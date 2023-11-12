@@ -141,7 +141,7 @@ using UnityEngine.Analytics;
 
         public AState DoExit()
         {
-            Debug.Log($"{GetType().Name} => Enter");
+            Debug.Log($"{GetType().Name} => Exit");
             OnExit?.Invoke();
             return this;
         }
