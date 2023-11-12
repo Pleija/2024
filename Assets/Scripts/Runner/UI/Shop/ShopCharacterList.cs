@@ -1,5 +1,6 @@
 ﻿using Runner.Characters;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -16,7 +17,7 @@ namespace Runner.UI.Shop
             foreach(var pair in CharacterDatabase.dictionary) {
                 var c = pair.Value;
                 if(c != null)
-                    prefabItem.InstantiateAsync().Completed += (op) => {
+                    Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
                         if(op.Result == null || !(op.Result is GameObject)) {
                             Debug.LogWarning(string.Format("Unable to load character shop list {0}.",
                                 prefabItem.Asset.name));
@@ -75,8 +76,8 @@ namespace Runner.UI.Shop
 
         public void Buy(Character c)
         {
-            PlayerData.instance.coins -= c.cost;
-            PlayerData.instance.premium -= c.premiumCost;
+            PlayerData.instance.coins.Value -= c.cost;
+            PlayerData.instance.premium.Value -= c.premiumCost;
             PlayerData.instance.AddCharacter(c.characterName);
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0

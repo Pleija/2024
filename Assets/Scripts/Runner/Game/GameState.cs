@@ -357,7 +357,7 @@ namespace Runner.Game
             if(m_GameoverSelectionDone)
                 return;
             m_GameoverSelectionDone = true;
-            PlayerData.instance.premium -= 3;
+            PlayerData.instance.premium.Value -= 3;
             //since premium are directly added to the PlayerData premium count, we also need to remove them from the current run premium count
             // (as if you had 0, grabbed 3 during that run, you can directly buy a new chance). But for the case where you add one in the playerdata
             // and grabbed 2 during that run, we don't want to remove 3, otherwise will have -1 premium for that run!

@@ -1,5 +1,6 @@
 ﻿using Runner.Consumable;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -19,7 +20,7 @@ namespace Runner.UI.Shop
             for(var i = 0; i < s_ConsumablesTypes.Length; ++i) {
                 var c = ConsumableDatabase.GetConsumbale(s_ConsumablesTypes[i]);
                 if(c != null)
-                    prefabItem.InstantiateAsync().Completed += (op) => {
+                    Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
                         if(op.Result == null || !(op.Result is GameObject)) {
                             Debug.LogWarning(string.Format("Unable to load item shop list {0}.",
                                 prefabItem.RuntimeKey));
@@ -77,8 +78,8 @@ namespace Runner.UI.Shop
 
         public void Buy(Consumable.Consumable c)
         {
-            PlayerData.instance.coins -= c.GetPrice();
-            PlayerData.instance.premium -= c.GetPremiumCost();
+            PlayerData.instance.coins.Value -= c.GetPrice();
+            PlayerData.instance.premium.Value -= c.GetPremiumCost();
             PlayerData.instance.Add(c.GetConsumableType());
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0

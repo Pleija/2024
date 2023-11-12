@@ -3270,7 +3270,7 @@ namespace SqlCipher4Unity3D
         }
 
         public MethodInfo serializeMethod;
-        public static bool useOdin;
+        public static bool useOdin = true;
 
         public object ReadCol(Sqlite3Statement stmt, int index, SQLite3.ColType type, Type clrType)
         {
@@ -3403,14 +3403,15 @@ namespace SqlCipher4Unity3D
                     var tMethod = serializeMethod?.MakeGenericMethod(clrType);
                     Assert.IsNotNull(tMethod, "serializeMethod != null");
                     return tMethod.Invoke(null,
-                        new object[] { bytes, Sirenix.Serialization.DataFormat.Binary, default });
+                        new object[] { bytes, Sirenix.Serialization.DataFormat.Binary, default }) 
+                        ?? Activator.CreateInstance(clrType);
                     // }
                 }
                 else {
                     // //else if(typeof(UnityEngine.Object).IsAssignableFrom(clrType)) {
                     try {
                         var json = SQLite3.ColumnString(stmt, index);
-                        if(json.Trim().Length > 0 && json.Trim()[0] == '{')
+                        //if(json.Trim().Length > 0 && json.Trim()[0] == '{')
                             return JsonUtility.FromJson(json, clrType) ?? Activator.CreateInstance(clrType);
                     }
                     catch(Exception e) {

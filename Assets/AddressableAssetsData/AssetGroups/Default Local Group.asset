@@ -21,14 +21,27 @@ MonoBehaviour:
     m_Address: Main
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c81bf86fb95a26446ae42f499fcbc766
     m_Address: Shop
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 66b8e0d49d006dd4cb32d8b0fa444728
     m_Address: Start
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 314684ffe9a947d8936ce602d2c99723
+    m_Address: Assets/Res
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 736ba970b46d744bb93fe7ee1d0308d2
+    m_Address: Runner.PlayerData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 735e874f947d0e143a6b4e83f8a7283a, type: 2}
   m_SchemaSet:

@@ -25,7 +25,7 @@ namespace Runner.UI.Shop
                 if(c.accessories != null && c.accessories.Length > 0)
                     m_CharacterList.Add(c);
             }
-            headerPrefab.InstantiateAsync().Completed += (op) => {
+            Addressables.InstantiateAsync(headerPrefab).Completed += (op) => {
                 LoadedCharacter(op, 0);
             };
         }
@@ -41,7 +41,7 @@ namespace Runner.UI.Shop
                 header.transform.SetParent(listRoot, false);
                 var itmHeader = header.GetComponent<ShopItemListItem>();
                 itmHeader.nameText.text = c.characterName;
-                prefabItem.InstantiateAsync().Completed += (innerOp) => {
+                Addressables.InstantiateAsync(prefabItem).Completed += (innerOp) => {
                     LoadedAccessory(innerOp, currentIndex, 0);
                 };
             }
@@ -88,12 +88,12 @@ namespace Runner.UI.Shop
                 //we finish the current character accessory, load the next character
                 characterIndex++;
                 if(characterIndex < m_CharacterList.Count)
-                    headerPrefab.InstantiateAsync().Completed += (innerOp) => {
+                    Addressables.InstantiateAsync(headerPrefab).Completed += (innerOp) => {
                         LoadedCharacter(innerOp, characterIndex);
                     };
             }
             else {
-                prefabItem.InstantiateAsync().Completed += (innerOp) => {
+                Addressables.InstantiateAsync(prefabItem).Completed += (innerOp) => {
                     LoadedAccessory(innerOp, characterIndex, accessoryIndex);
                 };
             }
@@ -127,8 +127,8 @@ namespace Runner.UI.Shop
 
         public void Buy(string name, int cost, int premiumCost)
         {
-            PlayerData.instance.coins -= cost;
-            PlayerData.instance.premium -= premiumCost;
+            PlayerData.instance.coins.Value -= cost;
+            PlayerData.instance.premium.Value -= premiumCost;
             PlayerData.instance.AddAccessory(name);
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0

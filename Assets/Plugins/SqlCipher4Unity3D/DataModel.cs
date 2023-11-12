@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Common;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using SQLite.Attributes;
@@ -67,10 +68,14 @@ namespace SqlCipher4Unity3D
 
         public static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
             if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
-                Res.Exists<T>().ForEach(x => {
-                    result ??= Defaults[typeof(T)] = Addressables.LoadAssetAsync<T>(x.PrimaryKey)
-                        .WaitForCompletion();
-                });
+                if(Res.Exists<T>() is { } locations) {
+                    result = Defaults[typeof(T)] = Addressables
+                        .LoadAssetAsync<T>(locations.First().PrimaryKey).WaitForCompletion();
+                    Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
+                }
+                else {
+                    Debug.Log($"{typeof(T).Name} asset not found");
+                }
             }
 #if UNITY_EDITOR
             // if(!Application.isEditor) return;
@@ -84,7 +89,7 @@ namespace SqlCipher4Unity3D
                 if(!Directory.Exists(Path.GetDirectoryName(path))) {
                     Directory.CreateDirectory(Path.GetDirectoryName(path)!);
                 }
-                AssetDatabase.CreateAsset(result, path);
+                AssetDatabase.CreateAsset(value, path);
                 AssetDatabase.Refresh();
                 result = AssetDatabase.LoadAssetAtPath<T>(path);
                 var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
@@ -104,10 +109,10 @@ namespace SqlCipher4Unity3D
 
         public static void Setup(Model config, T target)
         {
-            typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-                .Where(x => Regex.IsMatch(x.Name, @"^[A-Z]")).ForEach(x => {
-                    object value = null;
+            typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance).ForEach(x => {
+                object value = null;
 
+                if(Regex.IsMatch(x.Name, @"^[A-Z]")) {
                     switch(x) {
                         case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                             value = propertyInfo.GetValue(config) ??
@@ -120,28 +125,49 @@ namespace SqlCipher4Unity3D
                             fieldInfo.SetValue(target, value);
                             break;
                     }
-
-                    void ToSave()
-                    {
-                        Debug.Log($"Save {typeof(T).FullName} => {x.Name}");
-                        target.Save();
-                    }
-
-                    switch(value) {
-                        case IntReactiveProperty intReactiveProperty:
-                            intReactiveProperty.Subscribe(_ => ToSave());
+                }
+                else {
+                    switch(x) {
+                        case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
+                            value = propertyInfo.GetValue(target);
                             break;
-                        case StringReactiveProperty stringReactiveProperty:
-                            stringReactiveProperty.Subscribe(_ => ToSave());
-                            break;
-                        case BoolReactiveProperty boolReactiveProperty:
-                            boolReactiveProperty.Subscribe(_ => ToSave());
+                        case FieldInfo fieldInfo:
+                            value = fieldInfo.GetValue(target);
                             break;
                     }
-                });
+                }
+
+                void ToSave(object t)
+                {
+                    Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
+                    target.Save();
+                }
+
+                switch(value) {
+                    case IntReactiveProperty intReactiveProperty:
+                        Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
+                        intReactiveProperty.Subscribe(t => ToSave(t));
+                        break;
+                    case StringReactiveProperty stringReactiveProperty:
+                        Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
+                        stringReactiveProperty.Subscribe(t => ToSave(t));
+                        break;
+                    case BoolReactiveProperty boolReactiveProperty:
+                        Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
+                        boolReactiveProperty.Subscribe(t => ToSave(t));
+                        break;
+                }
+            });
         }
 
         [ButtonGroup("2")]
+        void TestSave()
+        {
+            Save();
+            Debug.Log(JsonConvert.SerializeObject(conn.Table<T>().FirstOrDefault(),
+                Formatting.Indented));
+        }
+
         public T Save()
         {
             conn.Save(this);

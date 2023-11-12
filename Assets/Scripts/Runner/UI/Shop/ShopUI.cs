@@ -106,8 +106,8 @@ namespace Runner.UI.Shop
 #if !UNITY_EDITOR && !DEVELOPMENT_BUILD
         return; //you can't cheat in production build
 #endif
-            PlayerData.instance.coins += k_CheatCoins;
-            PlayerData.instance.premium += k_CheatPremium;
+            PlayerData.instance.coins.Value += k_CheatCoins;
+            PlayerData.instance.premium.Value += k_CheatPremium;
             PlayerData.instance.Save();
         }
 

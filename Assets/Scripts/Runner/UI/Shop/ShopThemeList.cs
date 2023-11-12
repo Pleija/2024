@@ -1,5 +1,6 @@
 ﻿using Runner.Themes;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -16,7 +17,7 @@ namespace Runner.UI.Shop
             foreach(var pair in ThemeDatabase.dictionnary) {
                 var theme = pair.Value;
                 if(theme != null)
-                    prefabItem.InstantiateAsync().Completed += (op) => {
+                    Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
                         if(op.Result == null || !(op.Result is GameObject)) {
                             Debug.LogWarning(string.Format("Unable to load theme shop list {0}.",
                                 prefabItem.Asset.name));
@@ -75,8 +76,8 @@ namespace Runner.UI.Shop
 
         public void Buy(ThemeData t)
         {
-            PlayerData.instance.coins -= t.cost;
-            PlayerData.instance.premium -= t.premiumCost;
+            PlayerData.instance.coins.Value -= t.cost;
+            PlayerData.instance.premium.Value -= t.premiumCost;
             PlayerData.instance.AddTheme(t.themeName);
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0

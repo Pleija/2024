@@ -940,6 +940,7 @@ GameObject:
   - component: {fileID: 50343041}
   - component: {fileID: 50343043}
   - component: {fileID: 50343042}
+  - component: {fileID: 50343044}
   m_Layer: 0
   m_Name: CoinText
   m_TagString: Untagged
@@ -1008,6 +1009,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50343040}
   m_CullTransparentMesh: 0
+--- !u!114 &50343044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50343040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdc68ae40704a6b94db19629d01d111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnChange
+      Entry: 6
+      Data: 
+    - Name: type
+      Entry: 7
+      Data: 0|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: Runner.PlayerData, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+  Value:
+    value: 0
+  Id: 1
+  model: {fileID: 110376687}
+  fieldName: coins
 --- !u!1 &52346560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,6 +1562,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105448109}
   m_CullTransparentMesh: 0
+--- !u!114 &110376687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e606f5827b7e344b8c317f6ced3910, type: 3}
+  m_Name: Runner.PlayerData
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: consumables
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[Runner.Consumable.Consumable+ConsumableType,
+        Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Runner.Consumable.Consumable+ConsumableType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: highscores
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[Runner.HighscoreEntry, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: missions
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[Runner.Missions.MissionBase, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  Id: 1
+  Version: 1.0
+  Extra: '{}'
+  localExtra: '{}'
+  coins:
+    value: 0
+  premium:
+    value: 0
+  characters: []
+  usedCharacter: 0
+  usedAccessory: -1
+  characterAccessories: []
+  themes: []
+  usedTheme: 0
+  previousName: Trash Cat
+  licenceAccepted: 0
+  tutorialDone: 1
+  masterVolume: 0
+  musicVolume: -5.7796483
+  masterSFXVolume: 0
+  ftueLevel: 2
+  rank: 0
 --- !u!224 &137514648 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224000013969192492, guid: a53fe2875371488408daf0df7d69a981,
@@ -9412,7 +9546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &869760745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14586,6 +14720,8 @@ GameObject:
   - component: {fileID: 1226467018}
   - component: {fileID: 1226467020}
   - component: {fileID: 1226467019}
+  - component: {fileID: 1226467022}
+  - component: {fileID: 1226467021}
   m_Layer: 0
   m_Name: PremiumText
   m_TagString: Untagged
@@ -14645,7 +14781,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 999
+  m_Text: 0
 --- !u!222 &1226467020
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14654,6 +14790,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1226467017}
   m_CullTransparentMesh: 0
+--- !u!114 &1226467021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226467017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb219b23cdf4b314f94a27bca3cc8012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1226467022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226467017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdc68ae40704a6b94db19629d01d111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnChange
+      Entry: 6
+      Data: 
+    - Name: type
+      Entry: 7
+      Data: 0|System.RuntimeType, mscorlib
+    - Name: 
+      Entry: 1
+      Data: Runner.PlayerData, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+  Value:
+    value: 0
+  Id: 1
+  model: {fileID: 110376687}
+  fieldName: premium
 --- !u!1 &1236270526
 GameObject:
   m_ObjectHideFlags: 0
@@ -14806,7 +14992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1245236421
 RectTransform:
   m_ObjectHideFlags: 0

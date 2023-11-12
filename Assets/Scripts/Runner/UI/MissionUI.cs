@@ -20,7 +20,7 @@ namespace Runner.UI
 
             for(var i = 0; i < 3; ++i)
                 if(PlayerData.instance.missions.Count > i) {
-                    AsyncOperationHandle op = missionEntryPrefab.InstantiateAsync();
+                    AsyncOperationHandle op = Addressables.InstantiateAsync(missionEntryPrefab);
                     yield return op;
 
                     if(op.Result == null || !(op.Result is GameObject)) {
@@ -33,7 +33,7 @@ namespace Runner.UI
                     entry.FillWithMission(PlayerData.instance.missions[i], this);
                 }
                 else {
-                    AsyncOperationHandle op = addMissionButtonPrefab.InstantiateAsync();
+                    AsyncOperationHandle op = Addressables.InstantiateAsync(addMissionButtonPrefab);
                     yield return op;
 
                     if(op.Result == null || !(op.Result is GameObject)) {

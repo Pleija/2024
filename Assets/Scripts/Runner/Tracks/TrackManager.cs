@@ -225,8 +225,8 @@ namespace Runner.Tracks
                 RenderSettings.fog = true;
                 gameObject.SetActive(true);
                 characterController.gameObject.SetActive(true);
-                characterController.coins = 0;
-                characterController.premium = 0;
+                characterController.coins = PlayerData.instance.coins;
+                characterController.premium = PlayerData.instance.premium;
                 m_Score = 0;
                 m_ScoreAccum = 0;
                 m_SafeSegementLeft = m_IsTutorial ? 0 : k_StartingSafeSegments;
@@ -440,8 +440,8 @@ namespace Runner.Tracks
             if(segmentUse == m_PreviousSegment)
                 segmentUse = (segmentUse + 1) %
                     m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length;
-            AsyncOperationHandle segmentToUseOp = m_CurrentThemeData.zones[m_CurrentZone]
-                .prefabList[segmentUse].InstantiateAsync(_offScreenSpawnPos, Quaternion.identity);
+            AsyncOperationHandle segmentToUseOp = Addressables.InstantiateAsync(m_CurrentThemeData.zones[m_CurrentZone]
+                                                                         .prefabList[segmentUse],_offScreenSpawnPos, Quaternion.identity);
             yield return segmentToUseOp;
 
             if(segmentToUseOp.Result == null || !(segmentToUseOp.Result is GameObject)) {
@@ -493,7 +493,7 @@ namespace Runner.Tracks
         private IEnumerator SpawnFromAssetReference(AssetReference reference, TrackSegment segment,
             int posIndex)
         {
-            AsyncOperationHandle op = reference.LoadAssetAsync<GameObject>();
+            AsyncOperationHandle op = Addressables.LoadAssetAsync<GameObject>(reference);
             yield return op;
             var obj = op.Result as GameObject;
 
