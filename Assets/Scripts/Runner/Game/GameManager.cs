@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Runner.Consumable;
 using UnityEngine;
+using UnityEngine.Events;
 
-namespace Runner.Game {
+namespace Runner.Game
+{
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -74,8 +77,8 @@ using UnityEngine.Analytics;
                 Debug.LogError("Can't find the state named " + newState);
                 return;
             }
-            m_StateStack[m_StateStack.Count - 1].Exit(state);
-            state.Enter(m_StateStack[m_StateStack.Count - 1]);
+            m_StateStack[m_StateStack.Count - 1].DoExit().Exit(state);
+            state.DoEnter().Enter(m_StateStack[m_StateStack.Count - 1]);
             m_StateStack.RemoveAt(m_StateStack.Count - 1);
             m_StateStack.Add(state);
         }
@@ -93,8 +96,10 @@ using UnityEngine.Analytics;
                 Debug.LogError("Can't pop states, only one in stack.");
                 return;
             }
-            m_StateStack[m_StateStack.Count - 1].Exit(m_StateStack[m_StateStack.Count - 2]);
-            m_StateStack[m_StateStack.Count - 2].Enter(m_StateStack[m_StateStack.Count - 2]);
+            m_StateStack[m_StateStack.Count - 1].DoExit()
+                .Exit(m_StateStack[m_StateStack.Count - 2]);
+            m_StateStack[m_StateStack.Count - 2].DoEnter()
+                .Enter(m_StateStack[m_StateStack.Count - 2]);
             m_StateStack.RemoveAt(m_StateStack.Count - 1);
         }
 
@@ -108,11 +113,12 @@ using UnityEngine.Analytics;
             }
 
             if(m_StateStack.Count > 0) {
-                m_StateStack[m_StateStack.Count - 1].Exit(state);
-                state.Enter(m_StateStack[m_StateStack.Count - 1]);
+                m_StateStack[m_StateStack.Count - 1].DoExit().Exit(state);
+                //state.OnEnter?.Invoke();
+                state.DoEnter().Enter(m_StateStack[m_StateStack.Count - 1]);
             }
             else {
-                state.Enter(null);
+                state.DoEnter().Enter(null);
             }
             m_StateStack.Add(state);
         }
@@ -122,6 +128,23 @@ using UnityEngine.Analytics;
     {
         [HideInInspector]
         public GameManager manager;
+
+        public UnityEvent OnEnter;
+        public UnityEvent OnExit;
+
+        public AState DoEnter()
+        {
+            Debug.Log($"{GetType().Name} => Enter");
+            OnEnter?.Invoke();
+            return this;
+        }
+
+        public AState DoExit()
+        {
+            Debug.Log($"{GetType().Name} => Enter");
+            OnExit?.Invoke();
+            return this;
+        }
 
         public abstract void Enter(AState from);
         public abstract void Exit(AState to);
