@@ -1,0 +1,8 @@
+{
+    "name": "Helpers",
+    "references": [
+        "Unity.Addressables.Editor",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ]
+}

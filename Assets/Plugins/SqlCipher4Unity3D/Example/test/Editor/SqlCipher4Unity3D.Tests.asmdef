@@ -1,0 +1,19 @@
+{
+    "name": "SqlCipher4Unity3D.Tests",
+    "references": [
+        "SqlCipher4Unity3D",
+        "ICEROCK.Framework"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

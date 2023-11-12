@@ -1,0 +1,53 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "ES2015",
+        "jsx": "react",
+        "inlineSourceMap": true,
+        "skipLibCheck": true,
+        "allowJs": true,
+        "checkJs": false,
+        "noImplicitAny": false,
+        "allowSyntheticDefaultImports": true,
+        "allowUnreachableCode": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "baseUrl": "src",
+        "paths": {
+            "*": [
+                "*",
+                "../package~/node_modules/*"
+            ],
+            "Common/*": [
+                "Common/*"
+            ],
+            "Start/*": [
+                "Start/*"
+            ],
+            "Login/*": [
+                "Login/*"
+            ],
+            "Shop/*": [
+                "Shop/*"
+            ],
+            "Main/*": [
+                "Main/*"
+            ],
+            "Tags/*": [
+                "Tags/*"
+            ]
+        },
+        "typeRoots": [
+            "Typing",
+            "./package~/node_modules/@types"
+        ],
+        "outDir": "../../Assets/Res/dist"
+    },
+    "include": [
+        "src/**/*",
+        "Typing/**/*"
+    ]
+}

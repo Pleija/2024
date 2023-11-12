@@ -1,0 +1,18 @@
+export function dirname(path) {
+    return CS.System.IO.Path.GetDirectoryName(path);
+}
+
+export function resolve(dir, url) {
+    url = url.replace(/\\/g, "/");
+    while (url.startsWith("../")) {
+        dir = CS.System.IO.Path.GetDirectoryName(dir);
+        url = url.substr(3);
+    }
+    return CS.System.IO.Path.Combine(dir, url);
+}
+
+export function join(dir, url){
+    return resolve(dir, url);
+}
+
+module.exports = exports = global.path ??= { dirname, resolve, join }

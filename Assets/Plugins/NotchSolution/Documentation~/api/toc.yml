@@ -1,0 +1,27 @@
+### YamlMime:TableOfContent
+- uid: E7.NotchSolution
+  name: E7.NotchSolution
+  items:
+  - uid: E7.NotchSolution.AdaptationBase
+    name: AdaptationBase
+  - uid: E7.NotchSolution.AspectRatioAdaptation
+    name: AspectRatioAdaptation
+  - uid: E7.NotchSolution.INotchSimulatorTarget
+    name: INotchSimulatorTarget
+  - uid: E7.NotchSolution.NotchSolutionUIBehaviourBase
+    name: NotchSolutionUIBehaviourBase
+  - uid: E7.NotchSolution.NotchSolutionUtility
+    name: NotchSolutionUtility
+  - uid: E7.NotchSolution.SafeAdaptation
+    name: SafeAdaptation
+  - uid: E7.NotchSolution.SafePadding
+    name: SafePadding
+- uid: E7.NotchSolution.Editor
+  name: E7.NotchSolution.Editor
+  items:
+  - uid: E7.NotchSolution.Editor.GameViewResolution
+    name: GameViewResolution
+  - uid: E7.NotchSolution.Editor.GameViewSizePolicy
+    name: GameViewSizePolicy
+  - uid: E7.NotchSolution.Editor.PreviewOrientation
+    name: PreviewOrientation

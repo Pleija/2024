@@ -1,0 +1,9 @@
+{
+    "name": "QHierarchy.Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "references": [
+        "QHierarchy.Runtime"
+    ]
+}
