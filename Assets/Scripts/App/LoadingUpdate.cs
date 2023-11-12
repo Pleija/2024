@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Linq;
+using System.Net.Configuration;
 using Common;
+using IngameDebugConsole;
 #if UNITY_EDITOR
+using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
@@ -14,6 +17,8 @@ namespace App
 {
     public class LoadingUpdate : Singleton<LoadingUpdate>
     {
+        public AssetReference nextScene;
+        public AssetReference prefab;
         public string PrivacyKey = "App.Privacy";
         public string FirstUpdateKey = "App.FirstUpdate";
         public GameObject privacyPanel;
@@ -46,8 +51,33 @@ namespace App
             }
         }
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void DebugSetting()
+        {
+            if(Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
+                Instantiate(Resources.Load("IngameDebugConsole"));
+                return;
+            }
+            Debug.unityLogger.logEnabled = false;
+        }
+
+        private static bool m_Reloaded;
+
         private void Start()
         {
+            if(!m_Reloaded) {
+                m_Reloaded = true;
+                Addressables.InitializeAsync().WaitForCompletion();
+                var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
+                Debug.Log($"Start Update: Reload = {loc != null}");
+
+                if(PlayerPrefs.HasKey(FirstUpdateKey) && loc != null) {
+                    Debug.Log("Reload Update prefab");
+                    Addressables.InstantiateAsync(prefab).WaitForCompletion();
+                    Destroy(gameObject);
+                    return;
+                }
+            }
             privacyPanel.SetActive(!isAgreed);
             offlinePanel.SetActive(false);
             progress.gameObject.SetActive(false);
@@ -89,7 +119,7 @@ namespace App
             var p1 = Addressables.CheckForCatalogUpdates(false);
 
             // while(p1.IsValid() && !p1.IsDone) {
-                 text = $"Check Update...";
+            text = $"Check Update...";
             //     progress.value = p1.PercentComplete;
             //     yield return null;
             // }
@@ -100,7 +130,7 @@ namespace App
                 var p2 = Addressables.UpdateCatalogs(p1.Result, false);
 
                 // while(p2.IsValid() && !p2.IsDone) {
-                     text = $"Update Catalog...";
+                text = $"Update Catalog...";
                 //     progress.value = p2.PercentComplete;
                 //     yield return null;
                 // }
@@ -145,6 +175,9 @@ namespace App
             //     yield break;
             // }
             else {
+                if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
+                    PlayerPrefs.SetInt(FirstUpdateKey, 1);
+                }
                 Debug.Log("Don't need download");
             }
             text = "";
@@ -156,8 +189,9 @@ namespace App
         {
             if(Application.isEditor) {
 #if UNITY_EDITOR
-                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode("Assets/Scenes/Start.unity",
-                    new LoadSceneParameters() {
+                var path = AssetDatabase.GetAssetPath(nextScene.editorAsset);
+                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(
+                    path /*"Assets/Scenes/Start.unity"*/, new LoadSceneParameters() {
                         loadSceneMode = LoadSceneMode.Single
                     });
 
@@ -167,7 +201,7 @@ namespace App
 #endif
                 yield break;
             }
-            var p = Addressables.LoadSceneAsync("Start");
+            var p = Addressables.LoadSceneAsync(nextScene);
 
             while(p.IsValid() && !p.IsDone) {
                 progress.value = 0.9f - p.PercentComplete;
