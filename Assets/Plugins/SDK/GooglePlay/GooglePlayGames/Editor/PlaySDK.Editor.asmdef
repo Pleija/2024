@@ -1,0 +1,9 @@
+{
+  "name": "PlaySDK.Editor",
+    "references": [
+        "PlaySDK"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}

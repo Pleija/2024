@@ -47,14 +47,14 @@ namespace Editors
         /// </summary>
         public static string PreExport()
         {
+            var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
+            version[version.Length - 1] = (int.Parse(version[version.Length - 1]) + 1).ToString();
+            UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);
+
             if(newBuild) {
                 // var version = setting.OverridePlayerVersion.Split('.');
                 //     version[version.Length-1] = (int.Parse(version[version.Length-1])+1).ToString();
                 //  setting.OverridePlayerVersion = string.Join(".", version);    
-                var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
-                version[version.Length - 1] =
-                    (int.Parse(version[version.Length - 1]) + 1).ToString();
-                UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);
                 UnityEngine.Debug.Log("BuildAddressablesProcessor.PreExport start");
                 AddressableAssetSettings.CleanPlayerContent(AddressableAssetSettingsDefaultObject
                     .Settings.ActivePlayerDataBuilder);
