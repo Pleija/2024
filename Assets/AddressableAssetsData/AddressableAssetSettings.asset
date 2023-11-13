@@ -41,7 +41,6 @@ MonoBehaviour:
   m_BuildAddressablesWithPlayerBuild: 2
   m_overridePlayerVersion: 1.0
   m_GroupAssets:
-  - {fileID: 11400000, guid: 46a549cf223b965419395d1eb67697d5, type: 2}
   - {fileID: 11400000, guid: e2c827a9a9fb83b4193c2f8d1d7779d0, type: 2}
   - {fileID: 11400000, guid: 76221483d69bd3b4aac4488c3097199d, type: 2}
   - {fileID: 11400000, guid: d99611ab52ff789479179f6e24dde79d, type: 2}
