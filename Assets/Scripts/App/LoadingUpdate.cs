@@ -68,7 +68,7 @@ namespace App
 
         private void Awake()
         {
-           OnAwake?.Invoke();
+            OnAwake?.Invoke();
         }
 
         private void Start()
@@ -189,9 +189,14 @@ namespace App
                 }
                 Debug.Log("Don't need download");
             }
+
+            //progress.gameObject.SetActive(false);
+            if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
+                StartCoroutine(StartUpdate());
+                yield break;
+            }
             text = "Loading...";
             progress.value = 0;
-            //progress.gameObject.SetActive(false);
             OnLoad?.Invoke();
         }
 
