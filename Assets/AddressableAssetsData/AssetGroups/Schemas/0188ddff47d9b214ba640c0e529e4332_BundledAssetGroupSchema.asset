@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0188ddff47d9b214ba640c0e529e4332_BundledAssetGroupSchema
   m_EditorClassIdentifier: 
   m_Group: {fileID: 11400000, guid: 2981e407081d08d4887a5ef39df59609, type: 2}
-  m_InternalBundleIdMode: 1
+  m_InternalBundleIdMode: 2
   m_Compression: 1
   m_IncludeAddressInCatalog: 1
   m_IncludeGUIDInCatalog: 1

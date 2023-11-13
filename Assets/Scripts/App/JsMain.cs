@@ -23,11 +23,12 @@ namespace App
         public BetterEvent OnStart2;
         public static bool assetsReady;
 
+        public static string[] all => Res.Exists<TextAsset>()
+            .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto"))
+            .Select(x => x.PrimaryKey).Distinct().ToArray();
+
         public static async Task GetAssets()
         {
-            var all = Res.Exists<TextAsset>()
-                .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto"))
-                .Select(x => x.PrimaryKey).Distinct().ToArray();
             ResLoader.assets.Clear();
             // await Addressables.DownloadDependenciesAsync(all.AsEnumerable(), Addressables.MergeMode.Union).Task;
 
@@ -43,12 +44,16 @@ namespace App
         [SerializeField]
         private bool IsGetAssets;
 
+        public bool LoadModels;
+
         public async void Awake()
         {
+            Debug.Log("Start JsMain");
             self = this;
             if(transform.parent != null) transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
-            await Addressables.InitializeAsync().Task;
+            if(!Addressables.ResourceLocators.Any())
+                Addressables.InitializeAsync().WaitForCompletion();
 
             if(updateCatalog) {
                 var handle = Addressables.CheckForCatalogUpdates(false);
@@ -59,12 +64,13 @@ namespace App
                 }
                 Addressables.Release(handle);
             }
-            await Model.LoadAll();
+            if(LoadModels)
+                await Model.LoadAll();
 
             if(IsGetAssets) {
                 await GetAssets();
             }
-            Debug.Log(@$"Js Assets: {ResLoader.assets.Count()}");
+            Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
             JsEnv.self.AutoUsing();
             JsEnv.self.ExecuteModule("bootstrap.mjs");
             OnStart?.Invoke();
@@ -80,7 +86,8 @@ namespace App
 
         public void OnDestroy()
         {
-            JsEnv.self.Dispose();
+            if(JsEnv._env is { isDisposed: false })
+                JsEnv._env.Dispose();
         }
     }
 }

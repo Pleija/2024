@@ -9,6 +9,7 @@ using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -62,6 +63,13 @@ namespace App
         }
 
         private static bool m_Reloaded;
+        public UnityEvent OnAwake;
+        public UnityEvent OnStart;
+
+        private void Awake()
+        {
+           OnAwake?.Invoke();
+        }
 
         private void Start()
         {
@@ -78,6 +86,7 @@ namespace App
                     return;
                 }
             }
+            OnStart?.Invoke();
             privacyPanel.SetActive(!isAgreed);
             offlinePanel.SetActive(false);
             progress.gameObject.SetActive(false);
@@ -180,8 +189,16 @@ namespace App
                 }
                 Debug.Log("Don't need download");
             }
-            text = "";
-            progress.gameObject.SetActive(false);
+            text = "Loading...";
+            progress.value = 0;
+            //progress.gameObject.SetActive(false);
+            OnLoad?.Invoke();
+        }
+
+        public UnityEvent OnLoad = new UnityEvent();
+
+        public void LoadScene()
+        {
             StartCoroutine(LoadNextScene());
         }
 
