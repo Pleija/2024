@@ -38,7 +38,7 @@ namespace Editors
             return ContentUpdateScript.BuildContentUpdate(settings, contentStateDataPath);
         }
 
-        private static bool newBuild = true;
+        private static bool newBuild = false;
 
         /// <summary>
         ///     Run a clean build before export.
@@ -48,8 +48,6 @@ namespace Editors
         /// </summary>
         public static string PreExport()
         {
-
-
             if(newBuild) {
                 // var version = setting.OverridePlayerVersion.Split('.');
                 //     version[version.Length-1] = (int.Parse(version[version.Length-1])+1).ToString();
@@ -88,7 +86,6 @@ namespace Editors
                 return;
             }
             PreExport();
-
             var extensions = new List<string> {
                 ".mjs",
                 ".proto"
@@ -132,9 +129,9 @@ namespace Editors
             // }
 
             //options.options |= BuildOptions.CleanBuildCache;
-
             PlayerSettings.Android.bundleVersionCode += 1;
-            PlayerSettings.iOS.buildNumber = (int.Parse(PlayerSettings.iOS.buildNumber) + 1).ToString();
+            PlayerSettings.iOS.buildNumber =
+                (int.Parse(PlayerSettings.iOS.buildNumber) + 1).ToString();
             var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
             version[version.Length - 1] = (int.Parse(version[version.Length - 1]) + 1).ToString();
             UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);

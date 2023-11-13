@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using System.Net.Configuration;
@@ -16,12 +17,13 @@ using UnityEngine.UI;
 
 namespace App
 {
-    public class LoadingUpdate : Singleton<LoadingUpdate>
+    public class Loading : Singleton<Loading>
     {
         public AssetReference nextScene;
         public AssetReference prefab;
         public string PrivacyKey = "App.Privacy";
         public string FirstUpdateKey = "App.FirstUpdate";
+        public string VersionKey = "App.Version";
         public GameObject privacyPanel;
         public Button agreeBtn;
         public Text prgText;
@@ -79,7 +81,8 @@ namespace App
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
                 Debug.Log($"Start Update: Reload = {loc != null}");
 
-                if(PlayerPrefs.HasKey(FirstUpdateKey) && loc != null) {
+                if(PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
+                   Application.version == PlayerPrefs.GetString(VersionKey)) {
                     Debug.Log("Reload Update prefab");
                     Addressables.InstantiateAsync(prefab).WaitForCompletion();
                     Destroy(gameObject);
@@ -163,7 +166,8 @@ namespace App
                 while(p4.IsValid() && !p4.IsDone) {
                     var current = (float)p4.GetDownloadStatus().TotalBytes -
                         p4.GetDownloadStatus().DownloadedBytes;
-                    text = $"{(int)((1 - current / total) * 100)}% ({current / 1024 / 1024:f1}M)";
+                    text = $"{(int)((1 - current / total) * 100)}%" +
+                        (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
                     progress.value = 1f - (current / total);
                     yield return null;
                 }
@@ -177,6 +181,11 @@ namespace App
                     StartCoroutine(Offline());
                     yield break;
                 }
+
+                if(p4.Status == AsyncOperationStatus.Succeeded &&
+                   Application.version != PlayerPrefs.GetString(VersionKey)) {
+                    PlayerPrefs.SetString(VersionKey, Application.version);
+                }
                 if(p4.IsValid()) Addressables.Release(p4);
             }
             // else if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
@@ -186,6 +195,10 @@ namespace App
             else {
                 if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
                     PlayerPrefs.SetInt(FirstUpdateKey, 1);
+                }
+
+                if(Application.version != PlayerPrefs.GetString(VersionKey)) {
+                    PlayerPrefs.SetString(VersionKey, Application.version);
                 }
                 Debug.Log("Don't need download");
             }
