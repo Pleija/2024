@@ -29,7 +29,7 @@ namespace Puerts
                 assets.TryGetValue(filepath, out _) ||
                 Res.Exists<TextAsset>($"{root}/{filepath}") != null ||
                 Res.Exists<TextAsset>($"Assets/Res/proto/{filepath}") != null ||
-                Resources.Load(pathToUse);
+                Resources.Load<TextAsset>(pathToUse);
             return exist;
         }
 
