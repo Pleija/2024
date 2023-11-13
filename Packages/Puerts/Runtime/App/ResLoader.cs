@@ -58,8 +58,9 @@ namespace Puerts
                 file = Resources.Load<TextAsset>(PathToUse(filepath));
             }
 #if UNITY_EDITOR
-            if(file != null)
-                debugPath = Path.GetFullPath(AssetDatabase.GetAssetPath(file));
+            if(file != null && AssetDatabase.GetAssetPath(file) is { } assetPath &&
+               !string.IsNullOrEmpty(assetPath))
+                debugPath = Path.GetFullPath(assetPath);
 #endif
             if(file && (Path.GetExtension(filepath) == ".proto" ||
                    Path.GetExtension(filepath) == ".mjs") && file.text.IsBase64()) {
