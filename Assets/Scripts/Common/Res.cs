@@ -28,11 +28,12 @@ namespace Common
 
         public static AsyncOperationHandle DownloadAll()
         {
-            return Addressables.DownloadDependenciesAsync(Keys, Addressables.MergeMode.Union,false);
+            return Addressables.DownloadDependenciesAsync(Keys, Addressables.MergeMode.Union,
+                false);
         }
 
-        public static IEnumerable<string> Keys => ResourceLocators
-            .SelectMany(x => x.Keys).Select(key => Exists(key.ToString())?.PrimaryKey ?? null).Where(x => x != null)
+        public static IEnumerable<string> Keys => ResourceLocators.SelectMany(x => x.Keys)
+            .Select(key => Exists(key.ToString())?.PrimaryKey ?? null).Where(x => x != null)
             .Distinct();
 
         public static IResourceLocation Exists<T>(string key, Type type = null) =>
@@ -59,11 +60,13 @@ namespace Common
             foreach(var locator in ResourceLocators) {
                 foreach(var key in locator.Keys) {
                     if(locator.Locate(key, type, out var resourceLocations)) {
-                        result.Add(resourceLocations.First());
+                        if(resourceLocations.FirstOrDefault(x => !Guid.TryParse(x.PrimaryKey, out _))
+                           is { } loc)
+                            result.Add(loc);
                     }
                 }
             }
-            return result;
+            return result.Any() ? result : null;
         }
     }
 }

@@ -1910,6 +1910,7 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   PrivacyKey: App.Privacy
   FirstUpdateKey: App.FirstUpdate
+  VersionKey: App.Version
   privacyPanel: {fileID: 3135957550703820750}
   agreeBtn: {fileID: 3135957551527718510}
   prgText: {fileID: 3135957550874583694}
@@ -2388,3 +2389,4 @@ MonoBehaviour:
     Events: []
   updateCatalog: 0
   IsGetAssets: 0
+  LoadModels: 1

@@ -123,7 +123,7 @@ namespace Runner.Game
 
                 if(m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE) {
                     PlayerData.instance.Consume(m_PowerupToUse);
-                    var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse));
+                    var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse), (GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
                     inv.gameObject.SetActive(false);
                     gs.trackManager.characterController.inventory = inv;
                 }

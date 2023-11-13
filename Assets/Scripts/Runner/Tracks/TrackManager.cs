@@ -441,8 +441,9 @@ namespace Runner.Tracks
                 segmentUse = (segmentUse + 1) %
                     m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length;
             AsyncOperationHandle segmentToUseOp = Addressables.InstantiateAsync(m_CurrentThemeData.zones[m_CurrentZone]
-                                                                         .prefabList[segmentUse],_offScreenSpawnPos, Quaternion.identity);
+                                                                         .prefabList[segmentUse], _offScreenSpawnPos, Quaternion.identity);
             yield return segmentToUseOp;
+
 
             if(segmentToUseOp.Result == null || !(segmentToUseOp.Result is GameObject)) {
                 Debug.LogWarning(string.Format("Unable to load segment {0}.",
@@ -461,6 +462,7 @@ namespace Runner.Tracks
                 currentExitPoint = transform.position;
                 currentExitRotation = transform.rotation;
             }
+            newSegment.transform.SetParent((GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
             newSegment.transform.rotation = currentExitRotation;
             Vector3 entryPoint;
             Quaternion entryRotation;

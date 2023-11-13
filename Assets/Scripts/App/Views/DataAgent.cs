@@ -44,10 +44,17 @@ namespace App
         public void SetModel()
         {
             Assert.IsNotNull(type, "type != null");
-            model = type.GetProperty("self",
-                    BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
-                ?.GetValue(null) as Model;
-            Assert.IsNotNull(model, "model != null");
+
+            if(model) {
+                model = model.GetSelf();
+            }
+
+            if(!model) {
+                model = type.GetProperty("self",
+                        BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
+                    ?.GetValue(null, null) as Model;
+            }
+            Assert.IsNotNull(model, $"model: {type.FullName}.self == null");
         }
 
         [ButtonGroup("1")]

@@ -191,14 +191,14 @@ namespace Runner {
                     NewSave();
                     m_Instance.Save();
                 }
-                self.coins.Subscribe(x => {
-                    Debug.Log($"add coins: {x}");
-                    self.Save();
-                });
-                self.premium.Subscribe(x => {
-                    Debug.Log($"add premium: {x}");
-                    self.Save();
-                });
+                // self.coins.Subscribe(x => {
+                //     Debug.Log($"add coins: {x}");
+                //     self.Save();
+                // });
+                // self.premium.Subscribe(x => {
+                //     Debug.Log($"add premium: {x}");
+                //     self.Save();
+                // });
 
                 //if we create the PlayerData, mean it's the very first call, so we use that to init the database
                 //this allow to always init the database at the earlier we can, i.e. the start screen if started normally on device

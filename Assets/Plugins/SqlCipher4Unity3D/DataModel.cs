@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,6 +39,9 @@ namespace SqlCipher4Unity3D
         private static string dbPath => $"{Application.persistentDataPath}/{Md5("System")}.db";
         private static string pwd => "6FA2B924-BE3E-4353-9023-F3CCEABE4A74";
 
+        [Ignore]
+        public bool isSetup { get; set; }
+
         public static SQLiteConnection conn {
             get {
                 if(m_Connection != null) return m_Connection;
@@ -48,10 +52,15 @@ namespace SqlCipher4Unity3D
 
         public static async Task LoadAll()
         {
+            var types = new List<string>();
+
             foreach(var x in Res.Exists<Model>()) {
                 // await Addressables.DownloadDependenciesAsync(x).Task;
+                if(Defaults.ContainsKey(x.ResourceType)) continue;
+                types.Add($"{x.ResourceType.FullName} => {x.PrimaryKey}");
                 Defaults[x.ResourceType] = await Addressables.LoadAssetAsync<Model>(x).Task;
             }
+            Debug.Log($"all models: {string.Join(", ", types)}");
         }
 
         [AutoIncrement, PrimaryKey]
@@ -60,6 +69,9 @@ namespace SqlCipher4Unity3D
         public string Version = "1.0";
         public string Extra = "{}";
         public string localExtra = "{}";
+        public new string name { get; set; }
+        public new HideFlags hideFlags { get; set; }
+        public Model GetSelf() => null;
 
         public Model Save()
         {
@@ -75,6 +87,7 @@ namespace SqlCipher4Unity3D
         private static T m_Instance;
 
         public new static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
+            //value ??= CreateInstance<T>();
             if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
                 if(Res.Exists<T>() is { } locations) {
                     result = Defaults[typeof(T)] = Addressables
@@ -115,57 +128,65 @@ namespace SqlCipher4Unity3D
             }
         });
 
+        public new Model GetSelf() => self;
+
         public static void Setup(Model config, T target)
         {
-            typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance).ForEach(x => {
-                object value = null;
+            target.isSetup = true;
+            typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => !x.IsDefined(typeof(IgnoreAttribute), true)).ForEach(x => {
+                    object value = null;
 
-                if(Regex.IsMatch(x.Name, @"^[A-Z]")) {
-                    switch(x) {
-                        case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
-                            value = propertyInfo.GetValue(config) ??
-                                Activator.CreateInstance(propertyInfo.PropertyType);
-                            propertyInfo.SetValue(target, value);
+                    if(Regex.IsMatch(x.Name, @"^[A-Z]")) {
+                        switch(x) {
+                            case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
+                                value = propertyInfo.GetValue(config, null) ??
+                                    Activator.CreateInstance(propertyInfo.PropertyType);
+                                propertyInfo.SetValue(target, value);
+                                break;
+                            case FieldInfo fieldInfo:
+                                value = fieldInfo.GetValue(config) ??
+                                    Activator.CreateInstance(fieldInfo.FieldType);
+                                fieldInfo.SetValue(target, value);
+                                break;
+                        }
+                    }
+                    else {
+                        switch(x) {
+                            case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
+                                //Debug.Log($"check property: {x.Name}");
+                                value = propertyInfo.GetValue(target, null);
+                                break;
+                            case FieldInfo fieldInfo:
+                               // Debug.Log($"check field: {x.Name}");
+                                value = fieldInfo.GetValue(target);
+                                break;
+                        }
+                    }
+
+                    void ToSave(object t)
+                    {
+                        if(target.isSetup) return;
+                        Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
+                        target.Save();
+                    }
+
+                    switch(value) {
+                        case IntReactiveProperty intReactiveProperty:
+                            //Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
+                            intReactiveProperty.Subscribe(t => ToSave(t));
                             break;
-                        case FieldInfo fieldInfo:
-                            value = fieldInfo.GetValue(config) ??
-                                Activator.CreateInstance(fieldInfo.FieldType);
-                            fieldInfo.SetValue(target, value);
+                        case StringReactiveProperty stringReactiveProperty:
+                            //Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
+                            stringReactiveProperty.Subscribe(t => ToSave(t));
+                            break;
+                        case BoolReactiveProperty boolReactiveProperty:
+                            //Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
+                            boolReactiveProperty.Subscribe(t => ToSave(t));
                             break;
                     }
-                }
-                else {
-                    switch(x) {
-                        case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
-                            value = propertyInfo.GetValue(target);
-                            break;
-                        case FieldInfo fieldInfo:
-                            value = fieldInfo.GetValue(target);
-                            break;
-                    }
-                }
-
-                void ToSave(object t)
-                {
-                    Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
-                    target.Save();
-                }
-
-                switch(value) {
-                    case IntReactiveProperty intReactiveProperty:
-                        Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
-                        intReactiveProperty.Subscribe(t => ToSave(t));
-                        break;
-                    case StringReactiveProperty stringReactiveProperty:
-                        Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
-                        stringReactiveProperty.Subscribe(t => ToSave(t));
-                        break;
-                    case BoolReactiveProperty boolReactiveProperty:
-                        Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
-                        boolReactiveProperty.Subscribe(t => ToSave(t));
-                        break;
-                }
-            });
+                });
+            target.isSetup = false;
         }
 
         [ButtonGroup("2")]

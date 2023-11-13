@@ -1,0 +1,215 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 874aad0016e247f6a1cf7ebca527abc5, type: 3}
+  m_Name: App.Models.User
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  Id: 1
+  Version: 1.0
+  Extra: '{}'
+  localExtra: '{}'
+  username:
+    value: 
+  uid:
+    value: 0
+  musicOn:
+    value: 1
+  key:
+    value: f99e30e1927048f598068971b51f4036
+  loginServer:
+    value: 
+  roomServer:
+    value: 
+  loginTime:
+    value: 0
+  level:
+    value: 0
+  coin:
+    value: 1200
+  power:
+    value: 30
+  money:
+    value: 0
+  gold:
+    value: 105
+  exp:
+    value: 520
+  Levels:
+  - exp: 0
+    name: "\u672A\u6392\u540D"
+    icon:
+      m_AssetGUID: cf97a9314e48d4fea9197284ff6c3edb
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 400
+    name: "\u9752\u94DCIII"
+    icon:
+      m_AssetGUID: c8b4f9da01c18439e94c822645661562
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 500
+    name: "\u9752\u94DCII"
+    icon:
+      m_AssetGUID: 7904dc9402b684e3e805b64c8c109911
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 600
+    name: "\u9752\u94DCI"
+    icon:
+      m_AssetGUID: 661bac138403c4dc1a20a2c8deaf0045
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 800
+    name: "\u767D\u94F6III"
+    icon:
+      m_AssetGUID: f7698785276024c379438b9db73671c6
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 1000
+    name: "\u767D\u94F6II"
+    icon:
+      m_AssetGUID: d748f9d4b7c174f2889bfbbbea265b63
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 1200
+    name: "\u767D\u94F6I"
+    icon:
+      m_AssetGUID: 0032b0c5b5f8943b187e9125c07061a6
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 1400
+    name: "\u9EC4\u91D1III"
+    icon:
+      m_AssetGUID: 8b8b7f1b5068448f3aac4d700bd9a18c
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 1600
+    name: "\u9EC4\u91D1II"
+    icon:
+      m_AssetGUID: 7edcfc8a4679b4ee2a312ff101e85aa2
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 1800
+    name: "\u9EC4\u91D1I"
+    icon:
+      m_AssetGUID: c55f3b305e0a2434aac46cca6fac7e43
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 2000
+    name: "\u6C34\u6676III"
+    icon:
+      m_AssetGUID: 9e62b9598e1534a39a842a875885dd9f
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 2200
+    name: "\u6C34\u6676II"
+    icon:
+      m_AssetGUID: 05f5d51df45fe42c4a6e8e52f9dc858d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 2400
+    name: "\u6C34\u6676I"
+    icon:
+      m_AssetGUID: 2634c88b26355411bbb5728dd97c7408
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 2600
+    name: "\u5927\u5E08III"
+    icon:
+      m_AssetGUID: c15fcae08f1654c03b7d21baec94f060
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 2800
+    name: "\u5927\u5E08II"
+    icon:
+      m_AssetGUID: 74d7c4c9b398741218d8d93b101cc33a
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 3000
+    name: "\u5927\u5E08I"
+    icon:
+      m_AssetGUID: 9dceaa83294dd46e0b5c993f4d5a86be
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 3200
+    name: "\u51A0\u519BIII"
+    icon:
+      m_AssetGUID: 32ebd8113a400428baef6aa7a2edafe1
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 3500
+    name: "\u51A0\u519BII"
+    icon:
+      m_AssetGUID: 2b340f70723eb474ba8d214207e62ab8
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 3800
+    name: "\u51A0\u519BI"
+    icon:
+      m_AssetGUID: bcb5836cc84344005a2ae59be6cc5067
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 4100
+    name: "\u6CF0\u5766III"
+    icon:
+      m_AssetGUID: 5e07d5f433fff4cc3bfc64c0ca0e6a8b
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 4400
+    name: "\u6CF0\u5766II"
+    icon:
+      m_AssetGUID: e931ef1877f32491980366286528e298
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 4700
+    name: "\u6CF0\u5766I"
+    icon:
+      m_AssetGUID: c798c94d6956b45099f95344ccb0a304
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - exp: 5000
+    name: "\u4F20\u5947"
+    icon:
+      m_AssetGUID: 630320532b7d3426fa4f582cf31fc540
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
