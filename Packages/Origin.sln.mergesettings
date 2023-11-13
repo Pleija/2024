@@ -1,0 +1,166 @@
+<SlnMergeSettings>
+    <!--    <MergeTargetSolution>Packages/MagicOnion/MagicOnion-4.5.2~/samples/ChatApp/ChatApp.Server.sln</MergeTargetSolution>-->
+<!--    <MergeTargetSolution>SignalR/SignalR.sln</MergeTargetSolution>-->
+    <MergeTargetSolution>SignalR/BestHttpServer~/BestHTTP_DemoSite.sln</MergeTargetSolution>
+    <SolutionFolders>
+        <!-- Define a solution folder named 'Unity' with GUID -->
+        <SolutionFolder FolderPath="Server" Guid="{F24185EE-3431-4D8E-9659-89D24DF03155}"/>
+        <SolutionFolder FolderPath="Unity" Guid="{AE711480-FCBB-42A2-8594-89B923F0E468}"/>
+        <SolutionFolder FolderPath="Plugins" Guid="{5469DBCD-1AE0-4448-AD03-752BA7407A60}"/>
+        <SolutionFolder FolderPath="Runtime" Guid="{7753CF91-0675-40E8-AC72-70C3DD137244}"/>
+        <SolutionFolder FolderPath="Test" Guid="{3BD765F3-9788-4206-A211-4E78F56D4792}"/>
+        <SolutionFolder FolderPath="Editor" Guid="{A78893EB-A70B-440F-89A0-BC24EF235F97}"/>
+        <SolutionFolder FolderPath="Custom" Guid="{8E0A0E2F-87F6-4760-B1EF-9AE0ED1D286A}"/>
+    </SolutionFolders>
+    <NestedProjects>
+
+<!--        <NestedProject ProjectName="Core" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="EcsRx" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="Inject" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="sfloat" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="Ninject" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="Puerts.Core" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="Puerts.Editor" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="TsEngine.Editor" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="ToolbarExtender.Editor" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="UnityS.Physics" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="UnityUIExtensions" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="SqlCipher4Unity3D" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="SlnMerge.Editor" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="MoreTags.Editor" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Custom"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Custom"/>-->
+
+        
+        <NestedProject ProjectName="Assembly-CSharp" FolderPath="Unity"/>
+        <NestedProject ProjectName="Assembly-CSharp-Editor-firstpass" FolderPath="Unity"/>
+        <NestedProject ProjectName="Assembly-CSharp-Editor" FolderPath="Unity"/>
+        <NestedProject ProjectName="Assembly-CSharp-firstpass" FolderPath="Unity"/>
+
+<!--        <NestedProject ProjectName="GrpcService" FolderPath="Server"/>-->
+<!--        <NestedProject ProjectName="ArtsTech.Grpc.WebSocket" FolderPath="Server"/>-->
+<!--        <NestedProject ProjectName="SignalRServer" FolderPath="Server"/>-->
+        <NestedProject ProjectName="BestHTTP_DemoSite" FolderPath="Server"/>
+        
+
+
+        <!--        default        -->
+
+
+<!--        <NestedProject ProjectName="Unity.Addressables" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Entities" FolderPath="Runtime"/>-->
+<!--&lt;!&ndash;        <NestedProject ProjectName="Unity.Entities.BuildUtils" FolderPath="Runtime"/>&ndash;&gt;-->
+<!--        <NestedProject ProjectName="Unity.Entities.CodeGen" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Entities.Hybrid" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Entities.Hybrid.HybridComponents" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Mathematics.Extensions" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Mathematics.Extensions.Hybrid" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Properties" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.ResourceManager" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Scenes" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Serialization" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Transforms" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Transforms.Hybrid" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Zenject-TestFramework" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Zenject" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Deformations" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Unity.Core.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniTask.TextMeshPro" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniTask.Linq" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniTask.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniTask.DOTween" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniTask.Addressables" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniTask" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniRx.Examples" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="UniRx" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Tests" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="stransforms" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Sirenix.OdinInspector.CompatibilityLayer.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Sirenix.OdinInspector.CompatibilityLayer" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Newtonsoft.Json.UnityConverters.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Newtonsoft.Json.UnityConverters.Addressables" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Newtonsoft.Json.UnityConverters" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="MobileTouchCamera" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="MessagePack" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="ME.ECS.FPMath.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="IngameDebugConsole.Runtime" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="IngameDebugConsole.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="HierarchyPro.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="BestHTTP" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Better-Events.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="BetterEvents" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Coffee.SoftMaskForUGUI" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="Coffee.SoftMaskForUGUI.Editor" FolderPath="Runtime"/>        -->
+<!--        <NestedProject ProjectName="DOTween.Modules" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="DOTweenPro.EditorScripts" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="DOTweenPro.Scripts" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="DPhysicExample" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="E7.NotchSolution" FolderPath="Runtime"/>        -->
+<!--        <NestedProject ProjectName="E7.NotchSolution.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="EcsRx.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="EditorHelpers.Editor" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="EMX.HierarchyPro.Runtime" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Runtime"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Runtime"/>-->
+
+        <!-- tests -->
+
+<!--        <NestedProject ProjectName="Unity.Addressables.Editor.Tests" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="Unity.Addressables.Tests" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="Unity.ResourceManager.Tests" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="Unity.Serialization.PerformanceTests" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="Unity.Serialization.Tests" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="MockTests" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+<!--        <NestedProject ProjectName="" FolderPath="Test"/>-->
+        
+        
+        <!--        Editor           -->
+        
+        
+<!--        <NestedProject ProjectName="Unity.Addressables.Editor" FolderPath="Editor"/>-->
+<!--        <NestedProject ProjectName="Unity.Entities.Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Unity.Entities.Editor.Properties" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Unity.InternalAPIEditorBridge.002" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Unity.InternalAPIEngineBridge.002" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Unity.Properties.UI.Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Unity.Scenes.Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Unity.Serialization.Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="UnityUIExtensions.editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Zenject-Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Zenject-PoolMonitor-Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="Zenject-ReflectionBaking-Editor" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="" FolderPath="Editor"/>        -->
+<!--        <NestedProject ProjectName="" FolderPath="Editor"/>        -->
+
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+        <!--        <NestedProject ProjectName="" FolderPath="Unity" />-->
+
+    </NestedProjects>
+</SlnMergeSettings>

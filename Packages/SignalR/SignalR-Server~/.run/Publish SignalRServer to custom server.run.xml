@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish SignalRServer to custom server" type="DotNetPublishAndUpload" factoryName="Publish to custom server">
+    <riderPublish runtime="linux-x64" server_id="4e182e51-a23d-46d7-8d61-3e81710901b8" serverName="chancenet.cn" target_framework="net7.0" uuid_high="2888438087340421007" uuid_low="6888272328197508567" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -5,6 +5,7 @@ namespace Common
     public interface IAutoCreate { }
     public interface IDontDestroyOnLoad { }
 
+    public class SingletonSample: Singleton<SingletonSample> {}
     public class Singleton<T> : Agent<T> where T : Singleton<T>
     {
         private static T m_Instance;

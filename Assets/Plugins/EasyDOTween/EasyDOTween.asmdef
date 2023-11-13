@@ -1,0 +1,6 @@
+{
+    "name": "EasyDOTween",
+    "references": [
+        "DOTween.Modules"
+    ]
+}

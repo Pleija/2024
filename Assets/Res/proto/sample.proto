@@ -1,0 +1,7 @@
+// mono /path/to/protogen.exe -i:sample.pb -o:sample.pb.cs
+package sample;
+message Person {
+    required string name = 1;
+    required int32 id = 2;
+    optional string email = 3;
+}

@@ -1,0 +1,10 @@
+{
+    "name": "EasyDOTween.Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "references": [
+        "EasyDOTween",
+        "DOTween.Modules"
+    ]
+}

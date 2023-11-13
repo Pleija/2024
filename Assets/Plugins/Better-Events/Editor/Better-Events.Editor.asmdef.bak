@@ -1,0 +1,9 @@
+{
+    "name": "Better-Events.Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "references": [
+        "Pleija.Core"
+    ]
+}

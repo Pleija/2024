@@ -1,0 +1,26 @@
+import { StateNode } from "Common/StateNode.mjs";
+var $promise = puer.$promise;
+var Addressables = CS.UnityEngine.AddressableAssets.Addressables;
+export class LoadStart extends StateNode {
+    task;
+    preValue;
+    slider;
+    caption;
+    async enter() {
+        console.log("enter loadStart");
+        this.task = Addressables.LoadSceneAsync("Main");
+        //SceneManager.LoadSceneAsync("Main");
+        const scene = await $promise(this.task.Task);
+        console.log("Start Ready");
+    }
+    update() {
+        const value = this.task.PercentComplete;
+        if (value != this.preValue) {
+            this.preValue = value;
+            console.log(value);
+            this.slider.value = value;
+            this.caption.text = `LOADING... ${Math.floor(value * 100)}%`;
+        }
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTG9hZFN0YXJ0Lm1qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uL1BhY2thZ2VzL1RzUHJvai9zcmMvU3RhcnQvTG9naW4vTG9hZFN0YXJ0Lm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sc0JBQXNCLENBQUM7QUFJakQsSUFBTyxRQUFRLEdBQUcsSUFBSSxDQUFDLFFBQVEsQ0FBQztBQUNoQyxJQUFPLFlBQVksR0FBRyxFQUFFLENBQUMsV0FBVyxDQUFDLGlCQUFpQixDQUFDLFlBQVksQ0FBQztBQUlwRSxNQUFNLE9BQU8sU0FBVSxTQUFRLFNBQWdCO0lBRW5DLElBQUksQ0FBd0M7SUFDNUMsUUFBUSxDQUFTO0lBQ3pCLE1BQU0sQ0FBUztJQUNmLE9BQU8sQ0FBeUI7SUFFaEMsS0FBSyxDQUFDLEtBQUs7UUFDUCxPQUFPLENBQUMsR0FBRyxDQUFDLGlCQUFpQixDQUFDLENBQUM7UUFDL0IsSUFBSSxDQUFDLElBQUksR0FBRyxZQUFZLENBQUMsY0FBYyxDQUFDLE1BQU0sQ0FBQyxDQUFDO1FBQ2hELHNDQUFzQztRQUN0QyxNQUFNLEtBQUssR0FBRyxNQUFNLFFBQVEsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBQzdDLE9BQU8sQ0FBQyxHQUFHLENBQUMsYUFBYSxDQUFDLENBQUM7SUFDL0IsQ0FBQztJQUVELE1BQU07UUFDRixNQUFNLEtBQUssR0FBRyxJQUFJLENBQUMsSUFBSSxDQUFDLGVBQWUsQ0FBQztRQUN4QyxJQUFJLEtBQUssSUFBSSxJQUFJLENBQUMsUUFBUSxFQUFFO1lBQ3hCLElBQUksQ0FBQyxRQUFRLEdBQUcsS0FBSyxDQUFDO1lBQ3RCLE9BQU8sQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUFDLENBQUM7WUFDbkIsSUFBSSxDQUFDLE1BQU0sQ0FBQyxLQUFLLEdBQUcsS0FBSyxDQUFDO1lBQzFCLElBQUksQ0FBQyxPQUFPLENBQUMsSUFBSSxHQUFHLGNBQWMsSUFBSSxDQUFDLEtBQUssQ0FBQyxLQUFLLEdBQUcsR0FBRyxDQUFDLEdBQUcsQ0FBQztTQUNoRTtJQUNMLENBQUM7Q0FDSiJ9

@@ -187,6 +187,8 @@ namespace Puerts
 #endif
             if (!method.ContainsGenericParameters)
                 return true;
+            //return true;
+
             var methodParameters = method.GetParameters();
             var returnType = method.ReturnType;
             var hasValidGenericParameter = false;

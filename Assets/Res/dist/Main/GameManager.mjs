@@ -1,0 +1,5 @@
+import { StateFsm } from "Common/StateFsm.mjs";
+export class GameManager extends StateFsm {
+}
+export const self = global.GameManager ??= new GameManager();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiR2FtZU1hbmFnZXIubWpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vUGFja2FnZXMvVHNQcm9qL3NyYy9NYWluL0dhbWVNYW5hZ2VyLm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsUUFBUSxFQUFFLE1BQU0scUJBQXFCLENBQUM7QUFFL0MsTUFBTSxPQUFPLFdBQVksU0FBUSxRQUFRO0NBRXhDO0FBRUQsTUFBTSxDQUFDLE1BQU0sSUFBSSxHQUFlLE1BQU0sQ0FBQyxXQUFXLEtBQUssSUFBSSxXQUFXLEVBQUUsQ0FBQyJ9

@@ -1,0 +1,23 @@
+// import * as core from './core';
+export class FKDefinition {
+    name;
+    foreignTableName;
+    fields;
+    get id() {
+        return FKDefinition.genericForeignKeyId(this.fields.map((field) => field.name), this.foreignTableName, this.fields.map((field) => field.foreignColumnName));
+    }
+    constructor(name, foreignTableName) {
+        this.name = name;
+        this.foreignTableName = foreignTableName;
+        this.fields = [];
+    }
+    static genericForeignKeyId(fromCols, toTable, toCols) {
+        let res = '(';
+        res += fromCols.join(',');
+        res += `) => ${toTable}(`;
+        res += toCols.join(',');
+        res += ')';
+        return res;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRktEZWZpbml0aW9uLm1qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL1BhY2thZ2VzL1RzUHJvai9zcmMvQ29tbW9uL1NxbGl0ZTNPUk0vbWV0YWRhdGEvRktEZWZpbml0aW9uLm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxrQ0FBa0M7QUFhbEMsTUFBTSxPQUFPLFlBQVk7SUFDZCxJQUFJLENBQVM7SUFDYixnQkFBZ0IsQ0FBUztJQUN6QixNQUFNLENBQXNCO0lBRXJDLElBQUksRUFBRTtRQUNKLE9BQU8sWUFBWSxDQUFDLG1CQUFtQixDQUNyQyxJQUFJLENBQUMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDLEtBQUssRUFBRSxFQUFFLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxFQUN0QyxJQUFJLENBQUMsZ0JBQWdCLEVBQ3JCLElBQUksQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsS0FBSyxFQUFFLEVBQUUsQ0FBQyxLQUFLLENBQUMsaUJBQWlCLENBQUMsQ0FDcEQsQ0FBQztJQUNKLENBQUM7SUFFRCxZQUFtQixJQUFZLEVBQUUsZ0JBQXdCO1FBQ3ZELElBQUksQ0FBQyxJQUFJLEdBQUcsSUFBSSxDQUFDO1FBQ2pCLElBQUksQ0FBQyxnQkFBZ0IsR0FBRyxnQkFBZ0IsQ0FBQztRQUN6QyxJQUFJLENBQUMsTUFBTSxHQUFHLEVBQUUsQ0FBQztJQUNuQixDQUFDO0lBRUQsTUFBTSxDQUFDLG1CQUFtQixDQUFDLFFBQWtCLEVBQUUsT0FBZSxFQUFFLE1BQWdCO1FBQzlFLElBQUksR0FBRyxHQUFHLEdBQUcsQ0FBQztRQUNkLEdBQUcsSUFBSSxRQUFRLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDO1FBQzFCLEdBQUcsSUFBSSxRQUFRLE9BQU8sR0FBRyxDQUFDO1FBQzFCLEdBQUcsSUFBSSxNQUFNLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDO1FBQ3hCLEdBQUcsSUFBSSxHQUFHLENBQUM7UUFDWCxPQUFPLEdBQUcsQ0FBQztJQUNiLENBQUM7Q0FDRiJ9

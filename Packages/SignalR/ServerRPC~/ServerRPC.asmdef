@@ -1,0 +1,8 @@
+{
+    "name": "ServerRPC",
+    "references": [
+        "MessagePack",
+        "Shared",
+        "BestHTTP"
+    ]
+}

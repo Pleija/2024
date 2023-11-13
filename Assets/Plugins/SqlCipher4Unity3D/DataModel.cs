@@ -53,11 +53,6 @@ namespace SqlCipher4Unity3D
                 Defaults[x.ResourceType] = await Addressables.LoadAssetAsync<Model>(x).Task;
             }
         }
-    }
-
-    public class DataModel<T> : Model where T : DataModel<T>
-    {
-        private static T m_Instance;
 
         [AutoIncrement, PrimaryKey]
         public int Id = 1;
@@ -66,7 +61,20 @@ namespace SqlCipher4Unity3D
         public string Extra = "{}";
         public string localExtra = "{}";
 
-        public static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
+        public Model Save()
+        {
+            conn.Save(this);
+            return this;
+        }
+    }
+
+    public class DataModelSample : DataModel<DataModelSample> { }
+
+    public class DataModel<T> : Model where T : DataModel<T>
+    {
+        private static T m_Instance;
+
+        public new static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
             if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
                 if(Res.Exists<T>() is { } locations) {
                     result = Defaults[typeof(T)] = Addressables
@@ -168,7 +176,7 @@ namespace SqlCipher4Unity3D
                 Formatting.Indented));
         }
 
-        public T Save()
+        public new T Save()
         {
             conn.Save(this);
             return (T)this;

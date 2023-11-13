@@ -3,8 +3,8 @@ import { StateNode } from "Common/StateNode.mjs";
 import SceneManager = CS.UnityEngine.SceneManagement.SceneManager;
 import $typeof = puer.$typeof;
 import Button = CS.UnityEngine.UI.Button;
-import PlayerData = CS.Gameplay.Common.PlayerData;
 import GameObject = CS.UnityEngine.GameObject;
+import PlayerData = CS.Runner.PlayerData;
 
 export class StartGame extends StateNode<StartButton> {
     main: GameObject;

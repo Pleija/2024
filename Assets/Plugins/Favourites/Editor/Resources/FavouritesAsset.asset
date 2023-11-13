@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4453ee406c44654e939557f10cd6f2d, type: 3}
+  m_Name: FavouritesAsset
+  m_EditorClassIdentifier: 
+  favs:
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 66b8e0d49d006dd4cb32d8b0fa444728, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 678d462d33ebdd7419400a9476bf6759, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: c81bf86fb95a26446ae42f499fcbc766, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: a4644c752f91e4b329f47363b846602b, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: acc5afa2532de490180b95128388c2b3, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 5ed13563a809f06489c3e97e4da02176, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 1cdc2c41ef0834650bd2212b0c3fda1d, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 22646b8cd96b2424d867c403ec43cb9c, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: e1c3fbf9a4d694ab29908ed3aacc9f40, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 9ef2d32d6fbf442a8b7576ec22353d30, type: 3}
+  - categoryId: 6
+    obj: {fileID: 3413865394029385527, guid: 332fb7ef3c5a74bab8a208a192865d25, type: 3}
+  - categoryId: 6
+    obj: {fileID: 2706126992141005059, guid: 3d70056770dba4af3b642b26cccd9fee, type: 3}
+  - categoryId: 6
+    obj: {fileID: 5340036850555197181, guid: d5984e3cea46e4a289663526b97bbefe, type: 3}
+  - categoryId: 6
+    obj: {fileID: 5700243721625156982, guid: 3d70056770dba4af3b642b26cccd9fee, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  - categoryId: 6
+    obj: {fileID: 11400000, guid: 58e8a0d1e7eb2497fb4ed1c371569690, type: 2}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 493b772ce3fec437b88ff42772c67559, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 8ba39f879e541413ebcad7e5af33f1f3, type: 3}
+  - categoryId: 11
+    obj: {fileID: 1322238429537036357, guid: 2280b0124dc8a457a82efcdfe7d7d418, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: cd3e567a37c3fae4c97971ce706b5a63, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 6f553b39a285b4de485dcfe66bfea475, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 0d88a7f74b8e54ce086627196cee3933, type: 3}
+  - categoryId: 0
+    obj: {fileID: 102900000, guid: 6ba911dabb3ac4e5eb8b25dd533a7514, type: 3}
+  - categoryId: 6
+    obj: {fileID: 2139395265305806601, guid: 27b0cf246753c4bfaa9b98406347878c, type: 3}
+  - categoryId: 6
+    obj: {fileID: 7358970172705066517, guid: c249da81ba68f491d855c780d75e821b, type: 3}
+  - categoryId: 6
+    obj: {fileID: 3050671452599711983, guid: 68d3cd3369fc74aca8503ce404df8dfa, type: 3}
+  - categoryId: 6
+    obj: {fileID: 8410886544754916175, guid: 472dc82166cc541108f6415078e5f86b, type: 3}
+  - categoryId: 6
+    obj: {fileID: 7573306750257242173, guid: c4c6d39f394c34b0d9fe7cf4d63cd55f, type: 3}
+  - categoryId: 6
+    obj: {fileID: 5628387919311892689, guid: 2f2b4b388fb1d41469ca78a955b12b83, type: 3}
+  categories:
+  - id: 0
+    name: Scenes
+  - id: 6
+    name: Prefabs
+  - id: 11
+    name: Pages
+  nextCategoryId: 12

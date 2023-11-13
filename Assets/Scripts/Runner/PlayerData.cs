@@ -384,13 +384,13 @@ namespace Runner {
 #if UNITY_EDITOR
     public class PlayerDataEditor : Editor
     {
-        [MenuItem("Trash Dash Debug/Clear Save")]
+        [MenuItem("Debug/Clear Save")]
         public static void ClearSave()
         {
             File.Delete(Application.persistentDataPath + "/save.bin");
         }
 
-        [MenuItem("Trash Dash Debug/Give 1000000 fishbones and 1000 premium")]
+        [MenuItem("Debug/Give 1000000 fishbones and 1000 premium")]
         public static void GiveCoins()
         {
             PlayerData.instance.coins.Value += 1000000;
@@ -398,7 +398,7 @@ namespace Runner {
             PlayerData.instance.Save();
         }
 
-        [MenuItem("Trash Dash Debug/Give 10 Consumables of each types")]
+        [MenuItem("Debug/Give 10 Consumables of each types")]
         public static void AddConsumables()
         {
             for(var i = 0; i < ShopItemList.s_ConsumablesTypes.Length; ++i) {

@@ -1,0 +1,13 @@
+{
+    "name": "Favourites_Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "references": [
+        "Unity.GoQL.Runtime",
+        "Favourites.Runtime",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
+        "Pleija.Core"
+    ]
+}

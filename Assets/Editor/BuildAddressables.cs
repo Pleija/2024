@@ -95,7 +95,7 @@ namespace Editors
             var sDir = $"Assets/Resources";
             var res = "Assets/Res";
 
-            if(Directory.Exists(res)) {
+            if(Directory.Exists(res) && false) {
                 Directory.GetFiles(sDir, "*.*", SearchOption.AllDirectories)
                     .Where(f => extensions.IndexOf(Path.GetExtension(f)) >= 0).ForEach(file => {
                         if(Path.GetExtension(file) == ".mjs" &&

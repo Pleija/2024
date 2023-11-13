@@ -1,0 +1,15 @@
+import { BaseTag } from "Common/BaseTag.mjs";
+export class MainMenu extends BaseTag {
+    get enable() {
+        return true;
+    }
+    set enable(v) {
+    }
+    get value() {
+        return null;
+    }
+    set value(v) {
+    }
+}
+export const self = global.$MainMenu ??= new MainMenu();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTWFpbk1lbnUubWpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vUGFja2FnZXMvVHNQcm9qL3NyYy9UYWdzL01haW5NZW51Lm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsT0FBTyxFQUFFLE1BQU0sb0JBQW9CLENBQUM7QUFHN0MsTUFBTSxPQUFPLFFBQVMsU0FBUSxPQUFPO0lBQ2pDLElBQUksTUFBTTtRQUNOLE9BQU8sSUFBSSxDQUFDO0lBQ2hCLENBQUM7SUFFRCxJQUFJLE1BQU0sQ0FBQyxDQUFVO0lBRXJCLENBQUM7SUFFRCxJQUFJLEtBQUs7UUFDTCxPQUFPLElBQUksQ0FBQztJQUNoQixDQUFDO0lBRUQsSUFBSSxLQUFLLENBQUMsQ0FBcUI7SUFFL0IsQ0FBQztDQUNKO0FBRUQsTUFBTSxDQUFDLE1BQU0sSUFBSSxHQUFhLE1BQU0sQ0FBQyxTQUFTLEtBQUssSUFBSSxRQUFRLEVBQUUsQ0FBQyJ9

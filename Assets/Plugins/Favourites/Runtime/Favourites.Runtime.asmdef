@@ -1,0 +1,6 @@
+{
+    "name": "Favourites.Runtime",
+    "references": [
+        "Kernel.Common"
+    ]
+}

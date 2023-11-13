@@ -1,0 +1,7 @@
+{
+    "name": "Shared",
+    "references": [
+        "MessagePack",
+        "MessagePack.Annotations"
+    ]
+}

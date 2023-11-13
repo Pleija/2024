@@ -1,0 +1,67 @@
+import { StateNode } from "Common/StateNode.mjs";
+var Addressables = CS.UnityEngine.AddressableAssets.Addressables;
+var $promise = puer.$promise;
+var Res = CS.Common.Res;
+export class StartUpdating extends StateNode {
+    slider;
+    startButton;
+    text;
+    checkCatalog;
+    updateCatalog;
+    getSize;
+    getDownload;
+    needSize;
+    testStart() {
+    }
+    async enter() {
+        console.log("Updating...", getAllMethod(this).join(', '));
+        this.slider.value = 0;
+        this.text.text = "";
+        this.checkCatalog = Addressables.CheckForCatalogUpdates(false);
+        await $promise(this.checkCatalog.Task);
+        if (this.checkCatalog.Result?.Count > 0) {
+            this.updateCatalog = Addressables.UpdateCatalogs(this.checkCatalog.Result, false);
+            await $promise(this.updateCatalog.Task);
+            console.log("update catalog", this.updateCatalog.Result.Count);
+            if (this.updateCatalog.IsValid()) {
+                Addressables.Release(this.updateCatalog);
+            }
+        }
+        else {
+            console.log("catalog don't need update");
+        }
+        if (this.checkCatalog.IsValid()) {
+            //Addressables.Release(this.checkCatalog as any);
+        }
+        //const keys = CS.App.Helpers.Res.Keys;
+        this.getSize = Res.GetDownloadSizeAll();
+        await $promise(this.getSize.Task);
+        if (this.getSize.Result > 0) {
+            this.getDownload = Res.DownloadAll();
+            this.needSize = this.getDownload.GetDownloadStatus().TotalBytes - this.getDownload.GetDownloadStatus().DownloadedBytes;
+            console.log("need size", Number(this.needSize) / 1024 / 1024);
+            await $promise(this.getDownload.Task);
+            console.log("download ready");
+            if (this.getDownload.IsValid()) {
+                //Addressables.Release(this.getDownload);
+            }
+        }
+        else {
+            console.log("addressable is updated");
+        }
+        this.slider.gameObject.SetActive(false);
+        this.startButton.gameObject.SetActive(true);
+    }
+    update() {
+        let sizeText = "";
+        if (this.getDownload?.IsValid() && !this.getDownload.IsDone) {
+            const current = this.getDownload.GetDownloadStatus().TotalBytes - this.getDownload.GetDownloadStatus().DownloadedBytes;
+            console.log("current", current);
+            this.slider.value = 1 - Number(current / this.needSize);
+            sizeText = " [ " + (Number(current) / 1024 / 1024).toFixed(1).toString() + "M ]";
+        }
+        this.text.text = this.slider.value > 0 && this.slider.value < 1 ? Math.floor(this.slider.value * 100).toString() + "%" : "";
+        this.text.text += sizeText;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3RhcnRVcGRhdGluZy5tanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi9QYWNrYWdlcy9Uc1Byb2ovc3JjL1N0YXJ0L1VwZGF0aW5nL1N0YXJ0VXBkYXRpbmcubXRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUNBLE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxzQkFBc0IsQ0FBQztBQUlqRCxJQUFPLFlBQVksR0FBRyxFQUFFLENBQUMsV0FBVyxDQUFDLGlCQUFpQixDQUFDLFlBQVksQ0FBQztBQUdwRSxJQUFPLFFBQVEsR0FBRyxJQUFJLENBQUMsUUFBUSxDQUFDO0FBS2hDLElBQU8sR0FBRyxHQUFHLEVBQUUsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDO0FBRTNCLE1BQU0sT0FBTyxhQUFjLFNBQVEsU0FBbUI7SUFDbEQsTUFBTSxDQUFTO0lBQ2YsV0FBVyxDQUFTO0lBQ3BCLElBQUksQ0FBTztJQUNILFlBQVksQ0FBeUM7SUFDckQsYUFBYSxDQUFtRDtJQUNoRSxPQUFPLENBQWlDO0lBQ3hDLFdBQVcsQ0FBdUI7SUFDbEMsUUFBUSxDQUFTO0lBRXpCLFNBQVM7SUFDVCxDQUFDO0lBRUQsS0FBSyxDQUFDLEtBQUs7UUFDUCxPQUFPLENBQUMsR0FBRyxDQUFDLGFBQWEsRUFBRSxZQUFZLENBQUMsSUFBSSxDQUFDLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUM7UUFFMUQsSUFBSSxDQUFDLE1BQU0sQ0FBQyxLQUFLLEdBQUcsQ0FBQyxDQUFDO1FBQ3RCLElBQUksQ0FBQyxJQUFJLENBQUMsSUFBSSxHQUFHLEVBQUUsQ0FBQztRQUNwQixJQUFJLENBQUMsWUFBWSxHQUFHLFlBQVksQ0FBQyxzQkFBc0IsQ0FBQyxLQUFLLENBQUMsQ0FBQztRQUMvRCxNQUFNLFFBQVEsQ0FBQyxJQUFJLENBQUMsWUFBWSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBQ3ZDLElBQUksSUFBSSxDQUFDLFlBQVksQ0FBQyxNQUFNLEVB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
