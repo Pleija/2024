@@ -215,9 +215,9 @@ namespace App
             //     yield break;
             // }
             else {
-                if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
-                    PlayerPrefs.SetInt(FirstUpdateKey, 1);
-                }
+                // if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
+                //     PlayerPrefs.SetInt(FirstUpdateKey, 1);
+                // }
 
                 if(Application.version != PlayerPrefs.GetString(VersionKey)) {
                     PlayerPrefs.SetString(VersionKey, Application.version);
