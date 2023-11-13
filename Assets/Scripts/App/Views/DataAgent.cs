@@ -74,7 +74,7 @@ namespace App
             }
             // }
             if(Value == null) return;
-            Set(Value.Value);
+            //Set(Value.Value);
             Value.Subscribe(x => {
                 Set(x);
             }).AddTo(this);

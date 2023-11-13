@@ -16,7 +16,7 @@ MonoBehaviour:
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
-  m_CatalogRequestsTimeout: 0
+  m_CatalogRequestsTimeout: 10
   m_DisableCatalogUpdateOnStart: 1
   m_IgnoreUnsupportedFilesInBuild: 1
   m_UniqueBundleIds: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 2
-  m_overridePlayerVersion: 1.0
+  m_overridePlayerVersion: 1.1
   m_GroupAssets:
   - {fileID: 11400000, guid: e2c827a9a9fb83b4193c2f8d1d7779d0, type: 2}
   - {fileID: 11400000, guid: 76221483d69bd3b4aac4488c3097199d, type: 2}
@@ -91,6 +91,20 @@ MonoBehaviour:
         m_Value: HostedData/[BuildTarget]
       - m_Id: 2b8be43d6259b66479a487c5d62a5120
         m_Value: https://a-1300226177.cos.ap-tokyo.myqcloud.com/test/[BuildTarget]
+    - m_InheritedParent: 
+      m_Id: 92c53c2b214364e70b35012a3cd5fb76
+      m_ProfileName: http
+      m_Values:
+      - m_Id: 8313888cf8465ae438b49b4cc62dc871
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 5092185a396d423439d038aabcdd991b
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 48a34a86fea3bca43b73f47f4556ea17
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: e2a85240a48a2184b9fe1ffd5c4ef06e
+        m_Value: HostedData/[BuildTarget]
+      - m_Id: 2b8be43d6259b66479a487c5d62a5120
+        m_Value: http://a-1300226177.cos.ap-tokyo.myqcloud.com/test/[BuildTarget]
     m_ProfileEntryNames:
     - m_Id: 8313888cf8465ae438b49b4cc62dc871
       m_Name: BuildTarget
