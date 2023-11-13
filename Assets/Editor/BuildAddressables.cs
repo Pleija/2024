@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
+using UnityEngine;
 
 //[AutoClearStatic]
 namespace Editors
@@ -47,9 +48,7 @@ namespace Editors
         /// </summary>
         public static string PreExport()
         {
-            var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
-            version[version.Length - 1] = (int.Parse(version[version.Length - 1]) + 1).ToString();
-            UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);
+
 
             if(newBuild) {
                 // var version = setting.OverridePlayerVersion.Split('.');
@@ -88,6 +87,8 @@ namespace Editors
                    "Build with Addressables", "Cancel")) {
                 return;
             }
+            PreExport();
+
             var extensions = new List<string> {
                 ".mjs",
                 ".proto"
@@ -132,8 +133,13 @@ namespace Editors
 
             //options.options |= BuildOptions.CleanBuildCache;
 
-            // PlayerSettings.Android.bundleVersionCode += 1;
-            // PlayerSettings.iOS.buildNumber = (int.Parse(PlayerSettings.iOS.buildNumber) + 1).ToString();
+            PlayerSettings.Android.bundleVersionCode += 1;
+            PlayerSettings.iOS.buildNumber = (int.Parse(PlayerSettings.iOS.buildNumber) + 1).ToString();
+            var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
+            version[version.Length - 1] = (int.Parse(version[version.Length - 1]) + 1).ToString();
+            UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);
+            AssetDatabase.SaveAssets();
+            Debug.Log($"Version: {PlayerSettings.bundleVersion} => {Application.version}");
             //BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
             BuildPipeline.BuildPlayer(options);
             //m_FirstBuild = false;
