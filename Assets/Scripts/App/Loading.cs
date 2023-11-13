@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Configuration;
 using Common;
 using IngameDebugConsole;
+using Runner;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -30,10 +31,15 @@ namespace App
         public Slider progress;
         public GameObject offlinePanel;
         public Button retryBtn;
+        private static bool clicked;
+        private static bool updated;
 
         public bool isAgreed {
-            get => !(Application.isEditor || Debug.isDebugBuild) && PlayerPrefs.HasKey(PrivacyKey);
+            get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) &&
+                PlayerPrefs.HasKey(PrivacyKey);
             set {
+                clicked = value;
+
                 if(value) {
                     PlayerPrefs.SetInt(PrivacyKey, 1);
                 }
@@ -49,7 +55,7 @@ namespace App
             set {
                 if(preText == value || string.IsNullOrEmpty(value)) return;
                 preText = value;
-                prgText.text = value;
+                prgText.text = value.ToUpper();
                 Debug.Log(value);
             }
         }
@@ -67,10 +73,18 @@ namespace App
         private static bool m_Reloaded;
         public UnityEvent OnAwake;
         public UnityEvent OnStart;
+        public float timer = 3.0f;
+        private float startTime;
 
         private void Awake()
         {
             OnAwake?.Invoke();
+        }
+
+        public static IEnumerator LoadNewPrefab(GameObject old)
+        {
+            yield return Addressables.InstantiateAsync("Update");
+            Destroy(old);
         }
 
         private void Start()
@@ -177,7 +191,9 @@ namespace App
                    !PlayerPrefs.HasKey(FirstUpdateKey)) {
                     PlayerPrefs.SetInt(FirstUpdateKey, 1);
                 }
-                else if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
+
+                if(p4.Status != AsyncOperationStatus.Succeeded &&
+                   !PlayerPrefs.HasKey(FirstUpdateKey)) {
                     StartCoroutine(Offline());
                     yield break;
                 }
@@ -187,6 +203,12 @@ namespace App
                     PlayerPrefs.SetString(VersionKey, Application.version);
                 }
                 if(p4.IsValid()) Addressables.Release(p4);
+                updated = true;
+
+                if(Res.Exists<GameObject>("Update") is { }) {
+                    CoroutineHandler.StartStaticCoroutine(LoadNewPrefab(gameObject));
+                    yield break;
+                }
             }
             // else if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
             //     StartCoroutine(Offline());
@@ -237,9 +259,15 @@ namespace App
                 yield break;
             }
             var p = Addressables.LoadSceneAsync(nextScene);
+            startTime = Time.realtimeSinceStartup;
+            var start = 0f;
 
             while(p.IsValid() && !p.IsDone) {
-                progress.value = 0.9f - p.PercentComplete;
+                if(Time.realtimeSinceStartup - startTime >= timer / 100f) {
+                    start += 0.01f;
+                    startTime = Time.realtimeSinceStartup;
+                }
+                progress.value = Mathf.Max(p.PercentComplete / 0.9f, start);
                 yield return null;
             }
         }

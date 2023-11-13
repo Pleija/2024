@@ -48,7 +48,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5cdee3f3bea11415db4f4f59b48f2add
-    m_Address: Assets/Prefabs/UI/Update.prefab
+    m_Address: Update
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
