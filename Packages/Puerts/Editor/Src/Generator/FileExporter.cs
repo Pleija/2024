@@ -57,7 +57,7 @@ namespace Puerts.Editor
                               Encoding.UTF8)) {
                         string fileContext = typingRender(DTS.TypingGenInfo.FromTypes(tsTypes),
                             csharpModuleWillGen);
-                        textWriter.Write(fileContext/*.Replace("<>", "")*/);
+                        textWriter.Write(fileContext/*.Replace("<>", "__")*/);
                         textWriter.Flush();
                     }
                 }

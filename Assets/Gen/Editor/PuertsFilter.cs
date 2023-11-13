@@ -496,10 +496,10 @@ namespace Puerts
             }
         }
 
-        [Filter]
+        // [Filter]
         private static bool FilterByName(MemberInfo memberInfo) =>
             memberInfo is MethodInfo methodInfo && (methodInfo.ReturnType.Name.StartsWith("<") ||
-                methodInfo.GetParameters().Any(t => t.ParameterType.Name.StartsWith("<")));
+                methodInfo.GetParameters().Any(t => t.ParameterType.Name.StartsWith("<") || methodInfo.Name.StartsWith("<") ));
 
         [Filter]
         //适用于puerts_1.3.0版本及以上
