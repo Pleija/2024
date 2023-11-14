@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Network
 {
-    public class SignalRConnect : Agent<SignalRConnect>
+    public class SignalRConnect : Singleton<SignalRConnect>, IAutoCreate, IDontDestroyOnLoad
     {
         public IProtocol protocol { get; set; }
         public HubConnection Hub { get; set; }
@@ -15,9 +15,10 @@ namespace Network
         public string BaseURL = "http://192.168.1.65:5000";
         public bool autoStart;
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             Hub?.StartClose();
+            base.OnDestroy();
         }
 
         public void AddText(string log)

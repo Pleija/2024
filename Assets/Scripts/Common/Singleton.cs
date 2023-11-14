@@ -13,7 +13,7 @@ namespace Common
 
         public static T self {
             get {
-                m_Instance ??= FindObjectOfType<T>();
+                m_Instance ??= FindObjectOfType<T>(true);
                 if(m_Instance) return m_Instance;
                 if(!typeof(T).IsDefined(typeof(AutoCreateAttribute), true) &&
                    !typeof(IAutoCreate).IsAssignableFrom(typeof(T))) return m_Instance;
@@ -35,6 +35,14 @@ namespace Common
         {
             base.OnEnable();
             if(m_Instance == null) m_Instance = (T)this;
+
+            if(GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
+               typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
+                if(transform.parent != null) {
+                    transform.SetParent(null);
+                }
+                DontDestroyOnLoad(gameObject);
+            }
         }
 
         protected virtual void OnDestroy()
