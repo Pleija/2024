@@ -4,7 +4,8 @@ using Runner.Tracks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Runner.Missions {
+namespace Runner.Missions
+{
     /// <summary>
     ///     Base abstract class used to define a mission the player needs to complete to gain some premium
     ///     currency.

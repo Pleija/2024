@@ -4,8 +4,8 @@ namespace Common
 {
     public interface IAutoCreate { }
     public interface IDontDestroyOnLoad { }
+    public class SingletonSample : Singleton<SingletonSample> { }
 
-    public class SingletonSample: Singleton<SingletonSample> {}
     public class Singleton<T> : Agent<T> where T : Singleton<T>
     {
         private static T m_Instance;
@@ -23,9 +23,7 @@ namespace Common
                 if((typeof(T).IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
                        typeof(IDontDestroyOnLoad).IsAssignableFrom(typeof(T))) &&
                    Application.isPlaying) {
-                    if(go.transform.parent != null) {
-                        go.transform.SetParent(null);
-                    }
+                    if(go.transform.parent != null) go.transform.SetParent(null);
                     DontDestroyOnLoad(go);
                 }
                 return m_Instance;
@@ -36,19 +34,13 @@ namespace Common
         public override void OnEnable()
         {
             base.OnEnable();
-
-            if(m_Instance == null) {
-                m_Instance = (T)this;
-            }
+            if(m_Instance == null) m_Instance = (T)this;
         }
 
         protected virtual void OnDestroy()
         {
             Dispose();
-
-            if(m_Instance == this) {
-                m_Instance = null;
-            }
+            if(m_Instance == this) m_Instance = null;
         }
     }
 }

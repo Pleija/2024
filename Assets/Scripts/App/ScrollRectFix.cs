@@ -76,9 +76,7 @@ namespace App
             bool isBegin = false, [CallerMemberName] string callname = "")
             where T : IEventSystemHandler
         {
-            if(isDebug) {
-                Debug.Log($"{callname} => begin: {isBegin}");
-            }
+            if(isDebug) Debug.Log($"{callname} => begin: {isBegin}");
 
             if(Parent != null)
                 //当前操作方向不等于滑动方向，将事件传给父对象

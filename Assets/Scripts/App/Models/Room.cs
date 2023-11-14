@@ -5,6 +5,6 @@ namespace App.Models
 {
     public class Room : DataModel<Room>
     {
-        public StringReactiveProperty roomId ="";
+        public StringReactiveProperty roomId = "";
     }
 }

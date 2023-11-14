@@ -26,7 +26,8 @@ namespace Runner.UI
         {
             // Start by making all entries enabled & putting player entry last again.
             playerEntry.transform.SetAsLastSibling();
-            for(var i = 0; i < entriesCount; ++i) entriesRoot.GetChild(i).gameObject.SetActive(true);
+            for(var i = 0; i < entriesCount; ++i)
+                entriesRoot.GetChild(i).gameObject.SetActive(true);
 
             // Find all index in local page space.
             var localStart = 0;
@@ -43,7 +44,8 @@ namespace Runner.UI
                 playerEntry.transform.SetSiblingIndex(localPlace);
             }
             if(!forcePlayerDisplay || PlayerData.instance.highscores.Count < entriesCount)
-                entriesRoot.GetChild(entriesRoot.transform.childCount - 1).gameObject.SetActive(false);
+                entriesRoot.GetChild(entriesRoot.transform.childCount - 1).gameObject
+                    .SetActive(false);
             var currentHighScore = localStart;
 
             for(var i = 0; i < entriesCount; ++i) {
@@ -56,7 +58,8 @@ namespace Runner.UI
                     hs.gameObject.SetActive(true);
                     hs.playerName.text = PlayerData.instance.highscores[currentHighScore].name;
                     hs.number.text = (localStart + i + 1).ToString();
-                    hs.score.text = PlayerData.instance.highscores[currentHighScore].score.ToString();
+                    hs.score.text = PlayerData.instance.highscores[currentHighScore].score
+                        .ToString();
                     currentHighScore++;
                 }
                 else {

@@ -53,7 +53,8 @@ namespace Runner.Game
         {
             fullLeaderboard.forcePlayerDisplay = false;
             fullLeaderboard.displayPlayer = true;
-            fullLeaderboard.playerEntry.playerName.text = miniLeaderboard.playerEntry.inputName.text;
+            fullLeaderboard.playerEntry.playerName.text =
+                miniLeaderboard.playerEntry.inputName.text;
             fullLeaderboard.playerEntry.score.text = trackManager.score.ToString();
             fullLeaderboard.Open();
         }
@@ -80,20 +81,20 @@ namespace Runner.Game
         {
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0
-        var transactionId = System.Guid.NewGuid().ToString();
-        var transactionContext = "gameplay";
-        var level = PlayerData.instance.rank.ToString();
-        var itemType = "consumable";
+            var transactionId = System.Guid.NewGuid().ToString();
+            var transactionContext = "gameplay";
+            var level = PlayerData.instance.rank.ToString();
+            var itemType = "consumable";
 
-        if(trackManager.characterController.coins > 0) {
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, // Currency type
-                transactionContext, trackManager.characterController.coins, "fishbone", PlayerData.instance.coins, itemType, level, transactionId);
-        }
+            if(trackManager.characterController.coins > 0) {
+                AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, // Currency type
+                    transactionContext, trackManager.characterController.coins, "fishbone", PlayerData.instance.coins, itemType, level, transactionId);
+            }
 
-        if(trackManager.characterController.premium > 0) {
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
-                transactionContext, trackManager.characterController.premium, "anchovies", PlayerData.instance.premium, itemType, level, transactionId);
-        }
+            if(trackManager.characterController.premium > 0) {
+                AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
+                    transactionContext, trackManager.characterController.premium, "anchovies", PlayerData.instance.premium, itemType, level, transactionId);
+            }
 #endif
         }
 
@@ -108,15 +109,15 @@ namespace Runner.Game
             var de = trackManager.characterController.characterCollider.deathData;
             //register data to analytics
 #if UNITY_ANALYTICS
-        AnalyticsEvent.GameOver(null, new Dictionary<string, object> {
-            { "coins", de.coins },
-            { "premium", de.premium },
-            { "score", de.score },
-            { "distance", de.worldDistance },
-            { "obstacle", de.obstacleType },
-            { "theme", de.themeUsed },
-            { "character", de.character },
-        });
+            AnalyticsEvent.GameOver(null, new Dictionary<string, object> {
+                { "coins", de.coins },
+                { "premium", de.premium },
+                { "score", de.score },
+                { "distance", de.worldDistance },
+                { "obstacle", de.obstacleType },
+                { "theme", de.themeUsed },
+                { "character", de.character },
+            });
 #endif
             PlayerData.instance.Save();
             trackManager.End();

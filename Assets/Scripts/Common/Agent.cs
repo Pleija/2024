@@ -19,8 +19,9 @@ namespace Common
         }
     }
 
-    public class AgentSample: Agent<AgentSample>{}
-    public  class Agent<T> : Agent where T : Agent<T>
+    public class AgentSample : Agent<AgentSample> { }
+
+    public class Agent<T> : Agent where T : Agent<T>
     {
         public virtual void OnEnable() { }
     }

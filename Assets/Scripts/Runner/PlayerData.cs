@@ -12,8 +12,8 @@ using UniRx;
 using UnityEditor;
 using UnityEngine;
 
-namespace Runner {
-
+namespace Runner
+{
     public struct HighscoreEntry : System.IComparable<HighscoreEntry>
     {
         public string name;
@@ -30,7 +30,7 @@ namespace Runner {
     ///     somewhere to avoid player tampering with it. Here potentially a player could modify the binary
     ///     file to add premium currency.
     /// </summary>
-    public class PlayerData: DataModel<PlayerData>
+    public class PlayerData : DataModel<PlayerData>
     {
         protected static PlayerData m_Instance;
         public static PlayerData instance => m_Instance;
@@ -39,7 +39,8 @@ namespace Runner {
         public IntReactiveProperty premium = 0;
 
         public Dictionary<Consumable.Consumable.ConsumableType, int> consumables =
-            new Dictionary<Consumable.Consumable.ConsumableType, int>(); // Inventory of owned consumables and quantity.
+            new Dictionary<Consumable.Consumable.ConsumableType,
+                int>(); // Inventory of owned consumables and quantity.
 
         public List<string> characters = new List<string>(); // Inventory of characters owned.
         public int usedCharacter;                            // Currently equipped character.
@@ -142,15 +143,15 @@ namespace Runner {
         public void ClaimMission(MissionBase mission)
         {
             premium.Value += mission.reward;
-#if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0
-        AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
-            "mission",                                       // Context
-            mission.reward,                                  // Amount
-            "anchovies",                                     // Item ID
-            premium,                                         // Item balance
-            "consumable",                                    // Item type
-            rank.ToString()                                  // Level
-        );
+#if UNITY_ANALYTICS                                              // Using Analytics Standard Events v0.3.0
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
+                "mission",                                       // Context
+                mission.reward,                                  // Amount
+                "anchovies",                                     // Item ID
+                premium,                                         // Item balance
+                "consumable",                                    // Item type
+                rank.ToString()                                  // Level
+            );
 #endif
             missions.Remove(mission);
             CheckMissionsCount();
@@ -185,7 +186,8 @@ namespace Runner {
         public static void Create()
         {
             if(m_Instance == null) {
-                m_Instance = self;//new PlayerData();
+                m_Instance = self; //new PlayerData();
+
                 if(!m_Instance.themes.Any()) {
                     Debug.Log("New Save PlayData");
                     NewSave();
@@ -207,7 +209,6 @@ namespace Runner {
                 CoroutineHandler.StartStaticCoroutine(ThemeDatabase.LoadDatabase());
             }
 
-            
             // m_Instance.saveFile = Application.persistentDataPath + "/save.bin";
             // if(File.Exists(m_Instance.saveFile))
             //     // If we have a save, we read it.

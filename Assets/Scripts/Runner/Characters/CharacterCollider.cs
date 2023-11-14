@@ -83,12 +83,12 @@ namespace Runner.Characters
         {
             if(sliding) {
                 m_Collider.size = Vector3.Scale(m_Collider.size, k_SlidingColliderScale);
-                m_Collider.center =
-                    m_Collider.center - new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
+                m_Collider.center = m_Collider.center -
+                    new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
             }
             else {
-                m_Collider.center =
-                    m_Collider.center + new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
+                m_Collider.center = m_Collider.center +
+                    new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
                 m_Collider.size = Vector3.Scale(m_Collider.size, k_NotSlidingColliderScale);
             }
         }

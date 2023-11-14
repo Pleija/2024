@@ -20,7 +20,8 @@ namespace Runner.Obstacles
                 TrackManager.instance.firstObstacle && segment == segment.manager.currentSegment;
             if(isTutorialFirst)
                 TrackManager.instance.firstObstacle = false;
-            var count = isTutorialFirst ? 1 : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
+            var count = isTutorialFirst ? 1
+                : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
             var startLane = isTutorialFirst ? 0
                 : Random.Range(k_LeftMostLaneIndex, k_RightMostLaneIndex + 1);
             Vector3 position;
@@ -35,7 +36,8 @@ namespace Runner.Obstacles
                 yield return op;
 
                 if(op.Result == null || !(op.Result is GameObject)) {
-                    Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
+                    Debug.LogWarning(string.Format("Unable to load obstacle {0}.",
+                        gameObject.name));
                     yield break;
                 }
                 var obj = op.Result as GameObject;
@@ -44,7 +46,8 @@ namespace Runner.Obstacles
                     Debug.Log(gameObject.name);
                 }
                 else {
-                    obj.transform.position += obj.transform.right * lane * segment.manager.laneOffset;
+                    obj.transform.position +=
+                        obj.transform.right * lane * segment.manager.laneOffset;
                     obj.transform.SetParent(segment.objectRoot, true);
 
                     //TODO : remove that hack related to #issue7

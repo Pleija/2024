@@ -27,10 +27,7 @@ namespace App
         public void SetValue(int? value = null)
         {
             var data = value ?? User.self.exp.Value;
-
-            if(value == null) {
-                User.self.exp.Value = data;
-            }
+            if(value == null) User.self.exp.Value = data;
             var level = User.self.Levels.LastOrDefault(x => x.exp <= User.self.exp.Value) ??
                 User.self.Levels.Last();
             var index = User.self.Levels.IndexOf(level);
@@ -48,20 +45,13 @@ namespace App
             else {
                 var nextLevel = User.self.Levels[index + 1];
                 if(text) text.text = $"{data}/{nextLevel.exp}";
-
-                if(radialSlider) {
-                    radialSlider.Value = (float)data / nextLevel.exp;
-
-                    // if(radialSlider.TryGetComponent<RadialValue>(out var radialValue) && radialValue.enabled) {
-                    //     radialValue.value = (float)data / nextLevel.exp;
-                    // }
-                }
+                if(radialSlider) radialSlider.Value = (float)data / nextLevel.exp;
+                // if(radialSlider.TryGetComponent<RadialValue>(out var radialValue) && radialValue.enabled) {
+                //     radialValue.value = (float)data / nextLevel.exp;
+                // }
                 if(slider) slider.value = (float)data / nextLevel.exp;
             }
-
-            if(value != null) {
-                User.self.Save();
-            }
+            if(value != null) User.self.Save();
         }
     }
 }

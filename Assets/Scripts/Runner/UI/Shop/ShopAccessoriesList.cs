@@ -33,7 +33,8 @@ namespace Runner.UI.Shop
         private void LoadedCharacter(AsyncOperationHandle<GameObject> op, int currentIndex)
         {
             if(op.Result == null || !(op.Result is GameObject)) {
-                Debug.LogWarning(string.Format("Unable to load header {0}.", headerPrefab.RuntimeKey));
+                Debug.LogWarning(string.Format("Unable to load header {0}.",
+                    headerPrefab.RuntimeKey));
             }
             else {
                 var c = m_CharacterList[currentIndex];
@@ -121,7 +122,8 @@ namespace Runner.UI.Shop
             if(PlayerData.instance.characterAccessories.Contains(compoundName)) {
                 itm.buyButton.interactable = false;
                 itm.buyButton.image.sprite = itm.disabledButtonSprite;
-                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = "Owned";
+                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text =
+                    "Owned";
             }
         }
 
@@ -132,25 +134,25 @@ namespace Runner.UI.Shop
             PlayerData.instance.AddAccessory(name);
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0
-        var transactionId = System.Guid.NewGuid().ToString();
-        var transactionContext = "store";
-        var level = PlayerData.instance.rank.ToString();
-        var itemId = name;
-        var itemType = "non_consumable";
-        var itemQty = 1;
-        AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level, transactionId);
+            var transactionId = System.Guid.NewGuid().ToString();
+            var transactionContext = "store";
+            var level = PlayerData.instance.rank.ToString();
+            var itemId = name;
+            var itemType = "non_consumable";
+            var itemQty = 1;
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level, transactionId);
 
-        if(cost > 0) {
-            AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                   // Currency type
-                transactionContext, cost, itemId, PlayerData.instance.coins, // Balance
-                itemType, level, transactionId);
-        }
+            if(cost > 0) {
+                AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                   // Currency type
+                    transactionContext, cost, itemId, PlayerData.instance.coins, // Balance
+                    itemType, level, transactionId);
+            }
 
-        if(premiumCost > 0) {
-            AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                         // Currency type
-                transactionContext, premiumCost, itemId, PlayerData.instance.premium, // Balance
-                itemType, level, transactionId);
-        }
+            if(premiumCost > 0) {
+                AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                         // Currency type
+                    transactionContext, premiumCost, itemId, PlayerData.instance.premium, // Balance
+                    itemType, level, transactionId);
+            }
 #endif
             Refresh();
         }

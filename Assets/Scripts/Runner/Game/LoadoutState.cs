@@ -64,7 +64,9 @@ namespace Runner.Game
         [Header("Prefabs")]
         public ConsumableIcon consumableIcon;
 
-        private Consumable.Consumable.ConsumableType m_PowerupToUse = Consumable.Consumable.ConsumableType.NONE;
+        private Consumable.Consumable.ConsumableType m_PowerupToUse =
+            Consumable.Consumable.ConsumableType.NONE;
+
         protected GameObject m_Character;
         protected List<int> m_OwnedAccesories = new List<int>();
         protected int m_UsedAccessory = -1;
@@ -123,7 +125,8 @@ namespace Runner.Game
 
                 if(m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE) {
                     PlayerData.instance.Consume(m_PowerupToUse);
-                    var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse), (GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
+                    var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse),
+                        (GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
                     inv.gameObject.SetActive(false);
                     gs.trackManager.characterController.inventory = inv;
                 }
@@ -233,7 +236,8 @@ namespace Runner.Game
 
                         for(var i = 0; i < c.accessories.Length; ++i) {
                             // Check which accessories we own.
-                            var compoundName = c.characterName + ":" + c.accessories[i].accessoryName;
+                            var compoundName =
+                                c.characterName + ":" + c.accessories[i].accessoryName;
                             if(PlayerData.instance.characterAccessories.Contains(compoundName))
                                 m_OwnedAccesories.Add(i);
                         }
@@ -328,7 +332,8 @@ namespace Runner.Game
                     m_UsedPowerupIndex = (int)Consumable.Consumable.ConsumableType.MAX_COUNT - 1;
                 var count = 0;
                 if(PlayerData.instance.consumables.TryGetValue(
-                       (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex, out count) && count > 0)
+                       (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex, out count) &&
+                   count > 0)
                     found = true;
             } while(m_UsedPowerupIndex != 0 && !found);
             m_PowerupToUse = (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex;

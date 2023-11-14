@@ -60,7 +60,7 @@ namespace Runner.Game
         public Modifier currentModifier = new Modifier();
         public string adsPlacementId = "rewardedVideo";
 #if UNITY_ANALYTICS
-    public AdvertisingNetwork adsNetwork = AdvertisingNetwork.UnityAds;
+        public AdvertisingNetwork adsNetwork = AdvertisingNetwork.UnityAds;
 #endif
         public bool adsRewarded = true;
         protected bool m_Finished;
@@ -120,7 +120,8 @@ namespace Runner.Game
 
             if(!trackManager.isRerun) {
                 m_TimeSinceStart = 0;
-                trackManager.characterController.currentLife = trackManager.characterController.maxLife;
+                trackManager.characterController.currentLife =
+                    trackManager.characterController.maxLife;
             }
             currentModifier.OnRunStart(this);
             m_IsTutorial = !PlayerData.instance.tutorialDone;
@@ -131,7 +132,8 @@ namespace Runner.Game
                 tutorialValidatedObstacles.text = $"0/{k_ObstacleToClear}";
                 m_DisplayTutorial = true;
                 trackManager.newSegmentCreated = segment => {
-                    if(trackManager.currentZone != 0 && !m_CountObstacles && m_NextValidSegment == null)
+                    if(trackManager.currentZone != 0 && !m_CountObstacles &&
+                       m_NextValidSegment == null)
                         m_NextValidSegment = segment;
                 };
                 trackManager.currentSegementChanged = segment => {
@@ -159,18 +161,18 @@ namespace Runner.Game
             if(m_Finished) {
                 //if we are finished, we check if advertisement is ready, allow to disable the button until it is ready
 #if UNITY_ADS
-            if(!trackManager.isTutorial && !m_AdsInitialised && Advertisement.IsReady(adsPlacementId)) {
-                adsForLifeButton.SetActive(true);
-                m_AdsInitialised = true;
+                if(!trackManager.isTutorial && !m_AdsInitialised && Advertisement.IsReady(adsPlacementId)) {
+                    adsForLifeButton.SetActive(true);
+                    m_AdsInitialised = true;
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "level_index", PlayerData.instance.rank },
-                    { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
-                });
+                    AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
+                        { "level_index", PlayerData.instance.rank },
+                        { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
+                    });
 #endif
-            }
-            else if(trackManager.isTutorial || !m_AdsInitialised)
-                adsForLifeButton.SetActive(false);
+                }
+                else if(trackManager.isTutorial || !m_AdsInitialised)
+                    adsForLifeButton.SetActive(false);
 #else
                 adsForLifeButton.SetActive(false); //Ads is disabled
 #endif
@@ -379,25 +381,25 @@ namespace Runner.Game
                 return;
             m_GameoverSelectionDone = true;
 #if UNITY_ADS
-        if(Advertisement.IsReady(adsPlacementId)) {
+            if(Advertisement.IsReady(adsPlacementId)) {
 #if UNITY_ANALYTICS
-            AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                { "level_index", PlayerData.instance.rank },
-                { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
-            });
+                AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
+                    { "level_index", PlayerData.instance.rank },
+                    { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
+                });
 #endif
-            var options = new ShowOptions {
-                resultCallback = HandleShowResult
-            };
-            Advertisement.Show(adsPlacementId, options);
-        }
-        else {
+                var options = new ShowOptions {
+                    resultCallback = HandleShowResult
+                };
+                Advertisement.Show(adsPlacementId, options);
+            }
+            else {
 #if UNITY_ANALYTICS
-            AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                { "error", Advertisement.GetPlacementState(adsPlacementId).ToString() }
-            });
+                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
+                    { "error", Advertisement.GetPlacementState(adsPlacementId).ToString() }
+                });
 #endif
-        }
+            }
 #else
             GameOver();
 #endif
@@ -405,31 +407,31 @@ namespace Runner.Game
 
         //=== AD
 #if UNITY_ADS
-    private void HandleShowResult(ShowResult result)
-    {
-        switch(result) {
-            case ShowResult.Finished:
+        private void HandleShowResult(ShowResult result)
+        {
+            switch(result) {
+                case ShowResult.Finished:
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdComplete(adsRewarded, adsNetwork, adsPlacementId);
+                    AnalyticsEvent.AdComplete(adsRewarded, adsNetwork, adsPlacementId);
 #endif
-                SecondWind();
-                break;
-            case ShowResult.Skipped:
-                Debug.Log("The ad was skipped before reaching the end.");
+                    SecondWind();
+                    break;
+                case ShowResult.Skipped:
+                    Debug.Log("The ad was skipped before reaching the end.");
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId);
+                    AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId);
 #endif
-                break;
-            case ShowResult.Failed:
-                Debug.LogError("The ad failed to be shown.");
+                    break;
+                case ShowResult.Failed:
+                    Debug.LogError("The ad failed to be shown.");
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "error", "failed" }
-                });
+                    AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
+                        { "error", "failed" }
+                    });
 #endif
-                break;
+                    break;
+            }
         }
-    }
 #endif
 
         private void TutorialCheckObstacleClear()
@@ -437,11 +439,13 @@ namespace Runner.Game
             if(trackManager.segments.Count == 0)
                 return;
 
-            if(AudioListener.pause && !trackManager.characterController.tutorialWaitingForValidation) {
+            if(AudioListener.pause &&
+               !trackManager.characterController.tutorialWaitingForValidation) {
                 m_DisplayTutorial = false;
                 DisplayTutorial(false);
             }
-            var ratio = trackManager.currentSegmentDistance / trackManager.currentSegment.worldLength;
+            var ratio = trackManager.currentSegmentDistance /
+                trackManager.currentSegment.worldLength;
             var nextObstaclePosition =
                 m_CurrentSegmentObstacleIndex < trackManager.currentSegment.obstaclePositions.Length
                     ? trackManager.currentSegment.obstaclePositions[m_CurrentSegmentObstacleIndex]

@@ -1,9 +1,6 @@
-﻿
-using Common;
-
+﻿using Common;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
-
 #endif
 using UnityEngine;
 using UnityEngine.AddressableAssets;

@@ -10,12 +10,12 @@ namespace App.Models
     public class User : DataModel<User>
     {
         // 小写字母开头为本地数据,从数据库获取
-        public StringReactiveProperty username ="";
-        public IntReactiveProperty uid =0;
+        public StringReactiveProperty username = "";
+        public IntReactiveProperty uid = 0;
         public BoolReactiveProperty musicOn = true;
         public StringReactiveProperty key = Guid.NewGuid().ToString("N");
-        public StringReactiveProperty loginServer ="";
-        public StringReactiveProperty roomServer ="";
+        public StringReactiveProperty loginServer = "";
+        public StringReactiveProperty roomServer = "";
         public LongReactiveProperty loginTime = 0;
         public IntReactiveProperty level = 0;
         public IntReactiveProperty coin = 0;

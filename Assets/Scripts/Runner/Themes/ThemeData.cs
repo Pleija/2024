@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Runner.Themes {
+namespace Runner.Themes
+{
     [System.Serializable]
     public struct ThemeZone
     {

@@ -41,13 +41,10 @@ namespace App
                 PlayerPrefs.HasKey(PrivacyKey);
             set {
                 clicked = value;
-
-                if(value) {
+                if(value)
                     PlayerPrefs.SetInt(PrivacyKey, 1);
-                }
-                else {
+                else
                     PlayerPrefs.DeleteKey(PrivacyKey);
-                }
             }
         }
 
@@ -63,7 +60,7 @@ namespace App
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void DebugSetting()
+        private static void DebugSetting()
         {
             if(Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
                 Instantiate(Resources.Load("IngameDebugConsole"));
@@ -123,15 +120,12 @@ namespace App
                 privacyPanel.SetActive(false);
                 StartCoroutine(StartUpdate());
             });
-
-            if(isAgreed) {
-                StartCoroutine(StartUpdate());
-            }
+            if(isAgreed) StartCoroutine(StartUpdate());
         }
 
         public AsyncOperationHandle<GameObject> handle { get; set; }
 
-        IEnumerator Offline()
+        private IEnumerator Offline()
         {
             yield return new WaitForSeconds(1);
             progress.gameObject.SetActive(false);
@@ -143,7 +137,7 @@ namespace App
             });
         }
 
-        IEnumerator StartUpdate()
+        private IEnumerator StartUpdate()
         {
             progress.gameObject.SetActive(true);
             text = "UPDATING...";
@@ -195,26 +189,22 @@ namespace App
                         p4.GetDownloadStatus().DownloadedBytes;
                     text = $"{(int)((1 - current / total) * 100)}%" +
                         (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
-                    progress.value = 1f - (current / total);
+                    progress.value = 1f - current / total;
                     yield return null;
                 }
                 Debug.Log($"Download Finish: {p4.Status}");
-
                 if(p4.Status == AsyncOperationStatus.Succeeded &&
-                   !PlayerPrefs.HasKey(FirstUpdateKey)) {
+                   !PlayerPrefs.HasKey(FirstUpdateKey))
                     PlayerPrefs.SetInt(FirstUpdateKey, 1);
-                }
 
                 if(p4.Status != AsyncOperationStatus.Succeeded &&
                    !PlayerPrefs.HasKey(FirstUpdateKey)) {
                     StartCoroutine(Offline());
                     yield break;
                 }
-
                 if(p4.Status == AsyncOperationStatus.Succeeded &&
-                   Application.version != PlayerPrefs.GetString(VersionKey)) {
+                   Application.version != PlayerPrefs.GetString(VersionKey))
                     PlayerPrefs.SetString(VersionKey, Application.version);
-                }
                 if(p4.IsValid()) Addressables.Release(p4);
                 updated = true;
 
@@ -233,10 +223,8 @@ namespace App
                 // if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
                 //     PlayerPrefs.SetInt(FirstUpdateKey, 1);
                 // }
-
-                if(Application.version != PlayerPrefs.GetString(VersionKey)) {
+                if(Application.version != PlayerPrefs.GetString(VersionKey))
                     PlayerPrefs.SetString(VersionKey, Application.version);
-                }
                 Debug.Log("Don't need download");
             }
 
@@ -257,14 +245,14 @@ namespace App
             StartCoroutine(LoadNextScene());
         }
 
-        IEnumerator LoadNextScene()
+        private IEnumerator LoadNextScene()
         {
             if(Application.isEditor) {
 #if UNITY_EDITOR
                 var path = AssetDatabase.GetAssetPath(nextScene.editorAsset);
                 var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(
                     path /*"Assets/Scenes/Start.unity"*/, new LoadSceneParameters() {
-                        loadSceneMode = LoadSceneMode.Single
+                        loadSceneMode = LoadSceneMode.Single,
                     });
 
                 // while(!p1.isDone && p1.) {

@@ -11,7 +11,7 @@ namespace Runner
     {
         protected Stack<GameObject> m_FreeInstances = new Stack<GameObject>();
         protected GameObject m_Original;
-            GameObject root => GameObject.Find("/Pooler") ?? new GameObject("Pooler");
+        private GameObject root => GameObject.Find("/Pooler") ?? new GameObject("Pooler");
 
         public Pooler(GameObject original, int initialSize)
         {

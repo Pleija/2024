@@ -27,9 +27,7 @@ namespace Runner
                 Destroy(m_Instance.gameObject);
         }
 
-        public static Coroutine StartStaticCoroutine(IEnumerator coroutine)
-        {
-            return instance.StartCoroutine(coroutine);
-        }
+        public static Coroutine StartStaticCoroutine(IEnumerator coroutine) =>
+            instance.StartCoroutine(coroutine);
     }
 }

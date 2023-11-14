@@ -108,7 +108,10 @@ namespace Runner.Tracks
         protected float m_TotalWorldDistance;
         protected bool m_IsMoving;
         protected float m_Speed;
-        protected float m_TimeSincePowerup; // The higher it goes, the higher the chance of spawning one
+
+        protected float
+            m_TimeSincePowerup; // The higher it goes, the higher the chance of spawning one
+
         protected float m_TimeSinceLastPremium;
         protected int m_Multiplier;
         protected List<TrackSegment> m_Segments = new List<TrackSegment>();
@@ -233,11 +236,11 @@ namespace Runner.Tracks
                 Coin.coinPool = new Pooler(currentTheme.collectiblePrefab, k_StartingCoinPoolSize);
                 PlayerData.instance.StartRunMissions(this);
 #if UNITY_ANALYTICS
-            AnalyticsEvent.GameStart(new Dictionary<string, object> {
-                { "theme", m_CurrentThemeData.themeName },
-                { "character", player.characterName },
-                { "accessory", PlayerData.instance.usedAccessory >= 0 ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none" }
-            });
+                AnalyticsEvent.GameStart(new Dictionary<string, object> {
+                    { "theme", m_CurrentThemeData.themeName },
+                    { "character", player.characterName },
+                    { "accessory", PlayerData.instance.usedAccessory >= 0 ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none" }
+                });
 #endif
             }
             characterController.Begin();
@@ -291,7 +294,8 @@ namespace Runner.Tracks
                         : parallaxRoot.GetChild(parallaxRoot.childCount - 1).position.z +
                         currentTheme.cloudMinimumDistance.z;
                     var cloud =
-                        currentTheme.cloudPrefabs[Random.Range(0, currentTheme.cloudPrefabs.Length)];
+                        currentTheme.cloudPrefabs[
+                            Random.Range(0, currentTheme.cloudPrefabs.Length)];
 
                     if(cloud != null) {
                         var obj = Instantiate(cloud);
@@ -360,8 +364,8 @@ namespace Runner.Tracks
                 for(var i = 0; i < count; i++) m_PastSegments[i].transform.position -= currentPos;
 
                 // Recalculate current world position based on the moved world
-                m_Segments[0]
-                    .GetPointAtInWorldUnit(m_CurrentSegmentDistance, out currentPos, out currentRot);
+                m_Segments[0].GetPointAtInWorldUnit(m_CurrentSegmentDistance, out currentPos,
+                    out currentRot);
             }
             characterTransform.rotation = currentRot;
             characterTransform.position = currentPos;
@@ -379,7 +383,8 @@ namespace Runner.Tracks
 
             // Still move past segment until they aren't visible anymore.
             for(var i = 0; i < m_PastSegments.Count; ++i)
-                if((m_PastSegments[i].transform.position - currentPos).z < k_SegmentRemovalDistance) {
+                if((m_PastSegments[i].transform.position - currentPos).z <
+                   k_SegmentRemovalDistance) {
                     m_PastSegments[i].Cleanup();
                     m_PastSegments.RemoveAt(i);
                     i--;
@@ -406,8 +411,8 @@ namespace Runner.Tracks
                     PlayerData.instance.rank += 1;
                     PlayerData.instance.Save();
 #if UNITY_ANALYTICS
-                //"level" in our game are milestone the player have to reach : one every 300m
-                AnalyticsEvent.LevelUp(PlayerData.instance.rank);
+                    //"level" in our game are milestone the player have to reach : one every 300m
+                    AnalyticsEvent.LevelUp(PlayerData.instance.rank);
 #endif
                 }
                 PlayerData.instance.UpdateMissions(this);
@@ -436,14 +441,15 @@ namespace Runner.Tracks
             if(!m_IsTutorial)
                 if(m_CurrentThemeData.zones[m_CurrentZone].length < m_CurrentZoneDistance)
                     ChangeZone();
-            var segmentUse = Random.Range(0, m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length);
+            var segmentUse =
+                Random.Range(0, m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length);
             if(segmentUse == m_PreviousSegment)
                 segmentUse = (segmentUse + 1) %
                     m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length;
-            AsyncOperationHandle segmentToUseOp = Addressables.InstantiateAsync(m_CurrentThemeData.zones[m_CurrentZone]
-                                                                         .prefabList[segmentUse], _offScreenSpawnPos, Quaternion.identity);
+            AsyncOperationHandle segmentToUseOp = Addressables.InstantiateAsync(
+                m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse], _offScreenSpawnPos,
+                Quaternion.identity);
             yield return segmentToUseOp;
-
 
             if(segmentToUseOp.Result == null || !(segmentToUseOp.Result is GameObject)) {
                 Debug.LogWarning(string.Format("Unable to load segment {0}.",
@@ -462,7 +468,8 @@ namespace Runner.Tracks
                 currentExitPoint = transform.position;
                 currentExitRotation = transform.rotation;
             }
-            newSegment.transform.SetParent((GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
+            newSegment.transform.SetParent((GameObject.Find("/InGame") ?? new GameObject("InGame"))
+                .transform);
             newSegment.transform.rotation = currentExitRotation;
             Vector3 entryPoint;
             Quaternion entryRotation;
@@ -486,7 +493,8 @@ namespace Runner.Tracks
             if(segment.possibleObstacles.Length != 0)
                 for(var i = 0; i < segment.obstaclePositions.Length; ++i) {
                     var assetRef =
-                        segment.possibleObstacles[Random.Range(0, segment.possibleObstacles.Length)];
+                        segment.possibleObstacles[
+                            Random.Range(0, segment.possibleObstacles.Length)];
                     StartCoroutine(SpawnFromAssetReference(assetRef, segment, i));
                 }
             StartCoroutine(SpawnCoinAndPowerup(segment));
@@ -513,7 +521,8 @@ namespace Runner.Tracks
                 var currentWorldPos = 0.0f;
                 var currentLane = Random.Range(0, 3);
                 var powerupChance = Mathf.Clamp01(Mathf.Floor(m_TimeSincePowerup) * 0.5f * 0.001f);
-                var premiumChance = Mathf.Clamp01(Mathf.Floor(m_TimeSinceLastPremium) * 0.5f * 0.0001f);
+                var premiumChance =
+                    Mathf.Clamp01(Mathf.Floor(m_TimeSinceLastPremium) * 0.5f * 0.0001f);
 
                 while(currentWorldPos < segment.worldLength) {
                     Vector3 pos;
@@ -548,7 +557,8 @@ namespace Runner.Tracks
                                 m_TimeSincePowerup = 0.0f;
                                 powerupChance = 0.0f;
                                 AsyncOperationHandle op = Addressables.InstantiateAsync(
-                                    consumableDatabase.consumbales[picked].gameObject.name, pos, rot);
+                                    consumableDatabase.consumbales[picked].gameObject.name, pos,
+                                    rot);
                                 yield return op;
 
                                 if(op.Result == null || !(op.Result is GameObject)) {
@@ -564,8 +574,8 @@ namespace Runner.Tracks
                             m_TimeSinceLastPremium = 0.0f;
                             premiumChance = 0.0f;
                             AsyncOperationHandle op =
-                                Addressables.InstantiateAsync(currentTheme.premiumCollectible.name, pos,
-                                    rot);
+                                Addressables.InstantiateAsync(currentTheme.premiumCollectible.name,
+                                    pos, rot);
                             yield return op;
 
                             if(op.Result == null || !(op.Result is GameObject)) {

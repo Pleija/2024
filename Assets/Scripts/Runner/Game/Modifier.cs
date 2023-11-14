@@ -1,4 +1,5 @@
-﻿namespace Runner.Game {
+﻿namespace Runner.Game
+{
     /// <summary>
     ///     This class is used to modify the game state (e.g. limit length run, seed etc.)
     ///     Subclass it and override wanted messages to handle the state.

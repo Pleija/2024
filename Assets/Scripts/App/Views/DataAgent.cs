@@ -31,7 +31,7 @@ namespace App
         [ValueDropdown(nameof(ListNames))]
         public string fieldName;
 
-        IEnumerable<Type> ListTypes =>
+        private IEnumerable<Type> ListTypes =>
             typeof(DataAgent<T>).Assembly.ExportedTypes.Where(x =>
                 typeof(Model).IsAssignableFrom(x));
 
@@ -44,16 +44,11 @@ namespace App
         public void SetModel()
         {
             Assert.IsNotNull(type, "type != null");
-
-            if(model) {
-                model = model.GetSelf();
-            }
-
-            if(!model) {
+            if(model) model = model.GetSelf();
+            if(!model)
                 model = type.GetProperty("self",
                         BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
                     ?.GetValue(null, null) as Model;
-            }
             Assert.IsNotNull(model, $"model: {type.FullName}.self == null");
         }
 
@@ -65,13 +60,10 @@ namespace App
             // if(Value == null || Application.isEditor) {
             var member = type.GetMember(fieldName, BindingFlags.Instance | BindingFlags.Public)
                 .FirstOrDefault();
-
-            if(member is PropertyInfo propertyInfo) {
+            if(member is PropertyInfo propertyInfo)
                 Value = propertyInfo.GetValue(model) as ReactiveProperty<T>;
-            }
-            else if(member is FieldInfo fieldInfo) {
+            else if(member is FieldInfo fieldInfo)
                 Value = fieldInfo.GetValue(model) as ReactiveProperty<T>;
-            }
             // }
             if(Value == null) return;
             //Set(Value.Value);
@@ -93,23 +85,14 @@ namespace App
         public void Set(object value)
         {
             if(!this || !gameObject) return;
-
-            if(OnChange != null) {
-                value = OnChange.Invoke(value);
-            }
-
-            if(TryGetComponent<TMP_Text>(out var tmpText)) {
+            if(OnChange != null) value = OnChange.Invoke(value);
+            if(TryGetComponent<TMP_Text>(out var tmpText))
                 tmpText.text = $"{value}";
-            }
-            else if(TryGetComponent<Text>(out var text)) {
+            else if(TryGetComponent<Text>(out var text))
                 text.text = $"{value}";
-            }
-            else if(TryGetComponent<Slider>(out var slider)) {
+            else if(TryGetComponent<Slider>(out var slider))
                 slider.value = Convert.ToSingle(value);
-            }
-            else if(TryGetComponent<Toggle>(out var toggle)) {
-                toggle.isOn = Convert.ToBoolean(value);
-            }
+            else if(TryGetComponent<Toggle>(out var toggle)) toggle.isOn = Convert.ToBoolean(value);
         }
     }
 }

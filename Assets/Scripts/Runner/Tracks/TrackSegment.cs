@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Runner.Tracks {
+namespace Runner.Tracks
+{
     /// <summary>
     ///     This defines a "piece" of the track. This is attached to the prefab and contains data such as
     ///     what obstacles can spawn on it.

@@ -17,11 +17,11 @@ namespace Runner.UI
                 PlayerData.instance.ftueLevel = 1;
                 PlayerData.instance.Save();
 #if UNITY_ANALYTICS
-            AnalyticsEvent.FirstInteraction("start_button_pressed");
+                AnalyticsEvent.FirstInteraction("start_button_pressed");
 #endif
             }
 #if UNITY_PURCHASING
-        var module = StandardPurchasingModule.Instance();
+            var module = StandardPurchasingModule.Instance();
 #endif
             //SceneManager.LoadScene("main");
             SceneLoader.LoadScene("Main");

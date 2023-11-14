@@ -58,19 +58,15 @@ namespace App
             if(updateCatalog) {
                 var handle = Addressables.CheckForCatalogUpdates(false);
                 await handle.Task;
-
-                if(handle.Status == AsyncOperationStatus.Succeeded && handle.Result.Any()) {
+                if(handle.Status == AsyncOperationStatus.Succeeded && handle.Result.Any())
                     await Addressables.UpdateCatalogs(handle.Result).Task;
-                }
                 Addressables.Release(handle);
             }
             if(LoadModels)
                 await Model.LoadAll();
-
-            if(IsGetAssets) {
-                await GetAssets();
-            }
-            Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
+            if(IsGetAssets) await GetAssets();
+            Debug.Log(@$"Js Assets: {all.Length} bootstrap: {
+                all.Any(t => t.EndsWith("bootstrap.mjs"))}");
             JsEnv.self.AutoUsing();
             JsEnv.self.ExecuteModule("bootstrap.mjs");
             OnStart?.Invoke();
