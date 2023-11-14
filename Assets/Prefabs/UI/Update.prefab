@@ -254,7 +254,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: test
+  m_Text: test123
 --- !u!114 &3135957550874583695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2000,6 +2000,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   timer: 3
+  privacyUrl: https://static.pleija.com/docs/#/PrivacyPolicy
+  tosUrl: https://static.pleija.com/docs/#/TermsOfService
   OnLoad:
     m_PersistentCalls:
       m_Calls:

@@ -73,6 +73,10 @@ namespace App
         public UnityEvent OnAwake;
         public UnityEvent OnStart;
         public float timer = 3.0f;
+
+        public string privacyUrl = "https://static.pleija.com/docs/#/PrivacyPolicy";
+
+        public string tosUrl = "https://static.pleija.com/docs/#/TermsOfService";
         //private float startTime;
 
         private void Awake()

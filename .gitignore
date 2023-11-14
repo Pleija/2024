@@ -7,7 +7,7 @@
 **/.vscode/
 **/.vs
 
-**/HostedData/Android/
+**/HostedData/**/Android/
 
 # **/Assets/Plugins/*
 # **/Assets/Plugins.meta

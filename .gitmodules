@@ -1,2 +1,5 @@
 
 
+[submodule "Packages/HostedData/docs"]
+	path = Packages/HostedData/docs
+	url = git@github.com:Pleija/pleija.github.io.git
