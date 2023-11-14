@@ -853,6 +853,7 @@ namespace UnityEngine.AddressableAssets
         }
         public static AsyncOperationHandle<IResourceLocator> InitializeForceAsync()
         {
+            m_AddressablesInstance?.ReleaseSceneManagerOperation();
             m_AddressablesInstance =
                 new AddressablesImpl(new LRUCacheAllocationStrategy(1000, 1000, 100, 10));
             return m_Addressables.InitializeAsync();

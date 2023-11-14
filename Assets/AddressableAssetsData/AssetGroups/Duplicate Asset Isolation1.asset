@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Duplicate Asset Isolation1
+  m_EditorClassIdentifier: 
+  m_GroupName: Duplicate Asset Isolation1
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 2fb8f6489bdea4973a4187788ddba7db
+  m_SerializeEntries:
+  - m_GUID: cf1d894a79c44634fb97f93dbddb1635
+    m_Address: Assets/Art/Models/Materials/ParthatAndBowtie.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46634ac69176c504294d6187d01ffcba
+    m_Address: Assets/Art/Materials/ConstructionGear.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 601e436493183e74b96c11ccc0775fe0
+    m_Address: Assets/Art/Textures/ConstructionWorkerAlbedo.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b377babdac9686b4690150883dbaedca
+    m_Address: Assets/Art/Materials/Grass.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66a65a6ef5e8b42fda80d071374d9d35
+    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2 SDF 1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 767e4364a0b09234298acaeb98f0ad13
+    m_Address: Assets/Art/Animation/MenuEnvironmentProps.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f0bdd1a545262546a88cd46d13156f8
+    m_Address: Assets/Art/Animation/MenuActors.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b02c31c22c8c5eb4eae1187ce575f979
+    m_Address: Assets/Art/Animation/Animators/MenuActors.controller
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92b48ddff05b0f740990170bc4e5a6a9
+    m_Address: Assets/Art/Animation/Animators/MenuEnvironmentProps.controller
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d17274fb50cd048a9a3c779efd92ef34
+    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2.ttf
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68b35d2059b8c46e0a98e53628e9b3af
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Button/btn_rectangle_01_n_bluegray.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d25bd1f0354af4ccb924eaf16f85d23d
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon/Icon_ShopIcon_GemBox.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7872ace3dc2664a37b5618813a148479
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Play/Play_Roulette_Gold.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8464b41777b1a471c812a19695dfe17d
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Background/Background_08_6EffectImage.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e4107dadfbe1487ebf4a991ecd58b4e
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_UI/StatusBarBtn_Add_Green.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eecc241cd2f8c834088ff2b57e66c33a
+    m_Address: Assets/Design/UI/2d_UI/images/ui_element_button.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b5fc9870b4d1554f88f54e74a5fbf3f
+    m_Address: Assets/Art/Textures/GrassGradientAlbedo.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1020ed9e6cc744031b97dc06ed6c3484
+    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2 SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89bbc17355dc0064aae767e8f31a93aa
+    m_Address: Assets/Design/UI/Buttons/PNG/15Button_Long_Yellow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 735e874f947d0e143a6b4e83f8a7283a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 61857a06da38d4412aa46ddaa23e8a37, type: 2}
+    - {fileID: 11400000, guid: 06e2443e2e6164a51aa0d211aa12e6f7, type: 2}

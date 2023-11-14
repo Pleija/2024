@@ -33552,9 +33552,9 @@ MonoBehaviour:
   Pagination: {fileID: 0}
   PrevButton: {fileID: 0}
   NextButton: {fileID: 0}
-  transitionSpeed: 7.5
-  UseHardSwipe: 0
-  UseFastSwipe: 0
+  transitionSpeed: 100
+  UseHardSwipe: 1
+  UseFastSwipe: 1
   UseSwipeDeltaThreshold: 0
   FastSwipeThreshold: 100
   SwipeVelocityThreshold: 100
@@ -33562,8 +33562,8 @@ MonoBehaviour:
   UseTimeScale: 1
   MaskArea: {fileID: 0}
   MaskBuffer: 1
-  JumpOnEnable: 0
-  RestartOnEnable: 0
+  JumpOnEnable: 1
+  RestartOnEnable: 1
   UseParentTransform: 1
   ChildObjects: []
   m_OnSelectionChangeStartEvent:
@@ -33592,7 +33592,7 @@ MonoBehaviour:
   m_Content: {fileID: 738271977}
   m_Horizontal: 1
   m_Vertical: 0
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135

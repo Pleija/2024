@@ -22,6 +22,8 @@ namespace App
     {
         public AssetReference nextScene;
         public AssetReference prefab;
+
+        //public GameObject prefabObj;
         public string PrivacyKey = "App.Privacy";
         public string FirstUpdateKey = "App.FirstUpdate";
         public string VersionKey = "App.Version";
@@ -74,7 +76,7 @@ namespace App
         public UnityEvent OnAwake;
         public UnityEvent OnStart;
         public float timer = 3.0f;
-        private float startTime;
+        //private float startTime;
 
         private void Awake()
         {
@@ -83,8 +85,15 @@ namespace App
 
         public static IEnumerator LoadNewPrefab(GameObject old)
         {
-            yield return Addressables.InstantiateAsync("Update");
-            Destroy(old);
+            //Instantiate(old);
+            //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene()).completed += t => {
+            SceneManager.LoadScene(0);
+            //};
+            yield break;
+
+            // Addressables.Release(old);
+            // yield return Addressables.InstantiateAsync("Update");
+            // Destroy(old);
         }
 
         private void Start()
@@ -93,12 +102,14 @@ namespace App
                 m_Reloaded = true;
                 Addressables.InitializeAsync().WaitForCompletion();
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
-                Debug.Log($"Start Update: Reload = {loc != null}");
+                Debug.Log($"Start Update: Reload => {loc != null}");
 
                 if(PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
                    Application.version == PlayerPrefs.GetString(VersionKey)) {
                     Debug.Log("Reload Update prefab");
-                    Addressables.InstantiateAsync(prefab).WaitForCompletion();
+                    var obj = Addressables.LoadAssetAsync<GameObject>(prefab).WaitForCompletion();
+                    //AssetBundle.UnloadAllAssetBundles(false);
+                    Instantiate(obj);
                     Destroy(gameObject);
                     return;
                 }
@@ -117,6 +128,8 @@ namespace App
                 StartCoroutine(StartUpdate());
             }
         }
+
+        public AsyncOperationHandle<GameObject> handle { get; set; }
 
         IEnumerator Offline()
         {
@@ -205,8 +218,10 @@ namespace App
                 if(p4.IsValid()) Addressables.Release(p4);
                 updated = true;
 
-                if(Res.Exists<GameObject>("Update") is { }) {
-                    CoroutineHandler.StartStaticCoroutine(LoadNewPrefab(gameObject));
+                if(Res.Exists<GameObject>("Update") is { } found &&
+                   Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go) {
+                    Instantiate(go);
+                    Destroy(gameObject);
                     yield break;
                 }
             }
@@ -258,16 +273,18 @@ namespace App
 #endif
                 yield break;
             }
+            progress.value = 0;
             var p = Addressables.LoadSceneAsync(nextScene);
-            startTime = Time.realtimeSinceStartup;
-            var start = 0f;
+            //startTime = Time.realtimeSinceStartup;
+            //var start = 0f;
 
             while(p.IsValid() && !p.IsDone) {
-                if(Time.realtimeSinceStartup - startTime >= timer / 100f) {
-                    start += 0.01f;
-                    startTime = Time.realtimeSinceStartup;
-                }
-                progress.value = Mathf.Max(p.PercentComplete / 0.9f, start);
+                // if(Time.realtimeSinceStartup - startTime >= timer / 100f) {
+                //     start += 0.01f;
+                //     startTime = Time.realtimeSinceStartup;
+                // }
+                progress.value =
+                    Mathf.Max(p.PercentComplete / 0.9f, progress.value += timer / 100f);
                 yield return null;
             }
         }

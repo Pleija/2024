@@ -56,6 +56,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 071019c7a516a7748a2dc1448a67242b, type: 2}
   - {fileID: 11400000, guid: 6fc4762233972aa40bcd09bf0410eb96, type: 2}
   - {fileID: 11400000, guid: a307280d5bc664f998fb8818ed10a49a, type: 2}
+  - {fileID: 11400000, guid: 81470e52a53f54e75b15870a36c527a7, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -79,7 +80,7 @@ MonoBehaviour:
         m_Value: http://[PrivateIpAddress]:[HostingServicePort]
     - m_InheritedParent: 
       m_Id: 8c2ab3961115543b7bbccbeb74fd1d03
-      m_ProfileName: New Profile
+      m_ProfileName: https
       m_Values:
       - m_Id: 8313888cf8465ae438b49b4cc62dc871
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
