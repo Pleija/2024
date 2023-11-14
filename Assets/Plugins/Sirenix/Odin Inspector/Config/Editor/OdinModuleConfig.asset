@@ -16,6 +16,6 @@ MonoBehaviour:
   - ID: Unity.Mathematics
     ActivationSettings: 0
   - ID: Unity.Localization
-    ActivationSettings: 0
+    ActivationSettings: 1
   ModuleTogglingSettings: 1
   ModuleUpdateSettings: 0

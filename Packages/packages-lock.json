@@ -100,16 +100,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.film-internal-utilities": {
-      "version": "0.19.1-preview",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.uielements": "1.0.0",
-        "com.unity.timeline": "1.2.18"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.ide.rider": {
       "version": "3.0.26",
       "depth": 0,
@@ -126,16 +116,6 @@
       "dependencies": {
         "com.unity.collections": "0.15.0-preview.21",
         "com.unity.mathematics": "1.2.1"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.localization": {
-      "version": "1.4.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.addressables": "1.21.8",
-        "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
       "url": "https://packages.unity.com"
     },
@@ -243,15 +223,6 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.selection-groups": {
-      "version": "0.9.3-preview",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.film-internal-utilities": "0.19.1-preview"
-      },
       "url": "https://packages.unity.com"
     },
     "com.unity.serialization": {
