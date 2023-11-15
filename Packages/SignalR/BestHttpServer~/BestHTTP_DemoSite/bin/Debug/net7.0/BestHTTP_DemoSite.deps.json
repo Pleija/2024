@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "BestHTTP_DemoSite/1.0.0": {
         "dependencies": {
+          "Hashids.net": "1.7.0",
           "MessagePack.UnityShims": "2.5.129",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.13",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "5.0.13",
@@ -22,6 +23,14 @@
         },
         "runtime": {
           "BestHTTP_DemoSite.dll": {}
+        }
+      },
+      "Hashids.net/1.7.0": {
+        "runtime": {
+          "lib/net7.0/Hashids.net.dll": {
+            "assemblyVersion": "1.7.0.0",
+            "fileVersion": "1.7.0.0"
+          }
         }
       },
       "MessagePack/2.5.129": {
@@ -669,6 +678,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Hashids.net/1.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TuQ8ns5c+eeIOHSgJdwCLb0nWzKqn2gCPSLFoz6nWdhw3tS5Wa43qrwRXT4UJT7XVgHqKssacVU1SGlAOWjeIg==",
+      "path": "hashids.net/1.7.0",
+      "hashPath": "hashids.net.1.7.0.nupkg.sha512"
     },
     "MessagePack/2.5.129": {
       "type": "package",
