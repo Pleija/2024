@@ -1,4 +1,5 @@
 using SqlCipher4Unity3D;
+using UnityEngine;
 
 namespace App.Models
 {
@@ -6,6 +7,7 @@ namespace App.Models
     {
         public long timestamp;
         public long DefaultSeed;
+        [TextArea]
         public string DefaultKey;
     }
 }

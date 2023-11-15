@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 using App.Models;
 using HashidsCore.NET;
+using NetApi;
+using Network;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -42,5 +44,13 @@ public class TestRandom
         Debug.Log(t);
         var r = hashid.DecodeLong(t);
         Debug.Log(string.Join(", ", r));
+    }
+
+    [Test]
+    public static void TestNet()
+    {
+        Client.Call<Reg>(t => {
+            t.OnResult = x => { };
+        });
     }
 }

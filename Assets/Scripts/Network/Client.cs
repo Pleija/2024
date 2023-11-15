@@ -1,19 +1,27 @@
 using System;
+using System.Runtime.CompilerServices;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
 using Common;
+using NetApi;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Network
 {
-    public class SignalRConnect : Singleton<SignalRConnect>, IAutoCreate, IDontDestroyOnLoad
+    public class Client : Singleton<Client>, IAutoCreate, IDontDestroyOnLoad
     {
         public IProtocol protocol { get; set; }
         public HubConnection Hub { get; set; }
         public string path = "/TestHub";
         public string BaseURL = "http://192.168.1.65:5000";
         public bool autoStart;
+
+        public static T Call<T>(Action<T> callback) where T :  new()
+        {
+            var data = new T();
+            return data;
+        }
 
         protected override void OnDestroy()
         {

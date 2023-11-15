@@ -378,11 +378,23 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7638461250850786575, guid: 5cdee3f3bea11415db4f4f59b48f2add,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7638461250850786575, guid: 5cdee3f3bea11415db4f4f59b48f2add,
+        type: 3}
     - target: {fileID: 8261203542343118074, guid: 5cdee3f3bea11415db4f4f59b48f2add,
         type: 3}
       propertyPath: m_Name
       value: Update
       objectReference: {fileID: 0}
+    - target: {fileID: 8848996053414201861, guid: 5cdee3f3bea11415db4f4f59b48f2add,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8848996053414201861, guid: 5cdee3f3bea11415db4f4f59b48f2add,
+        type: 3}
     - target: {fileID: 8848996053414201861, guid: 5cdee3f3bea11415db4f4f59b48f2add,
         type: 3}
       propertyPath: OnStart.m_PersistentCalls.m_Calls.Array.data[0].m_Target

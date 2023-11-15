@@ -68,11 +68,23 @@ namespace SqlCipher4Unity3D
         [AutoIncrement, PrimaryKey]
         public int Id = 1;
 
+        [FoldoutGroup("Default")]
         public string Version = "1.0";
+
+        [FoldoutGroup("Default")]
+        [TextArea]
         public string Extra = "{}";
+
+        [FoldoutGroup("Default")]
+        [TextArea]
         public string localExtra = "{}";
+
+        [FoldoutGroup("Default")]
         public new string name { get; set; }
+
+        [FoldoutGroup("Default")]
         public new HideFlags hideFlags { get; set; }
+
         public Model GetSelf() => null;
 
         public Model Save()
@@ -137,11 +149,11 @@ namespace SqlCipher4Unity3D
                 }
                 AssetDatabase.CreateAsset(value, path);
                 AssetDatabase.Refresh();
+                //AssetDatabase.SaveAssets();
                 result = AssetDatabase.LoadAssetAtPath<T>(path);
-                var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
-                    settings.DefaultGroup);
-                entry.address = typeof(T).FullName;
-                AssetDatabase.SaveAssets();
+                // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
+                //     settings.DefaultGroup);
+                // entry.address = typeof(T).FullName;
             }
 #endif
 

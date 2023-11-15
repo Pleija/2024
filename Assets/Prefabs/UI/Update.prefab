@@ -43,6 +43,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d8d062810b43f58437ba56a7588ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   OnStart1:
     m_PersistentCalls:
       m_Calls:
@@ -1339,7 +1348,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.312
+  m_Value: 0.482
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2142,7 +2151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.18959872, b: 0.3301887, a: 0.78039217}
+  m_Color: {r: 0.4245283, g: 0.06658712, b: 0, a: 0.34117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2658,6 +2667,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a544bcd6aa84417490c53920c3fa479b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   nextScene:
     m_AssetGUID: 678d462d33ebdd7419400a9476bf6759
     m_SubObjectName: 
