@@ -1,4 +1,4 @@
-namespace Network
-{
-    public enum PersonStates { Unknown, Joined }
-}
+// namespace Network
+// {
+//     public enum PersonStates { Unknown, Joined }
+// }

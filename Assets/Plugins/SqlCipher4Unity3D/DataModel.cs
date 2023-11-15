@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using Common;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using Sirenix.Utilities;
 using SQLite.Attributes;
 using UniRx;
@@ -24,7 +25,8 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SqlCipher4Unity3D
 {
-    public class Model : SerializedScriptableObject
+    [ShowOdinSerializedPropertiesInInspector]
+    public class Model : ScriptableObject, ISerializationCallbackReceiver
     {
         public static readonly Dictionary<Type, Model> Defaults = new Dictionary<Type, Model>();
 
@@ -78,6 +80,20 @@ namespace SqlCipher4Unity3D
             conn.Save(this);
             return this;
         }
+
+        [SerializeField, HideInInspector]
+        private SerializationData serializationData;
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            UnitySerializationUtility.DeserializeUnityObject(this, ref this.serializationData);
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            if(this == null) return;
+            UnitySerializationUtility.SerializeUnityObject(this, ref this.serializationData);
+        }
     }
 
     public class DataModelSample : DataModel<DataModelSample> { }
@@ -86,15 +102,23 @@ namespace SqlCipher4Unity3D
     {
         private static T m_Instance;
 
-        public new static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
+        public static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
             //value ??= CreateInstance<T>();
             if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
-                if(Res.Exists<T>() is { } locations) {
+#if UNITY_EDITOR
+                if(!Application.isPlaying) {
+                    result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
+                            AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x)))
+                        .FirstOrDefault();
+                }
+#endif
+                if(result == null && Res.Exists<T>() is { } locations) {
                     result = Defaults[typeof(T)] = Addressables
                         .LoadAssetAsync<T>(locations.First().PrimaryKey).WaitForCompletion();
                     Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
                 }
-                else {
+
+                if(result == null) {
                     Debug.Log($"{typeof(T).Name} asset not found");
                 }
             }
@@ -158,7 +182,7 @@ namespace SqlCipher4Unity3D
                                 value = propertyInfo.GetValue(target, null);
                                 break;
                             case FieldInfo fieldInfo:
-                               // Debug.Log($"check field: {x.Name}");
+                                // Debug.Log($"check field: {x.Name}");
                                 value = fieldInfo.GetValue(target);
                                 break;
                         }

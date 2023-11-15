@@ -1,4 +1,4 @@
-namespace Network
-{
-    public enum MyEnum : int { None, One, Two }
-}
+// namespace Network
+// {
+//     public enum MyEnum : int { None, One, Two }
+// }

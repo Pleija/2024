@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>f4037f8b-296e-46b9-a038-f8132a344b0f</UserSecretsId>
     <LangVersion>11</LangVersion>
+    <RootNamespace />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

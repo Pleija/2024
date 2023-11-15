@@ -16,10 +16,11 @@ namespace App
     [DefaultExecutionOrder(-9000)]
     public class JsMain : Agent<JsMain>
     {
+
         public static JsMain self;
         // public void OnEnable() { }
 
-        public UnityEvent OnStart;
+        public UnityEvent OnStart1;
         public BetterEvent OnStart2;
         public static bool assetsReady;
 
@@ -69,7 +70,7 @@ namespace App
                 all.Any(t => t.EndsWith("bootstrap.mjs"))}");
             JsEnv.self.AutoUsing();
             JsEnv.self.ExecuteModule("bootstrap.mjs");
-            OnStart?.Invoke();
+            OnStart1?.Invoke();
             OnStart2.Invoke();
             //SceneManager.LoadScene("Start");
         }

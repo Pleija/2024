@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a4ab0d50-a3bb-44bc-b710-a6115d51d725" name="pleija.com">
+        <fileTransfer rootFolder="/root/server" accessType="SFTP" host="pleija.com" port="22" sshConfigId="677411db-c73d-4620-b5fd-ef4e61a88653" sshConfig="root@pleija.com:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

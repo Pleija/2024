@@ -47,7 +47,7 @@ namespace SQLiteNetExtensions.Extensions.TextBlob.Serializers
 
                 //var json = JsonConvert.SerializeObject(dictionary);
                 return JsonConvert.DeserializeObject<Dictionary<(int, int), string>>(text);
-            } catch (Exception e) {
+            } catch (Exception) {
                 return JsonConvert.DeserializeObject(text, type);
             }
         }

@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Net.WebSockets;
 using System.Threading;
+using Hubs;
 
 namespace BestHTTP_DemoSite
 {
@@ -135,9 +136,9 @@ namespace BestHTTP_DemoSite
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => {
-                endpoints.MapHub<Hubs.TestHub>("/TestHub");
-                endpoints.MapHub<Hubs.HubWithAuthorization>("/HubWithAuthorization");
-                endpoints.MapHub<Hubs.UploadHub>("/uploading");
+                endpoints.MapHub<TestHub>("/TestHub");
+                endpoints.MapHub<HubWithAuthorization>("/HubWithAuthorization");
+                endpoints.MapHub<UploadHub>("/uploading");
             });
 
             // app.UseSignalR(routes =>

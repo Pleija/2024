@@ -43,14 +43,15 @@ namespace Puerts
                 //     from type in assembly.GetExportedTypes() where type.Namespace != null &&
                 //         namespaces.Contains(type.Namespace) && !IsExcluded(type) select type;
                 var customAssemblys = new string[] {
+                    "Shared",
                     "Helpers",
                     "Unity.Addressables",
                     "Unity.ResourceManager", /* "Unity.Timeline",*/
                     "sfloat",
                     "PhysicsDemo",
                     "BestHTTP",
-                    "websocket-sharp",
-                    "ServerClient",
+                    //"websocket-sharp",
+                    //"ServerClient",
                     "HashidsCore.NET",
                     "LZ4",
                     "Assembly-CSharp", /* "Assembly-CSharp-firstpass",*/
@@ -67,7 +68,7 @@ namespace Puerts
                 };
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 var customTypes =
-                    from assembly in customAssemblys
+                    from assembly in customAssemblys.Distinct()
                         .Where(a =>
                             (from x in assemblies where x.GetName().Name == a select a)
                             .SingleOrDefault() != null).Select(s => Assembly.Load(s))

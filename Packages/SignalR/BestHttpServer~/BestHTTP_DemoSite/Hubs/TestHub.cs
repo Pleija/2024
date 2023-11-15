@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using SignalRSamples;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,40 +11,40 @@ using Random = System.Random;
 
 namespace Hubs
 {
-    public enum PersonStates
-    {
-        Unknown,
-        Joined
-    }
-
-    public class Person
-    {
-        public Vector3[] Positions { get; set; }
-        public string Name { get; set; }
-        public long Age { get; set; }
-        public DateTime Joined { get; set; }
-        public PersonStates State { get; set; }
-        public List<Person> Friends { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("[Person Name: '{0}', Age: {1}]", this.Name, this.Age.ToString());
-        }
-    }
-
-    public enum MyEnum : int
-    {
-        None,
-        One,
-        Two
-    }
-
-    public sealed class Metadata
-    {
-        public string strData;
-        public int intData;
-        public MyEnum myEnum;
-    }
+    // public enum PersonStates
+    // {
+    //     Unknown,
+    //     Joined
+    // }
+    //
+    // public class Person
+    // {
+    //     public Vector3[] Positions { get; set; }
+    //     public string Name { get; set; }
+    //     public long Age { get; set; }
+    //     public DateTime Joined { get; set; }
+    //     public PersonStates State { get; set; }
+    //     public List<Person> Friends { get; set; }
+    //
+    //     public override string ToString()
+    //     {
+    //         return string.Format("[Person Name: '{0}', Age: {1}]", this.Name, this.Age.ToString());
+    //     }
+    // }
+    //
+    // public enum MyEnum : int
+    // {
+    //     None,
+    //     One,
+    //     Two
+    // }
+    //
+    // public sealed class Metadata
+    // {
+    //     public string strData;
+    //     public int intData;
+    //     public MyEnum myEnum;
+    // }
 
     public class TestHub : Hub
     {

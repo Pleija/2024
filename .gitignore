@@ -13,7 +13,7 @@
 # **/Assets/Plugins.meta
 
 *.user
-*.idea
+#*.idea
 /*.csproj
 *.csproj.user
 /*.sln

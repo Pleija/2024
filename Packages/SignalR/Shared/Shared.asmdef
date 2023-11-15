@@ -1,6 +1,7 @@
 {
     "name": "Shared",
     "references": [
+        "sfloat",
         "MessagePack",
         "MessagePack.Annotations"
     ]

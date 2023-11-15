@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 874aad0016e247f6a1cf7ebca527abc5, type: 3}
   m_Name: App.Models.User
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   Id: 1
   Version: 1.0
   Extra: '{}'
@@ -32,7 +23,7 @@ MonoBehaviour:
   musicOn:
     value: 1
   key:
-    value: f99e30e1927048f598068971b51f4036
+    value: 1831f3eec7664202b710b3501bea22f0
   loginServer:
     value: 
   roomServer:
@@ -40,17 +31,17 @@ MonoBehaviour:
   loginTime:
     value: 0
   level:
-    value: 0
+    value: 1
   coin:
-    value: 1200
+    value: 0
   power:
-    value: 30
+    value: 0
   money:
     value: 0
   gold:
-    value: 105
+    value: 0
   exp:
-    value: 520
+    value: 0
   Levels:
   - exp: 0
     name: "\u672A\u6392\u540D"

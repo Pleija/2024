@@ -112,14 +112,12 @@
             jsEnv.UsingFunc<System.Int32, System.String, TMPro.TMP_SpriteAsset>();
             jsEnv.UsingFunc<System.IntPtr, System.IntPtr>();
             jsEnv.UsingFunc<System.Object, Cysharp.Threading.Tasks.UniTask>();
-            jsEnv.UsingFunc<System.Object, System.Security.Cryptography.X509Certificates.X509Certificate, System.Security.Cryptography.X509Certificates.X509Chain, System.Net.Security.SslPolicyErrors, System.Boolean>();
             jsEnv.UsingFunc<System.Reflection.Assembly, System.String, System.Boolean, System.Type>();
             jsEnv.UsingFunc<System.Reflection.FieldInfo, System.Boolean>();
             jsEnv.UsingFunc<System.Reflection.MemberInfo, System.Object, System.Boolean>();
             jsEnv.UsingFunc<System.Security.Claims.Claim, System.Boolean>();
             jsEnv.UsingFunc<System.Single>();
             jsEnv.UsingFunc<System.Single, System.Single>();
-            jsEnv.UsingFunc<System.String, System.Boolean>();
             jsEnv.UsingFunc<System.String, System.Int32, System.Char, System.Char>();
             jsEnv.UsingFunc<System.String, System.Object, System.Boolean>();
             jsEnv.UsingFunc<System.String, UnityEngine.Color>();
@@ -132,8 +130,6 @@
             jsEnv.UsingFunc<UnityEngine.Rendering.BatchRendererGroup, UnityEngine.Rendering.BatchCullingContext, Unity.Jobs.JobHandle>();
             jsEnv.UsingFunc<UnityEngine.ResourceManagement.AsyncOperations.DownloadStatus>();
             jsEnv.UsingFunc<UnityEngine.UI.ILayoutElement, System.Single>();
-            jsEnv.UsingFunc<WebSocketSharp.Net.CookieCollection, WebSocketSharp.Net.CookieCollection, System.Boolean>();
-            jsEnv.UsingFunc<WebSocketSharp.Net.HttpListenerRequest, WebSocketSharp.Net.AuthenticationSchemes>();
         }
         
         public static void UsingAction(this JsEnv jsEnv, params Type[] types)

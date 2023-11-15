@@ -4,11 +4,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Channels;
 
-namespace SignalRSamples
+namespace Hubs
 {
     public static class ObservableExtensions
     {
