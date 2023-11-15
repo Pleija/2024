@@ -16,6 +16,15 @@ MonoBehaviour:
   Version: 1.0
   Extra: '{}'
   localExtra: '{}'
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   timestamp: 0
-  DefaultSeed: 0
-  DefaultKey: 
+  DefaultSeed: 1700054363
+  DefaultKey: 8drpWsFJmD6IO+Qt7c9f5khwN4nPuiE1G2KbXTZYjSAog/HeBCylVq03azMRvLxU

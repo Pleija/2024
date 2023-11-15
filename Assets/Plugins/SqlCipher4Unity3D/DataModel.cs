@@ -86,6 +86,7 @@ namespace SqlCipher4Unity3D
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
+            if(this == null) return;
             UnitySerializationUtility.DeserializeUnityObject(this, ref this.serializationData);
         }
 

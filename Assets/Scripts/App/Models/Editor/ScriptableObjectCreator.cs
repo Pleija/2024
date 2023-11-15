@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
@@ -59,12 +60,19 @@ namespace Editors
             tree.SortMenuItemsByName();
             tree.Selection.SelectionConfirmed += x => CreateAsset();
             tree.Selection.SelectionChanged += e => {
-                if(previewObject && !AssetDatabase.Contains(previewObject))
-                    DestroyImmediate(previewObject);
+                // if(previewObject && !AssetDatabase.Contains(previewObject))
+                //     DestroyImmediate(previewObject);
                 if(e != SelectionChangedType.ItemAdded) return;
                 var t = SelectedType;
-                if(t != null && !t.IsAbstract)
-                    previewObject = CreateInstance(t) as ScriptableObject;
+
+                if(t != null && !t.IsAbstract) {
+                    previewObject =
+                        t.GetProperty("self",
+                                    BindingFlags.Public | BindingFlags.Static |
+                                    BindingFlags.FlattenHierarchy)!
+                                .GetValue(null, null) as
+                            ScriptableObject; //CreateInstance(t) as ScriptableObject;
+                }
             };
             return tree;
         }
