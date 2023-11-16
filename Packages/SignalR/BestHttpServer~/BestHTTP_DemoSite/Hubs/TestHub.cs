@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Api;
 using HashidsNet;
-using NetApi;
-using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 using Random = System.Random;
 
@@ -52,9 +52,23 @@ namespace Hubs
     {
         Random rand = new Random();
         PersonStates[] states = null;
+        private Dictionary<string, UserData> users = new Dictionary<string, UserData>();
+        private Hashids sid => HashId.self;
 
-        public byte[] Q(CallType id, byte[] data)
+        private UserData user => users.TryGetValue(Context.ConnectionId, out var ret) ? ret
+            : users[Context.ConnectionId] = new UserData();
+
+        public byte[] Q(CallType id, string frame, byte[] data)
         {
+            if(id == CallType.Hello) {
+                var fid = sid.DecodeLong( frame);
+
+                if(!fid.Any() || fid[0] != 1) {
+                    return "0"u8.ToArray();
+                }
+                return Encoding.UTF8.GetBytes(
+                    sid.EncodeLong(user.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
+            }
             return null;
         }
 

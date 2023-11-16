@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Net.Configuration;
 using Common;
@@ -24,9 +25,9 @@ namespace App
         public AssetReference prefab;
 
         //public GameObject prefabObj;
-        public string PrivacyKey = "App.Privacy";
-        public string FirstUpdateKey = "App.FirstUpdate";
-        public string VersionKey = "App.Version";
+        public static string PrivacyKey = "App.Privacy";
+        public static string FirstUpdateKey = "App.FirstUpdate";
+        public static string VersionKey = "App.Version";
         public GameObject privacyPanel;
         public Button agreeBtn;
         public Text prgText;
@@ -62,6 +63,11 @@ namespace App
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void DebugSetting()
         {
+            if(Debug.isDebugBuild && !Application.isEditor &&
+               PlayerPrefs.GetString(VersionKey) != Application.version) {
+                Directory.Delete(Application.persistentDataPath + "/com.unity.addressables", true);
+            }
+
             if(Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
                 Instantiate(Resources.Load("IngameDebugConsole"));
                 return;
@@ -73,9 +79,7 @@ namespace App
         public UnityEvent OnAwake;
         public UnityEvent OnStart;
         public float timer = 3.0f;
-
         public string privacyUrl = "https://static.pleija.com/docs/#/PrivacyPolicy";
-
         public string tosUrl = "https://static.pleija.com/docs/#/TermsOfService";
         //private float startTime;
 

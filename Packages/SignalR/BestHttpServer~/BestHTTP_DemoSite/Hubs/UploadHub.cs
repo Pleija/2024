@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Api;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Hubs

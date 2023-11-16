@@ -2,7 +2,7 @@ using System;
 
 //using MessagePack;
 
-namespace NetApi
+namespace Api
 {
     [Serializable]
     //[MessagePackObject]

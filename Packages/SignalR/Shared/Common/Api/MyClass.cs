@@ -3,7 +3,7 @@
 using MessagePack;
 using ProtoBuf;
 
-namespace NetApi
+namespace Api
 {
     [MessagePackObject]
     public class MyClass
@@ -25,33 +25,33 @@ namespace NetApi
         public string FullName { get { return FirstName + LastName; } }
     }
 
-    [ProtoContract]
-    class Person
-    {
-        [ProtoMember(1)]
-        public int Id { get; set; }
+    // [ProtoContract]
+    // class Person
+    // {
+    //     [ProtoMember(1)]
+    //     public int Id { get; set; }
+    //
+    //     [ProtoMember(2)]
+    //     public string Name { get; set; }
+    //
+    //     [ProtoMember(3)]
+    //     public Address Address { get; set; }
+    // }
 
-        [ProtoMember(2)]
-        public string Name { get; set; }
-
-        [ProtoMember(3)]
-        public Address Address { get; set; }
-    }
-
-    [ProtoContract]
-    class Address
-    {
-        [ProtoMember(1)]
-        public string Line1 { get; set; }
-
-        [ProtoMember(2)]
-        public string Line2 { get; set; }
-    }
+    // [ProtoContract]
+    // class Address
+    // {
+    //     [ProtoMember(1)]
+    //     public string Line1 { get; set; }
+    //
+    //     [ProtoMember(2)]
+    //     public string Line2 { get; set; }
+    // }
 
     //[MessagePackObject]
-    public class LoginRpc : RpcBase<LoginRpc>
-    {
-        // [Key(100)]
-        public string tkid { get; set; }
-    }
+    // public class LoginRpc : RpcBase<LoginRpc>
+    // {
+    //     // [Key(100)]
+    //     public string tkid { get; set; }
+    // }
 }

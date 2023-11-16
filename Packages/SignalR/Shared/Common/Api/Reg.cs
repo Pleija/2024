@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics.Eventing.Reader;
-using System.Runtime.CompilerServices;
 using HashidsNet;
 using MessagePack;
 
-namespace NetApi
+namespace Api
 {
-    public enum CallType { None = 0, Reg, Login }
+    public enum CallType { None = 0, Hello, Reg, Login }
 
     public interface IRpc<T1, T2>
     {
@@ -22,7 +20,7 @@ namespace NetApi
         public Action<T2> OnResult { get; set; }
     }
 
-    public class HashIdManager
+    public class HashId
     {
         public static string chars =
             "8drpWsFJmD6IO+Qt7c9f5khwN4nPuiE1G2KbXTZYjSAog/HeBCylVq03azMRvLxU";
@@ -32,8 +30,7 @@ namespace NetApi
 
         public static Hashids self {
             get {
-                return m_Hashids ??=
-                    new Hashids(chars, 0, new PcgRandom(0, seed).Shuffle(chars));
+                return m_Hashids ??= new Hashids(chars, 0, new PcgRandom(0, seed).Shuffle(chars));
             }
             set => m_Hashids = value;
         }
@@ -43,12 +40,23 @@ namespace NetApi
     public class RegQuery
     {
         [IgnoreMember]
-        private string m_Timestamp;
+        public long timestamp;
+
+        [IgnoreMember]
+        public long frame;
 
         [Key(0)]
-        public string Timestamp {
-            get { return m_Timestamp; }
-        }
+        public string Timestamp => HashId.self.EncodeLong(timestamp, frame);
+    }
+
+    [MessagePackObject]
+    public class RegResult
+    {
+        [IgnoreMember]
+        public long timestamp;
+
+        [Key(0)]
+        public string Timestamp => HashId.self.EncodeLong(timestamp);
     }
 
     public interface IRpc
@@ -56,7 +64,7 @@ namespace NetApi
         CallType id { get; }
     }
 
-    public class Reg : Rpc<string, string>, IRpc
+    public class Reg : Rpc<RegQuery, RegResult>, IRpc
     {
         public CallType id => CallType.Reg;
     }
