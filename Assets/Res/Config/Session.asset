@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4ba84f62dff40709b4c945185ac4bec, type: 3}
-  m_Name: App.Models.Session
+  m_Name: Session
   m_EditorClassIdentifier: 
   Id: 1
   Version: 1.0

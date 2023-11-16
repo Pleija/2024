@@ -9,16 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373e1c939fc44bcbb4ce899bb246f31c, type: 3}
-  m_Name: App.Models.Setting
+  m_Script: {fileID: 11500000, guid: 26b27d667fcc420ab79c449cdc5720a3, type: 3}
+  m_Name: Room
   m_EditorClassIdentifier: 
   Id: 1
   Version: 1.0
   Extra: '{}'
   localExtra: '{}'
-  ResVersion:
+  roomId:
     value: 
-  RegisterServer:
-    value: 
-  Servers: []
-  RoomServers: []

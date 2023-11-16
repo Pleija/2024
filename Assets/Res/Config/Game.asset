@@ -9,20 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433fb5f7033b4ced96fc3d09e5056d5f, type: 3}
-  m_Name: App.Models.Players
+  m_Script: {fileID: 11500000, guid: 93272de9612840029586ff4586f924ba, type: 3}
+  m_Name: Game
   m_EditorClassIdentifier: 
   Id: 1
   Version: 1.0
   Extra: '{}'
   localExtra: '{}'
-  username:
-    value: 
-  uid:
+  startTime:
     value: 0
-  country:
-    value: 
-  level:
+  frameCount:
     value: 0
-  rank:
+  currentFrame:
     value: 0

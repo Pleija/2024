@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7e606f5827b7e344b8c317f6ced3910, type: 3}
-  m_Name: Runner.PlayerData
+  m_Name: PlayerData
   m_EditorClassIdentifier: 
   Id: 1
   Version: 1.0

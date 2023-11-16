@@ -147,7 +147,7 @@ namespace SqlCipher4Unity3D
                         var settings = AddressableAssetSettingsDefaultObject.Settings;
                         //var entries = settings.groups.SelectMany(x => x.entries);
                         result = Defaults[typeof(T)] = value; //CreateInstance<T>();
-                        var path = $"Assets/Res/Config/{typeof(T).FullName}.asset";
+                        var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
 
                         if(!Directory.Exists(Path.GetDirectoryName(path))) {
                             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
