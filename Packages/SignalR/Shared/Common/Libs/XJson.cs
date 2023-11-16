@@ -19,27 +19,13 @@ using Newtonsoft.Json;
 
 // using UnityEngine;
 
-public static partial class XJsonUtility
+public static partial class XJson
 {
 #region Json
-    static readonly Byte[] bytes = {
-        0x54,
-        0x86,
-        0x5B,
-        0x40,
-        0xF2,
-        0x0B,
-        0x62,
-        0x44,
-        0x93,
-        0xE6,
-        0xF7,
-        0x7B,
-        0x29,
-        0x0F,
-        0x24,
-        0x9D,
-    };
+
+    // @formatter:off
+    static readonly Byte[] bytes = { 0x54, 0x86, 0x5B, 0x40, 0xF2, 0x0B, 0x62, 0x44, 0x93, 0xE6, 0xF7, 0x7B, 0x29, 0x0F, 0x24, 0x9D, };
+    // @formatter:on
 
     public static string FromBase64(this string data)
     {
