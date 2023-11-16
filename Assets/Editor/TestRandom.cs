@@ -4,6 +4,7 @@ using System.Text;
 using Api;
 using App.Models;
 using HashidsNet;
+using MessagePack;
 using Network;
 using NUnit.Framework;
 using UnityEditor;
@@ -49,8 +50,24 @@ public class TestRandom
     [Test]
     public static void TestNet()
     {
-        Client.Call<Reg>(t => {
-            t.OnResult = x => { };
-        });
+        Client.Call<long, long>(CallType.Reg, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            (r, t) => { });
+    }
+
+    [Test]
+    public static void TestEncrypt()
+    {
+        Debug.Log(XJson.EncryptToBase64String("test"));
+    }
+
+    [Test]
+    public static void TestMsgPack()
+    {
+        Debug.Log(MessagePackSerializer.Serialize((1, 1)).Length);
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Debug.Log(MessagePackSerializer.Serialize(timestamp).Length);
+        Debug.Log(XJson.Encrypt(MessagePackSerializer.Serialize(1)).Length);
+        Debug.Log(XJson.Encrypt(BitConverter.GetBytes(timestamp)).Length);
+        Debug.Log(MessagePackSerializer.Serialize(HashId.self.EncodeLong(timestamp)).Length);
     }
 }

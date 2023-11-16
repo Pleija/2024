@@ -115,55 +115,63 @@ namespace SqlCipher4Unity3D
     {
         private static T m_Instance;
 
-        public static T self => m_Instance ??= conn.Table<T>().FirstOrInsert(value => {
-            //value ??= CreateInstance<T>();
-            if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
+        public static T self {
+            get {
+                if(m_Instance) return m_Instance;
+                m_Instance = conn.Table<T>().FirstOrInsert(value => {
+                    //value ??= CreateInstance<T>();
+                    if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
-                if(!Application.isPlaying) {
-                    result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
-                            AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x)))
-                        .FirstOrDefault();
-                }
+                        if(!Application.isPlaying) {
+                            result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
+                                    AssetDatabase.LoadAssetAtPath<T>(
+                                        AssetDatabase.GUIDToAssetPath(x)))
+                                .FirstOrDefault();
+                        }
 #endif
-                if(result == null && Res.Exists<T>() is { } locations) {
-                    result = Defaults[typeof(T)] = Addressables
-                        .LoadAssetAsync<T>(locations.First().PrimaryKey).WaitForCompletion();
-                    Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
-                }
+                        if(result == null && Res.Exists<T>() is { } locations) {
+                            result = Defaults[typeof(T)] = Addressables
+                                .LoadAssetAsync<T>(locations.First().PrimaryKey)
+                                .WaitForCompletion();
+                            Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
+                        }
 
-                if(result == null) {
-                    Debug.Log($"{typeof(T).Name} asset not found");
-                }
-            }
+                        if(result == null) {
+                            Debug.Log($"{typeof(T).Name} asset not found");
+                        }
+                    }
 #if UNITY_EDITOR
-            // if(!Application.isEditor) return;
+                    // if(!Application.isEditor) return;
 
-            if((result == null || AssetDatabase.GetAssetPath(result) == null)) {
-                var settings = AddressableAssetSettingsDefaultObject.Settings;
-                //var entries = settings.groups.SelectMany(x => x.entries);
-                result = Defaults[typeof(T)] = value; //CreateInstance<T>();
-                var path = $"Assets/Res/Config/{typeof(T).FullName}.asset";
+                    if((result == null || AssetDatabase.GetAssetPath(result) == null)) {
+                        var settings = AddressableAssetSettingsDefaultObject.Settings;
+                        //var entries = settings.groups.SelectMany(x => x.entries);
+                        result = Defaults[typeof(T)] = value; //CreateInstance<T>();
+                        var path = $"Assets/Res/Config/{typeof(T).FullName}.asset";
 
-                if(!Directory.Exists(Path.GetDirectoryName(path))) {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                }
-                AssetDatabase.CreateAsset(value, path);
-                AssetDatabase.Refresh();
-                //AssetDatabase.SaveAssets();
-                result = AssetDatabase.LoadAssetAtPath<T>(path);
-                // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
-                //     settings.DefaultGroup);
-                // entry.address = typeof(T).FullName;
-            }
+                        if(!Directory.Exists(Path.GetDirectoryName(path))) {
+                            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                        }
+                        AssetDatabase.CreateAsset(value, path);
+                        AssetDatabase.Refresh();
+                        //AssetDatabase.SaveAssets();
+                        result = AssetDatabase.LoadAssetAtPath<T>(path);
+                        // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
+                        //     settings.DefaultGroup);
+                        // entry.address = typeof(T).FullName;
+                    }
 #endif
 
-            if(result) {
-                Setup(result, value);
+                    if(result) {
+                        Setup(result, value);
+                    }
+                    else {
+                        Debug.Log($"{typeof(T).FullName} asset not found");
+                    }
+                });
+                return m_Instance;
             }
-            else {
-                Debug.Log($"{typeof(T).FullName} asset not found");
-            }
-        });
+        }
 
         public new Model GetSelf() => self;
 

@@ -989,7 +989,7 @@ namespace BestHTTP.SignalRCore
                 (args) => callback((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]));
         }
 
-        private void On(string methodName, Type[] paramTypes, Action<object[]> callback)
+        public void On(string methodName, Type[] paramTypes, Action<object[]> callback)
         {
             this.subscriptions.GetOrAdd(methodName, _ => new Subscription())
                 .Add(paramTypes, callback);
@@ -1020,8 +1020,14 @@ namespace BestHTTP.SignalRCore
             OnFunc<Result>(methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, (args) => callback((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]));
         }
 
+        public void OnFunc(Type returnType, string methodName, Type[] paramTypes, Func<object[], object> callback)
+        {
+            this.subscriptions.GetOrAdd(methodName, _ => new Subscription())
+                .AddFunc(returnType, paramTypes, callback);
+        }
+
         // https://github.com/dotnet/aspnetcore/issues/5280
-        private void OnFunc<Result>(string methodName, Type[] paramTypes, Func<object[], object> callback)
+        public void OnFunc<Result>(string methodName, Type[] paramTypes, Func<object[], object> callback)
         {
             this.subscriptions.GetOrAdd(methodName, _ => new Subscription())
                 .AddFunc(typeof(Result), paramTypes, callback);

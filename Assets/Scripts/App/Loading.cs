@@ -237,7 +237,7 @@ namespace App
             }
 
             //progress.gameObject.SetActive(false);
-            if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
+            if(!PlayerPrefs.HasKey(FirstUpdateKey) && !Application.isEditor) {
                 StartCoroutine(StartUpdate());
                 yield break;
             }

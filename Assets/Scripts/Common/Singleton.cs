@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Common
@@ -20,28 +21,59 @@ namespace Common
                 var go = new GameObject(typeof(T).Name);
                 m_Instance = go.AddComponent<T>();
 
-                if((typeof(T).IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
-                       typeof(IDontDestroyOnLoad).IsAssignableFrom(typeof(T))) &&
-                   Application.isPlaying) {
-                    if(go.transform.parent != null) go.transform.SetParent(null);
-                    DontDestroyOnLoad(go);
+                if(Application.isPlaying) {
+                    m_Instance.CheckDontUnload();
+                }
+                else {
+                    go.hideFlags = HideFlags.HideAndDontSave;
+#if UNITY_EDITOR
+                    EditorApplication.update -= EditorUpdate;
+                    EditorApplication.update += EditorUpdate;
+#endif
                 }
                 return m_Instance;
             }
             set => m_Instance = value;
         }
 
+        public static void EditorUpdate()
+        {
+            if(m_Instance) {
+                m_Instance.Update();
+            }
+            else {
+#if UNITY_EDITOR
+                EditorApplication.update -= EditorUpdate;
+#endif
+            }
+        }
+
+        public virtual void Update() { }
+
         public override void OnEnable()
         {
             base.OnEnable();
-            if(m_Instance == null) m_Instance = (T)this;
 
-            if(GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
-               typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
-                if(transform.parent != null) {
-                    transform.SetParent(null);
+            if(m_Instance == null) {
+                m_Instance = (T)this;
+            }
+            else {
+                Destroy(gameObject);
+                return;
+            }
+            CheckDontUnload();
+        }
+
+        public void CheckDontUnload()
+        {
+            if(Application.isPlaying) {
+                if(GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
+                   typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
+                    if(transform.parent != null) {
+                        transform.SetParent(null);
+                    }
+                    DontDestroyOnLoad(gameObject);
                 }
-                DontDestroyOnLoad(gameObject);
             }
         }
 

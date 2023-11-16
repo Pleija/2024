@@ -172,7 +172,10 @@ namespace BestHTTP_DemoSite
                     "public,max-age=" + durationInSeconds;
             };
             app.UseStaticFiles(option);
-            WebSocketOptions options = new WebSocketOptions();
+            WebSocketOptions options = new WebSocketOptions() {
+                KeepAliveInterval = TimeSpan.FromSeconds(10),
+                //ReceiveBufferSize = 4 * 1024,
+            };
             app.UseWebSockets(options);
 
             //GlobalHost.DependencyResolver.UseRedis("localhost", 6379, string.Empty, "signalR");

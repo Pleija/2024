@@ -17,7 +17,7 @@ using System;
 using System.Text;
 using Newtonsoft.Json;
 
-// using UnityEngine;
+// using UnityEngine;                   
 
 public static partial class XJson
 {
@@ -80,7 +80,7 @@ public static partial class XJson
     }
 #endregion
 
-    private static readonly UTF8Encoding utf8 = new UTF8Encoding();
+    public static readonly UTF8Encoding utf8 = new UTF8Encoding();
     private const uint delta = 0x9E3779B9;
 
     private static uint MX(uint sum, uint y, uint z, int p, uint e, uint[] k) =>
@@ -99,7 +99,7 @@ public static partial class XJson
     public static byte[] Encrypt(string data, byte[] key = null) =>
         Encrypt(utf8.GetBytes(data), key ?? bytes);
 
-    public static byte[] Encrypt(byte[] data, string key = null) => Encrypt(data,
+    public static byte[] Encrypt(byte[] data, string key) => Encrypt(data,
         !string.IsNullOrEmpty(key) ? utf8.GetBytes(key) : bytes);
 
     public static byte[] Encrypt(string data, string key) => Encrypt(utf8.GetBytes(data),

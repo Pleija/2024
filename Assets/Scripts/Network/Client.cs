@@ -1,9 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Api;
+using BestHTTP;
 using BestHTTP.SignalRCore;
 using BestHTTP.SignalRCore.Encoders;
 using Common;
+using MessagePack;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,15 +18,32 @@ namespace Network
     public class Client : Singleton<Client>, IAutoCreate, IDontDestroyOnLoad
     {
         public IProtocol protocol { get; set; }
-        public HubConnection Hub { get; set; }
+        private HubConnection m_Hub;
+
+        public HubConnection Hub {
+            get {
+                if(m_Hub == null) Connect();
+                return m_Hub;
+            }
+            set => m_Hub = value;
+        }
+
         public string path = "/TestHub";
         public string BaseURL = "http://192.168.1.65:5000";
         public bool autoStart;
 
-        public static T Call<T>(Action<T> callback) where T :  new()
+        public static void Call<TRequest, TResult>(CallType id, Func<TRequest, TRequest> request,
+            Action<TRequest, TResult> result)
         {
-            var data = new T();
-            return data;
+            var data = request.Invoke(Activator.CreateInstance<TRequest>());
+            self.Hub.Invoke<byte[]>("Q", id, MessagePackSerializer.Serialize(data))
+                .OnSuccess(t => { }).OnError(t => { });
+        }
+
+        public static void Reg()
+        {
+            Call<long, long>(CallType.Reg, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                (r, t) => { });
         }
 
         protected override void OnDestroy()
@@ -60,25 +83,58 @@ namespace Network
             }
         }
 
+        public override void Update()
+        {
+            base.Update();
+            //
+            // if(m_Hub is { State: ConnectionStates.Connected }) {
+            //     HTTPManager.OnUpdate();
+            // }
+        }
+
+        public Dictionary<Type, object> instances = new Dictionary<Type, object>();
+        public bool testSample;
+
         public void Connect()
         {
             protocol = new MessagePackProtocol() /*new LitJsonEncoder()*/;
-            Hub = new HubConnection(new Uri(BaseURL + path), protocol);
-            Hub.OnConnected += Hub_OnConnected;
+            var option = new HubOptions {
+                PingInterval = TimeSpan.Zero,
+            };
+            Hub = new HubConnection(new Uri(BaseURL + path), protocol, option);
+            if(testSample)
+                Hub.OnConnected += Hub_OnConnected;
             Hub.OnError += Hub_OnError;
             Hub.OnClosed += Hub_OnClosed;
             Hub.OnTransportEvent += (hub, transport, ev) => AddText(
                 $"Transport(<color=green>{transport.TransportType}</color>) event: <color=green>{ev}</color>");
-            // Set up server callable functions
-            Hub.On("Send",
-                (string arg) =>
-                    AddText($"On '<color=green>Send</color>': '<color=yellow>{arg}</color>'"));
-            Hub.On<Person>("Person",
-                (person) =>
-                    AddText($"On '<color=green>Person</color>': '<color=yellow>{person}</color>'"));
-            Hub.On<Person, Person>("TwoPersons",
-                (person1, person2) => AddText(
-                    $"On '<color=green>TwoPersons</color>': '<color=yellow>{person1}</color>', '<color=yellow>{person2}</color>'"));
+            GetType().Assembly.ExportedTypes
+                .Where(type => typeof(INetService).IsAssignableFrom(type)).SelectMany(type =>
+                    type.GetMethods(BindingFlags.Public | BindingFlags.Instance)).ForEach(info => {
+                    var instance = instances.TryGetValue(info.DeclaringType!, out var ret) ? ret
+                        : instances[info.DeclaringType] =
+                            Activator.CreateInstance(info.DeclaringType);
+                    var paramTypes = info.GetParameters().Length > 0 ? info.GetParameters()
+                        .Select(x => x.ParameterType).ToArray() : null;
+
+                    if(info.ReturnType == typeof(void)) {
+                        Hub.On(info.Name, paramTypes, args => info.Invoke(instance, args));
+                        return;
+                    }
+                    Hub.OnFunc(info.ReturnType, info.Name, paramTypes,
+                        args => info.Invoke(instance, args));
+                });
+            //
+            // // Set up server callable functions
+            // Hub.On("Send",
+            //     (string arg) =>
+            //         AddText($"On '<color=green>Send</color>': '<color=yellow>{arg}</color>'"));
+            // Hub.On<Person>("Person",
+            //     (person) =>
+            //         AddText($"On '<color=green>Person</color>': '<color=yellow>{person}</color>'"));
+            // Hub.On<Person, Person>("TwoPersons",
+            //     (person1, person2) => AddText(
+            //         $"On '<color=green>TwoPersons</color>': '<color=yellow>{person1}</color>', '<color=yellow>{person2}</color>'"));
             // And finally start to connect to the server
             Hub.StartConnect();
             AddText("StartConnect called");
