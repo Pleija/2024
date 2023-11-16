@@ -44,6 +44,7 @@
 <!--        <NestedProject ProjectName="GrpcService" FolderPath="Server"/>-->
 <!--        <NestedProject ProjectName="ArtsTech.Grpc.WebSocket" FolderPath="Server"/>-->
 <!--        <NestedProject ProjectName="SignalRServer" FolderPath="Server"/>-->
+        
         <NestedProject ProjectName="BestHTTP_DemoSite" FolderPath="Server"/>
         
 

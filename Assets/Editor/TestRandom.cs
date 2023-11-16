@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Text;
 using App.Models;
-using HashidsCore.NET;
+using HashidsNet;
 using NetApi;
 using Network;
 using NUnit.Framework;

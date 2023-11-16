@@ -58,19 +58,19 @@ namespace Hubs
             return null;
         }
 
-        public void DoReg(Reg data)
-        {
-            var hashId = new Hashids();
-            var ret = data.Data;
-            var t = hashId.DecodeLong(ret.query);
-
-            if(t.Length == 2) {
-                var timestamp = t[0]; // 客户端初始timestamp
-                var frame = t[1];// 调用的帧必须比之前调用的帧大,防止重放攻击
-                ret.res = hashId.EncodeLong(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-                data.Data = ret;
-            }
-        }
+        // public void DoReg(Reg data)
+        // {
+        //     var hashId = new Hashids();
+        //     var ret = data.Data;
+        //     var t = hashId.DecodeLong(ret.query);
+        //
+        //     if(t.Length == 2) {
+        //         var timestamp = t[0]; // 客户端初始timestamp
+        //         var frame = t[1];// 调用的帧必须比之前调用的帧大,防止重放攻击
+        //         ret.res = hashId.EncodeLong(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+        //         data.Data = ret;
+        //     }
+        // }
 
         private Person CreatePerson(bool createFriends = true)
         {
