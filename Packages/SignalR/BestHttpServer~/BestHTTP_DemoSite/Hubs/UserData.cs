@@ -1,11 +1,12 @@
 using System;
 
-namespace Hubs;
-
-[Serializable]
-public class UserData
+namespace Hubs
 {
-    public User data;
-    public long lastFrame = -1;
-    public long timestamp;
+    [Serializable]
+    public class UserData
+    {
+        public User data;
+        public long index;
+        public long timestamp;
+    }
 }

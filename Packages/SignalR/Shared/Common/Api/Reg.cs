@@ -4,7 +4,7 @@ using MessagePack;
 
 namespace Api
 {
-    public enum CallType { None = 0, Hello, Reg, Login }
+    public enum CallType { None = 0, GetTimestamp, Reg, Login }
 
     public interface IRpc<T1, T2>
     {

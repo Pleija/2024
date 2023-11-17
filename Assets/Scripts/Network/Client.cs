@@ -28,21 +28,31 @@ namespace Network
             set => m_Hub = value;
         }
 
-        public string path = "/TestHub";
+        public string path => "/";
         public string BaseURL = "http://192.168.1.65:5000";
+        public string ServerURL = "http://43.163.239.131:5000";
         public bool autoStart;
+        public static int index { get; set; }
+        public void UseServer(GameObject target) { }
 
         public static void Call<TRequest, TResult>(CallType id, Func<TRequest, TRequest> request,
             Action<TRequest, TResult> result)
         {
-            var data = request.Invoke(Activator.CreateInstance<TRequest>());
-            self.Hub.Invoke<byte[]>("Q", id, MessagePackSerializer.Serialize(data))
-                .OnSuccess(t => { }).OnError(t => { });
+            var req = request.Invoke(Activator.CreateInstance<TRequest>());
+            var data = XJson.Encrypt(MessagePackSerializer.Serialize(req));
+            var key = index += 1;
+            self.Hub.Invoke<byte[]>("Q", id,
+                XJson.Encrypt(MessagePackSerializer.Serialize(key), data.MD5()), data).OnSuccess(
+                t => {
+                    var x = XJson.Decrypt(t, data.MD5(key));
+                    var ret = MessagePackSerializer.Deserialize<TResult>( x);
+                    result.Invoke(req, ret);
+                }).OnError(Debug.Log);
         }
 
         public static void Reg()
         {
-            Call<long, long>(CallType.Reg, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            Call<long, long>(CallType.GetTimestamp, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 (r, t) => { });
         }
 
@@ -99,7 +109,7 @@ namespace Network
         {
             protocol = new MessagePackProtocol() /*new LitJsonEncoder()*/;
             var option = new HubOptions {
-                PingInterval = TimeSpan.Zero,
+                PingInterval = TimeSpan.Zero, //TimeSpan.FromMinutes(5),
             };
             Hub = new HubConnection(new Uri(BaseURL + path), protocol, option);
             if(testSample)

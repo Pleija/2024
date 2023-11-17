@@ -22,6 +22,8 @@ using Newtonsoft.Json;
 using System.Net.WebSockets;
 using System.Threading;
 using Hubs;
+using Microsoft.AspNetCore.Http.Connections;
+using WebSocketOptions = Microsoft.AspNetCore.Builder.WebSocketOptions;
 
 namespace BestHTTP_DemoSite
 {
@@ -98,9 +100,12 @@ namespace BestHTTP_DemoSite
             });
             services.AddSignalR(options => {
                 options.EnableDetailedErrors = true;
-                options.KeepAliveInterval = TimeSpan.FromMinutes(1);
+                // 客户端10分钟没有发送过数据自动断开
+                //options.KeepAliveInterval = TimeSpan.FromMinutes(10);
                 options.MaximumParallelInvocationsPerClient = 10;
+                options.MaximumReceiveMessageSize = 1024;
             }).AddNewtonsoftJsonProtocol().AddMessagePackProtocol(options => {
+                //options.SerializerOptions.
                 //options.SerializerOptions.
             });
         }
@@ -136,7 +141,9 @@ namespace BestHTTP_DemoSite
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => {
-                endpoints.MapHub<TestHub>("/TestHub");
+                endpoints.MapHub<TestHub>("", opt => {
+                 //   opt.Transports = HttpTransportType.LongPolling | HttpTransportType.WebSockets;
+                });
                 endpoints.MapHub<HubWithAuthorization>("/HubWithAuthorization");
                 endpoints.MapHub<UploadHub>("/uploading");
             });
@@ -173,7 +180,8 @@ namespace BestHTTP_DemoSite
             };
             app.UseStaticFiles(option);
             WebSocketOptions options = new WebSocketOptions() {
-                KeepAliveInterval = TimeSpan.FromSeconds(10),
+                // 客户端10分钟没有发送过数据自动断开
+                //KeepAliveInterval = TimeSpan.FromMinutes(10),
                 //ReceiveBufferSize = 4 * 1024,
             };
             app.UseWebSockets(options);
@@ -186,8 +194,7 @@ namespace BestHTTP_DemoSite
                 }
                 else if(context.Request.Path.StartsWithSegments("/redirect")) {
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(new {
-                        url = $"{context.Request.Scheme}://{context.Request.Host
-                        }/HubWithAuthorization?testkey1=testvalue1&testkey2=testvalue2",
+                        url = $"{context.Request.Scheme}://{context.Request.Host}/HubWithAuthorization?testkey1=testvalue1&testkey2=testvalue2",
                         accessToken = GenerateJwtToken()
                     }));
                 }
@@ -219,8 +226,7 @@ namespace BestHTTP_DemoSite
                     for(var i = 0; true; ++i) {
                         await response.WriteAsync(": this is a comment!\r\r");
                         await response.WriteAsync("event: datetime\r");
-                        await response.WriteAsync($"data: {{\"eventid\": {i}, \"datetime\": \"{
-                            DateTime.Now}\"}}\r\r");
+                        await response.WriteAsync($"data: {{\"eventid\": {i}, \"datetime\": \"{DateTime.Now}\"}}\r\r");
                         await response.WriteAsync(
                             "data: Message from the server without an event.\r\r");
                         await response.Body.FlushAsync();

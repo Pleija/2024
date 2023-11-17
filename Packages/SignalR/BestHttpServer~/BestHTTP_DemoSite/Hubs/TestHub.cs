@@ -8,6 +8,8 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using Api;
 using HashidsNet;
+using MessagePack;
+using Microsoft.AspNetCore.Http.Features;
 using Debug = System.Diagnostics.Debug;
 using Random = System.Random;
 
@@ -58,14 +60,21 @@ namespace Hubs
         private UserData user => users.TryGetValue(Context.ConnectionId, out var ret) ? ret
             : users[Context.ConnectionId] = new UserData();
 
-        public byte[] Q(CallType id, string frame, byte[] data)
+        public byte[] Q(CallType id, string key, byte[] data)
         {
-            if(id == CallType.Hello) {
-                var fid = sid.DecodeLong( frame);
+            var index = MessagePackSerializer.Deserialize<long>(XJson.Decrypt(key.Bytes(),
+                data.MD5()));
 
-                if(!fid.Any() || fid[0] != 1) {
-                    return "0"u8.ToArray();
-                }
+            if(index <= user.index) {
+                //Clients.Client(Context.ConnectionId).
+            }
+            user.index = index;
+            if(id == CallType.GetTimestamp) {
+                // var fid = sid.DecodeLong(index);
+                //
+                // if(!fid.Any() || fid[0] != 1) {
+                //     return 0.Bytes();
+                // }
                 return Encoding.UTF8.GetBytes(
                     sid.EncodeLong(user.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
             }
@@ -111,7 +120,12 @@ namespace Hubs
 
         public override async Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("Send", $"{Context.ConnectionId} joined");
+            var feature = Context.Features.Get<IHttpConnectionFeature>();
+            var remoteIp = feature.RemoteIpAddress;
+            Debug.WriteLine($"IP: {remoteIp}");
+            // await Clients.All.SendAsync("Send", $"{Context.ConnectionId} joined");
+            await Clients.Client(Context.ConnectionId)
+                .SendAsync("Send", $"{Context.ConnectionId} joined IP: {remoteIp}");
             await Clients.Client(Context.ConnectionId).SendAsync("Person", CreatePerson());
             await Clients.Client(Context.ConnectionId)
                 .SendAsync("TwoPersons", CreatePerson(), CreatePerson());

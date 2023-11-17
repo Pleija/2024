@@ -128,7 +128,7 @@ public static partial class XJson
             true);
     }
 
-    public static byte[] Decrypt(byte[] data, string key = null) => Decrypt(data,
+    public static byte[] Decrypt(byte[] data, string key) => Decrypt(data,
         !string.IsNullOrEmpty(key) ? utf8.GetBytes(key) : bytes);
 
     public static byte[] DecryptBase64String(object data, byte[] key = null) => Decrypt(

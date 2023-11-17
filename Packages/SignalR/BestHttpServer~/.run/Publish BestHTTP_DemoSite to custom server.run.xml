@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish BestHTTP_DemoSite to custom server" type="DotNetPublishAndUpload" factoryName="Publish to custom server">
+    <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" server_id="a4ab0d50-a3bb-44bc-b710-a6115d51d725" serverName="pleija.com" target_framework="net7.0" uuid_high="-1879906025046457823" uuid_low="-7022540504694544437" />
+    <method v="2" />
+  </configuration>
+</component>
