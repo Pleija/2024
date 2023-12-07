@@ -18,7 +18,7 @@ namespace Runner
             m_Original = original;
             m_FreeInstances = new Stack<GameObject>(initialSize);
 
-            for(var i = 0; i < initialSize; ++i) {
+            for (var i = 0; i < initialSize; ++i) {
                 var obj = Object.Instantiate(original, root.transform);
                 obj.SetActive(false);
                 m_FreeInstances.Push(obj);

@@ -14,20 +14,20 @@ namespace Common
         private SerializationData serializationData;
 
         SerializationData ISupportsPrefabSerialization.SerializationData {
-            get { return this.serializationData; }
-            set { this.serializationData = value; }
+            get => serializationData;
+            set => serializationData = value;
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if(this == null) return;
-            UnitySerializationUtility.DeserializeUnityObject(this, ref this.serializationData);
+            if (this == null) return;
+            UnitySerializationUtility.DeserializeUnityObject(this, ref serializationData);
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            if(this == null) return;
-            UnitySerializationUtility.SerializeUnityObject(this, ref this.serializationData);
+            if (this == null) return;
+            UnitySerializationUtility.SerializeUnityObject(this, ref serializationData);
         }
 #endregion
 

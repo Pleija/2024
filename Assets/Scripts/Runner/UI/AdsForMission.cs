@@ -27,11 +27,11 @@ namespace Runner.UI
             newMissionText.gameObject.SetActive(false);
 
             // Only present an ad offer if less than 3 missions.
-            if(PlayerData.instance.missions.Count >= 3) return;
+            if (PlayerData.instance.missions.Count >= 3) return;
 #if UNITY_ADS
             var isReady = Advertisement.IsReady(adsPlacementId);
 
-            if(isReady) {
+            if (isReady) {
 #if UNITY_ANALYTICS
                 AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
                     { "level_index", PlayerData.instance.rank },
@@ -47,7 +47,7 @@ namespace Runner.UI
         public void ShowAds()
         {
 #if UNITY_ADS
-            if(Advertisement.IsReady(adsPlacementId)) {
+            if (Advertisement.IsReady(adsPlacementId)) {
 #if UNITY_ANALYTICS
                 AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
                     { "level_index", PlayerData.instance.rank },
@@ -72,7 +72,7 @@ namespace Runner.UI
 #if UNITY_ADS
         private void HandleShowResult(ShowResult result)
         {
-            switch(result) {
+            switch (result) {
                 case ShowResult.Finished:
                     AddNewMission();
 #if UNITY_ANALYTICS

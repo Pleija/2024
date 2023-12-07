@@ -93,10 +93,31 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  path: /TestHub
+    SerializationNodes:
+    - Name: instances
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[System.Type, mscorlib]],
+        mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   BaseURL: http://192.168.1.65:5000
+  ServerURL: http://43.163.239.131:5000
   autoStart: 1
+  testSample: 0
 --- !u!1 &607380135259524323
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3764067, g: 0.35933605, b: 0.8018868, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.16442966, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2711,9 +2732,6 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  PrivacyKey: App.Privacy
-  FirstUpdateKey: App.FirstUpdate
-  VersionKey: App.Version
   privacyPanel: {fileID: 5518132253115294656}
   agreeBtn: {fileID: 5518132253935596128}
   prgText: {fileID: 5518132253212999296}

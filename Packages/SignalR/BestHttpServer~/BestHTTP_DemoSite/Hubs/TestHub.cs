@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Api;
 using HashidsNet;
 using MessagePack;
+using Microsoft.AspNetCore.Connections.Features;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Debug = System.Diagnostics.Debug;
 using Random = System.Random;
@@ -55,30 +58,53 @@ namespace Hubs
         Random rand = new Random();
         PersonStates[] states = null;
         private Dictionary<string, UserData> users = new Dictionary<string, UserData>();
+        private MethodInfo[] methods;
         private Hashids sid => HashId.self;
 
         private UserData user => users.TryGetValue(Context.ConnectionId, out var ret) ? ret
             : users[Context.ConnectionId] = new UserData();
 
-        public byte[] Q(CallType id, string key, byte[] data)
+        public (ResultStatus status, byte[] data) Q(ApiFunc id, byte[] key, byte[] data)
         {
-            var index = MessagePackSerializer.Deserialize<long>(XJson.Decrypt(key.Bytes(),
-                data.MD5()));
+            var dec = XJson.Decrypt(key, data.MD5());
+
+            if(dec == null) {
+                Context.Abort();
+                return (ResultStatus.DecryptError, null);
+            }
+            var index = MessagePackSerializer.Deserialize<long>(dec);
 
             if(index <= user.index) {
-                //Clients.Client(Context.ConnectionId).
+                Context.Abort();
+                return (ResultStatus.KeyError, null);
             }
             user.index = index;
-            if(id == CallType.GetTimestamp) {
-                // var fid = sid.DecodeLong(index);
-                //
-                // if(!fid.Any() || fid[0] != 1) {
-                //     return 0.Bytes();
-                // }
-                return Encoding.UTF8.GetBytes(
-                    sid.EncodeLong(user.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
+            var names = Enum.GetNames<ApiFunc>();
+            methods ??= GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => names.Contains(x.Name)).ToArray();
+            var method = methods.FirstOrDefault(x => x.Name == $"{id}");
+            if(method == null) return (ResultStatus.MethodNotFound, null);
+            var types = method.GetParameters().Select(x => x.ParameterType).ToArray();
+
+            if(!types.Any()) {
+                return (ResultStatus.Success,
+                    XJson.Encrypt(MessagePackSerializer.Serialize(method.Invoke(this, null)),
+                        data.MD5(index)));
             }
-            return null;
+            var decrypt = NetConfig.Des(types, XJson.Decrypt(data, index.MD5()));
+            return (ResultStatus.Success,
+                XJson.Encrypt(MessagePackSerializer.Serialize(decrypt), data.MD5(index)));
+
+            // if(id == CallType.GetTimestamp) {
+            //     // var fid = sid.DecodeLong(index);
+            //     //
+            //     // if(!fid.Any() || fid[0] != 1) {
+            //     //     return 0.Bytes();
+            //     // }
+            //     return Encoding.UTF8.GetBytes(sid.EncodeLong(user.timestamp =
+            //         DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
+            // }
+            // return null;
         }
 
         // public void DoReg(Reg data)
@@ -116,6 +142,12 @@ namespace Hubs
                     person.Friends.Add(CreatePerson(false));
             }
             return person;
+        }
+
+        public long GetTimestamp(long timestamp, string guid)
+        {
+            user.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            return timestamp;
         }
 
         public override async Task OnConnectedAsync()

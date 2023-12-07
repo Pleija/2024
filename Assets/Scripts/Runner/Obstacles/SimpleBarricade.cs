@@ -16,38 +16,33 @@ namespace Runner.Obstacles
         public override IEnumerator Spawn(TrackSegment segment, float t)
         {
             //the tutorial very firts barricade need to be center and alone, so player can swipe safely in bother direction to avoid it
-            var isTutorialFirst = TrackManager.instance.isTutorial &&
-                TrackManager.instance.firstObstacle && segment == segment.manager.currentSegment;
-            if(isTutorialFirst)
+            var isTutorialFirst = TrackManager.instance.isTutorial && TrackManager.instance.firstObstacle &&
+                segment == segment.manager.currentSegment;
+            if (isTutorialFirst)
                 TrackManager.instance.firstObstacle = false;
-            var count = isTutorialFirst ? 1
-                : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
-            var startLane = isTutorialFirst ? 0
-                : Random.Range(k_LeftMostLaneIndex, k_RightMostLaneIndex + 1);
+            var count = isTutorialFirst ? 1 : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
+            var startLane = isTutorialFirst ? 0 : Random.Range(k_LeftMostLaneIndex, k_RightMostLaneIndex + 1);
             Vector3 position;
             Quaternion rotation;
             segment.GetPointAt(t, out position, out rotation);
 
-            for(var i = 0; i < count; ++i) {
+            for (var i = 0; i < count; ++i) {
                 var lane = startLane + i;
                 lane = lane > k_RightMostLaneIndex ? k_LeftMostLaneIndex : lane;
-                AsyncOperationHandle op =
-                    Addressables.InstantiateAsync(gameObject.name, position, rotation);
+                AsyncOperationHandle op = Addressables.InstantiateAsync(gameObject.name, position, rotation);
                 yield return op;
 
-                if(op.Result == null || !(op.Result is GameObject)) {
-                    Debug.LogWarning(string.Format("Unable to load obstacle {0}.",
-                        gameObject.name));
+                if (op.Result == null || !(op.Result is GameObject)) {
+                    Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                     yield break;
                 }
                 var obj = op.Result as GameObject;
 
-                if(obj == null) {
+                if (obj == null) {
                     Debug.Log(gameObject.name);
                 }
                 else {
-                    obj.transform.position +=
-                        obj.transform.right * lane * segment.manager.laneOffset;
+                    obj.transform.position += obj.transform.right * lane * segment.manager.laneOffset;
                     obj.transform.SetParent(segment.objectRoot, true);
 
                     //TODO : remove that hack related to #issue7

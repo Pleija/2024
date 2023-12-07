@@ -12,15 +12,15 @@ namespace Runner.UI.Shop
         public override void Populate()
         {
             m_RefreshCallback = null;
-            foreach(Transform t in listRoot) Destroy(t.gameObject);
+            foreach (Transform t in listRoot) Destroy(t.gameObject);
 
-            foreach(var pair in ThemeDatabase.dictionnary) {
+            foreach (var pair in ThemeDatabase.dictionnary) {
                 var theme = pair.Value;
-                if(theme != null)
+                if (theme != null)
                     Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
-                        if(op.Result == null || !(op.Result is GameObject)) {
-                            Debug.LogWarning(string.Format("Unable to load theme shop list {0}.",
-                                prefabItem.Asset.name));
+                        if (op.Result == null || !(op.Result is GameObject)) {
+                            Debug.LogWarning(
+                                string.Format("Unable to load theme shop list {0}.", prefabItem.Asset.name));
                             return;
                         }
                         var newEntry = op.Result;
@@ -30,7 +30,7 @@ namespace Runner.UI.Shop
                         itm.pricetext.text = theme.cost.ToString();
                         itm.icon.sprite = theme.themeIcon;
 
-                        if(theme.premiumCost > 0) {
+                        if (theme.premiumCost > 0) {
                             itm.premiumText.transform.parent.gameObject.SetActive(true);
                             itm.premiumText.text = theme.premiumCost.ToString();
                         }
@@ -51,7 +51,7 @@ namespace Runner.UI.Shop
 
         protected void RefreshButton(ShopItemListItem itm, ThemeData theme)
         {
-            if(theme.cost > PlayerData.instance.coins) {
+            if (theme.cost > PlayerData.instance.coins) {
                 itm.buyButton.interactable = false;
                 itm.pricetext.color = Color.red;
             }
@@ -59,7 +59,7 @@ namespace Runner.UI.Shop
                 itm.pricetext.color = Color.black;
             }
 
-            if(theme.premiumCost > PlayerData.instance.premium) {
+            if (theme.premiumCost > PlayerData.instance.premium) {
                 itm.buyButton.interactable = false;
                 itm.premiumText.color = Color.red;
             }
@@ -67,11 +67,10 @@ namespace Runner.UI.Shop
                 itm.premiumText.color = Color.black;
             }
 
-            if(PlayerData.instance.themes.Contains(theme.themeName)) {
+            if (PlayerData.instance.themes.Contains(theme.themeName)) {
                 itm.buyButton.interactable = false;
                 itm.buyButton.image.sprite = itm.disabledButtonSprite;
-                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text =
-                    "Owned";
+                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = "Owned";
             }
         }
 
@@ -90,13 +89,13 @@ namespace Runner.UI.Shop
             var itemQty = 1;
             AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level, transactionId);
 
-            if(t.cost > 0) {
+            if (t.cost > 0) {
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                     // Currency type
                     transactionContext, t.cost, itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
             }
 
-            if(t.premiumCost > 0) {
+            if (t.premiumCost > 0) {
                 AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                           // Currency type
                     transactionContext, t.premiumCost, itemId, PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);

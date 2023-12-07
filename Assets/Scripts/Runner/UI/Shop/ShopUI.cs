@@ -98,7 +98,7 @@ namespace Runner.UI.Shop
         {
             SceneManager.UnloadSceneAsync("Shop");
             var loadoutState = GameManager.instance.topState as LoadoutState;
-            if(loadoutState != null) loadoutState.Refresh();
+            if (loadoutState != null) loadoutState.Refresh();
         }
 
         public void CheatCoin()
@@ -114,7 +114,7 @@ namespace Runner.UI.Shop
 #if UNITY_ADS
         public void ShowRewardedAd()
         {
-            if(Advertisement.IsReady("rewardedVideo")) {
+            if (Advertisement.IsReady("rewardedVideo")) {
                 var options = new ShowOptions {
                     resultCallback = HandleShowResult
                 };
@@ -124,7 +124,7 @@ namespace Runner.UI.Shop
 
         private void HandleShowResult(ShowResult result)
         {
-            switch(result) {
+            switch (result) {
                 case ShowResult.Finished:
                     Debug.Log("The ad was successfully shown.");
                     PlayerData.instance.coins += k_AdRewardCoins;

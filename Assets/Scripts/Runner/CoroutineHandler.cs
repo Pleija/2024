@@ -13,7 +13,7 @@ namespace Runner
 
         public static CoroutineHandler instance {
             get {
-                if(m_Instance != null) return m_Instance;
+                if (m_Instance != null) return m_Instance;
                 var o = new GameObject("CoroutineHandler");
                 DontDestroyOnLoad(o);
                 m_Instance = o.AddComponent<CoroutineHandler>();
@@ -23,11 +23,10 @@ namespace Runner
 
         public void OnDisable()
         {
-            if(m_Instance)
+            if (m_Instance)
                 Destroy(m_Instance.gameObject);
         }
 
-        public static Coroutine StartStaticCoroutine(IEnumerator coroutine) =>
-            instance.StartCoroutine(coroutine);
+        public static Coroutine StartStaticCoroutine(IEnumerator coroutine) => instance.StartCoroutine(coroutine);
     }
 }

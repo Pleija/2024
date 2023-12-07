@@ -16,14 +16,14 @@ namespace Runner.Consumable.Types
         public override void Tick(CharacterInputController c)
         {
             base.Tick(c);
-            var nb = Physics.OverlapBoxNonAlloc(c.characterCollider.transform.position,
-                k_HalfExtentsBox, returnColls, c.characterCollider.transform.rotation, k_LayerMask);
+            var nb = Physics.OverlapBoxNonAlloc(c.characterCollider.transform.position, k_HalfExtentsBox, returnColls,
+                c.characterCollider.transform.rotation, k_LayerMask);
 
-            for(var i = 0; i < nb; ++i) {
+            for (var i = 0; i < nb; ++i) {
                 var returnCoin = returnColls[i].GetComponent<Coin>();
 
-                if(returnCoin != null && !returnCoin.isPremium &&
-                   !c.characterCollider.magnetCoins.Contains(returnCoin.gameObject)) {
+                if (returnCoin != null && !returnCoin.isPremium &&
+                    !c.characterCollider.magnetCoins.Contains(returnCoin.gameObject)) {
                     returnColls[i].transform.SetParent(c.transform);
                     c.characterCollider.magnetCoins.Add(returnColls[i].gameObject);
                 }

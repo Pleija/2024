@@ -28,13 +28,13 @@ namespace Runner.Game
             miniLeaderboard.playerEntry.inputName.text = PlayerData.instance.previousName;
             miniLeaderboard.playerEntry.score.text = trackManager.score.ToString();
             miniLeaderboard.Populate();
-            if(PlayerData.instance.AnyMissionComplete())
+            if (PlayerData.instance.AnyMissionComplete())
                 StartCoroutine(missionPopup.Open());
             else
                 missionPopup.gameObject.SetActive(false);
             CreditCoins();
 
-            if(MusicPlayer.instance.GetStem(0) != gameOverTheme) {
+            if (MusicPlayer.instance.GetStem(0) != gameOverTheme) {
                 MusicPlayer.instance.SetStem(0, gameOverTheme);
                 StartCoroutine(MusicPlayer.instance.RestartAllStems());
             }
@@ -53,8 +53,7 @@ namespace Runner.Game
         {
             fullLeaderboard.forcePlayerDisplay = false;
             fullLeaderboard.displayPlayer = true;
-            fullLeaderboard.playerEntry.playerName.text =
-                miniLeaderboard.playerEntry.inputName.text;
+            fullLeaderboard.playerEntry.playerName.text = miniLeaderboard.playerEntry.inputName.text;
             fullLeaderboard.playerEntry.score.text = trackManager.score.ToString();
             fullLeaderboard.Open();
         }
@@ -86,12 +85,12 @@ namespace Runner.Game
             var level = PlayerData.instance.rank.ToString();
             var itemType = "consumable";
 
-            if(trackManager.characterController.coins > 0) {
+            if (trackManager.characterController.coins > 0) {
                 AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, // Currency type
                     transactionContext, trackManager.characterController.coins, "fishbone", PlayerData.instance.coins, itemType, level, transactionId);
             }
 
-            if(trackManager.characterController.premium > 0) {
+            if (trackManager.characterController.premium > 0) {
                 AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
                     transactionContext, trackManager.characterController.premium, "anchovies", PlayerData.instance.premium, itemType, level, transactionId);
             }
@@ -100,12 +99,11 @@ namespace Runner.Game
 
         protected void FinishRun()
         {
-            if(miniLeaderboard.playerEntry.inputName.text == "")
+            if (miniLeaderboard.playerEntry.inputName.text == "")
                 miniLeaderboard.playerEntry.inputName.text = "Trash Cat";
             else
                 PlayerData.instance.previousName = miniLeaderboard.playerEntry.inputName.text;
-            PlayerData.instance.InsertScore(trackManager.score,
-                miniLeaderboard.playerEntry.inputName.text);
+            PlayerData.instance.InsertScore(trackManager.score, miniLeaderboard.playerEntry.inputName.text);
             var de = trackManager.characterController.characterCollider.deathData;
             //register data to analytics
 #if UNITY_ANALYTICS

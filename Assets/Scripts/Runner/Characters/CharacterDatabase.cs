@@ -18,18 +18,18 @@ namespace Runner.Characters
         public static Character GetCharacter(string type)
         {
             Character c;
-            if(m_CharactersDict == null || !m_CharactersDict.TryGetValue(type, out c))
+            if (m_CharactersDict == null || !m_CharactersDict.TryGetValue(type, out c))
                 return null;
             return c;
         }
 
         public static IEnumerator LoadDatabase()
         {
-            if(m_CharactersDict == null) {
+            if (m_CharactersDict == null) {
                 m_CharactersDict = new Dictionary<string, Character>();
                 yield return Addressables.LoadAssetsAsync<GameObject>("characters", op => {
                     var c = op.GetComponent<Character>();
-                    if(c != null) m_CharactersDict.Add(c.characterName, c);
+                    if (c != null) m_CharactersDict.Add(c.characterName, c);
                 });
                 m_Loaded = true;
             }

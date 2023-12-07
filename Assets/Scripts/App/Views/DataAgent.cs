@@ -32,20 +32,18 @@ namespace App
         public string fieldName;
 
         private IEnumerable<Type> ListTypes =>
-            typeof(DataAgent<T>).Assembly.ExportedTypes.Where(x =>
-                typeof(Model).IsAssignableFrom(x));
+            typeof(DataAgent<T>).Assembly.ExportedTypes.Where(x => typeof(Model).IsAssignableFrom(x));
 
         private IEnumerable<string> ListNames => type == null ? new List<string>() : type
-            .GetMembers(BindingFlags.Public | BindingFlags.Instance)
-            .Where(x => x is PropertyInfo || x is FieldInfo).Select(x => x.Name)
-            .OrderBy(s => Regex.IsMatch(s, @"^[a-z]")).ThenBy(x => x).ToList();
+            .GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is PropertyInfo || x is FieldInfo)
+            .Select(x => x.Name).OrderBy(s => Regex.IsMatch(s, @"^[a-z]")).ThenBy(x => x).ToList();
 
         [ButtonGroup("1")]
         public void SetModel()
         {
             Assert.IsNotNull(type, "type != null");
-            if(model) model = model.GetSelf();
-            if(!model)
+            if (model) model = model.GetSelf();
+            if (!model)
                 model = type.GetProperty("self",
                         BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
                     ?.GetValue(null, null) as Model;
@@ -55,17 +53,16 @@ namespace App
         [ButtonGroup("1")]
         public void SetValue()
         {
-            if(model == null) return;
+            if (model == null) return;
 
             // if(Value == null || Application.isEditor) {
-            var member = type.GetMember(fieldName, BindingFlags.Instance | BindingFlags.Public)
-                .FirstOrDefault();
-            if(member is PropertyInfo propertyInfo)
+            var member = type.GetMember(fieldName, BindingFlags.Instance | BindingFlags.Public).FirstOrDefault();
+            if (member is PropertyInfo propertyInfo)
                 Value = propertyInfo.GetValue(model) as ReactiveProperty<T>;
-            else if(member is FieldInfo fieldInfo)
+            else if (member is FieldInfo fieldInfo)
                 Value = fieldInfo.GetValue(model) as ReactiveProperty<T>;
             // }
-            if(Value == null) return;
+            if (Value == null) return;
             //Set(Value.Value);
             Value.Subscribe(x => {
                 Set(x);
@@ -84,15 +81,15 @@ namespace App
 
         public void Set(object value)
         {
-            if(!this || !gameObject) return;
-            if(OnChange != null) value = OnChange.Invoke(value);
-            if(TryGetComponent<TMP_Text>(out var tmpText))
+            if (!this || !gameObject) return;
+            if (OnChange != null) value = OnChange.Invoke(value);
+            if (TryGetComponent<TMP_Text>(out var tmpText))
                 tmpText.text = $"{value}";
-            else if(TryGetComponent<Text>(out var text))
+            else if (TryGetComponent<Text>(out var text))
                 text.text = $"{value}";
-            else if(TryGetComponent<Slider>(out var slider))
+            else if (TryGetComponent<Slider>(out var slider))
                 slider.value = Convert.ToSingle(value);
-            else if(TryGetComponent<Toggle>(out var toggle)) toggle.isOn = Convert.ToBoolean(value);
+            else if (TryGetComponent<Toggle>(out var toggle)) toggle.isOn = Convert.ToBoolean(value);
         }
     }
 }

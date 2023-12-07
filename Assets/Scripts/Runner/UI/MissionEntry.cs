@@ -19,7 +19,7 @@ namespace Runner.UI
             descText.text = m.GetMissionDesc();
             rewardText.text = m.reward.ToString();
 
-            if(m.isComplete) {
+            if (m.isComplete) {
                 claimButton.gameObject.SetActive(true);
                 progressText.gameObject.SetActive(false);
                 background.color = completedColor;

@@ -4,7 +4,6 @@ using MessagePack;
 
 namespace Api
 {
-    public enum CallType { None = 0, GetTimestamp, Reg, Login }
 
     public interface IRpc<T1, T2>
     {
@@ -61,11 +60,11 @@ namespace Api
 
     public interface IRpc
     {
-        CallType id { get; }
+        ApiFunc id { get; }
     }
 
     public class Reg : Rpc<RegQuery, RegResult>, IRpc
     {
-        public CallType id => CallType.Reg;
+        public ApiFunc id => ApiFunc.Reg;
     }
 }

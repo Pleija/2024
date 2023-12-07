@@ -15,7 +15,7 @@ namespace Runner.Themes
         public static ThemeData GetThemeData(string type)
         {
             ThemeData list;
-            if(themeDataList == null || !themeDataList.TryGetValue(type, out list))
+            if (themeDataList == null || !themeDataList.TryGetValue(type, out list))
                 return null;
             return list;
         }
@@ -23,11 +23,11 @@ namespace Runner.Themes
         public static IEnumerator LoadDatabase()
         {
             // If not null the dictionary was already loaded.
-            if(themeDataList == null) {
+            if (themeDataList == null) {
                 themeDataList = new Dictionary<string, ThemeData>();
                 yield return Addressables.LoadAssetsAsync<ThemeData>("themeData", op => {
-                    if(op != null)
-                        if(!themeDataList.ContainsKey(op.themeName))
+                    if (op != null)
+                        if (!themeDataList.ContainsKey(op.themeName))
                             themeDataList.Add(op.themeName, op);
                 });
                 m_Loaded = true;

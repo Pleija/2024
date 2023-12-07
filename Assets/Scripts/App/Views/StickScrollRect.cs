@@ -13,7 +13,7 @@ namespace App
         private void Update()
         {
             rt ??= GetComponent<RectTransform>();
-            if(!Application.isPlaying && Math.Abs(rt.anchoredPosition.y - value) > float.Epsilon)
+            if (!Application.isPlaying && Math.Abs(rt.anchoredPosition.y - value) > float.Epsilon)
                 rt.anchoredPosition = new Vector3(rt.anchoredPosition.x, value);
         }
     }

@@ -22,7 +22,7 @@ namespace Network
 
         public HubConnection Hub {
             get {
-                if(m_Hub == null) Connect();
+                if (m_Hub == null) Connect();
                 return m_Hub;
             }
             set => m_Hub = value;
@@ -35,25 +35,36 @@ namespace Network
         public static int index { get; set; }
         public void UseServer(GameObject target) { }
 
-        public static void Call<TRequest, TResult>(CallType id, Func<TRequest, TRequest> request,
+        public static void Call<TRequest, TResult>(ApiFunc id, Func<TRequest, TRequest> request,
             Action<TRequest, TResult> result)
         {
             var req = request.Invoke(Activator.CreateInstance<TRequest>());
-            var data = XJson.Encrypt(MessagePackSerializer.Serialize(req));
             var key = index += 1;
-            self.Hub.Invoke<byte[]>("Q", id,
-                XJson.Encrypt(MessagePackSerializer.Serialize(key), data.MD5()), data).OnSuccess(
-                t => {
-                    var x = XJson.Decrypt(t, data.MD5(key));
-                    var ret = MessagePackSerializer.Deserialize<TResult>( x);
-                    result.Invoke(req, ret);
-                }).OnError(Debug.Log);
+            var data = XJson.Encrypt(MessagePackSerializer.Serialize(req), key.MD5());
+            self.Hub.Invoke<(ResultStatus status, byte[] data)>("Q", id,
+                XJson.Encrypt(MessagePackSerializer.Serialize(key), data.MD5()), data).OnSuccess(t => {
+                if (t.status != ResultStatus.Success) {
+                    Debug.Log($"Result Error: {id} => {t.status}");
+                    return;
+                }
+                var x = XJson.Decrypt(t.data, data.MD5(key));
+                result.Invoke(req, MessagePackSerializer.Deserialize<TResult>(x));
+                // var ret = MessagePackSerializer
+                //     .Deserialize<(ResultStatus status, byte[] resultData)>(x);
+                //
+                // if(ret.status == ResultStatus.Success) {
+                //     result.Invoke(req,
+                //         MessagePackSerializer.Deserialize<TResult>(ret.resultData));
+                // }
+                // else {
+                //     Debug.Log($"{id} => {ret.status}");
+                // }
+            }).OnError(Debug.Log);
         }
 
         public static void Reg()
         {
-            Call<long, long>(CallType.GetTimestamp, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                (r, t) => { });
+            Call<long, long>(ApiFunc.GetTimestamp, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(), (r, t) => { });
         }
 
         protected override void OnDestroy()
@@ -88,9 +99,7 @@ namespace Network
 
         private void Start()
         {
-            if(autoStart) {
-                Connect();
-            }
+            if (autoStart) Connect();
         }
 
         public override void Update()
@@ -112,27 +121,24 @@ namespace Network
                 PingInterval = TimeSpan.Zero, //TimeSpan.FromMinutes(5),
             };
             Hub = new HubConnection(new Uri(BaseURL + path), protocol, option);
-            if(testSample)
+            if (testSample)
                 Hub.OnConnected += Hub_OnConnected;
             Hub.OnError += Hub_OnError;
             Hub.OnClosed += Hub_OnClosed;
             Hub.OnTransportEvent += (hub, transport, ev) => AddText(
                 $"Transport(<color=green>{transport.TransportType}</color>) event: <color=green>{ev}</color>");
-            GetType().Assembly.ExportedTypes
-                .Where(type => typeof(INetService).IsAssignableFrom(type)).SelectMany(type =>
-                    type.GetMethods(BindingFlags.Public | BindingFlags.Instance)).ForEach(info => {
+            GetType().Assembly.ExportedTypes.Where(type => typeof(INetService).IsAssignableFrom(type))
+                .SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance)).ForEach(info => {
                     var instance = instances.TryGetValue(info.DeclaringType!, out var ret) ? ret
-                        : instances[info.DeclaringType] =
-                            Activator.CreateInstance(info.DeclaringType);
+                        : instances[info.DeclaringType] = Activator.CreateInstance(info.DeclaringType);
                     var paramTypes = info.GetParameters().Length > 0 ? info.GetParameters()
                         .Select(x => x.ParameterType).ToArray() : null;
 
-                    if(info.ReturnType == typeof(void)) {
+                    if (info.ReturnType == typeof(void)) {
                         Hub.On(info.Name, paramTypes, args => info.Invoke(instance, args));
                         return;
                     }
-                    Hub.OnFunc(info.ReturnType, info.Name, paramTypes,
-                        args => info.Invoke(instance, args));
+                    Hub.OnFunc(info.ReturnType, info.Name, paramTypes, args => info.Invoke(instance, args));
                 });
             //
             // // Set up server callable functions
@@ -172,28 +178,23 @@ namespace Network
             // Call a parameterless function. We expect a string return value.
             hub.Invoke<string>("NoParam")
                 .OnSuccess(ret =>
-                    AddText(string.Format(
-                        "'<color=green>NoParam</color>' returned: '<color=yellow>{0}</color>'",
-                        ret))).OnError(error =>
-                    AddText(string.Format(
-                        "'<color=green>NoParam</color>' error: '<color=red>{0}</color>'", error)));
+                    AddText(string.Format("'<color=green>NoParam</color>' returned: '<color=yellow>{0}</color>'", ret)))
+                .OnError(error =>
+                    AddText(string.Format("'<color=green>NoParam</color>' error: '<color=red>{0}</color>'", error)));
 
             // Call a function on the server to add two numbers. OnSuccess will be called with the result and OnError if there's an error.
             hub.Invoke<int>("Add", 10, 20)
                 .OnSuccess(result =>
-                    AddText(string.Format(
-                        "'<color=green>Add(10, 20)</color>' returned: '<color=yellow>{0}</color>'",
+                    AddText(string.Format("'<color=green>Add(10, 20)</color>' returned: '<color=yellow>{0}</color>'",
                         result))).OnError(error =>
-                    AddText(string.Format(
-                        "'<color=green>Add(10, 20)</color>' error: '<color=red>{0}</color>'",
+                    AddText(string.Format("'<color=green>Add(10, 20)</color>' error: '<color=red>{0}</color>'",
                         error)));
             hub.Invoke<int?>("NullableTest", 10)
                 .OnSuccess(result =>
                     AddText(string.Format(
-                        "'<color=green>NullableTest(10)</color>' returned: '<color=yellow>{0}</color>'",
-                        result))).OnError(error =>
-                    AddText(string.Format(
-                        "'<color=green>NullableTest(10)</color>' error: '<color=red>{0}</color>'",
+                        "'<color=green>NullableTest(10)</color>' returned: '<color=yellow>{0}</color>'", result)))
+                .OnError(error =>
+                    AddText(string.Format("'<color=green>NullableTest(10)</color>' error: '<color=red>{0}</color>'",
                         error)));
 
             // Call a function that will return a Person object constructed from the function's parameters.
@@ -203,8 +204,7 @@ namespace Network
                         "'<color=green>GetPerson(\"Mr. Smith\", 26)</color>' returned: '<color=yellow>{0}</color>'",
                         result))).OnError(error =>
                     AddText(string.Format(
-                        "'<color=green>GetPerson(\"Mr. Smith\", 26)</color>' error: '<color=red>{0}</color>'",
-                        error)));
+                        "'<color=green>GetPerson(\"Mr. Smith\", 26)</color>' error: '<color=red>{0}</color>'", error)));
 
             // To test errors/exceptions this call always throws an exception on the server side resulting in an OnError call.
             // OnError expected here!
@@ -214,8 +214,7 @@ namespace Network
                         "'<color=green>SingleResultFailure(10, 20)</color>' returned: '<color=yellow>{0}</color>'",
                         result))).OnError(error =>
                     AddText(string.Format(
-                        "'<color=green>SingleResultFailure(10, 20)</color>' error: '<color=red>{0}</color>'",
-                        error)));
+                        "'<color=green>SingleResultFailure(10, 20)</color>' error: '<color=red>{0}</color>'", error)));
 
             // This call demonstrates IEnumerable<> functions, result will be the yielded numbers.
             hub.Invoke<int[]>("Batched", 10)
@@ -223,8 +222,7 @@ namespace Network
                     AddText(string.Format(
                         "'<color=green>Batched(10)</color>' returned items: '<color=yellow>{0}</color>'",
                         result.Length))).OnError(error =>
-                    AddText(string.Format(
-                        "'<color=green>Batched(10)</color>' error: '<color=red>{0}</color>'",
+                    AddText(string.Format("'<color=green>Batched(10)</color>' error: '<color=red>{0}</color>'",
                         error)));
 
             // OnItem is called for a streaming request for every items returned by the server. OnSuccess will still be called with all the items.
@@ -233,35 +231,29 @@ namespace Network
                     AddText(string.Format(
                         "'<color=green>ObservableCounter(10, 1000)</color>' OnItem: '<color=yellow>{0}</color>'",
                         result)))
-                .OnSuccess(result =>
-                    AddText("'<color=green>ObservableCounter(10, 1000)</color>' OnSuccess."))
-                .OnError(error =>
-                    AddText(string.Format(
-                        "'<color=green>ObservableCounter(10, 1000)</color>' error: '<color=red>{0}</color>'",
-                        error)));
+                .OnSuccess(result => AddText("'<color=green>ObservableCounter(10, 1000)</color>' OnSuccess.")).OnError(
+                    error => AddText(string.Format(
+                        "'<color=green>ObservableCounter(10, 1000)</color>' error: '<color=red>{0}</color>'", error)));
 
             // A stream request can be cancelled any time.
             var controller = hub.GetDownStreamController<int>("ChannelCounter", 10, 1000);
             controller
                 .OnItem(result =>
                     AddText(string.Format(
-                        "'<color=green>ChannelCounter(10, 1000)</color>' OnItem: '<color=yellow>{0}</color>'",
-                        result)))
-                .OnSuccess(result =>
-                    AddText("'<color=green>ChannelCounter(10, 1000)</color>' OnSuccess.")).OnError(
+                        "'<color=green>ChannelCounter(10, 1000)</color>' OnItem: '<color=yellow>{0}</color>'", result)))
+                .OnSuccess(result => AddText("'<color=green>ChannelCounter(10, 1000)</color>' OnSuccess.")).OnError(
                     error => AddText(string.Format(
-                        "'<color=green>ChannelCounter(10, 1000)</color>' error: '<color=red>{0}</color>'",
-                        error)));
+                        "'<color=green>ChannelCounter(10, 1000)</color>' error: '<color=red>{0}</color>'", error)));
 
             // a stream can be cancelled by calling the controller's Cancel method
             controller.Cancel();
 
             // This call will stream strongly typed objects
             hub.GetDownStreamController<Person>("GetRandomPersons", 20, 2000).OnItem(result =>
-                AddText(string.Format(
-                    "'<color=green>GetRandomPersons(20, 1000)</color>' OnItem: '<color=yellow>{0}</color>'",
-                    result))).OnSuccess(result =>
-                AddText("'<color=green>GetRandomPersons(20, 1000)</color>' OnSuccess."));
+                    AddText(string.Format(
+                        "'<color=green>GetRandomPersons(20, 1000)</color>' OnItem: '<color=yellow>{0}</color>'",
+                        result)))
+                .OnSuccess(result => AddText("'<color=green>GetRandomPersons(20, 1000)</color>' OnSuccess."));
         }
     }
 }

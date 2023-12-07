@@ -19,9 +19,9 @@ namespace Runner.Obstacles
         {
             var anim = GetComponentInChildren<Animation>();
             var audioSource = GetComponent<AudioSource>();
-            if(anim != null) anim.Play();
+            if (anim != null) anim.Play();
 
-            if(audioSource != null && impactedSound != null) {
+            if (audioSource != null && impactedSound != null) {
                 audioSource.Stop();
                 audioSource.loop = false;
                 audioSource.clip = impactedSound;

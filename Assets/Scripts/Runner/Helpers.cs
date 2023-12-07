@@ -9,7 +9,7 @@ namespace Runner
         public static void SetRendererLayerRecursive(GameObject root, int layer)
         {
             var rends = root.GetComponentsInChildren<Renderer>(true);
-            for(var i = 0; i < rends.Length; ++i) rends[i].gameObject.layer = layer;
+            for (var i = 0; i < rends.Length; ++i) rends[i].gameObject.layer = layer;
         }
     }
 }

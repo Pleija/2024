@@ -21,12 +21,12 @@ namespace Common
 
         public void Start()
         {
-            if(LoadOnStart) Load();
+            if (LoadOnStart) Load();
         }
 
         public async void Load()
         {
-            foreach(var item in items?.Where(x => x.enable) ?? new List<Item>())
+            foreach (var item in items?.Where(x => x.enable) ?? new List<Item>())
                 await Addressables.InstantiateAsync(item.prefab, item.parent).Task;
         }
     }

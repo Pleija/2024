@@ -10,19 +10,19 @@ namespace Runner.UI.Shop
     public class ShopItemList : ShopList
     {
         public static Consumable.Consumable.ConsumableType[] s_ConsumablesTypes =
-            System.Enum.GetValues(typeof(Consumable.Consumable.ConsumableType)) as
-                Consumable.Consumable.ConsumableType[];
+            System.Enum.GetValues(typeof(Consumable.Consumable.ConsumableType)) as Consumable.Consumable.ConsumableType
+                [];
 
         public override void Populate()
         {
             m_RefreshCallback = null;
-            foreach(Transform t in listRoot) Destroy(t.gameObject);
+            foreach (Transform t in listRoot) Destroy(t.gameObject);
 
-            for(var i = 0; i < s_ConsumablesTypes.Length; ++i) {
+            for (var i = 0; i < s_ConsumablesTypes.Length; ++i) {
                 var c = ConsumableDatabase.GetConsumbale(s_ConsumablesTypes[i]);
-                if(c != null)
+                if (c != null)
                     Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
-                        if(op.Result == null || !(op.Result is GameObject)) {
+                        if (op.Result == null || !(op.Result is GameObject)) {
                             Debug.LogWarning(string.Format("Unable to load item shop list {0}.",
                                 prefabItem.RuntimeKey));
                             return;
@@ -34,7 +34,7 @@ namespace Runner.UI.Shop
                         itm.nameText.text = c.GetConsumableName();
                         itm.pricetext.text = c.GetPrice().ToString();
 
-                        if(c.GetPremiumCost() > 0) {
+                        if (c.GetPremiumCost() > 0) {
                             itm.premiumText.transform.parent.gameObject.SetActive(true);
                             itm.premiumText.text = c.GetPremiumCost().ToString();
                         }
@@ -60,7 +60,7 @@ namespace Runner.UI.Shop
             PlayerData.instance.consumables.TryGetValue(c.GetConsumableType(), out count);
             itemList.countText.text = count.ToString();
 
-            if(c.GetPrice() > PlayerData.instance.coins) {
+            if (c.GetPrice() > PlayerData.instance.coins) {
                 itemList.buyButton.interactable = false;
                 itemList.pricetext.color = Color.red;
             }
@@ -68,7 +68,7 @@ namespace Runner.UI.Shop
                 itemList.pricetext.color = Color.black;
             }
 
-            if(c.GetPremiumCost() > PlayerData.instance.premium) {
+            if (c.GetPremiumCost() > PlayerData.instance.premium) {
                 itemList.buyButton.interactable = false;
                 itemList.premiumText.color = Color.red;
             }
@@ -92,13 +92,13 @@ namespace Runner.UI.Shop
             var itemQty = 1;
             AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level, transactionId);
 
-            if(c.GetPrice() > 0) {
+            if (c.GetPrice() > 0) {
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                           // Currency type
                     transactionContext, c.GetPrice(), itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
             }
 
-            if(c.GetPremiumCost() > 0) {
+            if (c.GetPremiumCost() > 0) {
                 AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                                // Currency type
                     transactionContext, c.GetPremiumCost(), itemId, PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);

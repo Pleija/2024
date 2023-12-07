@@ -81,14 +81,12 @@ namespace Runner.Characters
 
         public void Slide(bool sliding)
         {
-            if(sliding) {
+            if (sliding) {
                 m_Collider.size = Vector3.Scale(m_Collider.size, k_SlidingColliderScale);
-                m_Collider.center = m_Collider.center -
-                    new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
+                m_Collider.center = m_Collider.center - new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
             }
             else {
-                m_Collider.center = m_Collider.center +
-                    new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
+                m_Collider.center = m_Collider.center + new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
                 m_Collider.size = Vector3.Scale(m_Collider.size, k_NotSlidingColliderScale);
             }
         }
@@ -96,19 +94,18 @@ namespace Runner.Characters
         protected void Update()
         {
             // Every coin registered to the magnetCoin list (used by the magnet powerup exclusively, but could be used by other power up) is dragged toward the player.
-            for(var i = 0; i < magnetCoins.Count; ++i)
-                magnetCoins[i].transform.position = Vector3.MoveTowards(
-                    magnetCoins[i].transform.position, transform.position,
-                    k_MagnetSpeed * Time.deltaTime);
+            for (var i = 0; i < magnetCoins.Count; ++i)
+                magnetCoins[i].transform.position = Vector3.MoveTowards(magnetCoins[i].transform.position,
+                    transform.position, k_MagnetSpeed * Time.deltaTime);
         }
 
         protected void OnTriggerEnter(Collider c)
         {
-            if(c.gameObject.layer == k_CoinsLayerIndex) {
-                if(magnetCoins.Contains(c.gameObject))
+            if (c.gameObject.layer == k_CoinsLayerIndex) {
+                if (magnetCoins.Contains(c.gameObject))
                     magnetCoins.Remove(c.gameObject);
 
-                if(c.GetComponent<Coin>().isPremium) {
+                if (c.GetComponent<Coin>().isPremium) {
                     Addressables.ReleaseInstance(c.gameObject);
                     PlayerData.instance.premium.Value += 1;
                     controller.premium += 1;
@@ -121,23 +118,23 @@ namespace Runner.Characters
                     m_Audio.PlayOneShot(coinSound);
                 }
             }
-            else if(c.gameObject.layer == k_ObstacleLayerIndex) {
-                if(m_Invincible || controller.IsCheatInvincible())
+            else if (c.gameObject.layer == k_ObstacleLayerIndex) {
+                if (m_Invincible || controller.IsCheatInvincible())
                     return;
                 controller.StopMoving();
                 c.enabled = false;
                 var ob = c.gameObject.GetComponent<Obstacle>();
-                if(ob != null)
+                if (ob != null)
                     ob.Impacted();
                 else
                     Addressables.ReleaseInstance(c.gameObject);
-                if(TrackManager.instance.isTutorial)
+                if (TrackManager.instance.isTutorial)
                     m_TutorialHitObstacle = true;
                 else
                     controller.currentLife -= 1;
                 controller.character.animator.SetTrigger(s_HitHash);
 
-                if(controller.currentLife > 0) {
+                if (controller.currentLife > 0) {
                     m_Audio.PlayOneShot(controller.character.hitSound);
                     SetInvincible();
                 }
@@ -153,9 +150,9 @@ namespace Runner.Characters
                     m_DeathData.worldDistance = controller.trackManager.worldDistance;
                 }
             }
-            else if(c.gameObject.layer == k_PowerupLayerIndex) {
+            else if (c.gameObject.layer == k_PowerupLayerIndex) {
                 var consumable = c.GetComponent<Consumable.Consumable>();
-                if(consumable != null) controller.UseConsumable(consumable);
+                if (consumable != null) controller.UseConsumable(consumable);
             }
         }
 
@@ -177,7 +174,7 @@ namespace Runner.Characters
             var lastBlink = 0.0f;
             const float blinkPeriod = 0.1f;
 
-            while(time < timer && m_Invincible) {
+            while (time < timer && m_Invincible) {
                 Shader.SetGlobalFloat(s_BlinkingValueHash, currentBlink);
 
                 // We do the check every frame instead of waiting for a full blink period as if the game slow down too much
@@ -187,7 +184,7 @@ namespace Runner.Characters
                 time += Time.deltaTime;
                 lastBlink += Time.deltaTime;
 
-                if(blinkPeriod < lastBlink) {
+                if (blinkPeriod < lastBlink) {
                     lastBlink = 0;
                     currentBlink = 1.0f - currentBlink;
                 }

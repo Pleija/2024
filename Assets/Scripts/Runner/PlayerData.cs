@@ -39,8 +39,7 @@ namespace Runner
         public IntReactiveProperty premium = 0;
 
         public Dictionary<Consumable.Consumable.ConsumableType, int> consumables =
-            new Dictionary<Consumable.Consumable.ConsumableType,
-                int>(); // Inventory of owned consumables and quantity.
+            new Dictionary<Consumable.Consumable.ConsumableType, int>(); // Inventory of owned consumables and quantity.
 
         public List<string> characters = new List<string>(); // Inventory of characters owned.
         public int usedCharacter;                            // Currently equipped character.
@@ -57,10 +56,7 @@ namespace Runner
         public string previousName = "Trash Cat";
         public bool licenceAccepted;
         public bool tutorialDone;
-
-        public float masterVolume = float.MinValue,
-            musicVolume = float.MinValue,
-            masterSFXVolume = float.MinValue;
+        public float masterVolume = float.MinValue, musicVolume = float.MinValue, masterSFXVolume = float.MinValue;
 
         //ftue = First Time User Expeerience. This var is used to track thing a player do for the first time. It increment everytime the user do one of the step
         //e.g. it will increment to 1 when they click Start, to 2 when doing the first run, 3 when running at least 300m etc.
@@ -76,16 +72,16 @@ namespace Runner
 
         public void Consume(Consumable.Consumable.ConsumableType type)
         {
-            if(!consumables.ContainsKey(type))
+            if (!consumables.ContainsKey(type))
                 return;
             consumables[type] -= 1;
-            if(consumables[type] == 0) consumables.Remove(type);
+            if (consumables[type] == 0) consumables.Remove(type);
             Save();
         }
 
         public void Add(Consumable.Consumable.ConsumableType type)
         {
-            if(!consumables.ContainsKey(type)) consumables[type] = 0;
+            if (!consumables.ContainsKey(type)) consumables[type] = 0;
             consumables[type] += 1;
             Save();
         }
@@ -110,7 +106,7 @@ namespace Runner
         // Will add missions until we reach 2 missions.
         public void CheckMissionsCount()
         {
-            while(missions.Count < 2)
+            while (missions.Count < 2)
                 AddMission();
         }
 
@@ -124,18 +120,18 @@ namespace Runner
 
         public void StartRunMissions(TrackManager manager)
         {
-            for(var i = 0; i < missions.Count; ++i) missions[i].RunStart(manager);
+            for (var i = 0; i < missions.Count; ++i) missions[i].RunStart(manager);
         }
 
         public void UpdateMissions(TrackManager manager)
         {
-            for(var i = 0; i < missions.Count; ++i) missions[i].Update(manager);
+            for (var i = 0; i < missions.Count; ++i) missions[i].Update(manager);
         }
 
         public bool AnyMissionComplete()
         {
-            for(var i = 0; i < missions.Count; ++i)
-                if(missions[i].isComplete)
+            for (var i = 0; i < missions.Count; ++i)
+                if (missions[i].isComplete)
                     return true;
             return false;
         }
@@ -177,7 +173,7 @@ namespace Runner
             highscores.Insert(GetScorePlace(score), entry);
 
             // Keep only the 10 best scores.
-            while(highscores.Count > 10)
+            while (highscores.Count > 10)
                 highscores.RemoveAt(highscores.Count - 1);
         }
 
@@ -185,10 +181,10 @@ namespace Runner
 
         public static void Create()
         {
-            if(m_Instance == null) {
+            if (m_Instance == null) {
                 m_Instance = self; //new PlayerData();
 
-                if(!m_Instance.themes.Any()) {
+                if (!m_Instance.themes.Any()) {
                     Debug.Log("New Save PlayData");
                     NewSave();
                     m_Instance.Save();
@@ -402,9 +398,9 @@ namespace Runner
         [MenuItem("Debug/Give 10 Consumables of each types")]
         public static void AddConsumables()
         {
-            for(var i = 0; i < ShopItemList.s_ConsumablesTypes.Length; ++i) {
+            for (var i = 0; i < ShopItemList.s_ConsumablesTypes.Length; ++i) {
                 var c = ConsumableDatabase.GetConsumbale(ShopItemList.s_ConsumablesTypes[i]);
-                if(c != null) PlayerData.instance.consumables[c.GetConsumableType()] = 10;
+                if (c != null) PlayerData.instance.consumables[c.GetConsumableType()] = 10;
             }
             PlayerData.instance.Save();
         }

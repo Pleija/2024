@@ -10,9 +10,7 @@ namespace Runner.Sounds
         {
             public AudioSource source;
             public AudioClip clip;
-
-            public float
-                startingSpeedRatio; // The stem will start when this is lower than currentSpeed/maxSpeed.
+            public float startingSpeedRatio; // The stem will start when this is lower than currentSpeed/maxSpeed.
         }
 
         protected static MusicPlayer s_Instance;
@@ -23,7 +21,7 @@ namespace Runner.Sounds
 
         private void Awake()
         {
-            if(s_Instance != null) {
+            if (s_Instance != null) {
                 Destroy(gameObject);
                 return;
             }
@@ -39,7 +37,7 @@ namespace Runner.Sounds
         {
             PlayerData.Create();
 
-            if(PlayerData.instance.masterVolume > float.MinValue) {
+            if (PlayerData.instance.masterVolume > float.MinValue) {
                 mixer.SetFloat("MasterVolume", PlayerData.instance.masterVolume);
                 mixer.SetFloat("MusicVolume", PlayerData.instance.musicVolume);
                 mixer.SetFloat("MasterSFXVolume", PlayerData.instance.masterSFXVolume);
@@ -55,7 +53,7 @@ namespace Runner.Sounds
 
         public void SetStem(int index, AudioClip clip)
         {
-            if(stems.Length <= index) {
+            if (stems.Length <= index) {
                 Debug.LogError("Trying to set an undefined stem");
                 return;
             }
@@ -66,7 +64,7 @@ namespace Runner.Sounds
 
         public IEnumerator RestartAllStems()
         {
-            for(var i = 0; i < stems.Length; ++i) {
+            for (var i = 0; i < stems.Length; ++i) {
                 stems[i].source.clip = stems[i].clip;
                 stems[i].source.volume = 0.0f;
                 stems[i].source.Play();
@@ -75,7 +73,7 @@ namespace Runner.Sounds
             // This is to fix a bug in the Audio Mixer where attenuation will be applied only a few ms after the source start playing.
             // So we play all source at volume 0.0f first, then wait 50 ms before finally setting the actual volume.
             yield return new WaitForSeconds(0.05f);
-            for(var i = 0; i < stems.Length; ++i)
+            for (var i = 0; i < stems.Length; ++i)
                 stems[i].source.volume = stems[i].startingSpeedRatio <= 0.0f ? maxVolume : 0.0f;
         }
 
@@ -83,10 +81,9 @@ namespace Runner.Sounds
         {
             const float fadeSpeed = 0.5f;
 
-            for(var i = 0; i < stems.Length; ++i) {
+            for (var i = 0; i < stems.Length; ++i) {
                 var target = currentSpeedRatio >= stems[i].startingSpeedRatio ? maxVolume : 0.0f;
-                stems[i].source.volume = Mathf.MoveTowards(stems[i].source.volume, target,
-                    fadeSpeed * Time.deltaTime);
+                stems[i].source.volume = Mathf.MoveTowards(stems[i].source.volume, target, fadeSpeed * Time.deltaTime);
             }
         }
     }

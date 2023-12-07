@@ -22,7 +22,7 @@
 
         public override void OnRunTick(GameState state)
         {
-            if(state.trackManager.worldDistance >= distance)
+            if (state.trackManager.worldDistance >= distance)
                 state.trackManager.characterController.currentLife = 0;
         }
 
@@ -57,7 +57,7 @@
     {
         public override void OnRunTick(GameState state)
         {
-            if(state.trackManager.characterController.currentLife > 1)
+            if (state.trackManager.characterController.currentLife > 1)
                 state.trackManager.characterController.currentLife = 1;
         }
 

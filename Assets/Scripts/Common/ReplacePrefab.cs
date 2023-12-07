@@ -31,10 +31,10 @@ namespace Common
                 var parent = x.target.transform.parent;
                 var oldName = x.target.name;
                 Addressables.InstantiateAsync(x.prefab, parent).Completed += handle => {
-                    if(handle.Status == AsyncOperationStatus.Succeeded) {
+                    if (handle.Status == AsyncOperationStatus.Succeeded) {
                         Destroy(x.target);
                         handle.Result.name = oldName;
-                        if(handle.Result.transform.Find("OnLoad") is { } onload)
+                        if (handle.Result.transform.Find("OnLoad") is { } onload)
                             onload.gameObject.SetActive(true);
                     }
                 };

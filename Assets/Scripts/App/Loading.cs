@@ -38,11 +38,10 @@ namespace App
         private static bool updated;
 
         public bool isAgreed {
-            get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) &&
-                PlayerPrefs.HasKey(PrivacyKey);
+            get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) && PlayerPrefs.HasKey(PrivacyKey);
             set {
                 clicked = value;
-                if(value)
+                if (value)
                     PlayerPrefs.SetInt(PrivacyKey, 1);
                 else
                     PlayerPrefs.DeleteKey(PrivacyKey);
@@ -53,7 +52,7 @@ namespace App
 
         public string text {
             set {
-                if(preText == value || string.IsNullOrEmpty(value)) return;
+                if (preText == value || string.IsNullOrEmpty(value)) return;
                 preText = value;
                 prgText.text = value.ToUpper();
                 Debug.Log(value);
@@ -63,12 +62,10 @@ namespace App
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void DebugSetting()
         {
-            if(Debug.isDebugBuild && !Application.isEditor &&
-               PlayerPrefs.GetString(VersionKey) != Application.version) {
+            if (Debug.isDebugBuild && !Application.isEditor && PlayerPrefs.GetString(VersionKey) != Application.version)
                 Directory.Delete(Application.persistentDataPath + "/com.unity.addressables", true);
-            }
 
-            if(Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
+            if (Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
                 Instantiate(Resources.Load("IngameDebugConsole"));
                 return;
             }
@@ -88,6 +85,10 @@ namespace App
             OnAwake?.Invoke();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="old"></param>
+        /// <returns></returns>
         public static IEnumerator LoadNewPrefab(GameObject old)
         {
             //Instantiate(old);
@@ -103,14 +104,14 @@ namespace App
 
         private void Start()
         {
-            if(!m_Reloaded) {
+            if (!m_Reloaded) {
                 m_Reloaded = true;
                 Addressables.InitializeAsync().WaitForCompletion();
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
                 Debug.Log($"Start Update: Reload => {loc != null}");
 
-                if(PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
-                   Application.version == PlayerPrefs.GetString(VersionKey)) {
+                if (PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
+                    Application.version == PlayerPrefs.GetString(VersionKey)) {
                     Debug.Log("Reload Update prefab");
                     var obj = Addressables.LoadAssetAsync<GameObject>(prefab).WaitForCompletion();
                     //AssetBundle.UnloadAllAssetBundles(false);
@@ -128,7 +129,7 @@ namespace App
                 privacyPanel.SetActive(false);
                 StartCoroutine(StartUpdate());
             });
-            if(isAgreed) StartCoroutine(StartUpdate());
+            if (isAgreed) StartCoroutine(StartUpdate());
         }
 
         public AsyncOperationHandle<GameObject> handle { get; set; }
@@ -151,8 +152,8 @@ namespace App
             text = "UPDATING...";
             progress.value = 0;
 
-            if(Application.internetReachability == NetworkReachability.NotReachable &&
-               !PlayerPrefs.HasKey(FirstUpdateKey)) {
+            if (Application.internetReachability == NetworkReachability.NotReachable &&
+                !PlayerPrefs.HasKey(FirstUpdateKey)) {
                 StartCoroutine(Offline());
                 yield break;
             }
@@ -167,7 +168,7 @@ namespace App
             yield return p1;
             var needUpdate = p1.Status == AsyncOperationStatus.Succeeded && p1.Result.Any();
 
-            if(needUpdate) {
+            if (needUpdate) {
                 var p2 = Addressables.UpdateCatalogs(p1.Result, false);
 
                 // while(p2.IsValid() && !p2.IsDone) {
@@ -176,48 +177,43 @@ namespace App
                 //     yield return null;
                 // }
                 yield return p2;
-                if(p2.IsValid()) Addressables.Release(p2);
+                if (p2.IsValid()) Addressables.Release(p2);
             }
-            else if(p1.Status != AsyncOperationStatus.Succeeded &&
-                    !PlayerPrefs.HasKey(FirstUpdateKey)) {
+            else if (p1.Status != AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey)) {
                 StartCoroutine(Offline());
                 yield break;
             }
-            if(p1.IsValid()) Addressables.Release(p1);
+            if (p1.IsValid()) Addressables.Release(p1);
             var p3 = Res.GetDownloadSizeAll();
             yield return p3;
 
-            if(p3.Result > 0) {
+            if (p3.Result > 0) {
                 var p4 = Res.DownloadAll();
-                var total = (float)p4.GetDownloadStatus().TotalBytes -
-                    p4.GetDownloadStatus().DownloadedBytes;
+                var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
 
-                while(p4.IsValid() && !p4.IsDone) {
-                    var current = (float)p4.GetDownloadStatus().TotalBytes -
-                        p4.GetDownloadStatus().DownloadedBytes;
+                while (p4.IsValid() && !p4.IsDone) {
+                    var current = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
                     text = $"{(int)((1 - current / total) * 100)}%" +
                         (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
                     progress.value = 1f - current / total;
                     yield return null;
                 }
                 Debug.Log($"Download Finish: {p4.Status}");
-                if(p4.Status == AsyncOperationStatus.Succeeded &&
-                   !PlayerPrefs.HasKey(FirstUpdateKey))
+                if (p4.Status == AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey))
                     PlayerPrefs.SetInt(FirstUpdateKey, 1);
 
-                if(p4.Status != AsyncOperationStatus.Succeeded &&
-                   !PlayerPrefs.HasKey(FirstUpdateKey)) {
+                if (p4.Status != AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey)) {
                     StartCoroutine(Offline());
                     yield break;
                 }
-                if(p4.Status == AsyncOperationStatus.Succeeded &&
-                   Application.version != PlayerPrefs.GetString(VersionKey))
+                if (p4.Status == AsyncOperationStatus.Succeeded &&
+                    Application.version != PlayerPrefs.GetString(VersionKey))
                     PlayerPrefs.SetString(VersionKey, Application.version);
-                if(p4.IsValid()) Addressables.Release(p4);
+                if (p4.IsValid()) Addressables.Release(p4);
                 updated = true;
 
-                if(Res.Exists<GameObject>("Update") is { } found &&
-                   Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go) {
+                if (Res.Exists<GameObject>("Update") is { } found &&
+                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go) {
                     Instantiate(go);
                     Destroy(gameObject);
                     yield break;
@@ -231,13 +227,13 @@ namespace App
                 // if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
                 //     PlayerPrefs.SetInt(FirstUpdateKey, 1);
                 // }
-                if(Application.version != PlayerPrefs.GetString(VersionKey))
+                if (Application.version != PlayerPrefs.GetString(VersionKey))
                     PlayerPrefs.SetString(VersionKey, Application.version);
                 Debug.Log("Don't need download");
             }
 
             //progress.gameObject.SetActive(false);
-            if(!PlayerPrefs.HasKey(FirstUpdateKey) && !Application.isEditor) {
+            if (!PlayerPrefs.HasKey(FirstUpdateKey) && !Application.isEditor) {
                 StartCoroutine(StartUpdate());
                 yield break;
             }
@@ -255,11 +251,11 @@ namespace App
 
         private IEnumerator LoadNextScene()
         {
-            if(Application.isEditor) {
+            if (Application.isEditor) {
 #if UNITY_EDITOR
                 var path = AssetDatabase.GetAssetPath(nextScene.editorAsset);
-                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(
-                    path /*"Assets/Scenes/Start.unity"*/, new LoadSceneParameters() {
+                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(path /*"Assets/Scenes/Start.unity"*/,
+                    new LoadSceneParameters() {
                         loadSceneMode = LoadSceneMode.Single,
                     });
 
@@ -274,13 +270,12 @@ namespace App
             //startTime = Time.realtimeSinceStartup;
             //var start = 0f;
 
-            while(p.IsValid() && !p.IsDone) {
+            while (p.IsValid() && !p.IsDone) {
                 // if(Time.realtimeSinceStartup - startTime >= timer / 100f) {
                 //     start += 0.01f;
                 //     startTime = Time.realtimeSinceStartup;
                 // }
-                progress.value =
-                    Mathf.Max(p.PercentComplete / 0.9f, progress.value += timer / 100f);
+                progress.value = Mathf.Max(p.PercentComplete / 0.9f, progress.value += timer / 100f);
                 yield return null;
             }
         }

@@ -13,7 +13,7 @@ namespace Runner.UI
     {
         public void StartGame()
         {
-            if(PlayerData.instance.ftueLevel == 0) {
+            if (PlayerData.instance.ftueLevel == 0) {
                 PlayerData.instance.ftueLevel = 1;
                 PlayerData.instance.Save();
 #if UNITY_ANALYTICS

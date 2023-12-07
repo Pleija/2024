@@ -18,7 +18,7 @@ namespace Runner.Sounds
         private void Update()
         {
             m_TimeToDisable -= Time.deltaTime;
-            if(m_TimeToDisable < 0)
+            if (m_TimeToDisable < 0)
                 gameObject.SetActive(false);
         }
     }

@@ -12,12 +12,7 @@ namespace Runner.Consumable
     public abstract class Consumable : MonoBehaviour
     {
         public float duration;
-
-        public enum ConsumableType
-        {
-            NONE, COIN_MAG, SCORE_MULTIPLAYER, INVINCIBILITY, EXTRALIFE, MAX_COUNT,
-        }
-
+        public enum ConsumableType { NONE, COIN_MAG, SCORE_MULTIPLAYER, INVINCIBILITY, EXTRALIFE, MAX_COUNT }
         public Sprite icon;
         public AudioClip activatedSound;
 
@@ -50,19 +45,18 @@ namespace Runner.Consumable
         {
             m_SinceStart = 0;
 
-            if(activatedSound != null) {
+            if (activatedSound != null) {
                 c.powerupSource.clip = activatedSound;
                 c.powerupSource.Play();
             }
 
-            if(ActivatedParticleReference != null) {
+            if (ActivatedParticleReference != null) {
                 //Addressables 1.0.1-preview
                 var op = Addressables.InstantiateAsync(ActivatedParticleReference);
                 yield return op;
                 m_ParticleSpawned = op.Result.GetComponent<ParticleSystem>();
-                if(!m_ParticleSpawned.main.loop)
-                    StartCoroutine(TimedRelease(m_ParticleSpawned.gameObject,
-                        m_ParticleSpawned.main.duration));
+                if (!m_ParticleSpawned.main.loop)
+                    StartCoroutine(TimedRelease(m_ParticleSpawned.gameObject, m_ParticleSpawned.main.duration));
                 m_ParticleSpawned.transform.SetParent(c.characterCollider.transform);
                 m_ParticleSpawned.transform.localPosition = op.Result.transform.position;
             }
@@ -79,7 +73,7 @@ namespace Runner.Consumable
             // By default do nothing, override to do per frame manipulation
             m_SinceStart += Time.deltaTime;
 
-            if(m_SinceStart >= duration) {
+            if (m_SinceStart >= duration) {
                 m_Active = false;
                 return;
             }
@@ -87,14 +81,14 @@ namespace Runner.Consumable
 
         public virtual void Ended(CharacterInputController c)
         {
-            if(m_ParticleSpawned != null)
-                if(m_ParticleSpawned.main.loop)
+            if (m_ParticleSpawned != null)
+                if (m_ParticleSpawned.main.loop)
                     Addressables.ReleaseInstance(m_ParticleSpawned.gameObject);
-            if(activatedSound != null && c.powerupSource.clip == activatedSound)
+            if (activatedSound != null && c.powerupSource.clip == activatedSound)
                 c.powerupSource.Stop(); //if this one the one using the audio source stop it
 
-            for(var i = 0; i < c.consumables.Count; ++i)
-                if(c.consumables[i].active && c.consumables[i].activatedSound != null) {
+            for (var i = 0; i < c.consumables.Count; ++i)
+                if (c.consumables[i].active && c.consumables[i].activatedSound != null) {
                     //if there is still an active consumable that have a sound, this is the one playing now
                     c.powerupSource.clip = c.consumables[i].activatedSound;
                     c.powerupSource.Play();

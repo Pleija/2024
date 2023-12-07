@@ -65,10 +65,7 @@ namespace Runner.Characters
         protected int m_Coins;
         protected int m_Premium;
         protected int m_CurrentLife;
-
-        protected List<Consumable.Consumable> m_ActiveConsumables =
-            new List<Consumable.Consumable>();
-
+        protected List<Consumable.Consumable> m_ActiveConsumables = new List<Consumable.Consumable>();
         protected int m_ObstacleLayer;
         protected bool m_IsInvincible;
         protected bool m_IsRunning;
@@ -136,7 +133,7 @@ namespace Runner.Characters
 
         public void CleanConsumable()
         {
-            for(var i = 0; i < m_ActiveConsumables.Count; ++i) {
+            for (var i = 0; i < m_ActiveConsumables.Count; ++i) {
                 m_ActiveConsumables[i].Ended(this);
                 Addressables.ReleaseInstance(m_ActiveConsumables[i].gameObject);
             }
@@ -147,7 +144,7 @@ namespace Runner.Characters
         {
             StartMoving();
 
-            if(character.animator) {
+            if (character.animator) {
                 character.animator.Play(s_RunStartHash);
                 character.animator.SetBool(s_MovingHash, true);
             }
@@ -162,7 +159,7 @@ namespace Runner.Characters
         {
             m_IsRunning = false;
             trackManager.StopMove();
-            if(character.animator) character.animator.SetBool(s_MovingHash, false);
+            if (character.animator) character.animator.SetBool(s_MovingHash, false);
         }
 
         protected bool TutorialMoveCheck(int tutorialLevel)
@@ -176,37 +173,37 @@ namespace Runner.Characters
 #if UNITY_EDITOR || UNITY_STANDALONE
             // Use key input in editor or standalone
             // disabled if it's tutorial and not thecurrent right tutorial level (see func TutorialMoveCheck)
-            if(Input.GetKeyDown(KeyCode.LeftArrow) && TutorialMoveCheck(0))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && TutorialMoveCheck(0))
                 ChangeLane(-1);
-            else if(Input.GetKeyDown(KeyCode.RightArrow) && TutorialMoveCheck(0))
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && TutorialMoveCheck(0))
                 ChangeLane(1);
-            else if(Input.GetKeyDown(KeyCode.UpArrow) && TutorialMoveCheck(1))
+            else if (Input.GetKeyDown(KeyCode.UpArrow) && TutorialMoveCheck(1))
                 Jump();
-            else if(Input.GetKeyDown(KeyCode.DownArrow) && TutorialMoveCheck(2))
-                if(!m_Sliding)
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && TutorialMoveCheck(2))
+                if (!m_Sliding)
                     Slide();
 #else
             // Use touch input on mobile
-            if(Input.touchCount == 1) {
-                if(m_IsSwiping) {
+            if (Input.touchCount == 1) {
+                if (m_IsSwiping) {
                     Vector2 diff = Input.GetTouch(0).position - m_StartingTouch;
 
                     // Put difference in Screen ratio, but using only width, so the ratio is the same on both
                     // axes (otherwise we would have to swipe more vertically...)
                     diff = new Vector2(diff.x / Screen.width, diff.y / Screen.width);
 
-                    if(diff.magnitude > 0.01f) //we set the swip distance to trigger movement to 1% of the screen width
+                    if (diff.magnitude > 0.01f) //we set the swip distance to trigger movement to 1% of the screen width
                     {
-                        if(Mathf.Abs(diff.y) > Mathf.Abs(diff.x)) {
-                            if(TutorialMoveCheck(2) && diff.y < 0) {
+                        if (Mathf.Abs(diff.y) > Mathf.Abs(diff.x)) {
+                            if (TutorialMoveCheck(2) && diff.y < 0) {
                                 Slide();
                             }
-                            else if(TutorialMoveCheck(1)) {
+                            else if (TutorialMoveCheck(1)) {
                                 Jump();
                             }
                         }
-                        else if(TutorialMoveCheck(0)) {
-                            if(diff.x < 0) {
+                        else if (TutorialMoveCheck(0)) {
+                            if (diff.x < 0) {
                                 ChangeLane(-1);
                             }
                             else {
@@ -219,35 +216,35 @@ namespace Runner.Characters
 
                 // Input check is AFTER the swip test, that way if TouchPhase.Ended happen a single frame after the Began Phase
                 // a swipe can still be registered (otherwise, m_IsSwiping will be set to false and the test wouldn't happen for that began-Ended pair)
-                if(Input.GetTouch(0).phase == TouchPhase.Began) {
+                if (Input.GetTouch(0).phase == TouchPhase.Began) {
                     m_StartingTouch = Input.GetTouch(0).position;
                     m_IsSwiping = true;
                 }
-                else if(Input.GetTouch(0).phase == TouchPhase.Ended) {
+                else if (Input.GetTouch(0).phase == TouchPhase.Ended) {
                     m_IsSwiping = false;
                 }
             }
 #endif
             var verticalTargetPosition = m_TargetPosition;
 
-            if(m_Sliding) {
+            if (m_Sliding) {
                 // Slide time isn't constant but the slide length is (even if slightly modified by speed, to slide slightly further when faster).
                 // This is for gameplay reason, we don't want the character to drasticly slide farther when at max speed.
                 var correctSlideLength = slideLength * (1.0f + trackManager.speedRatio);
                 var ratio = (trackManager.worldDistance - m_SlideStart) / correctSlideLength;
-                if(ratio >= 1.0f)
+                if (ratio >= 1.0f)
                     // We slid to (or past) the required length, go back to running
                     StopSliding();
             }
 
-            if(m_Jumping) {
-                if(trackManager.isMoving) {
+            if (m_Jumping) {
+                if (trackManager.isMoving) {
                     // Same as with the sliding, we want a fixed jump LENGTH not fixed jump TIME. Also, just as with sliding,
                     // we slightly modify length with speed to make it more playable.
                     var correctJumpLength = jumpLength * (1.0f + trackManager.speedRatio);
                     var ratio = (trackManager.worldDistance - m_JumpStart) / correctJumpLength;
 
-                    if(ratio >= 1.0f) {
+                    if (ratio >= 1.0f) {
                         m_Jumping = false;
                         character.animator.SetBool(s_JumpingHash, false);
                     }
@@ -262,21 +259,20 @@ namespace Runner.Characters
                     verticalTargetPosition.y = Mathf.MoveTowards(verticalTargetPosition.y, 0,
                         k_GroundingSpeed * Time.deltaTime);
 
-                    if(Mathf.Approximately(verticalTargetPosition.y, 0f)) {
+                    if (Mathf.Approximately(verticalTargetPosition.y, 0f)) {
                         character.animator.SetBool(s_JumpingHash, false);
                         m_Jumping = false;
                     }
                 }
             }
-            characterCollider.transform.localPosition = Vector3.MoveTowards(
-                characterCollider.transform.localPosition, verticalTargetPosition,
-                laneChangeSpeed * Time.deltaTime);
+            characterCollider.transform.localPosition = Vector3.MoveTowards(characterCollider.transform.localPosition,
+                verticalTargetPosition, laneChangeSpeed * Time.deltaTime);
 
             // Put blob shadow under the character.
             RaycastHit hit;
 
-            if(Physics.Raycast(characterCollider.transform.position + Vector3.up, Vector3.down,
-                   out hit, k_ShadowRaycastDistance, m_ObstacleLayer)) {
+            if (Physics.Raycast(characterCollider.transform.position + Vector3.up, Vector3.down, out hit,
+                    k_ShadowRaycastDistance, m_ObstacleLayer)) {
                 blobShadow.transform.position = hit.point + Vector3.up * k_ShadowGroundOffset;
             }
             else {
@@ -288,16 +284,15 @@ namespace Runner.Characters
 
         public void Jump()
         {
-            if(!m_IsRunning)
+            if (!m_IsRunning)
                 return;
 
-            if(!m_Jumping) {
-                if(m_Sliding)
+            if (!m_Jumping) {
+                if (m_Sliding)
                     StopSliding();
                 var correctJumpLength = jumpLength * (1.0f + trackManager.speedRatio);
                 m_JumpStart = trackManager.worldDistance;
-                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio *
-                    (trackManager.speed / correctJumpLength);
+                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctJumpLength);
                 character.animator.SetFloat(s_JumpingSpeedHash, animSpeed);
                 character.animator.SetBool(s_JumpingHash, true);
                 m_Audio.PlayOneShot(character.jumpSound);
@@ -307,7 +302,7 @@ namespace Runner.Characters
 
         public void StopJumping()
         {
-            if(m_Jumping) {
+            if (m_Jumping) {
                 character.animator.SetBool(s_JumpingHash, false);
                 m_Jumping = false;
             }
@@ -315,16 +310,15 @@ namespace Runner.Characters
 
         public void Slide()
         {
-            if(!m_IsRunning)
+            if (!m_IsRunning)
                 return;
 
-            if(!m_Sliding) {
-                if(m_Jumping)
+            if (!m_Sliding) {
+                if (m_Jumping)
                     StopJumping();
                 var correctSlideLength = slideLength * (1.0f + trackManager.speedRatio);
                 m_SlideStart = trackManager.worldDistance;
-                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio *
-                    (trackManager.speed / correctSlideLength);
+                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctSlideLength);
                 character.animator.SetFloat(s_JumpingSpeedHash, animSpeed);
                 character.animator.SetBool(s_SlidingHash, true);
                 m_Audio.PlayOneShot(slideSound);
@@ -335,7 +329,7 @@ namespace Runner.Characters
 
         public void StopSliding()
         {
-            if(m_Sliding) {
+            if (m_Sliding) {
                 character.animator.SetBool(s_SlidingHash, false);
                 m_Sliding = false;
                 characterCollider.Slide(false);
@@ -344,10 +338,10 @@ namespace Runner.Characters
 
         public void ChangeLane(int direction)
         {
-            if(!m_IsRunning)
+            if (!m_IsRunning)
                 return;
             var targetLane = m_CurrentLane + direction;
-            if(targetLane < 0 || targetLane > 2)
+            if (targetLane < 0 || targetLane > 2)
                 // Ignore, we are on the borders.
                 return;
             m_CurrentLane = targetLane;
@@ -356,7 +350,7 @@ namespace Runner.Characters
 
         public void UseInventory()
         {
-            if(inventory != null && inventory.CanBeUsed(this)) {
+            if (inventory != null && inventory.CanBeUsed(this)) {
                 UseConsumable(inventory);
                 inventory = null;
             }
@@ -366,8 +360,8 @@ namespace Runner.Characters
         {
             characterCollider.audio.PlayOneShot(powerUpUseSound);
 
-            for(var i = 0; i < m_ActiveConsumables.Count; ++i)
-                if(m_ActiveConsumables[i].GetType() == c.GetType()) {
+            for (var i = 0; i < m_ActiveConsumables.Count; ++i)
+                if (m_ActiveConsumables[i].GetType() == c.GetType()) {
                     // If we already have an active consumable of that type, we just reset the time
                     m_ActiveConsumables[i].ResetTime();
                     Addressables.ReleaseInstance(c.gameObject);

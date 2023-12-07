@@ -43,7 +43,7 @@ namespace Runner.Missions
 
         public static MissionBase GetNewMissionFromType(MissionType type)
         {
-            switch(type) {
+            switch (type) {
                 case MissionType.SINGLE_RUN:
                     return new SingleRunMission();
                 case MissionType.PICKUP:
@@ -141,18 +141,17 @@ namespace Runner.Missions
 
         public override void Update(TrackManager manager)
         {
-            if(manager.characterController.isJumping) {
+            if (manager.characterController.isJumping) {
                 var boxSize = manager.characterController.characterCollider.collider.size +
                     k_CharacterColliderSizeOffset;
-                var boxCenter = manager.characterController.transform.position -
-                    Vector3.up * boxSize.y * 0.5f;
+                var boxCenter = manager.characterController.transform.position - Vector3.up * boxSize.y * 0.5f;
                 var count = Physics.OverlapBoxNonAlloc(boxCenter, boxSize * 0.5f, m_Hits);
 
-                for(var i = 0; i < count; ++i) {
+                for (var i = 0; i < count; ++i) {
                     var obs = m_Hits[i].GetComponent<Obstacle>();
 
-                    if(obs != null && obs is AllLaneObstacle) {
-                        if(obs != m_Previous) progress += 1;
+                    if (obs != null && obs is AllLaneObstacle) {
+                        if (obs != m_Previous) progress += 1;
                         m_Previous = obs;
                     }
                 }
@@ -183,7 +182,7 @@ namespace Runner.Missions
 
         public override void Update(TrackManager manager)
         {
-            if(manager.characterController.isSliding) {
+            if (manager.characterController.isSliding) {
                 var dist = manager.worldDistance - m_PreviousWorldDist;
                 progress += dist;
             }
@@ -214,7 +213,7 @@ namespace Runner.Missions
 
         public override void Update(TrackManager manager)
         {
-            if(manager.multiplier > progress)
+            if (manager.multiplier > progress)
                 progress = manager.multiplier;
         }
     }

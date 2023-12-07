@@ -64,9 +64,7 @@ namespace Runner.Game
         [Header("Prefabs")]
         public ConsumableIcon consumableIcon;
 
-        private Consumable.Consumable.ConsumableType m_PowerupToUse =
-            Consumable.Consumable.ConsumableType.NONE;
-
+        private Consumable.Consumable.ConsumableType m_PowerupToUse = Consumable.Consumable.ConsumableType.NONE;
         protected GameObject m_Character;
         protected List<int> m_OwnedAccesories = new List<int>();
         protected int m_UsedAccessory = -1;
@@ -94,16 +92,16 @@ namespace Runner.Game
             // Reseting the global blinking value. Can happen if the game unexpectedly exited while still blinking
             Shader.SetGlobalFloat("_BlinkingValue", 0.0f);
 
-            if(MusicPlayer.instance.GetStem(0) != menuTheme) {
+            if (MusicPlayer.instance.GetStem(0) != menuTheme) {
                 MusicPlayer.instance.SetStem(0, menuTheme);
                 StartCoroutine(MusicPlayer.instance.RestartAllStems());
             }
             runButton.interactable = false;
             runButton.GetComponentInChildren<Text>().text = "Loading...";
-            if(m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE)
+            if (m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE)
                 //if we come back from a run and we don't have any more of the powerup we wanted to use, we reset the powerup to use to NONE
-                if(!PlayerData.instance.consumables.ContainsKey(m_PowerupToUse) ||
-                   PlayerData.instance.consumables[m_PowerupToUse] == 0)
+                if (!PlayerData.instance.consumables.ContainsKey(m_PowerupToUse) ||
+                    PlayerData.instance.consumables[m_PowerupToUse] == 0)
                     m_PowerupToUse = Consumable.Consumable.ConsumableType.NONE;
             Refresh();
         }
@@ -112,18 +110,18 @@ namespace Runner.Game
         {
             missionPopup.gameObject.SetActive(false);
             inventoryCanvas.gameObject.SetActive(false);
-            if(m_Character != null) Addressables.ReleaseInstance(m_Character);
+            if (m_Character != null) Addressables.ReleaseInstance(m_Character);
             var gs = to as GameState;
             skyMeshFilter.gameObject.SetActive(false);
             UIGroundFilter.gameObject.SetActive(false);
 
-            if(gs != null) {
+            if (gs != null) {
                 gs.currentModifier = m_CurrentModifier;
 
                 // We reset the modifier to a default one, for next run (if a new modifier is applied, it will replace this default one before the run starts)
                 m_CurrentModifier = new Modifier();
 
-                if(m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE) {
+                if (m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE) {
                     PlayerData.instance.Consume(m_PowerupToUse);
                     var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse),
                         (GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
@@ -144,10 +142,10 @@ namespace Runner.Game
 
         public override void Tick()
         {
-            if(!runButton.interactable) {
+            if (!runButton.interactable) {
                 var interactable = ThemeDatabase.loaded && CharacterDatabase.loaded;
 
-                if(interactable) {
+                if (interactable) {
                     runButton.interactable = true;
                     runButton.GetComponentInChildren<Text>().text = "Run!";
 
@@ -155,9 +153,8 @@ namespace Runner.Game
                     tutorialPrompt.SetActive(true);
                 }
             }
-            if(m_Character != null)
-                m_Character.transform.Rotate(0, k_CharacterRotationSpeed * Time.deltaTime, 0,
-                    Space.Self);
+            if (m_Character != null)
+                m_Character.transform.Rotate(0, k_CharacterRotationSpeed * Time.deltaTime, 0, Space.Self);
             charSelect.gameObject.SetActive(PlayerData.instance.characters.Count > 1);
             themeSelect.gameObject.SetActive(PlayerData.instance.themes.Count > 1);
         }
@@ -171,9 +168,9 @@ namespace Runner.Game
         public void ChangeCharacter(int dir)
         {
             PlayerData.instance.usedCharacter += dir;
-            if(PlayerData.instance.usedCharacter >= PlayerData.instance.characters.Count)
+            if (PlayerData.instance.usedCharacter >= PlayerData.instance.characters.Count)
                 PlayerData.instance.usedCharacter = 0;
-            else if(PlayerData.instance.usedCharacter < 0)
+            else if (PlayerData.instance.usedCharacter < 0)
                 PlayerData.instance.usedCharacter = PlayerData.instance.characters.Count - 1;
             StartCoroutine(PopulateCharacters());
         }
@@ -181,11 +178,11 @@ namespace Runner.Game
         public void ChangeAccessory(int dir)
         {
             m_UsedAccessory += dir;
-            if(m_UsedAccessory >= m_OwnedAccesories.Count)
+            if (m_UsedAccessory >= m_OwnedAccesories.Count)
                 m_UsedAccessory = -1;
-            else if(m_UsedAccessory < -1)
+            else if (m_UsedAccessory < -1)
                 m_UsedAccessory = m_OwnedAccesories.Count - 1;
-            if(m_UsedAccessory != -1)
+            if (m_UsedAccessory != -1)
                 PlayerData.instance.usedAccessory = m_OwnedAccesories[m_UsedAccessory];
             else
                 PlayerData.instance.usedAccessory = -1;
@@ -195,9 +192,9 @@ namespace Runner.Game
         public void ChangeTheme(int dir)
         {
             PlayerData.instance.usedTheme += dir;
-            if(PlayerData.instance.usedTheme >= PlayerData.instance.themes.Count)
+            if (PlayerData.instance.usedTheme >= PlayerData.instance.themes.Count)
                 PlayerData.instance.usedTheme = 0;
-            else if(PlayerData.instance.usedTheme < 0)
+            else if (PlayerData.instance.usedTheme < 0)
                 PlayerData.instance.usedTheme = PlayerData.instance.themes.Count - 1;
             StartCoroutine(PopulateTheme());
         }
@@ -206,9 +203,8 @@ namespace Runner.Game
         {
             ThemeData t = null;
 
-            while(t == null) {
-                t = ThemeDatabase.GetThemeData(
-                    PlayerData.instance.themes[PlayerData.instance.usedTheme]);
+            while (t == null) {
+                t = ThemeDatabase.GetThemeData(PlayerData.instance.themes[PlayerData.instance.usedTheme]);
                 yield return null;
             }
             themeNameDisplay.text = t.themeName;
@@ -223,26 +219,25 @@ namespace Runner.Game
             PlayerData.instance.usedAccessory = -1;
             m_UsedAccessory = -1;
 
-            if(!m_IsLoadingCharacter) {
+            if (!m_IsLoadingCharacter) {
                 m_IsLoadingCharacter = true;
                 GameObject newChar = null;
 
-                while(newChar == null) {
+                while (newChar == null) {
                     var c = CharacterDatabase.GetCharacter(
                         PlayerData.instance.characters[PlayerData.instance.usedCharacter]);
 
-                    if(c != null) {
+                    if (c != null) {
                         m_OwnedAccesories.Clear();
 
-                        for(var i = 0; i < c.accessories.Length; ++i) {
+                        for (var i = 0; i < c.accessories.Length; ++i) {
                             // Check which accessories we own.
-                            var compoundName =
-                                c.characterName + ":" + c.accessories[i].accessoryName;
-                            if(PlayerData.instance.characterAccessories.Contains(compoundName))
+                            var compoundName = c.characterName + ":" + c.accessories[i].accessoryName;
+                            if (PlayerData.instance.characterAccessories.Contains(compoundName))
                                 m_OwnedAccesories.Add(i);
                         }
                         var pos = charPosition.transform.position;
-                        if(m_OwnedAccesories.Count > 0)
+                        if (m_OwnedAccesories.Count > 0)
                             pos.x = k_OwnedAccessoriesCharacterOffset;
                         else
                             pos.x = 0.0f;
@@ -251,16 +246,15 @@ namespace Runner.Game
                         AsyncOperationHandle op = Addressables.InstantiateAsync(c.characterName);
                         yield return op;
 
-                        if(op.Result == null || !(op.Result is GameObject)) {
-                            Debug.LogWarning(string.Format("Unable to load character {0}.",
-                                c.characterName));
+                        if (op.Result == null || !(op.Result is GameObject)) {
+                            Debug.LogWarning(string.Format("Unable to load character {0}.", c.characterName));
                             yield break;
                         }
                         newChar = op.Result as GameObject;
                         Helpers.SetRendererLayerRecursive(newChar, k_UILayer);
                         newChar.transform.SetParent(charPosition, false);
                         newChar.transform.rotation = k_FlippedYAxisRotation;
-                        if(m_Character != null)
+                        if (m_Character != null)
                             Addressables.ReleaseInstance(m_Character);
                         m_Character = newChar;
                         charNameDisplay.text = c.characterName;
@@ -285,16 +279,14 @@ namespace Runner.Game
             var c = m_Character.GetComponent<Character>();
             c.SetupAccesory(PlayerData.instance.usedAccessory);
 
-            if(PlayerData.instance.usedAccessory == -1) {
+            if (PlayerData.instance.usedAccessory == -1) {
                 accesoryNameDisplay.text = "None";
                 accessoryIconDisplay.enabled = false;
             }
             else {
                 accessoryIconDisplay.enabled = true;
-                accesoryNameDisplay.text =
-                    c.accessories[PlayerData.instance.usedAccessory].accessoryName;
-                accessoryIconDisplay.sprite =
-                    c.accessories[PlayerData.instance.usedAccessory].accessoryIcon;
+                accesoryNameDisplay.text = c.accessories[PlayerData.instance.usedAccessory].accessoryName;
+                accessoryIconDisplay.sprite = c.accessories[PlayerData.instance.usedAccessory].accessoryIcon;
             }
         }
 
@@ -302,11 +294,11 @@ namespace Runner.Game
         {
             powerupIcon.gameObject.SetActive(true);
 
-            if(PlayerData.instance.consumables.Count > 0) {
+            if (PlayerData.instance.consumables.Count > 0) {
                 var c = ConsumableDatabase.GetConsumbale(m_PowerupToUse);
                 powerupSelect.gameObject.SetActive(true);
 
-                if(c != null) {
+                if (c != null) {
                     powerupIcon.sprite = c.icon;
                     powerupCount.text = PlayerData.instance.consumables[m_PowerupToUse].ToString();
                 }
@@ -326,16 +318,15 @@ namespace Runner.Game
 
             do {
                 m_UsedPowerupIndex += dir;
-                if(m_UsedPowerupIndex >= (int)Consumable.Consumable.ConsumableType.MAX_COUNT)
+                if (m_UsedPowerupIndex >= (int)Consumable.Consumable.ConsumableType.MAX_COUNT)
                     m_UsedPowerupIndex = 0;
-                else if(m_UsedPowerupIndex < 0)
+                else if (m_UsedPowerupIndex < 0)
                     m_UsedPowerupIndex = (int)Consumable.Consumable.ConsumableType.MAX_COUNT - 1;
                 var count = 0;
-                if(PlayerData.instance.consumables.TryGetValue(
-                       (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex, out count) &&
-                   count > 0)
+                if (PlayerData.instance.consumables.TryGetValue(
+                        (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex, out count) && count > 0)
                     found = true;
-            } while(m_UsedPowerupIndex != 0 && !found);
+            } while (m_UsedPowerupIndex != 0 && !found);
             m_PowerupToUse = (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex;
             PopulatePowerup();
         }
@@ -352,8 +343,8 @@ namespace Runner.Game
 
         public void StartGame()
         {
-            if(PlayerData.instance.tutorialDone)
-                if(PlayerData.instance.ftueLevel == 1) {
+            if (PlayerData.instance.tutorialDone)
+                if (PlayerData.instance.ftueLevel == 1) {
                     PlayerData.instance.ftueLevel = 2;
                     PlayerData.instance.Save();
                 }

@@ -13,7 +13,7 @@ namespace Runner
         public static void LoadScene(string aName, LoadSceneMode mode = LoadSceneMode.Single)
         {
             //SceneManager.LoadScene(aName);
-            if(Application.isEditor) {
+            if (Application.isEditor) {
 #if UNITY_EDITOR
                 var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode($"Assets/Scenes/{aName}.unity",
                     new LoadSceneParameters() {

@@ -23,7 +23,7 @@ namespace Runner.UI.Shop
         {
             int amount = 0;
 
-            switch(product.definition.id) {
+            switch (product.definition.id) {
                 case "10_premium":
                     amount = 10;
                     break;
@@ -35,7 +35,7 @@ namespace Runner.UI.Shop
                     break;
             }
 
-            if(amount > 0) {
+            if (amount > 0) {
                 PlayerData.instance.premium += amount;
                 PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0

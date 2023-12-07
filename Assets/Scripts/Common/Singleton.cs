@@ -15,13 +15,13 @@ namespace Common
         public static T self {
             get {
                 m_Instance ??= FindObjectOfType<T>(true);
-                if(m_Instance) return m_Instance;
-                if(!typeof(T).IsDefined(typeof(AutoCreateAttribute), true) &&
-                   !typeof(IAutoCreate).IsAssignableFrom(typeof(T))) return m_Instance;
+                if (m_Instance) return m_Instance;
+                if (!typeof(T).IsDefined(typeof(AutoCreateAttribute), true) &&
+                    !typeof(IAutoCreate).IsAssignableFrom(typeof(T))) return m_Instance;
                 var go = new GameObject(typeof(T).Name);
                 m_Instance = go.AddComponent<T>();
 
-                if(Application.isPlaying) {
+                if (Application.isPlaying) {
                     m_Instance.CheckDontUnload();
                 }
                 else {
@@ -38,7 +38,7 @@ namespace Common
 
         public static void EditorUpdate()
         {
-            if(m_Instance) {
+            if (m_Instance) {
                 m_Instance.Update();
             }
             else {
@@ -54,7 +54,7 @@ namespace Common
         {
             base.OnEnable();
 
-            if(m_Instance == null) {
+            if (m_Instance == null) {
                 m_Instance = (T)this;
             }
             else {
@@ -66,21 +66,18 @@ namespace Common
 
         public void CheckDontUnload()
         {
-            if(Application.isPlaying) {
-                if(GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
-                   typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
-                    if(transform.parent != null) {
-                        transform.SetParent(null);
-                    }
+            if (Application.isPlaying)
+                if (GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
+                    typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
+                    if (transform.parent != null) transform.SetParent(null);
                     DontDestroyOnLoad(gameObject);
                 }
-            }
         }
 
         protected virtual void OnDestroy()
         {
             Dispose();
-            if(m_Instance == this) m_Instance = null;
+            if (m_Instance == this) m_Instance = null;
         }
     }
 }

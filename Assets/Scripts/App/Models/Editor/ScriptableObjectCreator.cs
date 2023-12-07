@@ -14,11 +14,10 @@ namespace Editors
 {
     public class ScriptableObjectCreator : OdinMenuEditorWindow
     {
-        private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(
-            AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
-                t.IsClass && !t.IsAbstract && typeof(Model).IsAssignableFrom(t) &&
-                t != typeof(Model) && !t.IsGenericType &&
-                !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
+        private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(AssemblyUtilities
+            .GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
+                t.IsClass && !t.IsAbstract && typeof(Model).IsAssignableFrom(t) && t != typeof(Model) &&
+                !t.IsGenericType && !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
         //.ToHashSet();
 
         [MenuItem("Debug/Create Scriptable Object...", priority = -10000)]
@@ -27,9 +26,9 @@ namespace Editors
             var path = "Assets";
             var obj = Selection.activeObject;
 
-            if(obj && AssetDatabase.Contains(obj)) {
+            if (obj && AssetDatabase.Contains(obj)) {
                 path = AssetDatabase.GetAssetPath(obj);
-                if(!Directory.Exists(path)) path = Path.GetDirectoryName(path);
+                if (!Directory.Exists(path)) path = Path.GetDirectoryName(path);
             }
             var window = GetWindow<ScriptableObjectCreator>();
             window.Show();
@@ -62,17 +61,13 @@ namespace Editors
             tree.Selection.SelectionChanged += e => {
                 // if(previewObject && !AssetDatabase.Contains(previewObject))
                 //     DestroyImmediate(previewObject);
-                if(e != SelectionChangedType.ItemAdded) return;
+                if (e != SelectionChangedType.ItemAdded) return;
                 var t = SelectedType;
-
-                if(t != null && !t.IsAbstract) {
+                if (t != null && !t.IsAbstract)
                     previewObject =
                         t.GetProperty("self",
-                                    BindingFlags.Public | BindingFlags.Static |
-                                    BindingFlags.FlattenHierarchy)!
-                                .GetValue(null, null) as
-                            ScriptableObject; //CreateInstance(t) as ScriptableObject;
-                }
+                                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)!
+                            .GetValue(null, null) as ScriptableObject; //CreateInstance(t) as ScriptableObject;
             };
             return tree;
         }
@@ -80,8 +75,8 @@ namespace Editors
         private string GetMenuPathForType(Type t)
         {
             var path = "";
-            if(t.Namespace != null)
-                foreach(var part in t.Namespace.Split('.'))
+            if (t.Namespace != null)
+                foreach (var part in t.Namespace.Split('.'))
                     path += part.SplitPascalCase() + "/";
             return path + t.Name.SplitPascalCase();
         }
@@ -95,7 +90,7 @@ namespace Editors
         {
             scroll = GUILayout.BeginScrollView(scroll);
             {
-                GUIStyle myStyle = new GUIStyle();
+                var myStyle = new GUIStyle();
                 myStyle.margin = new RectOffset(10, 10, 10, 10);
                 GUILayout.BeginVertical(myStyle);
                 base.DrawEditor(index);
@@ -103,16 +98,16 @@ namespace Editors
             }
             GUILayout.EndScrollView();
 
-            if(previewObject) {
+            if (previewObject) {
                 GUILayout.FlexibleSpace();
                 SirenixEditorGUI.HorizontalLineSeparator(1);
-                if(GUILayout.Button("Create Asset", GUILayoutOptions.Height(30))) CreateAsset();
+                if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30))) CreateAsset();
             }
         }
 
         private void CreateAsset()
         {
-            if(previewObject) {
+            if (previewObject) {
                 var dest = targetFolder + "/" + MenuTree.Selection.First().Name + ".asset";
                 dest = AssetDatabase.GenerateUniqueAssetPath(dest);
                 ProjectWindowUtil.CreateAsset(previewObject, dest);

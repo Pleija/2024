@@ -26,7 +26,7 @@ namespace Runner.UI
         {
             // Start by making all entries enabled & putting player entry last again.
             playerEntry.transform.SetAsLastSibling();
-            for(var i = 0; i < entriesCount; ++i)
+            for (var i = 0; i < entriesCount; ++i)
                 entriesRoot.GetChild(i).gameObject.SetActive(true);
 
             // Find all index in local page space.
@@ -34,32 +34,30 @@ namespace Runner.UI
             var place = -1;
             var localPlace = -1;
 
-            if(displayPlayer) {
+            if (displayPlayer) {
                 place = PlayerData.instance.GetScorePlace(int.Parse(playerEntry.score.text));
                 localPlace = place - localStart;
             }
 
-            if(localPlace >= 0 && localPlace < entriesCount && displayPlayer) {
+            if (localPlace >= 0 && localPlace < entriesCount && displayPlayer) {
                 playerEntry.gameObject.SetActive(true);
                 playerEntry.transform.SetSiblingIndex(localPlace);
             }
-            if(!forcePlayerDisplay || PlayerData.instance.highscores.Count < entriesCount)
-                entriesRoot.GetChild(entriesRoot.transform.childCount - 1).gameObject
-                    .SetActive(false);
+            if (!forcePlayerDisplay || PlayerData.instance.highscores.Count < entriesCount)
+                entriesRoot.GetChild(entriesRoot.transform.childCount - 1).gameObject.SetActive(false);
             var currentHighScore = localStart;
 
-            for(var i = 0; i < entriesCount; ++i) {
+            for (var i = 0; i < entriesCount; ++i) {
                 var hs = entriesRoot.GetChild(i).GetComponent<HighscoreUI>();
-                if(hs == playerEntry || hs == null)
+                if (hs == playerEntry || hs == null)
                     // We skip the player entry.
                     continue;
 
-                if(PlayerData.instance.highscores.Count > currentHighScore) {
+                if (PlayerData.instance.highscores.Count > currentHighScore) {
                     hs.gameObject.SetActive(true);
                     hs.playerName.text = PlayerData.instance.highscores[currentHighScore].name;
                     hs.number.text = (localStart + i + 1).ToString();
-                    hs.score.text = PlayerData.instance.highscores[currentHighScore].score
-                        .ToString();
+                    hs.score.text = PlayerData.instance.highscores[currentHighScore].score.ToString();
                     currentHighScore++;
                 }
                 else {
@@ -68,7 +66,7 @@ namespace Runner.UI
             }
 
             // If we force the player to be displayed, we enable it even if it was disabled from elsewhere
-            if(forcePlayerDisplay)
+            if (forcePlayerDisplay)
                 playerEntry.gameObject.SetActive(true);
             playerEntry.number.text = (place + 1).ToString();
         }

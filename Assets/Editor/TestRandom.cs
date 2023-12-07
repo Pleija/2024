@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Api;
 using App.Models;
@@ -50,7 +51,7 @@ public class TestRandom
     [Test]
     public static void TestNet()
     {
-        Client.Call<long, long>(CallType.Reg, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+        Client.Call<long, long>(ApiFunc.Reg, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             (r, t) => { });
     }
 
@@ -69,5 +70,24 @@ public class TestRandom
         Debug.Log(XJson.Encrypt(MessagePackSerializer.Serialize(1)).Length);
         Debug.Log(XJson.Encrypt(BitConverter.GetBytes(timestamp)).Length);
         Debug.Log(MessagePackSerializer.Serialize(HashId.self.EncodeLong(timestamp)).Length);
+    }
+
+    
+
+    [Test]
+    public static void TestTuple()
+    {
+        Debug.Log((1, "test"));
+        var data = MessagePackSerializer.Serialize((1, "test"));
+        var type = typeof(Tuple<,>).MakeGenericType(typeof(int), typeof(string));
+        Debug.Log(type.FullName);
+        Debug.Log((1, "test").GetType().FullName);
+        Debug.Log(data.Length);
+        var method =
+            typeof(NetConfig).GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static)!
+                .MakeGenericMethod(type);
+        var ret = method.Invoke(null, new object[] { data });
+        // var ret = MessagePackSerializer.Deserialize<Tuple<int,string>>(data);
+        Debug.Log(ret);
     }
 }

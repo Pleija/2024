@@ -17,9 +17,9 @@ namespace Runner.Consumable
 
         public void Load()
         {
-            if(_consumablesDict == null) {
+            if (_consumablesDict == null) {
                 _consumablesDict = new Dictionary<Consumable.ConsumableType, Consumable>();
-                for(var i = 0; i < consumbales.Length; ++i)
+                for (var i = 0; i < consumbales.Length; ++i)
                     _consumablesDict.Add(consumbales[i].GetConsumableType(), consumbales[i]);
             }
         }

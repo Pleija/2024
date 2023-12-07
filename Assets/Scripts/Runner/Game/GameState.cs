@@ -87,10 +87,10 @@ namespace Runner.Game
         {
             m_CountdownRectTransform = countdownText.GetComponent<RectTransform>();
             m_LifeHearts = new Image[k_MaxLives];
-            for(var i = 0; i < k_MaxLives; ++i)
+            for (var i = 0; i < k_MaxLives; ++i)
                 m_LifeHearts[i] = lifeRectTransform.GetChild(i).GetComponent<Image>();
 
-            if(MusicPlayer.instance.GetStem(0) != gameTheme) {
+            if (MusicPlayer.instance.GetStem(0) != gameTheme) {
                 MusicPlayer.instance.SetStem(0, gameTheme);
                 CoroutineHandler.StartStaticCoroutine(MusicPlayer.instance.RestartAllStems());
             }
@@ -118,34 +118,31 @@ namespace Runner.Game
             finishTuto.SetActive(false);
             tutorialValidatedObstacles.gameObject.SetActive(false);
 
-            if(!trackManager.isRerun) {
+            if (!trackManager.isRerun) {
                 m_TimeSinceStart = 0;
-                trackManager.characterController.currentLife =
-                    trackManager.characterController.maxLife;
+                trackManager.characterController.currentLife = trackManager.characterController.maxLife;
             }
             currentModifier.OnRunStart(this);
             m_IsTutorial = !PlayerData.instance.tutorialDone;
             trackManager.isTutorial = m_IsTutorial;
 
-            if(m_IsTutorial) {
+            if (m_IsTutorial) {
                 tutorialValidatedObstacles.gameObject.SetActive(true);
                 tutorialValidatedObstacles.text = $"0/{k_ObstacleToClear}";
                 m_DisplayTutorial = true;
                 trackManager.newSegmentCreated = segment => {
-                    if(trackManager.currentZone != 0 && !m_CountObstacles &&
-                       m_NextValidSegment == null)
+                    if (trackManager.currentZone != 0 && !m_CountObstacles && m_NextValidSegment == null)
                         m_NextValidSegment = segment;
                 };
                 trackManager.currentSegementChanged = segment => {
                     m_CurrentSegmentObstacleIndex = 0;
 
-                    if(!m_CountObstacles && trackManager.currentSegment == m_NextValidSegment) {
+                    if (!m_CountObstacles && trackManager.currentSegment == m_NextValidSegment) {
                         trackManager.characterController.currentTutorialLevel += 1;
                         m_CountObstacles = true;
                         m_NextValidSegment = null;
                         m_DisplayTutorial = true;
-                        tutorialValidatedObstacles.text =
-                            $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
+                        tutorialValidatedObstacles.text = $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
                     }
                 };
             }
@@ -158,10 +155,10 @@ namespace Runner.Game
 
         public override void Tick()
         {
-            if(m_Finished) {
+            if (m_Finished) {
                 //if we are finished, we check if advertisement is ready, allow to disable the button until it is ready
 #if UNITY_ADS
-                if(!trackManager.isTutorial && !m_AdsInitialised && Advertisement.IsReady(adsPlacementId)) {
+                if (!trackManager.isTutorial && !m_AdsInitialised && Advertisement.IsReady(adsPlacementId)) {
                     adsForLifeButton.SetActive(true);
                     m_AdsInitialised = true;
 #if UNITY_ANALYTICS
@@ -171,7 +168,7 @@ namespace Runner.Game
                     });
 #endif
                 }
-                else if(trackManager.isTutorial || !m_AdsInitialised)
+                else if (trackManager.isTutorial || !m_AdsInitialised)
                     adsForLifeButton.SetActive(false);
 #else
                 adsForLifeButton.SetActive(false); //Ads is disabled
@@ -179,11 +176,11 @@ namespace Runner.Game
                 return;
             }
 
-            if(trackManager.isLoaded) {
+            if (trackManager.isLoaded) {
                 var chrCtrl = trackManager.characterController;
                 m_TimeSinceStart += Time.deltaTime;
 
-                if(chrCtrl.currentLife <= 0) {
+                if (chrCtrl.currentLife <= 0) {
                     pauseButton.gameObject.SetActive(false);
                     chrCtrl.CleanConsumable();
                     chrCtrl.character.animator.SetBool(s_DeadHash, true);
@@ -195,21 +192,21 @@ namespace Runner.Game
                 var toRemove = new List<Consumable.Consumable>();
                 var toRemoveIcon = new List<PowerupIcon>();
 
-                for(var i = 0; i < chrCtrl.consumables.Count; ++i) {
+                for (var i = 0; i < chrCtrl.consumables.Count; ++i) {
                     PowerupIcon icon = null;
 
-                    for(var j = 0; j < m_PowerupIcons.Count; ++j)
-                        if(m_PowerupIcons[j].linkedConsumable == chrCtrl.consumables[i]) {
+                    for (var j = 0; j < m_PowerupIcons.Count; ++j)
+                        if (m_PowerupIcons[j].linkedConsumable == chrCtrl.consumables[i]) {
                             icon = m_PowerupIcons[j];
                             break;
                         }
                     chrCtrl.consumables[i].Tick(chrCtrl);
 
-                    if(!chrCtrl.consumables[i].active) {
+                    if (!chrCtrl.consumables[i].active) {
                         toRemove.Add(chrCtrl.consumables[i]);
                         toRemoveIcon.Add(icon);
                     }
-                    else if(icon == null) {
+                    else if (icon == null) {
                         // If there's no icon for the active consumable, create it!
                         var o = Instantiate(PowerupIconPrefab);
                         icon = o.GetComponent<PowerupIcon>();
@@ -219,15 +216,15 @@ namespace Runner.Game
                     }
                 }
 
-                for(var i = 0; i < toRemove.Count; ++i) {
+                for (var i = 0; i < toRemove.Count; ++i) {
                     toRemove[i].Ended(trackManager.characterController);
                     Addressables.ReleaseInstance(toRemove[i].gameObject);
-                    if(toRemoveIcon[i] != null)
+                    if (toRemoveIcon[i] != null)
                         Destroy(toRemoveIcon[i].gameObject);
                     chrCtrl.consumables.Remove(toRemove[i]);
                     m_PowerupIcons.Remove(toRemoveIcon[i]);
                 }
-                if(m_IsTutorial)
+                if (m_IsTutorial)
                     TutorialCheckObstacleClear();
                 UpdateUI();
                 currentModifier.OnRunTick(this);
@@ -236,18 +233,18 @@ namespace Runner.Game
 
         private void OnApplicationPause(bool pauseStatus)
         {
-            if(pauseStatus) Pause();
+            if (pauseStatus) Pause();
         }
 
         private void OnApplicationFocus(bool focusStatus)
         {
-            if(!focusStatus) Pause();
+            if (!focusStatus) Pause();
         }
 
         public void Pause(bool displayMenu = true)
         {
             //check if we aren't finished OR if we aren't already in pause (as that would mess states)
-            if(m_Finished || AudioListener.pause == true)
+            if (m_Finished || AudioListener.pause == true)
                 return;
             AudioListener.pause = true;
             Time.timeScale = 0;
@@ -264,7 +261,7 @@ namespace Runner.Game
             pauseButton.gameObject.SetActive(true);
             pauseMenu.gameObject.SetActive(false);
             wholeUI.gameObject.SetActive(true);
-            if(m_WasMoving) trackManager.StartMove(false);
+            if (m_WasMoving) trackManager.StartMove(false);
             AudioListener.pause = false;
         }
 
@@ -283,8 +280,8 @@ namespace Runner.Game
         {
             coinText.text = trackManager.characterController.coins.ToString();
             premiumText.text = trackManager.characterController.premium.ToString();
-            for(var i = 0; i < 3; ++i)
-                if(trackManager.characterController.currentLife > i)
+            for (var i = 0; i < 3; ++i)
+                if (trackManager.characterController.currentLife > i)
                     m_LifeHearts[i].color = Color.white;
                 else
                     m_LifeHearts[i].color = Color.black;
@@ -292,7 +289,7 @@ namespace Runner.Game
             multiplierText.text = "x " + trackManager.multiplier;
             distanceText.text = Mathf.FloorToInt(trackManager.worldDistance).ToString() + "m";
 
-            if(trackManager.timeToStart >= 0) {
+            if (trackManager.timeToStart >= 0) {
                 countdownText.gameObject.SetActive(true);
                 countdownText.text = Mathf.Ceil(trackManager.timeToStart).ToString();
                 m_CountdownRectTransform.localScale = Vector3.one *
@@ -303,7 +300,7 @@ namespace Runner.Game
             }
 
             // Consumable
-            if(trackManager.characterController.inventory != null) {
+            if (trackManager.characterController.inventory != null) {
                 inventoryIcon.transform.parent.gameObject.SetActive(true);
                 inventoryIcon.sprite = trackManager.characterController.inventory.icon;
             }
@@ -321,8 +318,8 @@ namespace Runner.Game
             Shader.SetGlobalFloat("_BlinkingValue", 0.0f);
             yield return new WaitForSeconds(2.0f);
 
-            if(currentModifier.OnRunEnd(this)) {
-                if(trackManager.isRerun)
+            if (currentModifier.OnRunEnd(this)) {
+                if (trackManager.isRerun)
                     manager.SwitchState("GameOver");
                 else
                     OpenGameOverPopup();
@@ -331,8 +328,8 @@ namespace Runner.Game
 
         protected void ClearPowerup()
         {
-            for(var i = 0; i < m_PowerupIcons.Count; ++i)
-                if(m_PowerupIcons[i] != null)
+            for (var i = 0; i < m_PowerupIcons.Count; ++i)
+                if (m_PowerupIcons[i] != null)
                     Destroy(m_PowerupIcons[i].gameObject);
             trackManager.characterController.powerupSource.Stop();
             m_PowerupIcons.Clear();
@@ -356,15 +353,14 @@ namespace Runner.Game
             //This check avoid a bug where the video AND premium button are released on the same frame.
             //It lead to the ads playing and then crashing the game as it try to start the second wind again.
             //Whichever of those function run first will take precedence
-            if(m_GameoverSelectionDone)
+            if (m_GameoverSelectionDone)
                 return;
             m_GameoverSelectionDone = true;
             PlayerData.instance.premium.Value -= 3;
             //since premium are directly added to the PlayerData premium count, we also need to remove them from the current run premium count
             // (as if you had 0, grabbed 3 during that run, you can directly buy a new chance). But for the case where you add one in the playerdata
             // and grabbed 2 during that run, we don't want to remove 3, otherwise will have -1 premium for that run!
-            trackManager.characterController.premium -=
-                Mathf.Min(trackManager.characterController.premium, 3);
+            trackManager.characterController.premium -= Mathf.Min(trackManager.characterController.premium, 3);
             SecondWind();
         }
 
@@ -377,11 +373,11 @@ namespace Runner.Game
 
         public void ShowRewardedAd()
         {
-            if(m_GameoverSelectionDone)
+            if (m_GameoverSelectionDone)
                 return;
             m_GameoverSelectionDone = true;
 #if UNITY_ADS
-            if(Advertisement.IsReady(adsPlacementId)) {
+            if (Advertisement.IsReady(adsPlacementId)) {
 #if UNITY_ANALYTICS
                 AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
                     { "level_index", PlayerData.instance.rank },
@@ -409,7 +405,7 @@ namespace Runner.Game
 #if UNITY_ADS
         private void HandleShowResult(ShowResult result)
         {
-            switch(result) {
+            switch (result) {
                 case ShowResult.Finished:
 #if UNITY_ANALYTICS
                     AnalyticsEvent.AdComplete(adsRewarded, adsNetwork, adsPlacementId);
@@ -436,58 +432,54 @@ namespace Runner.Game
 
         private void TutorialCheckObstacleClear()
         {
-            if(trackManager.segments.Count == 0)
+            if (trackManager.segments.Count == 0)
                 return;
 
-            if(AudioListener.pause &&
-               !trackManager.characterController.tutorialWaitingForValidation) {
+            if (AudioListener.pause && !trackManager.characterController.tutorialWaitingForValidation) {
                 m_DisplayTutorial = false;
                 DisplayTutorial(false);
             }
-            var ratio = trackManager.currentSegmentDistance /
-                trackManager.currentSegment.worldLength;
+            var ratio = trackManager.currentSegmentDistance / trackManager.currentSegment.worldLength;
             var nextObstaclePosition =
                 m_CurrentSegmentObstacleIndex < trackManager.currentSegment.obstaclePositions.Length
-                    ? trackManager.currentSegment.obstaclePositions[m_CurrentSegmentObstacleIndex]
-                    : float.MaxValue;
+                    ? trackManager.currentSegment.obstaclePositions[m_CurrentSegmentObstacleIndex] : float.MaxValue;
 
-            if(m_CountObstacles && ratio > nextObstaclePosition + 0.05f) {
+            if (m_CountObstacles && ratio > nextObstaclePosition + 0.05f) {
                 m_CurrentSegmentObstacleIndex += 1;
 
-                if(!trackManager.characterController.characterCollider.tutorialHitObstacle) {
+                if (!trackManager.characterController.characterCollider.tutorialHitObstacle) {
                     m_TutorialClearedObstacle += 1;
-                    tutorialValidatedObstacles.text =
-                        $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
+                    tutorialValidatedObstacles.text = $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
                 }
                 trackManager.characterController.characterCollider.tutorialHitObstacle = false;
 
-                if(m_TutorialClearedObstacle == k_ObstacleToClear) {
+                if (m_TutorialClearedObstacle == k_ObstacleToClear) {
                     m_TutorialClearedObstacle = 0;
                     m_CountObstacles = false;
                     m_NextValidSegment = null;
                     trackManager.ChangeZone();
                     tutorialValidatedObstacles.text = "Passed!";
 
-                    if(trackManager.currentZone == 0) {
+                    if (trackManager.currentZone == 0) {
                         //we looped, mean we finished the tutorial.
                         trackManager.characterController.currentTutorialLevel = 3;
                         DisplayTutorial(true);
                     }
                 }
             }
-            else if(m_DisplayTutorial && ratio > nextObstaclePosition - 0.1f) {
+            else if (m_DisplayTutorial && ratio > nextObstaclePosition - 0.1f) {
                 DisplayTutorial(true);
             }
         }
 
         private void DisplayTutorial(bool value)
         {
-            if(value)
+            if (value)
                 Pause(false);
             else
                 Resume();
 
-            switch(trackManager.characterController.currentTutorialLevel) {
+            switch (trackManager.characterController.currentTutorialLevel) {
                 case 0:
                     sideSlideTuto.SetActive(value);
                     trackManager.characterController.tutorialWaitingForValidation = value;

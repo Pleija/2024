@@ -22,7 +22,7 @@ namespace Runner.Game
 
         public AState topState {
             get {
-                if(m_StateStack.Count == 0) return null;
+                if (m_StateStack.Count == 0) return null;
                 return m_StateStack[m_StateStack.Count - 1];
             }
         }
@@ -39,10 +39,10 @@ namespace Runner.Game
 
             // We build a dictionnary from state for easy switching using their name.
             m_StateDict.Clear();
-            if(states.Length == 0)
+            if (states.Length == 0)
                 return;
 
-            for(var i = 0; i < states.Length; ++i) {
+            for (var i = 0; i < states.Length; ++i) {
                 states[i].manager = this;
                 m_StateDict.Add(states[i].GetName(), states[i]);
             }
@@ -52,7 +52,7 @@ namespace Runner.Game
 
         protected void Update()
         {
-            if(m_StateStack.Count > 0) m_StateStack[m_StateStack.Count - 1].Tick();
+            if (m_StateStack.Count > 0) m_StateStack[m_StateStack.Count - 1].Tick();
         }
 
         protected void OnApplicationQuit()
@@ -73,7 +73,7 @@ namespace Runner.Game
         {
             var state = FindState(newState);
 
-            if(state == null) {
+            if (state == null) {
                 Debug.LogError("Can't find the state named " + newState);
                 return;
             }
@@ -86,20 +86,18 @@ namespace Runner.Game
         public AState FindState(string stateName)
         {
             AState state;
-            if(!m_StateDict.TryGetValue(stateName, out state)) return null;
+            if (!m_StateDict.TryGetValue(stateName, out state)) return null;
             return state;
         }
 
         public void PopState()
         {
-            if(m_StateStack.Count < 2) {
+            if (m_StateStack.Count < 2) {
                 Debug.LogError("Can't pop states, only one in stack.");
                 return;
             }
-            m_StateStack[m_StateStack.Count - 1].DoExit()
-                .Exit(m_StateStack[m_StateStack.Count - 2]);
-            m_StateStack[m_StateStack.Count - 2].DoEnter()
-                .Enter(m_StateStack[m_StateStack.Count - 2]);
+            m_StateStack[m_StateStack.Count - 1].DoExit().Exit(m_StateStack[m_StateStack.Count - 2]);
+            m_StateStack[m_StateStack.Count - 2].DoEnter().Enter(m_StateStack[m_StateStack.Count - 2]);
             m_StateStack.RemoveAt(m_StateStack.Count - 1);
         }
 
@@ -107,12 +105,12 @@ namespace Runner.Game
         {
             AState state;
 
-            if(!m_StateDict.TryGetValue(name, out state)) {
+            if (!m_StateDict.TryGetValue(name, out state)) {
                 Debug.LogError("Can't find the state named " + name);
                 return;
             }
 
-            if(m_StateStack.Count > 0) {
+            if (m_StateStack.Count > 0) {
                 m_StateStack[m_StateStack.Count - 1].DoExit().Exit(state);
                 //state.OnEnter?.Invoke();
                 state.DoEnter().Enter(m_StateStack[m_StateStack.Count - 1]);

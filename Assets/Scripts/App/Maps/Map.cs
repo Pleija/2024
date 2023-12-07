@@ -12,7 +12,7 @@ namespace Maps
     {
         public static IEnumerable<string> ChunksUpto(string str, int maxChunkSize)
         {
-            for(var i = 0; i < str.Length; i += maxChunkSize)
+            for (var i = 0; i < str.Length; i += maxChunkSize)
                 yield return str.Substring(i, Math.Min(maxChunkSize, str.Length - i));
         }
 
@@ -40,12 +40,12 @@ namespace Maps
 
         public TileType Get(int x, int y)
         {
-            if(string.IsNullOrEmpty(Str)) Generate();
-            if(x < 0 || x > 27) return TileType.None;
-            if(y < 0 || y > 30) return TileType.None;
+            if (string.IsNullOrEmpty(Str)) Generate();
+            if (x < 0 || x > 27) return TileType.None;
+            if (y < 0 || y > 30) return TileType.None;
             var c = Arr[y][x];
-            if(c == '|') return TileType.Wall;
-            if(c == '_') return TileType.Fill;
+            if (c == '|') return TileType.Wall;
+            if (c == '_') return TileType.Fill;
             return TileType.Road;
         }
 

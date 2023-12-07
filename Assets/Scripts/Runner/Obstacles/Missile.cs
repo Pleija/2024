@@ -34,11 +34,10 @@ namespace Runner.Obstacles
             Vector3 position;
             Quaternion rotation;
             segment.GetPointAt(t, out position, out rotation);
-            AsyncOperationHandle op =
-                Addressables.InstantiateAsync(gameObject.name, position, rotation);
+            AsyncOperationHandle op = Addressables.InstantiateAsync(gameObject.name, position, rotation);
             yield return op;
 
-            if(op.Result == null || !(op.Result is GameObject)) {
+            if (op.Result == null || !(op.Result is GameObject)) {
                 Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                 yield break;
             }
@@ -64,20 +63,20 @@ namespace Runner.Obstacles
         public override void Impacted()
         {
             base.Impacted();
-            if(animator != null) animator.SetTrigger(s_DeathHash);
+            if (animator != null) animator.SetTrigger(s_DeathHash);
         }
 
         public void Update()
         {
-            if(m_Ready && m_OwnSegement.manager.isMoving) {
-                if(m_IsMoving) {
+            if (m_Ready && m_OwnSegement.manager.isMoving) {
+                if (m_IsMoving) {
                     transform.position += transform.forward * k_Speed * Time.deltaTime;
                 }
                 else {
-                    if(TrackManager.instance.segments[1] == m_OwnSegement) {
-                        if(animator != null) animator.SetTrigger(s_RunHash);
+                    if (TrackManager.instance.segments[1] == m_OwnSegement) {
+                        if (animator != null) animator.SetTrigger(s_RunHash);
 
-                        if(m_Audio != null && movingSound != null && movingSound.Length > 0) {
+                        if (m_Audio != null && movingSound != null && movingSound.Length > 0) {
                             m_Audio.clip = movingSound[Random.Range(0, movingSound.Length)];
                             m_Audio.Play();
                             m_Audio.loop = true;

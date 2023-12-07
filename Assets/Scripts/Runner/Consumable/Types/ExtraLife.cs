@@ -14,7 +14,7 @@ namespace Runner.Consumable.Types
 
         public override bool CanBeUsed(CharacterInputController c)
         {
-            if(c.currentLife == c.maxLife)
+            if (c.currentLife == c.maxLife)
                 return false;
             return true;
         }
@@ -22,7 +22,7 @@ namespace Runner.Consumable.Types
         public override IEnumerator Started(CharacterInputController c)
         {
             yield return base.Started(c);
-            if(c.currentLife < k_MaxLives)
+            if (c.currentLife < k_MaxLives)
                 c.currentLife += 1;
             else
                 c.coins += k_CoinValue;

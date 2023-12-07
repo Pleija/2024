@@ -15,15 +15,15 @@ namespace Runner.UI
         public IEnumerator Open()
         {
             gameObject.SetActive(true);
-            foreach(Transform t in missionPlace)
+            foreach (Transform t in missionPlace)
                 Addressables.ReleaseInstance(t.gameObject);
 
-            for(var i = 0; i < 3; ++i)
-                if(PlayerData.instance.missions.Count > i) {
+            for (var i = 0; i < 3; ++i)
+                if (PlayerData.instance.missions.Count > i) {
                     AsyncOperationHandle op = Addressables.InstantiateAsync(missionEntryPrefab);
                     yield return op;
 
-                    if(op.Result == null || !(op.Result is GameObject)) {
+                    if (op.Result == null || !(op.Result is GameObject)) {
                         Debug.LogWarning(string.Format("Unable to load mission entry {0}.",
                             missionEntryPrefab.Asset.name));
                         yield break;
@@ -36,7 +36,7 @@ namespace Runner.UI
                     AsyncOperationHandle op = Addressables.InstantiateAsync(addMissionButtonPrefab);
                     yield return op;
 
-                    if(op.Result == null || !(op.Result is GameObject)) {
+                    if (op.Result == null || !(op.Result is GameObject)) {
                         Debug.LogWarning(string.Format("Unable to load button {0}.",
                             addMissionButtonPrefab.Asset.name));
                         yield break;

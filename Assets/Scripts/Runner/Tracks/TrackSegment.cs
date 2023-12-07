@@ -51,7 +51,7 @@ namespace Runner.Tracks
             var segmentT = scaledT - index;
             var orig = pathParent.GetChild(index);
 
-            if(index == pathParent.childCount - 1) {
+            if (index == pathParent.childCount - 1) {
                 pos = orig.position;
                 rot = orig.rotation;
                 return;
@@ -65,7 +65,7 @@ namespace Runner.Tracks
         {
             m_WorldLength = 0;
 
-            for(var i = 1; i < pathParent.childCount; ++i) {
+            for (var i = 1; i < pathParent.childCount; ++i) {
                 var orig = pathParent.GetChild(i - 1);
                 var end = pathParent.GetChild(i);
                 var vec = end.position - orig.position;
@@ -75,7 +75,7 @@ namespace Runner.Tracks
 
         public void Cleanup()
         {
-            while(collectibleTransform.childCount > 0) {
+            while (collectibleTransform.childCount > 0) {
                 var t = collectibleTransform.GetChild(0);
                 t.SetParent(null);
                 Coin.coinPool.Free(t.gameObject);
@@ -86,19 +86,19 @@ namespace Runner.Tracks
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
-            if(pathParent == null)
+            if (pathParent == null)
                 return;
             var c = Gizmos.color;
             Gizmos.color = Color.red;
 
-            for(var i = 1; i < pathParent.childCount; ++i) {
+            for (var i = 1; i < pathParent.childCount; ++i) {
                 var orig = pathParent.GetChild(i - 1);
                 var end = pathParent.GetChild(i);
                 Gizmos.DrawLine(orig.position, end.position);
             }
             Gizmos.color = Color.blue;
 
-            for(var i = 0; i < obstaclePositions.Length; ++i) {
+            for (var i = 0; i < obstaclePositions.Length; ++i) {
                 Vector3 pos;
                 Quaternion rot;
                 GetPointAt(obstaclePositions[i], out pos, out rot);
@@ -123,21 +123,20 @@ namespace Runner.Tracks
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if(GUILayout.Button("Add obstacles"))
+            if (GUILayout.Button("Add obstacles"))
                 ArrayUtility.Add(ref m_Segment.obstaclePositions, 0.0f);
 
-            if(m_Segment.obstaclePositions != null) {
+            if (m_Segment.obstaclePositions != null) {
                 var toremove = -1;
 
-                for(var i = 0; i < m_Segment.obstaclePositions.Length; ++i) {
+                for (var i = 0; i < m_Segment.obstaclePositions.Length; ++i) {
                     GUILayout.BeginHorizontal();
-                    m_Segment.obstaclePositions[i] =
-                        EditorGUILayout.Slider(m_Segment.obstaclePositions[i], 0.0f, 1.0f);
-                    if(GUILayout.Button("-", GUILayout.MaxWidth(32)))
+                    m_Segment.obstaclePositions[i] = EditorGUILayout.Slider(m_Segment.obstaclePositions[i], 0.0f, 1.0f);
+                    if (GUILayout.Button("-", GUILayout.MaxWidth(32)))
                         toremove = i;
                     GUILayout.EndHorizontal();
                 }
-                if(toremove != -1)
+                if (toremove != -1)
                     ArrayUtility.RemoveAt(ref m_Segment.obstaclePositions, toremove);
             }
         }

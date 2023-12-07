@@ -25,7 +25,7 @@ namespace Runner.Characters
         // a value of -1 as parameter disables all accessory.
         public void SetupAccesory(int accessory)
         {
-            for(var i = 0; i < accessories.Length; ++i)
+            for (var i = 0; i < accessories.Length; ++i)
                 accessories[i].gameObject.SetActive(i == PlayerData.instance.usedAccessory);
         }
     }
