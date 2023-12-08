@@ -33,8 +33,7 @@ namespace SqlCipher4Unity3D
         public static string Md5(string observedText)
         {
             return string.Join("",
-                from ba in MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(observedText))
-                select ba.ToString("x2"));
+                from ba in MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(observedText)) select ba.ToString("x2"));
         }
 
         private static SQLiteConnection m_Connection;
@@ -46,7 +45,7 @@ namespace SqlCipher4Unity3D
 
         public static SQLiteConnection conn {
             get {
-                if(m_Connection != null) return m_Connection;
+                if (m_Connection != null) return m_Connection;
                 m_Connection = new SQLiteConnection(dbPath, pwd);
                 return m_Connection;
             }
@@ -56,9 +55,9 @@ namespace SqlCipher4Unity3D
         {
             var types = new List<string>();
 
-            foreach(var x in Res.Exists<Model>()) {
+            foreach (var x in Res.Exists<Model>()) {
                 // await Addressables.DownloadDependenciesAsync(x).Task;
-                if(Defaults.ContainsKey(x.ResourceType)) continue;
+                if (Defaults.ContainsKey(x.ResourceType)) continue;
                 types.Add($"{x.ResourceType.FullName} => {x.PrimaryKey}");
                 Defaults[x.ResourceType] = await Addressables.LoadAssetAsync<Model>(x).Task;
             }
@@ -98,13 +97,13 @@ namespace SqlCipher4Unity3D
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if(this == null) return;
+            if (this == null) return;
             UnitySerializationUtility.DeserializeUnityObject(this, ref this.serializationData);
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            if(this == null) return;
+            if (this == null) return;
             UnitySerializationUtility.SerializeUnityObject(this, ref this.serializationData);
         }
     }
@@ -117,39 +116,36 @@ namespace SqlCipher4Unity3D
 
         public static T self {
             get {
-                if(m_Instance) return m_Instance;
+                if (m_Instance) return m_Instance;
                 m_Instance = conn.Table<T>().FirstOrInsert(value => {
                     //value ??= CreateInstance<T>();
-                    if(!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
+                    if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
-                        if(!Application.isPlaying) {
+                        if (!Application.isPlaying) {
                             result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
-                                    AssetDatabase.LoadAssetAtPath<T>(
-                                        AssetDatabase.GUIDToAssetPath(x)))
-                                .FirstOrDefault();
+                                AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x))).FirstOrDefault();
                         }
 #endif
-                        if(result == null && Res.Exists<T>() is { } locations) {
-                            result = Defaults[typeof(T)] = Addressables
-                                .LoadAssetAsync<T>(locations.First().PrimaryKey)
+                        if (result == null && Res.Exists<T>() is { } locations) {
+                            result = Defaults[typeof(T)] = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey)
                                 .WaitForCompletion();
                             Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
                         }
 
-                        if(result == null) {
+                        if (result == null) {
                             Debug.Log($"{typeof(T).Name} asset not found");
                         }
                     }
 #if UNITY_EDITOR
                     // if(!Application.isEditor) return;
 
-                    if((result == null || AssetDatabase.GetAssetPath(result) == null)) {
+                    if ((result == null || AssetDatabase.GetAssetPath(result) == null)) {
                         var settings = AddressableAssetSettingsDefaultObject.Settings;
                         //var entries = settings.groups.SelectMany(x => x.entries);
                         result = Defaults[typeof(T)] = value; //CreateInstance<T>();
                         var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
 
-                        if(!Directory.Exists(Path.GetDirectoryName(path))) {
+                        if (!Directory.Exists(Path.GetDirectoryName(path))) {
                             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
                         }
                         AssetDatabase.CreateAsset(value, path);
@@ -162,7 +158,7 @@ namespace SqlCipher4Unity3D
                     }
 #endif
 
-                    if(result) {
+                    if (result) {
                         Setup(result, value);
                     }
                     else {
@@ -182,22 +178,21 @@ namespace SqlCipher4Unity3D
                 .Where(x => !x.IsDefined(typeof(IgnoreAttribute), true)).ForEach(x => {
                     object value = null;
 
-                    if(Regex.IsMatch(x.Name, @"^[A-Z]")) {
-                        switch(x) {
+                    if (Regex.IsMatch(x.Name, @"^[A-Z]")) {
+                        switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                                 value = propertyInfo.GetValue(config, null) ??
                                     Activator.CreateInstance(propertyInfo.PropertyType);
                                 propertyInfo.SetValue(target, value);
                                 break;
                             case FieldInfo fieldInfo:
-                                value = fieldInfo.GetValue(config) ??
-                                    Activator.CreateInstance(fieldInfo.FieldType);
+                                value = fieldInfo.GetValue(config) ?? Activator.CreateInstance(fieldInfo.FieldType);
                                 fieldInfo.SetValue(target, value);
                                 break;
                         }
                     }
                     else {
-                        switch(x) {
+                        switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                                 //Debug.Log($"check property: {x.Name}");
                                 value = propertyInfo.GetValue(target, null);
@@ -211,12 +206,12 @@ namespace SqlCipher4Unity3D
 
                     void ToSave(object t)
                     {
-                        if(target.isSetup) return;
+                        if (target.isSetup) return;
                         Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
                         target.Save();
                     }
 
-                    switch(value) {
+                    switch (value) {
                         case IntReactiveProperty intReactiveProperty:
                             //Debug.Log($"Setup: {typeof(T).Name}.{x.Name}");
                             intReactiveProperty.Subscribe(t => ToSave(t));
@@ -238,12 +233,11 @@ namespace SqlCipher4Unity3D
         void TestSave()
         {
             Save();
-            Debug.Log(JsonConvert.SerializeObject(conn.Table<T>().FirstOrDefault(),
-                Formatting.Indented));
+            Debug.Log(JsonConvert.SerializeObject(conn.Table<T>().FirstOrDefault(), Formatting.Indented));
         }
 
         [ButtonGroup("2")]
-       public void Drop()
+        public void Drop()
         {
             conn.DropTable<T>();
         }
