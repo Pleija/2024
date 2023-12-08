@@ -10,6 +10,6 @@ namespace App.Models
         public LongReactiveProperty DefaultSeed = 0;
 
         //[TextArea]
-        public StringReactiveProperty DefaultKey = "";
+        public string DefaultKey = "";
     }
 }
