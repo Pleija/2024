@@ -9,7 +9,7 @@ namespace App.Models
         public LongReactiveProperty timestamp = 0;
         public LongReactiveProperty DefaultSeed = 0;
 
-        [TextArea]
+        //[TextArea]
         public StringReactiveProperty DefaultKey = "";
     }
 }

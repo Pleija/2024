@@ -25,6 +25,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  timestamp: 0
-  DefaultSeed: 1700054363
-  DefaultKey: 8drpWsFJmD6IO+Qt7c9f5khwN4nPuiE1G2KbXTZYjSAog/HeBCylVq03azMRvLxU
+  timestamp:
+    value: 0
+  DefaultSeed:
+    value: 0
+  DefaultKey:
+    value: 

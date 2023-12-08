@@ -586,6 +586,11 @@ namespace SqlCipher4Unity3D
             return DropTable(GetMapping(typeof(T)));
         }
 
+        public int DropTable(Type type)
+        {
+            return DropTable(GetMapping(type));
+        }
+
         /// <summary>
         /// Executes a "drop table" on the database.  This is non-recoverable.
         /// </summary>

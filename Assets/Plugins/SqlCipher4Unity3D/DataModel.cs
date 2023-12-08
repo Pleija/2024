@@ -242,6 +242,12 @@ namespace SqlCipher4Unity3D
                 Formatting.Indented));
         }
 
+        [ButtonGroup("2")]
+       public void Drop()
+        {
+            conn.DropTable<T>();
+        }
+
         public new T Save()
         {
             conn.Save(this);

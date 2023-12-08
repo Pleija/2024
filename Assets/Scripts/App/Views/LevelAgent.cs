@@ -21,7 +21,7 @@ namespace App
             User.self.exp ??= new IntReactiveProperty();
             User.self.level ??= new IntReactiveProperty();
             User.self.exp.Subscribe(x => SetValue(x));
-            SetValue();
+            //SetValue();
         }
 
         public void SetValue(int? value = null)
