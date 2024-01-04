@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Pleija Games
-  productName: "PowerRun \u7206\u71C3\u8DD1\u9177"
+  productName: "My Cat Run Away \u6211\u5BB6\u732B\u8DD1\u4E86"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}

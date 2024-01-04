@@ -995,7 +995,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: d17274fb50cd048a9a3c779efd92ef34, type: 3}
     m_FontSize: 20
     m_FontStyle: 1
     m_BestFit: 0
@@ -1103,7 +1103,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CLASH RUNNER
+  m_text: My Cat Run Away
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1020ed9e6cc744031b97dc06ed6c3484, type: 2}
   m_sharedMaterial: {fileID: 3309598940397051126, guid: 1020ed9e6cc744031b97dc06ed6c3484,
@@ -1701,7 +1701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5518132253577229149
 RectTransform:
   m_ObjectHideFlags: 0

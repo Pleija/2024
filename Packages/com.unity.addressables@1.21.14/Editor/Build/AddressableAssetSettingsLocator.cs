@@ -387,7 +387,7 @@ namespace UnityEditor.AddressableAssets.Settings
                     locations.Add(new ResourceLocationBase(keyStr, internalId, typeof(AssetDatabaseProvider).FullName, m_SpriteAtlasType));
                 else
                 {
-                    foreach (var obj in AssetDatabaseProvider.LoadAssetsWithSubAssets(internalId))
+                    foreach (var obj in AssetDatabaseProvider.LoadAssetsWithSubAssets(internalId).Where(x => x != null))
                     {
                         var rtt = AddressableAssetUtility.MapEditorTypeToRuntimeType(obj.GetType(), false);
                         if (type.IsAssignableFrom(rtt))
