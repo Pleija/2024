@@ -1,0 +1,11 @@
+{
+    "name": "PhysicsDemo",
+    "allowUnsafeCode": true,
+    "references": [
+        "Unity.Entities",
+        "Unity.PhysicsS",
+        "sfloat",
+        "smath",
+        "stransforms"
+    ]
+}

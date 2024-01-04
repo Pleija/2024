@@ -108,18 +108,23 @@ namespace App
                 m_Reloaded = true;
                 Addressables.InitializeAsync().WaitForCompletion();
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
-                Debug.Log($"Start Update: Reload => {loc != null}");
+                Debug.Log($"Start Update: Reload => {loc != null}: {loc?.PrimaryKey}");
 
                 if (PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
                     Application.version == PlayerPrefs.GetString(VersionKey)) {
                     Debug.Log("Reload Update prefab");
-                    var obj = Addressables.LoadAssetAsync<GameObject>(prefab).WaitForCompletion();
-                    //AssetBundle.UnloadAllAssetBundles(false);
-                    Instantiate(obj);
-                    Destroy(gameObject);
+                    Addressables.InstantiateAsync(loc).Completed += h => {
+                        Debug.Log("replace prefab");
+                        gameObject.SetActive(false);
+                    };
+                    // var obj = Addressables.LoadAssetAsync<GameObject>(prefab).WaitForCompletion();
+                    // //AssetBundle.UnloadAllAssetBundles(false);
+                    // Instantiate(obj);
+                    // Destroy(gameObject);
                     return;
                 }
             }
+            Debug.Log("Start");
             OnStart?.Invoke();
             privacyPanel.SetActive(!isAgreed);
             offlinePanel.SetActive(false);
@@ -212,10 +217,14 @@ namespace App
                 if (p4.IsValid()) Addressables.Release(p4);
                 updated = true;
 
-                if (Res.Exists<GameObject>("Update") is { } found &&
-                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go) {
-                    Instantiate(go);
-                    Destroy(gameObject);
+                if (Res.Exists<GameObject>("Update") is { } found/* &&
+                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
+                    Addressables.InstantiateAsync(found).Completed += h => {
+                        //Destroy(gameObject);
+                        gameObject.SetActive(false);
+                    };
+                    // Instantiate(go);
+                    // Destroy(gameObject);
                     yield break;
                 }
             }

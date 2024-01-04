@@ -54,6 +54,7 @@
             jsEnv.UsingAction<System.Int32, System.Boolean>();
             jsEnv.UsingAction<System.Int32, System.Threading.Tasks.ParallelLoopState>();
             jsEnv.UsingAction<System.Int32, UnityEngine.Rect>();
+            jsEnv.UsingAction<System.Int32, UnityEngine.Vector2>();
             jsEnv.UsingAction<System.Int64>();
             jsEnv.UsingAction<System.Int64, System.Threading.Tasks.ParallelLoopState>();
             jsEnv.UsingAction<System.Object, System.Boolean>();
@@ -92,6 +93,7 @@
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.Scene>();
             jsEnv.UsingAction<UnityEngine.Scripting.GarbageCollector.Mode>();
             jsEnv.UsingAction<UnityEngine.Transform, UnityEngine.Transform, System.Boolean, System.Object[]>();
+            jsEnv.UsingAction<UnityRoyale.CardData, UnityEngine.Vector3, UnityRoyale.Placeable.Faction>();
             jsEnv.UsingFunc<BestHTTP.Connections.ConnectionBase, System.Boolean>();
             jsEnv.UsingFunc<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse, System.Byte[], System.Int32, System.Boolean>();
             jsEnv.UsingFunc<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse, System.Uri, System.Boolean>();
@@ -118,8 +120,10 @@
             jsEnv.UsingFunc<System.Security.Claims.Claim, System.Boolean>();
             jsEnv.UsingFunc<System.Single>();
             jsEnv.UsingFunc<System.Single, System.Single>();
+            jsEnv.UsingFunc<System.String, System.Boolean>();
             jsEnv.UsingFunc<System.String, System.Int32, System.Char, System.Char>();
             jsEnv.UsingFunc<System.String, System.Object, System.Boolean>();
+            jsEnv.UsingFunc<System.String, System.String, System.Int32>();
             jsEnv.UsingFunc<System.String, UnityEngine.Color>();
             jsEnv.UsingFunc<System.Threading.CancellationToken, Cysharp.Threading.Tasks.UniTask>();
             jsEnv.UsingFunc<System.Threading.CancellationToken, Cysharp.Threading.Tasks.UniTaskVoid>();
@@ -127,6 +131,7 @@
             jsEnv.UsingFunc<System.Type, System.Object, System.Boolean>();
             jsEnv.UsingFunc<System.ValueTuple<System.Single, System.Single>>();
             jsEnv.UsingFunc<UniRx.Unit, System.IObservable<UniRx.Unit>>();
+            jsEnv.UsingFunc<UnityEngine.GameObject, System.Boolean>();
             jsEnv.UsingFunc<UnityEngine.Rendering.BatchRendererGroup, UnityEngine.Rendering.BatchCullingContext, Unity.Jobs.JobHandle>();
             jsEnv.UsingFunc<UnityEngine.ResourceManagement.AsyncOperations.DownloadStatus>();
             jsEnv.UsingFunc<UnityEngine.UI.ILayoutElement, System.Single>();

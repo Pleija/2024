@@ -1,0 +1,20 @@
+{
+    "name": "stransforms",
+    "rootNamespace": "",
+    "references": [
+        "sfloat",
+        "Unity.Entities",
+        "Unity.Collections",
+        "Unity.Burst",
+        "smath"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
