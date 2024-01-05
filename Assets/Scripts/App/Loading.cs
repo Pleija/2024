@@ -113,7 +113,7 @@ namespace App
                 if (PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
                     Application.version == PlayerPrefs.GetString(VersionKey)) {
                     Debug.Log("Reload Update prefab");
-                    Addressables.InstantiateAsync(loc).Completed += h => {
+                    Addressables.InstantiateAsync(prefab).Completed += h => {
                         Debug.Log("replace prefab");
                         gameObject.SetActive(false);
                     };
@@ -217,7 +217,7 @@ namespace App
                 if (p4.IsValid()) Addressables.Release(p4);
                 updated = true;
 
-                if (Res.Exists<GameObject>("Update") is { } found/* &&
+                if (Res.Exists<GameObject>(updatePrefabName) is { } found /* &&
                     Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
                     Addressables.InstantiateAsync(found).Completed += h => {
                         //Destroy(gameObject);
@@ -252,6 +252,9 @@ namespace App
         }
 
         public UnityEvent OnLoad = new UnityEvent();
+
+        [SerializeField]
+        private string updatePrefabName = "StartUpdate";
 
         public void LoadScene()
         {
