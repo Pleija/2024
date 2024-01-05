@@ -2732,6 +2732,11 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  testPrefab:
+    m_AssetGUID: aaf2b1ba2eb984624b5e3fcaa618cb11
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   privacyPanel: {fileID: 5518132253115294656}
   agreeBtn: {fileID: 5518132253935596128}
   prgText: {fileID: 5518132253212999296}
@@ -2762,3 +2767,4 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  updatePrefabName: StartUpdate

@@ -23,6 +23,7 @@ namespace App
     {
         public AssetReference nextScene;
         public AssetReference prefab;
+        public AssetReference testPrefab;
 
         //public GameObject prefabObj;
         public static string PrivacyKey = "App.Privacy";
@@ -109,13 +110,20 @@ namespace App
                 Addressables.InitializeAsync().WaitForCompletion();
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
                 Debug.Log($"Start Update: Reload => {loc != null}: {loc?.PrimaryKey}");
+                Addressables.InstantiateAsync(testPrefab).WaitForCompletion();
+                var testHandle = Addressables.InstantiateAsync(prefab);
+                testHandle.Completed += h => {
+                    h.Result.SetActive(false);
+                };
+                testHandle.WaitForCompletion();
 
                 if (PlayerPrefs.HasKey(FirstUpdateKey) && loc != null &&
                     Application.version == PlayerPrefs.GetString(VersionKey)) {
                     Debug.Log("Reload Update prefab");
                     Addressables.InstantiateAsync(prefab).Completed += h => {
                         Debug.Log("replace prefab");
-                        gameObject.SetActive(false);
+                        DoStart();
+                        //gameObject.SetActive(false);
                     };
                     // var obj = Addressables.LoadAssetAsync<GameObject>(prefab).WaitForCompletion();
                     // //AssetBundle.UnloadAllAssetBundles(false);
@@ -124,6 +132,11 @@ namespace App
                     return;
                 }
             }
+            DoStart();
+        }
+
+        void DoStart()
+        {
             Debug.Log("Start");
             OnStart?.Invoke();
             privacyPanel.SetActive(!isAgreed);
