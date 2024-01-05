@@ -9,7 +9,7 @@
   "dependencies": {
     "com.tencent.puerts.core": "file:Puerts",
     "com.unity.2d.sprite": "1.0.0",
-    "com.unity.addressables": "1.18.19",
+    "com.unity.addressables": "1.21.19",
     "com.unity.ads": "4.4.2",
     "com.unity.analytics": "3.6.12",
     "com.unity.ext.nunit": "1.0.6",
