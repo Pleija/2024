@@ -501,8 +501,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 98.042, y: 514}
-  m_SizeDelta: {x: 451.52, y: 129.4057}
+  m_AnchoredPosition: {x: 131.62907, y: 514}
+  m_SizeDelta: {x: 384.3459, y: 129.4057}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1091824978
 MonoBehaviour:
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u7B28\u732B\u8DD1\u9177"
+  m_text: "\u732B\u54AA\u8DD1\u4E86!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66a65a6ef5e8b42fda80d071374d9d35, type: 2}
   m_sharedMaterial: {fileID: -1957096680720548571, guid: 66a65a6ef5e8b42fda80d071374d9d35,
@@ -534,8 +534,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278217679
-  m_fontColor: {r: 0.8113208, g: 0.42091078, b: 0, a: 1}
+    rgba: 4287271423
+  m_fontColor: {r: 1, g: 0.5689773, b: 0.5424528, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 105.2
+  m_fontSize: 94.7
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rogue Runner
+  m_text: Cats Run Away
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1020ed9e6cc744031b97dc06ed6c3484, type: 2}
   m_sharedMaterial: {fileID: 3309598940397051126, guid: 1020ed9e6cc744031b97dc06ed6c3484,
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 93.9
+  m_fontSize: 89.65
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
