@@ -231,11 +231,13 @@ namespace App
                 updated = true;
 
                 if (Res.Exists<GameObject>(updatePrefabName) is { } found /* &&
-                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
-                    Addressables.InstantiateAsync(found).Completed += h => {
-                        //Destroy(gameObject);
-                        gameObject.SetActive(false);
-                    };
+                                       Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
+                    //SceneManager.LoadScene(0);
+                    LoadScene();
+                    // Addressables.InstantiateAsync(found).Completed += h => {
+                    //     //Destroy(gameObject);
+                    //     gameObject.SetActive(false);
+                    // };
                     // Instantiate(go);
                     // Destroy(gameObject);
                     yield break;
