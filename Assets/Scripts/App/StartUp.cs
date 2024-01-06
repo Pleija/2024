@@ -12,6 +12,7 @@ namespace App
 
         private void Start()
         {
+            Debug.Log($"Start Time: {Time.realtimeSinceStartup:F2}");
             Addressables.InitializeAsync().WaitForCompletion();
 
             try {
