@@ -2,8 +2,8 @@ import ActionState = CS.NodeCanvas.StateMachines.ActionState;
 import FSM = CS.NodeCanvas.StateMachines.FSM;
 import Blackboard = CS.NodeCanvas.Framework.Blackboard;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
-import { iterator } from "Common/Iterator.mjs";
-import { StateNode } from "Common/StateNode.mjs";
+import {iterator} from "Common/Iterator.mjs";
+import {StateNode} from "Common/StateNode.mjs";
 
 export class StateFsm {
 
@@ -28,24 +28,31 @@ export class StateFsm {
         });
         this['init']?.();
         console.log("Init:", f.FsmName);
-
+        const keys = Object.keys(this);
+        keys.forEach(key => {
+            if (typeof this[key]['init'] == 'function') {
+                console.log("Init Node:", key);
+                this[key].init();
+            }
+            //console.log(`${key}: ${person[key]}`);
+        });
     }
 
     bindNode(s: FSMState) {
-        if(!this[s.NodeName]) return;
+        if (!this[s.NodeName]) return;
 
-        // console.log("Init Node:", s.NodeName);
+        console.log("Init Node:", s.NodeName);
         // if(this[s.NodeName]){
-        //     s.jsBind = this[s.NodeName];
-        //     this[s.NodeName].init?.();
+        s.jsBind = this[s.NodeName];
+        this[s.NodeName].init?.();
         //     return;
         // }
         // console.log(`Node: ${s.NodeName} is undefined`)
-        
+
     }
 
     exitNode(s: FSMState) {
-        if(!this[s.NodeName]) return;
+        if (!this[s.NodeName]) return;
 
         console.log("Exit Node:", s.NodeName);
         //(s.jsBind as StateNode)?._exit(s.jsBind);
@@ -53,7 +60,7 @@ export class StateFsm {
     }
 
     stop(s: FSMState) {
-        if(!this[s.NodeName]) return;
+        if (!this[s.NodeName]) return;
 
         console.log("Stop:", s.FsmName);
         //(s.jsBind as StateNode).stopFsm();
@@ -61,17 +68,17 @@ export class StateFsm {
     }
 
     match(s: FSMState): boolean {
-        if(!this[s.NodeName]) return;
+        if (!this[s.NodeName]) return;
         //return (s.jsBind as StateNode).match(s);
         return this[s.NodeName].match?.() ?? true;
     }
 
     enterNode(s: FSMState) {
-        console.log("Enter Node:",this.fsm.FsmName, s.NodeName);
-        if(!this[s.NodeName]){
-            console.log(this.fsm.FsmName, s.NodeName, "not defined");
+        if (!this[s.NodeName]) {
+            //console.log(this.fsm.FsmName, s.NodeName, "not defined");
             return;
-        } 
+        }
+        console.log("Enter Node:", this.fsm.FsmName, s.NodeName);
         //(s.jsBind as StateNode)?._enter(s.jsBind);
         const self = this[s.NodeName];
         iterator(s.blackboard.variables).forEach((value, key) => {
@@ -81,7 +88,7 @@ export class StateFsm {
     }
 
     updateNode(s: FSMState) {
-        if(!this[s.NodeName]) return;
+        if (!this[s.NodeName]) return;
 
         //(s.jsBind as StateNode)?._update(s.jsBind);
         this[s.NodeName].update?.();

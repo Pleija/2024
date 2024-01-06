@@ -14,10 +14,10 @@ namespace NodeCanvas.StateMachines
 
         public void CheckJsBind()
         {
-            if(jsBind == null) {
-                //Debug.Log($"{fsm.FsmName}.{NodeName} is undefined");
-                //fsm.Invoke("bindNode",this);
-            }
+            // if(jsBind == null) {
+            //     //Debug.Log($"{fsm.FsmName}.{NodeName} is undefined");
+            //     fsm.Invoke("bindNode",this);
+            // }
         }
     
 

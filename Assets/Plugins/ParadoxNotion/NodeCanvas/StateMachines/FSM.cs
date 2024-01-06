@@ -235,7 +235,7 @@ namespace NodeCanvas.StateMachines
             }
 
             //todo: 添加tags判断
-            newState.CheckJsBind();
+            //newState.CheckJsBind();
 
             if(!string.IsNullOrEmpty(newState.customName) && !InvokeFunc<bool>("match", newState)) {
                 return false;
