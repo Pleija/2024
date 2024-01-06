@@ -14,6 +14,8 @@ declare global {
     
     import { Login } from "Start/Login.mjs";
     import { Updating } from "Start/Updating.mjs";
+    import { MenuArea } from "Main/MenuArea.mjs";
+    declare var MenuArea: MenuArea;
     declare var Updating: Updating;
     declare var StartButton: StartButton;
     declare var Login: Login;

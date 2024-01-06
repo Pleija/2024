@@ -1,3 +1,4 @@
+import "Main/MenuArea.mjs";
 import "Start/Updating.mjs";
 import "Main/Mission.mjs";
 
