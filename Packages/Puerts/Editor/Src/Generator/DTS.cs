@@ -500,7 +500,7 @@ namespace Puerts.Editor
                         if (tsTypeGenInfos.ContainsKey(info.FullName)) 
                         {
 #if UNITY_EDITOR
-                            UnityEngine.Debug.LogWarning("[Puer] Existed type: " + info.FullName + ". It may cause some unexpected behaviour.");
+                            //UnityEngine.Debug.LogWarning("[Puer] Existed type: " + info.FullName + ". It may cause some unexpected behaviour.");
 #endif
                         }
                         else

@@ -230,8 +230,8 @@ namespace App
                 if (p4.IsValid()) Addressables.Release(p4);
                 updated = true;
 
-                if (Res.Exists<GameObject>(updatePrefabName) is { } found /* &&
-                                       Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
+                //if (Res.Exists<GameObject>(updatePrefabName) is { } found /* &&
+                   //                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
                     //SceneManager.LoadScene(0);
                     LoadScene();
                     // Addressables.InstantiateAsync(found).Completed += h => {
@@ -241,7 +241,7 @@ namespace App
                     // Instantiate(go);
                     // Destroy(gameObject);
                     yield break;
-                }
+               // }
             }
             // else if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
             //     StartCoroutine(Offline());

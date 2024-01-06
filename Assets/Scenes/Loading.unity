@@ -524,7 +524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u732B\u54AA\u8DD1\u4E86!"
+  m_text: "\u8DD1\u9177\u5927\u4F5C\u6218"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66a65a6ef5e8b42fda80d071374d9d35, type: 2}
   m_sharedMaterial: {fileID: -1957096680720548571, guid: 66a65a6ef5e8b42fda80d071374d9d35,
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 94.7
+  m_fontSize: 82.8
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cats Run Away
+  m_text: Super Runner
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1020ed9e6cc744031b97dc06ed6c3484, type: 2}
   m_sharedMaterial: {fileID: 3309598940397051126, guid: 1020ed9e6cc744031b97dc06ed6c3484,
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 89.65
+  m_fontSize: 95.6
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
