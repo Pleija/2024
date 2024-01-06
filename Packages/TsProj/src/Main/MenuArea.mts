@@ -3,12 +3,14 @@ import $typeof = puer.$typeof;
 import HorizontalScrollSnap = CS.UnityEngine.UI.Extensions.HorizontalScrollSnap;
 
 export class MenuArea extends StateFsm {
+    snap: HorizontalScrollSnap;
 
     init() {
         //
-        const snap = this.fsm.agent.GetComponent($typeof(HorizontalScrollSnap)) as HorizontalScrollSnap;
-        snap.OnSelectionPageChangedEvent.AddListener(index => {
+        this.snap = this.fsm.agent.GetComponent($typeof(HorizontalScrollSnap)) as HorizontalScrollSnap;
+        this.snap.OnSelectionPageChangedEvent.AddListener(index => {
             console.log(`page: ${index}`);
+            Navbar.setCurrent(index);
         });
     }
 }
