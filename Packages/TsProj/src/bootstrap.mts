@@ -1,4 +1,5 @@
 import "Start/Updating.mjs";
+import "Main/Mission.mjs";
 
 import "Start/Login.mjs";
 import "Main/Modifier.mjs";
