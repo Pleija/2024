@@ -1,0 +1,155 @@
+<html>
+<head></head>
+<body>
+
+<style type="text/css">
+h2{
+	margin-left:10px;
+}
+h3{
+	margin-left:20px;
+}
+h4{
+	margin-left:30px;
+}
+p{
+	margin-left:50px;
+}
+</style>
+
+<h1>Documentation</h1>
+
+<h2>Main Scripts for the project:</h2>
+<p>All scripts in the project are well commented, any doubt, please see the scripts comments for clarification.
+With that in mind, here are the main scripts for the project:</p>
+
+<h3>DungeonGenerator.cs</h3>
+<p>It creates all the dungeon for your game, set it up in your scene and configure all the prefabs your game will have.</p>
+<p>It can be extended or worked on to make more complex dungeons with more things.</p>
+
+
+<h3>CellManager.cs</h3>
+<p>The dungeon is made of a grid of cells, each cell must have this script..</p>
+<p>A cell is usually a ground plane with some texture, it can contain walls, enemy spawner, etc..</p>
+<p>Walls should not create dead ends, remember that the player maybe need to enter through the left of this cell and exit going up.</p>
+<p>A cell can have traps, holes or anything you want. Instead of using a enemy prefab, it should be used GameObjectSpanwer.cs script, that way you don't lose the enemy prefab once you add to the cell..</p>
+
+<h3>ObjectManager.cs</h3>
+<p>It manages all the object in the game that share the game grid, new objects need to interact with this script, read the script comments for more detail.</p>
+
+<h3>BaseObj.cs</h3>
+<p>The base for all the objects in the game, any method that need to be shared by all the game objects should be added here.</p>
+<p>All the classes exist in the game grid extends this class.</p>
+
+
+<br/><br/>
+
+<h2>Prefabs:</h2>
+<h3>Ambient:</h3>
+<p>Prefabs that appear in the dungeon ambient, like statues, vines, torches</p>
+
+
+<h3>Chars:</h3>
+<p>Creating new enemies and player:</p>
+<p>Check Prefabs/Chars for examples.</p>
+<p>An enemy should have a script that use of extend EnemyObj.cs. Just configure it with the correct status and it should work.</p>
+<p>The player prefab can be found in Prefabs/Chars/Player, you can create more prefabs if you maybe want to be able to choose from multiple heroes.</p>
+
+<br/><br/>
+
+<h3>Dungeon:</h3>
+<h4>Cells:</h4>
+<p>A cell is a room that the player will find in the dungeon.</p>
+<p>Usually have a ground, but this is only for visual effects, the player can walk in any empty area, so even without a ground, it will walk on top of it.</p>
+<p>If you want a hole in the room, you can create a invisible wall, so the player can't walk on top of it. Or a trap, so it kill the player once it get on top of it.</p>
+<p>Cells can have walls, enemies, items, traps, buttons, anything really. </p>
+<p>Default cells use GameObjectSpanwer.cs to spawn enemies and items, that way it has a chance that the enemy or item is not spawned, plus it choose from a pool with item it want to spawn.</p>
+<p>Adding the enemy or item prefab inside the cell will lost the prefab connection, so its best to use a script like GameObjectSpanwer.cs for that.</p>
+<p>The player need to navigate between the 4 exits in the cell, so don't create dead ends on the cell.</p>
+<p>You can make per example, a small passage with 4 exits, and a boss in the middle with 50% of spawn.</p>
+
+<h4>Doors:</h4>
+<p>Doors are walls that will appear between two cells in the dungeon, that the player must have a way to pass through.</p>
+<p>A wall can be totally empty, or have a small door, or be a hall, anything that the player can pass from one side to another.</p>
+<p>The door size should be the same as the cell size in the X axis</p>
+
+<h4>End Stage:</h4>
+<p>Those are special cells that only will appear on the end of the Dungeon.</p>
+<p>It should have a way to go the next floor.</p>
+<p>Example: A stair, a boss that you kill and appear a stair, a teleport surrounded by monsters. It will be the end of this stage.</p>
+
+<h4>Managers:</h4>
+<p>Prefabs for any manager for the game, if you configured a Dungeon, you can add it here so you can use later without the need to configure it again.</p>
+
+<h4>Walls:</h4>
+<p>Those will appear between two cells and the player must not be able to pass from one side to another.</p>
+<p>It can contain walls, traps, torches, anything really.</p>
+<p>The wall size should be the same as the cell size in the X axis.</p>
+
+<br/><br/>
+
+<h3>Items:</h3>
+<p>Any item that can appear during the dungeon</p>
+
+
+<h3>Particles:</h3>
+<p>Any particle prefab that exist in the game.</p>
+
+
+<h3>Ranged:</h3>
+<p>Prefabs of projectiles used in the game. Ex: Arrows, bombs, fire, etc</p>
+
+
+<h3>Traps:</h3>
+<p>Traps that appear in the dungeon</p>
+
+<h3>UI:</h3>
+<p>Elements of the UI, like health bar or damage.</p>
+
+<h3>Weapons:</h3>
+<p>Items that are weapons to appear on the ground during the dungeon.</p>
+
+
+<br/><br/>
+
+<h2>Starting a new dungeon:</h2>
+<b>1)</b> Set up a object with the DungeonGenerator.cs attached.
+<br/>
+<b>2)</b> Configure all the dungeon with prefabs for cells, items, etc. See the example scene for reference.
+<br/>
+<b>3)</b> Create a canvas, UI elements, audio manager, Object Manager, see example scene for reference.
+<br/>
+<b>4)</b> Create new cells at will, more doors, walls, enemies, items, traps if needed, extend the "Obj" scripts for new actions.
+<br/>
+<b>5)</b> Set the new prefabs on the DungeonGenerator script.
+<br/>
+<b>6)</b> Play the game
+
+<br/><br/>
+
+<h2>Setting up Script Execution Order:</h2>
+Scripts that extend BaseObj should have the order that you want to spawn in the world. Example:
+<br/>
+WallObj  +100
+<br/>
+EnemyObj +200
+<br/>
+PlayerObj +300
+<br/>
+This will make the walls spawn, then the enemies, then the player, if there is any wall in the place of a enemy, the wall will be destroyed, and if there is any enemy in the player place, the enemy will be destroyed.
+
+<br/><br/>
+<h1>--- Credits --- </h1>
+
+<h2>Art and music by: </h2>
+<h3><a href="http://kenney.nl/">Kenney</a></h3>
+
+<h2>Programming:</h2>
+<h3>Gabriel Poetsch</h3>
+
+<br/><br/>
+
+<h2>For any support, please contact:</h2>
+<h3><a href="mailto:gpoetsch@gmail.com">gpoetsch@gmail.com</a></h3>
+</body>
+</html>

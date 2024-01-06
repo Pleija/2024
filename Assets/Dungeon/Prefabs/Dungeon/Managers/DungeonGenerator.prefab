@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1287952215204514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4185382025519188}
+  - component: {fileID: 114907472512832840}
+  m_Layer: 0
+  m_Name: DungeonGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4185382025519188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287952215204514}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114907472512832840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287952215204514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e21f425bc31614aa2dc83ff979af50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generateOnStart: 1
+  generateHero: 1
+  level: 1
+  xSize: 3
+  zSize: 1
+  MainPathMaxLen: 35
+  MainPathCurrLen: 0
+  PlayerPrefab: {fileID: 1087330733774332, guid: a1888744f0ea7da4c8e6ba768c02a99f,
+    type: 3}
+  prefabs:
+  - AppearInAllLevels: 1
+    AppearFromLevel: 0
+    ApperToLevel: 0
+    prefabs:
+      FirstCells:
+      - {fileID: 114051935198824828, guid: 4b5f9301b2721fe45a19f6fecffbcf12, type: 3}
+      EndingCells:
+      - {fileID: 114362134472946306, guid: 2e0c08d53c8f9394cb368e16e646d002, type: 3}
+      CellPrefabs:
+      - {fileID: 114051935198824828, guid: d08c7b79f568f444ca48ff9e8fa492d2, type: 3}
+      - {fileID: 114362134472946306, guid: 5819f2019577f394ca8565576208f428, type: 3}
+      - {fileID: 114051935198824828, guid: c4e3d0f732c6b72459d7361e87adba31, type: 3}
+      - {fileID: 114194928450644830, guid: b3dd98d0875ed374ea1319f805e2b4a7, type: 3}
+      - {fileID: 114194928450644830, guid: 9c8687e4feb597442b39587154b6d78a, type: 3}
+      WallPrefabs:
+      - {fileID: 1458898350535354, guid: 32844a7c207510846808e58b2118d468, type: 3}
+      DoorPrefabs:
+      - {fileID: 1955380814478608, guid: 1214e9f9c86bcb44bbd747a8703907f9, type: 3}
+      - {fileID: 1049121225143830, guid: 3d5d8041fa4ae2744bc153fefa0f3e69, type: 3}
+      - {fileID: 1670038642039202, guid: 8a9e400c379602a44a2d4d0ec8c96e1f, type: 3}
+      - {fileID: 1049570649938562, guid: 2f3e0769208ecd34a947b7dd1e959e1f, type: 3}
+      WallDecorationsPrefab:
+      - {fileID: 1585616807253178, guid: 9bdd87326447ff54ab112e76034fca3a, type: 3}
+      - {fileID: 1585616807253178, guid: 934b18f97888fa94089e907c1f2944d1, type: 3}
+      - {fileID: 1585616807253178, guid: 3d503d2f42b090f448f626a5a3bfa09b, type: 3}
+      - {fileID: 1585616807253178, guid: ff0eb4b02658aee419bac18a6344bfac, type: 3}
+      weaponItems:
+      - {fileID: 1413432324120480, guid: 375591ab612708343bafbe27b353350b, type: 3}
+      - {fileID: 1413432324120480, guid: f1fc4329b053c7d47bdd2fb9bda50728, type: 3}
+  - AppearInAllLevels: 0
+    AppearFromLevel: 3
+    ApperToLevel: 99
+    prefabs:
+      FirstCells: []
+      EndingCells: []
+      CellPrefabs:
+      - {fileID: 114362134472946306, guid: f1d26f7827ebc064c958cd97c3bca67c, type: 3}
+      WallPrefabs: []
+      DoorPrefabs: []
+      WallDecorationsPrefab: []
+      weaponItems:
+      - {fileID: 1413432324120480, guid: 1520600b8ab015d42b69453b84944d23, type: 3}
