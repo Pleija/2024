@@ -233,14 +233,14 @@ namespace App
                 //if (Res.Exists<GameObject>(updatePrefabName) is { } found /* &&
                    //                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
                     //SceneManager.LoadScene(0);
-                    LoadScene();
+                    //LoadScene();
                     // Addressables.InstantiateAsync(found).Completed += h => {
                     //     //Destroy(gameObject);
                     //     gameObject.SetActive(false);
                     // };
                     // Instantiate(go);
                     // Destroy(gameObject);
-                    yield break;
+                    //yield break;
                // }
             }
             // else if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
