@@ -6,6 +6,9 @@ import Image = CS.UnityEngine.UI.Image;
 import Sprite = CS.UnityEngine.Sprite;
 import Color = CS.UnityEngine.Color;
 import LayoutElement = CS.UnityEngine.UI.LayoutElement;
+import RectTransform = CS.UnityEngine.RectTransform;
+import Vector3 = CS.UnityEngine.Vector3;
+import Vector2 = CS.UnityEngine.Vector2;
 
 export class Navbar extends StateFsm {
     currentImg: Sprite;
@@ -40,9 +43,15 @@ export class Navbar extends StateFsm {
         old.sprite = this.normalImg;
         old.color = this.normalColor;
         (old.GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 172;
+        let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
+        oldIcon.localScale = new Vector3(1,1,1);
+        oldIcon.anchoredPosition = new Vector2(0,32);
         const target = this.buttons[index].GetComponent($typeof(Image)) as Image;
         target.sprite = this.currentImg;
         target.color = this.currentColor;
+        let targetIcon = target.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
+        targetIcon.localScale = new Vector3(1.2,1.2,1);
+        targetIcon.anchoredPosition = new Vector2(0,42);
         (target.GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 200;
         if (MenuArea.snap.CurrentPage != index) {
             MenuArea.snap.GoToScreen(index);
