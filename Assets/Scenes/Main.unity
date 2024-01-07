@@ -467,6 +467,7 @@ GameObject:
   - component: {fileID: 23242380}
   - component: {fileID: 23242379}
   - component: {fileID: 23242381}
+  - component: {fileID: 23242382}
   m_Layer: 0
   m_Name: DistanceText
   m_TagString: Untagged
@@ -506,7 +507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.61111116, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.88401777, b: 0.0141509175, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -548,7 +549,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0.14217742, g: 0.08434255, b: 0.28676468, a: 0.65}
-  m_EffectDistance: {x: 3, y: -3}
+  m_EffectDistance: {x: 0, y: -6}
+  m_UseGraphicAlpha: 1
+--- !u!114 &23242382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23242377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06551ada625f85b419f3248c4a19184a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: -2, y: 2}
   m_UseGraphicAlpha: 1
 --- !u!4 &23485168 stripped
 Transform:
