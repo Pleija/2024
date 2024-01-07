@@ -207,7 +207,7 @@ namespace SqlCipher4Unity3D
                     void ToSave(object t)
                     {
                         if (target.isSetup) return;
-                        Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
+                        //Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
                         target.Save();
                     }
 

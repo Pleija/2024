@@ -1803,7 +1803,8 @@ namespace SqlCipher4Unity3D
         /// <returns>
         /// The number of rows added to the table.
         /// </returns>
-        public int Insert(object obj, string extra, Type objType)
+        public int 
+            Insert(object obj, string extra, Type objType)
         {
             if (obj == null || objType == null) {
                 return 0;
