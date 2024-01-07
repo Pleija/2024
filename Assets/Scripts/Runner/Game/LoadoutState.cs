@@ -97,7 +97,7 @@ namespace Runner.Game
                 StartCoroutine(MusicPlayer.instance.RestartAllStems());
             }
             runButton.interactable = false;
-            runButton.GetComponentInChildren<Text>().text = "Loading...";
+            //runButton.GetComponentInChildren<Text>().text = "Loading...";
             if (m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE)
                 //if we come back from a run and we don't have any more of the powerup we wanted to use, we reset the powerup to use to NONE
                 if (!PlayerData.instance.consumables.ContainsKey(m_PowerupToUse) ||

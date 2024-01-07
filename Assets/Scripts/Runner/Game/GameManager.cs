@@ -30,9 +30,11 @@ namespace Runner.Game
         public ConsumableDatabase m_ConsumableDatabase;
         protected List<AState> m_StateStack = new List<AState>();
         protected Dictionary<string, AState> m_StateDict = new Dictionary<string, AState>();
+        public UnityEvent OnEnableEvent;
 
         protected void OnEnable()
         {
+            OnEnableEvent?.Invoke();
             PlayerData.Create();
             s_Instance = this;
             m_ConsumableDatabase.Load();
@@ -45,9 +47,11 @@ namespace Runner.Game
             for (var i = 0; i < states.Length; ++i) {
                 states[i].manager = this;
                 m_StateDict.Add(states[i].GetName(), states[i]);
+                states[i].gameObject.SetActive(i == 0);
             }
             m_StateStack.Clear();
             PushState(states[0].GetName());
+
         }
 
         protected void Update()

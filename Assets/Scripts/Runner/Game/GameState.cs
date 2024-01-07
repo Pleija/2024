@@ -85,6 +85,7 @@ namespace Runner.Game
 
         public override void Enter(AState from)
         {
+            pauseButton.gameObject.SetActive(!trackManager.isTutorial);
             m_CountdownRectTransform = countdownText.GetComponent<RectTransform>();
             m_LifeHearts = new Image[k_MaxLives];
             for (var i = 0; i < k_MaxLives; ++i)
