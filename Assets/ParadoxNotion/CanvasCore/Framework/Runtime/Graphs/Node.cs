@@ -42,18 +42,18 @@ namespace NodeCanvas.Framework
 
         public string MakeFile()
         {
-            if(string.IsNullOrWhiteSpace(customName)) {
+            if (string.IsNullOrWhiteSpace(customName)) {
                 return "";
             }
             var src = "Packages/tsproj/src";
             var file = $"{graph.FsmPath.Replace(".mjs", "")}/{NodeName}.mjs";
             var path = $"{src}/{file.Replace(".mjs", ".mts")}";
 
-            if(!Directory.Exists(Path.GetDirectoryName(path))) {
+            if (!Directory.Exists(Path.GetDirectoryName(path))) {
                 Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             }
 
-            if(!File.Exists(path)) {
+            if (!File.Exists(path)) {
                 var content = @$"import {{ {graph.FsmName} }} from ""{graph.FsmPath}"";
 import {{ StateNode }} from ""Common/StateNode.mjs"";
 
@@ -72,33 +72,44 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             //.ForEach(x => Debug.Log(x.GetText()));
             var changed = false;
 
-            if(!imports.Any(t => t.GetText().Contains(file))) {
+            if (!imports.Any(t => t.GetText().Contains(file))) {
                 changed = true;
                 change.InsertAfter(imports.Last(), $"\nimport {{ {NodeName} }} from \"{file}\";");
             }
             var module = ast.OfKind(SyntaxKind.ClassDeclaration).First();
             var props = module.OfKind(SyntaxKind.PropertyDeclaration).ToArray();
 
-            if(props.All(x => x.IdentifierStr != NodeName)) {
+            if (props.All(x => x.IdentifierStr != NodeName)) {
                 changed = true;
-                change.InsertAfter(module.Children.FirstOrDefault(), $"\n    {NodeName}: {NodeName};");
+                change.InsertBefore(module.Children.Last(), $"\n    {NodeName}: {NodeName};");
             }
-            var init = module.OfKind(SyntaxKind.MethodDeclaration)
-                .First(x => x.IdentifierStr == "init");
+            var init = module.OfKind(SyntaxKind.MethodDeclaration).First(x => x.IdentifierStr == "init");
+            // init.Children.ForEach(x => {
+            //     Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+            // });
 
-            if(init.Children.All(x => !x.GetText().Contains($"this.{NodeName} = "))) {
+            if (init.Children.All(x => !x.GetText().Contains($"this.{NodeName} = "))) {
                 changed = true;
-                change.InsertAfter(init.Children.FirstOrDefault(),
-                    $"\n    this.{NodeName} = new {NodeName}(this);");
+                //Debug.Log("not found");
+                // init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
+                //     Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+                // });
+                var code = init.OfKind(SyntaxKind.Block).First().Children.FirstOrDefault();
+
+                if (code != null) {
+                    change.InsertBefore(code, $"\n    this.{NodeName} = new {NodeName}(this);");
+                }
+                else {
+                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),$"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
+                }
             }
 
-            if(changed) {
+            if (changed) {
                 var newSource = change.GetChangedSource(ast.SourceStr);
                 File.WriteAllText(fileName, newSource);
             }
             return path;
         }
-
 
         ///<summary>The local blackboard of the graph where parentBlackboard if any is parented to</summary>
         public IBlackboard blackboard => localBlackboard ??= new BlackboardSource();
@@ -180,8 +191,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         }
 
         ///<summary>The Unique ID of the node. One is created only if requested.</summary>
-        public string UID =>
-            string.IsNullOrEmpty(_UID) ? _UID = System.Guid.NewGuid().ToString() : _UID;
+        public string UID => string.IsNullOrEmpty(_UID) ? _UID = System.Guid.NewGuid().ToString() : _UID;
 
         ///<summary>All incomming connections to this node.</summary>
         public List<Connection> inConnections {
@@ -243,14 +253,13 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>The title name of the node. This is virtual so title name may change instance wise</summary>
         virtual public string name {
             get {
-                if(!string.IsNullOrEmpty(customName)) {
+                if (!string.IsNullOrEmpty(customName)) {
                     return customName;
                 }
 
-                if(string.IsNullOrEmpty(_nameCache)) {
+                if (string.IsNullOrEmpty(_nameCache)) {
                     var nameAtt = this.GetType().RTGetAttribute<NameAttribute>(true);
-                    _nameCache = (nameAtt != null ? nameAtt.name
-                        : GetType().FriendlyName().SplitCamelCase());
+                    _nameCache = (nameAtt != null ? nameAtt.name : GetType().FriendlyName().SplitCamelCase());
                 }
                 return _nameCache;
             }
@@ -260,7 +269,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>The description info of the node</summary>
         virtual public string description {
             get {
-                if(string.IsNullOrEmpty(_descriptionCache)) {
+                if (string.IsNullOrEmpty(_descriptionCache)) {
                     var descAtt = this.GetType().RTGetAttribute<DescriptionAttribute>(true);
                     _descriptionCache = descAtt != null ? descAtt.description : "No Description";
                 }
@@ -271,7 +280,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>The execution priority order of the node when it matters to the graph system</summary>
         virtual public int priority {
             get {
-                if(_priorityCache == int.MinValue) {
+                if (_priorityCache == int.MinValue) {
                     var prioAtt = this.GetType().RTGetAttribute<ExecutionPriorityAttribute>(true);
                     _priorityCache = prioAtt != null ? prioAtt.priority : 0;
                 }
@@ -304,7 +313,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         public Status status {
             get { return _status; }
             protected set {
-                if(_status == Status.Resting && value == Status.Running) {
+                if (_status == Status.Resting && value == Status.Running) {
                     timeStarted = graph.elapsedTime;
                 }
                 _status = value;
@@ -318,8 +327,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         public IBlackboard graphBlackboard => (graph != null ? graph.blackboard : null);
 
         ///<summary>The time in seconds the node has been Status.Running after a reset (Status.Resting)</summary>
-        public float elapsedTime =>
-            (status == Status.Running ? graph.elapsedTime - timeStarted : 0);
+        public float elapsedTime => (status == Status.Running ? graph.elapsedTime - timeStarted : 0);
 
         //Mark when status running change
         private float timeStarted { get; set; }
@@ -342,15 +350,13 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Create a new Node of type and assigned to the provided graph. Use this for constructor</summary>
         public static Node Create(Graph targetGraph, System.Type nodeType, Vector2 pos)
         {
-            if(targetGraph == null) {
-                Logger.LogError("Can't Create a Node without providing a Target Graph",
-                    LogTag.GRAPH);
+            if (targetGraph == null) {
+                Logger.LogError("Can't Create a Node without providing a Target Graph", LogTag.GRAPH);
                 return null;
             }
 
-            if(nodeType.IsGenericTypeDefinition) {
-                nodeType =
-                    nodeType.RTMakeGenericType(nodeType.GetFirstGenericParameterConstraintType());
+            if (nodeType.IsGenericTypeDefinition) {
+                nodeType = nodeType.RTMakeGenericType(nodeType.GetFirstGenericParameterConstraintType());
             }
             var newNode = (Node)System.Activator.CreateInstance(nodeType);
             UndoUtility.RecordObject(targetGraph, "Create Node");
@@ -366,9 +372,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Duplicate node alone assigned to the provided graph</summary>
         public Node Duplicate(Graph targetGraph)
         {
-            if(targetGraph == null) {
-                Logger.LogError("Can't duplicate a Node without providing a Target Graph",
-                    LogTag.GRAPH);
+            if (targetGraph == null) {
+                Logger.LogError("Can't duplicate a Node without providing a Target Graph", LogTag.GRAPH);
                 return null;
             }
 
@@ -379,14 +384,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             newNode.inConnections.Clear();
             newNode.outConnections.Clear();
 
-            if(targetGraph == this.graph) {
+            if (targetGraph == this.graph) {
                 newNode.position += new Vector2(50, 50);
             }
             newNode._UID = null;
             newNode.graph = targetGraph;
             BBParameter.SetBBFields(newNode, targetGraph.blackboard);
 
-            foreach(var task in Graph.GetTasksInElement(newNode)) {
+            foreach (var task in Graph.GetTasksInElement(newNode)) {
                 task.Validate(targetGraph);
             }
             //--
@@ -401,11 +406,11 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             OnValidate(assignedGraph);
             var hardError = GetHardError();
 
-            if(hardError != null) {
+            if (hardError != null) {
                 Logger.LogError(hardError, LogTag.VALIDATION, this);
             }
 
-            if(this is IGraphAssignable) {
+            if (this is IGraphAssignable) {
                 (this as IGraphAssignable).ValidateSubGraphAndParameters();
             }
         }
@@ -414,27 +419,26 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>The main execution function of the node. Execute the node for the agent and blackboard provided.</summary>
         public Status Execute(Component agent, IBlackboard blackboard)
         {
-            if(!graph.isRunning) {
+            if (!graph.isRunning) {
                 return status;
             }
 #if UNITY_EDITOR
-            if(isBreakpoint) {
-                if(status == Status.Resting) {
+            if (isBreakpoint) {
+                if (status == Status.Resting) {
                     var breakEditor = NodeCanvas.Editor.Prefs.breakpointPauseEditor;
                     var owner = agent as GraphOwner;
                     var contextName = owner != null ? owner.gameObject.name : graph.name;
                     Logger.LogWarning(
-                        string.Format(
-                            "Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'",
-                            name, ID, graph.GetType().Name, contextName), "Breakpoint", this);
+                        string.Format("Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'", name, ID,
+                            graph.GetType().Name, contextName), "Breakpoint", this);
 
-                    if(owner != null) {
+                    if (owner != null) {
                         owner.PauseBehaviour();
                     }
 
-                    if(breakEditor) {
+                    if (breakEditor) {
                         StartCoroutine(YieldBreak(() => {
-                            if(owner != null) {
+                            if (owner != null) {
                                 owner.StartBehaviour();
                             }
                         }));
@@ -443,7 +447,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     return status = Status.Running;
                 }
 
-                if(breakPointReached) {
+                if (breakPointReached) {
                     breakPointReached = false;
                     status = Status.Resting;
                 }
@@ -455,14 +459,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Recursively reset the node and child nodes if it's not Resting already</summary>
         public void Reset(bool recursively = true)
         {
-            if(status == Status.Resting || isChecked) {
+            if (status == Status.Resting || isChecked) {
                 return;
             }
             OnReset();
             status = Status.Resting;
             isChecked = true;
 
-            for(var i = 0; i < outConnections.Count; i++) {
+            for (var i = 0; i < outConnections.Count; i++) {
                 outConnections[i].Reset(recursively);
             }
             isChecked = false;
@@ -480,7 +484,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Helper for easier logging</summary>
         public Status Error(object msg)
         {
-            if(msg is System.Exception) {
+            if (msg is System.Exception) {
                 Logger.LogException((System.Exception)msg, LogTag.EXECUTION, this);
             }
             else {
@@ -525,33 +529,30 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns whether source and target nodes can generaly be connected together. This only validates max in/out connections that source and target nodes has, along with other validations. Providing an existing refConnection, will bypass source/target validation respectively if that connection is already connected to that source/target node.</summary>
-        public static bool IsNewConnectionAllowed(Node sourceNode, Node targetNode,
-            Connection refConnection = null)
+        public static bool IsNewConnectionAllowed(Node sourceNode, Node targetNode, Connection refConnection = null)
         {
-            if(sourceNode == null || targetNode == null) {
+            if (sourceNode == null || targetNode == null) {
                 Logger.LogWarning("A Node Provided is null.", LogTag.EDITOR, targetNode);
                 return false;
             }
 
-            if(sourceNode == targetNode && !sourceNode.canSelfConnect) {
+            if (sourceNode == targetNode && !sourceNode.canSelfConnect) {
                 Logger.LogWarning("Node can't connect to itself.", LogTag.EDITOR, targetNode);
                 return false;
             }
 
-            if(refConnection == null || refConnection.sourceNode != sourceNode) {
-                if(sourceNode.outConnections.Count >= sourceNode.maxOutConnections &&
-                   sourceNode.maxOutConnections != -1) {
-                    Logger.LogWarning("Source node can have no more out connections.",
-                        LogTag.EDITOR, sourceNode);
+            if (refConnection == null || refConnection.sourceNode != sourceNode) {
+                if (sourceNode.outConnections.Count >= sourceNode.maxOutConnections &&
+                    sourceNode.maxOutConnections != -1) {
+                    Logger.LogWarning("Source node can have no more out connections.", LogTag.EDITOR, sourceNode);
                     return false;
                 }
             }
 
-            if(refConnection == null || refConnection.targetNode != targetNode) {
-                if(targetNode.maxInConnections <= targetNode.inConnections.Count &&
-                   targetNode.maxInConnections != -1) {
-                    Logger.LogWarning("Target node can have no more in connections.", LogTag.EDITOR,
-                        targetNode);
+            if (refConnection == null || refConnection.targetNode != targetNode) {
+                if (targetNode.maxInConnections <= targetNode.inConnections.Count &&
+                    targetNode.maxInConnections != -1) {
+                    Logger.LogWarning("Target node can have no more in connections.", LogTag.EDITOR, targetNode);
                     return false;
                 }
             }
@@ -592,7 +593,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Nodes can use coroutine as normal through MonoManager.</summary>
         public void StopCoroutine(Coroutine routine)
         {
-            if(MonoManager.current != null) {
+            if (MonoManager.current != null) {
                 MonoManager.current.StopCoroutine(routine);
             }
         }
@@ -600,7 +601,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Returns all *direct* parent nodes (first depth level)</summary>
         public IEnumerable<Node> GetParentNodes()
         {
-            if(inConnections.Count != 0) {
+            if (inConnections.Count != 0) {
                 return inConnections.Select(c => c.sourceNode);
             }
             return new Node[0];
@@ -609,7 +610,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Returns all *direct* children nodes (first depth level)</summary>
         public IEnumerable<Node> GetChildNodes()
         {
-            if(outConnections.Count != 0) {
+            if (outConnections.Count != 0) {
                 return outConnections.Select(c => c.targetNode);
             }
             return new Node[0];
@@ -633,13 +634,13 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         {
             var hardError = GetHardError();
 
-            if(hardError != null) {
+            if (hardError != null) {
                 return "* " + hardError;
             }
             string result = null;
             var assignable = this as ITaskAssignable;
 
-            if(assignable != null && assignable.task != null) {
+            if (assignable != null && assignable.task != null) {
                 result = assignable.task.GetWarningOrError();
             }
             return result;
@@ -648,15 +649,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>A hard error, missing things</summary>
         string GetHardError()
         {
-            if(this is IMissingRecoverable) {
-                return string.Format("Missing Node '{0}'",
-                    (this as IMissingRecoverable).missingType);
+            if (this is IMissingRecoverable) {
+                return string.Format("Missing Node '{0}'", (this as IMissingRecoverable).missingType);
             }
 
-            if(this is IReflectedWrapper) {
+            if (this is IReflectedWrapper) {
                 var info = (this as IReflectedWrapper).GetSerializedInfo();
 
-                if(info != null && info.AsMemberInfo() == null) {
+                if (info != null && info.AsMemberInfo() == null) {
                     return string.Format("Missing Reflected Info '{0}'", info.AsString());
                 }
             }
@@ -722,23 +722,22 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         {
             var result = name;
 
-            if(this is IReflectedWrapper) {
+            if (this is IReflectedWrapper) {
                 var info = (this as IReflectedWrapper).GetSerializedInfo()?.AsMemberInfo();
 
-                if(info != null) {
+                if (info != null) {
                     result = info.FriendlyName();
                 }
             }
 
-            if(this is IGraphAssignable) {
+            if (this is IGraphAssignable) {
                 var subGraph = (this as IGraphAssignable).subGraph;
 
-                if(subGraph != null) {
+                if (subGraph != null) {
                     result = subGraph.name;
                 }
             }
-            return string.Format("{0}{1}", result,
-                (!string.IsNullOrEmpty(tag) ? " (" + tag + ")" : ""));
+            return string.Format("{0}{1}", result, (!string.IsNullOrEmpty(tag) ? " (" + tag + ")" : ""));
         }
     }
 }

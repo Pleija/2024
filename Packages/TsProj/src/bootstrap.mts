@@ -1,3 +1,4 @@
+import "Main/Game.mjs";
 import "Main/Navbar.mjs";
 import "Main/MenuArea.mjs";
 import "Start/Updating.mjs";

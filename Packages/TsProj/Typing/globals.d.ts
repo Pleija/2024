@@ -16,6 +16,8 @@ declare global {
     import { Updating } from "Start/Updating.mjs";
     import { MenuArea } from "Main/MenuArea.mjs";
     import { Navbar } from "Main/Navbar.mjs";
+    import { Game } from "Main/Game.mjs";
+    declare var Game: Game;
     declare var Navbar: Navbar;
     declare var MenuArea: MenuArea;
     declare var Updating: Updating;

@@ -233,12 +233,12 @@ namespace Runner.Game
 
         private void OnApplicationPause(bool pauseStatus)
         {
-            if (pauseStatus) Pause();
+            if (pauseStatus && !Application.isEditor) Pause();
         }
 
         private void OnApplicationFocus(bool focusStatus)
         {
-            if (!focusStatus) Pause();
+            if (!focusStatus && !Application.isEditor) Pause();
         }
 
         public void Pause(bool displayMenu = true)
