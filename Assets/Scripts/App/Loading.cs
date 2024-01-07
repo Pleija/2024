@@ -26,9 +26,9 @@ namespace App
         public AssetReference testPrefab;
 
         //public GameObject prefabObj;
-        public static string PrivacyKey = "App.Privacy";
-        public static string FirstUpdateKey = "App.FirstUpdate";
-        public static string VersionKey = "App.Version";
+        public const string PrivacyKey = "App.Privacy";
+        public const string FirstUpdateKey = "App.FirstUpdate";
+        public const string VersionKey = "App.Version";
         public GameObject privacyPanel;
         public Button agreeBtn;
         public Text prgText;
@@ -60,18 +60,7 @@ namespace App
             }
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void DebugSetting()
-        {
-            if (Debug.isDebugBuild && !Application.isEditor && PlayerPrefs.GetString(VersionKey) != Application.version)
-                Directory.Delete(Application.persistentDataPath + "/com.unity.addressables", true);
-
-            if (Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
-                Instantiate(Resources.Load("IngameDebugConsole"));
-                return;
-            }
-            Debug.unityLogger.logEnabled = false;
-        }
+   
 
         private static bool m_Reloaded;
         public UnityEvent OnAwake;
