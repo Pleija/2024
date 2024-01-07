@@ -524,7 +524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u4F11\u95F2\u8DD1\u9177"
+  m_text: "\u8DD1\u9177\u519B\u56E2"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66a65a6ef5e8b42fda80d071374d9d35, type: 2}
   m_sharedMaterial: {fileID: -1957096680720548571, guid: 66a65a6ef5e8b42fda80d071374d9d35,
@@ -806,15 +806,15 @@ RectTransform:
   m_GameObject: {fileID: 1845094103965668291}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 908249958}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 483}
-  m_SizeDelta: {x: 652.6638, y: 191.9711}
+  m_AnchoredPosition: {x: -0.0007782, y: 491.95212}
+  m_SizeDelta: {x: 652.66, y: 166.9054}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1845094103965668293
 MonoBehaviour:
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Relax Runner
+  m_text: Runner Troops
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1020ed9e6cc744031b97dc06ed6c3484, type: 2}
   m_sharedMaterial: {fileID: 3309598940397051126, guid: 1020ed9e6cc744031b97dc06ed6c3484,
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 99.2
+  m_fontSize: 90.3
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1
