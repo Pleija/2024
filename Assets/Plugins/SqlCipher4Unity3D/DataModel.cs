@@ -108,7 +108,7 @@ namespace SqlCipher4Unity3D
         }
     }
 
-    public class DataModelSample : DataModel<DataModelSample> { }
+    //public class DataModelSample : DataModel<DataModelSample> { }
 
     public class DataModel<T> : Model where T : DataModel<T>
     {
