@@ -1,3 +1,4 @@
+import "Main/MainHP.mjs";
 import "Main/Game.mjs";
 import "Main/Navbar.mjs";
 import "Main/MenuArea.mjs";
@@ -28,6 +29,6 @@ protobuf.load("awesome.proto", (err, root) => {
     console.log(type, "test proto");
 });
 
-Login.sayHello("puerts ready");
+$Login.sayHello("puerts ready");
 
 

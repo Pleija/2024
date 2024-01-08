@@ -4,4 +4,4 @@ export class GameManager extends StateFsm {
 
 }
 
-export const self:GameManager = global.GameManager ??= new GameManager();
+export const self:GameManager = global.$GameManager ??= new GameManager();

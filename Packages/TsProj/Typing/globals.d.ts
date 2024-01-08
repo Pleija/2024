@@ -17,25 +17,27 @@ declare global {
     import { MenuArea } from "Main/MenuArea.mjs";
     import { Navbar } from "Main/Navbar.mjs";
     import { Game } from "Main/Game.mjs";
-    declare var Game: Game;
-    declare var Navbar: Navbar;
-    declare var MenuArea: MenuArea;
-    declare var Updating: Updating;
-    declare var StartButton: StartButton;
-    declare var Login: Login;
+    import { MainHP } from "Main/MainHP.mjs";
+    declare var $MainHP: MainHP;
+    declare var $Game: Game;
+    declare var $Navbar: Navbar;
+    declare var $MenuArea: MenuArea;
+    declare var $Updating: Updating;
+    declare var $StartButton: StartButton;
+    declare var $Login: Login;
 
     declare var protobuf: protobuf;
-    declare var Modifier: Modifier;
-    declare var GameState: GameState;
-    declare var GameOverState: GameOverState;
-    declare var LoadoutState: LoadoutState;
-    declare var SeededRun: SeededRun;
+    declare var $Modifier: Modifier;
+    declare var $GameState: GameState;
+    declare var $GameOverState: GameOverState;
+    declare var $LoadoutState: LoadoutState;
+    declare var $SeededRun: SeededRun;
 
     declare var $: $;
     declare var $MainMenu: MainMenu;
     declare var $Test: Test;
-    declare var GameManager: GameManager
-    declare var TutorialState: TutorialState;
+    declare var $GameManager: GameManager
+    declare var $TutorialState: TutorialState;
 
     declare function getAllMethod(toCheck: any): string[];
 }

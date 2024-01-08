@@ -5,4 +5,4 @@ export class SeededRun extends StateFsm {
 
 }
 
-export const self:SeededRun = global.SeededRun ??= new SeededRun();
+export const self:SeededRun = global.$SeededRun ??= new SeededRun();

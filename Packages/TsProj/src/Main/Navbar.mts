@@ -53,11 +53,11 @@ export class Navbar extends StateFsm {
         targetIcon.localScale = new Vector3(1.2,1.2,1);
         targetIcon.anchoredPosition = new Vector2(0,42);
         (target.GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 200;
-        if (MenuArea.snap.CurrentPage != index) {
-            MenuArea.snap.GoToScreen(index);
+        if ($MenuArea.snap.CurrentPage != index) {
+            $MenuArea.snap.GoToScreen(index);
         }
         this.current = index;
     }
 }
 
-export const self: Navbar = global.Navbar ??= new Navbar();
+export const self: Navbar = global.$Navbar ??= new Navbar();

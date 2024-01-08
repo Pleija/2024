@@ -5,4 +5,4 @@ export class Modifier extends StateFsm {
 
 }
 
-export const self:Modifier = global.Modifier ??= new Modifier();
+export const self:Modifier = global.$Modifier ??= new Modifier();

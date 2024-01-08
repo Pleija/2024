@@ -4,4 +4,4 @@ export class GameOverState extends StateFsm {
 
 }
 
- export const self:GameOverState = global.GameOverState ??= new GameOverState();
+ export const self:GameOverState = global.$GameOverState ??= new GameOverState();

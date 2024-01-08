@@ -1809,7 +1809,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u70B9\u51FB\u540C\u610F <link=\"https://static.pleija.com/docs/#/PrivacyPolicy\"><color=green><u>\u9690\u79C1\u534F\u8BAE</u></color></link>
-    \u548C <link=\"https://static.pleija.com/docs/#/TermsOfService\"><color=green><u>\u7528\u6237\u6761\u6B3E</u></color></link>"
+    \u548C <link=\"https://static.pleija.com/docs/#/TermsOfService\"><color=green><u>\u7528\u6237\u6761\u6B3E</u></color></link>\n\n\u8F7B\u677E\u6109\u5FEB,
+    \u5145\u6EE1\u523A\u6FC0\u7684\u8DD1\u9177\u52A8\u4F5C\u6E38\u620F, \u4F7F\u7528\u5404\u79CD\u9053\u5177\u6218\u6597\u5E76\u6D88\u706D\u654C\u4EBA."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}

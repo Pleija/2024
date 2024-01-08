@@ -1,5 +1,5 @@
-import { BaseTag } from "Common/BaseTag.mjs";
-import { StateFsm } from "Common/StateFsm.mjs";
+import {BaseTag} from "Common/BaseTag.mjs";
+import {StateFsm} from "Common/StateFsm.mjs";
 
 export class Test extends BaseTag {
     get enable(): boolean {

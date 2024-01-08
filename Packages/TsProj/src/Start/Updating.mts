@@ -10,4 +10,4 @@ export class Updating extends StateFsm {
     }
 }
 
-export const self: Updating = global.Updating ??= new Updating();
+export const self: Updating = global.$Updating ??= new Updating();

@@ -10,9 +10,9 @@ export class MenuArea extends StateFsm {
         this.snap = this.fsm.agent.GetComponent($typeof(HorizontalScrollSnap)) as HorizontalScrollSnap;
         this.snap.OnSelectionPageChangedEvent.AddListener(index => {
             console.log(`page: ${index}`);
-            Navbar.setCurrent(index);
+            $Navbar.setCurrent(index);
         });
     }
 }
 
-export const self: MenuArea = global.MenuArea ??= new MenuArea();
+export const self: MenuArea = global.$MenuArea ??= new MenuArea();

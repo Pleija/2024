@@ -4,5 +4,5 @@ export class TutorialState extends StateFsm {
 
 }
 
-export const self: TutorialState = global.TutorialState ??= new TutorialState();
+export const self: TutorialState = global.$TutorialState ??= new TutorialState();
 

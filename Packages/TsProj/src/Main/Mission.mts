@@ -10,4 +10,4 @@ export class Mission extends StateFsm {
     }
 }
 
-export const self: Mission = global.Mission ??= new Mission();
+export const self: Mission = global.$Mission ??= new Mission();

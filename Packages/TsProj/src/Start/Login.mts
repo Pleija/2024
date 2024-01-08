@@ -1,5 +1,5 @@
-import { StateFsm } from "Common/StateFsm.mjs";
-import { LoadStart } from "Start/Login/LoadStart.mjs";
+import {StateFsm} from "Common/StateFsm.mjs";
+import {LoadStart} from "Start/Login/LoadStart.mjs";
 import FSM = CS.NodeCanvas.StateMachines.FSM;
 
 export class Login extends StateFsm {
@@ -11,4 +11,4 @@ export class Login extends StateFsm {
     }
 }
 
-export const self: Login = global.Login ??= new Login();
+export const self: Login = global.$Login ??= new Login();

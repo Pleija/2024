@@ -10,4 +10,4 @@ export class Game extends StateFsm {
 
 }
 
-export const self: Game = global.Game ??= new Game();
+export const self: Game = global.$Game ??= new Game();

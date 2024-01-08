@@ -133,7 +133,7 @@ export class {FsmName} extends StateFsm {{
       }}
 }}
 
-export const self:{FsmName} = global.{FsmName} ??= new {FsmName}();
+export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 ";
                 File.WriteAllText(classPath, content);
             }
@@ -147,7 +147,7 @@ export const self:{FsmName} = global.{FsmName} ??= new {FsmName}();
 
             if(!imports.Any(x => x.GetText().Contains(filePath))) {
                 change.InsertAfter(imports.Last(),
-                    $"\n    import {{ {FsmName} }} from \"{filePath}\";\n    declare var {FsmName}: {FsmName};");
+                    $"\n    import {{ {FsmName} }} from \"{filePath}\";\n    declare var ${FsmName}: {FsmName};");
                 var newSource = change.GetChangedSource(ast.SourceStr);
                 File.WriteAllText(dtsPath, newSource);
             }

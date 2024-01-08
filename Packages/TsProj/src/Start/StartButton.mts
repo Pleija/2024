@@ -9,4 +9,4 @@ export class StartButton extends StateFsm {
     }
 }
 
-export const self: StartButton = global.StartButton ??= new StartButton();
+export const self: StartButton = global.$StartButton ??= new StartButton();

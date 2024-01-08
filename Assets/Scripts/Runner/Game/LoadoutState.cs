@@ -34,6 +34,8 @@ namespace Runner.Game
         [Header("Theme UI")]
         public Text themeNameDisplay;
 
+        public GameObject mainHp;
+
         public RectTransform themeSelect;
         public Image themeIcon;
 
@@ -80,6 +82,7 @@ namespace Runner.Game
         public override void Enter(AState from)
         {
             tutorialBlocker.SetActive(!PlayerData.instance.tutorialDone);
+            mainHp.SetActive(PlayerData.instance.tutorialDone);
             tutorialPrompt.SetActive(false);
             inventoryCanvas.gameObject.SetActive(true);
             missionPopup.gameObject.SetActive(false);
