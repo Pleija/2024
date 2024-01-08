@@ -2,6 +2,7 @@
 using Runner.Obstacles;
 using Runner.Tracks;
 using UnityEngine;
+using Obstacle = Royale.Obstacle;
 using Random = UnityEngine.Random;
 
 namespace Runner.Missions
