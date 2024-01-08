@@ -786,7 +786,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 143.0813, y: 435.0003}
+  m_AnchoredPosition: {x: 143.08, y: 465}
   m_SizeDelta: {x: 366.4983, y: 88.8205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1091824978
@@ -809,7 +809,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u72C2\u66B4\u98DE\u5954"
+  m_text: "\u5C0F\u732B\u5FEB\u8DD1"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66a65a6ef5e8b42fda80d071374d9d35, type: 2}
   m_sharedMaterial: {fileID: -1957096680720548571, guid: 66a65a6ef5e8b42fda80d071374d9d35,
@@ -952,7 +952,7 @@ PrefabInstance:
     - target: {fileID: 991770010158100823, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.482
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 991770010158100823, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
@@ -1121,7 +1121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Madly DASH
+  m_text: Tiny Cats RUN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1020ed9e6cc744031b97dc06ed6c3484, type: 2}
   m_sharedMaterial: {fileID: 3309598940397051126, guid: 1020ed9e6cc744031b97dc06ed6c3484,
@@ -1149,7 +1149,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 105
+  m_fontSize: 91.4
   m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 1

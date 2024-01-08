@@ -590,8 +590,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00051689, y: -645.11676}
-  m_SizeDelta: {x: 720, y: 167.3894}
+  m_AnchoredPosition: {x: -0.00051689, y: -626.60297}
+  m_SizeDelta: {x: 720, y: 204.4171}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &991770009983138127
 MonoBehaviour:
@@ -1313,8 +1313,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0005188, y: -2.0277}
-  m_SizeDelta: {x: 608.36, y: 36.4245}
+  m_AnchoredPosition: {x: -0.000005722, y: -2.8426}
+  m_SizeDelta: {x: 720, y: 49.4617}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &991770010362974149
 CanvasRenderer:
@@ -1346,7 +1346,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d17274fb50cd048a9a3c779efd92ef34, type: 3}
-    m_FontSize: 16
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -1809,8 +1809,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u70B9\u51FB\u540C\u610F <link=\"https://static.pleija.com/docs/#/PrivacyPolicy\"><color=green><u>\u9690\u79C1\u534F\u8BAE</u></color></link>
-    \u548C <link=\"https://static.pleija.com/docs/#/TermsOfService\"><color=green><u>\u7528\u6237\u6761\u6B3E</u></color></link>\n\n\u8F7B\u677E\u6109\u5FEB,
-    \u5145\u6EE1\u523A\u6FC0\u7684\u8DD1\u9177\u52A8\u4F5C\u6E38\u620F, \u4F7F\u7528\u5404\u79CD\u9053\u5177\u6218\u6597\u5E76\u6D88\u706D\u654C\u4EBA."
+    \u548C <link=\"https://static.pleija.com/docs/#/TermsOfService\"><color=green><u>\u7528\u6237\u6761\u6B3E</u></color></link>\n\n\u8F7B\u677E\u6109\u60A6,
+    \u7545\u5FEB\u523A\u6FC0\u7684\u52A8\u4F5C\u8DD1\u9177\u6E38\u620F, \u4F7F\u7528\u5404\u79CD\u9053\u5177\u6218\u6597\u5E76\u6D88\u706D\u654C\u4EBA."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
