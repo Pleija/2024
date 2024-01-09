@@ -20,6 +20,9 @@ namespace App
             PlayGamesPlatform.InitializeInstance(config);
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.Activate();
+
+
+
             Social.localUser.Authenticate((bool success) => {
                 // handle success or failure
                 if (success) {

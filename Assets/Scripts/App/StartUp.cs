@@ -22,7 +22,7 @@ namespace App
                 //Instantiate(Resources.Load("IngameDebugConsole"));
             }
             else {
-                Debug.unityLogger.logEnabled = false;
+                //Debug.unityLogger.logEnabled = false;
             }
         }
 

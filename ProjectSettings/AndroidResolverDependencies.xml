@@ -55,13 +55,13 @@
     <file>Assets/Plugins/Android/androidx.versionedparcelable.versionedparcelable-1.1.0.aar</file>
     <file>Assets/Plugins/Android/androidx.viewpager.viewpager-1.0.0.aar</file>
     <file>Assets/Plugins/Android/com.android.installreferrer.installreferrer-1.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-applinks-16.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-bolts-16.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-common-16.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-core-16.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-gamingservices-16.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-login-16.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.facebook.android.facebook-share-16.2.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-applinks-16.3.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-bolts-16.3.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-common-16.3.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-core-16.3.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-gamingservices-16.3.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-login-16.3.0.aar</file>
+    <file>Assets/Plugins/Android/com.facebook.android.facebook-share-16.3.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-auth-19.2.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-auth-api-phone-17.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-auth-base-17.0.0.aar</file>
@@ -84,8 +84,8 @@
     <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-jdk8-1.5.10.jar</file>
   </files>
   <settings>
-    <setting name="androidAbis" value="arm64-v8a,armeabi-v7a,x86" />
-    <setting name="bundleId" value="com.pleija.runner" />
+    <setting name="androidAbis" value="arm64-v8a" />
+    <setting name="bundleId" value="com.pleija.dash" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
     <setting name="gradlePropertiesTemplateEnabled" value="False" />

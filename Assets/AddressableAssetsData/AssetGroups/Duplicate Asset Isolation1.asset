@@ -62,11 +62,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d17274fb50cd048a9a3c779efd92ef34
-    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2.ttf
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d25bd1f0354af4ccb924eaf16f85d23d
     m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon/Icon_ShopIcon_GemBox.png
     m_ReadOnly: 0
