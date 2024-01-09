@@ -16,15 +16,15 @@ PlayerSettings:
   productName: "\u8DD1\u9177\u5927\u4F5C\u6218"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0.14070842, g: 0.5614942, b: 0.5849056, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 0
-  m_SplashScreenOverlayOpacity: 0
+  m_SplashScreenOverlayOpacity: 0.376
   m_SplashScreenAnimation: 2
-  m_SplashScreenLogoStyle: 0
+  m_SplashScreenLogoStyle: 1
   m_SplashScreenDrawMode: 0
-  m_SplashScreenBackgroundAnimationZoom: 0
-  m_SplashScreenLogoAnimationZoom: 1
+  m_SplashScreenBackgroundAnimationZoom: 0.28
+  m_SplashScreenLogoAnimationZoom: 0.552
   m_SplashScreenBackgroundLandscapeAspect: 1
   m_SplashScreenBackgroundPortraitAspect: 1
   m_SplashScreenBackgroundLandscapeUvs:
@@ -39,7 +39,9 @@ PlayerSettings:
     y: 0
     width: 1
     height: 1
-  m_SplashScreenLogos: []
+  m_SplashScreenLogos:
+  - logo: {fileID: 21300000, guid: 67bbf092d40354cd38e6a887c31c821d, type: 3}
+    duration: 2
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 450
@@ -134,7 +136,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 1
-  bundleVersion: 1.0.120
+  bundleVersion: 1.0.134
   preloadedAssets:
   - {fileID: 11400000, guid: 206f4cb7cbf694c8f867da96f3a9e1c6, type: 2}
   metroInputSource: 0
@@ -162,10 +164,10 @@ PlayerSettings:
     tvOS: 
   buildNumber:
     Standalone: 0
-    iPhone: 119
+    iPhone: 133
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 469
+  AndroidBundleVersionCode: 483
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
@@ -276,7 +278,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 2d598331812e34a1184b4fc78af3278e, type: 3}
+      m_Icon: {fileID: 2800000, guid: 4f10503cb7e0d4034aa55b6c0bb6b087, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -730,11 +732,10 @@ PlayerSettings:
   ps4IncludedModules: []
   ps4attribVROutputEnabled: 0
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 9a542032926df4e6eb4b9c9d364b7be5,
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: bfd71187e5f614337ae0b4a9bcfff07f,
     type: 3}
-  splashScreenBackgroundSourcePortrait: {fileID: 21300000, guid: 9a542032926df4e6eb4b9c9d364b7be5,
-    type: 3}
-  blurSplashScreenBackground: 0
+  splashScreenBackgroundSourcePortrait: {fileID: 0}
+  blurSplashScreenBackground: 1
   spritePackerPolicy: 
   webGLMemorySize: 256
   webGLExceptionSupport: 1
@@ -754,7 +755,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;TextMeshPro
     4: UNITY_SOCIAL;DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;EasyDOTween_Audio;EasyDOTween_Physics;EasyDOTween_Physics2D;EasyDOTween_Sprite;EasyDOTween_UI;TextMeshPro
-    7: UNITY_SOCIAL;DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;ADDRESSABLES_LOG_ALL;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;BESTHTTP_SIGNALR_CORE_ENABLE_GAMEDEVWARE_MESSAGEPACK;NODECANVAS;EasyDOTween_Audio;EasyDOTween_Physics;EasyDOTween_Physics2D;EasyDOTween_Sprite;EasyDOTween_UI;PUERTS_REFLECT_ALL_EXTENSION;TextMeshPro
+    7: UNITY_SOCIAL;DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;ADDRESSABLES_LOG_ALL;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;BESTHTTP_SIGNALR_CORE_ENABLE_GAMEDEVWARE_MESSAGEPACK;NODECANVAS;EasyDOTween_Audio;EasyDOTween_Physics;EasyDOTween_Physics2D;EasyDOTween_Sprite;EasyDOTween_UI;PUERTS_REFLECT_ALL_EXTENSION;TextMeshPro;UNITY_PURCHASING;UNITY_ANALYTICS
     13: UNITY_POST_PROCESSING_STACK_V2;TextMeshPro
     14: UNITY_POST_PROCESSING_STACK_V2;TextMeshPro
     18: UNITY_POST_PROCESSING_STACK_V2

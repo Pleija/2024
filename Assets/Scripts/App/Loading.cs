@@ -94,7 +94,7 @@ namespace App
 
         private void Start()
         {
-            if (!m_Reloaded) {
+            if (!m_Reloaded && false) {
                 m_Reloaded = true;
                 Addressables.InitializeAsync().WaitForCompletion();
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
@@ -136,7 +136,7 @@ namespace App
                 privacyPanel.SetActive(false);
                 StartCoroutine(StartUpdate());
             });
-            if (isAgreed) StartCoroutine(StartUpdate());
+            if (isAgreed || true) StartCoroutine(StartUpdate());
         }
 
         public AsyncOperationHandle<GameObject> handle { get; set; }

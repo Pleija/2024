@@ -85,6 +85,18 @@ namespace App
             else {
                 await SignInWithGooglePlayGamesAsync(code);
             }
+
+            if (AuthenticationService.Instance.IsAuthorized) {
+                PlayGamesLocalUser user = (PlayGamesLocalUser)UnityEngine.Social.localUser;
+                Debug.LogFormat("UserName: {0} id: {1} Avatar URL: {2} ", //Email: {3} Token: {4}
+                    ((PlayGamesLocalUser)UnityEngine.Social.localUser).userName,
+                    ((PlayGamesLocalUser)UnityEngine.Social.localUser).id,
+                    ((PlayGamesLocalUser)UnityEngine.Social.localUser).AvatarURL
+                    //,
+                    // ((PlayGamesLocalUser)UnityEngine.Social.localUser).Email,
+                    // ((PlayGamesLocalUser)UnityEngine.Social.localUser).GetIdToken()
+                );
+            }
             // This token serves as an example to be used for SignInWithGooglePlayGames
         }
 

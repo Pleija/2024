@@ -40,8 +40,10 @@ namespace Runner.Characters
 
         public AudioClip premiumSound;
         public DeathEvent deathData => m_DeathData;
-        public new BoxCollider collider => m_Collider;
-        public new AudioSource audio => m_Audio;
+#pragma warning disable CS0108, CS0114
+        public  BoxCollider collider => m_Collider;
+        public  AudioSource audio => m_Audio;
+#pragma warning restore CS0108, CS0114
 
         [HideInInspector]
         public List<GameObject> magnetCoins = new List<GameObject>();

@@ -1,4 +1,4 @@
-﻿using Royale;
+﻿
 
 namespace PuertsStaticWrap
 {
@@ -95,7 +95,7 @@ namespace PuertsStaticWrap
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.Scene>();
             jsEnv.UsingAction<UnityEngine.Scripting.GarbageCollector.Mode>();
             jsEnv.UsingAction<UnityEngine.Transform, UnityEngine.Transform, System.Boolean, System.Object[]>();
-            jsEnv.UsingAction<CardData, UnityEngine.Vector3, Placeable.Faction>();
+            //jsEnv.UsingAction<CardData, UnityEngine.Vector3, Placeable.Faction>();
             jsEnv.UsingFunc<BestHTTP.Connections.ConnectionBase, System.Boolean>();
             jsEnv.UsingFunc<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse, System.Byte[], System.Int32, System.Boolean>();
             jsEnv.UsingFunc<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse, System.Uri, System.Boolean>();
