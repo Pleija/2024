@@ -134,7 +134,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 1
-  bundleVersion: 1.0.109
+  bundleVersion: 1.0.113
   preloadedAssets:
   - {fileID: 11400000, guid: 206f4cb7cbf694c8f867da96f3a9e1c6, type: 2}
   metroInputSource: 0
@@ -162,10 +162,10 @@ PlayerSettings:
     tvOS: 
   buildNumber:
     Standalone: 0
-    iPhone: 108
+    iPhone: 112
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 458
+  AndroidBundleVersionCode: 462
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
@@ -863,10 +863,14 @@ PlayerSettings:
     Build: 0
     Collab: 0
     ErrorHub: 0
+    Game Performance: 1
     Game_Performance: 0
     Hub: 0
-    Purchasing: 0
+    Legacy Analytics: 1
+    Purchasing: 1
+    UDP: 0
     UNet: 0
+    Unity Ads: 1
     Unity_Ads: 0
   luminIcon:
     m_Name: 
@@ -882,11 +886,11 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: a08dfa56-395b-4423-8222-3a585c8f9bbf
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: "\u8DD1\u9177\u5927\u4F5C\u6218"
+  organizationId: wechat_os_qy0yfafwxnrhmenhm7se9f2tw
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 1
   virtualTexturingSupportEnabled: 0

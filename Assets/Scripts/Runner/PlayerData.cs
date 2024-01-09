@@ -11,6 +11,9 @@ using SqlCipher4Unity3D;
 using UniRx;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_ANALYTICS
+using UnityEngine.Analytics;
+#endif
 
 namespace Runner
 {
