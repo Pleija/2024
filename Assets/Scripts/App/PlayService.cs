@@ -20,6 +20,28 @@ namespace App
             LoginGooglePlayGames();
         }
 
+        async Task LinkWithGooglePlayGamesAsync(string authCode)
+        {
+            try {
+                await AuthenticationService.Instance.LinkWithGooglePlayGamesAsync(authCode);
+                Debug.Log("Link is successful.");
+            }
+            catch (AuthenticationException ex) when (ex.HResult == AuthenticationErrorCodes.AccountAlreadyLinked) {
+                // Prompt the player with an error message.
+                Debug.LogError("This user is already linked with another account. Log in instead.");
+            }
+            catch (AuthenticationException ex) {
+                // Compare error code to AuthenticationErrorCodes
+                // Notify the player with the proper error message
+                Debug.LogException(ex);
+            }
+            catch (RequestFailedException ex) {
+                // Compare error code to CommonErrorCodes
+                // Notify the player with the proper error message
+                Debug.LogException(ex);
+            }
+        }
+
         async Task SignInWithGooglePlayGamesAsync(string authCode)
         {
             try {
@@ -56,7 +78,13 @@ namespace App
         {
             Debug.Log("Authorization code: " + code);
             Token = code;
-            await SignInWithGooglePlayGamesAsync(code);
+
+            if (AuthenticationService.Instance.IsSignedIn) {
+                await LinkWithGooglePlayGamesAsync(code);
+            }
+            else {
+                await SignInWithGooglePlayGamesAsync(code);
+            }
             // This token serves as an example to be used for SignInWithGooglePlayGames
         }
 

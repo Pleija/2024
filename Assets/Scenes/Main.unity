@@ -35899,6 +35899,7 @@ MonoBehaviour:
   downSlideTuto: {fileID: 1984826506}
   finishTuto: {fileID: 52346560}
   adsPlacementId: reviveVideo
+  adsNetwork: 78
   adsRewarded: 1
 --- !u!1 &1245708846
 GameObject:
