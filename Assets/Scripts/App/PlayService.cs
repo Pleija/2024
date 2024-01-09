@@ -21,7 +21,7 @@ namespace App
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.Activate();
 
-
+            //AuthenticationService.Instance.SignInWithGooglePlayGamesAsync
 
             Social.localUser.Authenticate((bool success) => {
                 // handle success or failure

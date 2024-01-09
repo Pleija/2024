@@ -812,7 +812,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u8DD1\u9177\u5927\u4E71\u6597"
+  m_text: "\u8DD1\u9177\u5927\u4F5C\u6218"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ac2314c79d0e4f8d9902b213cd4f2cf, type: 2}
   m_sharedMaterial: {fileID: -2865079643413680002, guid: 8ac2314c79d0e4f8d9902b213cd4f2cf,
