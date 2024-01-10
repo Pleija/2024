@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: RemoteCards_BundledAssetGroupSchema
   m_EditorClassIdentifier: 
   m_Group: {fileID: 11400000, guid: 14d147e8867c34555a451962683b47b3, type: 2}
-  m_InternalBundleIdMode: 1
+  m_InternalBundleIdMode: 2
   m_Compression: 1
   m_IncludeAddressInCatalog: 1
   m_IncludeGUIDInCatalog: 1
   m_IncludeLabelsInCatalog: 1
   m_InternalIdNamingMode: 0
-  m_CacheClearBehavior: 0
+  m_CacheClearBehavior: 1
   m_IncludeInBuild: 1
   m_BundledAssetProviderType:
     m_AssemblyName: Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
