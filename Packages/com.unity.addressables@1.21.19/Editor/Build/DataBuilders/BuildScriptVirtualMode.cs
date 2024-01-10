@@ -267,7 +267,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
             contentCatalog.SceneProviderData = ObjectInitializationData.CreateSerializedInitializationData(sceneProviderType.Value);
 
             //save catalog
-            WriteFile(GetCatalogPath(), JsonUtility.ToJson(contentCatalog), builderInput.Registry);
+            WriteFile(GetCatalogPath(), XJsonUtility.ToJson(contentCatalog), builderInput.Registry);
 #endif
 
 
@@ -278,7 +278,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
             }
 
             var settingsPath = GetSettingsPath();
-            WriteFile(settingsPath, JsonUtility.ToJson(aaContext.runtimeData), builderInput.Registry);
+            WriteFile(settingsPath, XJsonUtility.ToJson(aaContext.runtimeData), builderInput.Registry);
 
             //inform runtime of the init data path
             var runtimeSettingsPath = GetSettingsPath("file://{UnityEngine.Application.dataPath}/../");

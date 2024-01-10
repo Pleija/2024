@@ -505,7 +505,7 @@ public class BuildLayoutGenerationTaskTests
             if (format == ProjectConfigData.ReportFileFormat.JSON)
             {
                 string text = File.ReadAllText(layoutFilePath);
-                var layout = JsonUtility.FromJson<BuildLayout>(text);
+                var layout = XJsonUtility.FromJson<BuildLayout>(text);
                 Assert.IsNotNull(layout);
             }
         }

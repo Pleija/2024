@@ -26,7 +26,7 @@ namespace UnityEditor.AddressableAssets.Settings
 
         internal static OrgData ParseOrgData(string data)
         {
-            var orgData = JsonUtility.FromJson<OrgData>(data);
+            var orgData = XJsonUtility.FromJson<OrgData>(data);
             if (orgData.id == null)
             {
                 throw new ArgumentException("Unable to parse org data.");

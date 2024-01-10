@@ -406,7 +406,7 @@ $"https://{projectId}{m_CcdClientBasePath}/client_api/v1/environments/{environme
                     throw new Exception(response.ReasonPhrase);
                 }
                 var data = await response.Content.ReadAsStringAsync();
-                var envs = JsonUtility.FromJson<Environments>(data);
+                var envs = XJsonUtility.FromJson<Environments>(data);
                 var envList = envs.results.ToList();
                 return envList;
             }
@@ -416,14 +416,14 @@ $"https://{projectId}{m_CcdClientBasePath}/client_api/v1/environments/{environme
         {
             using (System.Net.Http.HttpClient client = new System.Net.Http.HttpClient())
             {
-                var jsonString = JsonUtility.ToJson(new Token() { token = CloudProjectSettings.accessToken });
+                var jsonString = XJsonUtility.ToJson(new Token() { token = CloudProjectSettings.accessToken });
                 var url = $"{m_ServicesBasePath}/api/auth/v1/genesis-token-exchange/unity/";
                 var clientResponse = await client.PostAsync(url, new StringContent(jsonString, Encoding.UTF8, "application/json"));
                 if (!clientResponse.IsSuccessStatusCode)
                 {
                     throw new Exception(clientResponse.ReasonPhrase);
                 }
-                var token = JsonUtility.FromJson<Token>(await clientResponse.Content.ReadAsStringAsync()).token;
+                var token = XJsonUtility.FromJson<Token>(await clientResponse.Content.ReadAsStringAsync()).token;
                 return $"Bearer {token}";
             }
         }

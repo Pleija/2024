@@ -329,7 +329,7 @@ public class CustomBuildScript : BuildScriptBase
         contentCatalog.SceneProviderData = ObjectInitializationData.CreateSerializedInitializationData(sceneProviderType.Value);
 
         //save catalog
-        var jsonText = JsonUtility.ToJson(contentCatalog);
+        var jsonText = XJsonUtility.ToJson(contentCatalog);
         CreateCatalogFiles(jsonText, builderInput, aaContext);
 
         foreach (var pd in contentCatalog.ResourceProviderData)
@@ -359,7 +359,7 @@ public class CustomBuildScript : BuildScriptBase
         Directory.CreateDirectory(Addressables.BuildPath + "/AddressablesLink/");
         m_Linker.Save(Addressables.BuildPath + "/AddressablesLink/link.xml");
         var settingsPath = Addressables.BuildPath + "/" + builderInput.RuntimeSettingsFilename;
-        WriteFile(settingsPath, JsonUtility.ToJson(aaContext.runtimeData), builderInput.Registry);
+        WriteFile(settingsPath, XJsonUtility.ToJson(aaContext.runtimeData), builderInput.Registry);
 
         var opResult = AddressableAssetBuildResult.CreateResult<TResult>(settingsPath, aaContext.locations.Count);
         if (extractData.BuildCache != null && builderInput.PreviousContentState == null)

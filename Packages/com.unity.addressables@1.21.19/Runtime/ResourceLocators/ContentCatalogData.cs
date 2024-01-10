@@ -443,12 +443,12 @@ namespace UnityEngine.AddressableAssets.ResourceLocators
 
         internal static ContentCatalogData LoadFromFile(string path, int cacheSize = 1024)
         {
-            return JsonUtility.FromJson<ContentCatalogData>(File.ReadAllText(path));
+            return XJsonUtility.FromJson<ContentCatalogData>(File.ReadAllText(path));
         }
 
         internal void SaveToFile(string path)
         {
-            File.WriteAllText(path, JsonUtility.ToJson(this));
+            File.WriteAllText(path, XJsonUtility.ToJson(this));
         }
 
         internal void CleanData()

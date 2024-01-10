@@ -420,7 +420,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
                 string contentHash = null;
                 string jsonText = null;
                 using (m_Log.ScopedStep(LogLevel.Info, "Generating Json"))
-                    jsonText = JsonUtility.ToJson(contentCatalog);
+                    jsonText = XJsonUtility.ToJson(contentCatalog);
                 if (aaContext.Settings.BuildRemoteCatalog || ProjectConfigData.GenerateBuildLayout)
                 {
                     using (m_Log.ScopedStep(LogLevel.Info, "Hashing Catalog"))
@@ -466,7 +466,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
             var settingsPath = Addressables.BuildPath + "/" + builderInput.RuntimeSettingsFilename;
 
             using (m_Log.ScopedStep(LogLevel.Info, "Generate Settings"))
-                WriteFile(settingsPath, JsonUtility.ToJson(aaContext.runtimeData), builderInput.Registry);
+                WriteFile(settingsPath, XJsonUtility.ToJson(aaContext.runtimeData), builderInput.Registry);
 
             if (extractData.BuildCache != null && builderInput.PreviousContentState == null)
             {

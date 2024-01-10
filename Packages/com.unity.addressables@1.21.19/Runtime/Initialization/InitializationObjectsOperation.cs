@@ -30,7 +30,7 @@ namespace UnityEngine.ResourceManagement.AsyncOperations
             if (!File.Exists(pathToBuildLogs))
                 return false;
 
-            PackedPlayModeBuildLogs runtimeBuildLogs = JsonUtility.FromJson<PackedPlayModeBuildLogs>(File.ReadAllText(pathToBuildLogs));
+            PackedPlayModeBuildLogs runtimeBuildLogs = XJsonUtility.FromJson<PackedPlayModeBuildLogs>(File.ReadAllText(pathToBuildLogs));
             bool messageLogged = false;
             foreach (var log in runtimeBuildLogs.RuntimeBuildLogs)
             {

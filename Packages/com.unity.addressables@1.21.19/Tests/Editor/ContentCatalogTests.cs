@@ -330,7 +330,7 @@ namespace UnityEditor.AddressableAssets.Tests
         [Test]
         public void CanLoad_OldCatalogFormat()
         {
-            var ccd = JsonUtility.FromJson<ContentCatalogData>(testData);
+            var ccd = XJsonUtility.FromJson<ContentCatalogData>(testData);
             Assert.IsNotNull(ccd);
             var loc = ccd.CreateLocator();
             Assert.IsNotNull(loc);
@@ -395,7 +395,7 @@ namespace UnityEditor.AddressableAssets.Tests
             foreach (var f in Directory.GetFiles($"{Path.GetDirectoryName(Application.dataPath)}/catalogs", "*.json"))
             {
                 var origText = File.ReadAllText(f);
-                var cd = JsonUtility.FromJson<ContentCatalogData>(origText);
+                var cd = XJsonUtility.FromJson<ContentCatalogData>(origText);
                 var entries = cd.GetData();
                 var originalJSONSize = new FileInfo(f).Length;
                 var binFileName = f.Replace(".json", ".bin");
@@ -405,7 +405,7 @@ namespace UnityEditor.AddressableAssets.Tests
 
                 sw.Start();
                 var startBytes = GC.GetTotalMemory(true);
-                var jsonLocator = JsonUtility.FromJson<ContentCatalogData>(File.ReadAllText(f)).CreateLocator();
+                var jsonLocator = XJsonUtility.FromJson<ContentCatalogData>(File.ReadAllText(f)).CreateLocator();
                 var endBytes = GC.GetTotalMemory(true);
                 Debug.Log($"JSON: load time: {sw.ElapsedMilliseconds}, memory: {(float)(endBytes - startBytes) / (1024 * 1024)}mb, file size: {(float)(originalJSONSize) / (1024 * 1024)}mb ");
 

@@ -54,7 +54,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
                 return (TResult)resE;
             }
 
-            var rtd = JsonUtility.FromJson<ResourceManagerRuntimeData>(File.ReadAllText(settingsPath));
+            var rtd = XJsonUtility.FromJson<ResourceManagerRuntimeData>(File.ReadAllText(settingsPath));
             if (rtd == null)
             {
                 IDataBuilderResult resE = new AddressablesPlayModeBuildResult()
@@ -80,7 +80,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
             }
 
             if (buildLogs.RuntimeBuildLogs.Count > 0)
-                File.WriteAllText(buildLogsPath, JsonUtility.ToJson(buildLogs));
+                File.WriteAllText(buildLogsPath, XJsonUtility.ToJson(buildLogs));
 
             //TODO: detect if the data that does exist is out of date..
             var runtimeSettingsPath = "{UnityEngine.AddressableAssets.Addressables.RuntimePath}/settings.json";

@@ -112,7 +112,7 @@ namespace UnityEditor.AddressableAssets.Settings
                 {
                     var parseMethod = objType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, CallingConventions.Any, new[] {typeof(string)}, null);
                     if (parseMethod == null || parseMethod.ReturnType != objType)
-                        entry.Data = JsonUtility.ToJson(value);
+                        entry.Data = XJsonUtility.ToJson(value);
                     else
                         entry.Data = value.ToString();
                 }
@@ -137,7 +137,7 @@ namespace UnityEditor.AddressableAssets.Settings
                     return Enum.Parse(objType, e.Data);
                 var parseMethod = objType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, CallingConventions.Any, new[] {typeof(string)}, null);
                 if (parseMethod == null || parseMethod.ReturnType != objType)
-                    return JsonUtility.FromJson(e.Data, objType);
+                    return XJsonUtility.FromJson(e.Data, objType);
                 return parseMethod.Invoke(null, new object[] {e.Data});
             }
             catch (Exception ex)

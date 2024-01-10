@@ -17,7 +17,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
         /// <returns>Returns the converted object.</returns>
         public override object Convert(Type type, string text)
         {
-            return JsonUtility.FromJson(text, type);
+            return XJsonUtility.FromJson(text, type);
         }
     }
 }

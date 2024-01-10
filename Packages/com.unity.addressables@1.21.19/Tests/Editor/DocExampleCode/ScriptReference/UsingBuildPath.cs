@@ -14,7 +14,7 @@ namespace AddressableAssets.DocExampleCode
 			{
 				string json = System.IO.File.ReadAllText(settingsPath);
 				ResourceManagerRuntimeData activeRuntimeSettings =
-					JsonUtility.FromJson<ResourceManagerRuntimeData>(json);
+					XJsonUtility.FromJson<ResourceManagerRuntimeData>(json);
 				return activeRuntimeSettings.AddressablesVersion;
 			}
 			return null;

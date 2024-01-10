@@ -942,8 +942,11 @@ namespace UnityEngine.AddressableAssets
                         key as IResourceLocation
                     };
                 }
-                else if (!GetResourceLocations(key, typeof(object), out locations))
-                    return ResourceManager.CreateCompletedOperationWithException<long>(0, new InvalidKeyException(key, typeof(object), this));
+                else if (!GetResourceLocations(key, typeof(object), out locations)) {
+                    Debug.Log($"{key} not found");
+                    locations = new List<IResourceLocation>();
+                    //return ResourceManager.CreateCompletedOperationWithException<long>(0, new InvalidKeyException(key, typeof(object), this));
+                }
 
                 foreach (var loc in locations)
                 {

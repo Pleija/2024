@@ -54,7 +54,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders.Simulation
         /// <returns>true if the data is as expected</returns>
         public override bool Initialize(string id, string data)
         {
-            VirtualAssetBundleRuntimeData bundleData = JsonUtility.FromJson<VirtualAssetBundleRuntimeData>(data);
+            VirtualAssetBundleRuntimeData bundleData = XJsonUtility.FromJson<VirtualAssetBundleRuntimeData>(data);
             return InitializeInternal(id, bundleData);
         }
 

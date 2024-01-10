@@ -301,7 +301,7 @@ namespace UnityEditor.AddressableAssets.Build.Layout
 
             string versionElementString = "\"UnityVersion\":";
             string headerJson = null;
-            string bodyJson = JsonUtility.ToJson(this, prettyPrint);
+            string bodyJson = XJsonUtility.ToJson(this, prettyPrint);
 
             if (prettyPrint)
             {
@@ -314,7 +314,7 @@ namespace UnityEditor.AddressableAssets.Build.Layout
                     Duration = this.Duration,
                     BuildError = this.BuildError
                 };
-                headerJson = JsonUtility.ToJson(header, false);
+                headerJson = XJsonUtility.ToJson(header, false);
                 headerJson = headerJson.Remove(headerJson.Length - 1, 1) + ',';
             }
 
@@ -384,7 +384,7 @@ namespace UnityEditor.AddressableAssets.Build.Layout
                     fileJsonText = fileJsonText.Remove(lastComma) + '}';
                     try
                     {
-                        EditorJsonUtility.FromJsonOverwrite(fileJsonText, this);
+                        EditorJsonUtility.FromJsonOverwrite(fileJsonText.FromBase64(), this);
                     }
                     catch (Exception e)
                     {
@@ -444,7 +444,7 @@ namespace UnityEditor.AddressableAssets.Build.Layout
                 }
 
                 string fileJsonText = m_StreamReader.ReadToEnd();
-                EditorJsonUtility.FromJsonOverwrite(fileJsonText, this);
+                EditorJsonUtility.FromJsonOverwrite(fileJsonText.FromBase64(), this);
                 m_HeaderRead = true;
                 m_BodyRead = true;
             }

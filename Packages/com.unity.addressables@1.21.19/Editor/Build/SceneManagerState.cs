@@ -130,7 +130,7 @@ namespace UnityEditor.AddressableAssets.Build
                 var dir = Path.GetDirectoryName(path);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-                File.WriteAllText(path, JsonUtility.ToJson(Create(EditorSceneManager.GetSceneManagerSetup())));
+                File.WriteAllText(path, XJsonUtility.ToJson(Create(EditorSceneManager.GetSceneManagerSetup())));
             }
             catch (Exception ex)
             {
@@ -165,7 +165,7 @@ namespace UnityEditor.AddressableAssets.Build
 
             try
             {
-                var state = JsonUtility.FromJson<SceneManagerState>(File.ReadAllText(path));
+                var state = XJsonUtility.FromJson<SceneManagerState>(File.ReadAllText(path));
                 if (restoreSceneManagerSetup)
                     EditorSceneManager.RestoreSceneManagerSetup(state.GetSceneSetups());
                 BuiltinSceneCache.scenes = state.GetEditorBuildSettingScenes();

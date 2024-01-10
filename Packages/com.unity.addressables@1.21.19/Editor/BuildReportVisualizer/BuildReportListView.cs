@@ -89,7 +89,7 @@ namespace UnityEditor.AddressableAssets.BuildReportVisualizer
             try
             {
                 string json = System.IO.File.ReadAllText(filePath);
-                BuildLayout layout = JsonUtility.FromJson<BuildLayout>(json);
+                BuildLayout layout = XJsonUtility.FromJson<BuildLayout>(json);
                 return layout;
             }
             catch (Exception e)

@@ -54,7 +54,7 @@ public class CustomPlayModeScript : BuildScriptBase
             return (TResult)resE;
         }
 
-        var rtd = JsonUtility.FromJson<ResourceManagerRuntimeData>(File.ReadAllText(settingsPath));
+        var rtd = XJsonUtility.FromJson<ResourceManagerRuntimeData>(File.ReadAllText(settingsPath));
         if (rtd == null)
         {
             IDataBuilderResult resE = new AddressablesPlayModeBuildResult()
@@ -79,7 +79,7 @@ public class CustomPlayModeScript : BuildScriptBase
         }
 
         if (buildLogs.RuntimeBuildLogs.Count > 0)
-            File.WriteAllText(buildLogsPath, JsonUtility.ToJson(buildLogs));
+            File.WriteAllText(buildLogsPath, XJsonUtility.ToJson(buildLogs));
 
         var runtimeSettingsPath = "{UnityEngine.AddressableAssets.Addressables.RuntimePath}/settings.json";
         PlayerPrefs.SetString(Addressables.kAddressablesRuntimeDataPath, runtimeSettingsPath);

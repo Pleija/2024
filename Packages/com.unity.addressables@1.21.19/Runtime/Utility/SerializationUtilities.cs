@@ -91,7 +91,7 @@ namespace UnityEngine.AddressableAssets.Utility
                         string jsonText = Encoding.Unicode.GetString(keyData, dataIndex, jsonLength);
                         var assembly = Assembly.Load(assemblyName);
                         var t = assembly.GetType(className);
-                        return JsonUtility.FromJson(jsonText, t);
+                        return XJsonUtility.FromJson(jsonText, t);
                     }
                 }
             }
@@ -201,7 +201,7 @@ namespace UnityEngine.AddressableAssets.Utility
             length += tmpClassName.Length;
 
             //write json data
-            byte[] tmpJson = Encoding.Unicode.GetBytes(JsonUtility.ToJson(obj));
+            byte[] tmpJson = Encoding.Unicode.GetBytes(XJsonUtility.ToJson(obj));
             buffer.AddRange(BitConverter.GetBytes(tmpJson.Length));
             length += 4;
             buffer.AddRange(tmpJson);

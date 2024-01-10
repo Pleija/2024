@@ -119,7 +119,7 @@ namespace UnityEngine.ResourceManagement.Diagnostics
         /// <returns>Byte array containing serialized version of the event</returns>
         internal byte[] Serialize()
         {
-            return Encoding.ASCII.GetBytes(JsonUtility.ToJson(this));
+            return Encoding.ASCII.GetBytes(XJsonUtility.ToJson(this));
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace UnityEngine.ResourceManagement.Diagnostics
         /// <param name="data">Serialized data</param>
         public static DiagnosticEvent Deserialize(byte[] data)
         {
-            return JsonUtility.FromJson<DiagnosticEvent>(Encoding.ASCII.GetString(data));
+            return XJsonUtility.FromJson<DiagnosticEvent>(Encoding.ASCII.GetString(data));
         }
     }
 }

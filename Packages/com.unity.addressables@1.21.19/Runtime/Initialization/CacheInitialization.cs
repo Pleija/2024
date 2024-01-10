@@ -24,7 +24,7 @@ namespace UnityEngine.AddressableAssets.Initialization
         public bool Initialize(string id, string dataStr)
         {
 #if ENABLE_CACHING
-            var data = JsonUtility.FromJson<CacheInitializationData>(dataStr);
+            var data = XJsonUtility.FromJson<CacheInitializationData>(dataStr);
             if (data != null)
             {
                 Caching.compressionEnabled = data.CompressionEnabled;

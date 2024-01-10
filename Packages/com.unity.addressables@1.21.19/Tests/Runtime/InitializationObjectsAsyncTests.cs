@@ -219,7 +219,7 @@ public abstract class InitializationObjectsAsyncTests : AddressablesTestFixture
             MaximumCacheSize = maxCacheSize
         };
 
-        string json = JsonUtility.ToJson(cacheData);
+        string json = XJsonUtility.ToJson(cacheData);
 
         CacheInitialization ci = new CacheInitialization();
         var handle = ci.InitializeAsync(m_Addressables.ResourceManager, "TestCacheInit", json);

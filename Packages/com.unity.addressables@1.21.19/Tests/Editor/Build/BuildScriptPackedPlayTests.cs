@@ -43,7 +43,7 @@ namespace UnityEditor.AddressableAssets.Tests
             //Test
             buildScript.BuildData<AddressablesPlayModeBuildResult>(input);
             var buildLogPath = Addressables.BuildPath + "/buildLogs.json";
-            var logs = JsonUtility.FromJson<PackedPlayModeBuildLogs>(File.ReadAllText(buildLogPath));
+            var logs = XJsonUtility.FromJson<PackedPlayModeBuildLogs>(File.ReadAllText(buildLogPath));
 
             //Cleanup (done early in case of test failure)
             File.Delete(buildLogPath);
@@ -61,21 +61,21 @@ namespace UnityEditor.AddressableAssets.Tests
             BuildScriptPackedPlayMode buildScript = ScriptableObject.CreateInstance<BuildScriptPackedPlayMode>();
             AddressablesDataBuilderInput input = new AddressablesDataBuilderInput(Settings);
             var settingsPath = Addressables.BuildPath + "/settings.json";
-            var rtd = JsonUtility.FromJson<ResourceManagerRuntimeData>(File.ReadAllText(settingsPath));
+            var rtd = XJsonUtility.FromJson<ResourceManagerRuntimeData>(File.ReadAllText(settingsPath));
             var buildLogPath = Addressables.BuildPath + "/buildLogs.json";
 
             string storedBuildTarget = rtd.BuildTarget;
             string invalidTarget = rtd.BuildTarget = "NotAValidBuildTarget";
-            File.WriteAllText(settingsPath, JsonUtility.ToJson(rtd));
+            File.WriteAllText(settingsPath, XJsonUtility.ToJson(rtd));
 
             //Test
             buildScript.BuildData<AddressablesPlayModeBuildResult>(input);
-            var logs = JsonUtility.FromJson<PackedPlayModeBuildLogs>(File.ReadAllText(buildLogPath));
+            var logs = XJsonUtility.FromJson<PackedPlayModeBuildLogs>(File.ReadAllText(buildLogPath));
 
             //Cleanup (done early in case of test failure)
             File.Delete(buildLogPath);
             rtd.BuildTarget = storedBuildTarget;
-            File.WriteAllText(settingsPath, JsonUtility.ToJson(rtd));
+            File.WriteAllText(settingsPath, XJsonUtility.ToJson(rtd));
 
             //Assert
             Assert.AreEqual(1, logs.RuntimeBuildLogs.Count);

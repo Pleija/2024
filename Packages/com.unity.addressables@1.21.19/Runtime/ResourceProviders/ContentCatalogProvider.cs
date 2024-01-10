@@ -323,7 +323,7 @@ namespace UnityEngine.AddressableAssets.ResourceProviders
                         && loadRequest.asset is TextAsset textAsset
                         && textAsset.text != null)
                     {
-                        m_CatalogData = JsonUtility.FromJson<ContentCatalogData>(textAsset.text);
+                        m_CatalogData = XJsonUtility.FromJson<ContentCatalogData>(textAsset.text);
                         OnLoaded?.Invoke(m_CatalogData);
                     }
                     else
@@ -430,7 +430,7 @@ namespace UnityEngine.AddressableAssets.ResourceProviders
 #if ENABLE_BINARY_CATALOG
                             ccd.CopyToFile(localCachePath);
 #else
-                            File.WriteAllText(localCachePath, JsonUtility.ToJson(ccd));
+                            File.WriteAllText(localCachePath, XJsonUtility.ToJson(ccd));
 #endif
                             File.WriteAllText(localCachePath.Replace(kCatalogExt, ".hash"), m_RemoteHashValue);
                         }

@@ -387,7 +387,7 @@ namespace UnityEditor.AddressableAssets.Settings
             if (string.IsNullOrEmpty(m_Version))
             {
                 var jsonFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Packages/com.unity.addressables/package.json");
-                var packageData = JsonUtility.FromJson<PackageData>(jsonFile.text);
+                var packageData = XJsonUtility.FromJson<PackageData>(jsonFile.text);
                 var split = packageData.version.Split('.');
                 if (split.Length < 2)
                     throw new Exception("Could not get correct version data for Addressables package");

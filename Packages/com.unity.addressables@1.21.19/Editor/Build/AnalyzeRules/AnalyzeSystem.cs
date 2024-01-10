@@ -110,7 +110,7 @@ namespace UnityEditor.AddressableAssets.Build
         /// <param name="path">File path to save to</param>
         public static void SerializeData(string path)
         {
-            File.WriteAllText(path, JsonUtility.ToJson(m_AnalyzeData));
+            File.WriteAllText(path, XJsonUtility.ToJson(m_AnalyzeData));
         }
 
         /// <summary>
@@ -120,13 +120,13 @@ namespace UnityEditor.AddressableAssets.Build
         public static void DeserializeData(string path)
         {
             if (!File.Exists(path))
-                File.WriteAllText(path, JsonUtility.ToJson(new AddressablesAnalyzeResultData()));
+                File.WriteAllText(path, XJsonUtility.ToJson(new AddressablesAnalyzeResultData()));
 
             //Cleans up the previous result data
             if (Directory.Exists(AnalyzeRuleDataAssetsFolderPath))
                 Directory.Delete(AnalyzeRuleDataAssetsFolderPath, true);
 
-            m_AnalyzeData = JsonUtility.FromJson<AddressablesAnalyzeResultData>(File.ReadAllText(path));
+            m_AnalyzeData = XJsonUtility.FromJson<AddressablesAnalyzeResultData>(File.ReadAllText(path));
             if (m_AnalyzeData == null)
                 Addressables.LogWarning($"Unable to load Analyze Result Data at {path}.");
             else
@@ -152,7 +152,7 @@ namespace UnityEditor.AddressableAssets.Build
 
         internal static void SaveDataForRule(AnalyzeRule rule, object data)
         {
-            string jsonData = JsonUtility.ToJson(data);
+            string jsonData = XJsonUtility.ToJson(data);
             string path = $"{AnalyzeRuleDataFolder}/{rule.ruleName}Data.json";
             File.WriteAllText(path, jsonData);
         }
@@ -163,7 +163,7 @@ namespace UnityEditor.AddressableAssets.Build
             if (!File.Exists(path))
                 return default;
             string fileRead = File.ReadAllText(path);
-            return JsonUtility.FromJson<T>(fileRead);
+            return XJsonUtility.FromJson<T>(fileRead);
         }
 
         internal static void ReplaceAnalyzeData(AnalyzeRule rule, List<AnalyzeRule.AnalyzeResult> results)
