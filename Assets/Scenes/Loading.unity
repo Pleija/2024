@@ -1545,10 +1545,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
+      propertyPath: timer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3743213976717073852, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
       propertyPath: m_Name

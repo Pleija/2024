@@ -60,8 +60,6 @@ namespace App
             }
         }
 
-   
-
         private static bool m_Reloaded;
         public UnityEvent OnAwake;
         public UnityEvent OnStart;
@@ -176,6 +174,7 @@ namespace App
             var needUpdate = p1.Status == AsyncOperationStatus.Succeeded && p1.Result.Any();
 
             if (needUpdate) {
+                Debug.Log("new catalogs");
                 var p2 = Addressables.UpdateCatalogs(p1.Result, false);
 
                 // while(p2.IsValid() && !p2.IsDone) {
@@ -184,6 +183,7 @@ namespace App
                 //     yield return null;
                 // }
                 yield return p2;
+                Debug.Log("Catalog updated");
                 if (p2.IsValid()) Addressables.Release(p2);
             }
             else if (p1.Status != AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey)) {
@@ -197,10 +197,12 @@ namespace App
             if (p3.Result > 0) {
                 var p4 = Res.DownloadAll();
                 var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
+                Debug.Log($"download total: {total / 1024 / 1024:f2}Mb");
 
                 while (p4.IsValid() && !p4.IsDone) {
                     var current = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
-                    text = $"{(int)((1 - current / total) * 100)}%" + (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
+                    text = $"{(int)((1 - current / total) * 100)}%" +
+                        (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
                     progress.value = 1f - current / total;
                     yield return null;
                 }
@@ -219,17 +221,17 @@ namespace App
                 updated = true;
 
                 //if (Res.Exists<GameObject>(updatePrefabName) is { } found /* &&
-                   //                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
-                    //SceneManager.LoadScene(0);
-                    //LoadScene();
-                    // Addressables.InstantiateAsync(found).Completed += h => {
-                    //     //Destroy(gameObject);
-                    //     gameObject.SetActive(false);
-                    // };
-                    // Instantiate(go);
-                    // Destroy(gameObject);
-                    //yield break;
-               // }
+                //                    Addressables.LoadAssetAsync<GameObject>(found).WaitForCompletion() is { } go*/) {
+                //SceneManager.LoadScene(0);
+                //LoadScene();
+                // Addressables.InstantiateAsync(found).Completed += h => {
+                //     //Destroy(gameObject);
+                //     gameObject.SetActive(false);
+                // };
+                // Instantiate(go);
+                // Destroy(gameObject);
+                //yield break;
+                // }
             }
             // else if(!PlayerPrefs.HasKey(FirstUpdateKey)) {
             //     StartCoroutine(Offline());
@@ -290,7 +292,8 @@ namespace App
                 //     start += 0.01f;
                 //     startTime = Time.realtimeSinceStartup;
                 // }
-                progress.value = Mathf.Max(p.PercentComplete / 0.9f, progress.value += timer / 100f);
+                progress.value = Mathf.Max(p.PercentComplete / 0.9f,
+                    progress.value += timer / 100f / Application.targetFrameRate);
                 yield return null;
             }
         }
