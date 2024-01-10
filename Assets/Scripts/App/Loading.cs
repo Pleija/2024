@@ -56,7 +56,7 @@ namespace App
                 if (preText == value || string.IsNullOrEmpty(value)) return;
                 preText = value;
                 prgText.text = value.ToUpper();
-                Debug.Log(value);
+                //Debug.Log(value);
             }
         }
 
@@ -200,8 +200,7 @@ namespace App
 
                 while (p4.IsValid() && !p4.IsDone) {
                     var current = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
-                    text = $"{(int)((1 - current / total) * 100)}%" +
-                        (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
+                    text = $"{(int)((1 - current / total) * 100)}%" + (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
                     progress.value = 1f - current / total;
                     yield return null;
                 }
