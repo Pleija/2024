@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: e293c425bd8527844ad6f809d4806dd7
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
-  m_BundleLocalCatalog: 0
+  m_BundleLocalCatalog: 1
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 1
   m_IgnoreUnsupportedFilesInBuild: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
-  m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
+  m_overridePlayerVersion: '[Ver]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 7ee396e2feea84344b0351ba3b4428b1, type: 2}
   - {fileID: 11400000, guid: 6fc4762233972aa40bcd09bf0410eb96, type: 2}
@@ -81,6 +81,10 @@ MonoBehaviour:
         m_Value: ServerData/[BuildTarget]
       - m_Id: a238311f2015241f3b61372614953bd9
         m_Value: http://[PrivateIpAddress]:[HostingServicePort]
+      - m_Id: e43ec5facfead42b6bf01f6a31b0378c
+        m_Value: '[UnityEditor.PlayerSettings.bundleVersion]'
+      - m_Id: 69f9dd84f848e442c9104147107fb40f
+        m_Value: '[UnityEditor.PlayerSettings.bundleVersion]'
     - m_InheritedParent: 
       m_Id: 82fadf6b82971441799b559bcde90605
       m_ProfileName: pleija.com
@@ -95,6 +99,10 @@ MonoBehaviour:
         m_Value: Packages/HostedData/test/[BuildTarget]
       - m_Id: a238311f2015241f3b61372614953bd9
         m_Value: https://pleija.com/game/test/[BuildTarget]
+      - m_Id: e43ec5facfead42b6bf01f6a31b0378c
+        m_Value: '[UnityEditor.PlayerSettings.bundleVersion]'
+      - m_Id: 69f9dd84f848e442c9104147107fb40f
+        m_Value: 1.0
     m_ProfileEntryNames:
     - m_Id: 12ccacb9d83844dd3b0160c1cbb9b19a
       m_Name: BuildTarget
@@ -110,6 +118,12 @@ MonoBehaviour:
       m_InlineUsage: 0
     - m_Id: a238311f2015241f3b61372614953bd9
       m_Name: Remote.LoadPath
+      m_InlineUsage: 0
+    - m_Id: e43ec5facfead42b6bf01f6a31b0378c
+      m_Name: DefaultVer
+      m_InlineUsage: 0
+    - m_Id: 69f9dd84f848e442c9104147107fb40f
+      m_Name: Ver
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
