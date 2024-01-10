@@ -117,6 +117,10 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - characters
+    - themeData
+    - Base
+    - AI
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 11229673ec6cea44facba91b6ff14f06, type: 2}
