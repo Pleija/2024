@@ -21,33 +21,29 @@ MonoBehaviour:
     m_Address: Mage
     m_ReadOnly: 0
     m_SerializedLabels:
-    - AI
     - Base
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    - AI
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d7c71ca08e6ff4e9fa7e86dc215ccaed
     m_Address: Archers
     m_ReadOnly: 0
     m_SerializedLabels:
     - AI
     - Base
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f73961e850ac543fcb00d172e912b492
     m_Address: Warrior
     m_ReadOnly: 0
     m_SerializedLabels:
     - Base
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c5eb71ff2e974ce88c45317fe5ee720
     m_Address: WarriorInnocuous
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 11400000, guid: 3c5eb71ff2e974ce88c45317fe5ee720, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 3c5eb71ff2e974ce88c45317fe5ee720, type: 2}
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
-  m_Settings: {fileID: 11400000, guid: 62fd5e501abef4d188f123698eca5c92, type: 2}
+  m_Settings: {fileID: 11400000, guid: 735e874f947d0e143a6b4e83f8a7283a, type: 2}
   m_SchemaSet:
     m_Schemas:
     - {fileID: 11400000, guid: 9c1ed6785db0842debb12aef61e6287c, type: 2}
