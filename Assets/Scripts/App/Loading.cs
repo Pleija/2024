@@ -194,7 +194,8 @@ namespace App
             var p3 = Res.GetDownloadSizeAll();
             yield return p3;
 
-            if (p3.Result > 0) {
+            if (p3.Result > 0) {  
+                Debug.Log($"total size:{p3.Result}");
                 var p4 = Res.DownloadAll();
                 var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
                 Debug.Log($"download total: {total / 1024 / 1024:f2}Mb");
