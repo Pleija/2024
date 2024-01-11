@@ -830,16 +830,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u8DD1\u9177\u5927\u4F5C\u6218"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1020ed9e6cc744031b97dc06ed6c3484, type: 2}
-  m_sharedMaterial: {fileID: 3309598940397051126, guid: 1020ed9e6cc744031b97dc06ed6c3484,
+  m_fontAsset: {fileID: 11400000, guid: 8ac2314c79d0e4f8d9902b213cd4f2cf, type: 2}
+  m_sharedMaterial: {fileID: -2865079643413680002, guid: 8ac2314c79d0e4f8d9902b213cd4f2cf,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294231807
-  m_fontColor: {r: 1, g: 0.7783019, b: 0.9551621, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1553,7 +1553,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f171f5a7142284878b267495f04045ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3e3fa9d4dea594404b71eea1ea4de47c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
