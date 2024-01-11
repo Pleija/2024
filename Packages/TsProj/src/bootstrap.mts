@@ -1,3 +1,4 @@
+import "Main/CardAgent.mjs";
 import "Main/ClanPage.mjs";
 import "Main/CardsPage.mjs";
 import "Main/HeroesPage.mjs";

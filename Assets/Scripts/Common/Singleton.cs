@@ -57,10 +57,10 @@ namespace Common
             if (m_Instance == null) {
                 m_Instance = (T)this;
             }
-            else {
-                Destroy(gameObject);
-                return;
-            }
+            // else {
+            //     Destroy(gameObject);
+            //     return;
+            // }
             CheckDontUnload();
         }
 

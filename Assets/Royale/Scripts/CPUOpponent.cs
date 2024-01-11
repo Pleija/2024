@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Common;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace UnityRoyale
 {
-    public class CPUOpponent : MonoBehaviour
+    public class CPUOpponent : Singleton<CPUOpponent>
     {
         public DeckData aiDeck;
         public UnityAction<CardData, Vector3, Placeable.Faction> OnCardUsed;

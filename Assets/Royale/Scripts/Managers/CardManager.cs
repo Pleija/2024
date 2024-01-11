@@ -30,7 +30,7 @@ namespace UnityRoyale
         private void Awake()
         {
             previewHolder = new GameObject("PreviewHolder");
-            cards = new Card[3]; //3 is the length of the dashboard
+            cards = new Card[4]; //3 is the length of the dashboard
         }
 
         public void LoadDeck()

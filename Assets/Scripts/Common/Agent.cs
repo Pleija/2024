@@ -43,7 +43,7 @@ namespace Common
         }
     }
 
-    public class AgentSample : Agent<AgentSample> { }
+    //public class AgentSample : Agent<AgentSample> { }
 
     public class Agent<T> : Agent where T : Agent<T>
     {
