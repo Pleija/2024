@@ -19,6 +19,16 @@ declare global {
     import { Game } from "Main/Game.mjs";
     import { MainHP } from "Main/MainHP.mjs";
     import { LevelStart } from "Main/LevelStart.mjs";
+    import { MissionPage } from "Main/MissionPage.mjs";
+    import { ShopPage } from "Main/ShopPage.mjs";
+    import { HeroesPage } from "Main/HeroesPage.mjs";
+    import { CardsPage } from "Main/CardsPage.mjs";
+    import { ClanPage } from "Main/ClanPage.mjs";
+    declare var $ClanPage: ClanPage;
+    declare var $CardsPage: CardsPage;
+    declare var $HeroesPage: HeroesPage;
+    declare var $ShopPage: ShopPage;
+    declare var $MissionPage: MissionPage;
     declare var $LevelStart: LevelStart;
 
     declare var $MainHP: MainHP;

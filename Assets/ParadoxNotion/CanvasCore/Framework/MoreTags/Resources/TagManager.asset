@@ -181,3 +181,38 @@ MonoBehaviour:
     enable: 0
     color: {r: 0, g: 0, b: 0, a: 0}
     gameObjects: []
+  - name: FSM.MissionPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ShopPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.HeroesPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.CardsPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ClanPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []

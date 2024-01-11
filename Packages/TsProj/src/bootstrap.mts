@@ -1,3 +1,8 @@
+import "Main/ClanPage.mjs";
+import "Main/CardsPage.mjs";
+import "Main/HeroesPage.mjs";
+import "Main/ShopPage.mjs";
+import "Main/MissionPage.mjs";
 import "Main/LevelStart.mjs";
 import "Main/MainHP.mjs";
 import "Main/Game.mjs";
@@ -19,10 +24,15 @@ import "Start/StartButton.mjs";
 import "Main/GameManager.mjs";
 import $typeof = puer.$typeof;
 import Boolean = CS.System.Boolean;
+import JsEnv = CS.Puerts.JsEnv;
 
 global.protobuf = require("protobufjs");
 
 //console.log(getAllMethod(protobuf).join(", "));
+JsEnv.self.UsingAction($typeof(CS.UnityEngine.Vector2));
+JsEnv.self.UsingAction($typeof(CS.System.Int32));
+JsEnv.self.UsingAction($typeof(CS.System.String));
+JsEnv.self.UsingAction($typeof(CS.System.Single));
 
 protobuf.load("awesome.proto", (err, root) => {
     if (err) throw err;

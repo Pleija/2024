@@ -45,6 +45,12 @@ export class StateFsm {
 
         const keys = Object.keys(this);
         keys.forEach(key => {
+            if (this[key].node?.blackboard) {
+                iterator(this[key].node.blackboard.variables).forEach((v, k) => {
+                    console.log(`[${this[key].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
+                    this[key][k] = v.value;
+                });
+            }
             if (typeof this[key]['init'] == 'function') {
                 console.log("Init Node:", key);
                 this[key].init();

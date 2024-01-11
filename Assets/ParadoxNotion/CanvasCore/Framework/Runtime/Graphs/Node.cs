@@ -59,6 +59,9 @@ import {{ StateNode }} from ""Common/StateNode.mjs"";
 
 export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
+    init() {{
+
+    }}
 }}
 ";
                 File.WriteAllText(path, content);
@@ -97,7 +100,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var code = init.OfKind(SyntaxKind.Block).First().Children.FirstOrDefault();
 
                 if (code != null) {
-                    change.InsertBefore(code, $"\n    this.{NodeName} = new {NodeName}(this);");
+                    change.InsertBefore(code, $"\n        this.{NodeName} = new {NodeName}(this);");
                 }
                 else {
                     change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),$"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");

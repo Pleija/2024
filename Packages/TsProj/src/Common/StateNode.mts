@@ -1,11 +1,11 @@
-import { StateFsm } from "Common/StateFsm.mjs";
+import {StateFsm} from "Common/StateFsm.mjs";
 import Blackboard = CS.NodeCanvas.Framework.Blackboard;
 import ActionState = CS.NodeCanvas.StateMachines.ActionState;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
 import FSM = CS.NodeCanvas.StateMachines.FSM;
 import * as fs from "fs";
 import Component = CS.UnityEngine.Component;
-import { iterator } from "Common/Iterator.mjs";
+import {iterator} from "Common/Iterator.mjs";
 import $typeof = puer.$typeof;
 
 export class StateNode<T extends StateFsm> {
@@ -27,11 +27,12 @@ export class StateNode<T extends StateFsm> {
         this.node.jsBind = this;
         this.fsm = stateFsm.fsm;
         this.agent = this.fsm.agent;
-        //console.log("methods:", getAllMethod(stateFsm).join(", "));
-        // const self = this;
+        //console.log("methods:", getAllMethod(this).join(", "));
+        //console.log("properties:",Object.keys(this).join(", "));
+        //const self = this;
         // iterator(this.node.blackboard.variables).forEach((v, k) => {
-        //     console.log(`bind var: ${name}.${k} =>`, v.varType.FullName, v.value == null)
-        //     self[k] = v.value;
+        //     console.log(`[${stateFsm.constructor.name}] ${this.constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
+        //     this[k] = v.value;
         // });
         // const fn = stateFsm[name];
         //
