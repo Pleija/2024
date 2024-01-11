@@ -197,17 +197,16 @@ namespace App
             yield return p3;
 
             if (p3.Result > 0) {
-
                 var keys = Addressables.ResourceLocators.SelectMany(x => x.Keys);
 
                 foreach (var key in keys) {
+                    if (Guid.TryParse($"{key}", out _)) continue;
                     var size = Addressables.GetDownloadSizeAsync(key).WaitForCompletion();
 
                     if (size > 0) {
-                        Debug.Log($"{key} => {size}");
+                        Debug.Log($"{key} => {size / 1024f / 1024f:F3}");
                     }
                 }
-
                 Debug.Log($"total size:{p3.Result}");
                 var p4 = Res.DownloadAll();
                 var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
