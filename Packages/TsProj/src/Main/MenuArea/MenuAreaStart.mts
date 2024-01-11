@@ -6,6 +6,6 @@ export class MenuAreaStart extends StateNode<MenuArea> {
     characterSample: GameObject;
 
     init() {
-        this.characterSample.SetActive(false);
+       
     }
 }

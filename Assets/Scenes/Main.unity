@@ -64408,16 +64408,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{"characterSample":{"_value":1,"_name":"characterSample","_id":"71e4af55-e605-4d0f-9438-0e79105d6b2a","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
-    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}},"_name":"MenuAreaStart","_preTags":[],"_postTags":[],"_position":{"x":491.0,"y":266.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"snap":{"_name":"snap","_id":"20f9d289-c394-47cc-89e1-b84fc136f0a4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Extensions.HorizontalScrollSnap,
-    UnityUIExtensions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}},"_name":"MenuAreaStart","_preTags":[],"_postTags":[],"_position":{"x":491.0,"y":266.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"snap":{"_value":2,"_name":"snap","_id":"20f9d289-c394-47cc-89e1-b84fc136f0a4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Extensions.HorizontalScrollSnap,
+    UnityUIExtensions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"characterSample":{"_value":1,"_name":"characterSample","_id":"ff9a229a-3a6f-4f27-9673-2246517c28c2","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
   - {fileID: 764160785}
+  - {fileID: 2026388874}
   _boundGraphSource:
     _version: 3.29
     _category: 
     _comments: 
-    _translation: {x: 19.908922, y: 12.545257}
+    _translation: {x: 6.5530186, y: -5.686276}
     _zoomFactor: 1
   _firstActivation: 1
   _enableAction: 0
