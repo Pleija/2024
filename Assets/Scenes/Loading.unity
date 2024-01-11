@@ -571,6 +571,8 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   old: {fileID: 2858377948324851107}
+  clearDir: 0
+  disableLog: 0
 --- !u!4 &760304481
 Transform:
   m_ObjectHideFlags: 0
@@ -1552,7 +1554,8 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
     - target: {fileID: 3743213976717073852, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
       propertyPath: m_Name

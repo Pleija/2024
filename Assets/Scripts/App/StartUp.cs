@@ -3,6 +3,7 @@ using System.IO;
 using Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace App
 {
@@ -10,37 +11,51 @@ namespace App
     {
         public AssetReference prefab;
         public GameObject old;
+        public bool clearDir = false;
+        public bool disableLog = false;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void DebugSetting()
         {
-            if (false && Debug.isDebugBuild && !Application.isEditor &&
+            if (StartUp.self.clearDir && Debug.isDebugBuild && !Application.isEditor &&
                 PlayerPrefs.GetString(Loading.VersionKey) != Application.version)
                 Directory.Delete(Application.persistentDataPath + "/com.unity.addressables", true);
 
             if (Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
                 //Instantiate(Resources.Load("IngameDebugConsole"));
             }
-            else {
-                //Debug.unityLogger.logEnabled = false;
+            else if (StartUp.self.disableLog) {
+                Debug.unityLogger.logEnabled = false;
             }
         }
 
-        private async void Start()
+        private async void Awake()
         {
             Debug.Log($"Start Time: {Time.realtimeSinceStartup:F2}");
+            //old.gameObject.SetActive(false);
+            Loading.self.enabled = false;
             Addressables.InitializeAsync().WaitForCompletion();
 
             try {
-                var go = await Addressables.InstantiateAsync(prefab).Task;
-
-                if (!go) {
-                    old.SetActive(true);
+                if (Res.Exists<GameObject>(prefab) is { } res) {
+                    Addressables.DownloadDependenciesAsync(prefab).Completed += h => {
+                        if (h.Status == AsyncOperationStatus.Succeeded) {
+                            Addressables.InstantiateAsync(prefab).Completed += h2 => {
+                                old.SetActive(false);
+                            };
+                        }
+                        else {
+                            Loading.self.enabled = true;
+                        }
+                    };
+                }
+                else {
+                    Loading.self.enabled = true;
                 }
             }
             catch (Exception e) {
                 Debug.LogException(e);
-                old.SetActive(true);
+                Loading.self.enabled = true;
             }
         }
     }

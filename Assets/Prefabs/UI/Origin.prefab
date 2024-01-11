@@ -2381,7 +2381,7 @@ MonoBehaviour:
   OnStart:
     m_PersistentCalls:
       m_Calls: []
-  timer: 3
+  timer: 6
   privacyUrl: https://static.pleija.com/docs/#/PrivacyPolicy
   tosUrl: https://static.pleija.com/docs/#/TermsOfService
   OnLoad:

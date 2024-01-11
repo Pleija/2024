@@ -124,7 +124,9 @@ namespace App
 
         void DoStart()
         {
-            Debug.Log("Start");
+            Debug.Log($"Start Time: {Time.realtimeSinceStartup:F2}");
+
+            //Debug.Log("Start");
             OnStart?.Invoke();
             privacyPanel.SetActive(!isAgreed);
             offlinePanel.SetActive(false);

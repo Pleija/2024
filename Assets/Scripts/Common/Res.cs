@@ -29,9 +29,9 @@ namespace Common
         public static IEnumerable<string> Keys => ResourceLocators.SelectMany(x => x.Keys)
             .Select(key => Exists(key.ToString())?.PrimaryKey ?? null).Where(x => x != null).Distinct();
 
-        public static IResourceLocation Exists<T>(string key, Type type = null) => Exists(key, typeof(T));
+        public static IResourceLocation Exists<T>(object key, Type type = null) => Exists(key, typeof(T));
 
-        public static IResourceLocation Exists(string key, Type type = null)
+        public static IResourceLocation Exists(object key, Type type = null)
         {
             var result = new List<IResourceLocation>();
             foreach (var locator in ResourceLocators)
