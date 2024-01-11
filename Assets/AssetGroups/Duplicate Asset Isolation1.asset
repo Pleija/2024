@@ -102,6 +102,71 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a50f50d60db8584d8079d8fc0b627ad
+    m_Address: Assets/Art/Animation/Materials/lambert1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 933532a4fcc9baf4fa0491de14d08ed7
+    m_Address: Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6e9a19c3678ded42a3bc431ebef7dbd
+    m_Address: Packages/com.unity.render-pipelines.universal/Shaders/Utils/FallbackError.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d17274fb50cd048a9a3c779efd92ef34
+    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2.ttf
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68b35d2059b8c46e0a98e53628e9b3af
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Button/btn_rectangle_01_n_bluegray.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9681f770c55d742df904f1727dbd82ee
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon_RuneIcons(Original)/RuneIcon_Frame_1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86ad28a37b0134b33b88df67b42b7fe0
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Button/Btn_MainButton_Purple.Png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1eaee135ce037439d925cee5e41ce026
+    m_Address: Assets/Design/UI/2D Casual UI/Sprite/GUI.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a74dacc9bfcf47749a8630eac3456429
+    m_Address: Assets/Design/UI/Elements/UI Elements/Extras/Rects/roundRect.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b41c440bff95c5f4bb8a6951735d322d
+    m_Address: Assets/Design/Custom/Imgs/whiteSquare_fadeOut_bt.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05c9abbefdc534a2abba228c77c173d8
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Icon_FunctionIcons_(Original)/function_icon_shield.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 535d5068f6e6f4174a907fe1688dc8c1
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Button/Btn_MainButton_White.Png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3265ab4bf004d28a9537516768c1c75
+    m_Address: Assets/Plugins/TextMesh Pro/Fonts/LiberationSans.ttf
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 735e874f947d0e143a6b4e83f8a7283a, type: 2}
   m_SchemaSet:
