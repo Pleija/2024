@@ -16,7 +16,7 @@ export class MenuArea extends StateFsm {
         //
         this.snap = this.fsm.agent.GetComponent($typeof(HorizontalScrollSnap)) as HorizontalScrollSnap;
         this.snap.OnSelectionPageChangedEvent.AddListener(index => {
-            console.log(`page: ${index}`);
+            //console.log(`page: ${index}`);
             $Navbar.setCurrent(index);
             this.characterSample.SetActive(index == 1);
         });

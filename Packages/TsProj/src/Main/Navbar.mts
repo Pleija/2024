@@ -33,7 +33,7 @@ export class Navbar extends StateFsm {
             }
             this.buttons[i] = btn;
             btn.onClick.AddListener(() => {
-                console.log(`click: ${i}`);
+                //console.log(`click: ${i}`);
                 this.setCurrent(this.buttons.indexOf(btn));
             });
         });
