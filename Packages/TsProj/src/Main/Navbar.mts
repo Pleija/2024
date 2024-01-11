@@ -45,6 +45,8 @@ export class Navbar extends StateFsm {
         old.sprite = this.normalImg;
         old.color = this.normalColor;
         (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 129;
+        (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 0;
+
         let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
         this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text),true).gameObject.SetActive(false);
         oldIcon.localScale = new Vector3(1,1,1);
@@ -56,6 +58,7 @@ export class Navbar extends StateFsm {
         targetIcon.localScale = new Vector3(1.2,1.2,1);
         targetIcon.anchoredPosition = new Vector2(0,42);
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 200;
+        (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 180;
         this.buttons[index].GetComponentInChildren($typeof(TMP_Text),true).gameObject.SetActive(true);
         if ($MenuArea.snap.CurrentPage != index) {
             $MenuArea.snap.GoToScreen(index);
