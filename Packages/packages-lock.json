@@ -7,7 +7,7 @@
       "dependencies": {}
     },
     "com.tencent.puerts.core": {
-      "version": "file:Puerts",
+      "version": "file:Puerts2.0.4",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

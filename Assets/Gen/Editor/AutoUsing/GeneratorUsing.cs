@@ -135,7 +135,7 @@ namespace Puerts.AutoUsing
                 .Select(m => m.GetGenericArguments().Length).ToList();
         }
 
-        [MenuItem("PuerTS/Generate UsingCode", false, -401)]
+        [MenuItem("Tools/PuerTS/Generate UsingCode", false, -401)]
         public static void GenerateUsingCode()
         {
             var start = DateTime.Now;
