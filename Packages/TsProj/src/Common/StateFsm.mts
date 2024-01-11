@@ -4,11 +4,19 @@ import Blackboard = CS.NodeCanvas.Framework.Blackboard;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
 import {iterator} from "Common/Iterator.mjs";
 import {StateNode} from "Common/StateNode.mjs";
+import MonoBehaviour = CS.UnityEngine.MonoBehaviour;
+import GameObject = CS.UnityEngine.GameObject;
+import Transform = CS.UnityEngine.Transform;
+import FSMOwner = CS.NodeCanvas.StateMachines.FSMOwner;
+import Component = CS.UnityEngine.Component;
 
 export class StateFsm {
 
     fsm: FSM;
-    bb: Blackboard;
+    agent: Component;
+    gameObject: GameObject;
+    transform: Transform;
+    blackboard: Blackboard;
 
     constructor() {
 
@@ -20,14 +28,21 @@ export class StateFsm {
 
     bindFsm(f: FSM, bb: Blackboard) {
         this.fsm = f;
-        this.bb = bb;
+        this.agent = this.fsm.agent;
+        this.transform = this.fsm.agent.transform;
+        this.gameObject = this.fsm.agent.gameObject;
+
+        this.blackboard = bb;
         f.jsBind = this;
         const self = this;
         iterator(bb.variables).forEach((value, key) => {
             self[key] = value.value;
         });
-        this['init']?.();
-        console.log("Init:", f.FsmName);
+        if (this['init']) {
+            console.log("Init:", f.FsmName);
+            this['init']?.();
+        }
+
         const keys = Object.keys(this);
         keys.forEach(key => {
             if (typeof this[key]['init'] == 'function') {

@@ -18,6 +18,9 @@ declare global {
     import { Navbar } from "Main/Navbar.mjs";
     import { Game } from "Main/Game.mjs";
     import { MainHP } from "Main/MainHP.mjs";
+    import { LevelStart } from "Main/LevelStart.mjs";
+    declare var $LevelStart: LevelStart;
+
     declare var $MainHP: MainHP;
     declare var $Game: Game;
     declare var $Navbar: Navbar;

@@ -1,3 +1,4 @@
+import "Main/LevelStart.mjs";
 import "Main/MainHP.mjs";
 import "Main/Game.mjs";
 import "Main/Navbar.mjs";

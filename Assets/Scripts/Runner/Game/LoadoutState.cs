@@ -23,6 +23,13 @@ namespace Runner.Game
     /// </summary>
     public class LoadoutState : AState
     {
+        public static LoadoutState self;
+
+        private void Awake()
+        {
+            self = this;
+        }
+
         public Canvas inventoryCanvas;
 
         [Header("Char UI")]
@@ -35,7 +42,6 @@ namespace Runner.Game
         public Text themeNameDisplay;
 
         public GameObject mainHp;
-
         public RectTransform themeSelect;
         public Image themeIcon;
 
