@@ -48,7 +48,7 @@ export class Navbar extends StateFsm {
         let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
         this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text),true).gameObject.SetActive(false);
         oldIcon.localScale = new Vector3(1,1,1);
-        oldIcon.anchoredPosition = new Vector2(0,0);
+        oldIcon.anchoredPosition = new Vector2(0,5);
         const target = this.buttons[index].GetComponent($typeof(Image)) as Image;
         target.sprite = this.currentImg;
         target.color = this.currentColor;

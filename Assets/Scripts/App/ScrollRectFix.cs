@@ -67,7 +67,7 @@ namespace App
             PassEvent(eventData, ExecuteEvents.endDragHandler);
         }
 
-        public bool isDebug = true;
+        public bool isDebug = false;
 
         // 渗透方法
         private void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> func, bool isBegin = false,
