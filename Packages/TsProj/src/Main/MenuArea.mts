@@ -4,6 +4,8 @@ import $typeof = puer.$typeof;
 import HorizontalScrollSnap = CS.UnityEngine.UI.Extensions.HorizontalScrollSnap;
 import ScrollRect = CS.UnityEngine.UI.ScrollRect;
 import GameObject = CS.UnityEngine.GameObject;
+import RectTransform = CS.UnityEngine.RectTransform;
+import Vector2 = CS.UnityEngine.Vector2;
 
 export class MenuArea extends StateFsm {
     snap: HorizontalScrollSnap;
@@ -24,6 +26,8 @@ export class MenuArea extends StateFsm {
         scroll.onValueChanged.AddListener(value => {
             //console.log(value.x, value.y);
         });
+       let rt = (this.snap.GetComponent($typeof(ScrollRect)) as ScrollRect).content.GetComponent($typeof(RectTransform)) as RectTransform;
+       rt.sizeDelta = new Vector2(3600, rt.sizeDelta.y);
     }
 }
 

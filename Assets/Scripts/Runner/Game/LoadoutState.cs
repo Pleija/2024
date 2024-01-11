@@ -260,7 +260,7 @@ namespace Runner.Game
                             yield break;
                         }
                         newChar = op.Result as GameObject;
-                        Helpers.SetRendererLayerRecursive(newChar, k_UILayer);
+                        Helpers.SetRendererLayerRecursive(newChar, /*k_UILayer*/LayerMask.NameToLayer("Character"));
                         newChar.transform.SetParent(charPosition, false);
                         newChar.transform.rotation = k_FlippedYAxisRotation;
                         if (m_Character != null)

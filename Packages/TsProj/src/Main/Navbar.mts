@@ -36,6 +36,7 @@ export class Navbar extends StateFsm {
                 //console.log(`click: ${i}`);
                 this.setCurrent(this.buttons.indexOf(btn));
             });
+            
         });
     }
 
