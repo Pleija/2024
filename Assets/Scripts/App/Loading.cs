@@ -309,10 +309,10 @@ namespace App
                 //     start += 0.01f;
                 //     startTime = Time.realtimeSinceStartup;
                 // }
-                progress.value = Mathf.Max(p.PercentComplete / 0.9f,
-                    progress.value += timer / 100f / Application.targetFrameRate);
+                progress.value = p.PercentComplete;
                 yield return null;
             }
+            progress.value = 1;
         }
     }
 }
