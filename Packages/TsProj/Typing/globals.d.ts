@@ -25,6 +25,8 @@ declare global {
     import { CardsPage } from "Main/CardsPage.mjs";
     import { ClanPage } from "Main/ClanPage.mjs";
     import { CardAgent } from "Main/CardAgent.mjs";
+    import { Settings } from "MissionPage/Settings.mjs";
+    declare var $Settings: Settings;
     declare var $CardAgent: CardAgent;
     declare var $ClanPage: ClanPage;
     declare var $CardsPage: CardsPage;

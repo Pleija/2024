@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   favs:
   - categoryId: 0
-    obj: {fileID: 102900000, guid: 66b8e0d49d006dd4cb32d8b0fa444728, type: 3}
-  - categoryId: 0
     obj: {fileID: 102900000, guid: 678d462d33ebdd7419400a9476bf6759, type: 3}
   - categoryId: 0
     obj: {fileID: 102900000, guid: a4644c752f91e4b329f47363b846602b, type: 3}
@@ -84,7 +82,7 @@ MonoBehaviour:
   - categoryId: 6
     obj: {fileID: 8029879071012677015, guid: e5b3509e5c33b4d379cf75fe984b9a13, type: 3}
   - categoryId: 0
-    obj: {fileID: 102900000, guid: 2518df6583c8d4b89a5e631f38c5ac06, type: 3}
+    obj: {fileID: 102900000, guid: 55ae290035c53434eb94fc9842eb61b8, type: 3}
   categories:
   - id: 0
     name: Scenes

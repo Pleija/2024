@@ -160,7 +160,7 @@ namespace App
         private IEnumerator StartUpdate()
         {
             progress.gameObject.SetActive(true);
-            text = "UPDATING...";
+            text = "UPDATING";
             progress.value = 0;
 
             if (Application.internetReachability == NetworkReachability.NotReachable &&
@@ -172,7 +172,7 @@ namespace App
             var p1 = Addressables.CheckForCatalogUpdates(false);
 
             // while(p1.IsValid() && !p1.IsDone) {
-            text = $"Check Update...";
+            text = $"Check Update";
             //     progress.value = p1.PercentComplete;
             //     yield return null;
             // }
@@ -184,7 +184,7 @@ namespace App
                 var p2 = Addressables.UpdateCatalogs(p1.Result, false);
 
                 // while(p2.IsValid() && !p2.IsDone) {
-                text = $"Update Catalog...";
+                text = $"Update Catalog";
                 //     progress.value = p2.PercentComplete;
                 //     yield return null;
                 // }
@@ -219,7 +219,7 @@ namespace App
                 while (p4.IsValid() && !p4.IsDone) {
                     var current = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
                     text = $"{(int)((1 - current / total) * 100)}%" +
-                        (current != 0 ? $" ({current / 1024 / 1024:f1}M)" : "");
+                        (current != 0 ? $" ({current / 1024 / 1024:f0}MB)" : "");
                     progress.value = 1f - current / total;
                     yield return null;
                 }
@@ -268,7 +268,7 @@ namespace App
                 StartCoroutine(StartUpdate());
                 yield break;
             }
-            text = "Loading...";
+            text = "Loading";
             progress.value = 0;
             OnLoad?.Invoke();
         }

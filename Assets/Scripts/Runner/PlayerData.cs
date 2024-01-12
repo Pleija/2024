@@ -187,7 +187,7 @@ namespace Runner
             if (m_Instance == null) {
                 m_Instance = self; //new PlayerData();
 
-                if (!m_Instance.themes.Any()) {
+                if (m_Instance.themes == null || !m_Instance.themes.Any()) {
                     Debug.Log("New Save PlayData");
                     NewSave();
                     m_Instance.Save();

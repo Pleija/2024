@@ -1,3 +1,4 @@
+import "MissionPage/Settings.mjs";
 import "Main/CardAgent.mjs";
 import "Main/ClanPage.mjs";
 import "Main/CardsPage.mjs";

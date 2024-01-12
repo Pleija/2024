@@ -47,12 +47,6 @@ namespace App
 
         public bool LoadModels;
 
-        static void AOT()
-        {
-            SerializationUtility.DeserializeValue<SerializationData>(null);
-            Runner.PlayerData.Create();
-        }
-
         public async void Awake()
         {
             Debug.Log("Start JsMain");
