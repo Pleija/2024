@@ -32,7 +32,7 @@ export class Settings extends StateFsm {
             console.log("drop PlayerData ok.");
         });
         this.settingsPop.SetActive(false);
-        (this.settingsPop.GetComponent($typeof(Transform)).UpdateAsObservable() as Subject$1<Unit>).SubscribeAction(t => {
+        (this.settingsPop.UpdateAsObservable() as Subject$1<Unit>).SubscribeAction(t => {
             if (this.settingsPop.activeInHierarchy && EventSystem.current.IsPointerOverGameObject()) {
                 this.settingsPop.SetActive(false);
                 console.log("hide ok");
