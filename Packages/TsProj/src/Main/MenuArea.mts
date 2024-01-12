@@ -26,8 +26,9 @@ export class MenuArea extends StateFsm {
         scroll.onValueChanged.AddListener(value => {
             //console.log(value.x, value.y);
         });
-       let rt = (this.snap.GetComponent($typeof(ScrollRect)) as ScrollRect).content.GetComponent($typeof(RectTransform)) as RectTransform;
-       rt.sizeDelta = new Vector2(3600, rt.sizeDelta.y);
+       //let rt = (this.snap.GetComponent($typeof(ScrollRect)) as ScrollRect).content.GetComponent($typeof(RectTransform)) as RectTransform;
+       //rt.sizeDelta = new Vector2(3600, rt.sizeDelta.y);
+        this.snap.GoToScreen(2);
     }
 }
 
