@@ -59,3 +59,5 @@ artifacts
 # 文件超标
 *.unitypackage
 
+
+## 删除大文件 git filter-branch -f --prune-empty --index-filter 'git rm -rf --cached --ignore-unmatch 文件路径' --tag-name-filter cat -- --all
