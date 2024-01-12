@@ -7,4 +7,11 @@
 		<type fullname="UnityEngine.Advertisements" preserve="all" />
 		<type fullname="UnityEngine.SpriteRenderer" preserve="all" />
 	</assembly>
+
+	<assembly fullname="Sirenix.OdinInspector.Attributes" preserve="all"/>
+	<assembly fullname="Sirenix.Serialization.Config" preserve="all"/>
+	<assembly fullname="Sirenix.Serialization" preserve="all"/>
+	<assembly fullname="Sirenix.Utilities" preserve="all"/>
+	<assembly fullname="Sirenix.Serialization.AOTGenerated" preserve="all" ignoreIfMissing="1"/>
+	
 </linker>

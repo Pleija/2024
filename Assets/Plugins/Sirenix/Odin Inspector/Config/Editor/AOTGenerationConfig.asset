@@ -12,9 +12,91 @@ MonoBehaviour:
   m_Script: {fileID: 1726182683, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
   m_Name: AOTGenerationConfig
   m_EditorClassIdentifier: 
-  automateBeforeBuilds: 0
+  automateBeforeBuilds: 1
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
-  automateForPlatforms: 0900000014000000
-  lastScan: 0
-  supportSerializedTypes: []
+  automateForPlatforms: 09000000140000000d000000
+  lastScan: 638406917818159900
+  supportSerializedTypes:
+  - TypeName: Sirenix.Serialization.SerializationData, Sirenix.Serialization
+    IsCustom: 1
+    Emit: 1
+  - TypeName: UnityRoyale.CardData, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: Runner.Consumable.Consumable+ConsumableType, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[Runner.Consumable.Consumable+ConsumableType,
+      Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.ValueTuple`2[[System.String,
+      mscorlib],[System.String, mscorlib]], mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object,
+      mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.EnumEqualityComparer`1[[Runner.Consumable.Consumable+ConsumableType,
+      Assembly-CSharp]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Func`2[[System.Object, mscorlib],[System.Object, mscorlib]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: Runner.HighscoreEntry, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.IEqualityComparer`1[[Runner.Consumable.Consumable+ConsumableType,
+      Assembly-CSharp]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.IEqualityComparer`1[[System.Type, mscorlib]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Int32, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.List`1[[Runner.HighscoreEntry, Assembly-CSharp]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.List`1[[Runner.Missions.MissionBase, Assembly-CSharp]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: Runner.Missions.MissionBase, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Object, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.ObjectEqualityComparer`1[[System.Type, mscorlib]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityRoyale.Placeable+Faction, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.String, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Type, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityEngine.Events.UnityAction`3[[UnityRoyale.CardData, Assembly-CSharp],[UnityEngine.Vector3,
+      UnityEngine.CoreModule],[UnityRoyale.Placeable+Faction, Assembly-CSharp]],
+      UnityEngine.CoreModule
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.ValueTuple`2[[System.String, mscorlib],[System.String, mscorlib]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityEngine.Vector3, UnityEngine.CoreModule
+    IsCustom: 0
+    Emit: 1

@@ -20,7 +20,7 @@ namespace Runner.Game
         public static GameManager instance => s_Instance;
         protected static GameManager s_Instance;
         public GameObject[] Prefabs;
-        public List<AState>  states = new List<AState>();
+        public List<AState> states = new List<AState>();
         public GameObject LoadingCharPos;
 
         public AState topState {
@@ -62,7 +62,6 @@ namespace Runner.Game
             }
             m_StateStack.Clear();
             PushState(states[0].GetName());
-
         }
 
         protected void Update()
@@ -144,6 +143,7 @@ namespace Runner.Game
 
         public UnityEvent OnEnter;
         public UnityEvent OnExit;
+        public virtual void OnEnable() { }
 
         public AState DoEnter()
         {

@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Common
 {
     [ShowOdinSerializedPropertiesInInspector]
+    [System.Serializable] 
     public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallbackReceiver,
         ISupportsPrefabSerialization
     {

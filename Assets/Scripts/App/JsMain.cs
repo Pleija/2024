@@ -4,6 +4,7 @@ using BetterEvents;
 using Common;
 using Puerts;
 using PuertsStaticWrap;
+using Sirenix.Serialization;
 using SqlCipher4Unity3D;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -45,6 +46,12 @@ namespace App
         private bool IsGetAssets;
 
         public bool LoadModels;
+
+        static void AOT()
+        {
+            SerializationUtility.DeserializeValue<SerializationData>(null);
+            Runner.PlayerData.Create();
+        }
 
         public async void Awake()
         {

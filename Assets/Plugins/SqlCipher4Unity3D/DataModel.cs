@@ -26,6 +26,7 @@ using Task = System.Threading.Tasks.Task;
 namespace SqlCipher4Unity3D
 {
     [ShowOdinSerializedPropertiesInInspector]
+    [System.Serializable,Preserve] 
     public class Model : ScriptableObject, ISerializationCallbackReceiver
     {
         public static readonly Dictionary<Type, Model> Defaults = new Dictionary<Type, Model>();
