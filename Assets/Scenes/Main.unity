@@ -11720,7 +11720,6 @@ MonoBehaviour:
   accesoryNameDisplay: {fileID: 1581550610}
   accessoryIconDisplay: {fileID: 1523852862}
   leaderboard: {fileID: 0}
-  missionPopup: {fileID: 0}
   runButton: {fileID: 1393864684}
   tutorialBlocker: {fileID: 1557869168}
   tutorialPrompt: {fileID: 610653253}

@@ -2872,9 +2872,7 @@ MonoBehaviour:
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-  trackManager: {fileID: 0}
   canvas: {fileID: 1876839688629752667}
-  missionPopup: {fileID: 1990271801304172816}
   gameOverTheme: {fileID: 8300000, guid: 15e26518785848f4caf8ba236b4d0690, type: 3}
   miniLeaderboard: {fileID: 1876839687960367958}
   fullLeaderboard: {fileID: 0}

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Common;
 using Runner.Missions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -6,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Runner.UI
 {
-    public class MissionUI : MonoBehaviour
+    public class MissionUI : Singleton<MissionUI>
     {
         public RectTransform missionPlace;
         public AssetReference missionEntryPrefab;

@@ -73,7 +73,7 @@ namespace Runner.Game
         [Header("Other Data")]
         public Leaderboard leaderboard;
 
-        public MissionUI missionPopup;
+        public MissionUI missionPopup => MissionUI.self;
         public Button runButton;
         public GameObject tutorialBlocker;
         public GameObject tutorialPrompt;
@@ -103,7 +103,7 @@ namespace Runner.Game
             mainHp.SetActive(PlayerData.instance.tutorialDone);
             tutorialPrompt.SetActive(false);
             inventoryCanvas.gameObject.SetActive(true);
-           if(missionPopup) missionPopup.gameObject.SetActive(false);
+            if (missionPopup) missionPopup.gameObject.SetActive(false);
             charNameDisplay.text = "";
             themeNameDisplay.text = "";
             k_UILayer = LayerMask.NameToLayer("UI");
@@ -129,7 +129,7 @@ namespace Runner.Game
 
         public override void Exit(AState to)
         {
-            missionPopup.gameObject.SetActive(false);
+            if (missionPopup) missionPopup.gameObject.SetActive(false);
             inventoryCanvas.gameObject.SetActive(false);
             if (m_Character != null) Addressables.ReleaseInstance(m_Character);
             var gs = to as GameState;

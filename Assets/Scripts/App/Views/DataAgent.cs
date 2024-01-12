@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Common;
 using Sirenix.OdinInspector;
 using SqlCipher4Unity3D;
 using TMPro;
@@ -14,7 +15,7 @@ using UnityEngine.UI;
 namespace App
 {
     [DefaultExecutionOrder(-1)]
-    public class DataAgent<T> : SerializedMonoBehaviour
+    public class DataAgent<T> : Agent
     {
         [ReadOnly]
         public ReactiveProperty<T> Value;

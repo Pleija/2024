@@ -15,9 +15,9 @@ namespace Runner.Game
     /// </summary>
     public class GameOverState : AState
     {
-        public TrackManager trackManager;
+        public TrackManager trackManager => TrackManager.instance;
         public Canvas canvas;
-        public MissionUI missionPopup;
+        public MissionUI missionPopup => MissionUI.self;
         public AudioClip gameOverTheme;
         public Leaderboard miniLeaderboard;
         public Leaderboard fullLeaderboard;

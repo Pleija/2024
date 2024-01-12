@@ -25,7 +25,7 @@ namespace Runner.Game
     {
         private static int s_DeadHash = Animator.StringToHash("Dead");
         public Canvas canvas;
-        public TrackManager trackManager;
+        public TrackManager trackManager => TrackManager.instance;
         public AudioClip gameTheme;
 
         [Header("UI")]

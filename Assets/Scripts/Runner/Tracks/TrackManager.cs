@@ -34,7 +34,9 @@ namespace Runner.Tracks
     /// </summary>
     public class TrackManager : MonoBehaviour
     {
-        public static TrackManager instance => s_Instance;
+        public static TrackManager instance =>
+            s_Instance ? s_Instance : s_Instance = FindObjectOfType<TrackManager>(true);
+
         protected static TrackManager s_Instance;
         private static int s_StartHash = Animator.StringToHash("Start");
         public delegate int MultiplierModifier(int current);
@@ -232,8 +234,11 @@ namespace Runner.Tracks
 #if UNITY_ANALYTICS
                 AnalyticsEvent.GameStart(new Dictionary<string, object> {
                     { "theme", m_CurrentThemeData.themeName },
-                    { "character", player.characterName },
-                    { "accessory", PlayerData.instance.usedAccessory >= 0 ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none" }
+                    { "character", player.characterName }, {
+                        "accessory",
+                        PlayerData.instance.usedAccessory >= 0
+                            ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none"
+                    }
                 });
 #endif
             }
