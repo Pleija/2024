@@ -21,11 +21,6 @@ export class LevelStart extends StateFsm {
     }
 
     startGame() {
-        if (PlayerData.instance.ftueLevel == 0) {
-            PlayerData.instance.ftueLevel = 1;
-            PlayerData.instance.Save();
-        }
-        AnalyticsEvent.FirstInteraction("start_button_pressed");
         LoadoutState.self.StartGame();
     }
 }
