@@ -67,7 +67,12 @@ namespace App
             if (IsGetAssets) await GetAssets();
             Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
             JsEnv.self.AutoUsing();
-            // JsEnv.self.UsingAction<UnityEngine.Vector2>();
+            JsEnv.self.UsingAction<Vector2>();
+            JsEnv.self.UsingAction<Vector3>();
+            JsEnv.self.UsingAction<bool>();
+            JsEnv.self.UsingAction<string>();
+            JsEnv.self.UsingAction<float>();
+            JsEnv.self.UsingAction<int>();
             JsEnv.self.ExecuteModule("bootstrap.mjs");
             OnStart1?.Invoke();
             OnStart2.Invoke();

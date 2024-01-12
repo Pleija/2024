@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Common;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using Unity.Services.Authentication;
@@ -8,7 +9,7 @@ using AuthenticationException = System.Security.Authentication.AuthenticationExc
 
 namespace App
 {
-    public class PlayService : MonoBehaviour
+    public class PlayService : Singleton<PlayService>, IDontDestroyOnLoad
     {
         //public string authCode { get; set; }
 
@@ -151,6 +152,6 @@ namespace App
         }
 
         // Update is called once per frame
-        void Update() { }
+        public override void Update() { }
     }
 }

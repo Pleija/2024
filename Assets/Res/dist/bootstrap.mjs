@@ -26,10 +26,10 @@ var $typeof = puer.$typeof;
 var JsEnv = CS.Puerts.JsEnv;
 global.protobuf = require("protobufjs");
 //console.log(getAllMethod(protobuf).join(", "));
-JsEnv.self.UsingAction($typeof(CS.UnityEngine.Vector2));
-JsEnv.self.UsingAction($typeof(CS.System.Int32));
-JsEnv.self.UsingAction($typeof(CS.System.String));
-JsEnv.self.UsingAction($typeof(CS.System.Single));
+// JsEnv.self.UsingAction($typeof(CS.UnityEngine.Vector2));
+// JsEnv.self.UsingAction($typeof(CS.System.Int32));
+// JsEnv.self.UsingAction($typeof(CS.System.String));
+// JsEnv.self.UsingAction($typeof(CS.System.Single));
 protobuf.load("awesome.proto", (err, root) => {
     if (err)
         throw err;

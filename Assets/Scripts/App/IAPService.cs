@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 namespace App
 {
+    //[DefaultExecutionOrder(-2000)]
     public class IAPService : Singleton<IAPService>, IDetailedStoreListener, IDontDestroyOnLoad
     {
         public Text informationText;

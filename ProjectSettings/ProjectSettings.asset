@@ -136,7 +136,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 1
-  bundleVersion: 1.0.161
+  bundleVersion: 1.0.164
   preloadedAssets:
   - {fileID: 11400000, guid: 206f4cb7cbf694c8f867da96f3a9e1c6, type: 2}
   metroInputSource: 0
@@ -164,10 +164,10 @@ PlayerSettings:
     tvOS: 
   buildNumber:
     Standalone: 0
-    iPhone: 160
+    iPhone: 163
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 530
+  AndroidBundleVersionCode: 533
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
@@ -250,7 +250,7 @@ PlayerSettings:
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 1
+  AndroidTargetArchitectures: 2
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 2
   androidSplashScreen: {fileID: 0}
@@ -278,7 +278,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 4f10503cb7e0d4034aa55b6c0bb6b087, type: 3}
+      m_Icon: {fileID: 2800000, guid: 5359babff9f9440adba8fe475a5eb18c, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -775,7 +775,7 @@ PlayerSettings:
     iPhone: 1
     tvOS: 1
   scriptingBackend:
-    Android: 0
+    Android: 1
     Standalone: 0
     WebGL: 1
     WebPlayer: 0
