@@ -56,3 +56,6 @@ artifacts
 .Editor
 .UnityLauncher.Editor
 
+# 文件超标
+*.unitypackage
+
