@@ -62,6 +62,18 @@ namespace UniRx
             outObserver.OnNext(value);
         }
 
+        public IDisposable Subscribe(Action action)
+        {
+            return this.Subscribe(t => {
+                action.Invoke();
+            });
+        }
+
+        public IDisposable SubscribeAction(Action<T> action)
+        {
+            return this.Subscribe(action);
+        }
+
         public IDisposable Subscribe(IObserver<T> observer)
         {
             if (observer == null) throw new ArgumentNullException("observer");
