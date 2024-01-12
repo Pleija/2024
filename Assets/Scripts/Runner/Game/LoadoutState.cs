@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -28,15 +29,26 @@ namespace Runner.Game
         private void Awake()
         {
             self = this;
+            PagePrefabs.ForEach(prefab => {
+                prefab.SetActive(false);
+                var go = Instantiate(prefab, PageContainer);
+                go.name = prefab.name;
+                go.SetActive(true);
+                prefab.SetActive(true);
+            });
+            if (Mainmenu) Mainmenu.enabled = true;
         }
 
+        public Transform PageContainer;
+        public List<GameObject> PagePrefabs = new List<GameObject>();
+        public HorizontalScrollSnap Mainmenu;
         public Canvas inventoryCanvas;
 
         [Header("Char UI")]
         public Text charNameDisplay;
 
         public RectTransform charSelect;
-        public Transform charPosition;
+        public Transform charPosition => GameManager.instance.LoadingCharPos.transform;
 
         [Header("Theme UI")]
         public Text themeNameDisplay;
@@ -91,7 +103,7 @@ namespace Runner.Game
             mainHp.SetActive(PlayerData.instance.tutorialDone);
             tutorialPrompt.SetActive(false);
             inventoryCanvas.gameObject.SetActive(true);
-            missionPopup.gameObject.SetActive(false);
+           if(missionPopup) missionPopup.gameObject.SetActive(false);
             charNameDisplay.text = "";
             themeNameDisplay.text = "";
             k_UILayer = LayerMask.NameToLayer("UI");

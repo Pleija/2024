@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Runner.Consumable;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,7 +19,9 @@ namespace Runner.Game
     {
         public static GameManager instance => s_Instance;
         protected static GameManager s_Instance;
-        public AState[] states;
+        public GameObject[] Prefabs;
+        public List<AState>  states = new List<AState>();
+        public GameObject LoadingCharPos;
 
         public AState topState {
             get {
@@ -38,13 +41,21 @@ namespace Runner.Game
             PlayerData.Create();
             s_Instance = this;
             m_ConsumableDatabase.Load();
+            states ??= new List<AState>();
+            Prefabs.ForEach(prefab => {
+                prefab.SetActive(false);
+                var go = Instantiate(prefab, transform);
+                go.name = prefab.name;
+                states.Add(go.GetComponent<AState>());
+                prefab.SetActive(true);
+            });
 
             // We build a dictionnary from state for easy switching using their name.
             m_StateDict.Clear();
-            if (states.Length == 0)
+            if (states.Count == 0)
                 return;
 
-            for (var i = 0; i < states.Length; ++i) {
+            for (var i = 0; i < states.Count; ++i) {
                 states[i].manager = this;
                 m_StateDict.Add(states[i].GetName(), states[i]);
                 states[i].gameObject.SetActive(i == 0);
