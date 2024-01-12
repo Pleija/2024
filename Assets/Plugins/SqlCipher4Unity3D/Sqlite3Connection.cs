@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Sirenix.Serialization;
+using Sirenix.Utilities;
 using SQLite.Attributes;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -3194,6 +3195,7 @@ namespace SqlCipher4Unity3D
                 return null;
             }
             else {
+                //Debug.Log($"col type: {clrType.GetNiceFullName()}");
                 var clrTypeInfo = clrType.GetTypeInfo();
 
                 if (clrTypeInfo.IsGenericType && clrTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>)) {
