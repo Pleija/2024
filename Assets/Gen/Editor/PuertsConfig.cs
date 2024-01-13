@@ -43,6 +43,9 @@ namespace Puerts
                 //     from type in assembly.GetExportedTypes() where type.Namespace != null &&
                 //         namespaces.Contains(type.Namespace) && !IsExcluded(type) select type;
                 var customAssemblys = new string[] {
+                    "DOTween.Modules",
+                    "DOTween",
+                    "EasyDOTween",
                     "Unity.Analytics.StandardEvents",
                     "Shared",
                     "Helpers",

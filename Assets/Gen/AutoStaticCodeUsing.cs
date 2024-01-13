@@ -34,6 +34,7 @@
             jsEnv.UsingAction<BestHTTP.WebSocket.WebSocketResponse, BestHTTP.PlatformSupport.Memory.BufferSegment>();
             jsEnv.UsingAction<BestHTTP.WebSocket.WebSocketResponse, BestHTTP.WebSocket.Frames.WebSocketFrameReader>();
             jsEnv.UsingAction<BestHTTP.WebSocket.WebSocketResponse, System.UInt16, System.String>();
+            jsEnv.UsingAction<DG.Tweening.Plugins.Options.PathOptions, DG.Tweening.Tween, UnityEngine.Quaternion, UnityEngine.Transform>();
             jsEnv.UsingAction<NodeCanvas.BehaviourTrees.BehaviourTree, NodeCanvas.Framework.Status>();
             jsEnv.UsingAction<NodeCanvas.Framework.Status>();
             jsEnv.UsingAction<ParadoxNotion.EventData>();
@@ -50,6 +51,7 @@
             jsEnv.UsingAction<Puerts.JsEnv, Puerts.ILoader, System.Int32>();
             jsEnv.UsingAction<System.Boolean>();
             jsEnv.UsingAction<System.Boolean, System.String>();
+            jsEnv.UsingAction<System.Double>();
             jsEnv.UsingAction<System.Int32>();
             jsEnv.UsingAction<System.Int32, System.Boolean>();
             jsEnv.UsingAction<System.Int32, System.Threading.Tasks.ParallelLoopState>();
@@ -66,11 +68,16 @@
             jsEnv.UsingAction<System.String, System.Boolean, UnityEngine.Profiling.Experimental.DebugScreenCapture>();
             jsEnv.UsingAction<System.String, System.String, UnityEngine.LogType>();
             jsEnv.UsingAction<System.String, UnityEngine.Rect>();
+            jsEnv.UsingAction<System.UInt32>();
+            jsEnv.UsingAction<System.UInt64>();
             jsEnv.UsingAction<UniRx.Diagnostics.LogEntry>();
             jsEnv.UsingAction<UniRx.Unit>();
+            jsEnv.UsingAction<UnityEngine.Color>();
             jsEnv.UsingAction<UnityEngine.CullingGroupEvent>();
             jsEnv.UsingAction<UnityEngine.CustomRenderTexture, System.Int32>();
             jsEnv.UsingAction<UnityEngine.Light[], Unity.Collections.NativeArray<UnityEngine.Experimental.GlobalIllumination.LightDataGI>>();
+            jsEnv.UsingAction<UnityEngine.Quaternion>();
+            jsEnv.UsingAction<UnityEngine.Rect>();
             jsEnv.UsingAction<UnityEngine.Rect, System.String>();
             jsEnv.UsingAction<UnityEngine.ReflectionProbe, UnityEngine.ReflectionProbe.ReflectionProbeEvent>();
             jsEnv.UsingAction<UnityEngine.Rendering.AsyncGPUReadbackRequest>();
@@ -93,6 +100,9 @@
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.Scene>();
             jsEnv.UsingAction<UnityEngine.Scripting.GarbageCollector.Mode>();
             jsEnv.UsingAction<UnityEngine.Transform, UnityEngine.Transform, System.Boolean, System.Object[]>();
+            jsEnv.UsingAction<UnityEngine.Vector2>();
+            jsEnv.UsingAction<UnityEngine.Vector3>();
+            jsEnv.UsingAction<UnityEngine.Vector4>();
             jsEnv.UsingAction<UnityRoyale.CardData, UnityEngine.Vector3, UnityRoyale.Placeable.Faction>();
             jsEnv.UsingFunc<BestHTTP.Connections.ConnectionBase, System.Boolean>();
             jsEnv.UsingFunc<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse, System.Byte[], System.Int32, System.Boolean>();
@@ -105,6 +115,7 @@
             jsEnv.UsingFunc<ParadoxNotion.Services.Logger.Message, System.Boolean>();
             jsEnv.UsingFunc<System.Boolean>();
             jsEnv.UsingFunc<System.DateTime, System.Object, System.Boolean>();
+            jsEnv.UsingFunc<System.Double>();
             jsEnv.UsingFunc<System.Exception, System.Boolean>();
             jsEnv.UsingFunc<System.Int32>();
             jsEnv.UsingFunc<System.Int32, System.Boolean>();
@@ -112,6 +123,7 @@
             jsEnv.UsingFunc<System.Int32, System.Int32, System.Int32>();
             jsEnv.UsingFunc<System.Int32, System.String, TMPro.TMP_FontAsset>();
             jsEnv.UsingFunc<System.Int32, System.String, TMPro.TMP_SpriteAsset>();
+            jsEnv.UsingFunc<System.Int64>();
             jsEnv.UsingFunc<System.IntPtr, System.IntPtr>();
             jsEnv.UsingFunc<System.Object, Cysharp.Threading.Tasks.UniTask>();
             jsEnv.UsingFunc<System.Reflection.Assembly, System.String, System.Boolean, System.Type>();
@@ -120,6 +132,7 @@
             jsEnv.UsingFunc<System.Security.Claims.Claim, System.Boolean>();
             jsEnv.UsingFunc<System.Single>();
             jsEnv.UsingFunc<System.Single, System.Single>();
+            jsEnv.UsingFunc<System.Single, System.Single, System.Single, System.Single, System.Single>();
             jsEnv.UsingFunc<System.String, System.Boolean>();
             jsEnv.UsingFunc<System.String, System.Int32, System.Char, System.Char>();
             jsEnv.UsingFunc<System.String, System.Object, System.Boolean>();
@@ -129,12 +142,21 @@
             jsEnv.UsingFunc<System.Threading.CancellationToken, Cysharp.Threading.Tasks.UniTaskVoid>();
             jsEnv.UsingFunc<System.Threading.CancellationToken, System.Collections.IEnumerator>();
             jsEnv.UsingFunc<System.Type, System.Object, System.Boolean>();
+            jsEnv.UsingFunc<System.UInt32>();
+            jsEnv.UsingFunc<System.UInt64>();
             jsEnv.UsingFunc<System.ValueTuple<System.Single, System.Single>>();
             jsEnv.UsingFunc<UniRx.Unit, System.IObservable<UniRx.Unit>>();
+            jsEnv.UsingFunc<UnityEngine.Color>();
             jsEnv.UsingFunc<UnityEngine.GameObject, System.Boolean>();
+            jsEnv.UsingFunc<UnityEngine.LogType, System.Object, System.Boolean>();
+            jsEnv.UsingFunc<UnityEngine.Quaternion>();
+            jsEnv.UsingFunc<UnityEngine.Rect>();
             jsEnv.UsingFunc<UnityEngine.Rendering.BatchRendererGroup, UnityEngine.Rendering.BatchCullingContext, Unity.Jobs.JobHandle>();
             jsEnv.UsingFunc<UnityEngine.ResourceManagement.AsyncOperations.DownloadStatus>();
             jsEnv.UsingFunc<UnityEngine.UI.ILayoutElement, System.Single>();
+            jsEnv.UsingFunc<UnityEngine.Vector2>();
+            jsEnv.UsingFunc<UnityEngine.Vector3>();
+            jsEnv.UsingFunc<UnityEngine.Vector4>();
         }
         
         public static void UsingAction(this JsEnv jsEnv, params Type[] types)

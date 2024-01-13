@@ -65,28 +65,36 @@ export class Navbar extends StateFsm {
         (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 0;
 
         let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
-        this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true).gameObject.SetActive(false);
-        oldIcon.localScale = new Vector3(1, 1, 1);
-        oldIcon.anchoredPosition = new Vector2(0, 5);
+        (this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(0, 0);//.gameObject.SetActive(false);
+        //oldIcon.localScale = new Vector3(1, 1, 1);
+        oldIcon.DOScale(new Vector3(1, 1, 1), 0.2);
+        //oldIcon.anchoredPosition = new Vector2(0, 5);
+        oldIcon.DOAnchorPos(new Vector2(0, 5), 0.2);
         const target = this.buttons[index].GetComponent($typeof(Image)) as Image;
         //target.enabled = false;
         // target.sprite = this.currentImg;
         // target.color = this.currentColor;
         let targetIcon = target.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
-        targetIcon.localScale = new Vector3(1.2, 1.2, 1);
-        targetIcon.anchoredPosition = new Vector2(0, 42);
+        //targetIcon.localScale = new Vector3(1.2, 1.2, 1);
+        targetIcon.DOScale( new Vector3(1.2, 1.2, 1),0.2);
+        
+        //targetIcon.anchoredPosition = new Vector2(0, 42);
+        targetIcon.DOAnchorPos(new Vector2(0, 42), 0.2);
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 200;
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 180;
-        this.buttons[index].GetComponentInChildren($typeof(TMP_Text), true).gameObject.SetActive(true);
-        if ($MenuArea.snap.CurrentPage != index) {
-            $MenuArea.snap.GoToScreen(index);
-        }
+        ( this.buttons[index].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(1, 0.2);//.gameObject.SetActive(true);
+
         const bgRect = this.bg.GetComponent($typeof(RectTransform)) as RectTransform;
         const rect = this.buttons[index].GetComponent($typeof(RectTransform)) as RectTransform;
         //bgRect.anchoredPosition = rect.anchoredPosition;
-         let map = [102,231,360,489,618];
-         bgRect.anchoredPosition.Set(map[index],-92);
+        let map = [102, 231, 360, 489, 618];
+        // bgRect.anchoredPosition = new CS.UnityEngine.Vector2(map[index],-92);
+        // console.log(bgRect.anchoredPosition, rect.anchoredPosition);
+        bgRect.DOAnchorPos(new CS.UnityEngine.Vector2(map[index], -92), 0.5);
         this.current = index;
+        if ($MenuArea.snap.CurrentPage != index) {
+            $MenuArea.snap.GoToScreen(index);
+        }
     }
 }
 

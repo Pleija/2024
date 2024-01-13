@@ -32,6 +32,10 @@
     <assembly fullname="Google.Play.Games" preserve="all"/>
     <assembly fullname="UnityEngine.Purchasing" preserve="all"/>
     <assembly fullname="Purchasing.Common" preserve="all"/>
+    <assembly fullname="DOTween.Modules" preserve="all"/>
+    <assembly fullname="DOTween" preserve="all"/>
+    <assembly fullname="EasyDOTween" preserve="all"/>
+    <assembly fullname="BetterEvents" preserve="all"/>
 
     <!-- signalR https://dev.to/masanori_msl/unity-communicate-with-signalr-from-unity-3739 -->
     <!--    <assembly fullname="Microsoft.AspNetCore.Connections.Abstractions" preserve="all"/>-->
