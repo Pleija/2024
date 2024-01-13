@@ -47,7 +47,7 @@ namespace NodeCanvas.StateMachines
             //     TagSystem.AddTag("FSM." + ((FSM)assignedGraph).FsmName);
             // }
 
-            if(actionList == null) {
+            if (actionList == null) {
                 actionList = (ActionList)Task.Create(typeof(ActionList), assignedGraph);
                 actionList.executionMode = ActionList.ActionsExecutionMode.ActionsRunInParallel;
             }
@@ -58,20 +58,12 @@ namespace NodeCanvas.StateMachines
             // }
         }
 
-
-        public override void OnGraphStarted()
+        //public override void OnGraphStarted() { }
+        //public override void OnGraphStoped() { }
+        protected override void OnInit()
         {
-            if(this != fsm.primeNode) return;
-            fsm.Invoke("bindFsm", fsm, graphBlackboard);
+            fsm.Invoke("bindNode",this);
         }
-
-        public override void OnGraphStoped()
-        {
-            if(this != fsm.primeNode) return;
-            fsm.Invoke("stop", this);
-        }
-
-        protected override void OnInit() { }
 
         protected override void OnEnter()
         {
@@ -80,7 +72,7 @@ namespace NodeCanvas.StateMachines
             //OnUpdate();
             var actionListStatus = actionList.Execute(graphAgent, graphBlackboard);
 
-            if(!repeatStateActions && actionListStatus != Status.Running) {
+            if (!repeatStateActions && actionListStatus != Status.Running) {
                 Finish(actionListStatus);
             }
         }
@@ -90,7 +82,7 @@ namespace NodeCanvas.StateMachines
             fsm.Invoke("updateNode", this);
             var actionListStatus = actionList.Execute(graphAgent, graphBlackboard);
 
-            if(!repeatStateActions && actionListStatus != Status.Running) {
+            if (!repeatStateActions && actionListStatus != Status.Running) {
                 Finish(actionListStatus);
             }
         }
@@ -116,7 +108,7 @@ namespace NodeCanvas.StateMachines
 #if UNITY_EDITOR
         protected override void OnNodeGUI()
         {
-            if(repeatStateActions) {
+            if (repeatStateActions) {
                 GUILayout.Label("<b>[REPEAT]</b>");
             }
             base.OnNodeGUI();
@@ -126,13 +118,12 @@ namespace NodeCanvas.StateMachines
         {
             ShowTransitionsInspector();
 
-            if(actionList == null) {
+            if (actionList == null) {
                 return;
             }
             EditorUtils.CoolLabel("Actions");
             GUI.color = repeatStateActions ? GUI.color : new Color(1, 1, 1, 0.5f);
-            repeatStateActions =
-                UnityEditor.EditorGUILayout.ToggleLeft("Repeat State Actions", repeatStateActions);
+            repeatStateActions = UnityEditor.EditorGUILayout.ToggleLeft("Repeat State Actions", repeatStateActions);
             GUI.color = Color.white;
             actionList.ShowListGUI();
             actionList.ShowNestedActionsGUI();

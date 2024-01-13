@@ -43,30 +43,38 @@ export class StateFsm {
             this['init']?.();
         }
 
-        const keys = Object.keys(this);
-        keys.forEach(key => {
-            if(!this[key]){
-                console.log(`${this.constructor.name}.${key} is null`);
-                return;
-            } 
-            if (this[key].node?.blackboard) {
-                iterator(this[key].node.blackboard.variables).forEach((v, k) => {
-                    console.log(`[${this[key].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
-                    this[key][k] = v.value;
-                });
-            }
-            if (typeof this[key]['init'] == 'function') {
-                //console.log("Init Node:", key);
-                this[key].init();
-            }
-            //console.log(`${key}: ${person[key]}`);
-        });
+
+        //
+        // const keys = Object.keys(this);
+        // keys.forEach(key => {
+        //     if (!this[key]) {
+        //         console.log(`${this.constructor.name}.${key} is null`);
+        //         return;
+        //     }
+        //     if (this[key].node?.blackboard) {
+        //         iterator(this[key].node.blackboard.variables).forEach((v, k) => {
+        //             console.log(`[${this[key].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
+        //             this[key][k] = v.value;
+        //         });
+        //     }
+        //     if (typeof this[key]['init'] == 'function') {
+        //         //console.log("Init Node:", key);
+        //         this[key].init();
+        //     }
+
+        //console.log(`${key}: ${person[key]}`);
+        // });
+
+        
     }
 
     bindNode(s: FSMState) {
         if (!this[s.NodeName]) return;
-
-        console.log("Init Node:", s.NodeName);
+        iterator(this[s.NodeName].node.blackboard.variables).forEach((v, k) => {
+            console.log(`[${this[s.NodeName].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
+            this[s.NodeName][k] = v.value;
+        });
+        console.log("Init Node2:", s.NodeName);
         // if(this[s.NodeName]){
         s.jsBind = this[s.NodeName];
         this[s.NodeName].init?.();

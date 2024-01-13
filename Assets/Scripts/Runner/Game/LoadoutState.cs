@@ -30,6 +30,10 @@ namespace Runner.Game
         private void Awake()
         {
             m_Instance = this;
+
+            foreach (Transform t in PageContainer.transform) {
+                Destroy(t.gameObject);
+            }
             PagePrefabs.ForEach(prefab => {
                 prefab.SetActive(false);
                 var go = Instantiate(prefab, PageContainer);
@@ -37,7 +41,7 @@ namespace Runner.Game
                 go.SetActive(true);
                 prefab.SetActive(true);
             });
-            if (Mainmenu) Mainmenu.enabled = true;
+             Mainmenu.enabled = true;
         }
 
         public Transform PageContainer;

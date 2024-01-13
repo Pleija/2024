@@ -65,7 +65,7 @@ export class Navbar extends StateFsm {
         (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 0;
 
         let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
-        (this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(0, 0);//.gameObject.SetActive(false);
+        (this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(0,0);//.gameObject.SetActive(false);
         //oldIcon.localScale = new Vector3(1, 1, 1);
         oldIcon.DOScale(new Vector3(1, 1, 1), 0.2);
         //oldIcon.anchoredPosition = new Vector2(0, 5);

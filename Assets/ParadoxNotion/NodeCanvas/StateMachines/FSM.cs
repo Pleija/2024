@@ -88,6 +88,13 @@ namespace NodeCanvas.StateMachines
         {
             stateStack = new Stack<FSMState>();
             enterStartStateFlag = true;
+
+            if (!agent.GetComponent<GraphOwner>().startCalled) {
+                Invoke("bindFsm", this, blackboard);
+            }
+            else {
+                Invoke("enable");
+            }
         }
 
         protected override void OnGraphUpdate()
@@ -163,15 +170,18 @@ namespace NodeCanvas.StateMachines
                     onStateExit(currentState);
                 }
             }
+            Invoke("disable");
+
             previousState = null;
             currentState = null;
             stateStack = null;
+
         }
 
         public void Invoke(string fn, params object[] param)
         {
             if(JsEnv.self.Eval<JSObject>($"${FsmName}?.{fn}") == null) {
-                Debug.Log($"${FsmName}.{fn} is undefined");
+                //Debug.Log($"${FsmName}.{fn} is undefined");
                 return;
             }
 
