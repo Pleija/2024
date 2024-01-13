@@ -23,6 +23,6 @@ namespace Runner.Consumable.Types
             c.trackManager.modifyMultiply -= MultiplyModify;
         }
 
-        protected int MultiplyModify(int multi) => multi * 2;
+        public int MultiplyModify(int multi) => multi * 2;
     }
 }

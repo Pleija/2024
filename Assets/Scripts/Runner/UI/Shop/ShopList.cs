@@ -9,7 +9,7 @@ namespace Runner.UI.Shop
         public AssetReference prefabItem;
         public RectTransform listRoot;
         public delegate void RefreshCallback();
-        protected RefreshCallback m_RefreshCallback;
+        public RefreshCallback m_RefreshCallback;
 
         public void Open()
         {

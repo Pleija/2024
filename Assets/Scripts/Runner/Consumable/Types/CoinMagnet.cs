@@ -5,13 +5,13 @@ namespace Runner.Consumable.Types
 {
     public class CoinMagnet : Consumable
     {
-        protected readonly Vector3 k_HalfExtentsBox = new Vector3(20.0f, 1.0f, 1.0f);
-        protected const int k_LayerMask = 1 << 8;
+        public readonly Vector3 k_HalfExtentsBox = new Vector3(20.0f, 1.0f, 1.0f);
+        public const int k_LayerMask = 1 << 8;
         public override string GetConsumableName() => "Magnet";
         public override ConsumableType GetConsumableType() => ConsumableType.COIN_MAG;
         public override int GetPrice() => 750;
         public override int GetPremiumCost() => 0;
-        protected Collider[] returnColls = new Collider[20];
+        public Collider[] returnColls = new Collider[20];
 
         public override void Tick(CharacterInputController c)
         {

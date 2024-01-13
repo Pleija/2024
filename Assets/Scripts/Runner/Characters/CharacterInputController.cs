@@ -62,29 +62,29 @@ namespace Runner.Characters
         [HideInInspector]
         public bool tutorialWaitingForValidation;
 
-        protected int m_Coins;
-        protected int m_Premium;
-        protected int m_CurrentLife;
-        protected List<Consumable.Consumable> m_ActiveConsumables = new List<Consumable.Consumable>();
-        protected int m_ObstacleLayer;
-        protected bool m_IsInvincible;
-        protected bool m_IsRunning;
-        protected float m_JumpStart;
-        protected bool m_Jumping;
-        protected bool m_Sliding;
-        protected float m_SlideStart;
-        protected AudioSource m_Audio;
-        protected int m_CurrentLane = k_StartingLane;
-        protected Vector3 m_TargetPosition = Vector3.zero;
-        protected readonly Vector3 k_StartingPosition = Vector3.forward * 2f;
-        protected const int k_StartingLane = 1;
-        protected const float k_GroundingSpeed = 80f;
-        protected const float k_ShadowRaycastDistance = 100f;
-        protected const float k_ShadowGroundOffset = 0.01f;
-        protected const float k_TrackSpeedToJumpAnimSpeedRatio = 0.6f;
-        protected const float k_TrackSpeedToSlideAnimSpeedRatio = 0.9f;
+        public int m_Coins;
+        public int m_Premium;
+        public int m_CurrentLife;
+        public List<Consumable.Consumable> m_ActiveConsumables = new List<Consumable.Consumable>();
+        public int m_ObstacleLayer;
+        public bool m_IsInvincible;
+        public bool m_IsRunning;
+        public float m_JumpStart;
+        public bool m_Jumping;
+        public bool m_Sliding;
+        public float m_SlideStart;
+        public AudioSource m_Audio;
+        public int m_CurrentLane = k_StartingLane;
+        public Vector3 m_TargetPosition = Vector3.zero;
+        public readonly Vector3 k_StartingPosition = Vector3.forward * 2f;
+        public const int k_StartingLane = 1;
+        public const float k_GroundingSpeed = 80f;
+        public const float k_ShadowRaycastDistance = 100f;
+        public const float k_ShadowGroundOffset = 0.01f;
+        public const float k_TrackSpeedToJumpAnimSpeedRatio = 0.6f;
+        public const float k_TrackSpeedToSlideAnimSpeedRatio = 0.9f;
 
-        protected void Awake()
+        public void Awake()
         {
             m_Premium = 0;
             m_CurrentLife = 0;
@@ -94,8 +94,8 @@ namespace Runner.Characters
         }
 
 #if !UNITY_STANDALONE
-        protected Vector2 m_StartingTouch;
-        protected bool m_IsSwiping = false;
+        public Vector2 m_StartingTouch;
+        public bool m_IsSwiping = false;
 #endif
 
         // Cheating functions, use for testing
@@ -162,13 +162,13 @@ namespace Runner.Characters
             if (character.animator) character.animator.SetBool(s_MovingHash, false);
         }
 
-        protected bool TutorialMoveCheck(int tutorialLevel)
+        public bool TutorialMoveCheck(int tutorialLevel)
         {
             tutorialWaitingForValidation = currentTutorialLevel != tutorialLevel;
             return !TrackManager.instance.isTutorial || currentTutorialLevel >= tutorialLevel;
         }
 
-        protected void Update()
+        public void Update()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
             // Use key input in editor or standalone

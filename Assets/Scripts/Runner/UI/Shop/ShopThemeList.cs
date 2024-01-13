@@ -49,7 +49,7 @@ namespace Runner.UI.Shop
             }
         }
 
-        protected void RefreshButton(ShopItemListItem itm, ThemeData theme)
+        public void RefreshButton(ShopItemListItem itm, ThemeData theme)
         {
             if (theme.cost > PlayerData.instance.coins) {
                 itm.buyButton.interactable = false;

@@ -28,11 +28,11 @@ namespace Runner.UI.Shop
 
         public Text premiumCounter;
         public Button cheatButton;
-        protected ShopList m_OpenList;
-        protected const int k_CheatCoins = 1000000;
-        protected const int k_CheatPremium = 1000;
+        public ShopList m_OpenList;
+        public const int k_CheatCoins = 1000000;
+        public const int k_CheatPremium = 1000;
 #if UNITY_ADS
-        protected const int k_AdRewardCoins = 100;
+        public const int k_AdRewardCoins = 100;
 #endif
 
         private void Start()

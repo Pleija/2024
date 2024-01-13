@@ -53,21 +53,21 @@ namespace Runner.Characters
             set => m_TutorialHitObstacle = value;
         }
 
-        protected bool m_TutorialHitObstacle;
-        protected bool m_Invincible;
-        protected DeathEvent m_DeathData;
-        protected BoxCollider m_Collider;
-        protected AudioSource m_Audio;
-        protected float m_StartingColliderHeight;
-        protected readonly Vector3 k_SlidingColliderScale = new Vector3(1.0f, 0.5f, 1.0f);
-        protected readonly Vector3 k_NotSlidingColliderScale = new Vector3(1.0f, 2.0f, 1.0f);
-        protected const float k_MagnetSpeed = 10f;
-        protected const int k_CoinsLayerIndex = 8;
-        protected const int k_ObstacleLayerIndex = 9;
-        protected const int k_PowerupLayerIndex = 10;
-        protected const float k_DefaultInvinsibleTime = 2f;
+        public bool m_TutorialHitObstacle;
+        public bool m_Invincible;
+        public DeathEvent m_DeathData;
+        public BoxCollider m_Collider;
+        public AudioSource m_Audio;
+        public float m_StartingColliderHeight;
+        public readonly Vector3 k_SlidingColliderScale = new Vector3(1.0f, 0.5f, 1.0f);
+        public readonly Vector3 k_NotSlidingColliderScale = new Vector3(1.0f, 2.0f, 1.0f);
+        public const float k_MagnetSpeed = 10f;
+        public const int k_CoinsLayerIndex = 8;
+        public const int k_ObstacleLayerIndex = 9;
+        public const int k_PowerupLayerIndex = 10;
+        public const float k_DefaultInvinsibleTime = 2f;
 
-        protected void Start()
+        public void Start()
         {
             m_Collider = GetComponent<BoxCollider>();
             m_Audio = GetComponent<AudioSource>();
@@ -93,7 +93,7 @@ namespace Runner.Characters
             }
         }
 
-        protected void Update()
+        public void Update()
         {
             // Every coin registered to the magnetCoin list (used by the magnet powerup exclusively, but could be used by other power up) is dragged toward the player.
             for (var i = 0; i < magnetCoins.Count; ++i)
@@ -101,7 +101,7 @@ namespace Runner.Characters
                     transform.position, k_MagnetSpeed * Time.deltaTime);
         }
 
-        protected void OnTriggerEnter(Collider c)
+        public void OnTriggerEnter(Collider c)
         {
             if (c.gameObject.layer == k_CoinsLayerIndex) {
                 if (magnetCoins.Contains(c.gameObject))
@@ -168,7 +168,7 @@ namespace Runner.Characters
             StartCoroutine(InvincibleTimer(timer));
         }
 
-        protected IEnumerator InvincibleTimer(float timer)
+        public IEnumerator InvincibleTimer(float timer)
         {
             m_Invincible = true;
             float time = 0;

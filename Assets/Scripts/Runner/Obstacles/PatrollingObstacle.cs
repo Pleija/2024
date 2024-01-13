@@ -21,13 +21,13 @@ namespace Runner.Obstacles
         public Animator animator;
 
         public AudioClip[] patrollingSound;
-        protected TrackSegment m_Segement;
-        protected Vector3 m_OriginalPosition = Vector3.zero;
-        protected float m_MaxSpeed;
-        protected float m_CurrentPos;
-        protected AudioSource m_Audio;
+        public TrackSegment m_Segement;
+        public Vector3 m_OriginalPosition = Vector3.zero;
+        public float m_MaxSpeed;
+        public float m_CurrentPos;
+        public AudioSource m_Audio;
         private bool m_isMoving = false;
-        protected const float k_LaneOffsetToFullWidth = 2f;
+        public const float k_LaneOffsetToFullWidth = 2f;
 
         public override IEnumerator Spawn(TrackSegment segment, float t)
         {

@@ -37,7 +37,7 @@ namespace Runner.Tracks
         public static TrackManager instance =>
             s_Instance ? s_Instance : s_Instance = FindObjectOfType<TrackManager>(true);
 
-        protected static TrackManager s_Instance;
+        public static TrackManager s_Instance;
         private static int s_StartHash = Animator.StringToHash("Start");
         public delegate int MultiplierModifier(int current);
         public MultiplierModifier modifyMultiply;
@@ -99,46 +99,46 @@ namespace Runner.Tracks
 
         //used by the obstacle spawning code in the tutorial, as it need to spawn the 1st obstacle in the middle lane
         public bool firstObstacle { get; set; }
-        protected float m_TimeToStart = -1.0f;
+        public float m_TimeToStart = -1.0f;
 
         // If this is set to -1, random seed is init to system clock, otherwise init to that value
         // Allow to play the same game multiple time (useful to make specific competition/challenge fair between players)
-        protected int m_TrackSeed = -1;
-        protected float m_CurrentSegmentDistance;
-        protected float m_TotalWorldDistance;
-        protected bool m_IsMoving;
-        protected float m_Speed;
-        protected float m_TimeSincePowerup; // The higher it goes, the higher the chance of spawning one
-        protected float m_TimeSinceLastPremium;
-        protected int m_Multiplier;
-        protected List<TrackSegment> m_Segments = new List<TrackSegment>();
-        protected List<TrackSegment> m_PastSegments = new List<TrackSegment>();
-        protected int m_SafeSegementLeft;
-        protected ThemeData m_CurrentThemeData;
-        protected int m_CurrentZone;
-        protected float m_CurrentZoneDistance;
-        protected int m_PreviousSegment = -1;
-        protected int m_Score;
-        protected float m_ScoreAccum;
+        public int m_TrackSeed = -1;
+        public float m_CurrentSegmentDistance;
+        public float m_TotalWorldDistance;
+        public bool m_IsMoving;
+        public float m_Speed;
+        public float m_TimeSincePowerup; // The higher it goes, the higher the chance of spawning one
+        public float m_TimeSinceLastPremium;
+        public int m_Multiplier;
+        public List<TrackSegment> m_Segments = new List<TrackSegment>();
+        public List<TrackSegment> m_PastSegments = new List<TrackSegment>();
+        public int m_SafeSegementLeft;
+        public ThemeData m_CurrentThemeData;
+        public int m_CurrentZone;
+        public float m_CurrentZoneDistance;
+        public int m_PreviousSegment = -1;
+        public int m_Score;
+        public float m_ScoreAccum;
 
-        protected bool
+        public bool
             m_Rerun; // This lets us know if we are entering a game over (ads) state or starting a new game (see GameState)
 
-        protected bool
+        public bool
             m_IsTutorial; //Tutorial is a special run that don't chance section until the tutorial step is "validated" by the TutorialState.
 
         private Vector3 m_CameraOriginalPos = Vector3.zero;
         private const float k_FloatingOriginThreshold = 10000f;
-        protected const float k_CountdownToStartLength = 5f;
-        protected const float k_CountdownSpeed = 1.5f;
-        protected const float k_StartingSegmentDistance = 2f;
-        protected const int k_StartingSafeSegments = 2;
-        protected const int k_StartingCoinPoolSize = 256;
-        protected const int k_DesiredSegmentCount = 10;
-        protected const float k_SegmentRemovalDistance = -30f;
-        protected const float k_Acceleration = 0.2f;
+        public const float k_CountdownToStartLength = 5f;
+        public const float k_CountdownSpeed = 1.5f;
+        public const float k_StartingSegmentDistance = 2f;
+        public const int k_StartingSafeSegments = 2;
+        public const int k_StartingCoinPoolSize = 256;
+        public const int k_DesiredSegmentCount = 10;
+        public const float k_SegmentRemovalDistance = -30f;
+        public const float k_Acceleration = 0.2f;
 
-        protected void Awake()
+        public void Awake()
         {
             m_ScoreAccum = 0.0f;
             s_Instance = this;

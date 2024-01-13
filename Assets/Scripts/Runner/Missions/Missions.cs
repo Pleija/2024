@@ -118,8 +118,8 @@ namespace Runner.Missions
     {
         private Obstacle m_Previous;
         private Collider[] m_Hits;
-        protected const int k_HitColliderCount = 8;
-        protected readonly Vector3 k_CharacterColliderSizeOffset = new Vector3(-0.3f, 2f, -0.3f);
+        public const int k_HitColliderCount = 8;
+        public readonly Vector3 k_CharacterColliderSizeOffset = new Vector3(-0.3f, 2f, -0.3f);
 
         public override void Created()
         {

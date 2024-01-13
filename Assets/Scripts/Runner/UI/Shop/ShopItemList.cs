@@ -54,7 +54,7 @@ namespace Runner.UI.Shop
             }
         }
 
-        protected void RefreshButton(ShopItemListItem itemList, Consumable.Consumable c)
+        public void RefreshButton(ShopItemListItem itemList, Consumable.Consumable c)
         {
             var count = 0;
             PlayerData.instance.consumables.TryGetValue(c.GetConsumableType(), out count);

@@ -35,9 +35,9 @@ namespace Runner
     /// </summary>
     public class PlayerData : DataModel<PlayerData>
     {
-        protected static PlayerData m_Instance;
+        public static PlayerData m_Instance;
         public static PlayerData instance => m_Instance;
-        protected string saveFile = "";
+        public string saveFile = "";
         public IntReactiveProperty coins = 0;
         public IntReactiveProperty premium = 0;
 

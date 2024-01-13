@@ -8,10 +8,10 @@ namespace Runner.Obstacles
 {
     public class SimpleBarricade : Obstacle
     {
-        protected const int k_MinObstacleCount = 1;
-        protected const int k_MaxObstacleCount = 2;
-        protected const int k_LeftMostLaneIndex = -1;
-        protected const int k_RightMostLaneIndex = 1;
+        public const int k_MinObstacleCount = 1;
+        public const int k_MaxObstacleCount = 2;
+        public const int k_LeftMostLaneIndex = -1;
+        public const int k_RightMostLaneIndex = 1;
 
         public override IEnumerator Spawn(TrackSegment segment, float t)
         {

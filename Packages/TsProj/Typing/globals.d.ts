@@ -26,6 +26,8 @@ declare global {
     import { ClanPage } from "Main/ClanPage.mjs";
     import { CardAgent } from "Main/CardAgent.mjs";
     import { Settings } from "MissionPage/Settings.mjs";
+    import { HpSlider } from "Game/HpSlider.mjs";
+    declare var $HpSlider: HpSlider;
     declare var $Settings: Settings;
     declare var $CardAgent: CardAgent;
     declare var $ClanPage: ClanPage;

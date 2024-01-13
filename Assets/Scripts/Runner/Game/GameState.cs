@@ -9,7 +9,6 @@ using UnityEngine.UI;
 #if UNITY_ADS
 using UnityEngine.Advertisements;
 #endif
-
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -63,25 +62,24 @@ namespace Runner.Game
         public AdvertisingNetwork adsNetwork = AdvertisingNetwork.UnityAds;
 #endif
         public bool adsRewarded = true;
-        protected bool m_Finished;
-        protected float m_TimeSinceStart;
-        protected List<PowerupIcon> m_PowerupIcons = new List<PowerupIcon>();
-        protected Image[] m_LifeHearts;
-        protected RectTransform m_CountdownRectTransform;
-        protected bool m_WasMoving;
-        protected bool m_AdsInitialised = false;
-        protected bool m_GameoverSelectionDone = false;
-        protected int k_MaxLives = 3;
+        public bool m_Finished;
+        public float m_TimeSinceStart;
+        public List<PowerupIcon> m_PowerupIcons = new List<PowerupIcon>();
+        public Image[] m_LifeHearts;
+        public RectTransform m_CountdownRectTransform;
+        public bool m_WasMoving;
+        public bool m_AdsInitialised = false;
+        public bool m_GameoverSelectionDone = false;
+        public int k_MaxLives = 3;
+        public bool m_IsTutorial;
+        //Tutorial is a special run that don't chance section until the tutorial step is "validated".
 
-        protected bool
-            m_IsTutorial; //Tutorial is a special run that don't chance section until the tutorial step is "validated".
-
-        protected int m_TutorialClearedObstacle = 0;
-        protected bool m_CountObstacles = true;
-        protected bool m_DisplayTutorial;
-        protected int m_CurrentSegmentObstacleIndex = 0;
-        protected TrackSegment m_NextValidSegment = null;
-        protected int k_ObstacleToClear = 3;
+        public int m_TutorialClearedObstacle = 0;
+        public bool m_CountObstacles = true;
+        public bool m_DisplayTutorial;
+        public int m_CurrentSegmentObstacleIndex = 0;
+        public TrackSegment m_NextValidSegment = null;
+        public int k_ObstacleToClear = 3;
 
         public override void Enter(AState from)
         {
@@ -249,9 +247,9 @@ namespace Runner.Game
                 return;
             AudioListener.pause = true;
             Time.timeScale = 0;
-            pauseButton.gameObject.SetActive(false);
+            //pauseButton.gameObject.SetActive(false);
             pauseMenu.gameObject.SetActive(displayMenu);
-            wholeUI.gameObject.SetActive(false);
+            //wholeUI.gameObject.SetActive(false);
             m_WasMoving = trackManager.isMoving;
             trackManager.StopMove();
         }
@@ -277,7 +275,7 @@ namespace Runner.Game
             manager.SwitchState("Loadout");
         }
 
-        protected void UpdateUI()
+        public void UpdateUI()
         {
             coinText.text = trackManager.characterController.coins.ToString();
             premiumText.text = trackManager.characterController.premium.ToString();
@@ -327,7 +325,7 @@ namespace Runner.Game
             }
         }
 
-        protected void ClearPowerup()
+        public void ClearPowerup()
         {
             for (var i = 0; i < m_PowerupIcons.Count; ++i)
                 if (m_PowerupIcons[i] != null)

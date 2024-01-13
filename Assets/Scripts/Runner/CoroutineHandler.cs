@@ -9,7 +9,7 @@ namespace Runner
     /// </summary>
     public class CoroutineHandler : MonoBehaviour
     {
-        protected static CoroutineHandler m_Instance;
+        public static CoroutineHandler m_Instance;
 
         public static CoroutineHandler instance {
             get {

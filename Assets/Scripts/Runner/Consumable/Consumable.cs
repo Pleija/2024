@@ -21,9 +21,9 @@ namespace Runner.Consumable
         public bool canBeSpawned = true;
         public bool active => m_Active;
         public float timeActive => m_SinceStart;
-        protected bool m_Active = true;
-        protected float m_SinceStart;
-        protected ParticleSystem m_ParticleSpawned;
+        public bool m_Active = true;
+        public float m_SinceStart;
+        public ParticleSystem m_ParticleSpawned;
 
         // Here - for the sake of showing diverse way of doing things - we use abstract functions to get the data for each consumable.
         // Another way to do it would be to have public field, like the Character or Accesories use, and define all those on the prefabs instead of here.

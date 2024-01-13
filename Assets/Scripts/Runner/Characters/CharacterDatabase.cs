@@ -10,9 +10,9 @@ namespace Runner.Characters
     /// </summary>
     public class CharacterDatabase
     {
-        protected static Dictionary<string, Character> m_CharactersDict;
+        public static Dictionary<string, Character> m_CharactersDict;
         public static Dictionary<string, Character> dictionary => m_CharactersDict;
-        protected static bool m_Loaded = false;
+        public static bool m_Loaded = false;
         public static bool loaded => m_Loaded;
 
         public static Character GetCharacter(string type)

@@ -129,7 +129,7 @@ import {{ StateFsm }} from ""Common/StateFsm.mjs"";
 export class {FsmName} extends StateFsm {{
 
       init(){{
-          //
+          console.log(""init {FsmName}"");
       }}
 }}
 

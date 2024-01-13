@@ -7,9 +7,9 @@ namespace Runner.Themes
 {
     public class ThemeDatabase
     {
-        protected static Dictionary<string, ThemeData> themeDataList;
+        public static Dictionary<string, ThemeData> themeDataList;
         public static Dictionary<string, ThemeData> dictionnary => themeDataList;
-        protected static bool m_Loaded = false;
+        public static bool m_Loaded = false;
         public static bool loaded => m_Loaded;
 
         public static ThemeData GetThemeData(string type)

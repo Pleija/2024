@@ -97,7 +97,7 @@ namespace Runner.UI.Shop
             }
         }
 
-        protected void RefreshButton(ShopItemListItem itm, CharacterAccessories accessory, string compoundName)
+        public void RefreshButton(ShopItemListItem itm, CharacterAccessories accessory, string compoundName)
         {
             if (accessory.cost > PlayerData.instance.coins) {
                 itm.buyButton.interactable = false;

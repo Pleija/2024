@@ -85,17 +85,17 @@ namespace Runner.Game
         public ConsumableIcon consumableIcon;
 
         private Consumable.Consumable.ConsumableType m_PowerupToUse = Consumable.Consumable.ConsumableType.NONE;
-        protected GameObject m_Character;
-        protected List<int> m_OwnedAccesories = new List<int>();
-        protected int m_UsedAccessory = -1;
-        protected int m_UsedPowerupIndex;
-        protected bool m_IsLoadingCharacter;
-        protected Modifier m_CurrentModifier = new Modifier();
-        protected const float k_CharacterRotationSpeed = 45f;
-        protected const string k_ShopSceneName = "Shop";
-        protected const float k_OwnedAccessoriesCharacterOffset = -0.1f;
-        protected int k_UILayer;
-        protected readonly Quaternion k_FlippedYAxisRotation = Quaternion.Euler(0f, 180f, 0f);
+        public GameObject m_Character;
+        public List<int> m_OwnedAccesories = new List<int>();
+        public int m_UsedAccessory = -1;
+        public int m_UsedPowerupIndex;
+        public bool m_IsLoadingCharacter;
+        public Modifier m_CurrentModifier = new Modifier();
+        public const float k_CharacterRotationSpeed = 45f;
+        public const string k_ShopSceneName = "Shop";
+        public const float k_OwnedAccessoriesCharacterOffset = -0.1f;
+        public int k_UILayer;
+        public readonly Quaternion k_FlippedYAxisRotation = Quaternion.Euler(0f, 180f, 0f);
 
         public override void Enter(AState from)
         {

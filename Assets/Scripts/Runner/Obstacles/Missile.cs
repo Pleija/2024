@@ -15,13 +15,13 @@ namespace Runner.Obstacles
         private static int s_RunHash = Animator.StringToHash("Run");
         public Animator animator;
         public AudioClip[] movingSound;
-        protected TrackSegment m_OwnSegement;
-        protected bool m_Ready { get; set; }
-        protected bool m_IsMoving;
-        protected AudioSource m_Audio;
-        protected const int k_LeftMostLaneIndex = -1;
-        protected const int k_RightMostLaneIndex = 1;
-        protected const float k_Speed = 5f;
+        public TrackSegment m_OwnSegement;
+        public bool m_Ready { get; set; }
+        public bool m_IsMoving;
+        public AudioSource m_Audio;
+        public const int k_LeftMostLaneIndex = -1;
+        public const int k_RightMostLaneIndex = 1;
+        public const float k_Speed = 5f;
 
         public void Awake()
         {

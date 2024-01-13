@@ -1,3 +1,4 @@
+import "Game/HpSlider.mjs";
 import "MissionPage/Settings.mjs";
 import "Main/CardAgent.mjs";
 import "Main/ClanPage.mjs";

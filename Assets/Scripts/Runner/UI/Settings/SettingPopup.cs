@@ -13,13 +13,13 @@ namespace Runner.UI.Settings
         public Slider masterSFXSlider;
         public LoadoutState loadoutState;
         public DataDeleteConfirmation confirmationPopup;
-        protected float m_MasterVolume;
-        protected float m_MusicVolume;
-        protected float m_MasterSFXVolume;
-        protected const float k_MinVolume = -80f;
-        protected const string k_MasterVolumeFloatName = "MasterVolume";
-        protected const string k_MusicVolumeFloatName = "MusicVolume";
-        protected const string k_MasterSFXVolumeFloatName = "MasterSFXVolume";
+        public float m_MasterVolume;
+        public float m_MusicVolume;
+        public float m_MasterSFXVolume;
+        public const float k_MinVolume = -80f;
+        public const string k_MasterVolumeFloatName = "MasterVolume";
+        public const string k_MusicVolumeFloatName = "MusicVolume";
+        public const string k_MasterSFXVolumeFloatName = "MasterSFXVolume";
 
         public void Open()
         {

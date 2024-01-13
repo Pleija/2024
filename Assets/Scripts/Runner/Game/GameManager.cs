@@ -18,7 +18,7 @@ namespace Runner.Game
     public class GameManager : MonoBehaviour
     {
         public static GameManager instance => s_Instance;
-        protected static GameManager s_Instance;
+        public static GameManager s_Instance;
         public GameObject[] Prefabs;
         public List<AState> states = new List<AState>();
         public GameObject LoadingCharPos;
@@ -31,11 +31,11 @@ namespace Runner.Game
         }
 
         public ConsumableDatabase m_ConsumableDatabase;
-        protected List<AState> m_StateStack = new List<AState>();
-        protected Dictionary<string, AState> m_StateDict = new Dictionary<string, AState>();
+        public List<AState> m_StateStack = new List<AState>();
+        public Dictionary<string, AState> m_StateDict = new Dictionary<string, AState>();
         public UnityEvent OnEnableEvent;
 
-        protected void OnEnable()
+        public void OnEnable()
         {
             OnEnableEvent?.Invoke();
             PlayerData.Create();
@@ -64,12 +64,12 @@ namespace Runner.Game
             PushState(states[0].GetName());
         }
 
-        protected void Update()
+        public void Update()
         {
             if (m_StateStack.Count > 0) m_StateStack[m_StateStack.Count - 1].Tick();
         }
 
-        protected void OnApplicationQuit()
+        public void OnApplicationQuit()
         {
 #if UNITY_ANALYTICS
             // We are exiting during game, so this make this invalid, send an event to log it

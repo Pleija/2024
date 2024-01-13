@@ -22,7 +22,7 @@ namespace Runner.Tracks
         public float[] obstaclePositions;
 
         public float worldLength => m_WorldLength;
-        protected float m_WorldLength;
+        public float m_WorldLength;
 
         private void OnEnable()
         {
@@ -61,7 +61,7 @@ namespace Runner.Tracks
             rot = Quaternion.Lerp(orig.rotation, target.rotation, segmentT);
         }
 
-        protected void UpdateWorldLength()
+        public void UpdateWorldLength()
         {
             m_WorldLength = 0;
 
@@ -113,7 +113,7 @@ namespace Runner.Tracks
     [CustomEditor(typeof(TrackSegment))]
     internal class TrackSegmentEditor : Editor
     {
-        protected TrackSegment m_Segment;
+        public TrackSegment m_Segment;
 
         public void OnEnable()
         {

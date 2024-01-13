@@ -5,7 +5,7 @@ namespace Runner.UI.Settings
 {
     public class DataDeleteConfirmation : MonoBehaviour
     {
-        protected LoadoutState m_LoadoutState;
+        public LoadoutState m_LoadoutState;
 
         public void Open(LoadoutState owner)
         {

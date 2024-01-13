@@ -60,7 +60,7 @@ import {{ StateNode }} from ""Common/StateNode.mjs"";
 export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
     init() {{
-
+        console.log(""init {NodeName}"");
     }}
 }}
 ";
@@ -100,10 +100,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var code = init.OfKind(SyntaxKind.Block).First().Children.FirstOrDefault();
 
                 if (code != null) {
-                    change.InsertBefore(code, $"\n        this.{NodeName} = new {NodeName}(this);");
+                    change.InsertBefore(code, $"\n          this.{NodeName} = new {NodeName}(this);");
                 }
                 else {
-                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),$"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
+                    init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
+                        Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+                    });
+                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),
+                        $"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
                 }
             }
 

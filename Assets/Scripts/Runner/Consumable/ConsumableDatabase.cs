@@ -13,7 +13,7 @@ namespace Runner.Consumable
     public class ConsumableDatabase : ScriptableObject
     {
         public Consumable[] consumbales;
-        protected static Dictionary<Consumable.ConsumableType, Consumable> _consumablesDict;
+        public static Dictionary<Consumable.ConsumableType, Consumable> _consumablesDict;
 
         public void Load()
         {

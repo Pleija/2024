@@ -4,9 +4,9 @@ namespace Runner.Sounds
 {
     public class CountdownSound : MonoBehaviour
     {
-        protected AudioSource m_Source;
-        protected float m_TimeToDisable;
-        protected const float k_StartDelay = 0.5f;
+        public AudioSource m_Source;
+        public float m_TimeToDisable;
+        public const float k_StartDelay = 0.5f;
 
         private void OnEnable()
         {

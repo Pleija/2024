@@ -13,7 +13,7 @@ namespace Runner.Sounds
             public float startingSpeedRatio; // The stem will start when this is lower than currentSpeed/maxSpeed.
         }
 
-        protected static MusicPlayer s_Instance;
+        public static MusicPlayer s_Instance;
         public static MusicPlayer instance => s_Instance;
         public UnityEngine.Audio.AudioMixer mixer;
         public Stem[] stems;

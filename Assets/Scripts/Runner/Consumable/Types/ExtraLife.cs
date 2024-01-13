@@ -5,8 +5,8 @@ namespace Runner.Consumable.Types
 {
     public class ExtraLife : Consumable
     {
-        protected const int k_MaxLives = 3;
-        protected const int k_CoinValue = 10;
+        public const int k_MaxLives = 3;
+        public const int k_CoinValue = 10;
         public override string GetConsumableName() => "Life";
         public override ConsumableType GetConsumableType() => ConsumableType.EXTRALIFE;
         public override int GetPrice() => 2000;

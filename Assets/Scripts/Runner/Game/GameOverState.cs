@@ -77,7 +77,7 @@ namespace Runner.Game
             manager.SwitchState("Game");
         }
 
-        protected void CreditCoins()
+        public void CreditCoins()
         {
             PlayerData.instance.Save();
 #if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0
@@ -98,7 +98,7 @@ namespace Runner.Game
 #endif
         }
 
-        protected void FinishRun()
+        public void FinishRun()
         {
             if (miniLeaderboard.playerEntry.inputName.text == "")
                 miniLeaderboard.playerEntry.inputName.text = "Trash Cat";
