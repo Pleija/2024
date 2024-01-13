@@ -9,8 +9,8 @@ namespace App
 {
     public class StartUp : Singleton<StartUp>
     {
-        public AssetReference prefab;
-        public GameObject old;
+        // public AssetReference prefab;
+        // public GameObject old;
         public bool clearDir = false;
         public bool disableLog = false;
 
@@ -31,32 +31,41 @@ namespace App
 
         private async void Awake()
         {
-            Debug.Log($"Start Time: {Time.realtimeSinceStartup:F2}");
+            Debug.Log($"Initial Time: {Time.realtimeSinceStartup:F2}");
             //old.gameObject.SetActive(false);
-            Loading.self.enabled = false;
-            Addressables.InitializeAsync().WaitForCompletion();
+            //Loading.self.enabled = false;
+            await Addressables.InitializeAsync().Task;
 
-            try {
-                if (Res.Exists<GameObject>(prefab) is { } res) {
-                    Addressables.DownloadDependenciesAsync(prefab).Completed += h => {
-                        if (h.Status == AsyncOperationStatus.Succeeded) {
-                            Addressables.InstantiateAsync(prefab).Completed += h2 => {
-                                old.SetActive(false);
-                            };
-                        }
-                        else {
-                            Loading.self.enabled = true;
-                        }
-                    };
-                }
-                else {
-                    Loading.self.enabled = true;
-                }
+            if (Res.Exists("StartContent") is { } loc) {
+                Debug.Log("StartContent Found");
+                Addressables.InstantiateAsync("StartContent");
             }
-            catch (Exception e) {
-                Debug.LogException(e);
-                Loading.self.enabled = true;
+            else {
+                Debug.Log("Load DefaultLoading");
+                Instantiate(Resources.Load("DefaultLoading"));
             }
+
+            // try {
+            //     if (Res.Exists<GameObject>(prefab) is { } res) {
+            //         Addressables.DownloadDependenciesAsync(prefab).Completed += h => {
+            //             if (h.Status == AsyncOperationStatus.Succeeded) {
+            //                 Addressables.InstantiateAsync(prefab).Completed += h2 => {
+            //                     old.SetActive(false);
+            //                 };
+            //             }
+            //             else {
+            //                 Loading.self.enabled = true;
+            //             }
+            //         };
+            //     }
+            //     else {
+            //         Loading.self.enabled = true;
+            //     }
+            // }
+            // catch (Exception e) {
+            //     Debug.LogException(e);
+            //     Loading.self.enabled = true;
+            // }
         }
     }
 }
