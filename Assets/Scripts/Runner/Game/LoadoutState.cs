@@ -30,18 +30,23 @@ namespace Runner.Game
         private void Awake()
         {
             m_Instance = this;
+            Debug.Log("Init Pages");
 
-            foreach (Transform t in PageContainer.transform) {
-                Destroy(t.gameObject);
-            }
+            // foreach (Transform t in PageContainer.transform) {
+            //     Destroy(t.gameObject);
+            // }
+            var pages = new List<GameObject>();
             PagePrefabs.ForEach(prefab => {
                 prefab.SetActive(false);
                 var go = Instantiate(prefab, PageContainer);
                 go.name = prefab.name;
+                pages.Add(go);
                 go.SetActive(true);
                 prefab.SetActive(true);
             });
-             Mainmenu.enabled = true;
+            Mainmenu.StartingScreen = 2;
+            Mainmenu.gameObject.SetActive(true);
+            Mainmenu.GoToScreen(2);
         }
 
         public Transform PageContainer;

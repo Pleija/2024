@@ -1,34 +1,25 @@
 declare global {
-    import { GameManager } from "Main/GameManager.mjs";
-    import { Test } from "Tags/Test.mjs";
-    import { BaseTag, $ } from "Common/BaseTag.mjs";
-    import { MainMenu } from "Tags/MainMenu.mjs";
-    import { StartButton } from "Start/StartButton.mjs";
-    import { TutorialState } from "Main/TutorialState.mjs";
-    import { SeededRun } from "Main/SeededRun.mjs";
-    import { LoadoutState } from "Main/LoadoutState.mjs";
-    import { GameOverState } from "Main/GameOverState.mjs";
-    import { GameState } from "Main/GameState.mjs";
-    import { Modifier } from "Main/Modifier.mjs";
+    import {BaseTag, $} from "Common/BaseTag.mjs";
     import protobuf from "protobufjs";
     
-    import { Login } from "Start/Login.mjs";
-    import { Updating } from "Start/Updating.mjs";
-    import { MenuArea } from "Main/MenuArea.mjs";
-    import { Navbar } from "Main/Navbar.mjs";
-    import { Game } from "Main/Game.mjs";
-    import { MainHP } from "Main/MainHP.mjs";
-    import { LevelStart } from "Main/LevelStart.mjs";
-    import { MissionPage } from "Main/MissionPage.mjs";
-    import { ShopPage } from "Main/ShopPage.mjs";
-    import { HeroesPage } from "Main/HeroesPage.mjs";
-    import { CardsPage } from "Main/CardsPage.mjs";
-    import { ClanPage } from "Main/ClanPage.mjs";
-    import { CardAgent } from "Main/CardAgent.mjs";
-    import { Settings } from "MissionPage/Settings.mjs";
-    import { HpSlider } from "Game/HpSlider.mjs";
-    import { LoadingCharPos } from "Main/LoadingCharPos.mjs";
-    import { ChangeCharacterBtn } from "HeroesPage/ChangeCharacterBtn.mjs";
+    import {StartButton} from "Start/StartButton.mjs";
+    import {Login} from "Start/Login.mjs";
+    import {Updating} from "Start/Updating.mjs";
+    import {MenuArea} from "Main/MenuArea.mjs";
+    import {Navbar} from "Main/Navbar.mjs";
+    import {Game} from "Main/Game.mjs";
+    import {MainHP} from "Main/MainHP.mjs";
+    import {LevelStart} from "Main/LevelStart.mjs";
+    import {MissionPage} from "Main/MissionPage.mjs";
+    import {ShopPage} from "Main/ShopPage.mjs";
+    import {HeroesPage} from "Main/HeroesPage.mjs";
+    import {CardsPage} from "Main/CardsPage.mjs";
+    import {ClanPage} from "Main/ClanPage.mjs";
+    import {CardAgent} from "Main/CardAgent.mjs";
+    import {Settings} from "MissionPage/Settings.mjs";
+    import {HpSlider} from "Game/HpSlider.mjs";
+    import {LoadingCharPos} from "Main/LoadingCharPos.mjs";
+    import {ChangeCharacterBtn} from "HeroesPage/ChangeCharacterBtn.mjs";
     declare var $ChangeCharacterBtn: ChangeCharacterBtn;
     declare var $LoadingCharPos: LoadingCharPos;
     declare var $HpSlider: HpSlider;
@@ -50,17 +41,7 @@ declare global {
     declare var $Login: Login;
 
     declare var protobuf: protobuf;
-    declare var $Modifier: Modifier;
-    declare var $GameState: GameState;
-    declare var $GameOverState: GameOverState;
-    declare var $LoadoutState: LoadoutState;
-    declare var $SeededRun: SeededRun;
-
     declare var $: $;
-    declare var $MainMenu: MainMenu;
-    declare var $Test: Test;
-    declare var $GameManager: GameManager
-    declare var $TutorialState: TutorialState;
 
     declare function getAllMethod(toCheck: any): string[];
 }

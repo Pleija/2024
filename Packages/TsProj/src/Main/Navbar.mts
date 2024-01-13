@@ -22,7 +22,7 @@ export class Navbar extends StateFsm {
     currentColor: Color;
     normalImg: Sprite;
     normalColor: Color;
-    private buttons: Button[] = new Array(4);
+    private buttons: Button[] = [];
     private current: number = 2;
     bg: Transform;
 
@@ -46,17 +46,22 @@ export class Navbar extends StateFsm {
 
         });
 
-        (this.fsm.agent.OnEnableAsObservable() as Subject$1<Unit>).Subscribe(() => {
-            console.log("Navbar enable");
-        });
+        // (this.fsm.agent.OnEnableAsObservable() as Subject$1<Unit>).Subscribe(() => {
+        //     console.log("Navbar enable");
+        // });
 
         // todo: 没用, 因为 jsEnv已经被销毁了
         // (this.fsm.agent.OnDisableAsObservable() as  Subject$1<Unit>).Subscribe(()=> {
         //     console.log("Navbar disable");
         // });
     }
+    
+    
 
     setCurrent(index: number) {
+        if(this.buttons.length == 0){
+            return;
+        }
         const old = this.buttons[this.current].GetComponent($typeof(Image)) as Image;
         //old.enabled = true;
         // old.sprite = this.normalImg;

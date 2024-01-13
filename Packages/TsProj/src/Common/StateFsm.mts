@@ -38,37 +38,40 @@ export class StateFsm {
         iterator(bb.variables).forEach((value, key) => {
             self[key] = value.value;
         });
+        
         if (this['init']) {
             //console.log("Init:", f.FsmName);
             this['init']?.();
         }
 
-
         //
-        // const keys = Object.keys(this);
-        // keys.forEach(key => {
-        //     if (!this[key]) {
-        //         console.log(`${this.constructor.name}.${key} is null`);
-        //         return;
-        //     }
-        //     if (this[key].node?.blackboard) {
-        //         iterator(this[key].node.blackboard.variables).forEach((v, k) => {
-        //             console.log(`[${this[key].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
-        //             this[key][k] = v.value;
-        //         });
-        //     }
-        //     if (typeof this[key]['init'] == 'function') {
-        //         //console.log("Init Node:", key);
-        //         this[key].init();
-        //     }
+        const keys = Object.keys(this);
+        keys.forEach(key => {
+            if (!this[key]) {
+                console.log(`${this.constructor.name}.${key} is null`);
+                return;
+            }
+            if (this[key].node?.blackboard) {
+                iterator(this[key].node.blackboard.variables).forEach((v, k) => {
+                    console.log(`[${this[key].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
+                    this[key][k] = v.value;
+                });
+            }
+            if (typeof this[key]['init'] == 'function') {
+                //console.log("Init Node:", key);
+                this[key].init();
+            }
 
-        //console.log(`${key}: ${person[key]}`);
-        // });
+            //console.log(`${key}: ${person[key]}`);
+        });
 
-        
+      
+
+
     }
 
     bindNode(s: FSMState) {
+        return;
         if (!this[s.NodeName]) return;
         iterator(this[s.NodeName].node.blackboard.variables).forEach((v, k) => {
             console.log(`[${this[s.NodeName].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
