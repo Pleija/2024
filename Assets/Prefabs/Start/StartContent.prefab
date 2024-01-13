@@ -1113,6 +1113,113 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1356061953325589477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1108472659316333183}
+  - component: {fileID: 2494992084343085673}
+  m_Layer: 0
+  m_Name: AOT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1108472659316333183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356061953325589477}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 534380030198364486}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2494992084343085673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356061953325589477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d4487f1cfc7d114e9eb271eace75d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"myColor":{"_name":"myColor","_id":"58904589-5092-44fa-b412-e422f80199e2","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Color,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myButton":{"_name":"myButton","_id":"7dba2ae8-1242-4a8e-b831-56efc20e44b9","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Button,
+    UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myObject":{"_name":"myObject","_id":"9fb8063f-6845-4e07-bdaa-07ffc0779312","$type":"NodeCanvas.Framework.Variable`1[[System.Object,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myGameObject":{"_name":"myGameObject","_id":"5e56fdc8-8c46-406e-b0ea-0389e2863f8b","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myTransform":{"_name":"myTransform","_id":"487f0c5d-64b5-47a2-ad25-43ec2a77844b","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myInteger":{"_name":"myInteger","_id":"d1ed4eea-8623-45f5-a217-f1981a1844b9","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myString":{"_name":"myString","_id":"b64729d0-0bf8-406b-9459-34bb1d77434e","$type":"NodeCanvas.Framework.Variable`1[[System.String,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myFloat":{"_name":"myFloat","_id":"74b33967-b4c8-4132-844b-238f81577fcf","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myImage":{"_name":"myImage","_id":"109c91c8-0d86-4124-9584-de2b8c8dbe0d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Image,
+    UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myTexture":{"_name":"myTexture","_id":"19ac762e-cec6-4e7c-9106-653f444c637d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Texture,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myTexture2D":{"_name":"myTexture2D","_id":"278de16f-e63e-45d3-ad09-bd37329a70c4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Texture2D,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myText":{"_name":"myText","_id":"8d8a2ed1-c0b6-435e-830e-c8a8eb059b71","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Text,
+    UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myTMP_Text":{"_name":"myTMP_Text","_id":"16de1030-9961-4a0c-9fe9-61199be25d94","$type":"NodeCanvas.Framework.Variable`1[[TMPro.TMP_Text,
+    Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myMesh":{"_name":"myMesh","_id":"92ca059b-4f85-4ae2-897c-9df046649c88","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Mesh,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences: []
+  _serializedVariables:
+  - _json: '{"_name":"myColor","_id":"58904589-5092-44fa-b412-e422f80199e2","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Color,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myButton","_id":"7dba2ae8-1242-4a8e-b831-56efc20e44b9","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Button,
+      UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myObject","_id":"9fb8063f-6845-4e07-bdaa-07ffc0779312","$type":"NodeCanvas.Framework.Variable`1[[System.Object,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_name":"myGameObject","_id":"5e56fdc8-8c46-406e-b0ea-0389e2863f8b","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myTransform","_id":"487f0c5d-64b5-47a2-ad25-43ec2a77844b","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myInteger","_id":"d1ed4eea-8623-45f5-a217-f1981a1844b9","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_name":"myString","_id":"b64729d0-0bf8-406b-9459-34bb1d77434e","$type":"NodeCanvas.Framework.Variable`1[[System.String,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_name":"myFloat","_id":"74b33967-b4c8-4132-844b-238f81577fcf","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_name":"myImage","_id":"109c91c8-0d86-4124-9584-de2b8c8dbe0d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Image,
+      UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myTexture","_id":"19ac762e-cec6-4e7c-9106-653f444c637d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Texture,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myTexture2D","_id":"278de16f-e63e-45d3-ad09-bd37329a70c4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Texture2D,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myText","_id":"8d8a2ed1-c0b6-435e-830e-c8a8eb059b71","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Text,
+      UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myTMP_Text","_id":"16de1030-9961-4a0c-9fe9-61199be25d94","$type":"NodeCanvas.Framework.Variable`1[[TMPro.TMP_Text,
+      Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myMesh","_id":"92ca059b-4f85-4ae2-897c-9df046649c88","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Mesh,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  _UID: 29b9a9c6-be8e-4f90-bba4-0ce14e21965b
+  _identifier: AOT
+  _singletonMode: 0
+  _dontDestroyOnLoad: 1
 --- !u!1 &1448847286334781505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,6 +1536,7 @@ Transform:
   - {fileID: 972849683004873371}
   - {fileID: 1871207423081689628}
   - {fileID: 972849682071775551}
+  - {fileID: 1108472659316333183}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
