@@ -17,6 +17,7 @@ namespace App
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void DebugSetting()
         {
+            if (StartUp.self == null) return;
             if (StartUp.self.clearDir && Debug.isDebugBuild && !Application.isEditor &&
                 PlayerPrefs.GetString(Loading.VersionKey) != Application.version)
                 Directory.Delete(Application.persistentDataPath + "/com.unity.addressables", true);

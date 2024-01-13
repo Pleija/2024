@@ -24,11 +24,12 @@ namespace Runner.Game
     /// </summary>
     public class LoadoutState : AState
     {
-        public static LoadoutState self;
+        public static LoadoutState self => m_Instance ? m_Instance : m_Instance = FindObjectOfType<LoadoutState>(true);
+        private static LoadoutState m_Instance;
 
         private void Awake()
         {
-            self = this;
+            m_Instance = this;
             PagePrefabs.ForEach(prefab => {
                 prefab.SetActive(false);
                 var go = Instantiate(prefab, PageContainer);

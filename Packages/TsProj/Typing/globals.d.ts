@@ -27,6 +27,10 @@ declare global {
     import { CardAgent } from "Main/CardAgent.mjs";
     import { Settings } from "MissionPage/Settings.mjs";
     import { HpSlider } from "Game/HpSlider.mjs";
+    import { LoadingCharPos } from "Main/LoadingCharPos.mjs";
+    import { ChangeCharacterBtn } from "HeroesPage/ChangeCharacterBtn.mjs";
+    declare var $ChangeCharacterBtn: ChangeCharacterBtn;
+    declare var $LoadingCharPos: LoadingCharPos;
     declare var $HpSlider: HpSlider;
     declare var $Settings: Settings;
     declare var $CardAgent: CardAgent;

@@ -39,7 +39,7 @@ export class StateFsm {
             self[key] = value.value;
         });
         if (this['init']) {
-            console.log("Init:", f.FsmName);
+            //console.log("Init:", f.FsmName);
             this['init']?.();
         }
 
@@ -52,7 +52,7 @@ export class StateFsm {
                 });
             }
             if (typeof this[key]['init'] == 'function') {
-                console.log("Init Node:", key);
+                //console.log("Init Node:", key);
                 this[key].init();
             }
             //console.log(`${key}: ${person[key]}`);

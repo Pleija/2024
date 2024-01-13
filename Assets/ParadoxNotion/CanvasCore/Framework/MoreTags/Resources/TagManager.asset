@@ -244,3 +244,17 @@ MonoBehaviour:
     enable: 0
     color: {r: 0, g: 0, b: 0, a: 0}
     gameObjects: []
+  - name: FSM.LoadingCharPos
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ChangeCharacterBtn
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []

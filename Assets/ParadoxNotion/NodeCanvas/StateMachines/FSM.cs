@@ -176,6 +176,10 @@ namespace NodeCanvas.StateMachines
             }
 
             switch(param.Length) {
+                case 0: 
+                    JsEnv.self.Eval<Action>($"${FsmName}.{fn}.bind(${FsmName})")
+                        ?.Invoke();
+                    break;
                 case 1:
                     JsEnv.self.Eval<Action<object>>($"${FsmName}.{fn}.bind(${FsmName})")
                         ?.Invoke(param[0]);
@@ -203,6 +207,8 @@ namespace NodeCanvas.StateMachines
         {
             if(JsEnv.self.Eval<JSObject>($"${FsmName}?.{fn}") != null)
                 return param.Length switch {
+                    0 => JsEnv.self.Eval<Func<T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                        .Invoke(),
                     1 => JsEnv.self.Eval<Func<object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0]),
                     2 => JsEnv.self.Eval<Func<object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")

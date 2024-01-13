@@ -10,6 +10,10 @@ import RectTransform = CS.UnityEngine.RectTransform;
 import Vector3 = CS.UnityEngine.Vector3;
 import Vector2 = CS.UnityEngine.Vector2;
 import TMP_Text = CS.TMPro.TMP_Text;
+import IObserver$1 = CS.System.IObserver$1;
+import Unit = CS.UniRx.Unit;
+import IObservable$1 = CS.System.IObservable$1;
+import Subject$1 = CS.UniRx.Subject$1;
 
 export class Navbar extends StateFsm {
     currentImg: Sprite;
@@ -38,6 +42,15 @@ export class Navbar extends StateFsm {
             });
             
         });
+
+        (this.fsm.agent.OnEnableAsObservable() as  Subject$1<Unit>).Subscribe(()=> {
+            console.log("Navbar enable");
+        });
+        
+        // todo: 没用, 因为 jsEnv已经被销毁了
+        // (this.fsm.agent.OnDisableAsObservable() as  Subject$1<Unit>).Subscribe(()=> {
+        //     console.log("Navbar disable");
+        // });
     }
 
     setCurrent(index: number) {

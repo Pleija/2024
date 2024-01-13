@@ -1,3 +1,5 @@
+import "HeroesPage/ChangeCharacterBtn.mjs";
+import "Main/LoadingCharPos.mjs";
 import "Game/HpSlider.mjs";
 import "MissionPage/Settings.mjs";
 import "Main/CardAgent.mjs";

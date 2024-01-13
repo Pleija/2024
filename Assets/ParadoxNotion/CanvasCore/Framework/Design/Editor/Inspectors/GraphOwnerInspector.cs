@@ -248,6 +248,7 @@ namespace NodeCanvas.Editor
                 {
                     if(GUILayout.Button(("Edit " + owner.graphType.Name.SplitCamelCase())
                            .ToUpper())) {
+                        owner.graph.CheckVarsFromTs(owner.graph.MakeFile(), owner.graph.blackboard);
                         GraphEditor.OpenWindow(owner);
                     }
 

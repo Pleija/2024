@@ -285,7 +285,7 @@ namespace Runner.Game
                 else
                     m_LifeHearts[i].color = Color.black;
             scoreText.text = trackManager.score.ToString();
-            multiplierText.text = "x " + trackManager.multiplier;
+            multiplierText.text = "x" + trackManager.multiplier;
             distanceText.text = Mathf.FloorToInt(trackManager.worldDistance).ToString() + "m";
 
             if (trackManager.timeToStart >= 0) {
