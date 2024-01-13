@@ -14,39 +14,42 @@ import IObserver$1 = CS.System.IObserver$1;
 import Unit = CS.UniRx.Unit;
 import IObservable$1 = CS.System.IObservable$1;
 import Subject$1 = CS.UniRx.Subject$1;
+import GameObject = CS.UnityEngine.GameObject;
+import Transform = CS.UnityEngine.Transform;
 
 export class Navbar extends StateFsm {
     currentImg: Sprite;
     currentColor: Color;
     normalImg: Sprite;
     normalColor: Color;
-    buttons: Button[] = new Array(4);
-    current: number = 2;
+    private buttons: Button[] = new Array(4);
+    private current: number = 2;
+    bg: Transform;
 
     init() {
         //
         iterator(this.fsm.agent.GetComponentsInChildren($typeof(Button))).forEach((x, i) => {
             let btn = x as Button;
-            let image = btn.GetComponent($typeof(Image)) as Image;
-            if (i == 2) {
-                this.currentImg = image.sprite;
-                this.currentColor = image.color;
-            } else if (i == 0) {
-                this.normalImg = image.sprite;
-                this.normalColor = image.color; 
-            }
+            // let image = btn.GetComponent($typeof(Image)) as Image;
+            // if (i == 2) {
+            //     this.currentImg = image.sprite;
+            //     this.currentColor = image.color;
+            // } else if (i == 0) {
+            //     this.normalImg = image.sprite;
+            //     this.normalColor = image.color; 
+            // }
             this.buttons[i] = btn;
             btn.onClick.AddListener(() => {
                 //console.log(`click: ${i}`);
                 this.setCurrent(this.buttons.indexOf(btn));
             });
-            
+
         });
 
-        (this.fsm.agent.OnEnableAsObservable() as  Subject$1<Unit>).Subscribe(()=> {
+        (this.fsm.agent.OnEnableAsObservable() as Subject$1<Unit>).Subscribe(() => {
             console.log("Navbar enable");
         });
-        
+
         // todo: 没用, 因为 jsEnv已经被销毁了
         // (this.fsm.agent.OnDisableAsObservable() as  Subject$1<Unit>).Subscribe(()=> {
         //     console.log("Navbar disable");
@@ -55,27 +58,34 @@ export class Navbar extends StateFsm {
 
     setCurrent(index: number) {
         const old = this.buttons[this.current].GetComponent($typeof(Image)) as Image;
-        old.sprite = this.normalImg;
-        old.color = this.normalColor;
+        //old.enabled = true;
+        // old.sprite = this.normalImg;
+        // old.color = this.normalColor;
         (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 129;
         (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 0;
 
         let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
-        this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text),true).gameObject.SetActive(false);
-        oldIcon.localScale = new Vector3(1,1,1);
-        oldIcon.anchoredPosition = new Vector2(0,5);
+        this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true).gameObject.SetActive(false);
+        oldIcon.localScale = new Vector3(1, 1, 1);
+        oldIcon.anchoredPosition = new Vector2(0, 5);
         const target = this.buttons[index].GetComponent($typeof(Image)) as Image;
-        target.sprite = this.currentImg;
-        target.color = this.currentColor;
+        //target.enabled = false;
+        // target.sprite = this.currentImg;
+        // target.color = this.currentColor;
         let targetIcon = target.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
-        targetIcon.localScale = new Vector3(1.2,1.2,1);
-        targetIcon.anchoredPosition = new Vector2(0,42);
+        targetIcon.localScale = new Vector3(1.2, 1.2, 1);
+        targetIcon.anchoredPosition = new Vector2(0, 42);
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 200;
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 180;
-        this.buttons[index].GetComponentInChildren($typeof(TMP_Text),true).gameObject.SetActive(true);
+        this.buttons[index].GetComponentInChildren($typeof(TMP_Text), true).gameObject.SetActive(true);
         if ($MenuArea.snap.CurrentPage != index) {
             $MenuArea.snap.GoToScreen(index);
         }
+        const bgRect = this.bg.GetComponent($typeof(RectTransform)) as RectTransform;
+        const rect = this.buttons[index].GetComponent($typeof(RectTransform)) as RectTransform;
+        //bgRect.anchoredPosition = rect.anchoredPosition;
+         let map = [102,231,360,489,618];
+         bgRect.anchoredPosition.Set(map[index],-92);
         this.current = index;
     }
 }

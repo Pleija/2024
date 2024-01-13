@@ -4939,7 +4939,8 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 114000011972273750, guid: a53fe2875371488408daf0df7d69a981,
+        type: 3}
     - target: {fileID: 114000011972273750, guid: a53fe2875371488408daf0df7d69a981,
         type: 3}
       propertyPath: missionEntryPrefab.m_AssetGUID

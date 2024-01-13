@@ -7,6 +7,7 @@ export class LoadingCharPos extends StateFsm {
 
     init() {
         console.log("init LoadingCharPos");
+        
     }
 }
 
