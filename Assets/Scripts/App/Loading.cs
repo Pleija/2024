@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Configuration;
@@ -202,19 +203,22 @@ namespace App
 
             if (p3.Result > 0) {
                 var keys = Addressables.ResourceLocators.SelectMany(x => x.Keys);
+                var changes = new List<string>();
 
                 foreach (var key in keys) {
                     if (Guid.TryParse($"{key}", out _)) continue;
                     var size = Addressables.GetDownloadSizeAsync(key).WaitForCompletion();
 
                     if (size > 0) {
-                        Debug.Log($"{key} => {size / 1024f / 1024f:F3}");
+                        changes.Add(key.ToString());
+                        // Debug.Log($"{key} => {size / 1024f / 1024f:F3}");
                     }
                 }
-                Debug.Log($"total size:{p3.Result}");
+                Debug.Log($"items({changes.Count}):\n" + string.Join("\n", changes));
+                Debug.Log($"total size: {p3.Result/1024f/1024f:f3}MB");
                 var p4 = Res.DownloadAll();
                 var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
-                Debug.Log($"download total: {total / 1024 / 1024:f2}Mb");
+                Debug.Log($"download total size: {total / 1024 / 1024:f2}Mb");
 
                 while (p4.IsValid() && !p4.IsDone) {
                     var current = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;

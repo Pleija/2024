@@ -16,7 +16,7 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 09000000140000000d000000
-  lastScan: 638407735825956280
+  lastScan: 638407790024174610
   supportSerializedTypes:
   - TypeName: UniRx.IntReactiveProperty, UniRx
     IsCustom: 1
