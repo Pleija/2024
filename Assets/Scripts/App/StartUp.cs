@@ -39,7 +39,11 @@ namespace App
 
             if (Res.Exists("StartContent") is { } loc) {
                 Debug.Log("StartContent Found");
-                Addressables.InstantiateAsync("StartContent");
+                Addressables.InstantiateAsync("StartContent").Completed += h => {
+                    if (h.Status == AsyncOperationStatus.Succeeded) return;
+                    Debug.Log("Load DefaultLoading");
+                    Instantiate(Resources.Load("DefaultLoading"));
+                };
             }
             else {
                 Debug.Log("Load DefaultLoading");
