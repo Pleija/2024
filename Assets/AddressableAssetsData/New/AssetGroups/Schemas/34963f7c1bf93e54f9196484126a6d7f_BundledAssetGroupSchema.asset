@@ -29,10 +29,10 @@ MonoBehaviour:
   m_UseAssetBundleCrc: 1
   m_UseAssetBundleCrcForCachedBundles: 1
   m_UseUWRForLocalBundles: 0
-  m_Timeout: 10
+  m_Timeout: -1
   m_ChunkedTransfer: 0
   m_RedirectLimit: -1
-  m_RetryCount: 2
+  m_RetryCount: 0
   m_BuildPath:
     m_Id: 6f7b45b4b264e45839d5999c5c6e9049
   m_LoadPath:

@@ -316,6 +316,10 @@ namespace App
                 progress.value = p.PercentComplete;
                 yield return null;
             }
+
+            if (p.Status != AsyncOperationStatus.Succeeded) {
+                SceneManager.LoadScene(0);
+            }
             progress.value = 1;
         }
     }
