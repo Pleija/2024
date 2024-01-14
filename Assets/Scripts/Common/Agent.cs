@@ -32,6 +32,14 @@ namespace Common
         }
 #endregion
 
+        public static bool isQuitting;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        static void BaseConfigOnLoad()
+        {
+            Application.quitting += () => isQuitting = true;
+        }
+
         [AttributeUsage(AttributeTargets.Class)]
         public class AutoCreateAttribute : Attribute { }
 

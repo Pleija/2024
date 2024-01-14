@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Pleija Games
-  productName: "\u732B\u54AA\u5C0F\u59B9"
+  productName: "\u55B5\u54AA\u5C0F\u59B9"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.14070842, g: 0.5614942, b: 0.5849056, a: 1}
@@ -136,7 +136,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 1
-  bundleVersion: 1.0.224
+  bundleVersion: 1.0.226
   preloadedAssets:
   - {fileID: 11400000, guid: 206f4cb7cbf694c8f867da96f3a9e1c6, type: 2}
   metroInputSource: 0
@@ -164,10 +164,10 @@ PlayerSettings:
     tvOS: 
   buildNumber:
     Standalone: 0
-    iPhone: 223
+    iPhone: 225
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 593
+  AndroidBundleVersionCode: 595
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
