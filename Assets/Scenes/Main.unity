@@ -7520,6 +7520,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c64ccf50119624ba1a5e67a781777d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: m_StateDict
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Runner.Game.AState,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   Prefabs:
   - {fileID: 4988753507147989385, guid: fede4caf380854467a2f100475c62129, type: 3}
   - {fileID: 1876839688629752671, guid: 3f26834a77b2b4eaf980c634f5d7f859, type: 3}
@@ -7530,6 +7559,9 @@ MonoBehaviour:
     type: 2}
   m_StateStack: []
   OnEnableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &590977523
@@ -11902,6 +11934,9 @@ MonoBehaviour:
   m_UsedPowerupIndex: 0
   m_IsLoadingCharacter: 0
   k_UILayer: 0
+  OnCharacterCreate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!222 &869760751
 CanvasRenderer:
   m_ObjectHideFlags: 0
