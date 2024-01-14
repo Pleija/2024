@@ -2,29 +2,28 @@ using System;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Common;
-using Runner.Game;
 using Sirenix.OdinInspector;
 using StackExchange.Redis;
 using UnityEngine;
-using Zu.TypeScript.TsParser;
 
 namespace App
 {
     [ExecuteAlways]
     public class Redis : Singleton<Redis>
     {
-        private static IDatabase m_Database;
-        public static IDatabase data => m_Database ??= redis?.GetDatabase();
-        private static ConnectionMultiplexer m_Redis;
+        private IDatabase m_Database;
+        public IDatabase data => m_Database ??= redis?.GetDatabase();
+        private ConnectionMultiplexer m_Redis;
         public string host = "192.168.1.65";
         public string password = "admin";
-        public enum ADDRESSFAM { IPv4, IPv6 }
 
         [Button]
         void ResetIP()
         {
             host = GetIP(ADDRESSFAM.IPv4);
         }
+
+        public enum ADDRESSFAM { IPv4, IPv6 }
 
         public static string GetIP(ADDRESSFAM addfam = ADDRESSFAM.IPv4)
         {
@@ -62,13 +61,9 @@ namespace App
             return output;
         }
 
-        public static ConnectionMultiplexer redis {
+        public ConnectionMultiplexer redis {
             get {
                 if (isQuitting) return m_Redis;
-#if UNITY_EDITOR
-                self.host = GetIP();
-                Debug.Log(self.host);
-#endif
                 return m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
             }
         }
@@ -79,6 +74,9 @@ namespace App
 
         public void Start()
         {
+            if (!(Debug.isDebugBuild || Application.isEditor)) return;
+            m_Redis?.Dispose();
+            m_Redis = null;
             // 以StackOverflow.Redis的开源项目为例
             // 创建NoSQL数据库
             //db = redis.GetDatabase();
@@ -101,6 +99,7 @@ namespace App
         protected override void OnDestroy()
         {
             m_Redis?.Close();
+            m_Redis?.Dispose();
             base.OnDestroy();
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using UnityEditor;
 using UnityEngine;
 
 namespace Common
@@ -38,6 +39,9 @@ namespace Common
         static void BaseConfigOnLoad()
         {
             Application.quitting += () => isQuitting = true;
+#if UNITY_EDITOR
+            EditorApplication.playModeStateChanged += mode => isQuitting = false;
+#endif
         }
 
         [AttributeUsage(AttributeTargets.Class)]

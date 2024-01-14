@@ -7,8 +7,9 @@ EditorSettings:
   m_SerializationMode: 2
   m_LineEndingsForNewScripts: 1
   m_DefaultBehaviorMode: 1
-  m_PrefabRegularEnvironment: {fileID: 0}
-  m_PrefabUIEnvironment: {fileID: 102900000, guid: 678d462d33ebdd7419400a9476bf6759,
+  m_PrefabRegularEnvironment: {fileID: 102900000, guid: 2518df6583c8d4b89a5e631f38c5ac06,
+    type: 3}
+  m_PrefabUIEnvironment: {fileID: 102900000, guid: 2518df6583c8d4b89a5e631f38c5ac06,
     type: 3}
   m_SpritePackerMode: 2
   m_SpritePackerPaddingPower: 1
