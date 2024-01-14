@@ -11,6 +11,9 @@ namespace App
 {
     public class PlayService : Singleton<PlayService>, IDontDestroyOnLoad
     {
+#if UNITY_ANDROID
+        
+
         //public string authCode { get; set; }
 
         private void Awake()
@@ -153,5 +156,6 @@ namespace App
 
         // Update is called once per frame
         public override void Update() { }
+#endif
     }
 }

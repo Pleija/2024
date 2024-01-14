@@ -18,6 +18,7 @@ namespace UnityChan
 		public Transform targetObj = null;
 		public bool isIkActive = false;
 		public float mixWeight = 1.0f;
+		public bool ShowGUI;
 
 		void Awake ()
 		{
@@ -45,6 +46,7 @@ namespace UnityChan
 
 		void OnGUI ()
 		{
+			if (!ShowGUI) return;
 			Rect rect1 = new Rect (10, Screen.height - 20, 400, 30);
 			isIkActive = GUI.Toggle (rect1, isIkActive, "IK Active");
 		}

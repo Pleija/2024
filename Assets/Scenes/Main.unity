@@ -1951,7 +1951,7 @@ PrefabInstance:
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
       propertyPath: m_text
-      value: Heroes
+      value: HEROES
       objectReference: {fileID: 0}
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
@@ -5380,7 +5380,7 @@ PrefabInstance:
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
       propertyPath: m_text
-      value: Shop
+      value: SHOP
       objectReference: {fileID: 0}
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
@@ -24280,7 +24280,7 @@ PrefabInstance:
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
       propertyPath: m_text
-      value: Deck
+      value: DECK
       objectReference: {fileID: 0}
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
@@ -25417,17 +25417,7 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: someKey
-      Entry: 7
-      Data: StackExchange.Redis.RedisKey, StackExchange.Redis
-    - Name: 
-      Entry: 8
-      Data: 
-  host: 192.168.1.65
-  password: admin
-  testKey: test:redis
-  testValue: 123
+    SerializationNodes: []
 --- !u!1 &1710657383
 GameObject:
   m_ObjectHideFlags: 0
@@ -30463,7 +30453,7 @@ PrefabInstance:
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
       propertyPath: m_text
-      value: Home
+      value: HOME
       objectReference: {fileID: 0}
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}

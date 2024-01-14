@@ -136,7 +136,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 1
-  bundleVersion: 1.0.233
+  bundleVersion: 1.0.234
   preloadedAssets:
   - {fileID: 11400000, guid: 206f4cb7cbf694c8f867da96f3a9e1c6, type: 2}
   metroInputSource: 0
@@ -164,10 +164,10 @@ PlayerSettings:
     tvOS: 
   buildNumber:
     Standalone: 0
-    iPhone: 232
+    iPhone: 233
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 602
+  AndroidBundleVersionCode: 603
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
@@ -753,7 +753,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;TextMeshPro
+    1: DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;TextMeshPro;UNITY_PIPELINE_URP;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;NODECANVAS;EasyDOTween_Audio;EasyDOTween_Physics;EasyDOTween_Physics2D;EasyDOTween_Sprite;EasyDOTween_UI;UNITY_SOCIAL;ADDRESSABLES_LOG_ALL;BESTHTTP_SIGNALR_CORE_ENABLE_GAMEDEVWARE_MESSAGEPACK;PUERTS_REFLECT_ALL_EXTENSION;UNITY_PURCHASING;UNITY_ANALYTICS;URP_OUTLINE
     4: UNITY_SOCIAL;DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;EasyDOTween_Audio;EasyDOTween_Physics;EasyDOTween_Physics2D;EasyDOTween_Sprite;EasyDOTween_UI;TextMeshPro
     7: UNITY_SOCIAL;DEBUG_ANALYTICS_STANDARD_EVENTS;UNITY_POST_PROCESSING_STACK_V2;ADDRESSABLES_LOG_ALL;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;BESTHTTP_SIGNALR_CORE_ENABLE_GAMEDEVWARE_MESSAGEPACK;NODECANVAS;EasyDOTween_Audio;EasyDOTween_Physics;EasyDOTween_Physics2D;EasyDOTween_Sprite;EasyDOTween_UI;PUERTS_REFLECT_ALL_EXTENSION;TextMeshPro;UNITY_PURCHASING;UNITY_ANALYTICS;URP_OUTLINE;UNITY_PIPELINE_URP
     13: UNITY_POST_PROCESSING_STACK_V2;TextMeshPro
