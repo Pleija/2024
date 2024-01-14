@@ -2872,6 +2872,12 @@ MonoBehaviour:
   OnExit:
     m_PersistentCalls:
       m_Calls: []
+  AfterEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterExit:
+    m_PersistentCalls:
+      m_Calls: []
   canvas: {fileID: 1876839688629752667}
   gameOverTheme: {fileID: 8300000, guid: 15e26518785848f4caf8ba236b4d0690, type: 3}
   miniLeaderboard: {fileID: 1876839687960367958}

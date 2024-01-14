@@ -7,6 +7,7 @@ using Runner.Themes;
 using Runner.UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -244,6 +245,8 @@ namespace Runner.Game
             UIGroundFilter.sharedMesh = t.UIGroundMesh;
         }
 
+        public UnityEvent<GameObject> OnCharacterCreate;
+
         public IEnumerator PopulateCharacters()
         {
             accessoriesSelector.gameObject.SetActive(false);
@@ -288,6 +291,7 @@ namespace Runner.Game
                         if (m_Character != null)
                             Addressables.ReleaseInstance(m_Character);
                         m_Character = newChar;
+                        OnCharacterCreate.Invoke(newChar);
                         charNameDisplay.text = c.characterName;
                         m_Character.transform.localPosition = Vector3.right * 1000;
                         //animator will take a frame to initialize, during which the character will be in a T-pose.

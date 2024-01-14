@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common;
 using Runner.Consumable;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Runner.Game
     ///     The Game manager is a state machine, that will switch between state according to current
     ///     gamestate.
     /// </summary>
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
         public static GameManager instance => s_Instance;
         public static GameManager s_Instance;
@@ -34,12 +35,23 @@ namespace Runner.Game
         public List<AState> m_StateStack = new List<AState>();
         public Dictionary<string, AState> m_StateDict = new Dictionary<string, AState>();
         public UnityEvent OnEnableEvent;
+        public UnityEvent OnStartEvent;
 
-        public void OnEnable()
+        public override void OnEnable()
         {
-            OnEnableEvent?.Invoke();
-            PlayerData.Create();
+            base.OnEnable();
             s_Instance = this;
+            OnEnableEvent.Invoke();
+        }
+
+        private void Start()
+        {
+            OnStartEvent.Invoke();
+        }
+
+        public void DoStart()
+        {
+            PlayerData.Create();
             m_ConsumableDatabase.Load();
             states ??= new List<AState>();
             Prefabs.ForEach(prefab => {
@@ -91,8 +103,8 @@ namespace Runner.Game
                 Debug.LogError("Can't find the state named " + newState);
                 return;
             }
-            m_StateStack[m_StateStack.Count - 1].DoExit().Exit(state);
-            state.DoEnter().Enter(m_StateStack[m_StateStack.Count - 1]);
+            m_StateStack[m_StateStack.Count - 1].DoExit(t => t.Exit(state));
+            state.DoEnter(t => t.Enter(m_StateStack[m_StateStack.Count - 1]));
             m_StateStack.RemoveAt(m_StateStack.Count - 1);
             m_StateStack.Add(state);
         }
@@ -110,8 +122,8 @@ namespace Runner.Game
                 Debug.LogError("Can't pop states, only one in stack.");
                 return;
             }
-            m_StateStack[m_StateStack.Count - 1].DoExit().Exit(m_StateStack[m_StateStack.Count - 2]);
-            m_StateStack[m_StateStack.Count - 2].DoEnter().Enter(m_StateStack[m_StateStack.Count - 2]);
+            m_StateStack[m_StateStack.Count - 1].DoExit(t => t.Exit(m_StateStack[m_StateStack.Count - 2]));
+            m_StateStack[m_StateStack.Count - 2].DoEnter(t => t.Enter(m_StateStack[m_StateStack.Count - 2]));
             m_StateStack.RemoveAt(m_StateStack.Count - 1);
         }
 
@@ -125,12 +137,12 @@ namespace Runner.Game
             }
 
             if (m_StateStack.Count > 0) {
-                m_StateStack[m_StateStack.Count - 1].DoExit().Exit(state);
+                m_StateStack[m_StateStack.Count - 1].DoExit(t => t.Exit(state));
                 //state.OnEnter?.Invoke();
-                state.DoEnter().Enter(m_StateStack[m_StateStack.Count - 1]);
+                state.DoEnter(t => t.Enter(m_StateStack[m_StateStack.Count - 1]));
             }
             else {
-                state.DoEnter().Enter(null);
+                state.DoEnter(t => t.Enter(null));
             }
             m_StateStack.Add(state);
         }
@@ -141,21 +153,27 @@ namespace Runner.Game
         [HideInInspector]
         public GameManager manager;
 
-        public UnityEvent OnEnter;
-        public UnityEvent OnExit;
+        public UnityEvent<AState> OnEnter;
+        public UnityEvent<AState> OnExit;
+        public UnityEvent<AState> AfterEnter;
+        public UnityEvent<AState> AfterExit;
         public virtual void OnEnable() { }
 
-        public AState DoEnter()
+        public AState DoEnter(Action<AState> fn)
         {
             Debug.Log($"{GetType().Name} => Enter");
-            OnEnter?.Invoke();
+            OnEnter?.Invoke(this);
+            fn.Invoke(this);
+            AfterEnter?.Invoke(this);
             return this;
         }
 
-        public AState DoExit()
+        public AState DoExit(Action<AState> fn)
         {
             Debug.Log($"{GetType().Name} => Exit");
-            OnExit?.Invoke();
+            OnExit?.Invoke(this);
+            fn.Invoke(this);
+            AfterExit?.Invoke(this);
             return this;
         }
 

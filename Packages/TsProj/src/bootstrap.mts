@@ -15,9 +15,10 @@ import "Main/Navbar.mjs";
 import "Main/MenuArea.mjs";
 import "Start/Updating.mjs";
 import "Main/Mission.mjs";
+import "Start/StartButton.mjs";
 
 import "Common/Helpers.mjs";
-import "Start/StartButton.mjs";
+import "Common/TypeUtils.mjs";
 
 
 global.protobuf = require("protobufjs");
@@ -30,6 +31,7 @@ protobuf.load("awesome.proto", (err, root) => {
     const type = root.lookupType("awesome.AwesomeMessage");
     console.log(type, "test proto");
 });
+
 
 // $Login.sayHello("puerts ready");
 

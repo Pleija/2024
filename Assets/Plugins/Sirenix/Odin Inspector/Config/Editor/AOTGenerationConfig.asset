@@ -16,7 +16,7 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 09000000140000000d000000
-  lastScan: 638408201445138020
+  lastScan: 638408465050099580
   supportSerializedTypes:
   - TypeName: UniRx.IntReactiveProperty, UniRx
     IsCustom: 1
@@ -29,6 +29,9 @@ MonoBehaviour:
     Emit: 1
   - TypeName: Sirenix.Serialization.SerializationData, Sirenix.Serialization
     IsCustom: 1
+    Emit: 1
+  - TypeName: Runner.Game.AState, Assembly-CSharp
+    IsCustom: 0
     Emit: 1
   - TypeName: UnityRoyale.CardData, Assembly-CSharp
     IsCustom: 0
@@ -44,6 +47,10 @@ MonoBehaviour:
       mscorlib],[System.String, mscorlib]], mscorlib]], mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Runner.Game.AState,
+      Assembly-CSharp]], mscorlib
+    IsCustom: 0
+    Emit: 1
   - TypeName: System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object,
       mscorlib]], mscorlib
     IsCustom: 0
@@ -56,11 +63,19 @@ MonoBehaviour:
       mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
   - TypeName: Runner.HighscoreEntry, Assembly-CSharp
     IsCustom: 0
     Emit: 1
   - TypeName: System.Collections.Generic.IEqualityComparer`1[[Runner.Consumable.Consumable+ConsumableType,
       Assembly-CSharp]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.IEqualityComparer`1[[System.String, mscorlib]],
+      mscorlib
     IsCustom: 0
     Emit: 1
   - TypeName: System.Collections.Generic.IEqualityComparer`1[[System.Type, mscorlib]],

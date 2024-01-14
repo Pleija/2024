@@ -16,6 +16,7 @@ import IObservable$1 = CS.System.IObservable$1;
 import Subject$1 = CS.UniRx.Subject$1;
 import GameObject = CS.UnityEngine.GameObject;
 import Transform = CS.UnityEngine.Transform;
+import LoadoutState = CS.Runner.Game.LoadoutState;
 
 export class Navbar extends StateFsm {
     currentImg: Sprite;
@@ -27,6 +28,7 @@ export class Navbar extends StateFsm {
     bg: Transform;
 
     init() {
+
         //
         iterator(this.fsm.agent.GetComponentsInChildren($typeof(Button))).forEach((x, i) => {
             let btn = x as Button;
@@ -55,11 +57,10 @@ export class Navbar extends StateFsm {
         //     console.log("Navbar disable");
         // });
     }
-    
-    
+
 
     setCurrent(index: number) {
-        if(this.buttons.length == 0){
+        if (this.buttons.length == 0) {
             return;
         }
         const old = this.buttons[this.current].GetComponent($typeof(Image)) as Image;
@@ -70,7 +71,7 @@ export class Navbar extends StateFsm {
         (this.buttons[this.current].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 0;
 
         let oldIcon = old.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
-        (this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(0,0);//.gameObject.SetActive(false);
+        (this.buttons[this.current].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(0, 0);//.gameObject.SetActive(false);
         //oldIcon.localScale = new Vector3(1, 1, 1);
         oldIcon.DOScale(new Vector3(1, 1, 1), 0.2);
         //oldIcon.anchoredPosition = new Vector2(0, 5);
@@ -81,13 +82,13 @@ export class Navbar extends StateFsm {
         // target.color = this.currentColor;
         let targetIcon = target.transform.Find("Image").GetComponent($typeof(RectTransform)) as RectTransform;
         //targetIcon.localScale = new Vector3(1.2, 1.2, 1);
-        targetIcon.DOScale( new Vector3(1.2, 1.2, 1),0.2);
-        
+        targetIcon.DOScale(new Vector3(1.2, 1.2, 1), 0.2);
+
         //targetIcon.anchoredPosition = new Vector2(0, 42);
         targetIcon.DOAnchorPos(new Vector2(0, 42), 0.2);
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minWidth = 200;
         (this.buttons[index].GetComponent($typeof(LayoutElement)) as LayoutElement).minHeight = 180;
-        ( this.buttons[index].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(1, 0.2);//.gameObject.SetActive(true);
+        (this.buttons[index].GetComponentInChildren($typeof(TMP_Text), true) as TMP_Text).DOFade(1, 0.2);//.gameObject.SetActive(true);
 
         const bgRect = this.bg.GetComponent($typeof(RectTransform)) as RectTransform;
         const rect = this.buttons[index].GetComponent($typeof(RectTransform)) as RectTransform;

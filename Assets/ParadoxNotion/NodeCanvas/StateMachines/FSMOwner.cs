@@ -6,7 +6,7 @@ namespace NodeCanvas.StateMachines
 {
 
     ///<summary> Add this component on a gameobject to behave based on an FSM.</summary>
-    [AddComponentMenu("NodeCanvas/FSM Owner")]
+    [AddComponentMenu("NodeCanvas/FSM Owner"), DefaultExecutionOrder(-1000)]
     public class FSMOwner : GraphOwner<FSM>
     {
 

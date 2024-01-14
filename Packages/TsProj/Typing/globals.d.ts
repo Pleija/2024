@@ -1,4 +1,5 @@
 declare global {
+
     import {BaseTag, $} from "Common/BaseTag.mjs";
     import protobuf from "protobufjs";
     
@@ -45,6 +46,7 @@ declare global {
 
     declare function getAllMethod(toCheck: any): string[];
 }
+
 
 export {}
 declare module 'csharp' {

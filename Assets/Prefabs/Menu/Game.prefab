@@ -2363,6 +2363,12 @@ MonoBehaviour:
   OnExit:
     m_PersistentCalls:
       m_Calls: []
+  AfterEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterExit:
+    m_PersistentCalls:
+      m_Calls: []
   canvas: {fileID: 4988753507147989381}
   gameTheme: {fileID: 8300000, guid: b341b9410b3c5274e8b15199f3b95fb5, type: 3}
   coinText: {fileID: 4988753508073382351}
