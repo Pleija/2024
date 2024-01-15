@@ -32,7 +32,7 @@ namespace App
         public string fieldName;
 
         private IEnumerable<Type> ListTypes =>
-            typeof(DataAgent<T>).Assembly.ExportedTypes.Where(x => typeof(ModelBase).IsAssignableFrom(x));
+            AppDomain.CurrentDomain.GetAssemblies( ).Where(a => !a.IsDynamic).SelectMany(x => x.ExportedTypes.Where(a => typeof(ModelBase).IsAssignableFrom(a) && !a.IsAbstract && !a.IsGenericType) );
 
         private IEnumerable<string> ListNames => type == null ? new List<string>() : type
             .GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is PropertyInfo || x is FieldInfo)

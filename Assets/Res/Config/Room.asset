@@ -16,5 +16,14 @@ MonoBehaviour:
   Version: 1.0
   Extra: '{}'
   localExtra: '{}'
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   roomId:
-    value: 
+    value: 2

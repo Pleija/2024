@@ -117,14 +117,14 @@ namespace SqlCipher4Unity3D
         public static T self {
             get {
                 if (m_Instance) return m_Instance;
-                m_Instance = conn.Table<T>().FirstOrInsert(value => {
+                conn.Table<T>().FirstOrInsert(table => {
                     //value ??= CreateInstance<T>();
                     if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
-                        if (!Application.isPlaying) {
-                            result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
-                                AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x))).FirstOrDefault();
-                        }
+                        //if (!Application.isPlaying) {
+                        result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
+                            AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x))).FirstOrDefault();
+                        // }
 #endif
                         if (result == null && Res.Exists<T>() is { } locations) {
                             result = Defaults[typeof(T)] = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey)
@@ -142,13 +142,13 @@ namespace SqlCipher4Unity3D
                     if ((result == null || AssetDatabase.GetAssetPath(result) == null)) {
                         var settings = AddressableAssetSettingsDefaultObject.Settings;
                         //var entries = settings.groups.SelectMany(x => x.entries);
-                        result = Defaults[typeof(T)] = value; //CreateInstance<T>();
+                        result = Defaults[typeof(T)] = table; //CreateInstance<T>();
                         var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
 
                         if (!Directory.Exists(Path.GetDirectoryName(path))) {
                             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
                         }
-                        AssetDatabase.CreateAsset(value, path);
+                        AssetDatabase.CreateAsset(table, path);
                         AssetDatabase.Refresh();
                         //AssetDatabase.SaveAssets();
                         result = AssetDatabase.LoadAssetAtPath<T>(path);
@@ -159,11 +159,12 @@ namespace SqlCipher4Unity3D
 #endif
 
                     if (result) {
-                        Setup(result, value);
+                        Setup(result, table);
                     }
                     else {
                         Debug.Log($"{typeof(T).FullName} asset not found");
                     }
+                    m_Instance = result as T;
                 });
                 return m_Instance;
             }
@@ -171,23 +172,23 @@ namespace SqlCipher4Unity3D
 
         public new ModelBase GetSelf() => self;
 
-        public static void Setup(ModelBase config, T target)
+        public static void Setup(ModelBase asset, T table)
         {
-            target.isSetup = true;
+            asset.isSetup = true;
             typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => !x.IsDefined(typeof(IgnoreAttribute), true)).ForEach(x => {
                     object value = null;
 
-                    if (Regex.IsMatch(x.Name, @"^[A-Z]")) {
+                    if (!Regex.IsMatch(x.Name, @"^[A-Z]")) {
                         switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
-                                value = propertyInfo.GetValue(config, null) ??
-                                    Activator.CreateInstance(propertyInfo.PropertyType);
-                                propertyInfo.SetValue(target, value);
+                                value = propertyInfo.GetValue(table, null) ??
+                                  (propertyInfo.PropertyType == typeof(string) ? "":Activator.CreateInstance(propertyInfo.PropertyType))  ;
+                                propertyInfo.SetValue(asset, value);
                                 break;
                             case FieldInfo fieldInfo:
-                                value = fieldInfo.GetValue(config) ?? Activator.CreateInstance(fieldInfo.FieldType);
-                                fieldInfo.SetValue(target, value);
+                                value = fieldInfo.GetValue(table) ?? (fieldInfo.FieldType == typeof(string) ? "" :  Activator.CreateInstance(fieldInfo.FieldType));
+                                fieldInfo.SetValue(asset, value);
                                 break;
                         }
                     }
@@ -195,20 +196,20 @@ namespace SqlCipher4Unity3D
                         switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                                 //Debug.Log($"check property: {x.Name}");
-                                value = propertyInfo.GetValue(target, null);
+                                value = propertyInfo.GetValue(asset, null);
                                 break;
                             case FieldInfo fieldInfo:
                                 // Debug.Log($"check field: {x.Name}");
-                                value = fieldInfo.GetValue(target);
+                                value = fieldInfo.GetValue(asset);
                                 break;
                         }
                     }
 
                     void ToSave(object t)
                     {
-                        if (target.isSetup) return;
+                        if (asset.isSetup) return;
                         //Debug.Log($"Save {typeof(T).FullName} => {x.Name} = {t}");
-                        target.Save();
+                        asset.Save();
                     }
 
                     switch (value) {
@@ -226,7 +227,7 @@ namespace SqlCipher4Unity3D
                             break;
                     }
                 });
-            target.isSetup = false;
+            asset.isSetup = false;
         }
 
         [ButtonGroup("2")]

@@ -13950,14 +13950,14 @@ MonoBehaviour:
       Data: 0|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: App.Models.User, Helpers
+      Data: Models.User, Helpers
     - Name: 
       Entry: 8
       Data: 
   Value:
     value: 1200
   Id: 1
-  model: {fileID: 11400000, guid: 7c841e9ae267541bb8079de05e409402, type: 2}
+  model: {fileID: 11400000, guid: 62138ce5dfaf8447cba7a5ced5edf6b3, type: 2}
   fieldName: coin
 --- !u!1 &987151459
 GameObject:
@@ -38123,7 +38123,7 @@ MonoBehaviour:
       Data: 0|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: App.Models.User, Helpers
+      Data: Models.User, Helpers
     - Name: 
       Entry: 8
       Data: 
@@ -38429,14 +38429,14 @@ MonoBehaviour:
       Data: 0|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: App.Models.User, Helpers
+      Data: Models.User, Helpers
     - Name: 
       Entry: 8
       Data: 
   Value:
     value: 1200
   Id: 1
-  model: {fileID: 11400000, guid: 7c841e9ae267541bb8079de05e409402, type: 2}
+  model: {fileID: 11400000, guid: 62138ce5dfaf8447cba7a5ced5edf6b3, type: 2}
   fieldName: coin
 --- !u!224 &4460641315881561360 stripped
 RectTransform:
