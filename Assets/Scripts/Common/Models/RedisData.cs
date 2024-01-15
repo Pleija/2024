@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using SqlCipher4Unity3D;
 using StackExchange.Redis;
+using UnityEditor;
 using UnityEngine;
 
 namespace Models
@@ -17,7 +18,7 @@ namespace Models
 
         public void Data(Action<IDatabase> fn)
         {
-            Redis(t => fn.Invoke(t.GetDatabase()));
+            Redis(t => fn.Invoke(m_Database ??= t.GetDatabase()));
             //m_Database ??= redis?.GetDatabase();
         }
 
@@ -67,8 +68,11 @@ namespace Models
 
         public void Redis(Action<ConnectionMultiplexer> fn)
         {
+            m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+            fn.Invoke(m_Redis);
+
             //if (m_Redis == null || !m_Redis.IsConnected) {
-            GetRedis(fn);
+            //GetRedis(fn);
             //     return;
             // }
             // fn.Invoke(m_Redis);
@@ -110,11 +114,6 @@ namespace Models
             // }
         }
 
-        private void OnEnable()
-        {
-            //Test();
-        }
-
         private void OnDestroy()
         {
             m_Redis?.Close();
@@ -124,6 +123,12 @@ namespace Models
 
         public void Test(Action fn = null)
         {
+#if UNITY_EDITOR
+            if (EditorApplication.isCompiling || EditorApplication.isUpdating) {
+                Debug.Log("editor is busy");
+                return;
+            }
+#endif
             // 设置Key和对应的String值
             Data(t => t.StringSet(testKey, testValue));
 

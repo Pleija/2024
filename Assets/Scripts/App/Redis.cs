@@ -16,6 +16,9 @@ namespace App
             if (Application.isEditor || Debug.isDebugBuild) {
                 RedisData.self.Test(() => OnUpdate.Invoke());
             }
+            else {
+                Debug.Log("redis is disabled in production");
+            }
         }
     }
 }
