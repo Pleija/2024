@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Common;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -40,7 +39,8 @@ namespace App
             if (Res.Exists("StartContent") is { } loc) {
                 Debug.Log("StartContent Found");
                 Addressables.InstantiateAsync("StartContent").Completed += h => {
-                    if (h.Status == AsyncOperationStatus.Succeeded) return;
+                    if (h.Status == AsyncOperationStatus.Succeeded && h.Result != null &&
+                        h.Result.GetComponentInChildren<Loading>() != null) return;
                     Debug.Log("Load DefaultLoading");
                     Instantiate(Resources.Load("DefaultLoading"));
                 };

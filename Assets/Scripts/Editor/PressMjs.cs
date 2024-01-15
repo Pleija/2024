@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using App;
+using Models;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class PressMjs : AssetPostprocessor
 
         if (files.Any()) {
             Debug.Log($"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
-            RedisData.self.Redis(t => t.GetSubscriber().Publish("js", files.Length));
+            RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"update js file(s): {files.Length}"));
         }
     }
 }

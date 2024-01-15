@@ -6,6 +6,7 @@ using Api;
 using App.Models;
 using HashidsNet;
 using MessagePack;
+using Models;
 using Network;
 using NUnit.Framework;
 using UnityEditor;

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using App.Models;
-using Common;
+using Models;
 using TMPro;
 using UniRx;
 using UnityEngine.UI;

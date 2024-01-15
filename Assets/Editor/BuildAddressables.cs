@@ -180,6 +180,7 @@ namespace Editors
             Debug.Log($"Version: {PlayerSettings.bundleVersion} => {Application.version}");
             //BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
             BuildPipeline.BuildPlayer(options);
+
             //m_FirstBuild = false;
         }
     }

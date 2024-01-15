@@ -6,8 +6,8 @@ using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 
-namespace Common
-{
+// namespace Common
+// {
     public static class Res
     {
         // public static string[] Keys => ResourceLocators.SelectMany(x => x.Keys).Cast<string>()
@@ -53,4 +53,4 @@ namespace Common
             return result.Any() ? result : null;
         }
     }
-}
+// }

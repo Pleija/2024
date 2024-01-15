@@ -13950,7 +13950,7 @@ MonoBehaviour:
       Data: 0|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: App.Models.User, Assembly-CSharp
+      Data: App.Models.User, Helpers
     - Name: 
       Entry: 8
       Data: 
@@ -22610,7 +22610,7 @@ PrefabInstance:
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
       propertyPath: m_text
-      value: PLAY
+      value: MAP
       objectReference: {fileID: 0}
     - target: {fileID: 1647260523599198544, guid: 236e7c4c9e4c948519b860b9ebd3f929,
         type: 3}
@@ -25448,6 +25448,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  OnUpdate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1710657383
 GameObject:
   m_ObjectHideFlags: 0
@@ -38120,7 +38123,7 @@ MonoBehaviour:
       Data: 0|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: App.Models.User, Assembly-CSharp
+      Data: App.Models.User, Helpers
     - Name: 
       Entry: 8
       Data: 
@@ -38426,7 +38429,7 @@ MonoBehaviour:
       Data: 0|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: App.Models.User, Assembly-CSharp
+      Data: App.Models.User, Helpers
     - Name: 
       Entry: 8
       Data: 

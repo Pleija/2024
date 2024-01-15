@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using BetterEvents;
-using Common;
 using Puerts;
 using PuertsStaticWrap;
 using Sirenix.Serialization;
@@ -63,9 +62,19 @@ namespace App
                     await Addressables.UpdateCatalogs(handle.Result).Task;
                 Addressables.Release(handle);
             }
-            if (LoadModels)
-                await ModelBase.LoadAll();
-            if (IsGetAssets) await GetAssets();
+            await Reload();
+            OnStart1?.Invoke();
+            OnStart2.Invoke();
+            //SceneManager.LoadScene("Start");
+        }
+
+        public async Task Reload(bool force = false)
+        {
+            if (force) JsEnv._env.Dispose();
+            //if (LoadModels)
+            await ModelBase.LoadAll();
+            if (IsGetAssets)
+                await GetAssets();
             Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
             JsEnv.self.AutoUsing();
             JsEnv.self.UsingAction<Vector2>();
@@ -75,9 +84,6 @@ namespace App
             JsEnv.self.UsingAction<float>();
             JsEnv.self.UsingAction<int>();
             JsEnv.self.ExecuteModule("bootstrap.mjs");
-            OnStart1?.Invoke();
-            OnStart2.Invoke();
-            //SceneManager.LoadScene("Start");
         }
 
         public void Update()

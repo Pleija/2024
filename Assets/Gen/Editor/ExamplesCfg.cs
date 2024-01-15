@@ -10,7 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using App;
-using Common;
 using Runner;
 using SqlCipher4Unity3D;
 #if UNITY_EDITOR

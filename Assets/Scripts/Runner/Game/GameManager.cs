@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common;
+using System.Linq;
+using App;
 using Runner.Consumable;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Runner.Game
 {
@@ -37,11 +40,25 @@ namespace Runner.Game
         public UnityEvent OnEnableEvent;
         public UnityEvent OnStartEvent;
 
-        public override void OnEnable()
+        public override async void OnEnable()
         {
             base.OnEnable();
             s_Instance = this;
             OnEnableEvent.Invoke();
+
+            // if (Debug.isDebugBuild) {
+            //     var handle = Addressables.CheckForCatalogUpdates(false);
+            //     await handle.Task;
+            //
+            //     if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.Any()) {
+            //         Debug.Log("Catalog updating");
+            //         await Addressables.UpdateCatalogs(handle.Result).Task;
+            //         await Addressables.DownloadDependenciesAsync("Main").Task;
+            //         await JsMain.self.Reload(true);
+            //         Addressables.LoadSceneAsync("Main");
+            //     }
+            //     Addressables.Release(handle);
+            // }
         }
 
         private void Start()

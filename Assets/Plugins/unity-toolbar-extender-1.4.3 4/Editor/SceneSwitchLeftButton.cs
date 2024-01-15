@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Models;
 using MS.Shell.Editor;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -215,6 +216,8 @@ namespace UnityToolbarExtender
                 UpdateBuild();
                 EditorShell.GitUpdate();
                 GUIUtility.ExitGUI();
+                RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"resource updated"));
+
             }
 
             if (GUILayout.Button(new GUIContent(buttonText, $"{tooltipText}: Clean & Build Builds/{appName} "),

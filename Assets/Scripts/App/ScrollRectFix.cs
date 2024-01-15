@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Common;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;

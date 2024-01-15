@@ -2,6 +2,12 @@ import {StateFsm} from "Common/StateFsm.mjs";
 import {GameStart} from "Main/Game/GameStart.mjs";
 import LoadoutState = CS.Runner.Game.LoadoutState;
 import GameManager = CS.Runner.Game.GameManager;
+import Debug = CS.UnityEngine.Debug;
+import Addressables = CS.UnityEngine.AddressableAssets.Addressables;
+import AsyncOperationStatus = CS.UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus;
+import $promise = puer.$promise;
+import JsMain = CS.App.JsMain;
+import Application = CS.UnityEngine.Application;
 
 export class Game extends StateFsm {
     GameStart: GameStart;
@@ -12,6 +18,21 @@ export class Game extends StateFsm {
             // console.log("test event hook");
             t.SetActive(false);
             //$LoadingCharPos.unityChan.gameObject.SetActive(true);
+        });
+        LoadoutState.self.OnEnter.AddListener(async () => {
+            if (Debug.isDebugBuild || Application.isEditor) {
+                const handle = Addressables.CheckForCatalogUpdates(false);
+                await $promise(handle.Task);
+
+                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.Count > 0) {
+                    Debug.Log("Catalog updating");
+                    await $promise(Addressables.UpdateCatalogs(handle.Result).Task);
+                    await $promise(Addressables.DownloadDependenciesAsync("Main").Task);
+                    await $promise(JsMain.self.Reload(true));
+                    Addressables.LoadSceneAsync("Main");
+                }
+                //Addressables.Release(handle as any);
+            }
         });
         this.agent.Get(GameManager).DoStart();
 
