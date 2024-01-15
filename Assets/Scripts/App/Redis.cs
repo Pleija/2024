@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace App
 {
-    [ExecuteAlways]
+    //[ExecuteAlways]
     public class Redis : Singleton<Redis>
     {
         public UnityEvent OnUpdate;
@@ -13,8 +13,14 @@ namespace App
         [Button]
         public void Start()
         {
+
             if (Application.isEditor || Debug.isDebugBuild) {
-                RedisData.self.Test(() => OnUpdate.Invoke());
+                RedisData.self.Test(() => {
+                    if (Application.isPlaying) {
+                        Loading.Restart();
+                        //OnUpdate.Invoke();
+                    }
+                });
             }
             else {
                 Debug.Log("redis is disabled in production");

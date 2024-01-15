@@ -29,11 +29,13 @@ export class Game extends StateFsm {
                 await $promise(handle.Task);
 
                 if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result?.Count > 0) {
+                    console.log("restart app"); 
                     Loading.Restart();
                 }
             }
         });
         (Redis.self as Redis).OnUpdate.AddListener(()=> {
+            console.log("restart app");
             Loading.Restart();
         });
         this.agent.Get(GameManager).DoStart();

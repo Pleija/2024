@@ -24,29 +24,29 @@ public class Singleton<T> : Agent<T> where T : Singleton<T>
             }
             else {
                 go.hideFlags = HideFlags.HideAndDontSave;
-#if UNITY_EDITOR
-                EditorApplication.update -= EditorUpdate;
-                EditorApplication.update += EditorUpdate;
-#endif
+// #if UNITY_EDITOR
+//                 EditorApplication.update -= EditorUpdate;
+//                 EditorApplication.update += EditorUpdate;
+// #endif
             }
             return m_Instance;
         }
         set => m_Instance = value;
     }
 
-    public static void EditorUpdate()
-    {
-        if (m_Instance) {
-            m_Instance.Update();
-        }
-        else {
-#if UNITY_EDITOR
-            EditorApplication.update -= EditorUpdate;
-#endif
-        }
-    }
+//     public static void EditorUpdate()
+//     {
+//         if (m_Instance) {
+//             //m_Instance.Update();
+//         }
+//         else {
+// #if UNITY_EDITOR
+//             EditorApplication.update -= EditorUpdate;
+// #endif
+//         }
+//     }
 
-    public virtual void Update() { }
+    // public virtual void Update() { }
 
     public override void OnEnable()
     {

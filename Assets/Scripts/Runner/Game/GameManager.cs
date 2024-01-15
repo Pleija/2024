@@ -40,7 +40,7 @@ namespace Runner.Game
         public UnityEvent OnEnableEvent;
         public UnityEvent OnStartEvent;
 
-        public override async void OnEnable()
+        public override  void OnEnable()
         {
             base.OnEnable();
             s_Instance = this;
@@ -93,7 +93,7 @@ namespace Runner.Game
             PushState(states[0].GetName());
         }
 
-        public void Update()
+        public  void Update()
         {
             if (m_StateStack.Count > 0) m_StateStack[m_StateStack.Count - 1].Tick();
         }

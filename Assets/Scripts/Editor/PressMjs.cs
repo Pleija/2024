@@ -9,6 +9,7 @@ using UnityEngine;
 public class PressMjs : AssetPostprocessor
 {
     private static bool ready;
+    private static string[] files;
 
     [InitializeOnLoadMethod]
     static void Setup()
@@ -19,15 +20,21 @@ public class PressMjs : AssetPostprocessor
     public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
         string[] movedFromAssetPaths)
     {
-        if ( EditorApplication.isCompiling) return;
-        var files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist")).ToArray();
+        if (EditorApplication.isCompiling) return;
+        files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist")).ToArray();
+
+        if (files.Any()) {
+            EditorApplication.delayCall += Push;
+        }
+    }
+
+    static void Push()
+    {
+        EditorApplication.delayCall -= Push;
         files.ForEach(path => {
             RedisData.self.Data(t => t.StringSet(path, File.ReadAllText(path)));
         });
-
-        if (files.Any()) {
-            Debug.Log($"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
-            RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"update js file(s): {files.Length}"));
-        }
+        Debug.Log($"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
+        RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"update js file(s): {files.Length}"));
     }
 }

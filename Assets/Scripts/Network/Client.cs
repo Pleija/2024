@@ -101,9 +101,8 @@ namespace Network
             if (autoStart) Connect();
         }
 
-        public override void Update()
+        public  void Update()
         {
-            base.Update();
             //
             // if(m_Hub is { State: ConnectionStates.Connected }) {
             //     HTTPManager.OnUpdate();
