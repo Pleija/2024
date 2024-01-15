@@ -105,6 +105,19 @@ namespace App
             }
         }
 
+        public static void Restart()
+        {
+            FindObjectsOfType<GameObject>(true).ForEach(t => {
+                try {
+                    Destroy(t);
+                }
+                catch (Exception) {
+                    //
+                }
+            });
+            SceneManager.LoadScene(0);
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="old"></param>

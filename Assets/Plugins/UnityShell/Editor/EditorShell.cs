@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -88,7 +89,7 @@ namespace MS.Shell.Editor
             }
         }
 
-        public static void GitUpdate(string comment = "Editor Update", bool exitGui = false)
+        public static void GitUpdate(Action onExit = null, string comment = "Editor Update", bool exitGui = false)
         {
             var operation = EditorShell.Execute($"art git {comment} 2>&1", new EditorShell.Options() {
                 workDirectory = "Packages/HostedData",
@@ -100,6 +101,7 @@ namespace MS.Shell.Editor
             operation.onExit += (exitCode) => {
                 EditorUtility.ClearProgressBar();
                 Debug.Log("finish");
+                onExit?.Invoke();
                 //AssetDatabase.Refresh();
                 //EditorUtility.DisplayDialog("", "finish", "ok");
             };

@@ -214,10 +214,10 @@ namespace UnityToolbarExtender
             if (GUILayout.Button(new GUIContent("Git"), buttonStyle, GUILayout.Height(btnHeight))) {
                 EditorSceneManager.SaveOpenScenes();
                 UpdateBuild();
-                EditorShell.GitUpdate();
+                EditorShell.GitUpdate(() => {
+                    RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"resource updated"));
+                });
                 GUIUtility.ExitGUI();
-                RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"resource updated"));
-
             }
 
             if (GUILayout.Button(new GUIContent(buttonText, $"{tooltipText}: Clean & Build Builds/{appName} "),

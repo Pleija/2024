@@ -68,7 +68,8 @@ namespace Models
 
         public void Redis(Action<ConnectionMultiplexer> fn)
         {
-            m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+            if (!(m_Redis is { IsConnected: true }))
+                m_Redis = ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
             fn.Invoke(m_Redis);
 
             //if (m_Redis == null || !m_Redis.IsConnected) {
