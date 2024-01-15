@@ -18,14 +18,14 @@ public class PressMjs : AssetPostprocessor
     public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
         string[] movedFromAssetPaths)
     {
-        if (!ready || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
-        var files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Asssets/Res/dist")).ToArray();
+        if ( EditorApplication.isCompiling) return;
+        var files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist")).ToArray();
         files.ForEach(path => {
             RedisData.self.Data(t => t.StringSet(path, File.ReadAllText(path)));
         });
 
         if (files.Any()) {
-            Debug.Log($"Pressed JS: {files.Length}\n{string.Join("\n", files.Select(Path.GetFileName))}");
+            Debug.Log($"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
             RedisData.self.Redis(t => t.GetSubscriber().Publish("js", files.Length));
         }
     }

@@ -258,3 +258,24 @@ MonoBehaviour:
     enable: 0
     color: {r: 0, g: 0, b: 0, a: 0}
     gameObjects: []
+  - name: FSM.ChangeCharcter
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ChangeCharacter
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.BackupCard
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []

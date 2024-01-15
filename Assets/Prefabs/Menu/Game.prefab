@@ -176,8 +176,10 @@ GameObject:
   - component: {fileID: 2871440215597031097}
   - component: {fileID: 5487062998507407405}
   - component: {fileID: 6499140031352034245}
+  - component: {fileID: 6326922386184181504}
+  - component: {fileID: 4905428977759235057}
   m_Layer: 0
-  m_Name: Button
+  m_Name: ChangeCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -287,6 +289,51 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6326922386184181504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527791671547797786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _boundGraphObjectReferences: []
+  _boundGraphSource:
+    _version: 3.29
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _firstActivation: 1
+  _enableAction: 0
+  _disableAction: 0
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 4905428977759235057}
+--- !u!114 &4905428977759235057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527791671547797786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{}}'
+  _objectReferences: []
+  _serializedVariables: []
 --- !u!1 &1030701079712149842
 GameObject:
   m_ObjectHideFlags: 0
@@ -6794,8 +6841,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 38.918518, y: -92.904}
-  m_SizeDelta: {x: 508.163, y: 114}
+  m_AnchoredPosition: {x: 99.202, y: -92.904}
+  m_SizeDelta: {x: 387.6, y: 114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4988753508170773655
 CanvasRenderer:
@@ -6819,7 +6866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9085,7 +9132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.36862746}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9622,15 +9669,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7458cb8dcbe646878be2cc1fa885bcd, type: 3}
---- !u!1 &6001095078924901753 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1617831097919865333, guid: d7458cb8dcbe646878be2cc1fa885bcd,
-    type: 3}
-  m_PrefabInstance: {fileID: 4988753506731154572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7221784225499356414 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2378871057786945650, guid: d7458cb8dcbe646878be2cc1fa885bcd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4988753506731154572}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6001095078924901753 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1617831097919865333, guid: d7458cb8dcbe646878be2cc1fa885bcd,
     type: 3}
   m_PrefabInstance: {fileID: 4988753506731154572}
   m_PrefabAsset: {fileID: 0}
@@ -10270,12 +10317,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e58b9faf30c146c3bd5a34149b92896, type: 3}
+--- !u!1 &2585553290776374388 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7411280008316006559, guid: 2e58b9faf30c146c3bd5a34149b92896,
+    type: 3}
+  m_PrefabInstance: {fileID: 4988753507897072875}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2585553290776374411 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7411280008316006496, guid: 2e58b9faf30c146c3bd5a34149b92896,
     type: 3}
   m_PrefabInstance: {fileID: 4988753507897072875}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2812239074761020780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2585553290776374388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _boundGraphObjectReferences: []
+  _boundGraphSource:
+    _version: 3.29
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _firstActivation: 1
+  _enableAction: 0
+  _disableAction: 0
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7481697860741823561}
+--- !u!114 &7481697860741823561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2585553290776374388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{}}'
+  _objectReferences: []
+  _serializedVariables: []
 --- !u!1001 &4988753508462651371
 PrefabInstance:
   m_ObjectHideFlags: 0

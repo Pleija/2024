@@ -20,7 +20,7 @@ namespace Editors
                 !t.IsGenericType && !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
         //.ToHashSet();
 
-        [MenuItem("Debug/Create Scriptable Object...", priority = -10000)]
+        [MenuItem("Tools/Models Manager", priority = -10000)]
         private static void ShowDialog()
         {
             var path = "Assets";

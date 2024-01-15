@@ -21,6 +21,11 @@ declare global {
     import {HpSlider} from "Game/HpSlider.mjs";
     import {LoadingCharPos} from "Main/LoadingCharPos.mjs";
     import {ChangeCharacterBtn} from "HeroesPage/ChangeCharacterBtn.mjs";
+    import { ChangeCharcter } from "Game/ChangeCharcter.mjs";
+    import { ChangeCharacter } from "Game/ChangeCharacter.mjs";
+    import { BackupCard } from "Game/BackupCard.mjs";
+    declare var $BackupCard: BackupCard;
+    declare var $ChangeCharacter: ChangeCharacter;
     declare var $ChangeCharacterBtn: ChangeCharacterBtn;
     declare var $LoadingCharPos: LoadingCharPos;
     declare var $HpSlider: HpSlider;

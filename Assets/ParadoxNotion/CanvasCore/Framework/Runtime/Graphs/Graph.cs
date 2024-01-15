@@ -180,7 +180,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             //exports.ForEach(x => Debug.Log(x.GetText()));
 
             if (!ast.SourceStr.Contains(filePath)) {
-                change.InsertBefore(ast.RootNode.Children.First(), $"import \"{filePath}\";\n");
+                change.InsertAfter(ast.OfKind(SyntaxKind.ImportDeclaration).Last(), $"\nimport \"{filePath}\";\n");
                 var newSource = change.GetChangedSource(ast.SourceStr);
                 File.WriteAllText(bootstrapPath, newSource);
             }
@@ -842,8 +842,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                 return;
             }
 
-            if (primeNode == null && requiresPrimeNode) {
-                Logger.LogError("You've tried to start graph without a 'Start' node.", LogTag.GRAPH, this);
+            if (primeNode == null && requiresPrimeNode && GetType().Name != "FSM") {
+                Logger.LogError($"{GetType().Name}: You've tried to start graph without a 'Start' node.", LogTag.GRAPH, this);
                 return;
             }
 

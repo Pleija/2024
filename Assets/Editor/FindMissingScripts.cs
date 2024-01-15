@@ -1,3 +1,5 @@
+using System.Linq;
+using Sirenix.Utilities;
 using UnityEngine;
     #if UNITY_EDITOR
     using UnityEditor;
@@ -44,8 +46,29 @@ using UnityEngine;
                 UnityEngine.Object.DestroyImmediate(instance);
                 EditorUtility.DisplayProgressBar("Modify Prefab", "Please wait...", i / (float)ids.Length);
             }
+            EditorUtility.DisplayProgressBar("Modify Gameobjects", "Please wait...", 0);
+            Remove();
+
             AssetDatabase.SaveAssets();
             EditorUtility.ClearProgressBar();
+        }
+
+        //[MenuItem("GameObject/Remove Missing Scripts")]
+        public static void Remove()
+        {
+            var objs = Resources.FindObjectsOfTypeAll<GameObject>();
+            var count = 0;
+            objs.ForEach(x => {
+                var t = GameObjectUtility.RemoveMonoBehavioursWithMissingScript(x);
+
+                if (t > 0) {
+                    EditorUtility.DisplayProgressBar($"Modify Gameobjects({count})", $"Removed({t}) on {x.name} as scene {x.scene.name}", count/100f);
+                    Debug.Log($"Removed({t}) on {x.name} as scene {x.scene.name}", x);
+                }
+                count += t;
+            });
+            //int count = objs.Sum(GameObjectUtility.RemoveMonoBehavioursWithMissingScript);
+            Debug.Log($"Removed {count} missing scripts");
         }
    
         private static void RecursivelyModifyPrefabChilds(GameObject obj, ref int delCount)

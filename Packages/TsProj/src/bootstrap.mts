@@ -1,3 +1,4 @@
+import "Game/ChangeCharacter.mjs";
 import "HeroesPage/ChangeCharacterBtn.mjs";
 import "Main/LoadingCharPos.mjs";
 import "Game/HpSlider.mjs";
@@ -19,6 +20,8 @@ import "Start/StartButton.mjs";
 
 import "Common/Helpers.mjs";
 import "Common/TypeUtils.mjs";
+import "Game/BackupCard.mjs";
+
 
 
 global.protobuf = require("protobufjs");

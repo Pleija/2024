@@ -99,6 +99,7 @@ namespace NodeCanvas.StateMachines
 
         protected override void OnGraphUpdate()
         {
+            if (primeNode == null) return;
             if(enterStartStateFlag) {
                 //use a flag so that other nodes can do stuff on graph started
                 enterStartStateFlag = false;
