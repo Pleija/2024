@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using NodeCanvas.Framework;
+using Sirenix.Serialization;
+using StackExchange.Redis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +13,7 @@ namespace App
         void Hook()
         {
             var test = new object[] {
+                SerializationUtility.DeserializeValue<RedisKey>(null),
                 new Variable<Color>(),
                 new Variable<Component>(),
                 new Variable<Text>(),

@@ -1,0 +1,60 @@
+Arguments: 
+  /usr/local/Cellar/node/20.8.1/bin/node /usr/local/Cellar/yarn/1.22.19/libexec/bin/yarn.js info --json com.unity.film-internal-utilities
+
+PATH: 
+  /usr/local/opt/sqlite/bin:/usr/local/sbin:/Applications/Unity/Hub/Editor/2020.3.48f1/PlaybackEngines/AndroidPlayer/SDK/platform-tools:/Applications/Unity/Hub/Editor/2020.3.48f1/PlaybackEngines/AndroidPlayer/SDK/build-tools/30.0.2:/usr/local/bin:/usr/local/opt/php@7.4/sbin:/usr/local/opt/php@7.4/bin:/Applications/Sublime Text.app/Contents/SharedSupport/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.8.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  TypeError: Cannot convert undefined or null to object
+      at keys (<anonymous>)
+      at Object.<anonymous> (/usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:84781:59)
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:310:30)
+      at /usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:321:13
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+npm manifest: 
+  {
+  	"name": "com.unity.toonshader",
+  	"displayName":"Unity Toon Shader",
+  	"version": "0.9.6",
+  	"unity": "2020.3",
+  	"description": "Unity Toon Shader (Unity-Chan Toon Shader 3) is a toon shader for images and video that is designed to meet the needs of creators working on cel-shaded 3DCG animations.\nUnlike other pre-render toon shaders, all features can be adjusted in real time on Unity, which is the greatest feature of UTS.\n\nUTS has great power and makes a wide variety of character designs possible, from cel-shaded to light novel illustration styles.\n\nUTS has the 3 basic layers of Base Color, 1st Shade Color, and 2nd Shade Color, colors and textures can also accept a wide variety of customization options, such as High Color, Rim Light, MatCap (sphere mapping), and Emissive (light emission).The level of gradation (feather) between colors can also be adjusted in Unity in real-time.\n\nMore precisely, View documentation above.",
+  	"dependencies":
+  	{
+       "com.unity.film-internal-utilities": "0.18.4",
+  	 "com.unity.render-pipelines.core": "10.0.0"
+  	},
+          "samples": [
+          {
+           "displayName": "Legacy render pipeline",
+           "description": "Sample scenes for the legacy (built-in) pipe-lines.",
+           "path": "Samples~/Legacy"
+          },
+          {
+           "displayName": "Universal render pipeline",
+           "description": "Sample scenes for Universal render pipeline.",
+           "path": "Samples~/URP"
+          },
+          {
+           "displayName": "High definition render pipeline",
+           "description": "Sample scenes for High definition render pipeline.",
+           "path": "Samples~/HDRP"
+          }
+          ]
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

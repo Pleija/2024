@@ -7,7 +7,10 @@ using System.Net.Configuration;
 using Common;
 using IngameDebugConsole;
 using Runner;
+using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 #if UNITY_EDITOR
+using SqlCipher4Unity3D;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
@@ -17,6 +20,7 @@ using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace App
 {
@@ -25,6 +29,8 @@ namespace App
         public AssetReference nextScene;
         public AssetReference prefab;
         public AssetReference testPrefab;
+        public List<ScriptableObject> preload;
+        public List<TextAsset> scripts;
 
         //public GameObject prefabObj;
         public const string PrivacyKey = "App.Privacy";
@@ -38,6 +44,28 @@ namespace App
         public Button retryBtn;
         private static bool clicked;
         private static bool updated;
+#if UNITY_EDITOR
+        [Button]
+        public void SetupModelPreload()
+        {
+            if (preload == null) preload = new List<ScriptableObject>();
+            preload.RemoveAll(x => !x);
+            AssetDatabase.FindAssets($"t:{typeof(ModelBase).FullName}").Select(x =>
+                AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(x))).ForEach(asset => {
+                if (preload.All(t => t != asset)) {
+                    preload.Add(asset);
+                }
+            });
+            var all = AssetDatabase.FindAssets($"t:TextAsset").Select(AssetDatabase.GUIDToAssetPath)
+                .Where(t => t.EndsWith(".mjs")).ToArray();
+            //Debug.Log(AssetDatabase.LoadAssetAtPath<Object>(all.FirstOrDefault()) ?.GetType().GetNiceName());
+            scripts = all.Where(x => x.StartsWith("Assets/Res/dist/")).Select(AssetDatabase.LoadAssetAtPath<TextAsset>)
+                .ToList();
+            Debug.Log($"all: {all.Count()} scripts: {scripts.Count}");
+            //var t = AssetDatabase.LoadAssetAtPath<Object>("Assets/Res/dist/bootstrap.mjs");
+            //Debug.Log(t.GetType().GetNiceName());
+        }
+#endif
 
         public bool isAgreed {
             get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) && PlayerPrefs.HasKey(PrivacyKey);
@@ -215,7 +243,7 @@ namespace App
                     }
                 }
                 Debug.Log($"items({changes.Count}):\n" + string.Join("\n", changes));
-                Debug.Log($"total size: {p3.Result/1024f/1024f:f3}MB");
+                Debug.Log($"total size: {p3.Result / 1024f / 1024f:f3}MB");
                 var p4 = Res.DownloadAll();
                 var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
                 Debug.Log($"download total size: {total / 1024 / 1024:f2}Mb");

@@ -16,12 +16,12 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 09000000140000000d000000
-  lastScan: 638408844891176570
+  lastScan: 638408942365946650
   supportSerializedTypes:
-  - TypeName: UniRx.IntReactiveProperty, UniRx
+  - TypeName: SqlCipher4Unity3D.Model, SqlCipher4Unity3D
     IsCustom: 1
     Emit: 1
-  - TypeName: SqlCipher4Unity3D.Model, SqlCipher4Unity3D
+  - TypeName: UniRx.IntReactiveProperty, UniRx
     IsCustom: 1
     Emit: 1
   - TypeName: Runner.PlayerData, Assembly-CSharp
@@ -104,9 +104,6 @@ MonoBehaviour:
     IsCustom: 0
     Emit: 1
   - TypeName: UnityRoyale.Placeable+Faction, Assembly-CSharp
-    IsCustom: 0
-    Emit: 1
-  - TypeName: StackExchange.Redis.RedisKey, StackExchange.Redis
     IsCustom: 0
     Emit: 1
   - TypeName: System.String, mscorlib

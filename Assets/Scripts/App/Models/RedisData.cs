@@ -1,7 +1,10 @@
+using System;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using SqlCipher4Unity3D;
+using SQLite.Attributes;
 using StackExchange.Redis;
 using UnityEngine;
 
@@ -10,14 +13,20 @@ namespace App
     public class RedisData : DataModel<RedisData>
     {
         private IDatabase m_Database;
-        public IDatabase data => m_Database ??= redis?.GetDatabase();
+
+        public void Data(Action<IDatabase> fn)
+        {
+            Redis(t => fn.Invoke(t.GetDatabase()));
+            //m_Database ??= redis?.GetDatabase();
+        }
+
         private ConnectionMultiplexer m_Redis;
         public string host = "192.168.1.65";
         public string password = "admin";
         public enum AddressType { IPv4, IPv6 }
         public string testKey = "test:redis";
         public string testValue = "123";
-        public RedisKey someKey;
+        private RedisKey someKey;
 
         public static string GetIP(AddressType type = AddressType.IPv4)
         {
@@ -55,10 +64,34 @@ namespace App
             return output;
         }
 
-        public ConnectionMultiplexer redis {
-            get {
-                // if (isQuitting) return m_Redis;
-                return m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+        public void Redis(Action<ConnectionMultiplexer> fn)
+        {
+            if (m_Redis == null || !m_Redis.IsConnected) {
+                GetRedis(fn);
+                return;
+            }
+            fn.Invoke(m_Redis);
+
+            // get {
+            //     // if (isQuitting) return m_Redis;
+            //     //ConnectionMultiplexer.ConnectAsync("")
+            //     if (m_Redis == null) {
+            //         GetRedis();
+            //     }
+            //     return m_Redis;
+            //     //return m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+            // }
+        }
+
+        async UniTask GetRedis(Action<ConnectionMultiplexer> fn)
+        {
+            m_Redis = await ConnectionMultiplexer.ConnectAsync($"{self.host},password={self.password}");
+
+            if (m_Redis.IsConnected) {
+                fn.Invoke(m_Redis);
+            }
+            else {
+                Debug.Log("Redis connect failed");
             }
         }
 
@@ -77,21 +110,21 @@ namespace App
         public void Test()
         {
             // 设置Key和对应的String值
-            data.StringSet(testKey, testValue);
+            Data(t => t.StringSet(testKey, testValue));
 
             // 删除Key和对应的值
-            data.KeyDelete(testKey);
+            Data(t => t.KeyDelete(testKey));
 
             // 生成随机Key
-            someKey = data.KeyRandom();
-            data.StringSet(testKey, testValue);
-            data.StringGet(testKey); // 将输出123
-            data.StringIncrement(testKey);
-            Debug.Log($"redis {testKey} => " + data.StringGet(testKey));
+            Data(t => someKey = t.KeyRandom());
+            Data(t => t.StringSet(testKey, testValue));
+            Data(t => t.StringGet(testKey)); // 将输出123
+            Data(t => t.StringIncrement(testKey));
+            Data(t => Debug.Log($"redis {testKey} => " + t.StringGet(testKey)));
             // 将输出124
-            redis.GetSubscriber().Subscribe("js", (channel, message) => {
+            Redis(t => t.GetSubscriber().Subscribe("js", (channel, message) => {
                 Debug.Log((string)message);
-            });
+            }));
         }
 
         [Button]

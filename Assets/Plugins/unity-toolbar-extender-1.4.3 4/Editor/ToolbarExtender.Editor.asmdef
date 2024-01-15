@@ -2,7 +2,8 @@
     "name": "ToolbarExtender.Editor",
     "rootNamespace": "UnityToolbarExtender",
     "references": [
-        "Unity.Addressables.Editor"
+        "Unity.Addressables.Editor",
+        "MS.Shell.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -16,7 +16,7 @@ namespace Editors
     {
         private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(AssemblyUtilities
             .GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
-                t.IsClass && !t.IsAbstract && typeof(Model).IsAssignableFrom(t) && t != typeof(Model) &&
+                t.IsClass && !t.IsAbstract && typeof(ModelBase).IsAssignableFrom(t) && t != typeof(ModelBase) &&
                 !t.IsGenericType && !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
         //.ToHashSet();
 

@@ -27,9 +27,9 @@ namespace SqlCipher4Unity3D
 {
     [ShowOdinSerializedPropertiesInInspector]
     [System.Serializable, Preserve]
-    public class Model : ScriptableObject, ISerializationCallbackReceiver
+    public class ModelBase : ScriptableObject, ISerializationCallbackReceiver
     {
-        public static readonly Dictionary<Type, Model> Defaults = new Dictionary<Type, Model>();
+        public static readonly Dictionary<Type, ModelBase> Defaults = new Dictionary<Type, ModelBase>();
 
         public static string Md5(string observedText)
         {
@@ -56,11 +56,11 @@ namespace SqlCipher4Unity3D
         {
             var types = new List<string>();
 
-            foreach (var x in Res.Exists<Model>()) {
+            foreach (var x in Res.Exists<ModelBase>()) {
                 // await Addressables.DownloadDependenciesAsync(x).Task;
                 if (Defaults.ContainsKey(x.ResourceType)) continue;
                 types.Add($"{x.ResourceType.FullName} => {x.PrimaryKey}");
-                Defaults[x.ResourceType] = await Addressables.LoadAssetAsync<Model>(x).Task;
+                Defaults[x.ResourceType] = await Addressables.LoadAssetAsync<ModelBase>(x).Task;
             }
             Debug.Log($"all models: {string.Join(", ", types)}");
         }
@@ -85,9 +85,9 @@ namespace SqlCipher4Unity3D
         [FoldoutGroup("Default")]
         public new HideFlags hideFlags { get; set; }
 
-        public Model GetSelf() => null;
+        public ModelBase GetSelf() => null;
 
-        public Model Save()
+        public ModelBase Save()
         {
             conn.Save(this);
             return this;
@@ -111,7 +111,7 @@ namespace SqlCipher4Unity3D
 
     //public class DataModelSample : DataModel<DataModelSample> { }
 
-    public class DataModel<T> : Model where T : DataModel<T>
+    public class DataModel<T> : ModelBase where T : DataModel<T>
     {
         private static T m_Instance;
 
@@ -170,9 +170,9 @@ namespace SqlCipher4Unity3D
             }
         }
 
-        public new Model GetSelf() => self;
+        public new ModelBase GetSelf() => self;
 
-        public static void Setup(Model config, T target)
+        public static void Setup(ModelBase config, T target)
         {
             target.isSetup = true;
             typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)

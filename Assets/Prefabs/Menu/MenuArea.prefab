@@ -1415,7 +1415,6 @@ GameObject:
   - component: {fileID: 8487628546242043435}
   - component: {fileID: 8487628546242043439}
   - component: {fileID: 8487628546242043438}
-  - component: {fileID: 8487628546242043433}
   - component: {fileID: 8487628546242043432}
   m_Layer: 5
   m_Name: Image
@@ -1483,26 +1482,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8487628546242043433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8487628546242043434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 385b7d1277b6c4007a84c065696e0f8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
-  m_DownSamplingRate: 1
-  m_Softness: 1
-  m_Alpha: 1
-  m_IgnoreParent: 0
-  m_PartOfParent: 0
-  m_IgnoreSelfGraphic: 0
-  m_IgnoreSelfStencil: 0
 --- !u!114 &8487628546242043432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10637,6 +10616,9 @@ MonoBehaviour:
   masterSFXSlider: {fileID: 8487628546660508747}
   loadoutState: {fileID: 0}
   confirmationPopup: {fileID: 8487628546780459709}
+  m_MasterVolume: 0
+  m_MusicVolume: 0
+  m_MasterSFXVolume: 0
 --- !u!1 &8487628546769850252
 GameObject:
   m_ObjectHideFlags: 0
@@ -10999,6 +10981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37c4b6ff32586945a6a6fd668bcf32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LoadoutState: {fileID: 0}
 --- !u!1 &8487628546800199440
 GameObject:
   m_ObjectHideFlags: 0
@@ -41454,6 +41437,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011972273750, guid: a53fe2875371488408daf0df7d69a981,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 114000011972273750, guid: a53fe2875371488408daf0df7d69a981,
+        type: 3}
     - target: {fileID: 114000011972273750, guid: a53fe2875371488408daf0df7d69a981,
         type: 3}
       propertyPath: missionEntryPrefab.m_AssetGUID

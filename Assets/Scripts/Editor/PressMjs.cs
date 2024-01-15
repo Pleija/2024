@@ -21,12 +21,12 @@ public class PressMjs : AssetPostprocessor
         if (!ready || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
         var files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Asssets/Res/dist")).ToArray();
         files.ForEach(path => {
-            RedisData.self.data.StringSet(path, File.ReadAllText(path));
+            RedisData.self.Data(t => t.StringSet(path, File.ReadAllText(path)));
         });
 
         if (files.Any()) {
             Debug.Log($"Pressed JS: {files.Length}\n{string.Join("\n", files.Select(Path.GetFileName))}");
-            RedisData.self.redis.GetSubscriber().Publish("js", files.Length);
+            RedisData.self.Redis(t => t.GetSubscriber().Publish("js", files.Length));
         }
     }
 }

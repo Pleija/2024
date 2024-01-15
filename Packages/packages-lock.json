@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.coffee.softmask-for-ugui": {
-      "version": "file:SoftMaskForUGUI-1.0.2",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.tencent.puerts.core": {
       "version": "file:Puerts2.0.4",
       "depth": 0,
@@ -70,14 +64,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.film-internal-utilities": {
-      "version": "0.18.4-preview",
-      "depth": 1,
-      "source": "registry",
+      "version": "file:com.unity.film-internal-utilities@0.18.4-preview",
+      "depth": 0,
+      "source": "embedded",
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0",
         "com.unity.timeline": "1.2.18"
-      },
-      "url": "https://packages.unity.com"
+      }
     },
     "com.unity.ide.rider": {
       "version": "3.0.27",
@@ -238,7 +231,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.film-internal-utilities": "0.18.4-preview",
+        "com.unity.film-internal-utilities": "1.18.4",
         "com.unity.render-pipelines.core": "10.0.0"
       }
     },

@@ -12,7 +12,7 @@ namespace App.Models
         [InitializeOnLoadMethod]
         public static void Gen()
         {
-            typeof(Game).Assembly.GetExportedTypes().Where(t => typeof(Model).IsAssignableFrom(t)).ForEach(type => {
+            typeof(Game).Assembly.GetExportedTypes().Where(t => typeof(ModelBase).IsAssignableFrom(t)).ForEach(type => {
                 //Debug.Log(type.FullName);
                 type.GetProperty("self", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)!
                     .GetValue(null, null);

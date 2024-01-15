@@ -23,7 +23,7 @@ namespace App
         // [ReadOnly]
         // public T value;
         public int Id = 1;
-        public Model model;
+        public ModelBase model;
         public Func<object, object> OnChange;
 
         [ValueDropdown(nameof(ListTypes))]
@@ -33,7 +33,7 @@ namespace App
         public string fieldName;
 
         private IEnumerable<Type> ListTypes =>
-            typeof(DataAgent<T>).Assembly.ExportedTypes.Where(x => typeof(Model).IsAssignableFrom(x));
+            typeof(DataAgent<T>).Assembly.ExportedTypes.Where(x => typeof(ModelBase).IsAssignableFrom(x));
 
         private IEnumerable<string> ListNames => type == null ? new List<string>() : type
             .GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is PropertyInfo || x is FieldInfo)
@@ -47,7 +47,7 @@ namespace App
             if (!model)
                 model = type.GetProperty("self",
                         BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
-                    ?.GetValue(null, null) as Model;
+                    ?.GetValue(null, null) as ModelBase;
             Assert.IsNotNull(model, $"model: {type.FullName}.self == null");
         }
 

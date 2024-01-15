@@ -64,7 +64,7 @@ namespace App
                 Addressables.Release(handle);
             }
             if (LoadModels)
-                await Model.LoadAll();
+                await ModelBase.LoadAll();
             if (IsGetAssets) await GetAssets();
             Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
             JsEnv.self.AutoUsing();

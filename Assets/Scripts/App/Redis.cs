@@ -1,15 +1,17 @@
 
 using Common;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace App
 {
-    //[ExecuteAlways]
+    [ExecuteAlways]
     public class Redis : Singleton<Redis>
     {
+        [Button]
         public void Start()
         {
-            RedisData.self.Test();
+           if(Application.isEditor || Debug.isDebugBuild) RedisData.self.Test();
         }
     }
 }

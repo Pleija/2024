@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using MS.Shell.Editor;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
@@ -30,10 +31,10 @@ namespace UnityToolbarExtender
 
         public static string PreExport()
         {
-            if(newBuild) {
+            if (newBuild) {
                 UnityEngine.Debug.Log("BuildAddressablesProcessor.PreExport start");
-                AddressableAssetSettings.CleanPlayerContent(AddressableAssetSettingsDefaultObject
-                    .Settings.ActivePlayerDataBuilder);
+                AddressableAssetSettings.CleanPlayerContent(AddressableAssetSettingsDefaultObject.Settings
+                    .ActivePlayerDataBuilder);
                 //AddressableAssetSettings.BuildPlayerContent();
                 AddressableAssetSettings.BuildPlayerContent(out var rst);
                 UnityEngine.Debug.Log("BuildAddressablesProcessor.PreExport done");
@@ -47,7 +48,7 @@ namespace UnityToolbarExtender
         {
             string contentStateDataPath = ContentUpdateScript.GetContentStateDataPath(false);
 
-            if(!File.Exists(contentStateDataPath)) {
+            if (!File.Exists(contentStateDataPath)) {
                 throw new Exception("Previous Content State Data missing");
             }
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -61,8 +62,7 @@ namespace UnityToolbarExtender
             EditorSceneManager.SaveOpenScenes();
             //SceneHelper.StartScene("Assets/ToolbarExtender/Example/Scenes/Scene1.unity");
             var options = new BuildPlayerOptions {
-                scenes = EditorBuildSettings.scenes.Where(x => x.enabled).Select(x => x.path)
-                    .ToArray(),
+                scenes = EditorBuildSettings.scenes.Where(x => x.enabled).Select(x => x.path).ToArray(),
                 locationPathName = isWin ? $"Builds/Win64/{Application.productName}.exe" :
                     isAndroid ? $"Builds/test.apk" : "Builds/test.app",
                 target = isWin ? BuildTarget.StandaloneWindows64 :
@@ -73,7 +73,7 @@ namespace UnityToolbarExtender
             };
             var buildReport = BuildPipeline.BuildPlayer(options);
 
-            if(buildReport.summary.result == BuildResult.Succeeded) {
+            if (buildReport.summary.result == BuildResult.Succeeded) {
                 Run();
                 // Process setup = new Process();
                 //
@@ -101,7 +101,7 @@ namespace UnityToolbarExtender
                 //Application.OpenURL("file://"+Directory.GetCurrentDirectory()+ "/Builds/test.app/Contents/MacOS/剑雪冰壶");
             }
             else {
-                if(EditorUtility.DisplayDialog("Build 失败, 重新生成?", "Build 失败, 重新生成?", "确定", "取消")) {
+                if (EditorUtility.DisplayDialog("Build 失败, 重新生成?", "Build 失败, 重新生成?", "确定", "取消")) {
                     BuildOSX();
                 }
             }
@@ -140,7 +140,7 @@ namespace UnityToolbarExtender
         {
             Process setup = new Process();
 
-            if(!isAndroid) {
+            if (!isAndroid) {
                 setup.StartInfo.FileName = $"{Directory.GetCurrentDirectory()}/Builds/{appName}";
                 setup.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
                 setup.Start();
@@ -161,8 +161,7 @@ namespace UnityToolbarExtender
                 string strOutput = setup.StandardOutput.ReadToEnd();
                 setup.WaitForExit();
                 UnityEngine.Debug.Log(strOutput);
-                proc.Arguments =
-                    $"shell am start -n {Application.identifier}/com.unity3d.player.UnityPlayerActivity";
+                proc.Arguments = $"shell am start -n {Application.identifier}/com.unity3d.player.UnityPlayerActivity";
                 Debug.Log($"{setup.StartInfo.FileName} {setup.StartInfo.Arguments}");
                 setup.Start();
                 strOutput = setup.StandardOutput.ReadToEnd();
@@ -194,46 +193,51 @@ namespace UnityToolbarExtender
             GUILayout.BeginVertical();
             GUILayout.Space(3);
             GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
             var bk = GUI.backgroundColor;
-            GUI.backgroundColor = ColorUtility.TryParseHtmlString("#bebebe", out var ret) ? ret
-                : Color.white;
+            GUI.backgroundColor = ColorUtility.TryParseHtmlString("#bebebe", out var ret) ? ret : Color.white;
             GUIStyle buttonStyle = new GUIStyle(EditorStyles.miniButton);
-            buttonStyle.fontStyle = FontStyle.Bold;
+            //buttonStyle.fontStyle = FontStyle.Bold;
             //buttonStyle.padding = new RectOffset(0, 0, 15, 0);
             //buttonStyle.margin = new RectOffset(0,5,20,-10);
-            buttonStyle.normal.textColor = Color.white;
+            buttonStyle.normal.textColor = Color.black;
             buttonStyle.active.textColor = Color.yellow;
             buttonStyle.focused.textColor = Color.yellow;
             buttonStyle.hover.textColor = Color.yellow;
             isWin = EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64;
             isAndroid = EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
-            var buttonText = isWin ? "Win64 Build" : isAndroid ? "Android Build" : "OSX Build";
-            appName = isWin ? "Win64/" + Application.productName + ".exe" :
-                isAndroid ? "test.apk" : "test.app";
+            var tooltipText = isWin ? "Win64 Build" : isAndroid ? "Android Build" : "OSX Build";
+            var buttonText = "Build";
+            appName = isWin ? "Win64/" + Application.productName + ".exe" : isAndroid ? "test.apk" : "test.app";
             var btnHeight = 20f;
 
-            if(GUILayout.Button(new GUIContent(buttonText, $"Clean & Build Builds/{appName}"),
-                   buttonStyle, GUILayout.Height(btnHeight))) {
-                if(!string.IsNullOrEmpty(PreExport())) {
+            if (GUILayout.Button(new GUIContent("Git"), buttonStyle, GUILayout.Height(btnHeight))) {
+                EditorSceneManager.SaveOpenScenes();
+                UpdateBuild();
+                EditorShell.GitUpdate();
+                GUIUtility.ExitGUI();
+            }
+
+            if (GUILayout.Button(new GUIContent(buttonText, $"{tooltipText}: Clean & Build Builds/{appName} "),
+                    buttonStyle, GUILayout.Height(btnHeight))) {
+                if (!string.IsNullOrEmpty(PreExport())) {
                     return;
                 }
                 BuildOSX();
             }
 
-            if(GUILayout.Button(new GUIContent($"Run", $"Run Builds/{appName}"), buttonStyle,
-                   GUILayout.Height(btnHeight))) {
+            if (GUILayout.Button(new GUIContent($"Run", $"Run Builds/{appName}"), buttonStyle,
+                    GUILayout.Height(btnHeight))) {
                 Run();
 
                 //Application.OpenURL("file://"+Directory.GetCurrentDirectory()+ "/Builds/test.app");// /Contents/MacOS/剑雪冰壶
             }
 
-            if(GUILayout.Button(new GUIContent("Update"), buttonStyle,
-                   GUILayout.Height(btnHeight))) {
+            if (GUILayout.Button(new GUIContent("Update"), buttonStyle, GUILayout.Height(btnHeight))) {
                 UpdateBuild();
             }
             //GUILayout.Space(130);
             GUI.backgroundColor = bk;
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
