@@ -19,16 +19,16 @@ MonoBehaviour:
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 1
   m_IgnoreUnsupportedFilesInBuild: 1
-  m_UniqueBundleIds: 1
-  m_NonRecursiveBuilding: 1
+  m_UniqueBundleIds: 0
+  m_NonRecursiveBuilding: 0
   m_CCDEnabled: 0
   m_maxConcurrentWebRequests: 3
-  m_ContiguousBundles: 1
+  m_ContiguousBundles: 0
   m_StripUnityVersionFromBundleBuild: 0
   m_DisableVisibleSubAssetRepresentations: 0
   m_ShaderBundleNaming: 1
   m_ShaderBundleCustomNaming: 
-  m_MonoScriptBundleNaming: 2
+  m_MonoScriptBundleNaming: 0
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
@@ -42,10 +42,8 @@ MonoBehaviour:
   m_overridePlayerVersion: '[Ver]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 7ee396e2feea84344b0351ba3b4428b1, type: 2}
-  - {fileID: 11400000, guid: 6fc4762233972aa40bcd09bf0410eb96, type: 2}
   - {fileID: 11400000, guid: 76221483d69bd3b4aac4488c3097199d, type: 2}
   - {fileID: 11400000, guid: 2981e407081d08d4887a5ef39df59609, type: 2}
-  - {fileID: 11400000, guid: 63ab06b7230ad4b6b970fb32aebb8f02, type: 2}
   - {fileID: 11400000, guid: 10ae8408a953cd14e95d879ea1e28ec9, type: 2}
   - {fileID: 11400000, guid: a307280d5bc664f998fb8818ed10a49a, type: 2}
   - {fileID: 11400000, guid: c4bc7133680d0814388173d245e6e7c2, type: 2}
@@ -60,6 +58,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 960939437f96bf942a92ab47685c085e, type: 2}
   - {fileID: 11400000, guid: 071019c7a516a7748a2dc1448a67242b, type: 2}
   - {fileID: 11400000, guid: 5f5d6b0bcf2724700afad36fc26ff325, type: 2}
+  - {fileID: 11400000, guid: 117fb572063644a6e8cb0faa98614189, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1

@@ -107,14 +107,14 @@ namespace App
 
         public static void Restart()
         {
-            FindObjectsOfType<GameObject>(true).ForEach(t => {
-                try {
-                    Destroy(t);
-                }
-                catch (Exception) {
-                    //
-                }
-            });
+            // FindObjectsOfType<GameObject>(true).ForEach(t => {
+            //     try {
+            //         Destroy(t);
+            //     }
+            //     catch (Exception) {
+            //         //
+            //     }
+            // });
             SceneManager.LoadScene(0);
         }
 

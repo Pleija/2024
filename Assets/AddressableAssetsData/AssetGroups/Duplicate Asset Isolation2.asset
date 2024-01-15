@@ -1,0 +1,411 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Duplicate Asset Isolation2
+  m_EditorClassIdentifier: 
+  m_GroupName: Duplicate Asset Isolation2
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 8f40a676036f349fd8b883c0a0d72c61
+  m_SerializeEntries:
+  - m_GUID: 634af5e9b95b83f40ab50b103810bb3c
+    m_Address: Assets/Art/Materials/PartyHatAndBowtie.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc2583299b79c944aace43dddff619e4
+    m_Address: Assets/Art/Textures/PartyHatBowtieAlbedo.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b73697bb416ade2438c2bca5fae0023f
+    m_Address: Assets/Art/Models/Daytime/PlasteredWall01.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0fe38f4066e12ac48a6be1778e8a8f3c
+    m_Address: Assets/Art/Materials/WarningLight.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e869e49c48392941a86999cef370ecf
+    m_Address: Assets/Art/Textures/WarningLightAlbedo.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a39a1374f2e36fb43861b417c3de0a28
+    m_Address: Assets/Art/Models/NightTime/Road01Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff3f2fce23e75124a8c93b78b4a757c4
+    m_Address: Assets/Art/Models/NightTime/FarBackBuilding02Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27e06a887eea7e0448752080024789c4
+    m_Address: Assets/Art/Models/NightTime/BrickWall01Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f6b01f4c527bbe44b1f49487047cafd
+    m_Address: Assets/Art/Models/NightTime/LightGlowPlane.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e6654fc5acfe364ba079a1a92d0c24e
+    m_Address: Assets/Art/Models/NightTime/Road02Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0300d94f57f56b42bcdc8dd2c4319f8
+    m_Address: Assets/Art/Materials/LightGlow.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87ddb59e82d8e444aa3a2026f5c87959
+    m_Address: Assets/Art/Textures/LightGlowSquareAlbedo.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8db0598205b778148977ecbd613bbc72
+    m_Address: Assets/Art/Models/NightTime/TelegraphPole01Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91adb92975a1cfd42baa9243d6897dbb
+    m_Address: Assets/Art/Models/NightTime/TelegraphPole02Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2bfbb7640650b2846a26b776a5fedf1f
+    m_Address: Assets/Art/Models/NightTime/BackgroundBuilding02Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76b8038df1fd9af4fb1ae18218eb0abe
+    m_Address: Assets/Art/Models/NightTime/TelegraphWiresNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d92fea2124f46184a8108b072ccf6bcb
+    m_Address: Assets/Art/Models/NightTime/PipesNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1eb7fe32b92f9c144a35065de004d511
+    m_Address: Assets/Art/Models/NightTime/WheelyBinBlueNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 844930ad4f45a9a4cbfe20cc435f28b1
+    m_Address: Assets/Art/Models/NightTime/BackgroundBuilding01Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff27ab6cdbd2558489a36a9f57aec39b
+    m_Address: Assets/Art/Models/NightTime/WireNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 519c944e61ed0114aa8ce901c86d3a41
+    m_Address: Assets/Art/Models/NightTime/DumpsterGreenNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 110d7e0ba2f65bd44acb7c77daec5cff
+    m_Address: Assets/Art/Models/NightTime/BinBagClosedNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd2e698e30376894aae9fb24df788f37
+    m_Address: Assets/Art/Models/NightTime/PlasteredWall02Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 00c38e62d2a93ff4eb50eab5bba54c68
+    m_Address: Assets/Art/Models/NightTime/WheelyBinRedNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1103aee49ba38b744a9ce352640f45df
+    m_Address: Assets/Art/Models/NightTime/BinBagOpenNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7b3ca3ecfb32be4994a0cc6bebcf0c0
+    m_Address: Assets/Art/Models/NightTime/LightCone.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef896326ab6f34a4b92f93cb7b333ed7
+    m_Address: Assets/Art/Models/NightTime/StreetLightNight.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7daf6e93f30dc142ac7544786739ca1
+    m_Address: Assets/Art/Models/NightTime/LightPool.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ccb801525444644c930f82f43032b93
+    m_Address: Assets/Art/Materials/LightCone.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c875674e43d8234e92c72134a251859
+    m_Address: Assets/Art/Textures/Grad.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58fe4014eb2279041837044e643ef98f
+    m_Address: Assets/Art/Materials/LightPool.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7188446976148db4881a1b85e0b24069
+    m_Address: Assets/Art/Textures/LightPoolAlbedo.tif
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf23d4eb7a0c0ef41baa165c1abf404a
+    m_Address: Assets/Art/Models/NightTime/Garage03Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acbe9efaa69e9ab4d90ce40cd942473e
+    m_Address: Assets/Art/Models/NightTime/PlasteredWall01Night.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0999d58022e15764c9c7f1db616452d4
+    m_Address: Assets/Shaders/CurvedRotation.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c69405ac74a42949b5bffb776f6ad62
+    m_Address: Assets/Art/Materials/FishBoneParticle.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c204816c584e8fd48a9e5c55a4d559b0
+    m_Address: Assets/Art/Animation/Image.controller
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f44cb90b6ae648c783dac573bfe9cd0
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Slider/Slider11_Fill_Blue.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff1e80f0b81db466ea7744ef87739aba
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Frame/frame_iconframe_square_00_frame_White2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ee91d319886c4e4b8a4155b88bc8e7f
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Background/Background_ScreenGlow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67305741c643f45a69932e6470cb7b5c
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Particle/Texture/fx_glow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40f8ecd1b27d34a80813bf14c543baba
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon/Icon_ImageIcon_Map_l.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67b77312d4981414296e738015a3fbf0
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Frame/frame_stageframe_04_s.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0aa457f380905464fad519a5d662ed48
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Slider/Slider07_Icon2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b779f7b448079467c9442503ad66781d
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Background/Background_09_Purple3_GlowTop.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c426b035919094016adb99e1349aa315
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_UI/Toggle_Switch_On_Handle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0f80e352af2442da980a67c5efd7adf
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Icon_FunctionIcons_(x2)/FunctionIcons_256/function_icon_arrow_top.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd77367546bf4433dbbb2317a935df54
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Frame/Frame_ItemFrame01_Color_Brown.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dacd02a5f0e234917a8ec3b1ac3e2fe1
+    m_Address: Assets/Design/Custom/Background/bg-9.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b09a22c5e72b1ff41a2185b7d2e2bb39
+    m_Address: Assets/Design/UI/2d_UI/images/ui_element_box25.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c72d5fc58ca8f4b95898ae5a9473a583
+    m_Address: Assets/Design/Custom/Background/bg-1a.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8834ee5e39554c6abd81648b1f91151
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Frame/frame_itemframe_01_s.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70f78e062098c4496b852abefff63acf
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon/Icon_PictoIcon_Close01.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b02f516c6d7962468b29ead59c450f4
+    m_Address: Assets/Design/UI/2d_UI/images/ui_element_box12.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fba6a86432714d318be2f4983f49b79
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon/Icon_ImageIcon_Ranking.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c9110a6ae31e504fb2817abbf8d8921
+    m_Address: Assets/Design/UI/2d_UI/images/ui_element_circle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e0a5dc6306d744b7abb20b9da16476a
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Slider/Slider03_Icon2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c61f02f6f37024742bc8d4214baeafa6
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon_ItemIcons(Original)/Icon_Dice_Yellow.Png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33effd6735e414dc7b70ded5e8bb47f8
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_UI/StatusBarIcon_Gold.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dd98809192e24bb185001de5a7f7b38
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon_ItemIcons(Original)/Icon_Heart.Png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1230a91a23d0849128d2f8c63b5996fe
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon_ItemIcons(Original)/Icon_Gem03_Diamond_Blue.Png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d0c3e2a3a9f42843917bab9397c1174
+    m_Address: Assets/Design/UI/2d_UI/images/ui_icons.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba55360d7f4744c2b89b2d8200af33b9
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Icon_FunctionIcons_(x2)/FunctionIcons_256/function_icon_arrow_bottom.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05c08d2d951f33243b9b36a3d6b46f29
+    m_Address: Assets/Art/UI/UIBorderTransparent.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8eceded76aa34c38baaa18c3f16a5ae
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Demo/Demo_Icon_ItemIcons(Original)/Icon_Cards.Png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65f42b8e2924f4e26adf8ce8fb34fcdf
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Button/btn_circle_01_red.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a23a57be640054bf08deecbc33c70a5e
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Frame/Frame_StageFrame_d.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a5d5fbf2b0304fef8da8a584f9d46c6
+    m_Address: Assets/Design/UI/GUI PRO Kit - Casual Game/ResourcesData/Sprite/Component/Slider/Slider06_Frame.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b6b6fb7a7a6fdf4cabb6ab682beb842
+    m_Address: Assets/Art/Animation/Tutorial/TutorialArrow.anim
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ac2314c79d0e4f8d9902b213cd4f2cf
+    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2 SDF 3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ad15db1aebb749f5b1846fbbfa25de7
+    m_Address: Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Button/btn_circle_01_green.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a6c3a96345564e8b94a69c9b4bc677d
+    m_Address: Assets/Design/UI/Fonts/AaHuanLeBao-2 SDF 2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e73e4be78a578649bd6c28e037ef6fa
+    m_Address: Assets/Design/UI/Buttons/PNG/18bttn-little.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3975fa0a89307406780324e21236b157
+    m_Address: Assets/Art/UI/be81570aea344d4f96d95c2b32f6635e 1.psd
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2a4651c46f6c4b86afcbfeb9acb339d
+    m_Address: Assets/Art/UI/UFO.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fc058abd9d392148a2636604bba0cb1
+    m_Address: Assets/Design/UI/2d_UI/fonts/RifficFree-Bold.ttf
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 612c0c745aef041e4b67550f458ff686
+    m_Address: Assets/Design/UI/UltimateCleanGUIPack/Themes/Minimalist/Fonts/RobotoCondensed-Bold
+      SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 735e874f947d0e143a6b4e83f8a7283a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d7c1e82f3b818495abb98412a3b8ea08, type: 2}
+    - {fileID: 11400000, guid: 17207caa6ca884b2f800aaa80989688c, type: 2}
