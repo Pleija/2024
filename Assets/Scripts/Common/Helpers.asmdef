@@ -1,7 +1,6 @@
 {
   "name": "Helpers",
   "references": [
-    "SqlCipher4Unity3D",
     "Unity.Addressables.Editor",
     "Unity.Addressables",
     "Unity.ResourceManager",

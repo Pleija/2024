@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\com.unity.rpc\Editor\Rpc\Rpc.csproj" />
+    <ProjectReference Include="..\BasicJob\BasicJob.csproj" />
+    <ProjectReference Include="..\JobBase\JobBase.csproj" />
+  </ItemGroup>
+
+</Project>
