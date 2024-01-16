@@ -1,6 +1,6 @@
 using Puerts;
 
-namespace App.Extensions
+namespace App
 {
     public static partial class JsHelpers
     {

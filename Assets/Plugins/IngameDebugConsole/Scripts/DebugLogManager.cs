@@ -882,6 +882,7 @@ namespace IngameDebugConsole
 			// Show the log window
 			logWindowCanvasGroup.blocksRaycasts = true;
 			logWindowCanvasGroup.alpha = 1f;
+			logWindowCanvasGroup.interactable = true;
 
 			popupManager.Hide();
 
@@ -915,6 +916,8 @@ namespace IngameDebugConsole
 			// Hide the log window
 			logWindowCanvasGroup.blocksRaycasts = false;
 			logWindowCanvasGroup.alpha = 0f;
+			logWindowCanvasGroup.interactable = false;
+
 
 			if( commandInputField.isFocused )
 				commandInputField.DeactivateInputField();

@@ -50,6 +50,7 @@ declare global {
     declare var $: $;
 
     declare function getAllMethod(toCheck: any): string[];
+    declare function bindClass<T>(csObj: T, ...targetClass: any[]): T;
 }
 
 

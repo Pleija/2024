@@ -12,6 +12,8 @@ namespace Runner.Obstacles
     public abstract class Obstacle : MonoBehaviour
     {
         public AudioClip impactedSound;
+        public bool isEnemy;
+        public int damageValue = 0;
         public virtual void Setup() { }
         public abstract IEnumerator Spawn(TrackSegment segment, float t);
 

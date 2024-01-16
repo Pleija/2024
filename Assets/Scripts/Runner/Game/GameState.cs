@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Runner.Sounds;
 using Runner.Tracks;
 using Runner.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 #if UNITY_ADS
 using UnityEngine.Advertisements;
@@ -22,10 +25,19 @@ namespace Runner.Game
     /// </summary>
     public class GameState : AState
     {
+        public static GameState self => m_Instance ? m_Instance : m_Instance = FindObjectOfType<GameState>(true);
+        private static GameState m_Instance;
+
+        private void Awake()
+        {
+            m_Instance = this;
+        }
+
         private static int s_DeadHash = Animator.StringToHash("Dead");
         public Canvas canvas;
         public TrackManager trackManager => TrackManager.instance;
         public AudioClip gameTheme;
+        public GameObject CharacterTouch;
 
         [Header("UI")]
         public Text coinText;
@@ -151,6 +163,16 @@ namespace Runner.Game
         }
 
         public override string GetName() => "Game";
+        public float Health;
+        public Image HealthImage;
+        public Image PreHeathImage;
+
+        [FormerlySerializedAs("autoHealth")]
+        public float HealthPerSecond = 10f;
+
+        public int oldLife;
+        public TMP_Text HealthText;
+        private bool m_PreReady;
 
         public override void Tick()
         {
@@ -185,6 +207,37 @@ namespace Runner.Game
                     chrCtrl.character.animator.SetBool(s_DeadHash, true);
                     chrCtrl.characterCollider.koParticle.gameObject.SetActive(true);
                     StartCoroutine(WaitForGameOver());
+                }
+                else {
+                    if (oldLife != chrCtrl.currentLife) {
+                        Health = chrCtrl.currentLife == 3 ? 100 : chrCtrl.currentLife * 33.3f;
+                        oldLife = chrCtrl.currentLife;
+                        // HealthImage.fillAmount = ;
+                        DOTween.To(() => HealthImage.fillAmount, x => HealthImage.fillAmount = x,
+                            chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
+                            //
+                        });
+                        m_PreReady = false;
+                        DOTween.To(() => PreHeathImage.fillAmount, x => PreHeathImage.fillAmount = x,
+                            chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
+                            m_PreReady = true;
+                        });
+                    }
+
+                    if (chrCtrl.currentLife < 3) {
+                        Health += Time.deltaTime * HealthPerSecond;
+
+                        if (Health > (chrCtrl.currentLife + 1) * 33.3f) {
+                            chrCtrl.currentLife += 1;
+
+                            if (chrCtrl.currentLife == 3) {
+                                Health = 100;
+                            }
+                        }
+                        if (m_PreReady) PreHeathImage.fillAmount = Health / 100f;
+                    }
+                    HealthText.text = $"{chrCtrl.currentLife}/{Health:F0}";
+                    //HealthImage.fillAmount = chrCtrl.currentLife / 3f;
                 }
 
                 // Consumable ticking & lifetime management
