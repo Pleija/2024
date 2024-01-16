@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using Models;
 using MS.Shell.Editor;
+using ParadoxNotion.Design;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
@@ -209,9 +210,11 @@ namespace UnityToolbarExtender
             var tooltipText = isWin ? "Win64 Build" : isAndroid ? "Android Build" : "OSX Build";
             var buttonText = "Build";
             appName = isWin ? "Win64/" + Application.productName + ".exe" : isAndroid ? "test.apk" : "test.app";
-            var btnHeight = 20f;
+            var btnHeight = 18f;
 
-            if (GUILayout.Button(new GUIContent("Git"), buttonStyle, GUILayout.Height(btnHeight))) {
+            var left = new GUIStyle("ButtonLeft");
+            //left.margin = new RectOffset(0, 0, -5, 0);
+            if (GUILayout.Button(new GUIContent("Git"), /*buttonStyle*/left, GUILayout.Height(btnHeight))) {
                 EditorSceneManager.SaveOpenScenes();
                 UpdateBuild();
                 EditorShell.GitUpdate(() => {
@@ -220,22 +223,26 @@ namespace UnityToolbarExtender
                 GUIUtility.ExitGUI();
             }
 
+            var mid = new GUIStyle("ButtonMid");
+            //mid.margin = new RectOffset(0, 0, -5, 0);
             if (GUILayout.Button(new GUIContent(buttonText, $"{tooltipText}: Clean & Build Builds/{appName} "),
-                    buttonStyle, GUILayout.Height(btnHeight))) {
+                    /*buttonStyle*/mid, GUILayout.Height(btnHeight))) {
                 if (!string.IsNullOrEmpty(PreExport())) {
                     return;
                 }
                 BuildOSX();
             }
 
-            if (GUILayout.Button(new GUIContent($"Run", $"Run Builds/{appName}"), buttonStyle,
+            if (GUILayout.Button(new GUIContent($"Run", $"Run Builds/{appName}"), /*buttonStyle*/mid,
                     GUILayout.Height(btnHeight))) {
                 Run();
 
                 //Application.OpenURL("file://"+Directory.GetCurrentDirectory()+ "/Builds/test.app");// /Contents/MacOS/剑雪冰壶
             }
 
-            if (GUILayout.Button(new GUIContent("Update"), buttonStyle, GUILayout.Height(btnHeight))) {
+            var right = new GUIStyle("ButtonRight");
+            //right.margin = new RectOffset(0, 0, -5, 0);
+            if (GUILayout.Button(new GUIContent("Update"), /*buttonStyle*/right, GUILayout.Height(btnHeight))) {
                 UpdateBuild();
             }
             //GUILayout.Space(130);

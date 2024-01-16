@@ -2,6 +2,7 @@
     "name": "ToolbarExtender.Editor",
     "rootNamespace": "UnityToolbarExtender",
     "references": [
+        "ParadoxNotion",
         "Helpers",
         "Unity.Addressables.Editor",
         "MS.Shell.Editor"
