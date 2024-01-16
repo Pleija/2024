@@ -277,19 +277,22 @@ namespace Runner.Game
                             pos.x = 0.0f;
                         charPosition.transform.position = pos;
                         accessoriesSelector.gameObject.SetActive(m_OwnedAccesories.Count > 0);
-                        AsyncOperationHandle op = Addressables.InstantiateAsync(c.characterName);
+                        var op = Addressables.LoadAssetAsync<GameObject>(c.characterName);
                         yield return op;
 
-                        if (op.Result == null || !(op.Result is GameObject)) {
+                        if (!(op.Result is { }) ) {
                             Debug.LogWarning(string.Format("Unable to load character {0}.", c.characterName));
                             yield break;
                         }
-                        newChar = op.Result as GameObject;
+                        newChar = Instantiate(op.Result); //op.Result as GameObject;
                         Helpers.SetRendererLayerRecursive(newChar, /*k_UILayer*/LayerMask.NameToLayer("Character"));
                         newChar.transform.SetParent(charPosition, false);
                         newChar.transform.rotation = k_FlippedYAxisRotation;
-                        if (m_Character != null)
-                            Addressables.ReleaseInstance(m_Character);
+
+                        if (m_Character != null) {
+                            Destroy(m_Character);
+                        }
+                        //Addressables.ReleaseInstance(m_Character);
                         m_Character = newChar;
                         OnCharacterCreate.Invoke(newChar);
                         charNameDisplay.text = c.characterName;

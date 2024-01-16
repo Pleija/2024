@@ -460,7 +460,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 760304479}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1812bfce4f484fd7bbd3f998b5fd2094, type: 3}
   m_Name: 
@@ -476,6 +476,12 @@ MonoBehaviour:
     SerializationNodes: []
   clearDir: 0
   disableLog: 0
+  useRemote: 1
+  prefab:
+    m_AssetGUID: b2b05e5486e5143f79e05f84c7462806
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!4 &760304481
 Transform:
   m_ObjectHideFlags: 0

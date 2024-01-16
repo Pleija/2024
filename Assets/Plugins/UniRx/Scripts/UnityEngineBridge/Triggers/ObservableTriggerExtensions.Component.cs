@@ -20,10 +20,10 @@ namespace UniRx.Triggers
         }
 
         /// <summary>Callback for processing animation movements for modifying root motion.</summary>
-        public static IObservable<Unit> OnAnimatorMoveAsObservable(this Component component)
+        public static Subject<Unit> OnAnimatorMoveAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableAnimatorTrigger>(component.gameObject).OnAnimatorMoveAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableAnimatorTrigger>(component.gameObject).OnAnimatorMoveAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -83,10 +83,10 @@ namespace UniRx.Triggers
         #region ObservableDestroyTrigger
 
         /// <summary>This function is called when the MonoBehaviour will be destroyed.</summary>
-        public static IObservable<Unit> OnDestroyAsObservable(this Component component)
+        public static Subject<Unit> OnDestroyAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Return(Unit.Default); // send destroy message
-            return GetOrAddComponent<ObservableDestroyTrigger>(component.gameObject).OnDestroyAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Return(Unit.Default) as Subject<Unit>; // send destroy message
+            return GetOrAddComponent<ObservableDestroyTrigger>(component.gameObject).OnDestroyAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -95,17 +95,17 @@ namespace UniRx.Triggers
         #region ObservableEnableTrigger
 
         /// <summary>This function is called when the object becomes enabled and active.</summary>
-        public static IObservable<Unit> OnEnableAsObservable(this Component component)
+        public static Subject<Unit> OnEnableAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableEnableTrigger>(component.gameObject).OnEnableAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableEnableTrigger>(component.gameObject).OnEnableAsObservable() as Subject<Unit>;
         }
 
         /// <summary>This function is called when the behaviour becomes disabled () or inactive.</summary>
-        public static IObservable<Unit> OnDisableAsObservable(this Component component)
+        public static Subject<Unit> OnDisableAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableEnableTrigger>(component.gameObject).OnDisableAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableEnableTrigger>(component.gameObject).OnDisableAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -113,10 +113,10 @@ namespace UniRx.Triggers
         #region ObservableFixedUpdateTrigger
 
         /// <summary>This function is called every fixed framerate frame, if the MonoBehaviour is enabled.</summary>
-        public static IObservable<Unit> FixedUpdateAsObservable(this Component component)
+        public static Subject<Unit> FixedUpdateAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableFixedUpdateTrigger>(component.gameObject).FixedUpdateAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableFixedUpdateTrigger>(component.gameObject).FixedUpdateAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -124,10 +124,10 @@ namespace UniRx.Triggers
         #region ObservableLateUpdateTrigger
 
         /// <summary>LateUpdate is called every frame, if the Behaviour is enabled.</summary>
-        public static IObservable<Unit> LateUpdateAsObservable(this Component component)
+        public static Subject<Unit> LateUpdateAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableLateUpdateTrigger>(component.gameObject).LateUpdateAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableLateUpdateTrigger>(component.gameObject).LateUpdateAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -137,49 +137,49 @@ namespace UniRx.Triggers
         #region ObservableMouseTrigger
 
         /// <summary>OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider.</summary>
-        public static IObservable<Unit> OnMouseDownAsObservable(this Component component)
+        public static Subject<Unit> OnMouseDownAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseDownAsObservable();
         }
 
         /// <summary>OnMouseDrag is called when the user has clicked on a GUIElement or Collider and is still holding down the mouse.</summary>
-        public static IObservable<Unit> OnMouseDragAsObservable(this Component component)
+        public static Subject<Unit> OnMouseDragAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseDragAsObservable();
         }
 
         /// <summary>OnMouseEnter is called when the mouse entered the GUIElement or Collider.</summary>
-        public static IObservable<Unit> OnMouseEnterAsObservable(this Component component)
+        public static Subject<Unit> OnMouseEnterAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseEnterAsObservable();
         }
 
         /// <summary>OnMouseExit is called when the mouse is not any longer over the GUIElement or Collider.</summary>
-        public static IObservable<Unit> OnMouseExitAsObservable(this Component component)
+        public static Subject<Unit> OnMouseExitAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseExitAsObservable();
         }
 
         /// <summary>OnMouseOver is called every frame while the mouse is over the GUIElement or Collider.</summary>
-        public static IObservable<Unit> OnMouseOverAsObservable(this Component component)
+        public static Subject<Unit> OnMouseOverAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseOverAsObservable();
         }
 
         /// <summary>OnMouseUp is called when the user has released the mouse button.</summary>
-        public static IObservable<Unit> OnMouseUpAsObservable(this Component component)
+        public static Subject<Unit> OnMouseUpAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseUpAsObservable();
         }
 
         /// <summary>OnMouseUpAsButton is only called when the mouse is released over the same GUIElement or Collider as it was pressed.</summary>
-        public static IObservable<Unit> OnMouseUpAsButtonAsObservable(this Component component)
+        public static Subject<Unit> OnMouseUpAsButtonAsObservable(this Component component)
         {
             if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
             return GetOrAddComponent<ObservableMouseTrigger>(component.gameObject).OnMouseUpAsButtonAsObservable();
@@ -244,10 +244,10 @@ namespace UniRx.Triggers
         #region ObservableUpdateTrigger
 
         /// <summary>Update is called every frame, if the MonoBehaviour is enabled.</summary>
-        public static IObservable<Unit> UpdateAsObservable(this Component component)
+        public static Subject<Unit> UpdateAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableUpdateTrigger>(component.gameObject).UpdateAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableUpdateTrigger>(component.gameObject).UpdateAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -255,17 +255,17 @@ namespace UniRx.Triggers
         #region ObservableVisibleTrigger
 
         /// <summary>OnBecameInvisible is called when the renderer is no longer visible by any camera.</summary>
-        public static IObservable<Unit> OnBecameInvisibleAsObservable(this Component component)
+        public static Subject<Unit> OnBecameInvisibleAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableVisibleTrigger>(component.gameObject).OnBecameInvisibleAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableVisibleTrigger>(component.gameObject).OnBecameInvisibleAsObservable() as Subject<Unit>;
         }
 
         /// <summary>OnBecameVisible is called when the renderer became visible by any camera.</summary>
-        public static IObservable<Unit> OnBecameVisibleAsObservable(this Component component)
+        public static Subject<Unit> OnBecameVisibleAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableVisibleTrigger>(component.gameObject).OnBecameVisibleAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableVisibleTrigger>(component.gameObject).OnBecameVisibleAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -275,24 +275,24 @@ namespace UniRx.Triggers
         #region ObservableTransformChangedTrigger
 
         /// <summary>Callback sent to the graphic before a Transform parent change occurs.</summary>
-        public static IObservable<Unit> OnBeforeTransformParentChangedAsObservable(this Component component)
+        public static Subject<Unit> OnBeforeTransformParentChangedAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableTransformChangedTrigger>(component.gameObject).OnBeforeTransformParentChangedAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableTransformChangedTrigger>(component.gameObject).OnBeforeTransformParentChangedAsObservable() as Subject<Unit>;
         }
 
         /// <summary>This function is called when the parent property of the transform of the GameObject has changed.</summary>
-        public static IObservable<Unit> OnTransformParentChangedAsObservable(this Component component)
+        public static Subject<Unit> OnTransformParentChangedAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableTransformChangedTrigger>(component.gameObject).OnTransformParentChangedAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableTransformChangedTrigger>(component.gameObject).OnTransformParentChangedAsObservable() as Subject<Unit>;
         }
 
         /// <summary>This function is called when the list of children of the transform of the GameObject has changed.</summary>
-        public static IObservable<Unit> OnTransformChildrenChangedAsObservable(this Component component)
+        public static Subject<Unit> OnTransformChildrenChangedAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableTransformChangedTrigger>(component.gameObject).OnTransformChildrenChangedAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableTransformChangedTrigger>(component.gameObject).OnTransformChildrenChangedAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -300,10 +300,10 @@ namespace UniRx.Triggers
         #region ObservableCanvasGroupChangedTrigger
 
         /// <summary>Callback that is sent if the canvas group is changed.</summary>
-        public static IObservable<Unit> OnCanvasGroupChangedAsObservable(this Component component)
+        public static Subject<Unit> OnCanvasGroupChangedAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableCanvasGroupChangedTrigger>(component.gameObject).OnCanvasGroupChangedAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableCanvasGroupChangedTrigger>(component.gameObject).OnCanvasGroupChangedAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -311,17 +311,17 @@ namespace UniRx.Triggers
         #region ObservableRectTransformTrigger
 
         /// <summary>Callback that is sent if an associated RectTransform has it's dimensions changed.</summary>
-        public static IObservable<Unit> OnRectTransformDimensionsChangeAsObservable(this Component component)
+        public static Subject<Unit> OnRectTransformDimensionsChangeAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableRectTransformTrigger>(component.gameObject).OnRectTransformDimensionsChangeAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableRectTransformTrigger>(component.gameObject).OnRectTransformDimensionsChangeAsObservable() as Subject<Unit>;
         }
 
         /// <summary>Callback that is sent if an associated RectTransform is removed.</summary>
-        public static IObservable<Unit> OnRectTransformRemovedAsObservable(this Component component)
+        public static Subject<Unit> OnRectTransformRemovedAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableRectTransformTrigger>(component.gameObject).OnRectTransformRemovedAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableRectTransformTrigger>(component.gameObject).OnRectTransformRemovedAsObservable() as Subject<Unit>;
         }
 
         #endregion
@@ -448,10 +448,10 @@ namespace UniRx.Triggers
 #if UNITY_5_4_OR_NEWER
 
         /// <summary>OnParticleTrigger is called when any particles in a particle system meet the conditions in the trigger module.</summary>
-        public static IObservable<Unit> OnParticleTriggerAsObservable(this Component component)
+        public static Subject<Unit> OnParticleTriggerAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Unit>();
-            return GetOrAddComponent<ObservableParticleTrigger>(component.gameObject).OnParticleTriggerAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Unit>() as Subject<Unit>;
+            return GetOrAddComponent<ObservableParticleTrigger>(component.gameObject).OnParticleTriggerAsObservable() as Subject<Unit>;
         }
 
 #endif

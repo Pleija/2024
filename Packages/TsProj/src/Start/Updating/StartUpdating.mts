@@ -11,7 +11,7 @@ import IResourceLocator = CS.UnityEngine.AddressableAssets.ResourceLocators.IRes
 import MergeMode = CS.UnityEngine.AddressableAssets.Addressables.MergeMode;
 import AsyncOperationHandle = CS.UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle;
 import { iterator } from "Common/Iterator.mjs";
-import Res = CS.Common.Res;
+import Res = CS.Res;
 
 export class StartUpdating extends StateNode<Updating> {
     slider: Slider;

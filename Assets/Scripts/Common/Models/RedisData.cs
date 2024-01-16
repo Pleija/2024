@@ -122,7 +122,7 @@ namespace Models
             m_Redis = null;
         }
 
-        public void Test(Action fn = null)
+        public void Test(Action<string> fn = null)
         {
 #if UNITY_EDITOR
             if (EditorApplication.isCompiling || EditorApplication.isUpdating) {
@@ -144,8 +144,8 @@ namespace Models
             Data(t => Debug.Log($"redis {testKey} => " + t.StringGet(testKey)));
             // 将输出124
             Redis(t => t.GetSubscriber().Subscribe("js", (channel, message) => {
-                Debug.Log((string)message);
-                fn?.Invoke();
+                Debug.Log($"Redis Receive: {message} Invoked: {fn != null}");
+                fn?.Invoke(message);
             }));
         }
 

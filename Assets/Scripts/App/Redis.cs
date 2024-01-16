@@ -13,17 +13,11 @@ namespace App
         [Button]
         public void Start()
         {
-
-            if (Application.isEditor || Debug.isDebugBuild) {
-                RedisData.self.Test(() => {
-                    if (Application.isPlaying) {
-                        Loading.Restart();
-                        //OnUpdate.Invoke();
-                    }
+            if (Application.isPlaying && (Application.isEditor || Debug.isDebugBuild)) {
+                RedisData.self.Test(message => {
+                    Debug.Log("restart app");
+                    Loading.Restart();
                 });
-            }
-            else {
-                Debug.Log("redis is disabled in production");
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Runner.Characters;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -52,13 +53,17 @@ namespace Runner.Consumable
 
             if (ActivatedParticleReference != null) {
                 //Addressables 1.0.1-preview
-                var op = Addressables.InstantiateAsync(ActivatedParticleReference);
+                var op = Addressables.LoadAssetAsync<GameObject>(ActivatedParticleReference);
                 yield return op;
-                m_ParticleSpawned = op.Result.GetComponent<ParticleSystem>();
+                var go = Instantiate(op.Result);
+                go.OnDestroyAsObservable().Subscribe(() => {
+                    if (op.IsValid()) Addressables.Release(op);
+                });
+                m_ParticleSpawned = go.GetComponent<ParticleSystem>();
                 if (!m_ParticleSpawned.main.loop)
                     StartCoroutine(TimedRelease(m_ParticleSpawned.gameObject, m_ParticleSpawned.main.duration));
                 m_ParticleSpawned.transform.SetParent(c.characterCollider.transform);
-                m_ParticleSpawned.transform.localPosition = op.Result.transform.position;
+                m_ParticleSpawned.transform.localPosition = go.transform.position;
             }
         }
 

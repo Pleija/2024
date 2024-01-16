@@ -16,9 +16,9 @@ namespace UniRx.Triggers
         }
 
         /// <summary>Awake is called when the script instance is being loaded.</summary>
-        public IObservable<Unit> AwakeAsObservable()
+        public Subject<Unit> AwakeAsObservable()
         {
-            if (calledAwake) return Observable.Return(Unit.Default);
+            if (calledAwake) return Observable.Return(Unit.Default) as Subject<Unit>;
             return awake ?? (awake = new Subject<Unit>());
         }
 

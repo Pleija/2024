@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -10,7 +11,8 @@ namespace App
     {
         public bool clearDir = false;
         public bool disableLog = false;
-        private bool useRemote => true;
+        public bool useRemote = true;
+        public AssetReferenceGameObject prefab;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void DebugSetting()
@@ -23,7 +25,8 @@ namespace App
             if (Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
                 //Instantiate(Resources.Load("IngameDebugConsole"));
             }
-            else if (StartUp.self.disableLog) {
+
+            if (StartUp.self.disableLog && !(Debug.isDebugBuild || Application.isEditor)) {
                 Debug.unityLogger.logEnabled = false;
             }
         }
@@ -33,23 +36,24 @@ namespace App
             Debug.Log($"Initial Time: {Time.realtimeSinceStartup:F2}");
             await Addressables.InitializeAsync().Task;
 
-            if (useRemote && Res.Exists("StartContent") is { } loc) {
+            if (useRemote && Res.Exists(prefab/*"StartContent"*/) is { } loc) {
                 Debug.Log("StartContent Found");
-                handle = Addressables.LoadAssetAsync<GameObject>(loc);
-                var prefab = await handle.Task;
-                var go = prefab != null ? Instantiate(prefab) : null;
-                if (go != null) return;
+                var handle = Addressables.LoadAssetAsync<GameObject>(loc);
+                var temp = await handle.Task;
+
+                if (temp != null && Instantiate(temp) is { } go) {
+                    go.OnDestroyAsObservable().Subscribe(() => {
+                        if (handle.IsValid()) Addressables.Release(handle);
+                    });
+                    return;
+                }
+
+                if (handle.IsValid()) {
+                    Addressables.Release(handle);
+                }
             }
             Debug.Log("Load DefaultLoading");
             Instantiate(Resources.Load("DefaultLoading"));
         }
-
-        protected override void OnDestroy()
-        {
-            if (handle.IsValid()) Addressables.Release(handle);
-            base.OnDestroy();
-        }
-
-        public AsyncOperationHandle<GameObject> handle { get; set; }
     }
 }
