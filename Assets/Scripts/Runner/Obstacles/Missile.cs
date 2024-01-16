@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using Cysharp.Threading.Tasks.Triggers;
 using Runner.Tracks;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -34,14 +36,18 @@ namespace Runner.Obstacles
             Vector3 position;
             Quaternion rotation;
             segment.GetPointAt(t, out position, out rotation);
-            AsyncOperationHandle op = Addressables.InstantiateAsync(gameObject.name, position, rotation);
+            var op = Addressables.LoadAssetAsync<GameObject>(gameObject.name);
             yield return op;
 
-            if (op.Result == null || !(op.Result is GameObject)) {
+            if (!(op.Result is {})) {
                 Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                 yield break;
             }
-            var obj = op.Result as GameObject;
+
+            var obj = Instantiate( op.Result, position, rotation);// as GameObject;
+            obj.OnDestroyAsObservable().Subscribe(() => {
+                if (op.IsValid()) Addressables.Release(op);
+            });
             obj.transform.SetParent(segment.objectRoot, true);
             obj.transform.position += obj.transform.right * lane * segment.manager.laneOffset;
             obj.transform.forward = -obj.transform.forward;

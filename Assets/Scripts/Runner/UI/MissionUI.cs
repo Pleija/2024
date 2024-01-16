@@ -20,28 +20,28 @@ namespace Runner.UI
 
             for (var i = 0; i < 3; ++i)
                 if (PlayerData.instance.missions.Count > i) {
-                    AsyncOperationHandle op = Addressables.InstantiateAsync(missionEntryPrefab);
+                    var op = Addressables.LoadAssetAsync<GameObject>(missionEntryPrefab);
                     yield return op;
 
-                    if (op.Result == null || !(op.Result is GameObject)) {
+                    if (op.Result == null) {
                         Debug.LogWarning(string.Format("Unable to load mission entry {0}.",
                             missionEntryPrefab.Asset.name));
                         yield break;
                     }
-                    var entry = (op.Result as GameObject).GetComponent<MissionEntry>();
+                    var entry = (op.Result.Instantiate().OnDestroyRelease(op)).GetComponent<MissionEntry>();
                     entry.transform.SetParent(missionPlace, false);
                     entry.FillWithMission(PlayerData.instance.missions[i], this);
                 }
                 else {
-                    AsyncOperationHandle op = Addressables.InstantiateAsync(addMissionButtonPrefab);
+                    var op = Addressables.LoadAssetAsync<GameObject>(addMissionButtonPrefab);
                     yield return op;
 
-                    if (op.Result == null || !(op.Result is GameObject)) {
+                    if (op.Result == null) {
                         Debug.LogWarning(string.Format("Unable to load button {0}.",
                             addMissionButtonPrefab.Asset.name));
                         yield break;
                     }
-                    var obj = (op.Result as GameObject)?.GetComponent<AdsForMission>();
+                    var obj = (op.Result.Instantiate().OnDestroyRelease(op)).GetComponent<AdsForMission>();
                     obj.missionUI = this;
                     obj.transform.SetParent(missionPlace, false);
                 }

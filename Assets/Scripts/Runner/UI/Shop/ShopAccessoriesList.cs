@@ -25,23 +25,23 @@ namespace Runner.UI.Shop
                 if (c.accessories != null && c.accessories.Length > 0)
                     m_CharacterList.Add(c);
             }
-            Addressables.InstantiateAsync(headerPrefab).Completed += (op) => {
+            Addressables.LoadAssetAsync<GameObject>(headerPrefab).Completed += (op) => {
                 LoadedCharacter(op, 0);
             };
         }
 
         private void LoadedCharacter(AsyncOperationHandle<GameObject> op, int currentIndex)
         {
-            if (op.Result == null || !(op.Result is GameObject)) {
+            if (op.Result == null) {
                 Debug.LogWarning(string.Format("Unable to load header {0}.", headerPrefab.RuntimeKey));
             }
             else {
                 var c = m_CharacterList[currentIndex];
-                var header = op.Result;
+                var header = op.Result.Instantiate().OnDestroyRelease(op);
                 header.transform.SetParent(listRoot, false);
                 var itmHeader = header.GetComponent<ShopItemListItem>();
                 itmHeader.nameText.text = c.characterName;
-                Addressables.InstantiateAsync(prefabItem).Completed += (innerOp) => {
+                Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (innerOp) => {
                     LoadedAccessory(innerOp, currentIndex, 0);
                 };
             }
@@ -51,12 +51,12 @@ namespace Runner.UI.Shop
         {
             var c = m_CharacterList[characterIndex];
 
-            if (op.Result == null || !(op.Result is GameObject)) {
+            if (op.Result == null) {
                 Debug.LogWarning(string.Format("Unable to load shop accessory list {0}.", prefabItem.Asset.name));
             }
             else {
                 var accessory = c.accessories[accessoryIndex];
-                var newEntry = op.Result;
+                var newEntry = op.Result.Instantiate().OnDestroyRelease(op);
                 newEntry.transform.SetParent(listRoot, false);
                 var itm = newEntry.GetComponent<ShopItemListItem>();
                 var compoundName = c.characterName + ":" + accessory.accessoryName;
@@ -86,12 +86,12 @@ namespace Runner.UI.Shop
                 //we finish the current character accessory, load the next character
                 characterIndex++;
                 if (characterIndex < m_CharacterList.Count)
-                    Addressables.InstantiateAsync(headerPrefab).Completed += (innerOp) => {
+                    Addressables.LoadAssetAsync<GameObject>(headerPrefab).Completed += (innerOp) => {
                         LoadedCharacter(innerOp, characterIndex);
                     };
             }
             else {
-                Addressables.InstantiateAsync(prefabItem).Completed += (innerOp) => {
+                Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (innerOp) => {
                     LoadedAccessory(innerOp, characterIndex, accessoryIndex);
                 };
             }

@@ -17,13 +17,13 @@ namespace Runner.UI.Shop
             foreach (var pair in CharacterDatabase.dictionary) {
                 var c = pair.Value;
                 if (c != null)
-                    Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
-                        if (op.Result == null || !(op.Result is GameObject)) {
+                    Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (op) => {
+                        if (op.Result == null) {
                             Debug.LogWarning(string.Format("Unable to load character shop list {0}.",
                                 prefabItem.Asset.name));
                             return;
                         }
-                        var newEntry = op.Result;
+                        var newEntry = op.Result.Instantiate().OnDestroyRelease(op);
                         newEntry.transform.SetParent(listRoot, false);
                         var itm = newEntry.GetComponent<ShopItemListItem>();
                         itm.icon.sprite = c.icon;

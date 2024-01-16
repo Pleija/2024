@@ -21,13 +21,13 @@ namespace Runner.UI.Shop
             for (var i = 0; i < s_ConsumablesTypes.Length; ++i) {
                 var c = ConsumableDatabase.GetConsumbale(s_ConsumablesTypes[i]);
                 if (c != null)
-                    Addressables.InstantiateAsync(prefabItem).Completed += (op) => {
-                        if (op.Result == null || !(op.Result is GameObject)) {
+                    Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (op) => {
+                        if (op.Result == null) {
                             Debug.LogWarning(string.Format("Unable to load item shop list {0}.",
                                 prefabItem.RuntimeKey));
                             return;
                         }
-                        var newEntry = op.Result;
+                        var newEntry = op.Result.Instantiate().OnDestroyRelease(op);
                         newEntry.transform.SetParent(listRoot, false);
                         var itm = newEntry.GetComponent<ShopItemListItem>();
                         itm.buyButton.image.sprite = itm.buyButtonSprite;

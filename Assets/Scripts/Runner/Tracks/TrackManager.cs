@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks.Triggers;
 using Runner.Characters;
 using Runner.Consumable;
 using Runner.Obstacles;
 using Runner.Sounds;
 using Runner.Themes;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -192,17 +194,20 @@ namespace Runner.Tracks
 
                 //Addressables 1.0.1-preview
                 // Spawn the player
-                var op = Addressables.InstantiateAsync(
-                    PlayerData.instance.characters[PlayerData.instance.usedCharacter], Vector3.zero,
-                    Quaternion.identity);
+                var op = Addressables.LoadAssetAsync<GameObject>(
+                    PlayerData.instance.characters[PlayerData.instance.usedCharacter]);
                 yield return op;
 
-                if (op.Result == null || !(op.Result is GameObject)) {
+                if (op.Result == null) {
                     Debug.LogWarning(string.Format("Unable to load character {0}.",
                         PlayerData.instance.characters[PlayerData.instance.usedCharacter]));
                     yield break;
                 }
-                var player = op.Result.GetComponent<Character>();
+                var obj = Instantiate(op.Result, Vector3.zero, Quaternion.identity);
+                obj.OnDestroyAsObservable().Subscribe(() => {
+                    if (op.IsValid()) Addressables.Release(op);
+                });
+                var player = obj.GetComponent<Character>();
                 player.SetupAccesory(PlayerData.instance.usedAccessory);
                 characterController.character = player;
                 characterController.trackManager = this;
@@ -434,17 +439,20 @@ namespace Runner.Tracks
             var segmentUse = Random.Range(0, m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length);
             if (segmentUse == m_PreviousSegment)
                 segmentUse = (segmentUse + 1) % m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length;
-            AsyncOperationHandle segmentToUseOp = Addressables.InstantiateAsync(
-                m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse], _offScreenSpawnPos,
-                Quaternion.identity);
+            var segmentToUseOp = Addressables.LoadAssetAsync<GameObject>(
+                m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse]);
             yield return segmentToUseOp;
 
-            if (segmentToUseOp.Result == null || !(segmentToUseOp.Result is GameObject)) {
+            if (segmentToUseOp.Result == null) {
                 Debug.LogWarning(string.Format("Unable to load segment {0}.",
                     m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse].Asset.name));
                 yield break;
             }
-            var newSegment = (segmentToUseOp.Result as GameObject).GetComponent<TrackSegment>();
+            var obj = Instantiate(segmentToUseOp.Result, _offScreenSpawnPos, Quaternion.identity);
+            obj.OnDestroyAsObservable().Subscribe(() => {
+                if (segmentToUseOp.IsValid()) Addressables.Release(segmentToUseOp);
+            });
+            var newSegment = obj.GetComponent<TrackSegment>();
             Vector3 currentExitPoint;
             Quaternion currentExitRotation;
 
@@ -536,32 +544,36 @@ namespace Runner.Tracks
                                 // Spawn a powerup instead.
                                 m_TimeSincePowerup = 0.0f;
                                 powerupChance = 0.0f;
-                                AsyncOperationHandle op = Addressables.InstantiateAsync(
-                                    consumableDatabase.consumbales[picked].gameObject.name, pos, rot);
+                                var op = Addressables.LoadAssetAsync<GameObject>(consumableDatabase.consumbales[picked]
+                                    .gameObject.name);
                                 yield return op;
 
-                                if (op.Result == null || !(op.Result is GameObject)) {
+                                if (op.Result == null) {
                                     Debug.LogWarning(string.Format("Unable to load consumable {0}.",
                                         consumableDatabase.consumbales[picked].gameObject.name));
                                     yield break;
                                 }
-                                toUse = op.Result as GameObject;
+                                toUse = Instantiate(op.Result, pos, rot).Of(x => x.OnDestroyAsObservable().Subscribe(
+                                    () => {
+                                        if (op.IsValid()) Addressables.Release(op);
+                                    }));
+
+                                // toUse = op.Result as GameObject;
                                 toUse.transform.SetParent(segment.transform, true);
                             }
                         }
                         else if (Random.value < premiumChance) {
                             m_TimeSinceLastPremium = 0.0f;
                             premiumChance = 0.0f;
-                            AsyncOperationHandle op =
-                                Addressables.InstantiateAsync(currentTheme.premiumCollectible.name, pos, rot);
+                            var op = Addressables.LoadAssetAsync<GameObject>(currentTheme.premiumCollectible.name);
                             yield return op;
 
-                            if (op.Result == null || !(op.Result is GameObject)) {
+                            if (op.Result == null) {
                                 Debug.LogWarning(string.Format("Unable to load collectable {0}.",
                                     currentTheme.premiumCollectible.name));
                                 yield break;
                             }
-                            toUse = op.Result as GameObject;
+                            toUse = Instantiate(op.Result, pos, rot).OnDestroyRelease(op);
                             toUse.transform.SetParent(segment.transform, true);
                         }
                         else {

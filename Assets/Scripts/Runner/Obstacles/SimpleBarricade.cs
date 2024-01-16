@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Runner.Tracks;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -29,15 +30,17 @@ namespace Runner.Obstacles
             for (var i = 0; i < count; ++i) {
                 var lane = startLane + i;
                 lane = lane > k_RightMostLaneIndex ? k_LeftMostLaneIndex : lane;
-                AsyncOperationHandle op = Addressables.InstantiateAsync(gameObject.name, position, rotation);
+                var op = Addressables.InstantiateAsync(gameObject.name);
                 yield return op;
 
-                if (op.Result == null || !(op.Result is GameObject)) {
+                if (op.Result == null) {
                     Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                     yield break;
                 }
-                var obj = op.Result as GameObject;
-
+                var obj = Instantiate(op.Result, position, rotation);//  as GameObject;
+                obj.OnDestroyAsObservable().Subscribe(() => {
+                    if (op.IsValid()) Addressables.Release(op);
+                }); 
                 if (obj == null) {
                     Debug.Log(gameObject.name);
                 }
