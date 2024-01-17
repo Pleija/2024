@@ -30,7 +30,7 @@ namespace Runner.Obstacles
             for (var i = 0; i < count; ++i) {
                 var lane = startLane + i;
                 lane = lane > k_RightMostLaneIndex ? k_LeftMostLaneIndex : lane;
-                var op = Addressables.InstantiateAsync(gameObject.name);
+                var op = Addressables.LoadAssetAsync<GameObject>(gameObject.name);
                 yield return op;
 
                 if (op.Result == null) {

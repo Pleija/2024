@@ -44,6 +44,19 @@ namespace App
         private static bool clicked;
         private static bool updated;
 #if UNITY_EDITOR
+        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        // static void LoadDefaultScene()
+        // {
+        //     var scene = SceneManager.GetActiveScene();
+        //     var defaultPath = SceneManager.GetSceneAt(0).path;
+        //
+        //     if (scene.path != defaultPath) {
+        //         SceneManager.GetAllScenes().Where(x => x.isLoaded && x.path != defaultPath).SelectMany(x => x.GetRootGameObjects())
+        //             .ForEach(x => x.SetActive(false));
+        //         SceneManager.LoadScene(0);
+        //     }
+        // }
+
         [Button]
         public void SetupModelPreload()
         {

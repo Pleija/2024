@@ -13,10 +13,10 @@ namespace UniRx.Triggers
         #region ObservableAnimatorTrigger
 
         /// <summary>Callback for setting up animation IK (inverse kinematics).</summary>
-        public static IObservable<int> OnAnimatorIKAsObservable(this Component component)
+        public static Subject<int> OnAnimatorIKAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<int>();
-            return GetOrAddComponent<ObservableAnimatorTrigger>(component.gameObject).OnAnimatorIKAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<int>() as Subject<int>;
+            return GetOrAddComponent<ObservableAnimatorTrigger>(component.gameObject).OnAnimatorIKAsObservable() as Subject<int>;
         }
 
         /// <summary>Callback for processing animation movements for modifying root motion.</summary>
@@ -31,25 +31,25 @@ namespace UniRx.Triggers
         #region ObservableCollision2DTrigger
 
         /// <summary>Sent when an incoming collider makes contact with this object's collider (2D physics only).</summary>
-        public static IObservable<Collision2D> OnCollisionEnter2DAsObservable(this Component component)
+        public static Subject<Collision2D> OnCollisionEnter2DAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collision2D>();
-            return GetOrAddComponent<ObservableCollision2DTrigger>(component.gameObject).OnCollisionEnter2DAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collision2D>() as Subject<Collision2D>;
+            return GetOrAddComponent<ObservableCollision2DTrigger>(component.gameObject).OnCollisionEnter2DAsObservable() as Subject<Collision2D>;;
         }
 
 
         /// <summary>Sent when a collider on another object stops touching this object's collider (2D physics only).</summary>
-        public static IObservable<Collision2D> OnCollisionExit2DAsObservable(this Component component)
+        public static Subject<Collision2D> OnCollisionExit2DAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collision2D>();
-            return GetOrAddComponent<ObservableCollision2DTrigger>(component.gameObject).OnCollisionExit2DAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collision2D>() as Subject<Collision2D>;;
+            return GetOrAddComponent<ObservableCollision2DTrigger>(component.gameObject).OnCollisionExit2DAsObservable() as Subject<Collision2D>;;
         }
 
         /// <summary>Sent each frame where a collider on another object is touching this object's collider (2D physics only).</summary>
-        public static IObservable<Collision2D> OnCollisionStay2DAsObservable(this Component component)
+        public static Subject<Collision2D> OnCollisionStay2DAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collision2D>();
-            return GetOrAddComponent<ObservableCollision2DTrigger>(component.gameObject).OnCollisionStay2DAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collision2D>() as Subject<Collision2D>;;
+            return GetOrAddComponent<ObservableCollision2DTrigger>(component.gameObject).OnCollisionStay2DAsObservable() as Subject<Collision2D>;;
         }
 
         #endregion
@@ -57,25 +57,25 @@ namespace UniRx.Triggers
         #region ObservableCollisionTrigger
 
         /// <summary>OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider.</summary>
-        public static IObservable<Collision> OnCollisionEnterAsObservable(this Component component)
+        public static Subject<Collision> OnCollisionEnterAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collision>();
-            return GetOrAddComponent<ObservableCollisionTrigger>(component.gameObject).OnCollisionEnterAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collision>() as Subject<Collision>;
+            return GetOrAddComponent<ObservableCollisionTrigger>(component.gameObject).OnCollisionEnterAsObservable() as Subject<Collision>;
         }
 
 
         /// <summary>OnCollisionExit is called when this collider/rigidbody has stopped touching another rigidbody/collider.</summary>
-        public static IObservable<Collision> OnCollisionExitAsObservable(this Component component)
+        public static Subject<Collision> OnCollisionExitAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collision>();
-            return GetOrAddComponent<ObservableCollisionTrigger>(component.gameObject).OnCollisionExitAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collision>() as Subject<Collision>;
+            return GetOrAddComponent<ObservableCollisionTrigger>(component.gameObject).OnCollisionExitAsObservable() as Subject<Collision>;
         }
 
         /// <summary>OnCollisionStay is called once per frame for every collider/rigidbody that is touching rigidbody/collider.</summary>
-        public static IObservable<Collision> OnCollisionStayAsObservable(this Component component)
+        public static Subject<Collision> OnCollisionStayAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collision>();
-            return GetOrAddComponent<ObservableCollisionTrigger>(component.gameObject).OnCollisionStayAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collision>() as Subject<Collision>;
+            return GetOrAddComponent<ObservableCollisionTrigger>(component.gameObject).OnCollisionStayAsObservable() as Subject<Collision>;
         }
 
         #endregion
@@ -192,25 +192,25 @@ namespace UniRx.Triggers
         #region ObservableTrigger2DTrigger
 
         /// <summary>Sent when another object enters a trigger collider attached to this object (2D physics only).</summary>
-        public static IObservable<Collider2D> OnTriggerEnter2DAsObservable(this Component component)
+        public static Subject<Collider2D> OnTriggerEnter2DAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collider2D>();
-            return GetOrAddComponent<ObservableTrigger2DTrigger>(component.gameObject).OnTriggerEnter2DAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collider2D>() as Subject<Collider2D>;
+            return GetOrAddComponent<ObservableTrigger2DTrigger>(component.gameObject).OnTriggerEnter2DAsObservable() as Subject<Collider2D>;
         }
 
 
         /// <summary>Sent when another object leaves a trigger collider attached to this object (2D physics only).</summary>
-        public static IObservable<Collider2D> OnTriggerExit2DAsObservable(this Component component)
+        public static Subject<Collider2D> OnTriggerExit2DAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collider2D>();
-            return GetOrAddComponent<ObservableTrigger2DTrigger>(component.gameObject).OnTriggerExit2DAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collider2D>() as Subject<Collider2D>;
+            return GetOrAddComponent<ObservableTrigger2DTrigger>(component.gameObject).OnTriggerExit2DAsObservable() as Subject<Collider2D>;
         }
 
         /// <summary>Sent each frame where another object is within a trigger collider attached to this object (2D physics only).</summary>
-        public static IObservable<Collider2D> OnTriggerStay2DAsObservable(this Component component)
+        public static Subject<Collider2D> OnTriggerStay2DAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collider2D>();
-            return GetOrAddComponent<ObservableTrigger2DTrigger>(component.gameObject).OnTriggerStay2DAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collider2D>() as Subject<Collider2D>;
+            return GetOrAddComponent<ObservableTrigger2DTrigger>(component.gameObject).OnTriggerStay2DAsObservable() as Subject<Collider2D>;
         }
 
         #endregion
@@ -218,25 +218,26 @@ namespace UniRx.Triggers
         #region ObservableTriggerTrigger
 
         /// <summary>OnTriggerEnter is called when the Collider other enters the trigger.</summary>
-        public static IObservable<Collider> OnTriggerEnterAsObservable(this Component component)
+        public static Subject<Collider> OnTriggerEnterAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collider>();
-            return GetOrAddComponent<ObservableTriggerTrigger>(component.gameObject).OnTriggerEnterAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collider>() as Subject<Collider>;
+            return GetOrAddComponent<ObservableTriggerTrigger>(component.gameObject).OnTriggerEnterAsObservable() as Subject<Collider>;
         }
 
 
         /// <summary>OnTriggerExit is called when the Collider other has stopped touching the trigger.</summary>
-        public static IObservable<Collider> OnTriggerExitAsObservable(this Component component)
+        public static Subject<Collider> OnTriggerExitAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collider>();
-            return GetOrAddComponent<ObservableTriggerTrigger>(component.gameObject).OnTriggerExitAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collider>() as Subject<Collider>;
+            return GetOrAddComponent<ObservableTriggerTrigger>(component.gameObject).OnTriggerExitAsObservable() as
+                Subject<Collider>;
         }
 
         /// <summary>OnTriggerStay is called once per frame for every Collider other that is touching the trigger.</summary>
-        public static IObservable<Collider> OnTriggerStayAsObservable(this Component component)
+        public static Subject<Collider> OnTriggerStayAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<Collider>();
-            return GetOrAddComponent<ObservableTriggerTrigger>(component.gameObject).OnTriggerStayAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<Collider>() as Subject<Collider>;
+            return GetOrAddComponent<ObservableTriggerTrigger>(component.gameObject).OnTriggerStayAsObservable() as Subject<Collider>;
         }
 
         #endregion
@@ -330,106 +331,106 @@ namespace UniRx.Triggers
 
         #region ObservableEventTrigger classes
 
-        public static IObservable<BaseEventData> OnDeselectAsObservable(this UIBehaviour component)
+        public static Subject<BaseEventData> OnDeselectAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>();
-            return GetOrAddComponent<ObservableDeselectTrigger>(component.gameObject).OnDeselectAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>() as Subject<BaseEventData>;
+            return GetOrAddComponent<ObservableDeselectTrigger>(component.gameObject).OnDeselectAsObservable() as Subject<BaseEventData>;
         }
 
-        public static IObservable<AxisEventData> OnMoveAsObservable(this UIBehaviour component)
+        public static Subject<AxisEventData> OnMoveAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<AxisEventData>();
-            return GetOrAddComponent<ObservableMoveTrigger>(component.gameObject).OnMoveAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<AxisEventData>() as Subject<AxisEventData>;
+            return GetOrAddComponent<ObservableMoveTrigger>(component.gameObject).OnMoveAsObservable() as Subject<AxisEventData>;
         }
 
-        public static IObservable<PointerEventData> OnPointerDownAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnPointerDownAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservablePointerDownTrigger>(component.gameObject).OnPointerDownAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservablePointerDownTrigger>(component.gameObject).OnPointerDownAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<PointerEventData> OnPointerEnterAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnPointerEnterAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservablePointerEnterTrigger>(component.gameObject).OnPointerEnterAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservablePointerEnterTrigger>(component.gameObject).OnPointerEnterAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<PointerEventData> OnPointerExitAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnPointerExitAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservablePointerExitTrigger>(component.gameObject).OnPointerExitAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservablePointerExitTrigger>(component.gameObject).OnPointerExitAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<PointerEventData> OnPointerUpAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnPointerUpAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservablePointerUpTrigger>(component.gameObject).OnPointerUpAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservablePointerUpTrigger>(component.gameObject).OnPointerUpAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<BaseEventData> OnSelectAsObservable(this UIBehaviour component)
+        public static Subject<BaseEventData> OnSelectAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>();
-            return GetOrAddComponent<ObservableSelectTrigger>(component.gameObject).OnSelectAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>() as Subject<BaseEventData>;
+            return GetOrAddComponent<ObservableSelectTrigger>(component.gameObject).OnSelectAsObservable() as Subject<BaseEventData>;
         }
 
-        public static IObservable<PointerEventData> OnPointerClickAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnPointerClickAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservablePointerClickTrigger>(component.gameObject).OnPointerClickAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservablePointerClickTrigger>(component.gameObject).OnPointerClickAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<BaseEventData> OnSubmitAsObservable(this UIBehaviour component)
+        public static Subject<BaseEventData> OnSubmitAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>();
-            return GetOrAddComponent<ObservableSubmitTrigger>(component.gameObject).OnSubmitAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>() as Subject<BaseEventData>;
+            return GetOrAddComponent<ObservableSubmitTrigger>(component.gameObject).OnSubmitAsObservable() as Subject<BaseEventData>;
         }
 
-        public static IObservable<PointerEventData> OnDragAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnDragAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservableDragTrigger>(component.gameObject).OnDragAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservableDragTrigger>(component.gameObject).OnDragAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<PointerEventData> OnBeginDragAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnBeginDragAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservableBeginDragTrigger>(component.gameObject).OnBeginDragAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservableBeginDragTrigger>(component.gameObject).OnBeginDragAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<PointerEventData> OnEndDragAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnEndDragAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservableEndDragTrigger>(component.gameObject).OnEndDragAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservableEndDragTrigger>(component.gameObject).OnEndDragAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<PointerEventData> OnDropAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnDropAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservableDropTrigger>(component.gameObject).OnDropAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservableDropTrigger>(component.gameObject).OnDropAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<BaseEventData> OnUpdateSelectedAsObservable(this UIBehaviour component)
+        public static Subject<BaseEventData> OnUpdateSelectedAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>();
-            return GetOrAddComponent<ObservableUpdateSelectedTrigger>(component.gameObject).OnUpdateSelectedAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>() as Subject<BaseEventData>;
+            return GetOrAddComponent<ObservableUpdateSelectedTrigger>(component.gameObject).OnUpdateSelectedAsObservable() as Subject<BaseEventData>;
         }
 
-        public static IObservable<PointerEventData> OnInitializePotentialDragAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnInitializePotentialDragAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservableInitializePotentialDragTrigger>(component.gameObject).OnInitializePotentialDragAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservableInitializePotentialDragTrigger>(component.gameObject).OnInitializePotentialDragAsObservable() as Subject<PointerEventData>;
         }
 
-        public static IObservable<BaseEventData> OnCancelAsObservable(this UIBehaviour component)
+        public static Subject<BaseEventData> OnCancelAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>();
-            return GetOrAddComponent<ObservableCancelTrigger>(component.gameObject).OnCancelAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<BaseEventData>() as Subject<BaseEventData>;
+            return GetOrAddComponent<ObservableCancelTrigger>(component.gameObject).OnCancelAsObservable() as Subject<BaseEventData>;
         }
 
-        public static IObservable<PointerEventData> OnScrollAsObservable(this UIBehaviour component)
+        public static Subject<PointerEventData> OnScrollAsObservable(this UIBehaviour component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>();
-            return GetOrAddComponent<ObservableScrollTrigger>(component.gameObject).OnScrollAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<PointerEventData>() as Subject<PointerEventData>;
+            return GetOrAddComponent<ObservableScrollTrigger>(component.gameObject).OnScrollAsObservable() as Subject<PointerEventData>;
         }
 
         #endregion
@@ -439,10 +440,10 @@ namespace UniRx.Triggers
         #region ObservableParticleTrigger
 
         /// <summary>OnParticleCollision is called when a particle hits a collider.</summary>
-        public static IObservable<GameObject> OnParticleCollisionAsObservable(this Component component)
+        public static Subject<GameObject> OnParticleCollisionAsObservable(this Component component)
         {
-            if (component == null || component.gameObject == null) return Observable.Empty<GameObject>();
-            return GetOrAddComponent<ObservableParticleTrigger>(component.gameObject).OnParticleCollisionAsObservable();
+            if (component == null || component.gameObject == null) return Observable.Empty<GameObject>() as Subject<GameObject>;
+            return GetOrAddComponent<ObservableParticleTrigger>(component.gameObject).OnParticleCollisionAsObservable() as Subject<GameObject>;
         }
 
 #if UNITY_5_4_OR_NEWER

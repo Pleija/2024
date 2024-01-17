@@ -21,6 +21,8 @@ import "Start/StartButton.mjs";
 import "Common/Helpers.mjs";
 import "Common/TypeUtils.mjs";
 import "Game/BackupCard.mjs";
+import "Loading/StartUp.mjs";
+
 
 
 

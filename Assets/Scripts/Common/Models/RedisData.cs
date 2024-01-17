@@ -15,6 +15,7 @@ namespace Models
     public class RedisData : DataModel<RedisData>
     {
         private IDatabase m_Database;
+        public static IDatabase Database => self.m_Database ??= Instance.GetDatabase();
 
         public void Data(Action<IDatabase> fn)
         {
@@ -66,11 +67,33 @@ namespace Models
             return output;
         }
 
+        public static ConnectionMultiplexer Instance {
+            get {
+                if (!(self.m_Redis is { IsConnected: true }))
+                    self.m_Redis = ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+                return self.m_Redis;
+            }
+        }
+
+        public static void Sub(RedisChannel channel, Action<RedisChannel, RedisValue> handler,
+            CommandFlags flags = CommandFlags.None)
+        {
+            Instance.GetSubscriber().Subscribe(channel, handler, flags);
+        }
+
+        public static void Sub(RedisChannel channel, CommandFlags flags = CommandFlags.None)
+        {
+            Instance.GetSubscriber().Subscribe(channel, flags);
+        }
+
+        public static void Publish(RedisChannel channel, RedisValue message, CommandFlags flags = CommandFlags.None)
+        {
+            Instance.GetSubscriber().Publish(channel, message, flags);
+        }
+
         public void Redis(Action<ConnectionMultiplexer> fn)
         {
-            if (!(m_Redis is { IsConnected: true }))
-                m_Redis = ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
-            fn.Invoke(m_Redis);
+            fn.Invoke(Instance);
 
             //if (m_Redis == null || !m_Redis.IsConnected) {
             //GetRedis(fn);

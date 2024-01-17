@@ -14,21 +14,31 @@ public class WsServer
     {
         protected override void OnMessage(MessageEventArgs e)
         {
-            var msg = e.Data == "BALUS" ? "Are you kidding?" : "I'm not available now.";
+            var msg = $"Websocket online: {e.Data}";
             Send(msg);
         }
     }
 
     public static WebSocketServer wssServer;
 
+    [InitializeOnEnterPlayMode]
+    static void OnPlay()
+    {
+        if (!(wssServer is { IsListening: true })) Restart();
+    }
+
     /// <summary>
     /// https://github.com/sta/websocket-sharp
     /// </summary>
-    [InitializeOnLoadMethod, MenuItem("Debug/Websocket server"), InitializeOnEnterPlayMode]
+    [InitializeOnLoadMethod, MenuItem("Debug/Websocket server")]
     public static void StartWsServer()
     {
         EditorApplication.playModeStateChanged -= OnEditorApplicationOnplayModeStateChanged;
         EditorApplication.playModeStateChanged += OnEditorApplicationOnplayModeStateChanged;
+        EditorApplication.delayCall += () => {
+            if (!(wssServer is { IsListening: true })) Restart();
+        };
+        if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
         if (!(wssServer is { IsListening: true })) Restart();
         var ws = new WebSocket("ws://192.168.1.65:5963/app");
         // ws.SslConfiguration.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => {
@@ -57,32 +67,33 @@ public class WsServer
 
     private static void OnEditorApplicationOnplayModeStateChanged(PlayModeStateChange mode)
     {
+        if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+
         //  if (mode == PlayModeStateChange.EnteredEditMode || mode == PlayModeStateChange.EnteredPlayMode) {
-        if (!(wssServer is { IsListening: true })) {
-            Restart();
-        }
-        else {
-            Debug.Log($"{mode} => Websocket ready");
-        }
+        if (!(wssServer is { IsListening: true })) Restart();
+
         //   }
     }
 
     static void Restart()
     {
         Debug.Log("restart ws server");
-        wssServer?.Stop();
-        wssServer = new WebSocketServer(5963, false) {
-            // SslConfiguration = {
-            //     ServerCertificate = new X509Certificate2(
-            //         /*"/path/to/cert.pfx"*/"Assets/Editor/Websockets/Pfx/certificate.pfx",
-            //         /*"password for cert.pfx"*/"7758"),
-            //     ClientCertificateRequired = false,
-            //     CheckCertificateRevocation = false,
-            //     ClientCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-            // },
-        };
-        wssServer.AddWebSocketService<WsService>("/app");
-        wssServer.Start();
+
+        if (wssServer?.IsListening != true) {
+            wssServer?.Stop();
+            wssServer = new WebSocketServer(5963, false) {
+                // SslConfiguration = {
+                //     ServerCertificate = new X509Certificate2(
+                //         /*"/path/to/cert.pfx"*/"Assets/Editor/Websockets/Pfx/certificate.pfx",
+                //         /*"password for cert.pfx"*/"7758"),
+                //     ClientCertificateRequired = false,
+                //     CheckCertificateRevocation = false,
+                //     ClientCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                // },
+            };
+            wssServer.AddWebSocketService<WsService>("/app");
+            wssServer.Start();
+        }
         Debug.Log($"started: {wssServer.IsListening}");
     }
 

@@ -96,10 +96,10 @@ namespace Runner.Characters
             m_IsRunning = false;
         }
 
-#if !UNITY_STANDALONE
+// #if !UNITY_STANDALONE
         public Vector2 m_StartingTouch;
         public bool m_IsSwiping = false;
-#endif
+// #endif
 
         // Cheating functions, use for testing
         public void CheatInvincible(bool invincible)
@@ -188,6 +188,7 @@ namespace Runner.Characters
             }
             else {
                 // Use touch input on mobile
+
                 var isUI = Input.touches.Any(t => EventSystem.current.IsPointerOverGameObject(t.fingerId));
 
                 if (!(isUI && EventSystem.current.currentSelectedGameObject) && Input.touchCount == 1 &&

@@ -24,6 +24,8 @@ declare global {
     import { ChangeCharcter } from "Game/ChangeCharcter.mjs";
     import { ChangeCharacter } from "Game/ChangeCharacter.mjs";
     import { BackupCard } from "Game/BackupCard.mjs";
+    import { StartUp } from "Loading/StartUp.mjs";
+    declare var $StartUp: StartUp;
     declare var $BackupCard: BackupCard;
     declare var $ChangeCharacter: ChangeCharacter;
     declare var $ChangeCharacterBtn: ChangeCharacterBtn;

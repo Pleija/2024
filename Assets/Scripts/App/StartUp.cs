@@ -31,7 +31,7 @@ namespace App
             }
         }
 
-        private async void Awake()
+        public async void OnStart()
         {
             Debug.Log($"Initial Time: {Time.realtimeSinceStartup:F2}");
             await Addressables.InitializeAsync().Task;

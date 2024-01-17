@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading;
-using BetterEvents;
+using UltEvents;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,12 +23,10 @@ namespace Cysharp.Threading.Tasks.Triggers
     [DisallowMultipleComponent]
     public sealed class AsyncAwakeTrigger : AsyncTriggerBase<AsyncUnit>
     {
-        public UnityEvent OnAwake;
-        public BetterEvent OnAwake2;
+        public UltEvent OnAwake;
         public UniTask AwakeAsync()
         {
-            OnAwake?.Invoke();
-            OnAwake2.Invoke();
+            OnAwake.Invoke();
             if (calledAwake) return UniTask.CompletedTask;
 
             return ((IAsyncOneShotTrigger)new AsyncTriggerHandler<AsyncUnit>(this, true)).OneShotAsync();

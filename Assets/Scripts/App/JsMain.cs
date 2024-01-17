@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using BetterEvents;
 using Puerts;
 using PuertsStaticWrap;
 using Sirenix.Serialization;
 using SqlCipher4Unity3D;
+using UltEvents;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
@@ -19,8 +19,7 @@ namespace App
         public static JsMain self;
         // public void OnEnable() { }
 
-        public UnityEvent OnStart1;
-        public BetterEvent OnStart2;
+        public UltEvent OnStart;
         public static bool assetsReady;
 
         public static string[] all => Res.Exists<TextAsset>()
@@ -46,7 +45,12 @@ namespace App
 
         public bool LoadModels;
 
-        public async void Awake()
+        public void ExecuteModule(string module)
+        {
+            JsEnv.self.ExecuteModule(module.EndsWith(".mjs") ? module : module + ".mjs");
+        }
+
+        public async void Load()
         {
             Debug.Log("Start JsMain");
             self = this;
@@ -63,8 +67,7 @@ namespace App
                 Addressables.Release(handle);
             }
             await Reload();
-            OnStart1?.Invoke();
-            OnStart2.Invoke();
+            OnStart?.Invoke();
             //SceneManager.LoadScene("Start");
         }
 

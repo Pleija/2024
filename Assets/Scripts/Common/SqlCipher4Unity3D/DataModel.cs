@@ -12,6 +12,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Models;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -84,13 +85,16 @@ namespace SqlCipher4Unity3D
         [FoldoutGroup("Default")]
         public new HideFlags hideFlags { get; set; }
 
-        public ModelBase GetSelf() => null;
+        public virtual ModelBase GetSelf() => null;
+        public virtual void ResetSelf() { }
 
         public ModelBase Save()
         {
             conn.Save(this);
             return this;
         }
+
+        public virtual void SetupFromRedis() { }
 
         [SerializeField, HideInInspector, Ignore]
         private SerializationData serializationData;
@@ -117,60 +121,121 @@ namespace SqlCipher4Unity3D
         public static T self {
             get {
                 if (m_Instance) return m_Instance;
-                conn.Table<T>().FirstOrInsert(table => {
-                    //value ??= CreateInstance<T>();
-                    if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
+                InnerResetSelf();
+                return m_Instance;
+            }
+        }
+
+        public override void ResetSelf() => InnerResetSelf();
+
+        public static void InnerResetSelf()
+        {
+            conn.Table<T>().FirstOrInsert(table => {
+                //value ??= CreateInstance<T>();
+                if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
-                        //if (!Application.isPlaying) {
-                        result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
-                            AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x))).FirstOrDefault();
-                        // }
+                    //if (!Application.isPlaying) {
+                    result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
+                        AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x))).FirstOrDefault();
+                    // }
 #endif
+                    if (Application.isPlaying && !Application.isEditor) {
                         if (result == null && Res.Exists<T>() is { } locations) {
                             result = Defaults[typeof(T)] = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey)
                                 .WaitForCompletion();
                             Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
                         }
-
-                        if (result == null) {
-                            Debug.Log($"{typeof(T).Name} asset not found");
-                        }
                     }
+
+                    if (result == null) {
+                        Debug.Log($"{typeof(T).Name} asset not found");
+                    }
+                }
 #if UNITY_EDITOR
-                    // if(!Application.isEditor) return;
+                // if(!Application.isEditor) return;
 
-                    if ((result == null || AssetDatabase.GetAssetPath(result) == null)) {
-                        var settings = AddressableAssetSettingsDefaultObject.Settings;
-                        //var entries = settings.groups.SelectMany(x => x.entries);
-                        result = Defaults[typeof(T)] = table; //CreateInstance<T>();
-                        var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
+                if ((result == null || AssetDatabase.GetAssetPath(result) == null)) {
+                    var settings = AddressableAssetSettingsDefaultObject.Settings;
+                    //var entries = settings.groups.SelectMany(x => x.entries);
+                    result = Defaults[typeof(T)] = table; //CreateInstance<T>();
+                    var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
 
-                        if (!Directory.Exists(Path.GetDirectoryName(path))) {
-                            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                        }
-                        AssetDatabase.CreateAsset(table, path);
-                        AssetDatabase.Refresh();
-                        //AssetDatabase.SaveAssets();
-                        result = AssetDatabase.LoadAssetAtPath<T>(path);
-                        // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
-                        //     settings.DefaultGroup);
-                        // entry.address = typeof(T).FullName;
+                    if (!Directory.Exists(Path.GetDirectoryName(path))) {
+                        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
                     }
+                    AssetDatabase.CreateAsset(table, path);
+                    AssetDatabase.Refresh();
+                    //AssetDatabase.SaveAssets();
+                    result = AssetDatabase.LoadAssetAtPath<T>(path);
+                    // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
+                    //     settings.DefaultGroup);
+                    // entry.address = typeof(T).FullName;
+                }
 #endif
 
-                    if (result) {
-                        Setup(result, table);
-                    }
-                    else {
-                        Debug.Log($"{typeof(T).FullName} asset not found");
-                    }
-                    m_Instance = result as T;
-                });
-                return m_Instance;
-            }
+                if (result) {
+                    Defaults[typeof(T)] = m_Instance = result as T;
+                    Setup(result, table);
+                    if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying) result.SetupFromRedis();
+                }
+                else {
+                    Debug.Log($"{typeof(T).FullName} asset not found");
+                }
+            });
         }
 
-        public new ModelBase GetSelf() => self;
+        public override void SetupFromRedis()
+        {
+            RedisData.self.Data(database => {
+                var json = database.StringGet(GetType().FullName);
+                var value = CreateInstance<T>();
+                JsonUtility.FromJsonOverwrite(json, value);
+                value.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .Where(x => Regex.IsMatch(x.Name, @"^[A-Z]")).ForEach(mi => {
+                        if (mi is PropertyInfo { CanRead: true, CanWrite: true } propertyInfo) {
+                            var newValue = propertyInfo.GetValue(value, null);
+                            var oldValue = propertyInfo.GetValue(this, null);
+
+                            switch (oldValue) {
+                                case IntReactiveProperty intReactiveProperty:
+                                    intReactiveProperty.Value = ((IntReactiveProperty)newValue).Value;
+                                    break;
+                                case StringReactiveProperty stringReactive:
+                                    stringReactive.Value = ((StringReactiveProperty)newValue).Value;
+                                    break;
+                                case FloatReactiveProperty floatReactive:
+                                    floatReactive.Value = ((FloatReactiveProperty)newValue).Value;
+                                    break;
+                                default:
+                                    propertyInfo.SetValue(this, newValue);
+                                    break;
+                            }
+                        }
+                        else if (mi is FieldInfo fieldInfo) {
+                            var newValue = fieldInfo.GetValue(value);
+                            var oldValue = fieldInfo.GetValue(this);
+
+                            switch (oldValue) {
+                                case IntReactiveProperty intReactiveProperty:
+                                    intReactiveProperty.Value = ((IntReactiveProperty)newValue).Value;
+                                    break;
+                                case StringReactiveProperty stringReactive:
+                                    stringReactive.Value = ((StringReactiveProperty)newValue).Value;
+                                    break;
+                                case FloatReactiveProperty floatReactive:
+                                    floatReactive.Value = ((FloatReactiveProperty)newValue).Value;
+                                    break;
+                                default:
+                                    fieldInfo.SetValue(this, newValue);
+                                    break;
+                            }
+                        }
+                    });
+                Debug.Log($"setup finish: {GetType().FullName}");
+            });
+        }
+
+        public override ModelBase GetSelf() => self;
 
         public static void Setup(ModelBase asset, T table)
         {
@@ -183,11 +248,13 @@ namespace SqlCipher4Unity3D
                         switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                                 value = propertyInfo.GetValue(table, null) ??
-                                  (propertyInfo.PropertyType == typeof(string) ? "":Activator.CreateInstance(propertyInfo.PropertyType))  ;
+                                    (propertyInfo.PropertyType == typeof(string) ? ""
+                                        : Activator.CreateInstance(propertyInfo.PropertyType));
                                 propertyInfo.SetValue(asset, value);
                                 break;
                             case FieldInfo fieldInfo:
-                                value = fieldInfo.GetValue(table) ?? (fieldInfo.FieldType == typeof(string) ? "" :  Activator.CreateInstance(fieldInfo.FieldType));
+                                value = fieldInfo.GetValue(table) ?? (fieldInfo.FieldType == typeof(string) ? ""
+                                    : Activator.CreateInstance(fieldInfo.FieldType));
                                 fieldInfo.SetValue(asset, value);
                                 break;
                         }
@@ -256,6 +323,16 @@ namespace SqlCipher4Unity3D
             return result;
         }
 
+#if UNITY_EDITOR
+        public virtual void OnValidate()
+        {
+            if (!EditorApplication.isCompiling && !EditorApplication.isUpdating) {
+                //Debug.Log($"OnValidate: {GetType().Name}");
+                RedisData.self.Data(t => t.StringSet(typeof(T).FullName, JsonUtility.ToJson(this)));
+                RedisData.self.Redis(t => t.GetSubscriber().Publish("update", typeof(T).FullName));
+            }
+        }
+#endif
         // void SaveConfig()
         // {
         //     Model.conn.Save(this);

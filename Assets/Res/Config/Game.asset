@@ -16,6 +16,18 @@ MonoBehaviour:
   Version: 1.0
   Extra: '{}'
   localExtra: '{}'
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: frameData
+      Entry: 6
+      Data: 
   startTime:
     value: 0
   frameCount:

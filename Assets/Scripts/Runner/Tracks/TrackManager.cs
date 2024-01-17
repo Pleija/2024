@@ -493,10 +493,9 @@ namespace Runner.Tracks
 
         private IEnumerator SpawnFromAssetReference(AssetReference reference, TrackSegment segment, int posIndex)
         {
-            AsyncOperationHandle op = Addressables.LoadAssetAsync<GameObject>(reference);
+            var op = Addressables.LoadAssetAsync<GameObject>(reference);
             yield return op;
-            var obj = op.Result as GameObject;
-
+            GameObject obj = op.Result as GameObject;
             if (obj != null) {
                 var obstacle = obj.GetComponent<Obstacle>();
                 if (obstacle != null)

@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-using BetterEvents;
+using UltEvents;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,13 +22,11 @@ namespace Cysharp.Threading.Tasks.Triggers
     public sealed class AsyncStartTrigger : AsyncTriggerBase<AsyncUnit>
     {
         bool called;
-        public UnityEvent OnStart;
-        public BetterEvent OnStart2;
+        public UltEvent OnStart;
 
         void Start()
         {
-            OnStart?.Invoke();
-            OnStart2.Invoke();
+            OnStart.Invoke();
             called = true;
             RaiseEvent(AsyncUnit.Default);
         }

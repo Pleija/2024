@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using Models;
 using Sirenix.Utilities;
 using SqlCipher4Unity3D;
@@ -11,9 +12,10 @@ namespace App.Models
 {
     public class GenModelAsset
     {
-        [InitializeOnLoadMethod]
+        [InitializeOnEnterPlayMode]
         public static void Gen()
         {
+            if (EditorApplication.isUpdating || EditorApplication.isCompiling) return;
             typeof(Game).Assembly.GetExportedTypes().Where(t =>
                     typeof(ModelBase).IsAssignableFrom(t) && t != typeof(ModelBase) && !t.IsAbstract &&
                     !t.IsGenericType)
