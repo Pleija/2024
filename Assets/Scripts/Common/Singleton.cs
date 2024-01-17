@@ -1,8 +1,11 @@
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 public interface IAutoCreate { }
 public interface IDontDestroyOnLoad { }
+public interface IEditorUpdate { }
 public class SingletonSample : Singleton<SingletonSample> { }
 
 public class Singleton<T> : Agent<T> where T : Singleton<T>
@@ -24,27 +27,35 @@ public class Singleton<T> : Agent<T> where T : Singleton<T>
             }
             else {
                 go.hideFlags = HideFlags.HideAndDontSave;
-// #if UNITY_EDITOR
-//                 EditorApplication.update -= EditorUpdate;
-//                 EditorApplication.update += EditorUpdate;
-// #endif
+#if UNITY_EDITOR
+                if (typeof(IEditorUpdate).IsAssignableFrom(typeof(T))) {
+                    EditorApplication.update -= EditorUpdate;
+                    EditorApplication.update += EditorUpdate;
+                }
+#endif
             }
             return m_Instance;
         }
         set => m_Instance = value;
     }
 
-//     public static void EditorUpdate()
-//     {
-//         if (m_Instance) {
-//             //m_Instance.Update();
-//         }
-//         else {
-// #if UNITY_EDITOR
-//             EditorApplication.update -= EditorUpdate;
-// #endif
-//         }
-//     }
+    public static void EditorUpdate()
+    {
+        if (m_Instance) {
+            UpdateMethodInfo ??= m_Instance.GetType().GetMethod("Update",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            if (UpdateMethodInfo != null) {
+                UpdateMethodInfo.Invoke(m_Instance, null);
+                return;
+            }
+        }
+#if UNITY_EDITOR
+        EditorApplication.update -= EditorUpdate;
+#endif
+    }
+
+    public static MethodInfo UpdateMethodInfo { get; set; }
 
     // public virtual void Update() { }
 
@@ -54,22 +65,19 @@ public class Singleton<T> : Agent<T> where T : Singleton<T>
 
         if (m_Instance == null) {
             m_Instance = (T)this;
+            CheckDontUnload();
         }
-        // else {
-        //     Destroy(gameObject);
-        //     return;
-        // }
-        CheckDontUnload();
     }
 
     public void CheckDontUnload()
     {
-        if (Application.isPlaying)
-            if (GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
-                typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
-                if (transform.parent != null) transform.SetParent(null);
-                DontDestroyOnLoad(gameObject);
-            }
+        if (!Application.isPlaying) return;
+
+        if (GetType().IsDefined(typeof(DontDestroyOnLoadAttribute), true) ||
+            typeof(IDontDestroyOnLoad).IsAssignableFrom(GetType())) {
+            if (transform.parent != null) transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     protected virtual void OnDestroy()

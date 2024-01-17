@@ -49,6 +49,7 @@
             jsEnv.UsingAction<ParadoxNotion.EventData<UnityEngine.EventSystems.PointerEventData>>();
             jsEnv.UsingAction<ParadoxNotion.EventData<UnityEngine.GameObject>>();
             jsEnv.UsingAction<Puerts.JsEnv, Puerts.ILoader, System.Int32>();
+            jsEnv.UsingAction<StackExchange.Redis.RedisChannel, StackExchange.Redis.RedisValue>();
             jsEnv.UsingAction<System.Boolean>();
             jsEnv.UsingAction<System.Boolean, System.String>();
             jsEnv.UsingAction<System.Double>();

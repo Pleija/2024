@@ -15,8 +15,8 @@ public static class Res
 
     public static IEnumerable<IResourceLocator> ResourceLocators {
         get {
-            // if (Addressables.ResourceLocators == null || !Addressables.ResourceLocators.Any())
-            //     Addressables.InitializeAsync().WaitForCompletion();
+            if (Addressables.ResourceLocators == null || !Addressables.ResourceLocators.Any())
+                Addressables.InitializeAsync().WaitForCompletion();
             return Addressables.ResourceLocators;
         }
     }

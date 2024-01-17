@@ -2,6 +2,7 @@
 using ParadoxNotion;
 using ParadoxNotion.Serialization;
 using ParadoxNotion.Serialization.FullSerializer;
+using UnityEngine;
 
 namespace NodeCanvas.Framework.Internal
 {

@@ -5,7 +5,8 @@
         "ParadoxNotion",
         "Helpers",
         "Unity.Addressables.Editor",
-        "MS.Shell.Editor"
+        "MS.Shell.Editor",
+        "com.tencent.puerts.core"
     ],
     "includePlatforms": [
         "Editor"

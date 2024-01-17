@@ -36,10 +36,10 @@ public class WsServer
         EditorApplication.playModeStateChanged -= OnEditorApplicationOnplayModeStateChanged;
         EditorApplication.playModeStateChanged += OnEditorApplicationOnplayModeStateChanged;
         EditorApplication.delayCall += () => {
-            if (!(wssServer is { IsListening: true })) Restart();
+            if (wssServer == null) Restart();
         };
         if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
-        if (!(wssServer is { IsListening: true })) Restart();
+        if (wssServer == null) Restart();
         var ws = new WebSocket("ws://192.168.1.65:5963/app");
         // ws.SslConfiguration.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => {
         //     Debug.Log(certificate.GetCertHashString());
@@ -70,7 +70,7 @@ public class WsServer
         if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
 
         //  if (mode == PlayModeStateChange.EnteredEditMode || mode == PlayModeStateChange.EnteredPlayMode) {
-        if (!(wssServer is { IsListening: true })) Restart();
+        if (wssServer == null) Restart();
 
         //   }
     }
@@ -79,8 +79,7 @@ public class WsServer
     {
         Debug.Log("restart ws server");
 
-        if (wssServer?.IsListening != true) {
-            wssServer?.Stop();
+        if (wssServer == null) {
             wssServer = new WebSocketServer(5963, false) {
                 // SslConfiguration = {
                 //     ServerCertificate = new X509Certificate2(
@@ -94,7 +93,7 @@ public class WsServer
             wssServer.AddWebSocketService<WsService>("/app");
             wssServer.Start();
         }
-        Debug.Log($"started: {wssServer.IsListening}");
+        Debug.Log($"websocket started: {wssServer.IsListening}");
     }
 
     /// <summary>

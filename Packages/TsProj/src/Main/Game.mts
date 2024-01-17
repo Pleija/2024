@@ -6,9 +6,7 @@ import Debug = CS.UnityEngine.Debug;
 import Addressables = CS.UnityEngine.AddressableAssets.Addressables;
 import AsyncOperationStatus = CS.UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus;
 import $promise = puer.$promise;
-import JsMain = CS.App.JsMain;
 import Application = CS.UnityEngine.Application;
-import SceneLoader = CS.Runner.SceneLoader;
 import Redis = CS.App.Redis;
 import Loading = CS.App.Loading;
 

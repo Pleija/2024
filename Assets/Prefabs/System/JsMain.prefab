@@ -1,0 +1,286 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5950315625506153904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6137553570899662488}
+  - component: {fileID: 1377158592846101511}
+  m_Layer: 0
+  m_Name: JsMain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6137553570899662488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5950315625506153904}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1377158592846101511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5950315625506153904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d8d062810b43f58437ba56a7588ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  OnStart:
+    _PersistentCalls: []
+  preload:
+  - {fileID: 11400000, guid: 389dc0164690641f38276896efeea3c6, type: 2}
+  - {fileID: 11400000, guid: 13fb58bb806094c7eb54bd0e38bd5596, type: 2}
+  - {fileID: 11400000, guid: 736ba970b46d744bb93fe7ee1d0308d2, type: 2}
+  - {fileID: 11400000, guid: 5652d562346344c73948db9d1b711b94, type: 2}
+  - {fileID: 11400000, guid: bdec12528653846079aaf89722e07e3d, type: 2}
+  - {fileID: 11400000, guid: b36e4c7a53742460fbf669c0ff2e7921, type: 2}
+  - {fileID: 11400000, guid: 201316fa81d2d478bb7368f2389ed404, type: 2}
+  - {fileID: 11400000, guid: d93aafdecfde346069cca3cc4381dcd1, type: 2}
+  - {fileID: 11400000, guid: 62138ce5dfaf8447cba7a5ced5edf6b3, type: 2}
+  scripts:
+  - path: Assets/Res/dist/bootstrap.mjs
+    file: {fileID: 2811297602134710623, guid: 97877341026b546459f6c515329e7a4c, type: 3}
+  - path: Assets/Res/dist/Common/BaseTag.mjs
+    file: {fileID: 2811297602134710623, guid: 37f64f198edc5459fb9295d42992b23b, type: 3}
+  - path: Assets/Res/dist/Common/Helpers.mjs
+    file: {fileID: 2811297602134710623, guid: 9cfaf4872b3e64879bec3c479d8f79ee, type: 3}
+  - path: Assets/Res/dist/Common/Iterator.mjs
+    file: {fileID: 2811297602134710623, guid: c679a2a2b6d764104a520a9917a2ee60, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBColumn.mjs
+    file: {fileID: 2811297602134710623, guid: a102dbf11fd374abe8055d66df13082f, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBCommand.mjs
+    file: {fileID: 2811297602134710623, guid: 2a7ebabe66e704b9089926e0cfa7dda3, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBCommandInsert.mjs
+    file: {fileID: 2811297602134710623, guid: a0e62d2715b544ee482e8eb6746d5033, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBConnection.mjs
+    file: {fileID: 2811297602134710623, guid: c4d390b16fba544d281d49bfd0f64889, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBMapping.mjs
+    file: {fileID: 2811297602134710623, guid: 040cb1b8079844160bdbbefb19f50fde, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBQuery.mjs
+    file: {fileID: 2811297602134710623, guid: df065c331f5214d16bda3a1ba10d5a48, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/DBType.mjs
+    file: {fileID: 2811297602134710623, guid: 0b8c625521279438699498842bccc2be, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/Orm.mjs
+    file: {fileID: 2811297602134710623, guid: 0c801a3b1e076450baea32682af2b27b, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/Utils/Attributes.mjs
+    file: {fileID: 2811297602134710623, guid: 709e541cceb6e49b895018fd7a6a3fbc, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/Utils/Decorator.mjs
+    file: {fileID: 2811297602134710623, guid: 172d80951716d44919861ba8831b7554, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3/Utils/Lambda.mjs
+    file: {fileID: 2811297602134710623, guid: aeb7be1597b414f95b72139dcafcea5d, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/AutoUpgrader.mjs
+    file: {fileID: 2811297602134710623, guid: aa003aae55cc34025a525b6dc455b5d2, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/BaseDAO.mjs
+    file: {fileID: 2811297602134710623, guid: a3bbc07d4bacb4d44a3ae6e13f2d2a87, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/core.mjs
+    file: {fileID: 2811297602134710623, guid: cafad633e9db64471b310e03d92b7bf9, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/index.mjs
+    file: {fileID: 2811297602134710623, guid: 2a43ee64ea15d4c76bc801943135ba52, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/SqlBackup.mjs
+    file: {fileID: 2811297602134710623, guid: 3b04d2d63319b4d8cb766337ff1f8dc7, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/SqlConnectionPool.mjs
+    file: {fileID: 2811297602134710623, guid: d94b0b8ee515b435693c406c424e1a10, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/SqlConnectionPoolDatabase.mjs
+    file: {fileID: 2811297602134710623, guid: a930755f0b0cb4ac88443a6aaa93e23a, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/SqlDatabase.mjs
+    file: {fileID: 2811297602134710623, guid: 85e442082ccb145a8b99fdde97447b8a, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/SqlDatabaseSettings.mjs
+    file: {fileID: 2811297602134710623, guid: a601402a3e0d44453b429e692201854e, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/core/SqlStatement.mjs
+    file: {fileID: 2811297602134710623, guid: af7c37cb250be46b8af97a4c8e3302d9, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/dbcatalog/DbCatalogDAO.mjs
+    file: {fileID: 2811297602134710623, guid: 20e31a633937c43cea11e82313226a21, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/dbcatalog/DbTableInfo.mjs
+    file: {fileID: 2811297602134710623, guid: ee2ab25882d18416bafca7a07340a387, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/dbcatalog/index.mjs
+    file: {fileID: 2811297602134710623, guid: d85ac841fb9f349f1bd181a413ef0c13, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/index.mjs
+    file: {fileID: 2811297602134710623, guid: b33e4c230592e452b8269681468a5e1d, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/decorators.mjs
+    file: {fileID: 2811297602134710623, guid: 2c61a2f18e39a43719d6778d850fc85f, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/DefaultValueTransformers.mjs
+    file: {fileID: 2811297602134710623, guid: 6d4f2ce641fd247b9b0a4f467b0a9854, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/Field.mjs
+    file: {fileID: 2811297602134710623, guid: a19db2177a65e4a9794cd76cfae9cee5, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/FKDefinition.mjs
+    file: {fileID: 2811297602134710623, guid: d79de14f9451a46b9b90ac8b3e225411, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/IDXDefinition.mjs
+    file: {fileID: 2811297602134710623, guid: 098fc37961d334dc7a06a4c5d8110c83, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/index.mjs
+    file: {fileID: 2811297602134710623, guid: 92393c981e34d4d0494c83bed8169352, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/MetaModel.mjs
+    file: {fileID: 2811297602134710623, guid: c41134b4a0b3b4ee7b5809f4628e793a, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/MetaProperty.mjs
+    file: {fileID: 2811297602134710623, guid: 5021d6ead2d6e4deebc7c3c79d45520c, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/PropertyType.mjs
+    file: {fileID: 2811297602134710623, guid: 6d9a8a6e46fad41afab0e106c6e14740, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/Schema.mjs
+    file: {fileID: 2811297602134710623, guid: 77e12f5487f694b5a818ce92af82d0b7, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/Table.mjs
+    file: {fileID: 2811297602134710623, guid: 1cb83debf338a450f94af8a802667c6c, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/metadata/ValueTransformer.mjs
+    file: {fileID: 2811297602134710623, guid: befb751bc8f774948ae10ed2f8876f0d, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/Filter.mjs
+    file: {fileID: 2811297602134710623, guid: 860fe2c2813094bd88dc6430cb11ac1a, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/index.mjs
+    file: {fileID: 2811297602134710623, guid: 5d2a847837e8a4f0385b11c27bb9b34f, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/QueryCondition.mjs
+    file: {fileID: 2811297602134710623, guid: 53f0375271d9f47ff8fecc33f69bb2b6, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/QueryModel.mjs
+    file: {fileID: 2811297602134710623, guid: 86c3724e9f8454651bb315e8a6cd6401, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/QueryModelBase.mjs
+    file: {fileID: 2811297602134710623, guid: d926a86e5113f4d678a15045a3d4584d, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/QueryModelPredicates.mjs
+    file: {fileID: 2811297602134710623, guid: 6855e4c9d36544420ba0a212c67939f7, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/QueryOperation.mjs
+    file: {fileID: 2811297602134710623, guid: 2340b5bad5227454d8151c1aa8f1f8e3, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/QueryPropertyPredicate.mjs
+    file: {fileID: 2811297602134710623, guid: ef33a4b6f0b1f404ab4d0bad54b035e4, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/query/Where.mjs
+    file: {fileID: 2811297602134710623, guid: cf32384cf368644eca8736fd0dc9a5f8, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/utils/identifiers.mjs
+    file: {fileID: 2811297602134710623, guid: d773a97a3bc494d3b90130996644b7a1, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/utils/index.mjs
+    file: {fileID: 2811297602134710623, guid: be9d78c7ff3de4ea18071c28310030c5, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/utils/sequentialize.mjs
+    file: {fileID: 2811297602134710623, guid: 2f1ad4203a61f48a5a9919b6c0eaabf3, type: 3}
+  - path: Assets/Res/dist/Common/Sqlite3ORM/utils/wait.mjs
+    file: {fileID: 2811297602134710623, guid: 88ddbb5b06f364a72ab02558e6131582, type: 3}
+  - path: Assets/Res/dist/Common/StateFsm.mjs
+    file: {fileID: 2811297602134710623, guid: 594af58fc8729412ab57b8978425c479, type: 3}
+  - path: Assets/Res/dist/Common/StateNode.mjs
+    file: {fileID: 2811297602134710623, guid: b7de95db53164443b8490753b0e21fa3, type: 3}
+  - path: Assets/Res/dist/Common/Tests/protobuf-test.mjs
+    file: {fileID: 2811297602134710623, guid: 5dff273cd3a324e9293b3e37f961ab11, type: 3}
+  - path: Assets/Res/dist/Common/TypeUtils.mjs
+    file: {fileID: 2811297602134710623, guid: 93fd5bfbdb6b8499892d98da32eb0381, type: 3}
+  - path: Assets/Res/dist/ExtensionDecl.mjs
+    file: {fileID: 2811297602134710623, guid: 9450df12a9fd34abf9db2f1ee5647238, type: 3}
+  - path: Assets/Res/dist/Game/BackupCard.mjs
+    file: {fileID: 2811297602134710623, guid: 84ceae259cd3244d6b16215ba01e25ef, type: 3}
+  - path: Assets/Res/dist/Game/ChangeCharacter.mjs
+    file: {fileID: 2811297602134710623, guid: e991fce9d4f004c5ab60b0f6baa1a024, type: 3}
+  - path: Assets/Res/dist/Game/ChangeCharcter.mjs
+    file: {fileID: 2811297602134710623, guid: 8b0626e9ad3e047d58081e5093f24e4f, type: 3}
+  - path: Assets/Res/dist/Game/HpSlider/HpStart.mjs
+    file: {fileID: 2811297602134710623, guid: 390eaed86ec2d42ddbe5c6bb3c83e532, type: 3}
+  - path: Assets/Res/dist/Game/HpSlider/Start.mjs
+    file: {fileID: 2811297602134710623, guid: 69c6718a2b624490d87ce83582fa90a7, type: 3}
+  - path: Assets/Res/dist/Game/HpSlider.mjs
+    file: {fileID: 2811297602134710623, guid: 23c14bdc3a5e747ceaefbae0ce7f44f0, type: 3}
+  - path: Assets/Res/dist/HeroesPage/ChangeCharacterBtn.mjs
+    file: {fileID: 2811297602134710623, guid: 7fd52c3d11723493d9fe11cd1d85cea6, type: 3}
+  - path: Assets/Res/dist/index.mjs
+    file: {fileID: 2811297602134710623, guid: 9438a4fddfa31468e9fa5172fd11a47b, type: 3}
+  - path: Assets/Res/dist/Loading/StartUp.mjs
+    file: {fileID: 2811297602134710623, guid: 213a335f4afb441308d9c8a93bc6a6a1, type: 3}
+  - path: Assets/Res/dist/Main/CardAgent.mjs
+    file: {fileID: 2811297602134710623, guid: f5ea06b57a0624761a3fcd4bcc45c9be, type: 3}
+  - path: Assets/Res/dist/Main/CardsPage.mjs
+    file: {fileID: 2811297602134710623, guid: f51f18a40421e45e08f41cf30a339a1b, type: 3}
+  - path: Assets/Res/dist/Main/ClanPage.mjs
+    file: {fileID: 2811297602134710623, guid: eae8312039cf8490aa978837ff575cad, type: 3}
+  - path: Assets/Res/dist/Main/Game/GameStart.mjs
+    file: {fileID: 2811297602134710623, guid: 5c673a31bd53f410ca4239deec2e0b63, type: 3}
+  - path: Assets/Res/dist/Main/Game.mjs
+    file: {fileID: 2811297602134710623, guid: e54db9abfd5324ea79e0bfa80e7e8d66, type: 3}
+  - path: Assets/Res/dist/Main/GameManager.mjs
+    file: {fileID: 2811297602134710623, guid: b2124d80eb1774c3a8cd1a65222f3432, type: 3}
+  - path: Assets/Res/dist/Main/GameOverState.mjs
+    file: {fileID: 2811297602134710623, guid: 7e438dc922d9c41a0a1f5d2895aff272, type: 3}
+  - path: Assets/Res/dist/Main/GameState.mjs
+    file: {fileID: 2811297602134710623, guid: 98b27c88ebe994939acf8714f898407d, type: 3}
+  - path: Assets/Res/dist/Main/HeroesPage.mjs
+    file: {fileID: 2811297602134710623, guid: ba4d70c69b0294f61b35cea904e6e254, type: 3}
+  - path: Assets/Res/dist/Main/LevelStart.mjs
+    file: {fileID: 2811297602134710623, guid: 97c3ce97e099b415c86d1139995de209, type: 3}
+  - path: Assets/Res/dist/Main/LoadingCharPos.mjs
+    file: {fileID: 2811297602134710623, guid: b50cd167a2d63461cb79348db9661d94, type: 3}
+  - path: Assets/Res/dist/Main/LoadoutState.mjs
+    file: {fileID: 2811297602134710623, guid: 289810bd98abb488299cbf1d8af92d45, type: 3}
+  - path: Assets/Res/dist/Main/MainHP.mjs
+    file: {fileID: 2811297602134710623, guid: b5884ba4587554be198f2af91b5892c5, type: 3}
+  - path: Assets/Res/dist/Main/MenuArea/MenuAreaStart.mjs
+    file: {fileID: 2811297602134710623, guid: 15e5dd94b4bb245c3b1a97ca3b1717b3, type: 3}
+  - path: Assets/Res/dist/Main/MenuArea.mjs
+    file: {fileID: 2811297602134710623, guid: 260dce21b1ce84e5fb97de7504a9aec0, type: 3}
+  - path: Assets/Res/dist/Main/Mission/MissionState.mjs
+    file: {fileID: 2811297602134710623, guid: dec6b12a5762a41bea94a4ad09182bcf, type: 3}
+  - path: Assets/Res/dist/Main/Mission.mjs
+    file: {fileID: 2811297602134710623, guid: c46194359ab7e4135974bc408054d4a2, type: 3}
+  - path: Assets/Res/dist/Main/MissionPage.mjs
+    file: {fileID: 2811297602134710623, guid: 18ab92b12cda042db96853bf5767c3c0, type: 3}
+  - path: Assets/Res/dist/Main/MissonBtn.mjs
+    file: {fileID: 2811297602134710623, guid: e0729ee832c0e42158c97fdc1acedb22, type: 3}
+  - path: Assets/Res/dist/Main/Modifier.mjs
+    file: {fileID: 2811297602134710623, guid: 40548a393d47d45c8bd19b14fc3bca08, type: 3}
+  - path: Assets/Res/dist/Main/Navbar.mjs
+    file: {fileID: 2811297602134710623, guid: 8353fdedc53d446428b690c7da8071bd, type: 3}
+  - path: Assets/Res/dist/Main/SeededRun.mjs
+    file: {fileID: 2811297602134710623, guid: 881c9f7e207fd4e14aa56e6519235279, type: 3}
+  - path: Assets/Res/dist/Main/ShopPage.mjs
+    file: {fileID: 2811297602134710623, guid: f805ade34b85a48ea921c964d7158ba0, type: 3}
+  - path: Assets/Res/dist/Main/TutorialState.mjs
+    file: {fileID: 2811297602134710623, guid: e5ba862175efb43b2bc872ac4a220897, type: 3}
+  - path: Assets/Res/dist/MissionPage/Settings.mjs
+    file: {fileID: 2811297602134710623, guid: e585cc6a4560c440a8f6bb33ff75ba02, type: 3}
+  - path: Assets/Res/dist/polyfill.mjs
+    file: {fileID: 2811297602134710623, guid: 1e10ad74dd31c45d2b3f633c54b63ebf, type: 3}
+  - path: Assets/Res/dist/QuickStart.mjs
+    file: {fileID: 2811297602134710623, guid: c55d5712c05c849dd850db3227f33818, type: 3}
+  - path: Assets/Res/dist/signalr.mjs
+    file: {fileID: 2811297602134710623, guid: 8fc260c8182d94b5c83590f5674e4040, type: 3}
+  - path: Assets/Res/dist/Start/Login/LoadStart.mjs
+    file: {fileID: 2811297602134710623, guid: bd63fe5f8e1ec476281fc989c559458f, type: 3}
+  - path: Assets/Res/dist/Start/Login.mjs
+    file: {fileID: 2811297602134710623, guid: a3b47d720ddd84998b089d2a6367cc77, type: 3}
+  - path: Assets/Res/dist/Start/StartButton/StartGame.mjs
+    file: {fileID: 2811297602134710623, guid: 0dd21ab62d1b04a69b407911f4341d72, type: 3}
+  - path: Assets/Res/dist/Start/StartButton.mjs
+    file: {fileID: 2811297602134710623, guid: 20f68db5e2a0a44c480528f64e1d889a, type: 3}
+  - path: Assets/Res/dist/Start/Updating/StartUpdating.mjs
+    file: {fileID: 2811297602134710623, guid: 13990c426fde84094b0fda90c7eaf199, type: 3}
+  - path: Assets/Res/dist/Start/Updating.mjs
+    file: {fileID: 2811297602134710623, guid: a2863513094f74f01908721c735eea6f, type: 3}
+  - path: Assets/Res/dist/Tags/MainMenu.mjs
+    file: {fileID: 2811297602134710623, guid: 9123b5e17286d4ae48f1b61ea2ceb4f1, type: 3}
+  - path: Assets/Res/dist/Tags/Test.mjs
+    file: {fileID: 2811297602134710623, guid: 59960c0e744db4d06a6d3577ccbb836c, type: 3}
+  - path: Assets/Res/dist/UIEvent.mjs
+    file: {fileID: 2811297602134710623, guid: a996df001f0484a168d78693b165e94a, type: 3}
+  - path: Assets/Res/dist/Websocket.mjs
+    file: {fileID: 2811297602134710623, guid: 71ca9a95058df406591b7aec8a1a31cc, type: 3}
+  - path: Assets/Res/proto/awesome.proto
+    file: {fileID: 2811297602134710623, guid: 13b4a9ed64d945fc90c50ce51ce4227a, type: 3}
+  - path: Assets/Res/proto/sample.proto
+    file: {fileID: 2811297602134710623, guid: 605741c6bfd94e2288e60a0681fb4d13, type: 3}
+  updateCatalog: 0
+  IsGetAssets: 0
+  LoadModels: 0

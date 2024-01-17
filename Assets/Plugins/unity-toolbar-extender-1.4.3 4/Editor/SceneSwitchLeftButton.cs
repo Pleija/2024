@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using App;
 using Models;
 using MS.Shell.Editor;
 using ParadoxNotion.Design;
@@ -33,6 +34,10 @@ namespace UnityToolbarExtender
 
         public static string PreExport()
         {
+            if (!JsMain.PressPreload()) {
+                return "JsMain Not Found";
+            }
+
             if (newBuild) {
                 UnityEngine.Debug.Log("BuildAddressablesProcessor.PreExport start");
                 AddressableAssetSettings.CleanPlayerContent(AddressableAssetSettingsDefaultObject.Settings
@@ -211,10 +216,13 @@ namespace UnityToolbarExtender
             var buttonText = "Build";
             appName = isWin ? "Win64/" + Application.productName + ".exe" : isAndroid ? "test.apk" : "test.app";
             var btnHeight = 18f;
-
             var left = new GUIStyle("ButtonLeft");
+
             //left.margin = new RectOffset(0, 0, -5, 0);
             if (GUILayout.Button(new GUIContent("Git"), /*buttonStyle*/left, GUILayout.Height(btnHeight))) {
+                if (!JsMain.PressPreload()) {
+                    return;
+                }
                 EditorSceneManager.SaveOpenScenes();
                 UpdateBuild();
                 EditorShell.GitUpdate(() => {
@@ -222,8 +230,8 @@ namespace UnityToolbarExtender
                 });
                 GUIUtility.ExitGUI();
             }
-
             var mid = new GUIStyle("ButtonMid");
+
             //mid.margin = new RectOffset(0, 0, -5, 0);
             if (GUILayout.Button(new GUIContent(buttonText, $"{tooltipText}: Clean & Build Builds/{appName} "),
                     /*buttonStyle*/mid, GUILayout.Height(btnHeight))) {
@@ -239,8 +247,8 @@ namespace UnityToolbarExtender
 
                 //Application.OpenURL("file://"+Directory.GetCurrentDirectory()+ "/Builds/test.app");// /Contents/MacOS/剑雪冰壶
             }
-
             var right = new GUIStyle("ButtonRight");
+
             //right.margin = new RectOffset(0, 0, -5, 0);
             if (GUILayout.Button(new GUIContent("Update"), /*buttonStyle*/right, GUILayout.Height(btnHeight))) {
                 UpdateBuild();

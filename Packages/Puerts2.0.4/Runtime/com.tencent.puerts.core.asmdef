@@ -2,6 +2,7 @@
     "name": "com.tencent.puerts.core",
     "rootNamespace": "Puerts",
     "references": [
+        "UltEvents",
         "Helpers",
         "Unity.ResourceManager",
         "Unity.Addressables"

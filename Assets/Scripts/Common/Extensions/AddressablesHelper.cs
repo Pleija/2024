@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -9,25 +10,52 @@ using Object = UnityEngine.Object;
 
 public static class AddressablesHelper
 {
-    public static WaitUntil Instantiate(this AssetReference asset, Action<GameObject> callback)
+    public static void Check(this AssetReference assetReference, Action<GameObject> action)
     {
-        return Instantiate(asset, null, Vector3.zero, Quaternion.identity, callback);
+        action.Invoke(null);
     }
 
-    public static WaitUntil Instantiate(this AssetReference asset, Transform parent, Action<GameObject> callback)
+    public static UniTask Inst(this AssetReference asset, Action<GameObject> callback)
     {
-        return Instantiate(asset, parent, Vector3.zero, Quaternion.identity, callback);
+        return Inst(asset, null, Vector3.zero, Quaternion.identity, callback);
     }
 
-    // public static Dictionary<object, AsyncOperationHandle<GameObject>> handles =
-    //     new Dictionary<object, AsyncOperationHandle<GameObject>>();
+    public static UniTask Inst(this AssetReference asset, Transform parent, Action<GameObject> callback)
+    {
+        return Inst(asset, parent, Vector3.zero, Quaternion.identity, callback);
+    }
 
-    public static WaitUntil Instantiate(this AssetReference asset, Transform parent, Vector3 position,
-        Quaternion rotation, Action<GameObject> callback)
+    public static UniTask LoadPrefab(this AssetReference asset, Action<GameObject> callback)
+    {
+        return LoadAs(asset, typeof(GameObject), t => callback.Invoke(t as GameObject));
+    }
+
+    public static UniTask LoadAs(this AssetReference asset, Type type = null,
+        Action<UnityEngine.Object> callback = null)
     {
         if (!asset.RuntimeKeyIsValid()) {
             Debug.LogException(new Exception("key error"));
-            return new WaitUntil(() => true);
+            return UniTask.WaitUntil(() => true);
+        }
+        var h = Addressables.LoadAssetAsync<UnityEngine.Object>(asset);
+        h.Completed += handle => {
+            if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.GetType() == type) {
+                callback?.Invoke(handle.Result);
+            }
+            else {
+                callback?.Invoke(null);
+                Addressables.Release(handle);
+            }
+        };
+        return UniTask.WaitUntil(() => h.IsDone);
+    }
+
+    public static UniTask Inst(this AssetReference asset, Transform parent, Vector3 position, Quaternion rotation,
+        Action<GameObject> callback)
+    {
+        if (!asset.RuntimeKeyIsValid()) {
+            Debug.LogException(new Exception("key error"));
+            return UniTask.WaitUntil(() => true);
         }
         var h = Addressables.LoadAssetAsync<GameObject>(asset);
         //Addressables.InstantiateAsync(asset, position, rotation, parent);
@@ -44,6 +72,6 @@ public static class AddressablesHelper
                 Addressables.Release(handle);
             }
         };
-        return new WaitUntil(() => h.IsDone);
+        return UniTask.WaitUntil(() => h.IsDone);
     }
 }

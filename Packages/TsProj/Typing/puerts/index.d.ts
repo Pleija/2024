@@ -4,6 +4,8 @@ declare namespace puer {
     import AsyncOperation = CS.UnityEngine.AsyncOperation;
     import AsyncOperationHandle$1 = CS.UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle$1;
     import AsyncOperationHandle = CS.UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle;
+    import IEnumerator = CS.System.Collections.IEnumerator;
+    import UniTask = CS.Cysharp.Threading.Tasks.UniTask;
 
     function $ref<T>(x?: T): CS.$Ref<T>;
 
@@ -11,7 +13,7 @@ declare namespace puer {
 
     function $set<T>(x: CS.$Ref<T>, val: T): void;
 
-    function $promise<T>(x: CS.$Task<T> | AsyncOperation | AsyncOperationHandle$1<T> | AsyncOperationHandle): Promise<T>;
+    function $promise<T>(x: CS.$Task<T> | AsyncOperation | AsyncOperationHandle$1<T> | AsyncOperationHandle | UniTask): Promise<T>;
 
     function $generic<T extends new (...args: any[]) => any>(genericType: T, ...genericArguments: (typeof __Puerts_CSharpEnum | (new (...args: any[]) => any))[]): T;
 

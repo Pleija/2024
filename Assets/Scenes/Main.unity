@@ -3760,7 +3760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -12.553772, y: -0.0254}
+  m_AnchoredPosition: {x: -12.553787, y: -0.0254}
   m_SizeDelta: {x: 52.4731, y: 51.243}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &262011976
@@ -4301,6 +4301,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295932397}
   m_CullTransparentMesh: 1
+--- !u!114 &299806970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277f1e0847954a80bd27dfc7d8797ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value:
+    m_AssetGUID: 94cb557246c11d14388842cc08be79a8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  path: Assets/Prefabs/UI/PowerupIcon.prefab
 --- !u!1 &318276332
 GameObject:
   m_ObjectHideFlags: 0
@@ -7565,13 +7583,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"GameStart","_preTags":[],"_postTags":[],"_position":{"x":438.0,"y":309.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
-  _boundGraphObjectReferences: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"GameStart","_preTags":[],"_postTags":[],"_position":{"x":438.0,"y":309.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myAssetReference":{"_value":{"m_AssetGUID":"94cb557246c11d14388842cc08be79a8","m_SubObjectName":"","m_SubObjectType":""},"_name":"myAssetReference","_id":"080e93f7-82a9-4f42-85d8-6918e385e205","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
+    Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 299806970}
   _boundGraphSource:
     _version: 3.29
     _category: 
     _comments: 
-    _translation: {x: 0, y: 0}
+    _translation: {x: 18.196348, y: 6.4030166}
     _zoomFactor: 1
   _firstActivation: 1
   _enableAction: 0

@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using NodeCanvas.Framework;
 using Sirenix.Serialization;
 using StackExchange.Redis;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace App
 {
@@ -12,6 +15,22 @@ namespace App
     {
         void Hook()
         {
+            var types = new Type[] {
+                typeof(Variable<AssetReference>),
+                typeof(Variable<bool>),
+                typeof(Variable<GameObject>),
+                typeof(Variable<Component>),
+                typeof(Variable<Object>),
+                typeof(Variable<string>),
+                typeof(Variable<int>),
+                typeof(Variable<float>),
+                typeof(Variable<long>),
+                typeof(Variable<Vector2>),
+                typeof(Variable<Vector2Int>),
+                typeof(Variable<Vector3>),
+                typeof(Variable<Vector3Int>),
+
+            };
             var test = new object[] {
                 SerializationUtility.DeserializeValue<RedisKey>(null),
                 new Variable<Color>(),

@@ -501,14 +501,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
-  _boundGraphObjectReferences: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myString":{"_value":"test1","_name":"myString","_id":"1f728be1-a32f-47b3-8c4e-be9abc3db69e","$type":"NodeCanvas.Framework.Variable`1[[System.String,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"prefab":{"_value":{"m_AssetGUID":"b2b05e5486e5143f79e05f84c7462806","m_SubObjectType":"","m_EditorAssetChanged":true},"_name":"prefab","_id":"4e54b263-9472-4a26-89d8-162f223ebf04","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
+    Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 1919056162}
   _boundGraphSource:
     _version: 3.29
     _category: 
     _comments: 
-    _translation: {x: 0, y: 0}
-    _zoomFactor: 1
+    _translation: {x: 253.9876, y: 156.75421}
+    _zoomFactor: 0.2500795
   _firstActivation: 1
   _enableAction: 0
   _disableAction: 0
@@ -729,6 +733,24 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1919056162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277f1e0847954a80bd27dfc7d8797ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value:
+    m_AssetGUID: b2b05e5486e5143f79e05f84c7462806
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  path: Assets/Prefabs/Start/StartContent.prefab
 --- !u!1001 &3868378820542785068
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -28,8 +28,7 @@ namespace App
         public AssetReference nextScene;
         public AssetReference prefab;
         public AssetReference testPrefab;
-        public List<ScriptableObject> preload;
-        public List<TextAsset> scripts;
+     
 
         //public GameObject prefabObj;
         public const string PrivacyKey = "App.Privacy";
@@ -43,41 +42,7 @@ namespace App
         public Button retryBtn;
         private static bool clicked;
         private static bool updated;
-#if UNITY_EDITOR
-        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        // static void LoadDefaultScene()
-        // {
-        //     var scene = SceneManager.GetActiveScene();
-        //     var defaultPath = SceneManager.GetSceneAt(0).path;
-        //
-        //     if (scene.path != defaultPath) {
-        //         SceneManager.GetAllScenes().Where(x => x.isLoaded && x.path != defaultPath).SelectMany(x => x.GetRootGameObjects())
-        //             .ForEach(x => x.SetActive(false));
-        //         SceneManager.LoadScene(0);
-        //     }
-        // }
 
-        [Button]
-        public void SetupModelPreload()
-        {
-            if (preload == null) preload = new List<ScriptableObject>();
-            preload.RemoveAll(x => !x);
-            AssetDatabase.FindAssets($"t:{typeof(ModelBase).FullName}").Select(x =>
-                AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(x))).ForEach(asset => {
-                if (preload.All(t => t != asset)) {
-                    preload.Add(asset);
-                }
-            });
-            var all = AssetDatabase.FindAssets($"t:TextAsset").Select(AssetDatabase.GUIDToAssetPath)
-                .Where(t => t.EndsWith(".mjs")).ToArray();
-            //Debug.Log(AssetDatabase.LoadAssetAtPath<Object>(all.FirstOrDefault()) ?.GetType().GetNiceName());
-            scripts = all.Where(x => x.StartsWith("Assets/Res/dist/")).Select(AssetDatabase.LoadAssetAtPath<TextAsset>)
-                .ToList();
-            Debug.Log($"all: {all.Count()} scripts: {scripts.Count}");
-            //var t = AssetDatabase.LoadAssetAtPath<Object>("Assets/Res/dist/bootstrap.mjs");
-            //Debug.Log(t.GetType().GetNiceName());
-        }
-#endif
 
         public bool isAgreed {
             get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) && PlayerPrefs.HasKey(PrivacyKey);

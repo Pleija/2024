@@ -52,18 +52,7 @@ namespace SqlCipher4Unity3D
             }
         }
 
-        public static async Task LoadAll()
-        {
-            var types = new List<string>();
-
-            foreach (var x in Res.Exists<ModelBase>()) {
-                // await Addressables.DownloadDependenciesAsync(x).Task;
-                //if (Defaults.ContainsKey(x.ResourceType)) continue;
-                types.Add($"{x.ResourceType.FullName} => {x.PrimaryKey}");
-                Defaults[x.ResourceType] = await Addressables.LoadAssetAsync<ModelBase>(x).Task;
-            }
-            Debug.Log($"all models: {string.Join(", ", types)}");
-        }
+      
 
         [AutoIncrement, PrimaryKey]
         public int Id = 1;

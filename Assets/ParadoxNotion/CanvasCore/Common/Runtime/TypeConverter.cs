@@ -23,6 +23,8 @@ namespace ParadoxNotion
                 }
             }
 
+            //Debug.Log($"{fromType.FullName} => {toType.FullName}");
+
             // Normal assignment.
             if ( toType.RTIsAssignableFrom(fromType) ) {
                 return (value) => value;

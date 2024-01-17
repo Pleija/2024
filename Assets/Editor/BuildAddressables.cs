@@ -110,19 +110,7 @@ namespace Editors
             }
         }
 
-        static void PressPreload()
-        {
-            var prefab = AssetDatabase.FindAssets("StartContent").FirstOrDefault();
-
-            if (prefab == null) {
-                EditorUtility.DisplayDialog("error", "StartContent not found", "ok");
-                return;
-            }
-            var path = AssetDatabase.GUIDToAssetPath(prefab);
-            var go = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            go.GetComponentInChildren<Loading>().SetupModelPreload();
-            PrefabUtility.SavePrefabAsset(go);
-        }
+      
 
         static void GitUpdate()
         {
@@ -150,14 +138,17 @@ namespace Editors
             //     AddressableAssetSettingsDefaultObject.Settings.SaveAsset();
             // }
             //if(m_FirstBuild || !m_CanPass)
+
+            if (!JsMain.PressPreload()) {
+                return;
+            }
+
             if (!EditorUtility.DisplayDialog("Build with Addressables",
                     "必须在build 之前执行一次addressables build, 并且addressables build之后不能执行过run, 否则安卓会报catelog 404\n\nDo you want to build a clean addressables before export?",
                     "Build with Addressables", "Cancel")) {
                 return;
             }
             EditorSceneManager.SaveOpenScenes();
-
-            PressPreload();
             PreExport();
             EditorShell.GitUpdate();
             //GitUpdate();

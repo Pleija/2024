@@ -4,7 +4,9 @@ using ParadoxNotion;
 using ParadoxNotion.Serialization;
 using ParadoxNotion.Serialization.FullSerializer;
 using NodeCanvas.Framework.Internal;
+using ParadoxNotion.Design;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Logger = ParadoxNotion.Services.Logger;
 
 namespace NodeCanvas.Framework
@@ -24,6 +26,11 @@ namespace NodeCanvas.Framework
         [SerializeField] private string _id;
         [SerializeField] private bool _isPublic;
         [SerializeField, fsIgnoreInBuild] private bool _debugBoundValue;
+
+#if UNITY_EDITOR
+        [SerializeField]
+        public AssetObject assetObject;
+#endif
 
         ///<summary>Raised when name change</summary>
         public event Action<string> onNameChanged;
@@ -163,7 +170,12 @@ namespace NodeCanvas.Framework
 
         ///<summary>The value as type T when accessing as this type</summary>
         new public T value {
-            get { return getter != null ? getter() : _value; }
+            get {
+                if (typeof(T) == typeof(AssetReference) && assetObject) {
+                    _value = (T)(object) assetObject.Reference ;
+                }
+                return getter != null ? getter() : _value;
+            }
             set
             {
                 if ( base.HasValueChangeEvent() ) { //check this first to avoid unescessary value boxing
@@ -177,6 +189,10 @@ namespace NodeCanvas.Framework
                 }
 
                 this._value = value;
+
+                if (typeof(T) == typeof(AssetReference) && assetObject) {
+                    assetObject.Reference =(AssetReference)(object) value;
+                }
                 if ( setter != null ) { setter(value); }
             }
         }
@@ -188,7 +204,11 @@ namespace NodeCanvas.Framework
         public Variable(string name, string ID) : base(name, ID) { }
 
         ///<summary>Same as .value. Used for binding.</summary>
-        public override object GetValueBoxed() { return value; }
+        public override object GetValueBoxed()
+        {
+            //Debug.Log(typeof(T).Name);
+            return value;
+        }
         ///<summary>Same as .value. Used for binding.</summary>
         public override void SetValueBoxed(object newValue) { this.value = (T)newValue; }
         ///<summary>Same as .value. Used for binding.</summary>

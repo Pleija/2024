@@ -37,7 +37,7 @@ namespace Runner
                 if (handle.IsValid()) Addressables.Release(handle);
             }
             await Addressables.DownloadDependenciesAsync(aName).Task;
-            await JsMain.self.Reload(true);
+             JsMain.self.Reload(true);
             Addressables.LoadSceneAsync(aName, mode);
         }
     }
