@@ -137,8 +137,7 @@ namespace App
         private void Awake()
         {
             if (m_Instance) {
-                Destroy(gameObject);
-                return;
+                Destroy(m_Instance.gameObject);
             }
             Debug.Log("Start JsMain");
             m_Instance = this;
