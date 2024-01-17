@@ -35,7 +35,7 @@
     <assembly fullname="DOTween.Modules" preserve="all"/>
     <assembly fullname="DOTween" preserve="all"/>
     <assembly fullname="EasyDOTween" preserve="all"/>
-    <assembly fullname="BetterEvents" preserve="all"/>
+    <assembly fullname="UltEvents" preserve="all"/>
 
     <!-- signalR https://dev.to/masanori_msl/unity-communicate-with-signalr-from-unity-3739 -->
     <!--    <assembly fullname="Microsoft.AspNetCore.Connections.Abstractions" preserve="all"/>-->
