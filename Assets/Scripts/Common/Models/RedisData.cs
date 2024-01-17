@@ -12,8 +12,10 @@ using UnityEngine;
 
 namespace Models
 {
-    public class RedisData : DataModel<RedisData>
+    public class RedisData
     {
+        private static RedisData m_Instance;
+        public static RedisData self => m_Instance ??= new RedisData();
         private IDatabase m_Database;
         public static IDatabase Database => self.m_Database ??= Instance.GetDatabase();
 

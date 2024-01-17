@@ -22,7 +22,8 @@ namespace UltEvents
                 Y = "_Y",
                 Z = "_Z",
                 W = "_W",
-                Object = "_Object";
+                Object = "_Object",
+                AssetRef = "_AssetRef";
 
             /// <summary>[Editor-Only] The full names of various members in <see cref="UltEvents.PersistentArgument"/>.</summary>
             internal static class Full

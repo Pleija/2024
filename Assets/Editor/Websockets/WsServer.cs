@@ -21,7 +21,7 @@ public class WsServer
 
     public static WebSocketServer wssServer;
 
-    [InitializeOnEnterPlayMode]
+    //[InitializeOnEnterPlayMode]
     static void OnPlay()
     {
         if (!(wssServer is { IsListening: true })) Restart();
@@ -30,7 +30,7 @@ public class WsServer
     /// <summary>
     /// https://github.com/sta/websocket-sharp
     /// </summary>
-    [InitializeOnLoadMethod, MenuItem("Debug/Websocket server")]
+    //[InitializeOnLoadMethod, MenuItem("Debug/Websocket server")]
     public static void StartWsServer()
     {
         EditorApplication.playModeStateChanged -= OnEditorApplicationOnplayModeStateChanged;

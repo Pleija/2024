@@ -418,6 +418,8 @@ namespace Puerts
 
         public void Action()
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return;
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -435,6 +437,9 @@ namespace Puerts
 
         public void Action<T1>(T1 p1)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -453,6 +458,9 @@ namespace Puerts
 
         public void Action<T1, T2>(T1 p1, T2 p2) 
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -472,6 +480,9 @@ namespace Puerts
 
         public void Action<T1, T2, T3>(T1 p1, T2 p2, T3 p3)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -492,6 +503,9 @@ namespace Puerts
 
         public void Action<T1, T2, T3, T4>(T1 p1, T2 p2, T3 p3, T4 p4)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -513,6 +527,9 @@ namespace Puerts
 
         public TResult Func<TResult>()
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return default;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -533,6 +550,9 @@ namespace Puerts
 
         public TResult Func<T1, TResult>(T1 p1)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return default;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -554,6 +574,9 @@ namespace Puerts
 
         public TResult Func<T1, T2, TResult>(T1 p1, T2 p2)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return default;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -576,6 +599,9 @@ namespace Puerts
 
         public TResult Func<T1, T2, T3, TResult>(T1 p1, T2 p2, T3 p3)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return default;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {
@@ -599,6 +625,9 @@ namespace Puerts
 
         public TResult Func<T1, T2, T3, T4, TResult>(T1 p1, T2 p2, T3 p3, T4 p4)
         {
+            // todo: jsEnv 被销毁后, 从C#调用js会导致为空, 实际上直接返回即可 
+            if (nativeJsFuncPtr == IntPtr.Zero) return default;
+
             CheckLiveness();
 #if THREAD_SAFE
             lock(jsEnv) {

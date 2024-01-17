@@ -8,6 +8,7 @@ using IngameDebugConsole;
 using Runner;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
+using UltEvents;
 #if UNITY_EDITOR
 using SqlCipher4Unity3D;
 using UnityEditor;
@@ -67,8 +68,8 @@ namespace App
         }
 
         private static bool m_Reloaded;
-        public UnityEvent OnAwake;
-        public UnityEvent OnStart;
+        public UltEvent OnAwake;
+        public UltEvent OnStart;
         public float timer = 3.0f;
         public string privacyUrl = "https://static.pleija.com/docs/#/PrivacyPolicy";
         public string tosUrl = "https://static.pleija.com/docs/#/TermsOfService";
@@ -115,7 +116,7 @@ namespace App
 
         private void Start()
         {
-            if (!m_Reloaded && false) {
+            if (!m_Reloaded && notUsed) {
                 m_Reloaded = true;
                 Addressables.InitializeAsync().WaitForCompletion();
                 var loc = Res.Exists<GameObject>(prefab.RuntimeKey.ToString());
@@ -295,21 +296,24 @@ namespace App
             OnLoad?.Invoke();
         }
 
-        public UnityEvent OnLoad = new UnityEvent();
+        public UltEvent OnLoad;
 
         [SerializeField]
         private string updatePrefabName = "StartUpdate";
 
-        public void LoadScene()
+        [SerializeField]
+        private bool notUsed;
+
+        public void LoadScene(AssetReference scene)
         {
-            StartCoroutine(LoadNextScene());
+            StartCoroutine(LoadNextScene(scene));
         }
 
-        private IEnumerator LoadNextScene()
+        private IEnumerator LoadNextScene(AssetReference scene)
         {
             if (Application.isEditor) {
 #if UNITY_EDITOR
-                var path = AssetDatabase.GetAssetPath(nextScene.editorAsset);
+                var path = AssetDatabase.GetAssetPath(scene.editorAsset);
                 var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(path /*"Assets/Scenes/Start.unity"*/,
                     new LoadSceneParameters() {
                         loadSceneMode = LoadSceneMode.Single,
@@ -322,7 +326,7 @@ namespace App
                 yield break;
             }
             progress.value = 0;
-            var p = Addressables.LoadSceneAsync(nextScene);
+            var p = Addressables.LoadSceneAsync(scene);
             //startTime = Time.realtimeSinceStartup;
             //var start = 0f;
 

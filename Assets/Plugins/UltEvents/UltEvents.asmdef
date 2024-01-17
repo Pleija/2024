@@ -1,3 +1,7 @@
 ﻿{
-	"name": "UltEvents"
+	"name": "UltEvents" ,
+	"references": [
+		"Unity.Addressables",
+		"Unity.ResourceManager"
+	]
 }

@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 
 namespace UltEvents
@@ -75,6 +76,8 @@ namespace UltEvents
         // Otherwise the assembly qualified name of the type is stored in _String.
         /// <summary>The return value by a previous <see cref="PersistentCall"/>.</summary>
         ReturnValue,
+
+        AssetRef,
     }
 
     /// <summary>
@@ -92,6 +95,12 @@ namespace UltEvents
 
         [SerializeField]
         internal int _Int;
+
+        [SerializeField]
+        internal AssetReference _AssetRef;
+
+        [SerializeField]
+        internal AssetRefCache m_AssetRefCache;
 
         [SerializeField]
         internal string _String;
@@ -505,19 +514,20 @@ namespace UltEvents
                 {
                     switch (_Type)
                     {
-                        case PersistentArgumentType.Bool: _Value = Bool; break;
-                        case PersistentArgumentType.String: _Value = String; break;
-                        case PersistentArgumentType.Int: _Value = Int; break;
-                        case PersistentArgumentType.Enum: _Value = Enum; break;
-                        case PersistentArgumentType.Float: _Value = Float; break;
-                        case PersistentArgumentType.Vector2: _Value = Vector2; break;
-                        case PersistentArgumentType.Vector3: _Value = Vector3; break;
-                        case PersistentArgumentType.Vector4: _Value = Vector4; break;
+                        case PersistentArgumentType.Bool:       _Value = Bool; break;
+                        case PersistentArgumentType.String:     _Value = String; break;
+                        case PersistentArgumentType.Int:        _Value = Int; break;
+                        case PersistentArgumentType.Enum:       _Value = Enum; break;
+                        case PersistentArgumentType.Float:      _Value = Float; break;
+                        case PersistentArgumentType.Vector2:    _Value = Vector2; break;
+                        case PersistentArgumentType.Vector3:    _Value = Vector3; break;
+                        case PersistentArgumentType.Vector4:    _Value = Vector4; break;
                         case PersistentArgumentType.Quaternion: _Value = Quaternion; break;
-                        case PersistentArgumentType.Color: _Value = Color; break;
-                        case PersistentArgumentType.Color32: _Value = Color32; break;
-                        case PersistentArgumentType.Rect: _Value = Rect; break;
-                        case PersistentArgumentType.Object: _Value = Object; break;
+                        case PersistentArgumentType.Color:      _Value = Color; break;
+                        case PersistentArgumentType.Color32:    _Value = Color32; break;
+                        case PersistentArgumentType.Rect:       _Value = Rect; break;
+                        case PersistentArgumentType.Object:     _Value = Object; break;
+                        case PersistentArgumentType.AssetRef:   _Value = AssetRef; break;
 
                         // Don't cache parameters or returned values.
                         case PersistentArgumentType.Parameter: return Parameter;
@@ -562,6 +572,16 @@ namespace UltEvents
             }
         }
 
+        public AssetReference AssetRef {      get
+            {
+                AssertType(PersistentArgumentType.AssetRef);
+                return _AssetRef;
+            }
+            set
+            {
+                AssertType(PersistentArgumentType.AssetRef);
+                _AssetRef = value;
+            } }
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
@@ -595,17 +615,18 @@ namespace UltEvents
         {
             switch (type)
             {
-                case PersistentArgumentType.Bool: return typeof(bool);
-                case PersistentArgumentType.String: return typeof(string);
-                case PersistentArgumentType.Int: return typeof(int);
-                case PersistentArgumentType.Float: return typeof(float);
-                case PersistentArgumentType.Vector2: return typeof(Vector2);
-                case PersistentArgumentType.Vector3: return typeof(Vector3);
-                case PersistentArgumentType.Vector4: return typeof(Vector4);
+                case PersistentArgumentType.Bool:       return typeof(bool);
+                case PersistentArgumentType.String:     return typeof(string);
+                case PersistentArgumentType.Int:        return typeof(int);
+                case PersistentArgumentType.Float:      return typeof(float);
+                case PersistentArgumentType.Vector2:    return typeof(Vector2);
+                case PersistentArgumentType.Vector3:    return typeof(Vector3);
+                case PersistentArgumentType.Vector4:    return typeof(Vector4);
                 case PersistentArgumentType.Quaternion: return typeof(Quaternion);
-                case PersistentArgumentType.Color: return typeof(Color);
-                case PersistentArgumentType.Color32: return typeof(Color32);
-                case PersistentArgumentType.Rect: return typeof(Rect);
+                case PersistentArgumentType.Color:      return typeof(Color);
+                case PersistentArgumentType.Color32:    return typeof(Color32);
+                case PersistentArgumentType.Rect:       return typeof(Rect);
+                case PersistentArgumentType.AssetRef:   return typeof(AssetReference);
 
                 case PersistentArgumentType.Enum:
                 case PersistentArgumentType.Object:
@@ -648,6 +669,7 @@ namespace UltEvents
             else if (type == typeof(Color)) return PersistentArgumentType.Color;
             else if (type == typeof(Color32)) return PersistentArgumentType.Color32;
             else if (type == typeof(Rect)) return PersistentArgumentType.Rect;
+            else if (type == typeof(AssetReference)) return PersistentArgumentType.AssetRef;
             else if (type.IsEnum)
             {
                 if (System.Enum.GetUnderlyingType(type) == typeof(int))
@@ -661,6 +683,10 @@ namespace UltEvents
             {
                 assemblyQualifiedName = type.AssemblyQualifiedName;
                 return PersistentArgumentType.Object;
+            }
+            else if (type == typeof(AssetReference)) {
+                assemblyQualifiedName = type.AssemblyQualifiedName;
+                return PersistentArgumentType.AssetRef;
             }
             else
             {
@@ -722,6 +748,7 @@ namespace UltEvents
                 case PersistentArgumentType.Color32:
                 case PersistentArgumentType.Rect:
                 case PersistentArgumentType.Object:
+                case PersistentArgumentType.AssetRef:
                     return Names.PersistentArgument.Class + ": SystemType=" + SystemType + ", Value=" + Value;
                 case PersistentArgumentType.Parameter:
                     return Names.PersistentArgument.Class + ": SystemType=" + SystemType + ", Value=Parameter" + ParameterIndex;

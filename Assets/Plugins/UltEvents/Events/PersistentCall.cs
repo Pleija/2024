@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 
 namespace UltEvents
@@ -373,6 +374,7 @@ namespace UltEvents
                 type == typeof(Quaternion) ||
                 type == typeof(Color) ||
                 type == typeof(Color32) ||
+                type == typeof(AssetReference) ||  type.IsSubclassOf(typeof(AssetReference))||
                 type == typeof(Rect) ||
                 type == typeof(Object) || type.IsSubclassOf(typeof(Object));
         }

@@ -1140,6 +1140,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 3642931523967692303}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Int
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+        type: 3}
+      propertyPath: OnLoad._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._AssetRef.m_AssetGUID
+      value: 678d462d33ebdd7419400a9476bf6759
+      objectReference: {fileID: 0}
     - target: {fileID: 3743213976717073852, guid: 2825d65beb4a14a05a4661ad72025e3f,
         type: 3}
       propertyPath: m_Name
@@ -1171,6 +1211,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1862290671014400582}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3642931523967692303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3122795078385204297, guid: 2825d65beb4a14a05a4661ad72025e3f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1862290671014400582}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a544bcd6aa84417490c53920c3fa479b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1448847286850401422 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 991770009864234696, guid: 2825d65beb4a14a05a4661ad72025e3f,
@@ -1230,6 +1282,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 534380030198364486}
     m_Modifications:
+    - target: {fileID: 1377158592846101511, guid: 756ee54202146436885b80a2e8c01730,
+        type: 3}
+      propertyPath: preload.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377158592846101511, guid: 756ee54202146436885b80a2e8c01730,
+        type: 3}
+      propertyPath: preload.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: b36e4c7a53742460fbf669c0ff2e7921,
+        type: 2}
+    - target: {fileID: 1377158592846101511, guid: 756ee54202146436885b80a2e8c01730,
+        type: 3}
+      propertyPath: preload.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 201316fa81d2d478bb7368f2389ed404,
+        type: 2}
+    - target: {fileID: 1377158592846101511, guid: 756ee54202146436885b80a2e8c01730,
+        type: 3}
+      propertyPath: preload.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: d93aafdecfde346069cca3cc4381dcd1,
+        type: 2}
+    - target: {fileID: 1377158592846101511, guid: 756ee54202146436885b80a2e8c01730,
+        type: 3}
+      propertyPath: preload.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 62138ce5dfaf8447cba7a5ced5edf6b3,
+        type: 2}
     - target: {fileID: 1377158592846101511, guid: 756ee54202146436885b80a2e8c01730,
         type: 3}
       propertyPath: serializationData.Prefab

@@ -21,7 +21,8 @@ namespace App
     public class JsMain : Agent<JsMain>
     {
         public UltEvent OnStart;
-       // public static bool assetsReady;
+
+        // public static bool assetsReady;
         private static JsMain m_Instance;
 
         public static JsMain self {
@@ -101,8 +102,7 @@ namespace App
                 .Where(t => t.EndsWith(".mjs") || t.EndsWith(".proto")).ToArray();
             //Debug.Log(AssetDatabase.LoadAssetAtPath<Object>(all.FirstOrDefault()) ?.GetType().GetNiceName());
             scripts = assets.Where(x => x.StartsWith("Assets/Res/")).Select(x => new Item() {
-                path = x,
-                file = AssetDatabase.LoadAssetAtPath<TextAsset>(x)
+                path = x, file = AssetDatabase.LoadAssetAtPath<TextAsset>(x)
             }).ToList();
             Debug.Log($"all: {assets.Count()} scripts: {scripts.Count}");
             //var t = AssetDatabase.LoadAssetAtPath<Object>("Assets/Res/dist/bootstrap.mjs");
@@ -132,6 +132,18 @@ namespace App
         public void ExecuteModule(string module)
         {
             JsEnv.self.ExecuteModule(module.EndsWith(".mjs") ? module : module + ".mjs");
+        }
+
+        private void Awake()
+        {
+            if (m_Instance) {
+                Destroy(gameObject);
+                return;
+            }
+            Debug.Log("Start JsMain");
+            m_Instance = this;
+            if (transform.parent != null) transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
         }
 
         public async void Load()
@@ -226,8 +238,9 @@ namespace App
 
         protected void OnDestroy()
         {
-            if (JsEnv._env is { isDisposed: false })
-                JsEnv._env.Dispose();
+            JsEnv._env?.Dispose();
+            // if (JsEnv._env is { isDisposed: false })
+            //     JsEnv._env.Dispose();
         }
     }
 }

@@ -48,6 +48,7 @@ namespace UltEvents.Editor
                 case PersistentArgumentType.Color32: DoColor32GUI(area, argumentProperty, label); break;
                 case PersistentArgumentType.Rect: DoRectGUI(area, argumentProperty, label); break;
                 case PersistentArgumentType.Object: DoObjectGUI(area, argumentProperty, label); break;
+                case PersistentArgumentType.AssetRef: DoAssetRefGUI(area, argumentProperty, label); break;
 
                 case PersistentArgumentType.Parameter:
                 case PersistentArgumentType.ReturnValue:
@@ -444,6 +445,25 @@ namespace UltEvents.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 o.objectReferenceValue = value;
+            }
+            EditorGUI.EndProperty();
+        }
+
+        private static void DoAssetRefGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
+        {
+            var o = argumentProperty.FindPropertyRelative(Names.PersistentArgument.AssetRef);
+
+            label = EditorGUI.BeginProperty(area, label, o);
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.PropertyField(area, o, label);
+                o.serializedObject.ApplyModifiedProperties();
+
+            // var type = argumentProperty.GetValue<PersistentArgument>().SystemType ?? typeof(UnityEngine.Object);
+            //
+            // var value = EditorGUI.ObjectField(area, label, o.objectReferenceValue, type, true);
+
+            if (EditorGUI.EndChangeCheck()) {
+                //o.objectReferenceValue = value;
             }
             EditorGUI.EndProperty();
         }
