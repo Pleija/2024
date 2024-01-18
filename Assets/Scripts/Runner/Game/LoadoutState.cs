@@ -142,7 +142,7 @@ namespace Runner.Game
         {
             if (missionPopup) missionPopup.gameObject.SetActive(false);
             inventoryCanvas.gameObject.SetActive(false);
-            if (m_Character != null) Addressables.ReleaseInstance(m_Character);
+            if (m_Character != null) /*Addressables.ReleaseInstance*/Destroy(m_Character);
             var gs = to as GameState;
             skyMeshFilter.gameObject.SetActive(false);
             UIGroundFilter.gameObject.SetActive(false);
@@ -284,12 +284,12 @@ namespace Runner.Game
                             Debug.LogWarning(string.Format("Unable to load character {0}.", c.characterName));
                             yield break;
                         }
-                        newChar = Instantiate(op.Result); //op.Result as GameObject;
+                        newChar = Instantiate(op.Result).OnDestroyRelease(op); //op.Result as GameObject;
                         Helpers.SetRendererLayerRecursive(newChar, /*k_UILayer*/LayerMask.NameToLayer("Character"));
                         newChar.transform.SetParent(charPosition, false);
                         newChar.transform.rotation = k_FlippedYAxisRotation;
                         if (m_Character != null) Destroy(m_Character);
-                        //Addressables.ReleaseInstance(m_Character);
+                        /*Addressables.ReleaseInstance*/Destroy(m_Character);
                         m_Character = newChar;
                         OnCharacterCreate.Invoke(newChar);
                         charNameDisplay.text = c.characterName;

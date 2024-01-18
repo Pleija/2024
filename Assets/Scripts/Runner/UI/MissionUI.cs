@@ -16,7 +16,7 @@ namespace Runner.UI
         {
             gameObject.SetActive(true);
             foreach (Transform t in missionPlace)
-                Addressables.ReleaseInstance(t.gameObject);
+                /*Addressables.ReleaseInstance*/Destroy(t.gameObject);
 
             for (var i = 0; i < 3; ++i)
                 if (PlayerData.instance.missions.Count > i) {

@@ -4,6 +4,7 @@ using Runner.Obstacles;
 using Runner.Tracks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+#pragma warning disable CS0108, CS0114
 
 namespace Runner.Characters
 {
@@ -40,10 +41,8 @@ namespace Runner.Characters
 
         public AudioClip premiumSound;
         public DeathEvent deathData => m_DeathData;
-#pragma warning disable CS0108, CS0114
         public BoxCollider collider => m_Collider;
         public AudioSource audio => m_Audio;
-#pragma warning restore CS0108, CS0114
 
         [HideInInspector]
         public List<GameObject> magnetCoins = new List<GameObject>();
@@ -108,7 +107,7 @@ namespace Runner.Characters
                     magnetCoins.Remove(c.gameObject);
 
                 if (c.GetComponent<Coin>().isPremium) {
-                    Addressables.ReleaseInstance(c.gameObject);
+                    /*Addressables.ReleaseInstance*/Destroy(c.gameObject);
                     PlayerData.instance.premium.Value += 1;
                     controller.premium += 1;
                     m_Audio.PlayOneShot(premiumSound);
@@ -129,7 +128,7 @@ namespace Runner.Characters
                 if (ob != null)
                     ob.Impacted();
                 else
-                    Addressables.ReleaseInstance(c.gameObject);
+                    /*Addressables.ReleaseInstance*/Destroy(c.gameObject);
                 if (TrackManager.instance.isTutorial)
                     m_TutorialHitObstacle = true;
                 else

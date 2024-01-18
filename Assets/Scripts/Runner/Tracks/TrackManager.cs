@@ -255,16 +255,16 @@ namespace Runner.Tracks
         public void End()
         {
             foreach (var seg in m_Segments) {
-                Addressables.ReleaseInstance(seg.gameObject);
+                /*Addressables.ReleaseInstance*/Destroy(seg.gameObject);
                 _spawnedSegments--;
             }
             for (var i = 0; i < m_PastSegments.Count; ++i)
-                Addressables.ReleaseInstance(m_PastSegments[i].gameObject);
+                /*Addressables.ReleaseInstance*/Destroy(m_PastSegments[i].gameObject);
             m_Segments.Clear();
             m_PastSegments.Clear();
             characterController.End();
             gameObject.SetActive(false);
-            Addressables.ReleaseInstance(characterController.character.gameObject);
+            /*Addressables.ReleaseInstance*/Destroy(characterController.character.gameObject);
             characterController.character = null;
             Camera.main.transform.SetParent(null);
             Camera.main.transform.position = m_CameraOriginalPos;

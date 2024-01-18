@@ -138,7 +138,7 @@ namespace Runner.Characters
         {
             for (var i = 0; i < m_ActiveConsumables.Count; ++i) {
                 m_ActiveConsumables[i].Ended(this);
-                Addressables.ReleaseInstance(m_ActiveConsumables[i].gameObject);
+                /*Addressables.ReleaseInstance*/Destroy(m_ActiveConsumables[i].gameObject);
             }
             m_ActiveConsumables.Clear();
         }
@@ -367,7 +367,7 @@ namespace Runner.Characters
                 if (m_ActiveConsumables[i].GetType() == c.GetType()) {
                     // If we already have an active consumable of that type, we just reset the time
                     m_ActiveConsumables[i].ResetTime();
-                    Addressables.ReleaseInstance(c.gameObject);
+                    /*Addressables.ReleaseInstance*/Destroy(c.gameObject);
                     return;
                 }
 

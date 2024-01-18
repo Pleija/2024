@@ -264,7 +264,7 @@ namespace Runner.Game
 
                 for (var i = 0; i < toRemove.Count; ++i) {
                     toRemove[i].Ended(trackManager.characterController);
-                    Addressables.ReleaseInstance(toRemove[i].gameObject);
+                    /*Addressables.ReleaseInstance*/Destroy(toRemove[i].gameObject);
                     if (toRemoveIcon[i] != null)
                         Destroy(toRemoveIcon[i].gameObject);
                     chrCtrl.consumables.Remove(toRemove[i]);

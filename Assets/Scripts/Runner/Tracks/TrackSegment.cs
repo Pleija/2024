@@ -80,7 +80,7 @@ namespace Runner.Tracks
                 t.SetParent(null);
                 Coin.coinPool.Free(t.gameObject);
             }
-            Addressables.ReleaseInstance(gameObject);
+            /*Addressables.ReleaseInstance*/Destroy(gameObject);
         }
 
 #if UNITY_EDITOR

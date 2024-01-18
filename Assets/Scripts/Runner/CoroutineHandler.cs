@@ -3,6 +3,14 @@ using UnityEngine;
 
 namespace Runner
 {
+    public static class CoroutineHelper
+    {
+        public static Coroutine StartStaticCoroutine(this IEnumerator enumerator)
+        {
+            return CoroutineHandler.StartStaticCoroutine(enumerator);
+        }
+    }
+
     /// <summary>
     ///     This class allows us to start Coroutines from non-Monobehaviour scripts
     ///     Create a GameObject it will use to launch the coroutine on
