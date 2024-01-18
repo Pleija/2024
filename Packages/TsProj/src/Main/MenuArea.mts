@@ -13,7 +13,7 @@ export class MenuArea extends StateFsm {
     MenuAreaStart: MenuAreaStart;
 
     init() {
-        this.MenuAreaStart = new MenuAreaStart(this);
+        this.MenuAreaStart = this.bind(MenuAreaStart);
         this.characterSample.SetActive(false);
         //
         this.snap = this.fsm.agent.GetComponent($typeof(HorizontalScrollSnap)) as HorizontalScrollSnap;

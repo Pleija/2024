@@ -27,6 +27,7 @@ namespace App
 
         public static JsMain self {
             get {
+                if (isQuit) return m_Instance;
                 m_Instance ??= FindObjectOfType<JsMain>(true);
                 if (m_Instance) return m_Instance;
                 var go = Instantiate(Addressables.LoadAssetAsync<GameObject>("JsMain").WaitForCompletion());
@@ -43,18 +44,6 @@ namespace App
             .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto")).Select(x => x.PrimaryKey)
             .Distinct().ToArray();
 
-        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        // static void LoadDefaultScene()
-        // {
-        //     var scene = SceneManager.GetActiveScene();
-        //     var defaultPath = SceneManager.GetSceneAt(0).path;
-        //
-        //     if (scene.path != defaultPath) {
-        //         SceneManager.GetAllScenes().Where(x => x.isLoaded && x.path != defaultPath).SelectMany(x => x.GetRootGameObjects())
-        //             .ForEach(x => x.SetActive(false));
-        //         SceneManager.LoadScene(0);
-        //     }
-        // }
         public List<ScriptableObject> preload = new List<ScriptableObject>();
 
         [Serializable]
@@ -134,8 +123,12 @@ namespace App
             JsEnv.self.ExecuteModule(module.EndsWith(".mjs") ? module : module + ".mjs");
         }
 
+        private static bool isQuit;
+
         private void Awake()
         {
+            Application.quitting += () => isQuit = true;
+
             if (m_Instance) {
                 Destroy(m_Instance.gameObject);
             }

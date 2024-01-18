@@ -5,7 +5,7 @@ export class HpSlider extends StateFsm {
     Start: Start;
 
     init() {
-        this.Start = new Start(this);
+        this.Start = this.bind(Start);
         console.log("init HpSlider");
     }
 }

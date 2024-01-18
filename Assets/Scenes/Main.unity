@@ -3760,7 +3760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -12.553787, y: -0.0254}
+  m_AnchoredPosition: {x: -12.553772, y: -0.0254}
   m_SizeDelta: {x: 52.4731, y: 51.243}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &262011976
@@ -7582,8 +7582,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mtsFile: {fileID: 0}
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"GameStart","_preTags":[],"_postTags":[],"_position":{"x":438.0,"y":309.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myAssetReference":{"_value":{"m_AssetGUID":"94cb557246c11d14388842cc08be79a8","m_SubObjectName":"","m_SubObjectType":""},"_name":"myAssetReference","_id":"080e93f7-82a9-4f42-85d8-6918e385e205","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"GameStart","_preTags":[],"_postTags":[],"_position":{"x":428.0,"y":302.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myAssetReference":{"_value":{"m_AssetGUID":"94cb557246c11d14388842cc08be79a8","m_SubObjectName":"","m_SubObjectType":""},"_name":"myAssetReference","_id":"080e93f7-82a9-4f42-85d8-6918e385e205","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
     Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
@@ -10678,6 +10679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mtsFile: {fileID: 0}
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_preTags":[],"_postTags":[],"_position":{"x":312.0,"y":274.5},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"unityChan":{"_value":1,"_name":"unityChan","_id":"57e96b52-1509-49c1-a2d8-2869cbb9c4a2","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
@@ -12602,6 +12604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mtsFile: {fileID: 0}
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_preTags":[],"_postTags":[],"_position":{"x":513.0,"y":317.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
   _boundGraphObjectReferences: []
@@ -20058,6 +20061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mtsFile: {fileID: 0}
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_preTags":[],"_postTags":[],"_position":{"x":463.0,"y":303.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"currentImg":{"_name":"currentImg","_id":"8f615043-50d7-470d-b40f-1456638cfc4c","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Sprite,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"currentColor":{"_name":"currentColor","_id":"bc9c0693-ecf8-449c-bd78-ac8bea105b54","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Color,
@@ -31176,6 +31180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7dbb6bbdf4ffb46ab7dd87ba8191e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mtsFile: {fileID: 0}
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{"characterSample":{"_value":1,"_name":"characterSample","_id":"71e4af55-e605-4d0f-9438-0e79105d6b2a","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}},"_name":"MenuAreaStart","_preTags":[],"_postTags":[],"_position":{"x":491.0,"y":266.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"snap":{"_value":2,"_name":"snap","_id":"20f9d289-c394-47cc-89e1-b84fc136f0a4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.UI.Extensions.HorizontalScrollSnap,

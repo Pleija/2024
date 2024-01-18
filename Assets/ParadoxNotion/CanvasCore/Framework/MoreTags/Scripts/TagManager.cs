@@ -69,7 +69,7 @@ namespace MoreTags
         {
             //if(m_Instance != null) return;
             m_Instance = this;
-            Debug.Log("[TagManager] Load");
+            //Debug.Log("[TagManager] Load");
             // var tm = FindObjectsOfType<TagManager>();
             // if (tm.Length == 0 || (tm.Length == 1 && tm[0] == this))
             //TagSystem.Reset();

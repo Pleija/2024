@@ -9,6 +9,21 @@ import GameObject = CS.UnityEngine.GameObject;
 import Transform = CS.UnityEngine.Transform;
 import FSMOwner = CS.NodeCanvas.StateMachines.FSMOwner;
 import Component = CS.UnityEngine.Component;
+import $typeof = puer.$typeof;
+import Debug = CS.UnityEngine.Debug;
+import Type = CS.System.Type;
+import {bindClass} from "Common/Helpers.mjs";
+
+// const isParent = (type: any, parentType: any) => {
+//     let _type = type;
+//     while (_type) {
+//         if (_type === parentType) {
+//             return true;
+//         }
+//         _type = _type.__proto__;
+//     }
+//     return false;
+// }
 
 export class StateFsm {
 
@@ -21,6 +36,18 @@ export class StateFsm {
     constructor() {
 
     }
+
+    bind<T>($class: { new(...args: any[]): T }): T {
+        if ($typeof($class) != null) {
+            console.log($class.name + " is c# class: " + $typeof($class).FullName);
+            //console.log(n.toString());
+            const state = this.fsm.GetState($class.name);
+            const component = state.bindComponent;
+            return bindClass(component, $class) as any as T;
+        }
+        return new $class(this);
+    }
+
 
     sayHello() {
         console.log(...arguments)
@@ -38,7 +65,7 @@ export class StateFsm {
         iterator(bb.variables).forEach((value, key) => {
             self[key] = value.value;
         });
-        
+
         if (this['init']) {
             //console.log("Init:", f.FsmName);
             this['init']?.();
@@ -64,8 +91,6 @@ export class StateFsm {
 
             //console.log(`${key}: ${person[key]}`);
         });
-
-      
 
 
     }

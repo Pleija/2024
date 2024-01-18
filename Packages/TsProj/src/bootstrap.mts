@@ -23,9 +23,6 @@ import "Common/TypeUtils.mjs";
 import "Game/BackupCard.mjs";
 import "Loading/StartUp.mjs";
 
-
-
-
 global.protobuf = require("protobufjs");
 
 //console.log(getAllMethod(protobuf).join(", "));

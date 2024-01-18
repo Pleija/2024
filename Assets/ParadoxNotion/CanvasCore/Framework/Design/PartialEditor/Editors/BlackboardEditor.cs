@@ -8,6 +8,7 @@ using NodeCanvas.Framework;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion;
 using ParadoxNotion.Design;
+using Puerts.App;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -78,6 +79,12 @@ namespace NodeCanvas.Editor
                 serializedContext = new SerializedObject(contextObject);
                 variablesProperty = serializedContext.FindProperty(bb.independantVariablesFieldName);
             }
+
+            if (bb.unityContextObject is Graph graph) {
+                //todo
+                graph.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, graph.mtsFile, typeof(MtsFile));
+            }
+            //Debug.Log(bb.unityContextObject.GetType().Name); 
 
             //Add variable button
             GUI.backgroundColor = Colors.lightBlue;

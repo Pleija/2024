@@ -14,7 +14,7 @@ export class Game extends StateFsm {
     GameStart: GameStart;
 
     init() {
-        this.GameStart = new GameStart(this);
+        this.GameStart = this.bind(GameStart);
         LoadoutState.self.OnCharacterCreate.AddListener(t => {
             // console.log("test event hook");
             t.SetActive(false);

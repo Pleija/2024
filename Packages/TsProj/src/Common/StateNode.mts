@@ -8,7 +8,29 @@ import Component = CS.UnityEngine.Component;
 import {iterator} from "Common/Iterator.mjs";
 import $typeof = puer.$typeof;
 
-export class StateNode<T extends StateFsm> {
+export declare interface IStateNode<T extends StateFsm> {
+
+    //constructor(c: T):void;
+    stateFsm: StateFsm;
+    fsm: FSM;
+    node: CS.NodeCanvas.Framework.Node;
+    agent: Component;
+    _update: (s: StateNode<T>) => void;
+    _enter: (s: StateNode<T>) => void;
+    _exit: (s: StateNode<T>) => void;
+
+    onUpdate(fn: (t: StateNode<T>) => void): void;
+
+    onEnter(fn: (t: StateNode<T>) => void): void;
+
+    onExit(fn: (t: StateNode<T>) => void): void;
+
+    match(): boolean
+
+    stopFsm(): void;
+}
+
+export class StateNode<T extends StateFsm> /*implements IStateNode<T>*/ {
     stateFsm: StateFsm;
     fsm: FSM;
     node: CS.NodeCanvas.Framework.Node;
@@ -60,7 +82,7 @@ export class StateNode<T extends StateFsm> {
         })).bind(this.stateFsm);
     }
 
-    match() {
+    match(): boolean {
         //console.log("matched:", this.constructor.name)
         return true;
     }

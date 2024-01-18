@@ -50,7 +50,10 @@ namespace ParadoxNotion.Design
             //         }
             //     }
             // }
-            Debug.Log($"type: {objectType.FullName} not support");
+            if (!typeof(ScriptableObject).IsAssignableFrom(objectType)) {
+                Debug.Log($"type: {objectType.FullName} not support");
+
+            }
             return objectDrawers[objectType] = new DefaultObjectDrawer(objectType);
         }
 

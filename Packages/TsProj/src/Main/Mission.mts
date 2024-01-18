@@ -5,7 +5,7 @@ export class Mission extends StateFsm {
     MissionState: MissionState;
 
     init() {
-        this.MissionState = new MissionState(this);
+        this.MissionState = this.bind(MissionState);
         //
     }
 }

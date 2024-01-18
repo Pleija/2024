@@ -304,9 +304,10 @@ namespace NodeCanvas.Framework
                     EditorGUIUtility.SetIconSize(new Vector2(16, 16));
                     //Remark: CalcHeight does not take into account SetIconSize. CalcSize does.
                     var headerHeight = StyleSheet.windowTitle.CalcSize(node.cachedHeaderContent).y;
-
-                    if (node.nodeColor != default) {
-                        GUI.color = node.nodeColor;
+                   // node.nodeColor todo
+                    var nodeColor = node.bindComponent ? "#2A77FF".ToColor() : node.nodeColor;// "#FF6B52".ToColor();
+                    if (nodeColor != default) {
+                        GUI.color = nodeColor;
                         if (node.rect.height <= 35) headerHeight = 35;
                         Styles.Draw(new Rect(0, 0, node.rect.width, headerHeight), StyleSheet.windowHeader);
                         GUI.color = Color.white;
@@ -761,23 +762,28 @@ namespace NodeCanvas.Framework
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
             //GUI.color = Color.white.WithAlpha(0.5f);
-            EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(node.customName));
-            {
-                var originalFontColor = GUI.contentColor;
-                //if(!string.IsNullOrEmpty(node.customName)) GUI.contentColor = Color.green;
-                var style = new GUIStyle("Button");
-                style.normal.textColor = string.IsNullOrEmpty(node.customName) ? Color.gray : Color.black;
-                style.fontStyle = FontStyle.Bold;
+            // EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(node.customName));
+            // {
+            var originalFontColor = GUI.contentColor;
+            //if(!string.IsNullOrEmpty(node.customName)) GUI.contentColor = Color.green;
+            var style = new GUIStyle("Button");
+            //style.normal.textColor = string.IsNullOrEmpty(node.customName) ? Color.gray : Color.black;
+            style.fontStyle = FontStyle.Bold;
 
-                if (GUILayout.Button("Edit...", style, GUILayout.Width(40))) {
-                    //todo edit ts file
-                    var file = node.MakeFile();
-                    node.graph.CheckVarsFromTs(file, node.blackboard);
-                    UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(file, 1);
+            if (GUILayout.Button("Edit...", style, GUILayout.Width(40))) {
+                //todo edit ts file
+                var file = node.MakeFile();
+                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(file, 1);
+                AssetDatabase.ImportAsset(file);
+
+                if (AssetDatabase.LoadAssetAtPath<MtsFile>(file) is { } f) {
+                    node.mtsFile = f;
                 }
-                //GUI.contentColor = originalFontColor;
-                EditorGUI.EndDisabledGroup();
+                node.graph.CheckVarsFromTs(file, node.blackboard);
             }
+            //GUI.contentColor = originalFontColor;
+            EditorGUI.EndDisabledGroup();
+            //}
             // if ( node.allowAsPrime && ( !node.hasIcon || node.iconAlignment != Alignment2x2.Default ) ) {
             node.customName = EditorGUILayout.TextField(node.customName);
             EditorUtils.CommentLastTextField(node.customName, "Name...");

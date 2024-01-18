@@ -7,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace App
 {
-    public class StartUp : Singleton<StartUp>
+    public class StartUpAgent : Singleton<StartUpAgent>
     {
         public bool clearDir = false;
         public bool disableLog = false;

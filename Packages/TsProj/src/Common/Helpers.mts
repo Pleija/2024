@@ -1,11 +1,11 @@
-export const bindClass = global.bindClass = function bindClass<T>(csObj: T, ...targetClass: any[]): T {
-    let result = csObj;
+export const bindClass = global.bindClass = function bindClass<T>(component: T, ...classes: any[]): T {
+    let result = component;
     let cp = Object.getPrototypeOf(result);
-    targetClass.forEach(value => {
-        let cls = value.prototype;
+    classes.forEach($class => {
+        let cls = $class.prototype;
         //let newClass = targetClass.toString().replace(/extends\s+.+?\{/g, "{\nconstructor(){ }");
-        let newClass = targetClass.toString().replace(/extends\s+.+?\{/g, "{\n").replace('super(...arguments);', "");
-        console.log(newClass);
+        let newClass = $class.toString().replace(/extends\s+.+?\{/g, "{\n").replace('super(...arguments);', "");
+        //console.log(newClass);
         let tmp = eval(`new ${newClass}`);
         Reflect.ownKeys(tmp).forEach(k => {
             console.log(k, ' = ', tmp[k]);
@@ -18,7 +18,8 @@ export const bindClass = global.bindClass = function bindClass<T>(csObj: T, ...t
             console.log("[reset method]", k);
             result[k] = cls[k];
         });
-    })
+        result[`_${$class.name}_`] = tmp;
+    });
 
     return result;
 }

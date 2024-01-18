@@ -6,6 +6,7 @@ using UnityEngine;
 using ParadoxNotion;
 using ParadoxNotion.Design;
 using NodeCanvas.Framework;
+using UnityEditor.SceneManagement;
 using CanvasGroup = NodeCanvas.Framework.CanvasGroup;
 using Logger = ParadoxNotion.Services.Logger;
 
@@ -444,9 +445,15 @@ namespace NodeCanvas.Editor
             if (!CheckSumOK()) return;
             ///----------------------------------------------------------------------------------------------
             if (e.type == EventType.MouseDown) RemoveNotification();
-            if (mouseOverWindow == current && (e.isMouse || e.isKey)) willRepaint = true;
+
+            if (mouseOverWindow == current && (e.isMouse || e.isKey)) {
+                //Debug.Log("set dirty");
+                //todo 防止过于频繁的dirty
+                //willRepaint = true;
+            }
             ///<summary>should we set dirty? Put in practise at the end</summary>
-            var willDirty = e.rawType == EventType.MouseUp;
+              //todo 防止过于频繁的dirty
+            var willDirty = false;// e.rawType == EventType.MouseUp;
 
             //background grid
             DrawGrid(canvasRect, pan, zoomFactor);
@@ -500,7 +507,12 @@ namespace NodeCanvas.Editor
                 willRepaint = true;
                 currentGraph.SelfSerialize();
                 UndoUtility.SetDirty(currentGraph);
-                if (targetOwner != null && targetOwner.graphIsBound) UndoUtility.SetDirty(targetOwner);
+
+                if (targetOwner != null && targetOwner.graphIsBound) {
+                    UndoUtility.SetDirty(targetOwner);
+                    //todo 自动保存场景
+                    //EditorSceneManager.SaveScene(targetOwner.gameObject.scene);
+                }
             }
 
             //repaint?

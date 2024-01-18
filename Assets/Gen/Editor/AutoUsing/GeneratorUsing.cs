@@ -167,20 +167,23 @@ namespace Puerts.AutoUsing
             var allowReturn = AllowArgumentsLength("UsingFunc");
             var genInfos = new List<GenInfo>();
 
+            var failed = new List<string>();
+
             foreach (var type in refTypes.Distinct())
                 if (ContainsValueParameter(type)) {
                     var info = ToGenInfo(type);
 
                     if ((info.HasReturn && !allowReturn.Contains(info.Parameters.Length)) ||
                         (!info.HasReturn && !allowVoid.Contains(info.Parameters.Length))) {
-                        Debug.LogWarning(string.Format("Method parameter length don't match:{0} \nSource  type: {1} ",
-                            info, type.ToString()));
+                        failed.Add(string.Format("Method parameter length don't match:{0} \nSource  type: {1} ", info, type.ToString()));
                         continue;
                     }
                     if (genInfos.Contains(info))
                         continue;
                     genInfos.Add(info);
                 }
+
+            if(failed.Any()) Debug.Log(failed.JoinStr("\n"));
 
             using (var jsEnv = new JsEnv()) {
                 var autoRegisterRender =

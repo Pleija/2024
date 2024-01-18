@@ -5,7 +5,7 @@ export class StartButton extends StateFsm {
     StartGame: StartGame;
 
     init() {
-        this.StartGame = new StartGame(this);
+        this.StartGame = this.bind(StartGame);
     }
 }
 

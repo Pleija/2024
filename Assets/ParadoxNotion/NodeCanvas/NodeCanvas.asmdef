@@ -2,7 +2,9 @@
   "name": "NodeCanvas",
   "references": [
     "com.tencent.puerts.core",
-    "Allints.Runtime",
+    "Helpers",
+    "Unity.Addressables",
+    "Unity.ResourceManager",
     "ParadoxNotion"
   ],
   "includePlatforms": [],

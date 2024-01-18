@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NodeCanvas.Framework;
@@ -28,19 +29,23 @@ namespace NodeCanvas.Editor
             if (e.type == EventType.MouseDown && e.button == 2 && e.clickCount == 2)
                 FocusPosition(ViewToCanvas(e.mousePosition));
 
-            if (e.type == EventType.ScrollWheel && GraphEditorUtility.allowClick)
+            //todo alt 才能缩放
+            if (e.type == EventType.ScrollWheel && GraphEditorUtility.allowClick && e.alt)
                 if (canvasRect.Contains(e.mousePosition)) {
                     var zoomDelta = e.shift ? 0.1f : 0.25f;
                     ZoomAt(e.mousePosition, -e.delta.y > 0 ? zoomDelta : -zoomDelta);
                 }
 
-            if (e.type == EventType.MouseDrag && e.alt && e.button == 1) {
+            if (e.type == EventType.MouseDrag /*&& e.alt*/ && e.button == 1) {
+                // Debug.Log("Test");
                 ZoomAt(new Vector2(screenWidth / 2, screenHeight / 2), e.delta.x / 100);
                 e.Use();
             }
 
             if ((e.button == 2 && e.type == EventType.MouseDrag && canvasRect.Contains(e.mousePosition)) ||
-                ((e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && e.alt && e.isMouse)) {
+                (( /*e.type == EventType.MouseDown ||*/ e.type == EventType.MouseDrag) /*&& e.alt*/ && e.isMouse &&
+                    GraphEditorUtility.activeElement == null)) {
+                //Debug.Log($"Test: {GraphEditorUtility.activeElement?.GetType().FullName}");
                 pan += e.delta;
                 smoothPan = null;
                 smoothZoomFactor = null;

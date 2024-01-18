@@ -2,6 +2,7 @@
 using NodeCanvas.Framework;
 using ParadoxNotion;
 using ParadoxNotion.Design;
+using Puerts.App;
 using UnityEditor;
 using UnityEngine;
 
@@ -232,6 +233,14 @@ namespace NodeCanvas.Editor
             }
 
             if (!isBoundGraphOnPrefabRoot) {
+                if (owner.mtsFile == null && owner.graph.mtsFile) {
+                    owner.mtsFile = owner.graph.mtsFile;
+                }
+                else if (owner.graph.mtsFile == null && owner.mtsFile) {
+                    owner.graph.mtsFile = owner.mtsFile;
+                }
+                owner.graph.mtsFile =
+                    (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, owner.graph.mtsFile, typeof(MtsFile));
                 //Open behaviour
                 GUI.backgroundColor = Colors.lightBlue;
                 GUILayout.BeginHorizontal();
@@ -244,6 +253,12 @@ namespace NodeCanvas.Editor
                     if (GUILayout.Button("Edit TsClass")) {
                         var path = owner.graph.CheckVarsFromTs(owner.graph.MakeFile(), owner.graph.blackboard);
                         UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(path, 1);
+                        AssetDatabase.ImportAsset(path);
+
+                        if (AssetDatabase.LoadAssetAtPath<MtsFile>(path) is { } f) {
+                            owner.graph.mtsFile = f;
+                            UndoUtility.SetDirty(owner);
+                        }
                     }
                     GUILayout.EndHorizontal();
                 }

@@ -198,6 +198,20 @@ MonoBehaviour:
     file: {fileID: 2811297602134710623, guid: 7fd52c3d11723493d9fe11cd1d85cea6, type: 3}
   - path: Assets/Res/dist/index.mjs
     file: {fileID: 2811297602134710623, guid: 9438a4fddfa31468e9fa5172fd11a47b, type: 3}
+  - path: Assets/Res/dist/Loading/StartUp/_dpkz.mjs
+    file: {fileID: 2811297602134710623, guid: d4f2aa1cb64e44d059507a07636cb27e, type: 3}
+  - path: Assets/Res/dist/Loading/StartUp/_zNAx.mjs
+    file: {fileID: 2811297602134710623, guid: 2dce7faf776d043f4867bef62a6a1b67, type: 3}
+  - path: Assets/Res/dist/Loading/StartUp/Nodedpkz.mjs
+    file: {fileID: 2811297602134710623, guid: 237803b192d1745f38a687b85aa4d2a8, type: 3}
+  - path: Assets/Res/dist/Loading/StartUp/NodezNAx.mjs
+    file: {fileID: 2811297602134710623, guid: c634a260110204a619c151d9943af93d, type: 3}
+  - path: "Assets/Res/dist/Loading/StartUp/\u4E0B\u8F7D.mjs"
+    file: {fileID: 2811297602134710623, guid: 65f6e0aeac73547bba16cd6bfee2bd4c, type: 3}
+  - path: "Assets/Res/dist/Loading/StartUp/\u4E0B\u8F7D\u66F4\u65B0.mjs"
+    file: {fileID: 2811297602134710623, guid: 7bb2b78242477447ab17ec1e5b102207, type: 3}
+  - path: "Assets/Res/dist/Loading/StartUp/\u5F00\u59CB\u4E0B\u8F7D.mjs"
+    file: {fileID: 2811297602134710623, guid: e7bb12779f10d4522b5e98c1cd6a0f42, type: 3}
   - path: Assets/Res/dist/Loading/StartUp.mjs
     file: {fileID: 2811297602134710623, guid: 213a335f4afb441308d9c8a93bc6a6a1, type: 3}
   - path: Assets/Res/dist/Main/CardAgent.mjs
@@ -250,6 +264,8 @@ MonoBehaviour:
     file: {fileID: 2811297602134710623, guid: e5ba862175efb43b2bc872ac4a220897, type: 3}
   - path: Assets/Res/dist/MissionPage/Settings.mjs
     file: {fileID: 2811297602134710623, guid: e585cc6a4560c440a8f6bb33ff75ba02, type: 3}
+  - path: Assets/Res/dist/Packages/tsproj/src/Loading/StartUp.mjs
+    file: {fileID: 2811297602134710623, guid: d3291c4a3a19344a3a589d4b0f5a3eb5, type: 3}
   - path: Assets/Res/dist/polyfill.mjs
     file: {fileID: 2811297602134710623, guid: 1e10ad74dd31c45d2b3f633c54b63ebf, type: 3}
   - path: Assets/Res/dist/QuickStart.mjs

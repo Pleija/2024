@@ -5,7 +5,7 @@ export class Updating extends StateFsm {
     StartUpdating: StartUpdating;
 
     init() {
-        this.StartUpdating = new StartUpdating(this);
+        this.StartUpdating = this.bind(StartUpdating);
         //
     }
 }

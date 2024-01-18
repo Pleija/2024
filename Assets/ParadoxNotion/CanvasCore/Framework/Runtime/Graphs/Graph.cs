@@ -9,6 +9,7 @@ using ParadoxNotion.Serialization;
 using ParadoxNotion.Serialization.FullSerializer;
 using ParadoxNotion.Services;
 using Puerts;
+using Puerts.App;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -108,15 +109,20 @@ namespace NodeCanvas.Framework
             return mtsFile;
         }
 
+        [SerializeField]  public MtsFile mtsFile;
+
+        public static string ToFileName(string input) => Regex.Replace(input.Split(' ').First(), @"\W+", "");
         public Node Find(string aName) => allNodes.FirstOrDefault(x => x.NodeName == aName);
-        public string FsmName => agent.name.Split(' ').First();
-        public string FsmPath => $"{agent.gameObject.scene.name}/{FsmName}.mjs";
+        public string FsmName => mtsFile ? Path.GetFileNameWithoutExtension(mtsFile.assetPath) : ToFileName(agent.name);
+
+        public string FsmPath =>
+            mtsFile ? mtsFile.assetPath.Split(new [] {"src/"}, StringSplitOptions.None).Last().Replace(".mts",".mjs") : $"{ToFileName(agent.gameObject.scene.name)}/{FsmName}.mjs";
 
         public string MakeFile()
         {
             var root = "Packages/tsproj/src";
-            var filePath = $"{agent.gameObject.scene.name}/{FsmName}.mjs";
-            var classPath = $"{root}/{filePath.Replace(".mjs", ".mts")}";
+            var filePath =  FsmPath; // $"{ToFileName(agent.gameObject.scene.name)}/{FsmName}.mjs";
+            var classPath = Path.GetFullPath($"{root}/{filePath.Replace(".mjs", ".mts")}");
             if (!Directory.Exists(Path.GetDirectoryName(classPath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(classPath)!);
 
@@ -127,7 +133,7 @@ import {{ StateFsm }} from ""Common/StateFsm.mjs"";
 export class {FsmName} extends StateFsm {{
 
       init(){{
-          console.log(""init {FsmName}"");
+          console.log(`init ${{this.constructor.name}}`);
       }}
 }}
 
@@ -161,7 +167,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                 var newSource = change.GetChangedSource(ast.SourceStr);
                 File.WriteAllText(bootstrapPath, newSource);
             }
-            return classPath;
+            return classPath.Replace(Directory.GetCurrentDirectory()+"/","");
         }
 
         ///<summary>Update mode of the graph (see 'StartGraph')</summary>
@@ -189,6 +195,14 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         //the actual graph data. Mixed serialized by Unity/Json
         [SerializeField]
         private GraphSource _graphSource = new GraphSource();
+
+        [SerializeField]
+        private int _hashIdMax;
+
+        public int HashIdMax {
+            get => _hashIdMax;
+            set => _hashIdMax = value;
+        }
 
         //used to halt self-serialization when something went wrong in deserialization
         [SerializeField]

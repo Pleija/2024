@@ -104,7 +104,9 @@ namespace Favourites.Editor
 
         protected void OnGUI()
         {
-            if (treeView == null) UpdateTreeview();
+            if (treeView == null) {
+                UpdateTreeview();
+            }
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
             {
                 // var index = 0;

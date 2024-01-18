@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HashidsNet;
 using MoreTags;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion;
@@ -12,8 +13,11 @@ using ParadoxNotion.Serialization.FullSerializer;
 using ParadoxNotion.Services;
 using Puerts;
 using Puerts.App;
+using Sirenix.Utilities;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using WebSocketSharp;
 using Zu.TypeScript;
 using Zu.TypeScript.Change;
 using Zu.TypeScript.TsTypes;
@@ -36,39 +40,92 @@ namespace NodeCanvas.Framework
         public MtsFile mtsFile;
         public JSObject jsBind { get; set; }
         public string FsmName => graphAgent.name.Split(' ').First();
-
-        public string NodeName {
-            get {
-                var t = Regex.Split(name, @"\s+");
-                //t[0] = t[0].ToLower();
-                return string.Join("", t);
-            }
-        }
+        public string NodeName => name.RegexReplace(@"\W+", "");
 
         public string MakeFile()
         {
-            if (string.IsNullOrWhiteSpace(customName)) return "";
+            // if (string.IsNullOrWhiteSpace(customName)) {
+            //
+            //     return "";
+            // }
             var src = "Packages/tsproj/src";
             var file = $"{graph.FsmPath.Replace(".mjs", "")}/{NodeName}.mjs";
-            var path = $"{src}/{file.Replace(".mjs", ".mts")}";
-            if (!Directory.Exists(Path.GetDirectoryName(path))) Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            var nodeFilePath = Path.GetFullPath($"{src}/{file.Replace(".mjs", ".mts")}");
+            var basename = mtsFile ? Path.GetFileNameWithoutExtension(mtsFile.assetPath) : "";
 
-            if (!File.Exists(path)) {
+            if (mtsFile && customName != basename && !customName.IsNullOrEmpty()) {
+                if (!EditorUtility.DisplayDialog("", $"{basename}.mts => {customName}.mts?", "OK", "Cancel")) {
+                    nodeFilePath = Path.GetFullPath(mtsFile.assetPath);
+                }
+                else {
+                    var files = AssetDatabase.FindAssets($"t:MtsFile").Select(AssetDatabase.GUIDToAssetPath)
+                        .Where(x => x.StartsWith(mtsFile.assetPath.Replace(".mts", "")));
+                    files.ForEach(x => {
+                        File.WriteAllText(x, File.ReadAllText(x).Replace(basename, customName));
+                    });
+                    File.Move(mtsFile.assetPath, mtsFile.assetPath.Replace(basename, customName));
+                    AssetDatabase.ImportAsset(mtsFile.assetPath.Replace(basename, customName));
+                }
+            }
+            Debug.Log(
+                $"path: {nodeFilePath} dir: {Path.GetDirectoryName(nodeFilePath)} exists: {Directory.Exists(Path.GetDirectoryName(nodeFilePath))}");
+            if (!Directory.Exists(Path.GetDirectoryName(nodeFilePath))) Directory.CreateDirectory(Path.GetDirectoryName(nodeFilePath)!);
+
+            if (!File.Exists(nodeFilePath)) {
                 var content = @$"import {{ {graph.FsmName} }} from ""{graph.FsmPath}"";
 import {{ StateNode }} from ""Common/StateNode.mjs"";
 
 export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
     init() {{
-        console.log(""init {NodeName}"");
+        console.log(`init ${{this.constructor.name}}`);
     }}
 }}
 ";
-                File.WriteAllText(path, content);
+                File.WriteAllText(nodeFilePath, content);
             }
-            var fileName = $"{src}/{graph.FsmPath.Replace(".mjs", ".mts")}";
-            var source = File.ReadAllText(fileName);
-            var ast = new TypeScriptAST(source, fileName);
+            else {
+                var content = File.ReadAllText(nodeFilePath);
+                var root = new TypeScriptAST(content, nodeFilePath);
+                var changeAst = new ChangeAST();
+                var cls = root.OfKind(SyntaxKind.ClassDeclaration).First();
+                var extends = cls.OfKind(SyntaxKind.HeritageClause).First();
+                cls.LogDetail();
+                root.RootNode.LogDetail();
+                var ch = false;
+
+                if (bindComponent && !extends.GetText().Contains(bindComponent.GetType().Name)) {
+                    ch = true;
+                    changeAst.ChangeNode(extends, $"extends {bindComponent.GetType().Name}");
+
+                    if (root.OfKind(SyntaxKind.ImportEqualsDeclaration).All(x =>
+                            !x.GetText().Contains($"CS.{bindComponent.GetType().FullName}"))) {
+                        changeAst.InsertBefore(root.RootNode,
+                            $"import {bindComponent.GetType().Name} = CS.{bindComponent.GetType().FullName};\n");
+                    }
+                }
+                else if (!bindComponent) {
+                    if (!extends.GetText().Contains($"StateFSM<{FsmName}>")) {
+                        ch = true;
+                        changeAst.ChangeNode(extends, $"extends StateFSM<{FsmName}>");
+                    }
+                    var ims = root.OfKind(SyntaxKind.ImportDeclaration).ToArray();
+
+                    if (!ims.Any(t => t.GetText().Contains(file))) {
+                        ch = true;
+                        changeAst.InsertBefore(root.RootNode, $"import {{ {NodeName} }} from \"{file}\";\n");
+                    }
+                }
+
+                if (ch) {
+                    File.WriteAllText(nodeFilePath, changeAst.GetChangedSource(root.SourceStr));
+                }
+            }
+
+            var fsmFilePath = $"{src}/{graph.FsmPath.Replace(".mjs", ".mts")}";
+
+            var source = File.ReadAllText(fsmFilePath);
+            var ast = new TypeScriptAST(source, fsmFilePath);
             var change = new ChangeAST();
             var imports = ast.OfKind(SyntaxKind.ImportDeclaration).ToArray();
 
@@ -100,7 +157,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var code = init.OfKind(SyntaxKind.Block).First().Children.FirstOrDefault();
 
                 if (code != null) {
-                    change.InsertBefore(code, $"\n          this.{NodeName} = new {NodeName}(this);");
+                    change.InsertBefore(code, $"\n          this.{NodeName} = this.bind({NodeName});");
                 }
                 else {
                     init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
@@ -113,9 +170,9 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
             if (changed) {
                 var newSource = change.GetChangedSource(ast.SourceStr);
-                File.WriteAllText(fileName, newSource);
+                File.WriteAllText(fsmFilePath, newSource);
             }
-            return path;
+            return nodeFilePath.Replace(Directory.GetCurrentDirectory() + "/", "");
         }
 
         ///<summary>The local blackboard of the graph where parentBlackboard if any is parented to</summary>
@@ -264,6 +321,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         public virtual string name {
             get {
                 if (!string.IsNullOrEmpty(customName)) return customName;
+                if (mtsFile) return Path.GetFileNameWithoutExtension(mtsFile.assetPath);
+                var id = new Hashids("NodeName", 4);
+                customName = $"_{id.Encode(graph.HashIdMax += 1)}";
+                return customName;
 
                 if (string.IsNullOrEmpty(_nameCache)) {
                     var nameAtt = GetType().RTGetAttribute<NameAttribute>(true);

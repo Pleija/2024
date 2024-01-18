@@ -1,12 +1,29 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Zu.TypeScript.TsTypes;
 
 public static class UnityApi
 {
+    public static Color ToColor(this string hexString)
+    {
+        return ColorUtility.TryParseHtmlString(hexString, out var color) ? color : Color.white;
+    }
+
+    public static void LogDetail(this Node node)
+    {
+        node.Children.ForEach(x => {
+            Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+        });
+    }
+
+    public static string JoinStr<T>(this IEnumerable<T> target, string s = ", ") => string.Join(s, target);
+    public static string RegexReplace(this string input, string rule, string to) => Regex.Replace(input, rule, to);
     public static T IsNull<T>(this T o) where T : UnityEngine.Object => o == null ? null : o;
 
     public static string GetPath(this GameObject gameObject) => string.Join("/",

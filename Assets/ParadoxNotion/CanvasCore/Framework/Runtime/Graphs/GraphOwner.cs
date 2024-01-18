@@ -4,12 +4,14 @@ using NodeCanvas.Framework.Internal;
 using UnityEngine;
 using UnityEngine.Serialization;
 using ParadoxNotion.Serialization;
+using Puerts.App;
 
 namespace NodeCanvas.Framework
 {
     ///<summary> A component that is used to control a Graph in respects to the gameobject attached to</summary>
     public abstract class GraphOwner : MonoBehaviour, ISerializationCallbackReceiver
     {
+        public MtsFile mtsFile;
         ///----------------------------------------------------------------------------------------------
         public enum EnableAction { EnableBehaviour, DoNothing }
 
@@ -55,6 +57,8 @@ namespace NodeCanvas.Framework
                     exposedParameters.Add(exposedParam);
                 }
             }
+
+          
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -199,6 +203,12 @@ namespace NodeCanvas.Framework
             if (!instances.TryGetValue(originalGraph, out instance)) {
                 instance = Graph.Clone<Graph>(originalGraph, null);
                 instances[originalGraph] = instance;
+            }
+
+            if (instance) {
+                if ( instance.mtsFile == null && mtsFile) {
+                    instance.mtsFile = mtsFile;
+                }
             }
             return instance;
         }

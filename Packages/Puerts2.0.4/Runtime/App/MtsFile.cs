@@ -1,5 +1,8 @@
+using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AssetImporters;
@@ -10,8 +13,11 @@ namespace Puerts.App
 {
     public class MtsFile : ScriptableObject
     {
-        public string modulePath;
-        public string assetPath;
+        [NotNull]
+        public string moduleName => assetPath.Split(new[] { "src/" }, StringSplitOptions.None).Last();
+
+        [NotNull]
+        public string assetPath = "";
     }
 
 #if UNITY_EDITOR
@@ -26,13 +32,12 @@ namespace Puerts.App
             subAsset.assetPath = assetPath;
             var icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
                 "Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Icon_Icons_(Original)/icon_flag_skull.png");
-           // typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static)
+            // typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static)
             //    ?.Invoke(null, new object[] { subAsset, icon });
             var editorGUIUtilityType = typeof(EditorGUIUtility);
             var bindingFlags = BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.NonPublic;
             var args = new object[] { subAsset, icon };
             editorGUIUtilityType.InvokeMember("SetIconForObject", bindingFlags, null, null, args);
-
             ctx.AddObjectToAsset("asset", subAsset);
             ctx.SetMainObject(subAsset);
         }

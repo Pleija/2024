@@ -1,7 +1,7 @@
 ﻿{
   "name": "ParadoxNotion",
   "references": [
-    "App",
+    "Helpers",
     "Unity.Addressables",
     "Unity.ResourceManager",
     "com.tencent.puerts.core"

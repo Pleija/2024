@@ -7,7 +7,7 @@ export class Login extends StateFsm {
     LoadStart: LoadStart;
 
     init() {
-        this.LoadStart = new LoadStart(this);
+        this.LoadStart = this.bind(LoadStart);
     }
 }
 

@@ -2,7 +2,7 @@ declare global {
 
     import {BaseTag, $} from "Common/BaseTag.mjs";
     import protobuf from "protobufjs";
-    
+
     import {StartButton} from "Start/StartButton.mjs";
     import {Login} from "Start/Login.mjs";
     import {Updating} from "Start/Updating.mjs";
@@ -21,10 +21,10 @@ declare global {
     import {HpSlider} from "Game/HpSlider.mjs";
     import {LoadingCharPos} from "Main/LoadingCharPos.mjs";
     import {ChangeCharacterBtn} from "HeroesPage/ChangeCharacterBtn.mjs";
-    import { ChangeCharcter } from "Game/ChangeCharcter.mjs";
-    import { ChangeCharacter } from "Game/ChangeCharacter.mjs";
-    import { BackupCard } from "Game/BackupCard.mjs";
-    import { StartUp } from "Loading/StartUp.mjs";
+    import {ChangeCharcter} from "Game/ChangeCharcter.mjs";
+    import {ChangeCharacter} from "Game/ChangeCharacter.mjs";
+    import {BackupCard} from "Game/BackupCard.mjs";
+    import {StartUp} from "Loading/StartUp.mjs";
     declare var $StartUp: StartUp;
     declare var $BackupCard: BackupCard;
     declare var $ChangeCharacter: ChangeCharacter;
@@ -51,7 +51,12 @@ declare global {
     declare var protobuf: protobuf;
     declare var $: $;
 
+    declare interface Class<T> {
+        new(...args: any[]): T
+    }
+
     declare function getAllMethod(toCheck: any): string[];
+
     declare function bindClass<T>(csObj: T, ...targetClass: any[]): T;
 }
 

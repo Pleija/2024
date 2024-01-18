@@ -35,6 +35,8 @@ namespace NodeCanvas.StateMachines
         public event Action<IState> onStateExit;
         public event Action<IState> onStateTransition;
 
+        public FSMState GetState(string nodeName) => allNodes.OfType<FSMState>().FirstOrDefault(x => x.name == nodeName);
+
         ///<summary>The current FSM state</summary>
         public FSMState currentState { get; private set; }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ParadoxNotion.Serialization.FullSerializer;
+using Puerts.App;
 using UnityEngine;
 
 namespace NodeCanvas.Framework.Internal
@@ -33,6 +34,9 @@ namespace NodeCanvas.Framework.Internal
 
         ///----------------------------------------------------------------------------------------------
         public const float FRAMEWORK_VERSION = 3.29f;
+
+        // [SerializeField, fsSerializeAs("mtsFile")]
+        // public MtsFile mtsFile;
 
         [SerializeField, fsSerializeAs("version"), fsWriteOnly, fsIgnoreInBuild]
         private float _version;
