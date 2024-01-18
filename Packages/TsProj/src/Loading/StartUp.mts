@@ -15,8 +15,8 @@ export class StartUp extends StateFsm {
     下载更新: 下载更新;
 
     loadDefault() {
-        console.log("Load DefaultLoading");
-        CS.UnityEngine.Object.Instantiate(Resources.Load("DefaultLoading", $typeof(GameObject)));
+        console.log("Load Backup");
+        CS.UnityEngine.Object.Instantiate(Resources.Load("Backup", $typeof(GameObject)));
     }
 
 
