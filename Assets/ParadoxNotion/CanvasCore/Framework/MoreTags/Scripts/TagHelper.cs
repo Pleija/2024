@@ -20,68 +20,24 @@ namespace MoreTags
             last = parts[parts.Length - 1];
         }
 
-        public static implicit operator TagName(string name)
-        {
-            return new TagName(name);
-        }
-
-        public static implicit operator string(TagName name)
-        {
-            return name.name;
-        }
-
-        public static implicit operator TagPattern(TagName name)
-        {
-            return TagSystem.pattern.With(name.name);
-        }
-
-        public static TagPattern operator &(TagName a, TagName b)
-        {
-            return TagSystem.pattern.Both(a, b);
-        }
-
-        public static TagPattern operator |(TagName a, TagName b)
-        {
-            return TagSystem.pattern.Either(a, b);
-        }
-
-        public static TagPattern operator -(TagName a, TagName b)
-        {
-            return (TagPattern)a - b;
-        }
-
-        public static TagPattern operator -(TagName a)
-        {
-            return -(TagPattern)a;
-        }
-
-        public static implicit operator TagNames(TagName name)
-        {
-            return new TagNames(name.name);
-        }
-
-        public static TagNames operator +(TagName a, TagName b)
-        {
-            return new TagNames(a.name, b.name);
-        }
+        public static implicit operator TagName(string name) => new TagName(name);
+        public static implicit operator string(TagName name) => name.name;
+        public static implicit operator TagPattern(TagName name) => TagSystem.pattern.With(name.name);
+        public static TagPattern operator &(TagName a, TagName b) => TagSystem.pattern.Both(a, b);
+        public static TagPattern operator |(TagName a, TagName b) => TagSystem.pattern.Either(a, b);
+        public static TagPattern operator -(TagName a, TagName b) => (TagPattern)a - b;
+        public static TagPattern operator -(TagName a) => -(TagPattern)a;
+        public static implicit operator TagNames(TagName name) => new TagNames(name.name);
+        public static TagNames operator +(TagName a, TagName b) => new TagNames(a.name, b.name);
     }
 
     public class TagNames : IEnumerable<string>
     {
-        public TagPattern both { get { return TagSystem.pattern.Both(names.ToArray()); } }
-        public TagPattern either { get { return TagSystem.pattern.Either(names.ToArray()); } }
-
+        public TagPattern both => TagSystem.pattern.Both(names.ToArray());
+        public TagPattern either => TagSystem.pattern.Either(names.ToArray());
         protected IEnumerable<string> names;
-
-        public TagNames(params string[] n)
-        {
-            names = n;
-        }
-
-        public TagNames(IEnumerable<string> n)
-        {
-            names = n;
-        }
+        public TagNames(params string[] n) => names = n;
+        public TagNames(IEnumerable<string> n) => names = n;
 
         public void Add(TagNames n)
         {
@@ -93,37 +49,17 @@ namespace MoreTags
             names = names.Except(n.names);
         }
 
-        public IEnumerator<string> GetEnumerator()
-        {
-            return names.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return names.GetEnumerator();
-        }
-
-        public static implicit operator TagNames(string str)
-        {
-            return TagHelper.StringToTagNames(str);
-        }
-
-        public static TagNames operator +(TagNames a, TagNames b)
-        {
-            return new TagNames(a.names.Union(b.names));
-        }
-
-        public static TagNames operator -(TagNames a, TagNames b)
-        {
-            return new TagNames(a.names.Except(b.names));
-        }
+        public IEnumerator<string> GetEnumerator() => names.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => names.GetEnumerator();
+        public static implicit operator TagNames(string str) => TagHelper.StringToTagNames(str);
+        public static TagNames operator +(TagNames a, TagNames b) => new TagNames(a.names.Union(b.names));
+        public static TagNames operator -(TagNames a, TagNames b) => new TagNames(a.names.Except(b.names));
     }
 
     public class TagGroup : TagName
     {
-        public TagNames children { get { return GetTagNames(); } }
-        public TagNames all { get { return GetTagNames(true); } }
-
+        public TagNames children => GetTagNames();
+        public TagNames all => GetTagNames(true);
         public TagGroup(string n) : base(n) { }
 
         private TagNames GetTagNames(bool recursive = false)
@@ -137,17 +73,14 @@ namespace MoreTags
             return recursive || tag.IndexOf(".", name.Length + 1) == -1;
         }
 
-        public static implicit operator TagGroup(string cat)
-        {
-            return new TagGroup(cat);
-        }
+        public static implicit operator TagGroup(string cat) => new TagGroup(cat);
     }
 
-    public class TagChildren: TagNames
+    public class TagChildren : TagNames
     {
         public readonly string name;
-        public TagNames children { get { return GetTagNames(); } }
-        public TagNames all { get { return GetTagNames(true); } }
+        public TagNames children => GetTagNames();
+        public TagNames all => GetTagNames(true);
 
         public TagChildren(string n)
         {
@@ -167,10 +100,7 @@ namespace MoreTags
             return recursive || tag.IndexOf(".", idx + name.Length + 2) == -1;
         }
 
-        public static implicit operator TagChildren(string child)
-        {
-            return new TagChildren(child);
-        }
+        public static implicit operator TagChildren(string child) => new TagChildren(child);
     }
 
     public static class TagHelper
@@ -181,26 +111,24 @@ namespace MoreTags
             var pattern = TagSystem.pattern;
             str = Regex.Replace(str, @"\s+", string.Empty);
 
-            while (true)
-            {
+            while (true) {
                 TagPattern r;
                 var s = str.Substring(index);
                 var neg = s.StartsWith("-");
-                if (neg)
-                {
+
+                if (neg) {
                     index++;
                     s = str.Substring(index);
                 }
-                if (s.StartsWith("*") && !s.StartsWith("*."))
-                {
+
+                if (s.StartsWith("*") && !s.StartsWith("*.")) {
                     index++;
                     r = new TagNames(TagSystem.AllTags()).either;
                 }
-                else if (s.StartsWith("("))
-                {
+                else if (s.StartsWith("(")) {
                     int idx = 0, count = 0;
-                    while (true)
-                    {
+
+                    while (true) {
                         idx = s.IndexOfAny("()".ToArray(), idx + 1);
                         if (idx == -1) break;
                         if (s[idx] == ')' && count == 0) break;
@@ -211,16 +139,14 @@ namespace MoreTags
                     s = s.Substring(1, idx - 1);
                     r = StringToPattern(s);
                 }
-                else if (s.ToLower().StartsWith("both(") || s.ToLower().StartsWith("either("))
-                {
+                else if (s.ToLower().StartsWith("both(") || s.ToLower().StartsWith("either(")) {
                     var baseidx = s.IndexOf('(') + 1;
                     var idx = s.IndexOf(')', baseidx);
                     var tn = StringToTagNames(s.Substring(baseidx, idx - baseidx));
                     index += idx + 1;
                     r = s.ToLower().StartsWith("both(") ? tn.both : tn.either;
                 }
-                else
-                {
+                else {
                     var len = s.IndexOfAny("&|-".ToArray());
                     len = len == -1 ? s.Length : len;
                     s = s.Substring(0, len);
@@ -231,14 +157,19 @@ namespace MoreTags
                         r = ConvertToTagNames(s).either;
                 }
                 pattern = pattern.Combine(neg ? -r : r);
-
                 if (index >= str.Length) break;
                 if (!"&|-".Contains(str[index])) break;
-                switch (str[index])
-                {
-                    case '&': pattern = pattern.And(); break;
-                    case '|': pattern = pattern.Or(); break;
-                    case '-': pattern = pattern.Exclude(); break;
+
+                switch (str[index]) {
+                    case '&':
+                        pattern = pattern.And();
+                        break;
+                    case '|':
+                        pattern = pattern.Or();
+                        break;
+                    case '-':
+                        pattern = pattern.Exclude();
+                        break;
                 }
                 index++;
             }
@@ -250,16 +181,16 @@ namespace MoreTags
             var tn = new TagNames();
             var op = '+';
             int baseidx = 0, idx = 0;
-            while (idx != -1)
-            {
+
+            while (idx != -1) {
                 idx = str.IndexOfAny("+-".ToArray(), baseidx);
                 var name = idx == -1 ? str.Substring(baseidx) : str.Substring(baseidx, idx - baseidx);
                 if (op == '+')
                     tn.Add(ConvertToTagNames(name));
                 else
                     tn.Remove(ConvertToTagNames(name));
-                if (idx != -1)
-                {
+
+                if (idx != -1) {
                     op = str[idx];
                     idx++;
                     baseidx = idx;
@@ -271,8 +202,8 @@ namespace MoreTags
         private static TagNames ConvertToTagNames(string str)
         {
             if (string.IsNullOrEmpty(str)) return new TagNames();
-            if (!str.StartsWith("*."))
-            {
+
+            if (!str.StartsWith("*.")) {
                 if (str.EndsWith(".*"))
                     return ((TagGroup)str.TrimEnd('.', '*')).all;
                 else if (str.EndsWith(".?"))
@@ -280,8 +211,7 @@ namespace MoreTags
                 else
                     return (TagName)str;
             }
-            else
-            {
+            else {
                 str = str.Substring(2);
                 if (str.EndsWith(".*"))
                     return ((TagChildren)str.TrimEnd('.', '*')).all;
@@ -300,10 +230,8 @@ namespace MoreTags
             return go;
         }
 
-        public static GameObject[] CreateGameObject(int count)
-        {
-            return Enumerable.Repeat(CreateGameObject(), count).ToArray();
-        }
+        public static GameObject[] CreateGameObject(int count) =>
+            Enumerable.Repeat(CreateGameObject(), count).ToArray();
 
         public static void DestroyGameObject(GameObject go)
         {
@@ -316,8 +244,7 @@ namespace MoreTags
                 Object.DestroyImmediate(go);
         }
 
-        public static TagPattern Test()
-        {
+        public static TagPattern Test() =>
             //TagGroup b = "Team";
             //var a = (Tag.Team.all - Tag.Team.Player);
             //var aa = (-a.either).GameObjects();
@@ -326,7 +253,6 @@ namespace MoreTags
             //var t = Tag.Team.Player & (Tag.Weapon.Sword | Tag.all.Fire.either);
             //var r = Tag.Team.Player | (Tag.Weapon.Sword & Tag.all.either);
             //var rr = Tag.Team.Player | (Tag.Weapon.Sword & Tag.Magic.Fire);
-            return TagSystem.pattern;
-        }
+            TagSystem.pattern;
     }
 }

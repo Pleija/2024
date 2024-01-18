@@ -20,19 +20,13 @@ public static class UnityApi
         return value;
     }
 
-    public static T1 To<T, T1>(this T value, Func<T, T1> fn)
-    {
-        return fn.Invoke(value);
-    }
+    public static T1 To<T, T1>(this T value, Func<T, T1> fn) => fn.Invoke(value);
 
     public static GameObject OnDestroyRelease(this GameObject go, AsyncOperationHandle<GameObject> handle)
     {
-        if(handle.IsValid()) Addressables.Release(handle);
+        if (handle.IsValid()) Addressables.Release(handle);
         return go;
     }
 
-    public static GameObject Instantiate(this GameObject go)
-    {
-        return UnityEngine.Object.Instantiate(go);
-    }
+    public static GameObject Instantiate(this GameObject go) => UnityEngine.Object.Instantiate(go);
 }

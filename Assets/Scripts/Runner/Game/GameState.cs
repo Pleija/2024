@@ -183,10 +183,7 @@ namespace Runner.Game
                     adsForLifeButton.SetActive(true);
                     m_AdsInitialised = true;
 #if UNITY_ANALYTICS
-                    AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                        { "level_index", PlayerData.instance.rank },
-                        { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
-                    });
+                    AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "level_index", PlayerData.instance.rank }, { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance }, });
 #endif
                 }
                 else if (trackManager.isTutorial || !m_AdsInitialised)
@@ -229,10 +226,7 @@ namespace Runner.Game
 
                         if (Health > (chrCtrl.currentLife + 1) * 33.3f) {
                             chrCtrl.currentLife += 1;
-
-                            if (chrCtrl.currentLife == 3) {
-                                Health = 100;
-                            }
+                            if (chrCtrl.currentLife == 3) Health = 100;
                         }
                         if (m_PreReady) PreHeathImage.fillAmount = Health / 100f;
                     }
@@ -431,21 +425,14 @@ namespace Runner.Game
 #if UNITY_ADS
             if (Advertisement.IsReady(adsPlacementId)) {
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "level_index", PlayerData.instance.rank },
-                    { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
-                });
+                AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "level_index", PlayerData.instance.rank }, { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance }, });
 #endif
-                var options = new ShowOptions {
-                    resultCallback = HandleShowResult
-                };
+                var options = new ShowOptions { resultCallback = HandleShowResult };
                 Advertisement.Show(adsPlacementId, options);
             }
             else {
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "error", Advertisement.GetPlacementState(adsPlacementId).ToString() }
-                });
+                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "error", Advertisement.GetPlacementState(adsPlacementId).ToString() } });
 #endif
             }
 #else
@@ -473,9 +460,7 @@ namespace Runner.Game
                 case ShowResult.Failed:
                     Debug.LogError("The ad failed to be shown.");
 #if UNITY_ANALYTICS
-                    AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                        { "error", "failed" }
-                    });
+                    AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "error", "failed" } });
 #endif
                     break;
             }

@@ -15,29 +15,24 @@ public static class AddressablesHelper
         action.Invoke(null);
     }
 
-    public static UniTask Inst(this AssetReference asset, Action<GameObject> callback)
-    {
-        return Inst(asset, null, Vector3.zero, Quaternion.identity, callback);
-    }
+    public static UniTask Inst(this AssetReference asset, Action<GameObject> callback) =>
+        Inst(asset, null, Vector3.zero, Quaternion.identity, callback);
 
-    public static UniTask Inst(this AssetReference asset, Transform parent, Action<GameObject> callback)
-    {
-        return Inst(asset, parent, Vector3.zero, Quaternion.identity, callback);
-    }
+    public static UniTask Inst(this AssetReference asset, Transform parent, Action<GameObject> callback) =>
+        Inst(asset, parent, Vector3.zero, Quaternion.identity, callback);
 
     public static UniTask LoadPrefab(this AssetReference asset, Action<GameObject> callback)
     {
         return LoadAs(asset, typeof(GameObject), t => callback.Invoke(t as GameObject));
     }
 
-    public static UniTask LoadAs(this AssetReference asset, Type type = null,
-        Action<UnityEngine.Object> callback = null)
+    public static UniTask LoadAs(this AssetReference asset, Type type = null, Action<Object> callback = null)
     {
         if (!asset.RuntimeKeyIsValid()) {
             Debug.LogException(new Exception("key error"));
             return UniTask.WaitUntil(() => true);
         }
-        var h = Addressables.LoadAssetAsync<UnityEngine.Object>(asset);
+        var h = Addressables.LoadAssetAsync<Object>(asset);
         h.Completed += handle => {
             if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.GetType() == type) {
                 callback?.Invoke(handle.Result);

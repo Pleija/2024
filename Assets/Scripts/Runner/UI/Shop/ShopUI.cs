@@ -8,7 +8,6 @@ using UnityEngine.UI;
 #if UNITY_ADS
 using UnityEngine.Advertisements;
 #endif
-
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -115,9 +114,7 @@ namespace Runner.UI.Shop
         public void ShowRewardedAd()
         {
             if (Advertisement.IsReady("rewardedVideo")) {
-                var options = new ShowOptions {
-                    resultCallback = HandleShowResult
-                };
+                var options = new ShowOptions { resultCallback = HandleShowResult };
                 Advertisement.Show("rewardedVideo", options);
             }
         }

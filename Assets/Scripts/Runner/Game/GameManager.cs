@@ -40,7 +40,7 @@ namespace Runner.Game
         public UnityEvent OnEnableEvent;
         public UnityEvent OnStartEvent;
 
-        public override  void OnEnable()
+        public override void OnEnable()
         {
             base.OnEnable();
             s_Instance = this;
@@ -93,7 +93,7 @@ namespace Runner.Game
             PushState(states[0].GetName());
         }
 
-        public  void Update()
+        public void Update()
         {
             if (m_StateStack.Count > 0) m_StateStack[m_StateStack.Count - 1].Tick();
         }
@@ -103,11 +103,11 @@ namespace Runner.Game
 #if UNITY_ANALYTICS
             // We are exiting during game, so this make this invalid, send an event to log it
             // NOTE : this is only called on standalone build, as on mobile this function isn't called
-            bool inGameExit = m_StateStack[m_StateStack.Count - 1].GetType() == typeof(GameState);
-            Analytics.CustomEvent("user_end_session", new Dictionary<string, object> {
-                { "force_exit", inGameExit },
-                { "timer", Time.realtimeSinceStartup }
-            });
+            var inGameExit = m_StateStack[m_StateStack.Count - 1].GetType() == typeof(GameState);
+            Analytics.CustomEvent("user_end_session",
+                new Dictionary<string, object> {
+                    { "force_exit", inGameExit }, { "timer", Time.realtimeSinceStartup },
+                });
 #endif
         }
 

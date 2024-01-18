@@ -3,25 +3,24 @@ using UnityEngine;
 
 namespace MoreTags
 {
-    [AddComponentMenu("MoreTags/Prefab Tags", 0)]
-    [ExecuteInEditMode]
+    [AddComponentMenu("MoreTags/Prefab Tags", 0), ExecuteInEditMode]
     public class PrefabTags : MonoBehaviour
     {
         public List<string> Tags = new List<string>();
 
-        void Awake()
+        private void Awake()
         {
             gameObject.AddTag(Tags.ToArray());
             RemoveSelf();
         }
 
 #if UNITY_EDITOR
-        void Reset()
+        private void Reset()
         {
             Invoke("RemoveSelf", 0);
         }
 #endif
-        void RemoveSelf()
+        private void RemoveSelf()
         {
 #if UNITY_EDITOR
             DestroyImmediate(this);

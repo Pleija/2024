@@ -26,9 +26,7 @@ namespace MoreTags
 
         public static TagManager self {
             get {
-                if(m_Instance == null) {
-                    m_Instance = Resources.Load<TagManager>("TagManager");
-                }
+                if (m_Instance == null) m_Instance = Resources.Load<TagManager>("TagManager");
                 return m_Instance;
             }
             set => m_Instance = value;
@@ -40,10 +38,8 @@ namespace MoreTags
         public void AddTag(params string[] tags)
         {
             var newList = tags.Where(tag => m_tags.All(x => x.name != tag)).ToArray();
-            if(!newList.Any()) return;
-            newList.ForEach(x => m_tags.Add(new TagData() {
-                name = x
-            }));
+            if (!newList.Any()) return;
+            newList.ForEach(x => m_tags.Add(new TagData() { name = x }));
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
@@ -51,10 +47,10 @@ namespace MoreTags
 
         public void RenameTag(string old, string tag)
         {
-            if(string.IsNullOrEmpty(tag)) return;
-            if(m_tags.Any(x => x.name == tag)) return;
+            if (string.IsNullOrEmpty(tag)) return;
+            if (m_tags.Any(x => x.name == tag)) return;
             var item = m_tags.FirstOrDefault(x => x.name == old);
-            if(item == null) return;
+            if (item == null) return;
             item.name = tag;
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);

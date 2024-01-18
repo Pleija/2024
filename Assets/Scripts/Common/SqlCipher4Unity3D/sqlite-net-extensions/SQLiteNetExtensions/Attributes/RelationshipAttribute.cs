@@ -4,7 +4,7 @@ using SqlCipher4Unity3D.SQLite.Attribute;
 namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public abstract class RelationshipAttribute: IgnoreAttribute
+    public abstract class RelationshipAttribute : IgnoreAttribute
     {
         protected RelationshipAttribute(string foreignKey, string inverseForeignKey, string inverseProperty)
         {

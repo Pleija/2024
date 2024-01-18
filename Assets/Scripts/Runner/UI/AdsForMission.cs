@@ -3,7 +3,6 @@ using UnityEngine.UI;
 #if UNITY_ADS
 using UnityEngine.Advertisements;
 #endif
-
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -33,10 +32,7 @@ namespace Runner.UI
 
             if (isReady) {
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "level_index", PlayerData.instance.rank },
-                    { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
-                });
+                AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "level_index", PlayerData.instance.rank }, { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance }, });
 #endif
             }
             newMissionText.gameObject.SetActive(isReady);
@@ -49,21 +45,14 @@ namespace Runner.UI
 #if UNITY_ADS
             if (Advertisement.IsReady(adsPlacementId)) {
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "level_index", PlayerData.instance.rank },
-                    { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance },
-                });
+                AnalyticsEvent.AdStart(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "level_index", PlayerData.instance.rank }, { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance }, });
 #endif
-                var options = new ShowOptions {
-                    resultCallback = HandleShowResult
-                };
+                var options = new ShowOptions { resultCallback = HandleShowResult };
                 Advertisement.Show(adsPlacementId, options);
             }
             else {
 #if UNITY_ANALYTICS
-                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                    { "error", Advertisement.GetPlacementState(adsPlacementId).ToString() }
-                });
+                AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "error", Advertisement.GetPlacementState(adsPlacementId).ToString() } });
 #endif
             }
 #endif
@@ -88,9 +77,7 @@ namespace Runner.UI
                 case ShowResult.Failed:
                     Debug.LogError("The ad failed to be shown.");
 #if UNITY_ANALYTICS
-                    AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> {
-                        { "error", "failed" }
-                    });
+                    AnalyticsEvent.AdSkip(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "error", "failed" } });
 #endif
                     break;
             }

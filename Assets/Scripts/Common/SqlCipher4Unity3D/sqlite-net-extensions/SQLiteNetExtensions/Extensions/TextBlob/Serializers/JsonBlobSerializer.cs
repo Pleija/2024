@@ -8,31 +8,25 @@ using UnityEngine;
 
 namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions.TextBlob.Serializers
 {
-    public class TupleConverter<T1, T2>: TypeConverter
+    public class TupleConverter<T1, T2> : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-        }
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+            sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var elements = Convert.ToString(value)
-                .Trim('(')
-                .Trim(')')
+            var elements = Convert.ToString(value).Trim('(').Trim(')')
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
             return (int.Parse(elements.First()), int.Parse(elements.Last()));
         }
     }
 
-    public class JsonBlobSerializer: ITextBlobSerializer
+    public class JsonBlobSerializer : ITextBlobSerializer
     {
         public string Serialize(object element)
         {
             TypeDescriptor.AddAttributes(typeof((int, int)),
                 new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
-
             return JsonConvert.SerializeObject(element);
         }
 
@@ -47,7 +41,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
                 //var json = JsonConvert.SerializeObject(dictionary);
                 return JsonConvert.DeserializeObject<Dictionary<(int, int), string>>(text);
-            } catch (Exception) {
+            }
+            catch (Exception) {
                 return JsonConvert.DeserializeObject(text, type);
             }
         }

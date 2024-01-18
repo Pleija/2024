@@ -87,19 +87,16 @@ namespace Runner.UI.Shop
             var itemId = c.characterName;
             var itemType = "non_consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level, transactionId);
-
-            if (c.cost > 0) {
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level,
+                transactionId);
+            if (c.cost > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                     // Currency type
                     transactionContext, c.cost, itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
-            }
-
-            if (c.premiumCost > 0) {
+            if (c.premiumCost > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                           // Currency type
                     transactionContext, c.premiumCost, itemId, PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);
-            }
 #endif
 
             // Repopulate to change button accordingly.

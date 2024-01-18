@@ -7,7 +7,7 @@ namespace ParadoxNotion
     public class AssetObject : ScriptableObject
     {
         [SerializeField]
-        AssetReference value;
+        private AssetReference value;
 #if UNITY_EDITOR
         public SerializedObject serializedObject;
         public SerializedProperty property;

@@ -21,7 +21,7 @@ using Sqlite3BackupHandle = System.IntPtr;
 namespace SqlCipher4Unity3D
 {
     /// <summary>
-    /// An open connection to a SQLite database.
+    ///     An open connection to a SQLite database.
     /// </summary>
     [Preserve(AllMembers = true)]
     public partial class SQLiteConnection : IDisposable
@@ -38,58 +38,58 @@ namespace SqlCipher4Unity3D
         static readonly Sqlite3BackupHandle NullBackupHandle = default(Sqlite3BackupHandle);
 
         /// <summary>
-        /// Gets the database path used by this connection.
+        ///     Gets the database path used by this connection.
         /// </summary>
         public string DatabasePath { get; private set; }
 
         /// <summary>
-        /// Gets the SQLite library version number. 3007014 would be v3.7.14
+        ///     Gets the SQLite library version number. 3007014 would be v3.7.14
         /// </summary>
         public int LibVersionNumber { get; private set; }
 
         /// <summary>
-        /// Whether Trace lines should be written that show the execution time of queries.
+        ///     Whether Trace lines should be written that show the execution time of queries.
         /// </summary>
         public bool TimeExecution { get; set; }
 
         /// <summary>
-        /// Whether to write queries to <see cref="Tracer"/> during execution.
+        ///     Whether to write queries to <see cref="Tracer" /> during execution.
         /// </summary>
         public bool Trace { get; set; }
 
         /// <summary>
-        /// The delegate responsible for writing trace lines.
+        ///     The delegate responsible for writing trace lines.
         /// </summary>
         /// <value>The tracer.</value>
         public Action<string> Tracer { get; set; }
 
         /// <summary>
-        /// Whether to store DateTime properties as ticks (true) or strings (false).
+        ///     Whether to store DateTime properties as ticks (true) or strings (false).
         /// </summary>
         public bool StoreDateTimeAsTicks { get; private set; }
 
         /// <summary>
-        /// Whether to store TimeSpan properties as ticks (true) or strings (false).
+        ///     Whether to store TimeSpan properties as ticks (true) or strings (false).
         /// </summary>
         public bool StoreTimeSpanAsTicks { get; private set; }
 
         /// <summary>
-        /// The format to use when storing DateTime properties as strings. Ignored if StoreDateTimeAsTicks is true.
+        ///     The format to use when storing DateTime properties as strings. Ignored if StoreDateTimeAsTicks is true.
         /// </summary>
         /// <value>The date time string format.</value>
         public string DateTimeStringFormat { get; private set; }
 
         /// <summary>
-        /// The DateTimeStyles value to use when parsing a DateTime property string.
+        ///     The DateTimeStyles value to use when parsing a DateTime property string.
         /// </summary>
         /// <value>The date time style.</value>
         internal System.Globalization.DateTimeStyles DateTimeStyle { get; private set; }
 
 #if USE_SQLITEPCL_RAW && !NO_SQLITEPCL_RAW_BATTERIES
-		static SQLiteConnection ()
-		{
-			SQLitePCL.Batteries_V2.Init ();
-		}
+        static SQLiteConnection()
+        {
+            SQLitePCL.Batteries_V2.Init();
+        }
 #endif
 
         // NOTE(pyoung): added for SqlCipher4Unity3D
@@ -98,48 +98,48 @@ namespace SqlCipher4Unity3D
                 storeDateTimeAsTicks, password)) { }
 
         /// <summary>
-        /// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
+        ///     Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
         /// </summary>
         /// <param name="databasePath">
-        /// Specifies the path to the database file.
+        ///     Specifies the path to the database file.
         /// </param>
         /// <param name="storeDateTimeAsTicks">
-        /// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
-        /// absolutely do want to store them as Ticks in all new projects. The value of false is
-        /// only here for backwards compatibility. There is a *significant* speed advantage, with no
-        /// down sides, when setting storeDateTimeAsTicks = true.
-        /// If you use DateTimeOffset properties, it will be always stored as ticks regardingless
-        /// the storeDateTimeAsTicks parameter.
+        ///     Specifies whether to store DateTime properties as ticks (true) or strings (false). You
+        ///     absolutely do want to store them as Ticks in all new projects. The value of false is
+        ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
+        ///     down sides, when setting storeDateTimeAsTicks = true.
+        ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
+        ///     the storeDateTimeAsTicks parameter.
         /// </param>
         public SQLiteConnection(string databasePath, bool storeDateTimeAsTicks = true) : this(
             new SQLiteConnectionString(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create,
                 storeDateTimeAsTicks)) { }
 
         /// <summary>
-        /// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
+        ///     Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
         /// </summary>
         /// <param name="databasePath">
-        /// Specifies the path to the database file.
+        ///     Specifies the path to the database file.
         /// </param>
         /// <param name="openFlags">
-        /// Flags controlling how the connection should be opened.
+        ///     Flags controlling how the connection should be opened.
         /// </param>
         /// <param name="storeDateTimeAsTicks">
-        /// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
-        /// absolutely do want to store them as Ticks in all new projects. The value of false is
-        /// only here for backwards compatibility. There is a *significant* speed advantage, with no
-        /// down sides, when setting storeDateTimeAsTicks = true.
-        /// If you use DateTimeOffset properties, it will be always stored as ticks regardingless
-        /// the storeDateTimeAsTicks parameter.
+        ///     Specifies whether to store DateTime properties as ticks (true) or strings (false). You
+        ///     absolutely do want to store them as Ticks in all new projects. The value of false is
+        ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
+        ///     down sides, when setting storeDateTimeAsTicks = true.
+        ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
+        ///     the storeDateTimeAsTicks parameter.
         /// </param>
         public SQLiteConnection(string databasePath, SQLiteOpenFlags openFlags, bool storeDateTimeAsTicks = true) :
             this(new SQLiteConnectionString(databasePath, openFlags, storeDateTimeAsTicks)) { }
 
         /// <summary>
-        /// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
+        ///     Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
         /// </summary>
         /// <param name="connectionString">
-        /// Details on how to find and open the database.
+        ///     Details on how to find and open the database.
         /// </param>
         public SQLiteConnection(SQLiteConnectionString connectionString)
         {
@@ -176,17 +176,16 @@ namespace SqlCipher4Unity3D
                         0x66,
                         0x69,
                         0x65,
-                        0x64
+                        0x64,
                     }));
             DatabasePath = connectionString.DatabasePath;
             LibVersionNumber = SQLite3.LibVersionNumber();
 #if NETFX_CORE
-			SQLite3.SetDirectory(/*temp directory type*/2, Windows.Storage.ApplicationData.Current.TemporaryFolder.Path);
+            SQLite3.SetDirectory( /*temp directory type*/2, Windows.Storage.ApplicationData.Current.TemporaryFolder.Path);
 #endif
             Sqlite3DatabaseHandle handle;
 #if SILVERLIGHT || USE_CSHARP_SQLITE || USE_SQLITEPCL_RAW
-			var r =
- SQLite3.Open (connectionString.DatabasePath, out handle, (int)connectionString.OpenFlags, connectionString.VfsName);
+            var r = SQLite3.Open(connectionString.DatabasePath, out handle, (int)connectionString.OpenFlags, connectionString.VfsName);
 #else
             // open using the byte[]
             // in the case where the path may include Unicode
@@ -239,7 +238,7 @@ namespace SqlCipher4Unity3D
                         0x7B,
                         0x31,
                         0x7D,
-                        0x29
+                        0x29,
                     }), DatabasePath, r));
             }
             _open = true;
@@ -316,16 +315,16 @@ namespace SqlCipher4Unity3D
                         0x72,
                         0x61,
                         0x79,
-                        0x73
+                        0x73,
                     }));
             }
             connectionString.PostKeyAction?.Invoke(this);
         }
 
         /// <summary>
-        /// Enables the write ahead logging. WAL is significantly faster in most scenarios
-        /// by providing better concurrency and better disk IO performance than the normal
-        /// journal mode. You only need to call this function once in the lifetime of the database.
+        ///     Enables the write ahead logging. WAL is significantly faster in most scenarios
+        ///     by providing better concurrency and better disk IO performance than the normal
+        ///     journal mode. You only need to call this function once in the lifetime of the database.
         /// </summary>
         public void EnableWriteAheadLogging()
         {
@@ -353,12 +352,12 @@ namespace SqlCipher4Unity3D
                     0x3D,
                     0x57,
                     0x41,
-                    0x4C
+                    0x4C,
                 }));
         }
 
         /// <summary>
-        /// Convert an input string to a quoted SQL string that can be safely used in queries.
+        ///     Convert an input string to a quoted SQL string that can be safely used in queries.
         /// </summary>
         /// <returns>The quoted string.</returns>
         /// <param name="unsafeString">The unsafe string to quote.</param>
@@ -371,10 +370,10 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Sets the key used to encrypt/decrypt the database with "pragma key = ...".
-        /// This must be the first thing you call before doing anything else with this connection
-        /// if your database is encrypted.
-        /// This only has an effect if you are using the SQLCipher nuget package.
+        ///     Sets the key used to encrypt/decrypt the database with "pragma key = ...".
+        ///     This must be the first thing you call before doing anything else with this connection
+        ///     if your database is encrypted.
+        ///     This only has an effect if you are using the SQLCipher nuget package.
         /// </summary>
         /// <param name="key">Ecryption key plain text that is converted to the real encryption key using PBKDF2 key derivation</param>
         void SetKey(string key)
@@ -382,7 +381,7 @@ namespace SqlCipher4Unity3D
             if (key == null) throw new ArgumentNullException(nameof(key));
             var q = Quote(key);
             Execute( /*"pragma key = "*/Encoding.UTF8.GetString(new byte[] {
-                0x70, 0x72, 0x61, 0x67, 0x6D, 0x61, 0x20, 0x6B, 0x65, 0x79, 0x20, 0x3D, 0x20
+                0x70, 0x72, 0x61, 0x67, 0x6D, 0x61, 0x20, 0x6B, 0x65, 0x79, 0x20, 0x3D, 0x20,
             }) + q);
         }
 
@@ -391,15 +390,15 @@ namespace SqlCipher4Unity3D
             if (key == null) throw new ArgumentNullException(nameof(key));
             var q = Quote(key);
             Execute( /* "pragma rekey = " */ Encoding.UTF8.GetString(new byte[] {
-                0x70, 0x72, 0x61, 0x67, 0x6D, 0x61, 0x20, 0x72, 0x65, 0x6B, 0x65, 0x79, 0x20, 0x3D, 0x20
+                0x70, 0x72, 0x61, 0x67, 0x6D, 0x61, 0x20, 0x72, 0x65, 0x6B, 0x65, 0x79, 0x20, 0x3D, 0x20,
             }) + q);
         }
 
         /// <summary>
-        /// Sets the key used to encrypt/decrypt the database.
-        /// This must be the first thing you call before doing anything else with this connection
-        /// if your database is encrypted.
-        /// This only has an effect if you are using the SQLCipher nuget package.
+        ///     Sets the key used to encrypt/decrypt the database.
+        ///     This must be the first thing you call before doing anything else with this connection
+        ///     if your database is encrypted.
+        ///     This only has an effect if you are using the SQLCipher nuget package.
         /// </summary>
         /// <param name="key">256-bit (32 byte) ecryption key data</param>
         void SetKey(byte[] key)
@@ -438,16 +437,16 @@ namespace SqlCipher4Unity3D
                         0x62,
                         0x69,
                         0x74,
-                        0x29
+                        0x29,
                     }), nameof(key));
             var s = String.Join("", key.Select(x => x.ToString("X2")));
             Execute( /* "pragma key = " */ Encoding.UTF8.GetString(new byte[] {
-                0x70, 0x72, 0x61, 0x67, 0x6D, 0x61, 0x20, 0x6B, 0x65, 0x79, 0x20, 0x3D, 0x20
+                0x70, 0x72, 0x61, 0x67, 0x6D, 0x61, 0x20, 0x6B, 0x65, 0x79, 0x20, 0x3D, 0x20,
             }) + "\"x'" + s + "'\"");
         }
 
         /// <summary>
-        /// Enable or disable extension loading.
+        ///     Enable or disable extension loading.
         /// </summary>
         public void EnableLoadExtension(bool enabled)
         {
@@ -470,8 +469,8 @@ namespace SqlCipher4Unity3D
 #endif
 
         /// <summary>
-        /// Sets a busy handler to sleep the specified amount of time when a table is locked.
-        /// The handler will sleep multiple times until a total time of <see cref="BusyTimeout"/> has accumulated.
+        ///     Sets a busy handler to sleep the specified amount of time when a table is locked.
+        ///     The handler will sleep multiple times until a total time of <see cref="BusyTimeout" /> has accumulated.
         /// </summary>
         public TimeSpan BusyTimeout {
             get { return _busyTimeout; }
@@ -485,8 +484,8 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns the mappings from types to tables that the connection
-        /// currently understands.
+        ///     Returns the mappings from types to tables that the connection
+        ///     currently understands.
         /// </summary>
         public IEnumerable<TableMapping> TableMappings {
             get {
@@ -497,17 +496,17 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Retrieves the mapping that is automatically generated for the given type.
+        ///     Retrieves the mapping that is automatically generated for the given type.
         /// </summary>
         /// <param name="type">
-        /// The type whose mapping to the database is returned.
+        ///     The type whose mapping to the database is returned.
         /// </param>
         /// <param name="createFlags">
-        /// Optional flags allowing implicit PK and indexes based on naming conventions
+        ///     Optional flags allowing implicit PK and indexes based on naming conventions
         /// </param>
         /// <returns>
-        /// The mapping represents the schema of the columns of the database and contains
-        /// methods to set and get properties of objects.
+        ///     The mapping represents the schema of the columns of the database and contains
+        ///     methods to set and get properties of objects.
         /// </returns>
         public TableMapping GetMapping(Type type, CreateFlags createFlags = CreateFlags.None)
         {
@@ -530,14 +529,14 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Retrieves the mapping that is automatically generated for the given type.
+        ///     Retrieves the mapping that is automatically generated for the given type.
         /// </summary>
         /// <param name="createFlags">
-        /// Optional flags allowing implicit PK and indexes based on naming conventions
+        ///     Optional flags allowing implicit PK and indexes based on naming conventions
         /// </param>
         /// <returns>
-        /// The mapping represents the schema of the columns of the database and contains
-        /// methods to set and get properties of objects.
+        ///     The mapping represents the schema of the columns of the database and contains
+        ///     methods to set and get properties of objects.
         /// </returns>
         public TableMapping GetMapping<T>(CreateFlags createFlags = CreateFlags.None)
         {
@@ -559,7 +558,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "drop table" on the database.  This is non-recoverable.
+        ///     Executes a "drop table" on the database.  This is non-recoverable.
         /// </summary>
         public int DropTable<T>()
         {
@@ -572,10 +571,10 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "drop table" on the database.  This is non-recoverable.
+        ///     Executes a "drop table" on the database.  This is non-recoverable.
         /// </summary>
         /// <param name="map">
-        /// The TableMapping used to identify the table.
+        ///     The TableMapping used to identify the table.
         /// </param>
         public int DropTable(TableMapping map)
         {
@@ -584,13 +583,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <returns>
-        /// Whether the table was created or migrated.
+        ///     Whether the table was created or migrated.
         /// </returns>
         public CreateTableResult CreateTable<T>(CreateFlags createFlags = CreateFlags.None)
         {
@@ -598,15 +597,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <param name="ty">Type to reflect to a database table.</param>
         /// <param name="createFlags">Optional flags allowing implicit PK and indexes based on naming conventions.</param>
         /// <returns>
-        /// Whether the table was created or migrated.
+        ///     Whether the table was created or migrated.
         /// </returns>
         public CreateTableResult CreateTable(Type ty, CreateFlags createFlags = CreateFlags.None)
         {
@@ -659,17 +658,14 @@ namespace SqlCipher4Unity3D
                             IndexName = iname,
                             TableName = map.TableName,
                             Unique = i.Unique,
-                            Columns = new List<IndexedColumn>()
+                            Columns = new List<IndexedColumn>(),
                         };
                         indexes.Add(iname, iinfo);
                     }
                     if (i.Unique != iinfo.Unique)
                         throw new Exception(
                             "All the columns in an index must have the same value for their Unique property");
-                    iinfo.Columns.Add(new IndexedColumn {
-                        Order = i.Order,
-                        ColumnName = c.Name
-                    });
+                    iinfo.Columns.Add(new IndexedColumn { Order = i.Order, ColumnName = c.Name });
                 }
             }
 
@@ -682,13 +678,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database for each type. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database for each type. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <returns>
-        /// Whether the table was created or migrated for each type.
+        ///     Whether the table was created or migrated for each type.
         /// </returns>
         public CreateTablesResult CreateTables<T, T2>(CreateFlags createFlags = CreateFlags.None) where T : new()
             where T2 : new()
@@ -697,13 +693,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database for each type. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database for each type. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <returns>
-        /// Whether the table was created or migrated for each type.
+        ///     Whether the table was created or migrated for each type.
         /// </returns>
         public CreateTablesResult CreateTables<T, T2, T3>(CreateFlags createFlags = CreateFlags.None) where T : new()
             where T2 : new() where T3 : new()
@@ -712,13 +708,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database for each type. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database for each type. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <returns>
-        /// Whether the table was created or migrated for each type.
+        ///     Whether the table was created or migrated for each type.
         /// </returns>
         public CreateTablesResult CreateTables<T, T2, T3, T4>(CreateFlags createFlags = CreateFlags.None)
             where T : new() where T2 : new() where T3 : new() where T4 : new()
@@ -727,13 +723,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database for each type. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database for each type. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <returns>
-        /// Whether the table was created or migrated for each type.
+        ///     Whether the table was created or migrated for each type.
         /// </returns>
         public CreateTablesResult CreateTables<T, T2, T3, T4, T5>(CreateFlags createFlags = CreateFlags.None)
             where T : new() where T2 : new() where T3 : new() where T4 : new() where T5 : new()
@@ -742,13 +738,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes a "create table if not exists" on the database for each type. It also
-        /// creates any specified indexes on the columns of the table. It uses
-        /// a schema automatically generated from the specified type. You can
-        /// later access this schema by calling GetMapping.
+        ///     Executes a "create table if not exists" on the database for each type. It also
+        ///     creates any specified indexes on the columns of the table. It uses
+        ///     a schema automatically generated from the specified type. You can
+        ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <returns>
-        /// Whether the table was created or migrated for each type.
+        ///     Whether the table was created or migrated for each type.
         /// </returns>
         public CreateTablesResult CreateTables(CreateFlags createFlags = CreateFlags.None, params Type[] types)
         {
@@ -762,7 +758,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates an index for the specified table and columns.
+        ///     Creates an index for the specified table and columns.
         /// </summary>
         /// <param name="indexName">Name of the index to create</param>
         /// <param name="tableName">Name of the database table</param>
@@ -778,7 +774,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates an index for the specified table and column.
+        ///     Creates an index for the specified table and column.
         /// </summary>
         /// <param name="indexName">Name of the index to create</param>
         /// <param name="tableName">Name of the database table</param>
@@ -791,7 +787,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates an index for the specified table and column.
+        ///     Creates an index for the specified table and column.
         /// </summary>
         /// <param name="tableName">Name of the database table</param>
         /// <param name="columnName">Name of the column to index</param>
@@ -803,7 +799,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates an index for the specified table and columns.
+        ///     Creates an index for the specified table and columns.
         /// </summary>
         /// <param name="tableName">Name of the database table</param>
         /// <param name="columnNames">An array of column names to index</param>
@@ -815,8 +811,8 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates an index for the specified object property.
-        /// e.g. CreateIndex&lt;Client&gt;(c => c.Name);
+        ///     Creates an index for the specified object property.
+        ///     e.g. CreateIndex&lt;Client&gt;(c => c.Name);
         /// </summary>
         /// <typeparam name="T">Type to reflect to a database table.</typeparam>
         /// <param name="property">Property to index</param>
@@ -866,7 +862,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Query the built-in sqlite table_info table for a specific tables columns.
+        ///     Query the built-in sqlite table_info table for a specific tables columns.
         /// </summary>
         /// <returns>The columns contains in the table.</returns>
         /// <param name="tableName">Table name.</param>
@@ -901,26 +897,26 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a new SQLiteCommand. Can be overridden to provide a sub-class.
+        ///     Creates a new SQLiteCommand. Can be overridden to provide a sub-class.
         /// </summary>
-        /// <seealso cref="SQLiteCommand.OnInstanceCreated"/>
+        /// <seealso cref="SQLiteCommand.OnInstanceCreated" />
         protected virtual SQLiteCommand NewCommand()
         {
             return new SQLiteCommand(this);
         }
 
         /// <summary>
-        /// Creates a new SQLiteCommand given the command text with arguments. Place a '?'
-        /// in the command text for each of the arguments.
+        ///     Creates a new SQLiteCommand given the command text with arguments. Place a '?'
+        ///     in the command text for each of the arguments.
         /// </summary>
         /// <param name="cmdText">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="ps">
-        /// Arguments to substitute for the occurences of '?' in the command text.
+        ///     Arguments to substitute for the occurences of '?' in the command text.
         /// </param>
         /// <returns>
-        /// A <see cref="SQLiteCommand"/>
+        ///     A <see cref="SQLiteCommand" />
         /// </returns>
         public SQLiteCommand CreateCommand(string cmdText, params object[] ps)
         {
@@ -938,18 +934,18 @@ namespace SqlCipher4Unity3D
         public bool Connected => true;
 
         /// <summary>
-        /// Creates a new SQLiteCommand given the command text with named arguments. Place a "[@:$]VVV"
-        /// in the command text for each of the arguments. VVV represents an alphanumeric identifier.
-        /// For example, @name :name and $name can all be used in the query.
+        ///     Creates a new SQLiteCommand given the command text with named arguments. Place a "[@:$]VVV"
+        ///     in the command text for each of the arguments. VVV represents an alphanumeric identifier.
+        ///     For example, @name :name and $name can all be used in the query.
         /// </summary>
         /// <param name="cmdText">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of "[@:$]VVV" in the command text.
+        ///     Arguments to substitute for the occurences of "[@:$]VVV" in the command text.
         /// </param>
         /// <returns>
-        /// A <see cref="SQLiteCommand" />
+        ///     A <see cref="SQLiteCommand" />
         /// </returns>
         public SQLiteCommand CreateCommand(string cmdText, Dictionary<string, object> args)
         {
@@ -965,21 +961,21 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// Use this method instead of Query when you don't expect rows back. Such cases include
-        /// INSERTs, UPDATEs, and DELETEs.
-        /// You can set the Trace or TimeExecution properties of the connection
-        /// to profile execution.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     Use this method instead of Query when you don't expect rows back. Such cases include
+        ///     INSERTs, UPDATEs, and DELETEs.
+        ///     You can set the Trace or TimeExecution properties of the connection
+        ///     to profile execution.
         /// </summary>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// The number of rows modified in the database as a result of this execution.
+        ///     The number of rows modified in the database as a result of this execution.
         /// </returns>
         public int Execute(string query, params object[] args)
         {
@@ -1004,20 +1000,20 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// Use this method when return primitive values.
-        /// You can set the Trace or TimeExecution properties of the connection
-        /// to profile execution.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     Use this method when return primitive values.
+        ///     You can set the Trace or TimeExecution properties of the connection
+        ///     to profile execution.
         /// </summary>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// The number of rows modified in the database as a result of this execution.
+        ///     The number of rows modified in the database as a result of this execution.
         /// </returns>
         public T ExecuteScalar<T>(string query, params object[] args)
         {
@@ -1042,19 +1038,19 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// It returns each row of the result using the mapping automatically generated for
-        /// the given type.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     It returns each row of the result using the mapping automatically generated for
+        ///     the given type.
         /// </summary>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// An enumerable with one result for each row returned by the query.
+        ///     An enumerable with one result for each row returned by the query.
         /// </returns>
         public List<T> Query<T>(string query, params object[] args)
         {
@@ -1063,18 +1059,18 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// It returns the first column of each row of the result.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     It returns the first column of each row of the result.
         /// </summary>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// An enumerable with one result for the first column of each row returned by the query.
+        ///     An enumerable with one result for the first column of each row returned by the query.
         /// </returns>
         public List<T> QueryScalars<T>(string query, params object[] args)
         {
@@ -1083,22 +1079,22 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// It returns each row of the result using the mapping automatically generated for
-        /// the given type.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     It returns each row of the result using the mapping automatically generated for
+        ///     the given type.
         /// </summary>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// An enumerable with one result for each row returned by the query.
-        /// The enumerator (retrieved by calling GetEnumerator() on the result of this method)
-        /// will call sqlite3_step on each call to MoveNext, so the database
-        /// connection must remain open for the lifetime of the enumerator.
+        ///     An enumerable with one result for each row returned by the query.
+        ///     The enumerator (retrieved by calling GetEnumerator() on the result of this method)
+        ///     will call sqlite3_step on each call to MoveNext, so the database
+        ///     connection must remain open for the lifetime of the enumerator.
         /// </returns>
         public IEnumerable<T> DeferredQuery<T>(string query, params object[] args) where T : new()
         {
@@ -1107,24 +1103,24 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// It returns each row of the result using the specified mapping. This function is
-        /// only used by libraries in order to query the database via introspection. It is
-        /// normally not used.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     It returns each row of the result using the specified mapping. This function is
+        ///     only used by libraries in order to query the database via introspection. It is
+        ///     normally not used.
         /// </summary>
         /// <param name="map">
-        /// A <see cref="TableMapping"/> to use to convert the resulting rows
-        /// into objects.
+        ///     A <see cref="TableMapping" /> to use to convert the resulting rows
+        ///     into objects.
         /// </param>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// An enumerable with one result for each row returned by the query.
+        ///     An enumerable with one result for each row returned by the query.
         /// </returns>
         public List<object> Query(TableMapping map, string query, params object[] args)
         {
@@ -1133,27 +1129,27 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
-        /// in the command text for each of the arguments and then executes that command.
-        /// It returns each row of the result using the specified mapping. This function is
-        /// only used by libraries in order to query the database via introspection. It is
-        /// normally not used.
+        ///     Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        ///     in the command text for each of the arguments and then executes that command.
+        ///     It returns each row of the result using the specified mapping. This function is
+        ///     only used by libraries in order to query the database via introspection. It is
+        ///     normally not used.
         /// </summary>
         /// <param name="map">
-        /// A <see cref="TableMapping"/> to use to convert the resulting rows
-        /// into objects.
+        ///     A <see cref="TableMapping" /> to use to convert the resulting rows
+        ///     into objects.
         /// </param>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// An enumerable with one result for each row returned by the query.
-        /// The enumerator (retrieved by calling GetEnumerator() on the result of this method)
-        /// will call sqlite3_step on each call to MoveNext, so the database
-        /// connection must remain open for the lifetime of the enumerator.
+        ///     An enumerable with one result for each row returned by the query.
+        ///     The enumerator (retrieved by calling GetEnumerator() on the result of this method)
+        ///     will call sqlite3_step on each call to MoveNext, so the database
+        ///     connection must remain open for the lifetime of the enumerator.
         /// </returns>
         public IEnumerable<object> DeferredQuery(TableMapping map, string query, params object[] args)
         {
@@ -1162,11 +1158,11 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns a queryable interface to the table represented by the given type.
+        ///     Returns a queryable interface to the table represented by the given type.
         /// </summary>
         /// <returns>
-        /// A queryable object that is able to translate Where, OrderBy, and Take
-        /// queries into native SQL.
+        ///     A queryable object that is able to translate Where, OrderBy, and Take
+        ///     queries into native SQL.
         /// </returns>
         private HashSet<Type> _createdTest = new HashSet<Type>();
 
@@ -1176,9 +1172,7 @@ namespace SqlCipher4Unity3D
                 CreateTable(type, CreateFlags.AllImplicit); //todo
                 _createdTest.Add(type);
             }
-            var ret = new TableQuery<ScriptableObject>(this) {
-                Table = GetMapping(type),
-            };
+            var ret = new TableQuery<ScriptableObject>(this) { Table = GetMapping(type) };
             return ret;
         }
 
@@ -1192,16 +1186,16 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve an object with the given primary key from the table
-        /// associated with the specified type. Use of this method requires that
-        /// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
+        ///     Attempts to retrieve an object with the given primary key from the table
+        ///     associated with the specified type. Use of this method requires that
+        ///     the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
         /// </summary>
         /// <param name="pk">
-        /// The primary key.
+        ///     The primary key.
         /// </param>
         /// <returns>
-        /// The object with the given primary key. Throws a not found exception
-        /// if the object is not found.
+        ///     The object with the given primary key. Throws a not found exception
+        ///     if the object is not found.
         /// </returns>
         public T Get<T>(object pk)
         {
@@ -1210,19 +1204,19 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve an object with the given primary key from the table
-        /// associated with the specified type. Use of this method requires that
-        /// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
+        ///     Attempts to retrieve an object with the given primary key from the table
+        ///     associated with the specified type. Use of this method requires that
+        ///     the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
         /// </summary>
         /// <param name="pk">
-        /// The primary key.
+        ///     The primary key.
         /// </param>
         /// <param name="map">
-        /// The TableMapping used to identify the table.
+        ///     The TableMapping used to identify the table.
         /// </param>
         /// <returns>
-        /// The object with the given primary key. Throws a not found exception
-        /// if the object is not found.
+        ///     The object with the given primary key. Throws a not found exception
+        ///     if the object is not found.
         /// </returns>
         public object Get(object pk, TableMapping map)
         {
@@ -1230,15 +1224,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve the first object that matches the predicate from the table
-        /// associated with the specified type.
+        ///     Attempts to retrieve the first object that matches the predicate from the table
+        ///     associated with the specified type.
         /// </summary>
         /// <param name="predicate">
-        /// A predicate for which object to find.
+        ///     A predicate for which object to find.
         /// </param>
         /// <returns>
-        /// The object that matches the given predicate. Throws a not found exception
-        /// if the object is not found.
+        ///     The object that matches the given predicate. Throws a not found exception
+        ///     if the object is not found.
         /// </returns>
         public T Get<T>(Expression<Func<T, bool>> predicate) where T : class, new()
         {
@@ -1246,16 +1240,16 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve an object with the given primary key from the table
-        /// associated with the specified type. Use of this method requires that
-        /// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
+        ///     Attempts to retrieve an object with the given primary key from the table
+        ///     associated with the specified type. Use of this method requires that
+        ///     the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
         /// </summary>
         /// <param name="pk">
-        /// The primary key.
+        ///     The primary key.
         /// </param>
         /// <returns>
-        /// The object with the given primary key or null
-        /// if the object is not found.
+        ///     The object with the given primary key or null
+        ///     if the object is not found.
         /// </returns>
         public T Find<T>(object pk) where T : new()
         {
@@ -1264,19 +1258,19 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve an object with the given primary key from the table
-        /// associated with the specified type. Use of this method requires that
-        /// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
+        ///     Attempts to retrieve an object with the given primary key from the table
+        ///     associated with the specified type. Use of this method requires that
+        ///     the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
         /// </summary>
         /// <param name="pk">
-        /// The primary key.
+        ///     The primary key.
         /// </param>
         /// <param name="map">
-        /// The TableMapping used to identify the table.
+        ///     The TableMapping used to identify the table.
         /// </param>
         /// <returns>
-        /// The object with the given primary key or null
-        /// if the object is not found.
+        ///     The object with the given primary key or null
+        ///     if the object is not found.
         /// </returns>
         public object Find(object pk, TableMapping map)
         {
@@ -1284,15 +1278,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve the first object that matches the predicate from the table
-        /// associated with the specified type.
+        ///     Attempts to retrieve the first object that matches the predicate from the table
+        ///     associated with the specified type.
         /// </summary>
         /// <param name="predicate">
-        /// A predicate for which object to find.
+        ///     A predicate for which object to find.
         /// </param>
         /// <returns>
-        /// The object that matches the given predicate or null
-        /// if the object is not found.
+        ///     The object that matches the given predicate or null
+        ///     if the object is not found.
         /// </returns>
         public T Find<T>(Expression<Func<T, bool>> predicate) where T : class, new()
         {
@@ -1300,18 +1294,18 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve the first object that matches the query from the table
-        /// associated with the specified type.
+        ///     Attempts to retrieve the first object that matches the query from the table
+        ///     associated with the specified type.
         /// </summary>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// The object that matches the given predicate or null
-        /// if the object is not found.
+        ///     The object that matches the given predicate or null
+        ///     if the object is not found.
         /// </returns>
         public T FindWithQuery<T>(string query, params object[] args) where T : new()
         {
@@ -1319,21 +1313,21 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Attempts to retrieve the first object that matches the query from the table
-        /// associated with the specified type.
+        ///     Attempts to retrieve the first object that matches the query from the table
+        ///     associated with the specified type.
         /// </summary>
         /// <param name="map">
-        /// The TableMapping used to identify the table.
+        ///     The TableMapping used to identify the table.
         /// </param>
         /// <param name="query">
-        /// The fully escaped SQL.
+        ///     The fully escaped SQL.
         /// </param>
         /// <param name="args">
-        /// Arguments to substitute for the occurences of '?' in the query.
+        ///     Arguments to substitute for the occurences of '?' in the query.
         /// </param>
         /// <returns>
-        /// The object that matches the given predicate or null
-        /// if the object is not found.
+        ///     The object that matches the given predicate or null
+        ///     if the object is not found.
         /// </returns>
         public object FindWithQuery(TableMapping map, string query, params object[] args)
         {
@@ -1341,14 +1335,14 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Whether <see cref="BeginTransaction"/> has been called and the database is waiting for a <see cref="Commit"/>.
+        ///     Whether <see cref="BeginTransaction" /> has been called and the database is waiting for a <see cref="Commit" />.
         /// </summary>
         public bool IsInTransaction {
             get { return _transactionDepth > 0; }
         }
 
         /// <summary>
-        /// Begins a new transaction. Call <see cref="Commit"/> to end the transaction.
+        ///     Begins a new transaction. Call <see cref="Commit" /> to end the transaction.
         /// </summary>
         /// <example cref="System.InvalidOperationException">Throws if a transaction has already begun.</example>
         public void BeginTransaction()
@@ -1395,12 +1389,11 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a savepoint in the database at the current point in the transaction timeline.
-        /// Begins a new transaction if one is not in progress.
-        ///
-        /// Call <see cref="RollbackTo(string)"/> to undo transactions since the returned savepoint.
-        /// Call <see cref="Release"/> to commit transactions after the savepoint returned here.
-        /// Call <see cref="Commit"/> to end the transaction, committing all changes.
+        ///     Creates a savepoint in the database at the current point in the transaction timeline.
+        ///     Begins a new transaction if one is not in progress.
+        ///     Call <see cref="RollbackTo(string)" /> to undo transactions since the returned savepoint.
+        ///     Call <see cref="Release" /> to commit transactions after the savepoint returned here.
+        ///     Call <see cref="Commit" /> to end the transaction, committing all changes.
         /// </summary>
         /// <returns>A string naming the savepoint.</returns>
         public string SaveTransactionPoint()
@@ -1437,7 +1430,8 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Rolls back the transaction that was begun by <see cref="BeginTransaction"/> or <see cref="SaveTransactionPoint"/>.
+        ///     Rolls back the transaction that was begun by <see cref="BeginTransaction" /> or <see cref="SaveTransactionPoint" />
+        ///     .
         /// </summary>
         public void Rollback()
         {
@@ -1445,18 +1439,24 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Rolls back the savepoint created by <see cref="BeginTransaction"/> or SaveTransactionPoint.
+        ///     Rolls back the savepoint created by <see cref="BeginTransaction" /> or SaveTransactionPoint.
         /// </summary>
-        /// <param name="savepoint">The name of the savepoint to roll back to, as returned by <see cref="SaveTransactionPoint"/>.  If savepoint is null or empty, this method is equivalent to a call to <see cref="Rollback"/></param>
+        /// <param name="savepoint">
+        ///     The name of the savepoint to roll back to, as returned by <see cref="SaveTransactionPoint" />.
+        ///     If savepoint is null or empty, this method is equivalent to a call to <see cref="Rollback" />
+        /// </param>
         public void RollbackTo(string savepoint)
         {
             RollbackTo(savepoint, false);
         }
 
         /// <summary>
-        /// Rolls back the transaction that was begun by <see cref="BeginTransaction"/>.
+        ///     Rolls back the transaction that was begun by <see cref="BeginTransaction" />.
         /// </summary>
-        /// <param name="savepoint">The name of the savepoint to roll back to, as returned by <see cref="SaveTransactionPoint"/>.  If savepoint is null or empty, this method is equivalent to a call to <see cref="Rollback"/></param>
+        /// <param name="savepoint">
+        ///     The name of the savepoint to roll back to, as returned by <see cref="SaveTransactionPoint" />.
+        ///     If savepoint is null or empty, this method is equivalent to a call to <see cref="Rollback" />
+        /// </param>
         /// <param name="noThrow">true to avoid throwing exceptions, false otherwise</param>
         void RollbackTo(string savepoint, bool noThrow)
         {
@@ -1479,13 +1479,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Releases a savepoint returned from <see cref="SaveTransactionPoint"/>.  Releasing a savepoint
-        ///    makes changes since that savepoint permanent if the savepoint began the transaction,
-        ///    or otherwise the changes are permanent pending a call to <see cref="Commit"/>.
-        ///
-        /// The RELEASE command is like a COMMIT for a SAVEPOINT.
+        ///     Releases a savepoint returned from <see cref="SaveTransactionPoint" />.  Releasing a savepoint
+        ///     makes changes since that savepoint permanent if the savepoint began the transaction,
+        ///     or otherwise the changes are permanent pending a call to <see cref="Commit" />.
+        ///     The RELEASE command is like a COMMIT for a SAVEPOINT.
         /// </summary>
-        /// <param name="savepoint">The name of the savepoint to release.  The string should be the result of a call to <see cref="SaveTransactionPoint"/></param>
+        /// <param name="savepoint">
+        ///     The name of the savepoint to release.  The string should be the result of a call to
+        ///     <see cref="SaveTransactionPoint" />
+        /// </param>
         public void Release(string savepoint)
         {
             try {
@@ -1520,9 +1522,9 @@ namespace SqlCipher4Unity3D
                     // TODO: Mild race here, but inescapable without locking almost everywhere.
                     if (0 <= depth && depth < _transactionDepth) {
 #if NETFX_CORE || USE_SQLITEPCL_RAW || NETCORE
-						Volatile.Write (ref _transactionDepth, depth);
+                        Volatile.Write(ref _transactionDepth, depth);
 #elif SILVERLIGHT
-						_transactionDepth = depth;
+                        _transactionDepth = depth;
 #else
                         Thread.VolatileWrite(ref _transactionDepth, depth);
 #endif
@@ -1536,7 +1538,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Commits the transaction that was begun by <see cref="BeginTransaction"/>.
+        ///     Commits the transaction that was begun by <see cref="BeginTransaction" />.
         /// </summary>
         public void Commit()
         {
@@ -1561,14 +1563,14 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Executes <paramref name="action"/> within a (possibly nested) transaction by wrapping it in a SAVEPOINT. If an
-        /// exception occurs the whole transaction is rolled back, not just the current savepoint. The exception
-        /// is rethrown.
+        ///     Executes <paramref name="action" /> within a (possibly nested) transaction by wrapping it in a SAVEPOINT. If an
+        ///     exception occurs the whole transaction is rolled back, not just the current savepoint. The exception
+        ///     is rethrown.
         /// </summary>
         /// <param name="action">
-        /// The <see cref="Action"/> to perform within a transaction. <paramref name="action"/> can contain any number
-        /// of operations on the connection but should never call <see cref="BeginTransaction"/> or
-        /// <see cref="Commit"/>.
+        ///     The <see cref="Action" /> to perform within a transaction. <paramref name="action" /> can contain any number
+        ///     of operations on the connection but should never call <see cref="BeginTransaction" /> or
+        ///     <see cref="Commit" />.
         /// </param>
         public void RunInTransaction(Action action)
         {
@@ -1584,15 +1586,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts all specified objects.
+        ///     Inserts all specified objects.
         /// </summary>
         /// <param name="objects">
-        /// An <see cref="IEnumerable"/> of the objects to insert.
-        /// <param name="runInTransaction"/>
-        /// A boolean indicating if the inserts should be wrapped in a transaction.
+        ///     An <see cref="IEnumerable" /> of the objects to insert.
+        ///     <param name="runInTransaction" />
+        ///     A boolean indicating if the inserts should be wrapped in a transaction.
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
         public int InsertAll(System.Collections.IEnumerable objects, bool runInTransaction = true)
         {
@@ -1614,19 +1616,19 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts all specified objects.
+        ///     Inserts all specified objects.
         /// </summary>
         /// <param name="objects">
-        /// An <see cref="IEnumerable"/> of the objects to insert.
+        ///     An <see cref="IEnumerable" /> of the objects to insert.
         /// </param>
         /// <param name="extra">
-        /// Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
+        ///     Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
         /// </param>
         /// <param name="runInTransaction">
-        /// A boolean indicating if the inserts should be wrapped in a transaction.
+        ///     A boolean indicating if the inserts should be wrapped in a transaction.
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
         public int InsertAll(System.Collections.IEnumerable objects, string extra, bool runInTransaction = true)
         {
@@ -1648,19 +1650,19 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts all specified objects.
+        ///     Inserts all specified objects.
         /// </summary>
         /// <param name="objects">
-        /// An <see cref="IEnumerable"/> of the objects to insert.
+        ///     An <see cref="IEnumerable" /> of the objects to insert.
         /// </param>
         /// <param name="objType">
-        /// The type of object to insert.
+        ///     The type of object to insert.
         /// </param>
         /// <param name="runInTransaction">
-        /// A boolean indicating if the inserts should be wrapped in a transaction.
+        ///     A boolean indicating if the inserts should be wrapped in a transaction.
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
         public int InsertAll(System.Collections.IEnumerable objects, Type objType, bool runInTransaction = true)
         {
@@ -1682,15 +1684,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts the given object (and updates its
-        /// auto incremented primary key if it has one).
-        /// The return value is the number of rows added to the table.
+        ///     Inserts the given object (and updates its
+        ///     auto incremented primary key if it has one).
+        ///     The return value is the number of rows added to the table.
         /// </summary>
         /// <param name="obj">
-        /// The object to insert.
+        ///     The object to insert.
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
         public int Insert(object obj)
         {
@@ -1701,18 +1703,18 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts the given object (and updates its
-        /// auto incremented primary key if it has one).
-        /// The return value is the number of rows added to the table.
-        /// If a UNIQUE constraint violation occurs with
-        /// some pre-existing object, this function deletes
-        /// the old object.
+        ///     Inserts the given object (and updates its
+        ///     auto incremented primary key if it has one).
+        ///     The return value is the number of rows added to the table.
+        ///     If a UNIQUE constraint violation occurs with
+        ///     some pre-existing object, this function deletes
+        ///     the old object.
         /// </summary>
         /// <param name="obj">
-        /// The object to insert.
+        ///     The object to insert.
         /// </param>
         /// <returns>
-        /// The number of rows modified.
+        ///     The number of rows modified.
         /// </returns>
         public int InsertOrReplace(object obj)
         {
@@ -1725,18 +1727,18 @@ namespace SqlCipher4Unity3D
         public int Save(object obj) => InsertOrReplace(obj);
 
         /// <summary>
-        /// Inserts the given object (and updates its
-        /// auto incremented primary key if it has one).
-        /// The return value is the number of rows added to the table.
+        ///     Inserts the given object (and updates its
+        ///     auto incremented primary key if it has one).
+        ///     The return value is the number of rows added to the table.
         /// </summary>
         /// <param name="obj">
-        /// The object to insert.
+        ///     The object to insert.
         /// </param>
         /// <param name="objType">
-        /// The type of object to insert.
+        ///     The type of object to insert.
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
         public int Insert(object obj, Type objType)
         {
@@ -1744,21 +1746,21 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts the given object (and updates its
-        /// auto incremented primary key if it has one).
-        /// The return value is the number of rows added to the table.
-        /// If a UNIQUE constraint violation occurs with
-        /// some pre-existing object, this function deletes
-        /// the old object.
+        ///     Inserts the given object (and updates its
+        ///     auto incremented primary key if it has one).
+        ///     The return value is the number of rows added to the table.
+        ///     If a UNIQUE constraint violation occurs with
+        ///     some pre-existing object, this function deletes
+        ///     the old object.
         /// </summary>
         /// <param name="obj">
-        /// The object to insert.
+        ///     The object to insert.
         /// </param>
         /// <param name="objType">
-        /// The type of object to insert.
+        ///     The type of object to insert.
         /// </param>
         /// <returns>
-        /// The number of rows modified.
+        ///     The number of rows modified.
         /// </returns>
         public int InsertOrReplace(object obj, Type objType)
         {
@@ -1766,18 +1768,18 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts the given object (and updates its
-        /// auto incremented primary key if it has one).
-        /// The return value is the number of rows added to the table.
+        ///     Inserts the given object (and updates its
+        ///     auto incremented primary key if it has one).
+        ///     The return value is the number of rows added to the table.
         /// </summary>
         /// <param name="obj">
-        /// The object to insert.
+        ///     The object to insert.
         /// </param>
         /// <param name="extra">
-        /// Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
+        ///     Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
         public int Insert(object obj, string extra)
         {
@@ -1788,24 +1790,23 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Inserts the given object (and updates its
-        /// auto incremented primary key if it has one).
-        /// The return value is the number of rows added to the table.
+        ///     Inserts the given object (and updates its
+        ///     auto incremented primary key if it has one).
+        ///     The return value is the number of rows added to the table.
         /// </summary>
         /// <param name="obj">
-        /// The object to insert.
+        ///     The object to insert.
         /// </param>
         /// <param name="extra">
-        /// Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
+        ///     Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
         /// </param>
         /// <param name="objType">
-        /// The type of object to insert.
+        ///     The type of object to insert.
         /// </param>
         /// <returns>
-        /// The number of rows added to the table.
+        ///     The number of rows added to the table.
         /// </returns>
-        public int 
-            Insert(object obj, string extra, Type objType)
+        public int Insert(object obj, string extra, Type objType)
         {
             if (obj == null || objType == null) {
                 return 0;
@@ -1898,15 +1899,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Updates all of the columns of a table using the specified object
-        /// except for its primary key.
-        /// The object is required to have a primary key.
+        ///     Updates all of the columns of a table using the specified object
+        ///     except for its primary key.
+        ///     The object is required to have a primary key.
         /// </summary>
         /// <param name="obj">
-        /// The object to update. It must have a primary key designated using the PrimaryKeyAttribute.
+        ///     The object to update. It must have a primary key designated using the PrimaryKeyAttribute.
         /// </param>
         /// <returns>
-        /// The number of rows updated.
+        ///     The number of rows updated.
         /// </returns>
         public int Update(object obj)
         {
@@ -1917,18 +1918,18 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Updates all of the columns of a table using the specified object
-        /// except for its primary key.
-        /// The object is required to have a primary key.
+        ///     Updates all of the columns of a table using the specified object
+        ///     except for its primary key.
+        ///     The object is required to have a primary key.
         /// </summary>
         /// <param name="obj">
-        /// The object to update. It must have a primary key designated using the PrimaryKeyAttribute.
+        ///     The object to update. It must have a primary key designated using the PrimaryKeyAttribute.
         /// </param>
         /// <param name="objType">
-        /// The type of object to insert.
+        ///     The type of object to insert.
         /// </param>
         /// <returns>
-        /// The number of rows updated.
+        ///     The number of rows updated.
         /// </returns>
         public int Update(object obj, Type objType)
         {
@@ -1973,16 +1974,16 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Updates all specified objects.
+        ///     Updates all specified objects.
         /// </summary>
         /// <param name="objects">
-        /// An <see cref="IEnumerable"/> of the objects to insert.
+        ///     An <see cref="IEnumerable" /> of the objects to insert.
         /// </param>
         /// <param name="runInTransaction">
-        /// A boolean indicating if the inserts should be wrapped in a transaction
+        ///     A boolean indicating if the inserts should be wrapped in a transaction
         /// </param>
         /// <returns>
-        /// The number of rows modified.
+        ///     The number of rows modified.
         /// </returns>
         public int UpdateAll(System.Collections.IEnumerable objects, bool runInTransaction = true)
         {
@@ -2004,13 +2005,13 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Deletes the given object from the database using its primary key.
+        ///     Deletes the given object from the database using its primary key.
         /// </summary>
         /// <param name="objectToDelete">
-        /// The object to delete. It must have a primary key designated using the PrimaryKeyAttribute.
+        ///     The object to delete. It must have a primary key designated using the PrimaryKeyAttribute.
         /// </param>
         /// <returns>
-        /// The number of rows deleted.
+        ///     The number of rows deleted.
         /// </returns>
         public int Delete(object objectToDelete)
         {
@@ -2027,16 +2028,16 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Deletes the object with the specified primary key.
+        ///     Deletes the object with the specified primary key.
         /// </summary>
         /// <param name="primaryKey">
-        /// The primary key of the object to delete.
+        ///     The primary key of the object to delete.
         /// </param>
         /// <returns>
-        /// The number of objects deleted.
+        ///     The number of objects deleted.
         /// </returns>
         /// <typeparam name='T'>
-        /// The type of object.
+        ///     The type of object.
         /// </typeparam>
         public int Delete<T>(object primaryKey)
         {
@@ -2044,16 +2045,16 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Deletes the object with the specified primary key.
+        ///     Deletes the object with the specified primary key.
         /// </summary>
         /// <param name="primaryKey">
-        /// The primary key of the object to delete.
+        ///     The primary key of the object to delete.
         /// </param>
         /// <param name="map">
-        /// The TableMapping used to identify the table.
+        ///     The TableMapping used to identify the table.
         /// </param>
         /// <returns>
-        /// The number of objects deleted.
+        ///     The number of objects deleted.
         /// </returns>
         public int Delete(object primaryKey, TableMapping map)
         {
@@ -2069,15 +2070,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Deletes all the objects from the specified table.
-        /// WARNING WARNING: Let me repeat. It deletes ALL the objects from the
-        /// specified table. Do you really want to do that?
+        ///     Deletes all the objects from the specified table.
+        ///     WARNING WARNING: Let me repeat. It deletes ALL the objects from the
+        ///     specified table. Do you really want to do that?
         /// </summary>
         /// <returns>
-        /// The number of objects deleted.
+        ///     The number of objects deleted.
         /// </returns>
         /// <typeparam name='T'>
-        /// The type of objects to delete.
+        ///     The type of objects to delete.
         /// </typeparam>
         public int DeleteAll<T>()
         {
@@ -2086,15 +2087,15 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Deletes all the objects from the specified table.
-        /// WARNING WARNING: Let me repeat. It deletes ALL the objects from the
-        /// specified table. Do you really want to do that?
+        ///     Deletes all the objects from the specified table.
+        ///     WARNING WARNING: Let me repeat. It deletes ALL the objects from the
+        ///     specified table. Do you really want to do that?
         /// </summary>
         /// <param name="map">
-        /// The TableMapping used to identify the table.
+        ///     The TableMapping used to identify the table.
         /// </param>
         /// <returns>
-        /// The number of objects deleted.
+        ///     The number of objects deleted.
         /// </returns>
         public int DeleteAll(TableMapping map)
         {
@@ -2105,7 +2106,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Backup the entire database to the specified path.
+        ///     Backup the entire database to the specified path.
         /// </summary>
         /// <param name="destinationDatabasePath">Path to backup file.</param>
         /// <param name="databaseName">The name of the database to backup (usually "main").</param>
@@ -2214,10 +2215,10 @@ namespace SqlCipher4Unity3D
         }
     }
 
-    public enum NotifyTableChangedAction { Insert, Update, Delete, }
+    public enum NotifyTableChangedAction { Insert, Update, Delete }
 
     /// <summary>
-    /// Represents a parsed connection string.
+    ///     Represents a parsed connection string.
     /// </summary>
     public class SQLiteConnectionString
     {
@@ -2234,15 +2235,8 @@ namespace SqlCipher4Unity3D
         public Action<SQLiteConnection> PostKeyAction { get; }
         public string VfsName { get; }
 #if NETFX_CORE
-		static readonly string MetroStyleDataPath =
-																																					                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-
-        public static readonly string[] InMemoryDbPaths = new[]
-        {
-            ":memory:",
-            "file::memory:"
-        };
-
+        static readonly string MetroStyleDataPath = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+        public static readonly string[] InMemoryDbPaths = new[] { ":memory:", "file::memory:" };
         public static bool IsInMemoryPath(string databasePath)
         {
             return InMemoryDbPaths.Any(i => i.Equals(databasePath, StringComparison.OrdinalIgnoreCase));
@@ -2250,47 +2244,47 @@ namespace SqlCipher4Unity3D
 #endif
 
         /// <summary>
-        /// Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
+        ///     Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
         /// </summary>
         /// <param name="databasePath">
-        /// Specifies the path to the database file.
+        ///     Specifies the path to the database file.
         /// </param>
         /// <param name="storeDateTimeAsTicks">
-        /// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
-        /// absolutely do want to store them as Ticks in all new projects. The value of false is
-        /// only here for backwards compatibility. There is a *significant* speed advantage, with no
-        /// down sides, when setting storeDateTimeAsTicks = true.
-        /// If you use DateTimeOffset properties, it will be always stored as ticks regardingless
-        /// the storeDateTimeAsTicks parameter.
+        ///     Specifies whether to store DateTime properties as ticks (true) or strings (false). You
+        ///     absolutely do want to store them as Ticks in all new projects. The value of false is
+        ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
+        ///     down sides, when setting storeDateTimeAsTicks = true.
+        ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
+        ///     the storeDateTimeAsTicks parameter.
         /// </param>
         public SQLiteConnectionString(string databasePath, bool storeDateTimeAsTicks = true) : this(databasePath,
             SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite, storeDateTimeAsTicks) { }
 
         /// <summary>
-        /// Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
+        ///     Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
         /// </summary>
         /// <param name="databasePath">
-        /// Specifies the path to the database file.
+        ///     Specifies the path to the database file.
         /// </param>
         /// <param name="storeDateTimeAsTicks">
-        /// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
-        /// absolutely do want to store them as Ticks in all new projects. The value of false is
-        /// only here for backwards compatibility. There is a *significant* speed advantage, with no
-        /// down sides, when setting storeDateTimeAsTicks = true.
-        /// If you use DateTimeOffset properties, it will be always stored as ticks regardingless
-        /// the storeDateTimeAsTicks parameter.
+        ///     Specifies whether to store DateTime properties as ticks (true) or strings (false). You
+        ///     absolutely do want to store them as Ticks in all new projects. The value of false is
+        ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
+        ///     down sides, when setting storeDateTimeAsTicks = true.
+        ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
+        ///     the storeDateTimeAsTicks parameter.
         /// </param>
         /// <param name="key">
-        /// Specifies the encryption key to use on the database. Should be a string or a byte[].
+        ///     Specifies the encryption key to use on the database. Should be a string or a byte[].
         /// </param>
         /// <param name="preKeyAction">
-        /// Executes prior to setting key for SQLCipher databases
+        ///     Executes prior to setting key for SQLCipher databases
         /// </param>
         /// <param name="postKeyAction">
-        /// Executes after setting key for SQLCipher databases
+        ///     Executes after setting key for SQLCipher databases
         /// </param>
         /// <param name="vfsName">
-        /// Specifies the Virtual File System to use on the database.
+        ///     Specifies the Virtual File System to use on the database.
         /// </param>
         public SQLiteConnectionString(string databasePath, bool storeDateTimeAsTicks, object key = null,
             Action<SQLiteConnection> preKeyAction = null, Action<SQLiteConnection> postKeyAction = null,
@@ -2298,42 +2292,42 @@ namespace SqlCipher4Unity3D
             storeDateTimeAsTicks, key, preKeyAction, postKeyAction, vfsName) { }
 
         /// <summary>
-        /// Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
+        ///     Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
         /// </summary>
         /// <param name="databasePath">
-        /// Specifies the path to the database file.
+        ///     Specifies the path to the database file.
         /// </param>
         /// <param name="openFlags">
-        /// Flags controlling how the connection should be opened.
+        ///     Flags controlling how the connection should be opened.
         /// </param>
         /// <param name="storeDateTimeAsTicks">
-        /// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
-        /// absolutely do want to store them as Ticks in all new projects. The value of false is
-        /// only here for backwards compatibility. There is a *significant* speed advantage, with no
-        /// down sides, when setting storeDateTimeAsTicks = true.
-        /// If you use DateTimeOffset properties, it will be always stored as ticks regardingless
-        /// the storeDateTimeAsTicks parameter.
+        ///     Specifies whether to store DateTime properties as ticks (true) or strings (false). You
+        ///     absolutely do want to store them as Ticks in all new projects. The value of false is
+        ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
+        ///     down sides, when setting storeDateTimeAsTicks = true.
+        ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
+        ///     the storeDateTimeAsTicks parameter.
         /// </param>
         /// <param name="key">
-        /// Specifies the encryption key to use on the database. Should be a string or a byte[].
+        ///     Specifies the encryption key to use on the database. Should be a string or a byte[].
         /// </param>
         /// <param name="preKeyAction">
-        /// Executes prior to setting key for SQLCipher databases
+        ///     Executes prior to setting key for SQLCipher databases
         /// </param>
         /// <param name="postKeyAction">
-        /// Executes after setting key for SQLCipher databases
+        ///     Executes after setting key for SQLCipher databases
         /// </param>
         /// <param name="vfsName">
-        /// Specifies the Virtual File System to use on the database.
+        ///     Specifies the Virtual File System to use on the database.
         /// </param>
         /// <param name="dateTimeStringFormat">
-        /// Specifies the format to use when storing DateTime properties as strings.
+        ///     Specifies the format to use when storing DateTime properties as strings.
         /// </param>
         /// <param name="storeTimeSpanAsTicks">
-        /// Specifies whether to store TimeSpan properties as ticks (true) or strings (false). You
-        /// absolutely do want to store them as Ticks in all new projects. The value of false is
-        /// only here for backwards compatibility. There is a *significant* speed advantage, with no
-        /// down sides, when setting storeTimeSpanAsTicks = true.
+        ///     Specifies whether to store TimeSpan properties as ticks (true) or strings (false). You
+        ///     absolutely do want to store them as Ticks in all new projects. The value of false is
+        ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
+        ///     down sides, when setting storeTimeSpanAsTicks = true.
         /// </param>
         public SQLiteConnectionString(string databasePath, SQLiteOpenFlags openFlags, bool storeDateTimeAsTicks,
             object key = null, Action<SQLiteConnection> preKeyAction = null,
@@ -2356,9 +2350,7 @@ namespace SqlCipher4Unity3D
             OpenFlags = openFlags;
             VfsName = vfsName;
 #if NETFX_CORE
-			DatabasePath = IsInMemoryPath(databasePath)
-                ? databasePath
-                : System.IO.Path.Combine(MetroStyleDataPath, databasePath);
+            DatabasePath = IsInMemoryPath(databasePath) ? databasePath : System.IO.Path.Combine(MetroStyleDataPath, databasePath);
 #else
             DatabasePath = databasePath;
 #endif
@@ -2571,7 +2563,7 @@ namespace SqlCipher4Unity3D
                 return _prop switch {
                     PropertyInfo propertyInfo => propertyInfo.GetValue(obj, null),
                     FieldInfo fieldInfo       => fieldInfo.GetValue(obj),
-                    _                         => throw new Exception("Type Error")
+                    _                         => throw new Exception("Type Error"),
                 };
             }
         }
@@ -2917,14 +2909,14 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Invoked every time an instance is loaded from the database.
+        ///     Invoked every time an instance is loaded from the database.
         /// </summary>
         /// <param name='obj'>
-        /// The newly created object.
+        ///     The newly created object.
         /// </param>
         /// <remarks>
-        /// This can be overridden in combination with the <see cref="SQLiteConnection.NewCommand"/>
-        /// method to hook into the life-cycle of objects.
+        ///     This can be overridden in combination with the <see cref="SQLiteConnection.NewCommand" />
+        ///     method to hook into the life-cycle of objects.
         /// </remarks>
         protected virtual void OnInstanceCreated(object obj)
         {
@@ -3035,10 +3027,7 @@ namespace SqlCipher4Unity3D
 
         public void Bind(string name, object val)
         {
-            _bindings.Add(new Binding {
-                Name = name,
-                Value = val
-            });
+            _bindings.Add(new Binding { Name = name, Value = val });
         }
 
         public void Bind(object val)
@@ -3369,18 +3358,22 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Creates a delegate that can be used to quickly set object members from query columns.
-        ///
-        /// Note that this frontloads the slow reflection-based type checking for columns to only happen once at the beginning of a query,
-        /// and then afterwards each row of the query can invoke the delegate returned by this function to get much better performance (up to 10x speed boost, depending on query size and platform).
+        ///     Creates a delegate that can be used to quickly set object members from query columns.
+        ///     Note that this frontloads the slow reflection-based type checking for columns to only happen once at the beginning
+        ///     of a query,
+        ///     and then afterwards each row of the query can invoke the delegate returned by this function to get much better
+        ///     performance (up to 10x speed boost, depending on query size and platform).
         /// </summary>
         /// <typeparam name="T">The type of the destination object that the query will read into</typeparam>
-        /// <param name="conn">The active connection.  Note that this is primarily needed in order to read preferences regarding how certain data types (such as TimeSpan / DateTime) should be encoded in the database.</param>
+        /// <param name="conn">
+        ///     The active connection.  Note that this is primarily needed in order to read preferences regarding
+        ///     how certain data types (such as TimeSpan / DateTime) should be encoded in the database.
+        /// </param>
         /// <param name="column">The table mapping used to map the statement column to a member of the destination object type</param>
         /// <returns>
-        /// A delegate for fast-setting of object members from statement columns.
-        ///
-        /// If no fast setter is available for the requested column (enums in particular cause headache), then this function returns null.
+        ///     A delegate for fast-setting of object members from statement columns.
+        ///     If no fast setter is available for the requested column (enums in particular cause headache), then this function
+        ///     returns null.
         /// </returns>
         internal static Action<T, Sqlite3Statement, int> GetFastSetter<T>(SQLiteConnection conn,
             TableMapping.Column column)
@@ -3537,12 +3530,16 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// This creates a strongly typed delegate that will permit fast setting of column values given a Sqlite3Statement and a column index.
-        ///
-        /// Note that this is identical to CreateTypedSetterDelegate(), but has an extra check to see if it should create a nullable version of the delegate.
+        ///     This creates a strongly typed delegate that will permit fast setting of column values given a Sqlite3Statement and
+        ///     a column index.
+        ///     Note that this is identical to CreateTypedSetterDelegate(), but has an extra check to see if it should create a
+        ///     nullable version of the delegate.
         /// </summary>
         /// <typeparam name="ObjectType">The type of the object whose member column is being set</typeparam>
-        /// <typeparam name="ColumnMemberType">The CLR type of the member in the object which corresponds to the given SQLite columnn</typeparam>
+        /// <typeparam name="ColumnMemberType">
+        ///     The CLR type of the member in the object which corresponds to the given SQLite
+        ///     columnn
+        /// </typeparam>
         /// <param name="column">The column mapping that identifies the target member of the destination object</param>
         /// <param name="getColumnValue">A lambda that can be used to retrieve the column value at query-time</param>
         /// <returns>A strongly-typed delegate</returns>
@@ -3576,10 +3573,14 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// This creates a strongly typed delegate that will permit fast setting of column values given a Sqlite3Statement and a column index.
+        ///     This creates a strongly typed delegate that will permit fast setting of column values given a Sqlite3Statement and
+        ///     a column index.
         /// </summary>
         /// <typeparam name="ObjectType">The type of the object whose member column is being set</typeparam>
-        /// <typeparam name="ColumnMemberType">The CLR type of the member in the object which corresponds to the given SQLite columnn</typeparam>
+        /// <typeparam name="ColumnMemberType">
+        ///     The CLR type of the member in the object which corresponds to the given SQLite
+        ///     columnn
+        /// </typeparam>
         /// <param name="column">The column mapping that identifies the target member of the destination object</param>
         /// <param name="getColumnValue">A lambda that can be used to retrieve the column value at query-time</param>
         /// <returns>A strongly-typed delegate</returns>
@@ -3612,7 +3613,7 @@ namespace SqlCipher4Unity3D
     }
 
     /// <summary>
-    /// Since the insert never changed, we only need to prepare once.
+    ///     Since the insert never changed, we only need to prepare once.
     /// </summary>
     public class PreparedSqlLiteInsertCommand : IDisposable
     {
@@ -3697,7 +3698,7 @@ namespace SqlCipher4Unity3D
         }
     }
 
-    public enum CreateTableResult { Created, Migrated, }
+    public enum CreateTableResult { Created, Migrated }
 
     public class CreateTablesResult
     {
@@ -3766,7 +3767,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Filters the query based on a predicate.
+        ///     Filters the query based on a predicate.
         /// </summary>
         public TableQuery<T> Where(Expression<Func<T, bool>> predExpr)
         {
@@ -3785,7 +3786,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Delete all the rows that match this query.
+        ///     Delete all the rows that match this query.
         /// </summary>
         public int Delete()
         {
@@ -3793,7 +3794,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Delete all the rows that match this query and the given predicate.
+        ///     Delete all the rows that match this query and the given predicate.
         /// </summary>
         public int Delete(Expression<Func<T, bool>> predExpr)
         {
@@ -3818,7 +3819,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Yields a given number of elements from the query and then skips the remainder.
+        ///     Yields a given number of elements from the query and then skips the remainder.
         /// </summary>
         public TableQuery<T> Take(int n)
         {
@@ -3828,7 +3829,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Skips a given number of elements from the query and then yields the remainder.
+        ///     Skips a given number of elements from the query and then yields the remainder.
         /// </summary>
         public TableQuery<T> Skip(int n)
         {
@@ -3838,7 +3839,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns the element at a given index
+        ///     Returns the element at a given index
         /// </summary>
         public T ElementAt(int index)
         {
@@ -3855,7 +3856,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Order the query results according to a key.
+        ///     Order the query results according to a key.
         /// </summary>
         public TableQuery<T> OrderBy<U>(Expression<Func<T, U>> orderExpr)
         {
@@ -3863,7 +3864,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Order the query results according to a key.
+        ///     Order the query results according to a key.
         /// </summary>
         public TableQuery<T> OrderByDescending<U>(Expression<Func<T, U>> orderExpr)
         {
@@ -3871,7 +3872,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Order the query results according to a key.
+        ///     Order the query results according to a key.
         /// </summary>
         public TableQuery<T> ThenBy<U>(Expression<Func<T, U>> orderExpr)
         {
@@ -3879,7 +3880,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Order the query results according to a key.
+        ///     Order the query results according to a key.
         /// </summary>
         public TableQuery<T> ThenByDescending<U>(Expression<Func<T, U>> orderExpr)
         {
@@ -3907,8 +3908,7 @@ namespace SqlCipher4Unity3D
                         q._orderBys = new List<Ordering>();
                     }
                     q._orderBys.Add(new Ordering {
-                        ColumnName = Table.FindColumnWithPropertyName(mem.Member.Name).Name,
-                        Ascending = asc
+                        ColumnName = Table.FindColumnWithPropertyName(mem.Member.Name).Name, Ascending = asc,
                     });
                     return q;
                 }
@@ -4026,19 +4026,14 @@ namespace SqlCipher4Unity3D
                     text = CompileNullBinaryExpression(bin, leftr);
                 else
                     text = "(" + leftr.CommandText + " " + GetSqlName(bin) + " " + rightr.CommandText + ")";
-                return new CompileResult {
-                    CommandText = text
-                };
+                return new CompileResult { CommandText = text };
             }
             else if (expr.NodeType == ExpressionType.Not) {
                 var operandExpr = ((UnaryExpression)expr).Operand;
                 var opr = CompileExpr(operandExpr, queryArgs);
                 object val = opr.Value;
                 if (val is bool) val = !((bool)val);
-                return new CompileResult {
-                    CommandText = "NOT(" + opr.CommandText + ")",
-                    Value = val
-                };
+                return new CompileResult { CommandText = "NOT(" + opr.CommandText + ")", Value = val };
             }
             else if (expr.NodeType == ExpressionType.Call) {
                 var call = (MethodCallExpression)expr;
@@ -4123,25 +4118,19 @@ namespace SqlCipher4Unity3D
                     sqlCall = call.Method.Name.ToLower() + "(" +
                         string.Join(",", args.Select(a => a.CommandText).ToArray()) + ")";
                 }
-                return new CompileResult {
-                    CommandText = sqlCall
-                };
+                return new CompileResult { CommandText = sqlCall };
             }
             else if (expr.NodeType == ExpressionType.Constant) {
                 var c = (ConstantExpression)expr;
                 queryArgs.Add(c.Value);
-                return new CompileResult {
-                    CommandText = "?",
-                    Value = c.Value
-                };
+                return new CompileResult { CommandText = "?", Value = c.Value };
             }
             else if (expr.NodeType == ExpressionType.Convert) {
                 var u = (UnaryExpression)expr;
                 var ty = u.Type;
                 var valr = CompileExpr(u.Operand, queryArgs);
                 return new CompileResult {
-                    CommandText = valr.CommandText,
-                    Value = valr.Value != null ? ConvertTo(valr.Value, ty) : null
+                    CommandText = valr.CommandText, Value = valr.Value != null ? ConvertTo(valr.Value, ty) : null,
                 };
             }
             else if (expr.NodeType == ExpressionType.MemberAccess) {
@@ -4162,9 +4151,7 @@ namespace SqlCipher4Unity3D
                     // Need to translate it if that column name is mapped
                     //
                     var columnName = Table.FindColumnWithPropertyName(mem.Member.Name).Name;
-                    return new CompileResult {
-                        CommandText = "\"" + columnName + "\""
-                    };
+                    return new CompileResult { CommandText = "\"" + columnName + "\"" };
                 }
                 else {
                     object obj = null;
@@ -4215,17 +4202,11 @@ namespace SqlCipher4Unity3D
                             head = ",";
                         }
                         sb.Append(")");
-                        return new CompileResult {
-                            CommandText = sb.ToString(),
-                            Value = val
-                        };
+                        return new CompileResult { CommandText = sb.ToString(), Value = val };
                     }
                     else {
                         queryArgs.Add(val);
-                        return new CompileResult {
-                            CommandText = "?",
-                            Value = val
-                        };
+                        return new CompileResult { CommandText = "?", Value = val };
                     }
                 }
             }
@@ -4246,7 +4227,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Compiles a BinaryExpression where one of the parameters is null.
+        ///     Compiles a BinaryExpression where one of the parameters is null.
         /// </summary>
         /// <param name="expression">The expression to compile</param>
         /// <param name="parameter">The non-null parameter</param>
@@ -4305,7 +4286,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Execute SELECT COUNT(*) on the query
+        ///     Execute SELECT COUNT(*) on the query
         /// </summary>
         public int Count()
         {
@@ -4313,7 +4294,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Execute SELECT COUNT(*) on the query with an additional WHERE clause.
+        ///     Execute SELECT COUNT(*) on the query with an additional WHERE clause.
         /// </summary>
         public int Count(Expression<Func<T, bool>> predExpr)
         {
@@ -4332,7 +4313,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Queries the database and returns the results as a List.
+        ///     Queries the database and returns the results as a List.
         /// </summary>
         public List<T> ToList()
         {
@@ -4340,7 +4321,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Queries the database and returns the results as an array.
+        ///     Queries the database and returns the results as an array.
         /// </summary>
         public T[] ToArray()
         {
@@ -4348,7 +4329,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns the first element of this query.
+        ///     Returns the first element of this query.
         /// </summary>
         public T First()
         {
@@ -4357,7 +4338,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns the first element of this query, or null if no element is found.
+        ///     Returns the first element of this query, or null if no element is found.
         /// </summary>
         public T FirstOrDefault()
         {
@@ -4386,7 +4367,7 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns the first element of this query that matches the predicate.
+        ///     Returns the first element of this query that matches the predicate.
         /// </summary>
         public T First(Expression<Func<T, bool>> predExpr)
         {
@@ -4394,8 +4375,8 @@ namespace SqlCipher4Unity3D
         }
 
         /// <summary>
-        /// Returns the first element of this query that matches the predicate, or null
-        /// if no element is found.
+        ///     Returns the first element of this query that matches the predicate, or null
+        ///     if no element is found.
         /// </summary>
         public T FirstOrDefault(Expression<Func<T, bool>> predExpr)
         {

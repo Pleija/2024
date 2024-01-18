@@ -101,7 +101,7 @@ namespace Network
             if (autoStart) Connect();
         }
 
-        public  void Update()
+        public void Update()
         {
             //
             // if(m_Hub is { State: ConnectionStates.Connected }) {
@@ -164,11 +164,7 @@ namespace Network
             AddText(string.Format(
                 "Hub Connected with <color=green>{0}</color> transport using the <color=green>{1}</color> encoder.",
                 hub.Transport.TransportType.ToString(), hub.Protocol.Name));
-            hub.Send("SendMetadata", new Metadata() {
-                intData = 123,
-                strData = "meta data",
-                myEnum = MyEnum.One,
-            });
+            hub.Send("SendMetadata", new Metadata() { intData = 123, strData = "meta data", myEnum = MyEnum.One });
 
             // Call a server function with a string param. We expect no return value.
             hub.Send("Send", "my message");

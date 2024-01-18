@@ -11,7 +11,9 @@ using ParadoxNotion.Serialization;
 using ParadoxNotion.Serialization.FullSerializer;
 using ParadoxNotion.Services;
 using Puerts;
+using Puerts.App;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zu.TypeScript;
 using Zu.TypeScript.Change;
 using Zu.TypeScript.TsTypes;
@@ -22,19 +24,22 @@ namespace NodeCanvas.Framework
 {
     ///<summary>The base class for all nodes that can live in a NodeCanvas Graph</summary>
 #if UNITY_EDITOR //handles missing Nodes
-    [fsObject(Processor = typeof(fsRecoveryProcessor<Node, MissingNode>))]
+    [fsObject(Processor = typeof(fsRecoveryProcessor<Node, MissingNode>)), SpoofAOT, System.Serializable,
+     fsSerializeAsReference, fsDeserializeOverwrite]
 #endif
-    [ParadoxNotion.Design.SpoofAOT]
-    [System.Serializable, fsSerializeAsReference, fsDeserializeOverwrite]
-    abstract public partial class Node : IGraphElement, ISerializationCollectable
+    public abstract partial class Node : IGraphElement, ISerializationCollectable
     {
         //todo: add
+        [FormerlySerializedAs("BindComponent")]
+        public Component bindComponent;
+
+        public MtsFile mtsFile;
         public JSObject jsBind { get; set; }
         public string FsmName => graphAgent.name.Split(' ').First();
 
         public string NodeName {
             get {
-                var t = Regex.Split(this.name, @"\s+");
+                var t = Regex.Split(name, @"\s+");
                 //t[0] = t[0].ToLower();
                 return string.Join("", t);
             }
@@ -42,16 +47,11 @@ namespace NodeCanvas.Framework
 
         public string MakeFile()
         {
-            if (string.IsNullOrWhiteSpace(customName)) {
-                return "";
-            }
+            if (string.IsNullOrWhiteSpace(customName)) return "";
             var src = "Packages/tsproj/src";
             var file = $"{graph.FsmPath.Replace(".mjs", "")}/{NodeName}.mjs";
             var path = $"{src}/{file.Replace(".mjs", ".mts")}";
-
-            if (!Directory.Exists(Path.GetDirectoryName(path))) {
-                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-            }
+            if (!Directory.Exists(Path.GetDirectoryName(path))) Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
             if (!File.Exists(path)) {
                 var content = @$"import {{ {graph.FsmName} }} from ""{graph.FsmPath}"";
@@ -127,11 +127,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>The local blackboard of the graph</summary>
         public BlackboardSource localBlackboard {
             get { return _localBlackboard ??= new BlackboardSource(); }
-            set { _localBlackboard = value; }
+            set => _localBlackboard = value;
         }
 
         //----------------------------------------------------------------------------------------------
-        ///<summary>Add on an IList (list/array) field to autosort it automatically when the children nodes are autosorted. Thus keeping the collection the same in respects to the children. Related only to tree graphs.</summary>
+        /// <summary>
+        ///     Add on an IList (list/array) field to autosort it automatically when the children nodes are autosorted. Thus
+        ///     keeping the collection the same in respects to the children. Related only to tree graphs.
+        /// </summary>
         [System.AttributeUsage(System.AttributeTargets.Field)]
         protected class AutoSortWithChildrenConnections : System.Attribute { }
 
@@ -187,14 +190,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
         ///<summary>The graph this node belongs to.</summary>
         public Graph graph {
-            get { return _graph; }
-            internal set { _graph = value; }
+            get => _graph;
+            internal set => _graph = value;
         }
 
         ///<summary>The node's int index ID in the graph. This is not persistant in any way. Use UID for that.</summary>
         public int ID {
-            get { return _ID; }
-            internal set { _ID = value; }
+            get => _ID;
+            internal set => _ID = value;
         }
 
         ///<summary>The Unique ID of the node. One is created only if requested.</summary>
@@ -202,32 +205,32 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
         ///<summary>All incomming connections to this node.</summary>
         public List<Connection> inConnections {
-            get { return _inConnections; }
-            protected set { _inConnections = value; }
+            get => _inConnections;
+            protected set => _inConnections = value;
         }
 
         ///<summary>All outgoing connections from this node.</summary>
         public List<Connection> outConnections {
-            get { return _outConnections; }
-            protected set { _outConnections = value; }
+            get => _outConnections;
+            protected set => _outConnections = value;
         }
 
         ///<summary>The position of the node in the graph.</summary>
         public Vector2 position {
-            get { return _position; }
-            set { _position = value; }
+            get => _position;
+            set => _position = value;
         }
 
         ///<summary>The custom title name of the node if any.</summary>
         public string customName {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         ///<summary>The node tag. Useful for finding nodes through code.</summary>
         public string tag {
-            get { return _tag; }
-            set { _tag = value; }
+            get => _tag;
+            set => _tag = value;
         }
 
         public List<TagData> preTags {
@@ -247,37 +250,35 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
         ///<summary>The comments of the node if any.</summary>
         public string comments {
-            get { return _comment; }
-            set { _comment = value; }
+            get => _comment;
+            set => _comment = value;
         }
 
         ///<summary>Is the node set as a breakpoint?</summary>
         public bool isBreakpoint {
-            get { return _isBreakpoint; }
-            set { _isBreakpoint = value; }
+            get => _isBreakpoint;
+            set => _isBreakpoint = value;
         }
 
         ///<summary>The title name of the node. This is virtual so title name may change instance wise</summary>
-        virtual public string name {
+        public virtual string name {
             get {
-                if (!string.IsNullOrEmpty(customName)) {
-                    return customName;
-                }
+                if (!string.IsNullOrEmpty(customName)) return customName;
 
                 if (string.IsNullOrEmpty(_nameCache)) {
-                    var nameAtt = this.GetType().RTGetAttribute<NameAttribute>(true);
-                    _nameCache = (nameAtt != null ? nameAtt.name : GetType().FriendlyName().SplitCamelCase());
+                    var nameAtt = GetType().RTGetAttribute<NameAttribute>(true);
+                    _nameCache = nameAtt != null ? nameAtt.name : GetType().FriendlyName().SplitCamelCase();
                 }
                 return _nameCache;
             }
-            set { customName = value; }
+            set => customName = value;
         }
 
         ///<summary>The description info of the node</summary>
-        virtual public string description {
+        public virtual string description {
             get {
                 if (string.IsNullOrEmpty(_descriptionCache)) {
-                    var descAtt = this.GetType().RTGetAttribute<DescriptionAttribute>(true);
+                    var descAtt = GetType().RTGetAttribute<DescriptionAttribute>(true);
                     _descriptionCache = descAtt != null ? descAtt.description : "No Description";
                 }
                 return _descriptionCache;
@@ -285,10 +286,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         }
 
         ///<summary>The execution priority order of the node when it matters to the graph system</summary>
-        virtual public int priority {
+        public virtual int priority {
             get {
                 if (_priorityCache == int.MinValue) {
-                    var prioAtt = this.GetType().RTGetAttribute<ExecutionPriorityAttribute>(true);
+                    var prioAtt = GetType().RTGetAttribute<ExecutionPriorityAttribute>(true);
                     _priorityCache = prioAtt != null ? prioAtt.priority : 0;
                 }
                 return _priorityCache;
@@ -296,45 +297,43 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         }
 
         ///<summary>The numer of possible inputs. -1 for infinite.</summary>
-        abstract public int maxInConnections { get; }
+        public abstract int maxInConnections { get; }
 
         ///<summary>The numer of possible outputs. -1 for infinite.</summary>
-        abstract public int maxOutConnections { get; }
+        public abstract int maxOutConnections { get; }
 
         ///<summary>The output connection Type this node has.</summary>
-        abstract public System.Type outConnectionType { get; }
+        public abstract System.Type outConnectionType { get; }
 
         ///<summary>Can this node be set as prime (Start)?</summary>
-        abstract public bool allowAsPrime { get; }
+        public abstract bool allowAsPrime { get; }
 
         ///<summary>Can this node connect to itself?</summary>
-        abstract public bool canSelfConnect { get; }
+        public abstract bool canSelfConnect { get; }
 
         ///<summary>Alignment of the comments when shown (editor).</summary>
-        abstract public Alignment2x2 commentsAlignment { get; }
+        public abstract Alignment2x2 commentsAlignment { get; }
 
         ///<summary>Alignment of the icons (editor).</summary>
-        abstract public Alignment2x2 iconAlignment { get; }
+        public abstract Alignment2x2 iconAlignment { get; }
 
         ///<summary>The current status of the node</summary>
         public Status status {
-            get { return _status; }
+            get => _status;
             protected set {
-                if (_status == Status.Resting && value == Status.Running) {
-                    timeStarted = graph.elapsedTime;
-                }
+                if (_status == Status.Resting && value == Status.Running) timeStarted = graph.elapsedTime;
                 _status = value;
             }
         }
 
         ///<summary>The current agent.</summary>
-        public Component graphAgent => (graph != null ? graph.agent : null);
+        public Component graphAgent => graph != null ? graph.agent : null;
 
         ///<summary>The current blackboard.</summary>
-        public IBlackboard graphBlackboard => (graph != null ? graph.blackboard : null);
+        public IBlackboard graphBlackboard => graph != null ? graph.blackboard : null;
 
         ///<summary>The time in seconds the node has been Status.Running after a reset (Status.Resting)</summary>
-        public float elapsedTime => (status == Status.Running ? graph.elapsedTime - timeStarted : 0);
+        public float elapsedTime => status == Status.Running ? graph.elapsedTime - timeStarted : 0;
 
         //Mark when status running change
         private float timeStarted { get; set; }
@@ -361,10 +360,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 Logger.LogError("Can't Create a Node without providing a Target Graph", LogTag.GRAPH);
                 return null;
             }
-
-            if (nodeType.IsGenericTypeDefinition) {
+            if (nodeType.IsGenericTypeDefinition)
                 nodeType = nodeType.RTMakeGenericType(nodeType.GetFirstGenericParameterConstraintType());
-            }
             var newNode = (Node)System.Activator.CreateInstance(nodeType);
             UndoUtility.RecordObject(targetGraph, "Create Node");
             newNode.graph = targetGraph;
@@ -390,17 +387,11 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             targetGraph.allNodes.Add(newNode);
             newNode.inConnections.Clear();
             newNode.outConnections.Clear();
-
-            if (targetGraph == this.graph) {
-                newNode.position += new Vector2(50, 50);
-            }
+            if (targetGraph == graph) newNode.position += new Vector2(50, 50);
             newNode._UID = null;
             newNode.graph = targetGraph;
             BBParameter.SetBBFields(newNode, targetGraph.blackboard);
-
-            foreach (var task in Graph.GetTasksInElement(newNode)) {
-                task.Validate(targetGraph);
-            }
+            foreach (var task in Graph.GetTasksInElement(newNode)) task.Validate(targetGraph);
             //--
             newNode.Validate(targetGraph);
             UndoUtility.SetDirty(targetGraph);
@@ -412,44 +403,29 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         {
             OnValidate(assignedGraph);
             var hardError = GetHardError();
-
-            if (hardError != null) {
-                Logger.LogError(hardError, LogTag.VALIDATION, this);
-            }
-
-            if (this is IGraphAssignable) {
-                (this as IGraphAssignable).ValidateSubGraphAndParameters();
-            }
+            if (hardError != null) Logger.LogError(hardError, LogTag.VALIDATION, this);
+            if (this is IGraphAssignable) (this as IGraphAssignable).ValidateSubGraphAndParameters();
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>The main execution function of the node. Execute the node for the agent and blackboard provided.</summary>
         public Status Execute(Component agent, IBlackboard blackboard)
         {
-            if (!graph.isRunning) {
-                return status;
-            }
+            if (!graph.isRunning) return status;
 #if UNITY_EDITOR
             if (isBreakpoint) {
                 if (status == Status.Resting) {
-                    var breakEditor = NodeCanvas.Editor.Prefs.breakpointPauseEditor;
+                    var breakEditor = Editor.Prefs.breakpointPauseEditor;
                     var owner = agent as GraphOwner;
                     var contextName = owner != null ? owner.gameObject.name : graph.name;
                     Logger.LogWarning(
                         string.Format("Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'", name, ID,
                             graph.GetType().Name, contextName), "Breakpoint", this);
-
-                    if (owner != null) {
-                        owner.PauseBehaviour();
-                    }
-
-                    if (breakEditor) {
+                    if (owner != null) owner.PauseBehaviour();
+                    if (breakEditor)
                         StartCoroutine(YieldBreak(() => {
-                            if (owner != null) {
-                                owner.StartBehaviour();
-                            }
+                            if (owner != null) owner.StartBehaviour();
                         }));
-                    }
                     breakPointReached = true;
                     return status = Status.Running;
                 }
@@ -466,22 +442,17 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Recursively reset the node and child nodes if it's not Resting already</summary>
         public void Reset(bool recursively = true)
         {
-            if (status == Status.Resting || isChecked) {
-                return;
-            }
+            if (status == Status.Resting || isChecked) return;
             OnReset();
             status = Status.Resting;
             isChecked = true;
-
-            for (var i = 0; i < outConnections.Count; i++) {
-                outConnections[i].Reset(recursively);
-            }
+            for (var i = 0; i < outConnections.Count; i++) outConnections[i].Reset(recursively);
             isChecked = false;
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Helper for breakpoints</summary>
-        IEnumerator YieldBreak(System.Action resume)
+        private IEnumerator YieldBreak(System.Action resume)
         {
             Debug.Break();
             yield return null;
@@ -491,12 +462,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Helper for easier logging</summary>
         public Status Error(object msg)
         {
-            if (msg is System.Exception) {
+            if (msg is System.Exception)
                 Logger.LogException((System.Exception)msg, LogTag.EXECUTION, this);
-            }
-            else {
+            else
                 Logger.LogError(msg, LogTag.EXECUTION, this);
-            }
             status = Status.Error;
             return Status.Error;
         }
@@ -534,8 +503,13 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             graph.SendEvent(eventName, value, this);
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Returns whether source and target nodes can generaly be connected together. This only validates max in/out connections that source and target nodes has, along with other validations. Providing an existing refConnection, will bypass source/target validation respectively if that connection is already connected to that source/target node.</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns whether source and target nodes can generaly be connected together. This only validates max in/out
+        ///     connections that source and target nodes has, along with other validations. Providing an existing refConnection,
+        ///     will bypass source/target validation respectively if that connection is already connected to that source/target
+        ///     node.
+        /// </summary>
         public static bool IsNewConnectionAllowed(Node sourceNode, Node targetNode, Connection refConnection = null)
         {
             if (sourceNode == null || targetNode == null) {
@@ -548,21 +522,19 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 return false;
             }
 
-            if (refConnection == null || refConnection.sourceNode != sourceNode) {
+            if (refConnection == null || refConnection.sourceNode != sourceNode)
                 if (sourceNode.outConnections.Count >= sourceNode.maxOutConnections &&
                     sourceNode.maxOutConnections != -1) {
                     Logger.LogWarning("Source node can have no more out connections.", LogTag.EDITOR, sourceNode);
                     return false;
                 }
-            }
 
-            if (refConnection == null || refConnection.targetNode != targetNode) {
+            if (refConnection == null || refConnection.targetNode != targetNode)
                 if (targetNode.maxInConnections <= targetNode.inConnections.Count &&
                     targetNode.maxInConnections != -1) {
                     Logger.LogWarning("Target node can have no more in connections.", LogTag.EDITOR, targetNode);
                     return false;
                 }
-            }
             var final = true;
             final &= sourceNode.CanConnectToTarget(targetNode);
             final &= targetNode.CanConnectFromSource(sourceNode);
@@ -570,16 +542,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         }
 
         ///<summary>Override for explicit handling</summary>
-        virtual protected bool CanConnectToTarget(Node targetNode)
-        {
-            return true;
-        }
+        protected virtual bool CanConnectToTarget(Node targetNode) => true;
 
         ///<summary>Override for explicit handling</summary>
-        virtual protected bool CanConnectFromSource(Node sourceNode)
-        {
-            return true;
-        }
+        protected virtual bool CanConnectFromSource(Node sourceNode) => true;
 
         ///<summary>Are provided nodes connected at all regardless of parent/child relation?</summary>
         public static bool AreNodesConnected(Node a, Node b)
@@ -592,34 +558,26 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Nodes can use coroutine as normal through MonoManager.</summary>
-        public Coroutine StartCoroutine(IEnumerator routine)
-        {
-            return MonoManager.current != null ? MonoManager.current.StartCoroutine(routine) : null;
-        }
+        public Coroutine StartCoroutine(IEnumerator routine) =>
+            MonoManager.current != null ? MonoManager.current.StartCoroutine(routine) : null;
 
         ///<summary>Nodes can use coroutine as normal through MonoManager.</summary>
         public void StopCoroutine(Coroutine routine)
         {
-            if (MonoManager.current != null) {
-                MonoManager.current.StopCoroutine(routine);
-            }
+            if (MonoManager.current != null) MonoManager.current.StopCoroutine(routine);
         }
 
         ///<summary>Returns all *direct* parent nodes (first depth level)</summary>
         public IEnumerable<Node> GetParentNodes()
         {
-            if (inConnections.Count != 0) {
-                return inConnections.Select(c => c.sourceNode);
-            }
+            if (inConnections.Count != 0) return inConnections.Select(c => c.sourceNode);
             return new Node[0];
         }
 
         ///<summary>Returns all *direct* children nodes (first depth level)</summary>
         public IEnumerable<Node> GetChildNodes()
         {
-            if (outConnections.Count != 0) {
-                return outConnections.Select(c => c.targetNode);
-            }
+            if (outConnections.Count != 0) return outConnections.Select(c => c.targetNode);
             return new Node[0];
         }
 
@@ -637,90 +595,81 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns a warning string or null if none</summary>
-        virtual protected string GetWarningOrError()
+        protected virtual string GetWarningOrError()
         {
             var hardError = GetHardError();
-
-            if (hardError != null) {
-                return "* " + hardError;
-            }
+            if (hardError != null) return "* " + hardError;
             string result = null;
             var assignable = this as ITaskAssignable;
-
-            if (assignable != null && assignable.task != null) {
-                result = assignable.task.GetWarningOrError();
-            }
+            if (assignable != null && assignable.task != null) result = assignable.task.GetWarningOrError();
             return result;
         }
 
         ///<summary>A hard error, missing things</summary>
-        string GetHardError()
+        private string GetHardError()
         {
-            if (this is IMissingRecoverable) {
+            if (this is IMissingRecoverable)
                 return string.Format("Missing Node '{0}'", (this as IMissingRecoverable).missingType);
-            }
 
             if (this is IReflectedWrapper) {
                 var info = (this as IReflectedWrapper).GetSerializedInfo();
-
-                if (info != null && info.AsMemberInfo() == null) {
+                if (info != null && info.AsMemberInfo() == null)
                     return string.Format("Missing Reflected Info '{0}'", info.AsString());
-                }
             }
             return null;
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Override to define node functionality. The Agent and Blackboard used to start the Graph are propagated</summary>
-        virtual protected Status OnExecute(Component agent, IBlackboard blackboard)
-        {
-            return status;
-        }
+        protected virtual Status OnExecute(Component agent, IBlackboard blackboard) => status;
 
-        ///<summary>Called when the node gets reseted. e.g. OnGraphStart, after a tree traversal, when interrupted, OnGraphEnd etc...</summary>
-        virtual protected void OnReset() { }
+        /// <summary>
+        ///     Called when the node gets reseted. e.g. OnGraphStart, after a tree traversal, when interrupted, OnGraphEnd
+        ///     etc...
+        /// </summary>
+        protected virtual void OnReset() { }
 
         ///<summary>Called once the first time node is created.</summary>
-        virtual public void OnCreate(Graph assignedGraph) { }
+        public virtual void OnCreate(Graph assignedGraph) { }
 
         ///<summary>Called when the Node is created, duplicated or otherwise needs validation.</summary>
-        virtual public void OnValidate(Graph assignedGraph) { }
+        public virtual void OnValidate(Graph assignedGraph) { }
 
         ///<summary>Called when the Node is removed from the graph (always through graph.RemoveNode)</summary>
-        virtual public void OnDestroy() { }
+        public virtual void OnDestroy() { }
 
         ///<summary>Called when an input connection is connected</summary>
-        virtual public void OnParentConnected(int connectionIndex) { }
+        public virtual void OnParentConnected(int connectionIndex) { }
 
         ///<summary>Called when an input connection is disconnected but before it actually does</summary>
-        virtual public void OnParentDisconnected(int connectionIndex) { }
+        public virtual void OnParentDisconnected(int connectionIndex) { }
 
         ///<summary>Called when an output connection is connected</summary>
-        virtual public void OnChildConnected(int connectionIndex) { }
+        public virtual void OnChildConnected(int connectionIndex) { }
 
         ///<summary>Called when an output connection is disconnected but before it actually does</summary>
-        virtual public void OnChildDisconnected(int connectionIndex) { }
+        public virtual void OnChildDisconnected(int connectionIndex) { }
 
         ///<summary>Called when child connection are sorted</summary>
-        virtual public void OnChildrenConnectionsSorted(int[] oldIndeces) { }
+        public virtual void OnChildrenConnectionsSorted(int[] oldIndeces) { }
 
         ///<summary>Called when the parent graph is started. Use to init values or otherwise.</summary>
-        virtual public void OnGraphStarted() { }
+        public virtual void OnGraphStarted() { }
 
         ///<summary>Called when the parent graph is started, but after all OnGraphStarted calls on all nodes.</summary>
-        virtual public void OnPostGraphStarted() { }
+        public virtual void OnPostGraphStarted() { }
 
         ///<summary>Called when the parent graph is stopped.</summary>
-        virtual public void OnGraphStoped() { }
+        public virtual void OnGraphStoped() { }
 
         ///<summary>Called when the parent graph is stopped, but after all OnGraphStoped calls on all nodes.</summary>
-        virtual public void OnPostGraphStoped() { }
+        public virtual void OnPostGraphStoped() { }
 
         ///<summary>Called when the parent graph is paused.</summary>
-        virtual public void OnGraphPaused() { }
+        public virtual void OnGraphPaused() { }
 
         ///<summary>Called when the parent graph is unpaused.</summary>
-        virtual public void OnGraphUnpaused() { }
+        public virtual void OnGraphUnpaused() { }
 
         ///----------------------------------------------------------------------------------------------
 
@@ -731,20 +680,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
             if (this is IReflectedWrapper) {
                 var info = (this as IReflectedWrapper).GetSerializedInfo()?.AsMemberInfo();
-
-                if (info != null) {
-                    result = info.FriendlyName();
-                }
+                if (info != null) result = info.FriendlyName();
             }
 
             if (this is IGraphAssignable) {
                 var subGraph = (this as IGraphAssignable).subGraph;
-
-                if (subGraph != null) {
-                    result = subGraph.name;
-                }
+                if (subGraph != null) result = subGraph.name;
             }
-            return string.Format("{0}{1}", result, (!string.IsNullOrEmpty(tag) ? " (" + tag + ")" : ""));
+            return string.Format("{0}{1}", result, !string.IsNullOrEmpty(tag) ? " (" + tag + ")" : "");
         }
     }
 }

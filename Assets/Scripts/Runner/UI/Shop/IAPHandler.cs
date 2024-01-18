@@ -2,7 +2,6 @@
 #if UNITY_PURCHASING
 using UnityEngine.Purchasing;
 #endif
-
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
@@ -21,7 +20,7 @@ namespace Runner.UI.Shop
 
         public void ProductBought(Product product)
         {
-            int amount = 0;
+            var amount = 0;
 
             switch (product.definition.id) {
                 case "10_premium":
@@ -44,7 +43,8 @@ namespace Runner.UI.Shop
                 var itemId = product.definition.id;
                 var itemType = "consumable";
                 var level = PlayerData.instance.rank.ToString();
-                AnalyticsEvent.IAPTransaction(transactionContext, (float)product.metadata.localizedPrice, itemId, itemType, level, transactionId);
+                AnalyticsEvent.IAPTransaction(transactionContext, (float)product.metadata.localizedPrice, itemId,
+                    itemType, level, transactionId);
                 AnalyticsEvent.ItemAcquired(AcquisitionType.Premium,                 // Currency type
                     transactionContext, amount, itemId, PlayerData.instance.premium, // Item balance
                     itemType, level, transactionId);

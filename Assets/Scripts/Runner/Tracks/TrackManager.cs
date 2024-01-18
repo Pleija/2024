@@ -243,7 +243,7 @@ namespace Runner.Tracks
                         "accessory",
                         PlayerData.instance.usedAccessory >= 0
                             ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none"
-                    }
+                    },
                 });
 #endif
             }
@@ -495,7 +495,8 @@ namespace Runner.Tracks
         {
             var op = Addressables.LoadAssetAsync<GameObject>(reference);
             yield return op;
-            GameObject obj = op.Result as GameObject;
+            var obj = op.Result as GameObject;
+
             if (obj != null) {
                 var obstacle = obj.GetComponent<Obstacle>();
                 if (obstacle != null)

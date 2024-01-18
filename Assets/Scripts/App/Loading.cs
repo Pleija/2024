@@ -29,7 +29,6 @@ namespace App
         public AssetReference nextScene;
         public AssetReference prefab;
         public AssetReference testPrefab;
-     
 
         //public GameObject prefabObj;
         public const string PrivacyKey = "App.Privacy";
@@ -43,7 +42,6 @@ namespace App
         public Button retryBtn;
         private static bool clicked;
         private static bool updated;
-
 
         public bool isAgreed {
             get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) && PlayerPrefs.HasKey(PrivacyKey);
@@ -78,10 +76,7 @@ namespace App
         private void Awake()
         {
             OnAwake?.Invoke();
-
-            if (Application.isEditor) {
-                DebugLogManager.Instance.gameObject.SetActive(false);
-            }
+            if (Application.isEditor) DebugLogManager.Instance.gameObject.SetActive(false);
         }
 
         public static void Restart()
@@ -146,7 +141,7 @@ namespace App
             DoStart();
         }
 
-        void DoStart()
+        private void DoStart()
         {
             Debug.Log($"Start Time: {Time.realtimeSinceStartup:F2}");
 
@@ -227,11 +222,8 @@ namespace App
                 foreach (var key in keys) {
                     if (Guid.TryParse($"{key}", out _)) continue;
                     var size = Addressables.GetDownloadSizeAsync(key).WaitForCompletion();
-
-                    if (size > 0) {
-                        changes.Add(key.ToString());
-                        // Debug.Log($"{key} => {size / 1024f / 1024f:F3}");
-                    }
+                    if (size > 0) changes.Add(key.ToString());
+                    // Debug.Log($"{key} => {size / 1024f / 1024f:F3}");
                 }
                 Debug.Log($"items({changes.Count}):\n" + string.Join("\n", changes));
                 Debug.Log($"total size: {p3.Result / 1024f / 1024f:f3}MB");
@@ -315,9 +307,7 @@ namespace App
 #if UNITY_EDITOR
                 var path = AssetDatabase.GetAssetPath(scene.editorAsset);
                 var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(path /*"Assets/Scenes/Start.unity"*/,
-                    new LoadSceneParameters() {
-                        loadSceneMode = LoadSceneMode.Single,
-                    });
+                    new LoadSceneParameters() { loadSceneMode = LoadSceneMode.Single });
 
                 // while(!p1.isDone && p1.) {
                 //     progress.value = 0.9f - p1.progress;
@@ -338,10 +328,7 @@ namespace App
                 progress.value = p.PercentComplete;
                 yield return null;
             }
-
-            if (p.Status != AsyncOperationStatus.Succeeded) {
-                SceneManager.LoadScene(0);
-            }
+            if (p.Status != AsyncOperationStatus.Succeeded) SceneManager.LoadScene(0);
             progress.value = 1;
         }
     }

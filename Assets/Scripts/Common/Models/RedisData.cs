@@ -36,34 +36,27 @@ namespace Models
         public static string GetIP(AddressType type = AddressType.IPv4)
         {
             //Return null if ADDRESSFAM is Ipv6 but Os does not support it
-            if (type == AddressType.IPv6 && !Socket.OSSupportsIPv6) {
-                return null;
-            }
-            string output = "";
+            if (type == AddressType.IPv6 && !Socket.OSSupportsIPv6) return null;
+            var output = "";
 
-            foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces()) {
+            foreach (var item in NetworkInterface.GetAllNetworkInterfaces()) {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            NetworkInterfaceType _type1 = NetworkInterfaceType.Wireless80211;
-            NetworkInterfaceType _type2 = NetworkInterfaceType.Ethernet;
+                NetworkInterfaceType _type1 = NetworkInterfaceType.Wireless80211;
+                NetworkInterfaceType _type2 = NetworkInterfaceType.Ethernet;
 
-            if ((item.NetworkInterfaceType == _type1 || item.NetworkInterfaceType == _type2) && item.OperationalStatus == OperationalStatus.Up)
+                if ((item.NetworkInterfaceType == _type1 || item.NetworkInterfaceType == _type2) && item.OperationalStatus == OperationalStatus.Up)
 #endif
                 {
-                    foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses) {
+                    foreach (var ip in item.GetIPProperties().UnicastAddresses)
                         //IPv4
                         if (type == AddressType.IPv4) {
-                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork) {
-                                output = ip.Address.ToString();
-                            }
+                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork) output = ip.Address.ToString();
                         }
-
                         //IPv6
                         else if (type == AddressType.IPv6) {
-                            if (ip.Address.AddressFamily == AddressFamily.InterNetworkV6) {
+                            if (ip.Address.AddressFamily == AddressFamily.InterNetworkV6)
                                 output = ip.Address.ToString();
-                            }
                         }
-                    }
                 }
             }
             return output;
@@ -116,21 +109,16 @@ namespace Models
 
         private Queue<Action<ConnectionMultiplexer>> m_Queue = new Queue<Action<ConnectionMultiplexer>>();
 
-        async UniTask GetRedis(Action<ConnectionMultiplexer> fn)
+        private async UniTask GetRedis(Action<ConnectionMultiplexer> fn)
         {
             m_Queue.Enqueue(fn);
-
-            if (m_Redis == null) {
+            if (m_Redis == null)
                 m_Redis = await ConnectionMultiplexer.ConnectAsync($"{self.host},password={self.password}");
-            }
-            else if (m_Redis.IsConnecting) {
+            else if (m_Redis.IsConnecting)
                 return;
-            }
-            else if (m_Redis.IsConnected) {
-                while (m_Queue.Any()) {
+            else if (m_Redis.IsConnected)
+                while (m_Queue.Any())
                     m_Queue.Dequeue()?.Invoke(m_Redis);
-                }
-            }
 
             // if (m_Redis.IsConnected) {
             //     fn.Invoke(m_Redis);

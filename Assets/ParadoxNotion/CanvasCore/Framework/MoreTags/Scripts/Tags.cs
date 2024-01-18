@@ -6,13 +6,14 @@ namespace MoreTags
     public class Tags : MonoBehaviour
     {
 #if UNITY_EDITOR
-        void CheckSingle()
+        private void CheckSingle()
         {
             foreach (var comp in GetComponents<Tags>())
-                if (comp != this) DestroyImmediate(this);
+                if (comp != this)
+                    DestroyImmediate(this);
         }
 
-        void Reset()
+        private void Reset()
         {
             Invoke("CheckSingle", 0);
         }

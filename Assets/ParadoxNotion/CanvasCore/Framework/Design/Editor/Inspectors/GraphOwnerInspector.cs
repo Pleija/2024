@@ -10,10 +10,7 @@ namespace NodeCanvas.Editor
     [CustomEditor(typeof(GraphOwner), true)]
     public class GraphOwnerInspector : UnityEditor.Editor
     {
-        private GraphOwner owner {
-            get { return (GraphOwner)target; }
-        }
-
+        private GraphOwner owner => (GraphOwner)target;
         private SerializedProperty boundGraphSerializationProp;
         private SerializedProperty boundGraphReferencesProp;
         private SerializedProperty graphProp;
@@ -28,39 +25,25 @@ namespace NodeCanvas.Editor
         private SerializedProperty preInitProp;
         private SerializedProperty updateModeProp;
         private SerializedProperty exposeParamsProp;
+        private string graphTypeName => owner.graphType.Name.SplitCamelCase();
+        private bool isOwnerPeristant => EditorUtility.IsPersistent(owner);
+        public bool isBoundGraphOnPrefabRoot => isOwnerPeristant && owner.graphIsBound;
 
-        private string graphTypeName {
-            get { return owner.graphType.Name.SplitCamelCase(); }
-        }
+        public bool isBoundGraphOnPrefabInstance =>
+            !isOwnerPeristant && owner.graphIsBound && PrefabUtility.IsPartOfAnyPrefab(owner);
 
-        private bool isOwnerPeristant {
-            get { return EditorUtility.IsPersistent(owner); }
-        }
-
-        public bool isBoundGraphOnPrefabRoot {
-            get { return isOwnerPeristant && owner.graphIsBound; }
-        }
-
-        public bool isBoundGraphOnPrefabInstance {
-            get { return !isOwnerPeristant && owner.graphIsBound && PrefabUtility.IsPartOfAnyPrefab(owner); }
-        }
-
-        public bool isBoundGraphPrefabOverridden {
-            get { return boundGraphSerializationProp.prefabOverride; }
-        }
+        public bool isBoundGraphPrefabOverridden => boundGraphSerializationProp.prefabOverride;
 
         ///----------------------------------------------------------------------------------------------
-        void OnDestroy()
+        private void OnDestroy()
         {
             //just a little trick to destroy graph and not left editing a floating one
-            if (owner == null && !ReferenceEquals(owner, null) && owner.graph != null) {
-                if (owner.graphIsBound) {
+            if (owner == null && !ReferenceEquals(owner, null) && owner.graph != null)
+                if (owner.graphIsBound)
                     Undo.DestroyObjectImmediate(owner.graph);
-                }
-            }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             boundGraphSerializationProp = serializedObject.FindProperty("_boundGraphSerialization");
             boundGraphReferencesProp = serializedObject.FindProperty("_boundGraphObjectReferences");
@@ -96,7 +79,7 @@ namespace NodeCanvas.Editor
         //create new local graph and assign it to owner
         public Graph NewAsBound()
         {
-            var newGraph = (Graph)ScriptableObject.CreateInstance(owner.graphType);
+            var newGraph = (Graph)CreateInstance(owner.graphType);
             UndoUtility.RecordObject(owner, "New Bound Graph");
             owner.SetBoundGraphReference(newGraph);
             UndoUtility.SetDirty(owner);
@@ -170,7 +153,7 @@ namespace NodeCanvas.Editor
         ///----------------------------------------------------------------------------------------------
 
         //...
-        void DoPrefabRelatedGUI()
+        private void DoPrefabRelatedGUI()
         {
             //show lock bound graph prefab overrides
             if (owner.graphIsBound) {
@@ -178,11 +161,9 @@ namespace NodeCanvas.Editor
                     UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage()
                         ?.prefabContentsRoot == owner.gameObject;
                 var case2 = PrefabUtility.IsPartOfAnyPrefab(owner) && !isBoundGraphPrefabOverridden;
-
-                if (case1 || case2) {
+                if (case1 || case2)
                     EditorGUILayout.PropertyField(lockPrefabProp,
                         EditorUtils.GetTempContent("Lock Prefab Graph Overrides"));
-                }
             }
 
             //show bound graph prefab overrides controls
@@ -194,14 +175,10 @@ namespace NodeCanvas.Editor
                 var content =
                     EditorUtils.GetTempContent("<b>Bound Graph is prefab overridden.</b>", StyleSheet.canvasIcon);
                 GUILayout.Label(content, Styles.topLeftLabel);
-
-                if (GUILayout.Button("Revert Graph", EditorStyles.miniButtonLeft, GUILayout.Width(100))) {
+                if (GUILayout.Button("Revert Graph", EditorStyles.miniButtonLeft, GUILayout.Width(100)))
                     PrefabRevertBoundGraph();
-                }
-
-                if (GUILayout.Button("Apply Graph", EditorStyles.miniButtonRight, GUILayout.Width(100))) {
+                if (GUILayout.Button("Apply Graph", EditorStyles.miniButtonRight, GUILayout.Width(100)))
                     PrefabApplyBoundGraph();
-                }
                 GUILayout.EndHorizontal();
                 EditorUtils.MarkLastFieldOverride();
                 GUILayout.Space(5);
@@ -209,7 +186,7 @@ namespace NodeCanvas.Editor
         }
 
         //...
-        void DoMissingGraphControls()
+        private void DoMissingGraphControls()
         {
             EditorGUILayout.HelpBox(
                 owner.GetType().Name + " needs a " + graphTypeName + ".\nAssign or Create a new one...",
@@ -217,17 +194,14 @@ namespace NodeCanvas.Editor
 
             if (!Application.isPlaying && GUILayout.Button("CREATE NEW")) {
                 Graph newGraph = null;
-
                 if (EditorUtility.DisplayDialog("Create Graph",
                         "Create a Bound or an Asset Graph?\n\n" +
                         "Bound Graph is saved with the GraphOwner and you can use direct scene references within it.\n\n" +
                         "Asset Graph is an asset file and can be reused amongst any number of GraphOwners.\n\n" +
-                        "You can convert from one type to the other at any time.", "Bound", "Asset")) {
+                        "You can convert from one type to the other at any time.", "Bound", "Asset"))
                     newGraph = NewAsBound();
-                }
-                else {
+                else
                     newGraph = NewAsAsset();
-                }
 
                 if (newGraph != null) {
                     owner.Validate();
@@ -236,14 +210,11 @@ namespace NodeCanvas.Editor
             }
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(graphProp, new GUIContent(graphTypeName));
-
-            if (EditorGUI.EndChangeCheck()) {
-                owner.Validate();
-            }
+            if (EditorGUI.EndChangeCheck()) owner.Validate();
         }
 
         //...
-        void DoValidGraphControls()
+        private void DoValidGraphControls()
         {
             //Graph comments ONLY if Bound graph else readonly
             if (owner.graph != null) {
@@ -296,49 +267,40 @@ namespace NodeCanvas.Editor
             //bind asset or delete bound graph
             if (!Application.isPlaying) {
                 if (!owner.graphIsBound) {
-                    if (GUILayout.Button("Bind Graph")) {
+                    if (GUILayout.Button("Bind Graph"))
                         if (EditorUtility.DisplayDialog("Bind Graph",
                                 "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?",
-                                "YES", "NO")) {
+                                "YES", "NO"))
                             AssetToBound();
-                        }
-                    }
                 }
                 else {
-                    if (GUILayout.Button("Delete Bound Graph")) {
+                    if (GUILayout.Button("Delete Bound Graph"))
                         if (EditorUtility.DisplayDialog("Delete Bound Graph", "Are you sure?", "YES", "NO")) {
-                            Object.DestroyImmediate(owner.graph, true);
+                            DestroyImmediate(owner.graph, true);
                             UndoUtility.RecordObject(owner, "Delete Bound Graph");
                             owner.SetBoundGraphReference(null);
                             UndoUtility.SetDirty(owner);
                         }
-                    }
                 }
             }
         }
 
         //...
-        void DoStandardFields()
+        private void DoStandardFields()
         {
             //basic options
-            if (Application.isPlaying || !owner.graphIsBound) {
+            if (Application.isPlaying || !owner.graphIsBound)
                 EditorGUILayout.PropertyField(graphProp, EditorUtils.GetTempContent(graphTypeName));
-            }
             var rect = EditorGUILayout.GetControlRect();
             var label = EditorGUI.BeginProperty(rect, EditorUtils.GetTempContent("Blackboard"), blackboardProp);
             EditorGUI.BeginChangeCheck();
             owner.blackboard =
                 (IBlackboard)EditorGUI.ObjectField(rect, label, owner.blackboard as Object, typeof(IBlackboard), true);
-
-            if (EditorGUI.EndChangeCheck()) {
-                UndoUtility.SetDirty(owner);
-            }
+            if (EditorGUI.EndChangeCheck()) UndoUtility.SetDirty(owner);
             EditorGUI.EndProperty();
-
-            if (owner.blackboard == null) {
+            if (owner.blackboard == null)
                 EditorUtils.MarkLastFieldWarning(
                     "No Blackboard assigned. This is fine if you only want to use Graph Blackboard Variables.");
-            }
             EditorGUILayout.PropertyField(firstActivationProp);
             EditorGUILayout.PropertyField(enableActionProp, EditorUtils.GetTempContent("On Enable"));
             EditorGUILayout.PropertyField(disableActionProp, EditorUtils.GetTempContent("On Disable"));
@@ -347,22 +309,15 @@ namespace NodeCanvas.Editor
         }
 
         //...
-        void DoExposedVariablesMapping()
+        private void DoExposedVariablesMapping()
         {
-            if (owner.graph == null) {
-                return;
-            }
+            if (owner.graph == null) return;
             var separatorDrawn = false;
             var subTreeVariables = owner.graph.blackboard.variables.Values;
 
             foreach (var variable in subTreeVariables) {
-                if (variable is Variable<VariableSeperator>) {
-                    continue;
-                }
-
-                if (!variable.isExposedPublic || variable.isPropertyBound) {
-                    continue;
-                }
+                if (variable is Variable<VariableSeperator>) continue;
+                if (!variable.isExposedPublic || variable.isPropertyBound) continue;
 
                 if (!separatorDrawn) {
                     separatorDrawn = true;
@@ -371,10 +326,8 @@ namespace NodeCanvas.Editor
                         "Exposed Graph Variables. Use the arrows button to override/parametrize the variable. Doing this will not change the graph serialization. Prefab overrides are also supported.",
                         MessageType.None);
                 }
-
-                if (owner.exposedParameters == null) {
+                if (owner.exposedParameters == null)
                     owner.exposedParameters = new System.Collections.Generic.List<ExposedParameter>();
-                }
                 var exposedParam = owner.exposedParameters.Find(x => x.targetVariableID == variable.ID);
 
                 if (exposedParam == null) {
@@ -383,7 +336,7 @@ namespace NodeCanvas.Editor
                     EditorUtils.DrawEditorFieldDirect(
                         new GUIContent(variable.name,
                             "This is an Exposed Public variable of the graph local blackboard. You can use the arrows button on the right side to override/parametrize the default value."),
-                        variable.value, variable.varType, default(InspectedFieldInfo));
+                        variable.value, variable.varType, default);
                     GUI.enabled = true;
 
                     if (GUILayout.Button(EditorUtils.GetTempContent("▽△", null, "Override Variable"),
@@ -426,7 +379,7 @@ namespace NodeCanvas.Editor
 
                     if (rect.Contains(Event.current.mousePosition) && Event.current.type == EventType.ContextClick) {
                         var prefabAssetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(owner);
-                        var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(prefabAssetPath);
+                        var asset = AssetDatabase.LoadAssetAtPath<Object>(prefabAssetPath);
                         var menu = new GenericMenu();
                         menu.AddItem(new GUIContent($"Apply to Prefab '{asset.name}'"), false, () => {
                             UndoUtility.RecordObject(owner, "Apply Exposed Parameter");
@@ -444,13 +397,10 @@ namespace NodeCanvas.Editor
                     }
                 }
             }
-
-            if (separatorDrawn) {
-                EditorUtils.Separator();
-            }
+            if (separatorDrawn) EditorUtils.Separator();
 
             //cleanup
-            if (owner.exposedParameters != null) {
+            if (owner.exposedParameters != null)
                 for (var i = owner.exposedParameters.Count; i-- > 0;) {
                     var exposedParam = owner.exposedParameters[i];
                     var variable = owner.graph.blackboard.GetVariableByID(exposedParam.targetVariableID);
@@ -460,11 +410,10 @@ namespace NodeCanvas.Editor
                         UndoUtility.SetDirty(owner);
                     }
                 }
-            }
         }
 
         //...
-        void DoRuntimeGraphControls()
+        private void DoRuntimeGraphControls()
         {
             //execution debug controls
             if (Application.isPlaying && owner.graph != null && !isOwnerPeristant) {
@@ -497,9 +446,9 @@ namespace NodeCanvas.Editor
         }
 
         ///----------------------------------------------------------------------------------------------
-        virtual protected void OnPreExtraGraphOptions() { }
+        protected virtual void OnPreExtraGraphOptions() { }
 
-        virtual protected void OnPostExtraGraphOptions() { }
+        protected virtual void OnPostExtraGraphOptions() { }
     }
 }
 

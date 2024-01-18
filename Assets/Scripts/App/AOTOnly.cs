@@ -13,7 +13,7 @@ namespace App
 {
     public class AOTOnly : MonoBehaviour
     {
-        void Hook()
+        private void Hook()
         {
             var types = new Type[] {
                 typeof(Variable<AssetReference>),
@@ -29,7 +29,6 @@ namespace App
                 typeof(Variable<Vector2Int>),
                 typeof(Variable<Vector3>),
                 typeof(Variable<Vector3Int>),
-
             };
             var test = new object[] {
                 SerializationUtility.DeserializeValue<RedisKey>(null),
@@ -48,7 +47,7 @@ namespace App
                 new Variable<Vector2Int>(),
                 new Variable<Vector3Int>(),
                 new Variable<Vector3>(),
-                new Variable<int>()
+                new Variable<int>(),
             };
         }
     }

@@ -14,21 +14,19 @@ namespace SqlCipher4Unity3D.Example
     public class DataService
     {
         private readonly SQLiteConnection _connection;
-
 #if UNITY_EDITOR
         [MenuItem("Debug/Tests/Database/Create Database")]
-        static void TestCreateDatabase()
+        private static void TestCreateDatabase()
         {
             var databaseName = "test_password.sqlite";
-            if (!Directory.Exists(@"ProjectSettings/data/samples")) {
+            if (!Directory.Exists(@"ProjectSettings/data/samples"))
                 Directory.CreateDirectory(@"ProjectSettings/data/samples");
-            }
             var dbPath = string.Format(@"ProjectSettings/data/samples/{0}", databaseName);
             File.Delete(dbPath);
             var ds = new DataService(databaseName, "hello");
             //ds._connection.DropTable<Person>();
             ds.CreateDB(true);
-            IEnumerable<Person> people = ds.GetPersons();
+            var people = ds.GetPersons();
             ToConsole(people);
             people = ds.GetPersonsNamedRoberto();
             ToConsole("Searching for Roberto ...");
@@ -38,7 +36,7 @@ namespace SqlCipher4Unity3D.Example
 
         private static void ToConsole(IEnumerable<Person> people)
         {
-            foreach (Person person in people) ToConsole(person.ToString());
+            foreach (var person in people) ToConsole(person.ToString());
         }
 
         private static void ToConsole(string msg)
@@ -50,19 +48,15 @@ namespace SqlCipher4Unity3D.Example
 
         public DataService(string databaseName, string password = "password")
         {
-            string dbPath = (Application.persistentDataPath + $"/data/{databaseName}");
-            if (!Directory.Exists(Path.GetDirectoryName(dbPath))) {
-                Directory.CreateDirectory(Path.GetDirectoryName(dbPath)+"");
-            }
+            var dbPath = Application.persistentDataPath + $"/data/{databaseName}";
+            if (!Directory.Exists(Path.GetDirectoryName(dbPath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(dbPath) + "");
 #if UNITY_EDITOR
             dbPath = string.Format(@"ProjectSettings/data/samples/{0}", databaseName);
-            if (!Directory.Exists(Path.GetDirectoryName(dbPath))) {
-                Directory.CreateDirectory(Path.GetDirectoryName(dbPath)+"");
-            }
+            if (!Directory.Exists(Path.GetDirectoryName(dbPath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(dbPath) + "");
 #else
 #if false
-      
-
             // check if file exists in Application.persistentDataPath
             string filepath = string.Format("{0}/{1}", Application.persistentDataPath, DatabaseName);
 
@@ -120,39 +114,15 @@ namespace SqlCipher4Unity3D.Example
         {
             if (drop) _connection.DropTable<Person>();
             _connection.CreateTable<Person>();
-
             _connection.InsertAll(new[] {
-                new Person {
-                    Id = 1,
-                    Name = "Tom",
-                    Surname = "Perez",
-                    Age = 56
-                },
-                new Person {
-                    Id = 2,
-                    Name = "Fred",
-                    Surname = "Arthurson",
-                    Age = 16
-                },
-                new Person {
-                    Id = 3,
-                    Name = "John",
-                    Surname = "Doe",
-                    Age = 25
-                },
-                new Person {
-                    Id = 4,
-                    Name = "Roberto",
-                    Surname = "Huertas",
-                    Age = 37
-                }
+                new Person { Id = 1, Name = "Tom", Surname = "Perez", Age = 56 },
+                new Person { Id = 2, Name = "Fred", Surname = "Arthurson", Age = 16 },
+                new Person { Id = 3, Name = "John", Surname = "Doe", Age = 25 },
+                new Person { Id = 4, Name = "Roberto", Surname = "Huertas", Age = 37 },
             });
         }
 
-        public IEnumerable<Person> GetPersons()
-        {
-            return _connection.Table<Person>();
-        }
+        public IEnumerable<Person> GetPersons() => _connection.Table<Person>();
 
         public IEnumerable<Person> GetPersonsNamedRoberto()
         {
@@ -166,11 +136,7 @@ namespace SqlCipher4Unity3D.Example
 
         public Person CreatePerson()
         {
-            Person p = new Person {
-                Name = "Johnny",
-                Surname = "Mnemonic",
-                Age = 21
-            };
+            var p = new Person { Name = "Johnny", Surname = "Mnemonic", Age = 21 };
             _connection.Insert(p);
             return p;
         }

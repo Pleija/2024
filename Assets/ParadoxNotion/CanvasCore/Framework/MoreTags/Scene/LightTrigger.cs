@@ -9,16 +9,10 @@ public class LightTrigger : MonoBehaviour
     private HashSet<GameObject> m_GreenObject = new HashSet<GameObject>();
     private HashSet<GameObject> m_BlueObject = new HashSet<GameObject>();
     private Color m_Color = Color.black;
+    private void Start() { }
+    private void Update() { }
 
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-    }
-
-    void UpdateLight()
+    private void UpdateLight()
     {
         m_Color.r = m_RedObject.Any() ? 1 : 0;
         m_Color.g = m_GreenObject.Any() ? 1 : 0;

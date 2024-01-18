@@ -15,34 +15,30 @@ namespace NodeCanvas.StateMachines
         private ConditionTask _condition;
 
         public ConditionTask condition {
-            get { return _condition; }
-            set { _condition = value; }
+            get => _condition;
+            set => _condition = value;
         }
 
         public Task task {
-            get { return condition; }
-            set { condition = (ConditionTask)value; }
+            get => condition;
+            set => condition = (ConditionTask)value;
         }
 
         public FSM.TransitionCallMode transitionCallMode {
-            get { return _transitionCallMode; }
-            private set { _transitionCallMode = value; }
+            get => _transitionCallMode;
+            private set => _transitionCallMode = value;
         }
 
         //...
         public void EnableCondition(Component agent, IBlackboard blackboard)
         {
-            if(condition != null) {
-                condition.Enable(agent, blackboard);
-            }
+            if (condition != null) condition.Enable(agent, blackboard);
         }
 
         //...
         public void DisableCondition()
         {
-            if(condition != null) {
-                condition.Disable();
-            }
+            if (condition != null) condition.Disable();
         }
 
         public string FsmName => graph.agent.name.Split(' ').First();
@@ -60,9 +56,7 @@ namespace NodeCanvas.StateMachines
             get { return TipConnectionStyle.Arrow; }
         }
 
-        public override bool animate {
-            get { return status == Status.Failure; }
-        }
+        public override bool animate => status == Status.Failure;
 
         protected override string GetConnectionInfo()
         {
@@ -78,10 +72,10 @@ namespace NodeCanvas.StateMachines
                 "Stacked Call Mode will push the current state to the stack and pop return to it later when another finished state without outgoing transitions has been encountered within the FSM. If you decide to use this feature make sure that you are not cycle stacking states.\nA Clean transition will clear the FSM stack.",
                 UnityEditor.MessageType.None);
             transitionCallMode =
-                (FSM.TransitionCallMode)UnityEditor.EditorGUILayout.EnumPopup(
-                    "Call Mode (Experimental)", transitionCallMode);
+                (FSM.TransitionCallMode)UnityEditor.EditorGUILayout.EnumPopup("Call Mode (Experimental)",
+                    transitionCallMode);
             ParadoxNotion.Design.EditorUtils.Separator();
-            NodeCanvas.Editor.TaskEditor.TaskFieldMulti<ConditionTask>(condition, graph, (c) => {
+            Editor.TaskEditor.TaskFieldMulti<ConditionTask>(condition, graph, (c) => {
                 condition = c;
             });
         }

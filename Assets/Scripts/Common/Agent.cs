@@ -4,10 +4,8 @@ using Sirenix.Serialization;
 using UnityEditor;
 using UnityEngine;
 
-[ShowOdinSerializedPropertiesInInspector]
-[System.Serializable] 
-public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallbackReceiver,
-    ISupportsPrefabSerialization
+[ShowOdinSerializedPropertiesInInspector, Serializable]
+public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallbackReceiver, ISupportsPrefabSerialization
 {
 #region Odin
     [SerializeField, HideInInspector]
@@ -34,7 +32,7 @@ public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallback
     public static bool isQuitting;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-    static void BaseConfigOnLoad()
+    private static void BaseConfigOnLoad()
     {
         Application.quitting += () => isQuitting = true;
 #if UNITY_EDITOR

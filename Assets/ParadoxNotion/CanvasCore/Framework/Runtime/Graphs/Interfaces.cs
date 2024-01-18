@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace NodeCanvas.Framework
 {
-
     ///<summary>Basically Nodes and Connections</summary>
     public interface IGraphElement
     {
@@ -66,8 +65,15 @@ namespace NodeCanvas.Framework
 
     //----------------------------------------------------------------------------------------------
     [System.Obsolete("This is no longer used nor required")]
-    public interface ISubTasksContainer { Task[] GetSubTasks(); }
+    public interface ISubTasksContainer
+    {
+        Task[] GetSubTasks();
+    }
+
     [System.Obsolete("This is no longer used nor required")]
-    public interface ISubParametersContainer { BBParameter[] GetSubParameters(); }
+    public interface ISubParametersContainer
+    {
+        BBParameter[] GetSubParameters();
+    }
     //----------------------------------------------------------------------------------------------
 }

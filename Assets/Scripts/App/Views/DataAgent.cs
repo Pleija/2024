@@ -31,8 +31,9 @@ namespace App
         [ValueDropdown(nameof(ListNames))]
         public string fieldName;
 
-        private IEnumerable<Type> ListTypes =>
-            AppDomain.CurrentDomain.GetAssemblies( ).Where(a => !a.IsDynamic).SelectMany(x => x.ExportedTypes.Where(a => typeof(ModelBase).IsAssignableFrom(a) && !a.IsAbstract && !a.IsGenericType) );
+        private IEnumerable<Type> ListTypes => AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic)
+            .SelectMany(x =>
+                x.ExportedTypes.Where(a => typeof(ModelBase).IsAssignableFrom(a) && !a.IsAbstract && !a.IsGenericType));
 
         private IEnumerable<string> ListNames => type == null ? new List<string>() : type
             .GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is PropertyInfo || x is FieldInfo)

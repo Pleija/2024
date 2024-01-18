@@ -1,6 +1,4 @@
 ﻿#if UNITY_EDITOR
-
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,28 +14,23 @@ namespace MoreTags
     {
         private static List<string> s_PresetString = new List<string>();
         private static Dictionary<string, Color> s_ColorTable = new Dictionary<string, Color>();
-
         private static ReorderableList m_ReorderableList;
-
         public static readonly string kPrefsPrefix = "MoreTags.";
 
         static TagPreset()
         {
             LoadPreset();
-
             m_ReorderableList = new ReorderableList(s_PresetString, typeof(string));
             m_ReorderableList.elementHeight = EditorGUIUtility.singleLineHeight + 2;
             m_ReorderableList.drawHeaderCallback += DrawHeaderCallback;
             m_ReorderableList.drawElementCallback += DrawElementCallback;
             m_ReorderableList.onChangedCallback += (list) => SavePreset();
-            m_ReorderableList.onAddCallback += (list) =>
-            {
+            m_ReorderableList.onAddCallback += (list) => {
                 var tag = GetUniquePresetString("Tag");
                 s_PresetString.Add(tag);
                 s_ColorTable[tag] = Color.white;
             };
-            m_ReorderableList.onRemoveCallback += (list) =>
-            {
+            m_ReorderableList.onRemoveCallback += (list) => {
                 s_ColorTable.Remove(s_PresetString[list.index]);
                 s_PresetString.RemoveAt(list.index);
             };
@@ -48,15 +41,10 @@ namespace MoreTags
             m_ReorderableList.DoLayoutList();
         }
 
-        public static string[] GetPresets()
-        {
-            return s_PresetString.ToArray();
-        }
+        public static string[] GetPresets() => s_PresetString.ToArray();
 
-        public static Color GetPresetColor(string preset)
-        {
-            return s_ColorTable.ContainsKey(preset) ? s_ColorTable[preset] : Color.white;
-        }
+        public static Color GetPresetColor(string preset) =>
+            s_ColorTable.ContainsKey(preset) ? s_ColorTable[preset] : Color.white;
 
         private static void DrawHeaderCallback(Rect rect)
         {
@@ -64,20 +52,17 @@ namespace MoreTags
             var r = new Rect(rect);
             r.x = rect.xMax - 252;
             r.width = 80;
+
             if (GUI.Button(r, "To Manager", EditorStyles.miniButton))
-            {
-                foreach (var tag in s_PresetString.Except(TagSystem.GetAllTags()))
-                {
+                foreach (var tag in s_PresetString.Except(TagSystem.GetAllTags())) {
                     TagSystem.AddTag(tag);
                     TagSystem.SetTagColor(tag, GetPresetColor(tag));
                 }
-            }
             r.x = r.xMax + 4;
             r.width = 80;
-            if (GUI.Button(r, "To Preset", EditorStyles.miniButton))
-            {
-                foreach (var tag in TagSystem.GetAllTags().Except(s_PresetString))
-                {
+
+            if (GUI.Button(r, "To Preset", EditorStyles.miniButton)) {
+                foreach (var tag in TagSystem.GetAllTags().Except(s_PresetString)) {
                     s_PresetString.Add(tag);
                     s_ColorTable[tag] = TagSystem.GetTagColor(tag);
                 }
@@ -85,10 +70,7 @@ namespace MoreTags
             }
             r.x = r.xMax + 4;
             r.width = 80;
-            if (GUI.Button(r, "Auto Class", EditorStyles.miniButton))
-            {
-                AutoClass();
-            }
+            if (GUI.Button(r, "Auto Class", EditorStyles.miniButton)) AutoClass();
         }
 
         private static void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -102,8 +84,8 @@ namespace MoreTags
             r.xMin = r.xMax + 4;
             r.xMax = rect.xMax;
             var col = EditorGUI.ColorField(r, GetPresetColor(s_PresetString[index]));
-            if (GUI.changed)
-            {
+
+            if (GUI.changed) {
                 s_ColorTable[s_PresetString[index]] = col;
                 SavePreset();
                 //Repaint();
@@ -115,8 +97,8 @@ namespace MoreTags
             s_PresetString.Clear();
             s_ColorTable.Clear();
             var count = EditorPrefs.GetInt(kPrefsPrefix + "Count", 0);
-            for (int i = 0; i < count; i++)
-            {
+
+            for (var i = 0; i < count; i++) {
                 var key = kPrefsPrefix + i;
                 var def = GetUniquePresetString("Tag");
                 var s = EditorPrefs.GetString(key, def);
@@ -132,8 +114,8 @@ namespace MoreTags
         private static void SavePreset()
         {
             var count = EditorPrefs.GetInt(kPrefsPrefix + "Count", 0);
-            for (int i = s_PresetString.Count; i < count; i++)
-            {
+
+            for (var i = s_PresetString.Count; i < count; i++) {
                 var key = kPrefsPrefix + i;
                 EditorPrefs.DeleteKey(key);
                 EditorPrefs.DeleteKey(key + ".r");
@@ -141,10 +123,9 @@ namespace MoreTags
                 EditorPrefs.DeleteKey(key + ".b");
                 EditorPrefs.DeleteKey(key + ".a");
             }
-
             EditorPrefs.SetInt(kPrefsPrefix + "Count", s_PresetString.Count);
-            for (int i = 0; i < s_PresetString.Count; i++)
-            {
+
+            for (var i = 0; i < s_PresetString.Count; i++) {
                 var key = kPrefsPrefix + i;
                 EditorPrefs.SetString(key, s_PresetString[i]);
                 var col = GetPresetColor(s_PresetString[i]);
@@ -162,16 +143,13 @@ namespace MoreTags
             return order;
         }
 
-        public static string GetUniquePresetString(string tag)
-        {
-            return ObjectNames.GetUniqueName(s_PresetString.ToArray(), tag);
-        }
+        public static string GetUniquePresetString(string tag) =>
+            ObjectNames.GetUniqueName(s_PresetString.ToArray(), tag);
 
         private static string GetFieldName(string name)
         {
             if (string.IsNullOrEmpty(name)) return string.Empty;
             name = name.Trim();
-
             var sb = new StringBuilder();
             if (!char.IsLetter(name.FirstOrDefault()))
                 sb.Append("_");
@@ -189,12 +167,13 @@ namespace MoreTags
             code.AppendFormat("    public class {0}Group : TagGroup", catname).AppendLine();
             code.AppendLine("    {");
             code.AppendFormat("        public {0}Group(string name) : base(name) {{ }}", catname).AppendLine();
-            foreach (var tag in tc.children.OrderBy(tag => GetTagOrder(tag)))
-            {
+
+            foreach (var tag in tc.children.OrderBy(tag => GetTagOrder(tag))) {
                 var tagname = tag.Substring(cat.Length + 1).Replace(".", string.Empty);
                 catname = tag.Replace(".", string.Empty);
                 if (new TagGroup(tag).all.Any())
-                    code.AppendFormat("        public {2}Group {1} = new {2}Group(\"{0}\");", tag, tagname, catname).AppendLine();
+                    code.AppendFormat("        public {2}Group {1} = new {2}Group(\"{0}\");", tag, tagname, catname)
+                        .AppendLine();
                 else
                     code.AppendFormat("        public TagName {1} = new TagName(\"{0}\");", tag, tagname).AppendLine();
             }
@@ -210,7 +189,6 @@ namespace MoreTags
             var path = AssetDatabase.GetAssetPath(ms);
             path = path.Replace("Tags.cs", "TagList.cs");
             TagHelper.DestroyGameObject(go);
-
             var tags = TagSystem.GetAllTags().OrderBy(tag => GetTagOrder(tag));
             var code = new StringBuilder();
             code.AppendLine("namespace MoreTags");
@@ -219,17 +197,16 @@ namespace MoreTags
             code.AppendLine("    {");
             code.AppendLine("        public static AllTags all = new AllTags();");
             var allname = tags.Where(tag => tag.Split('.').Count() < 2);
-            var allgroup = tags.Except(allname).Select(tag => tag.Split('.').FirstOrDefault() ?? string.Empty).Distinct();
+            var allgroup = tags.Except(allname).Select(tag => tag.Split('.').FirstOrDefault() ?? string.Empty)
+                .Distinct();
             allname = allname.Except(allgroup);
             foreach (var tag in allgroup)
                 code.AppendFormat("        public static {0}Group {0} = new {0}Group(\"{0}\");", tag).AppendLine();
             foreach (var tag in allname)
                 code.AppendFormat("        public static TagName {0} = new TagName(\"{0}\");", tag).AppendLine();
             code.AppendLine("    }").AppendLine();
-
             foreach (var tag in allgroup)
                 AutoClassGroup(tag, ref code);
-
             code.AppendLine("    public class AllTags : TagNames");
             code.AppendLine("    {");
             code.AppendLine("        public AllTags() : base(TagSystem.AllTags()) { }");
@@ -238,7 +215,6 @@ namespace MoreTags
                 code.AppendFormat("        public TagChildren {0} = new TagChildren(\"{0}\");", tag).AppendLine();
             code.AppendLine("    }");
             code.AppendLine("}");
-
             File.WriteAllText(path, code.ToString());
             AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
         }

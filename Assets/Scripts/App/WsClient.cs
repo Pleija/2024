@@ -19,15 +19,15 @@ namespace App
             ws.OnMessage += (sender, e) => {
                 var fmt = "[WebSocket Message] {0}";
                 var body = !e.IsPing ? e.Data : "A ping was received.";
-                Debug.Log(fmt+body);
+                Debug.Log(fmt + body);
             };
             ws.OnError += (sender, e) => {
                 var fmt = "[WebSocket Error] {0}";
-                Debug.Log(fmt+e.Message);
+                Debug.Log(fmt + e.Message);
             };
             ws.OnClose += (sender, e) => {
                 var fmt = "[WebSocket Close ({0})] {1}";
-                Debug.Log(fmt+e.Code+e.Reason);
+                Debug.Log(fmt + e.Code + e.Reason);
             };
 #if DEBUG
             // To change the logging level.

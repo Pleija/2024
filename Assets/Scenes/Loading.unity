@@ -501,18 +501,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myString":{"_value":"test1","_name":"myString","_id":"1f728be1-a32f-47b3-8c4e-be9abc3db69e","$type":"NodeCanvas.Framework.Variable`1[[System.String,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"prefab":{"_value":{"m_AssetGUID":"b2b05e5486e5143f79e05f84c7462806","m_SubObjectType":"","m_EditorAssetChanged":true},"_name":"prefab","_id":"4e54b263-9472-4a26-89d8-162f223ebf04","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":0.4075489,"g":1.0,"b":0.3215686,"a":1.0},"BindComponent":1,"localBlackboard":{"_variables":{}},"_name":"","_preTags":[],"_postTags":[],"_position":{"x":-36.82446,"y":414.9835},"_comment":"","$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myString":{"_value":"test1","_name":"myString","_id":"1f728be1-a32f-47b3-8c4e-be9abc3db69e","$type":"NodeCanvas.Framework.Variable`1[[System.String,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"prefab":{"_value":{"m_AssetGUID":"b2b05e5486e5143f79e05f84c7462806","m_SubObjectName":"","m_SubObjectType":"","m_EditorAssetChanged":true},"_name":"prefab","_id":"4e54b263-9472-4a26-89d8-162f223ebf04","assetObject":2,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
     Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
+  - {fileID: 760304483}
   - {fileID: 1919056162}
   _boundGraphSource:
     _version: 3.29
     _category: 
     _comments: 
-    _translation: {x: 253.9876, y: 156.75421}
-    _zoomFactor: 0.2500795
+    _translation: {x: 475.7944, y: -87.1256}
+    _zoomFactor: 1
   _firstActivation: 1
   _enableAction: 0
   _disableAction: 0

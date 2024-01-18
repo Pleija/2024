@@ -96,10 +96,10 @@ namespace Runner.Characters
             m_IsRunning = false;
         }
 
-// #if !UNITY_STANDALONE
+        // #if !UNITY_STANDALONE
         public Vector2 m_StartingTouch;
         public bool m_IsSwiping = false;
-// #endif
+        // #endif
 
         // Cheating functions, use for testing
         public void CheatInvincible(bool invincible)
@@ -188,13 +188,12 @@ namespace Runner.Characters
             }
             else {
                 // Use touch input on mobile
-
                 var isUI = Input.touches.Any(t => EventSystem.current.IsPointerOverGameObject(t.fingerId));
 
                 if (!(isUI && EventSystem.current.currentSelectedGameObject) && Input.touchCount == 1 &&
                     Time.timeScale > 0) {
                     if (m_IsSwiping) {
-                        Vector2 diff = Input.GetTouch(0).position - m_StartingTouch;
+                        var diff = Input.GetTouch(0).position - m_StartingTouch;
 
                         // Put difference in Screen ratio, but using only width, so the ratio is the same on both
                         // axes (otherwise we would have to swipe more vertically...)
@@ -204,20 +203,15 @@ namespace Runner.Characters
                             0.01f) //we set the swip distance to trigger movement to 1% of the screen width
                         {
                             if (Mathf.Abs(diff.y) > Mathf.Abs(diff.x)) {
-                                if (TutorialMoveCheck(2) && diff.y < 0) {
+                                if (TutorialMoveCheck(2) && diff.y < 0)
                                     Slide();
-                                }
-                                else if (TutorialMoveCheck(1)) {
-                                    Jump();
-                                }
+                                else if (TutorialMoveCheck(1)) Jump();
                             }
                             else if (TutorialMoveCheck(0)) {
-                                if (diff.x < 0) {
+                                if (diff.x < 0)
                                     ChangeLane(-1);
-                                }
-                                else {
+                                else
                                     ChangeLane(1);
-                                }
                             }
                             m_IsSwiping = false;
                         }

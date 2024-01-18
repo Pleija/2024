@@ -22,33 +22,29 @@ namespace ParadoxNotion.Serialization.FullSerializer
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class fsSerializeAsAttribute : Attribute
     {
-        readonly public string Name;
+        public readonly string Name;
         public fsSerializeAsAttribute() { }
-        public fsSerializeAsAttribute(string name) {
-            this.Name = name;
-        }
+        public fsSerializeAsAttribute(string name) => Name = name;
     }
 
     ///----------------------------------------------------------------------------------------------
-
     ///<summary> Use on a class to deserialize migrate into target type. This works in pair with IMigratable interface.</summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class fsMigrateToAttribute : System.Attribute
+    public class fsMigrateToAttribute : Attribute
     {
-        public readonly System.Type targetType;
-        public fsMigrateToAttribute(System.Type targetType) {
-            this.targetType = targetType;
-        }
+        public readonly Type targetType;
+        public fsMigrateToAttribute(Type targetType) => this.targetType = targetType;
     }
 
-    ///<summary> Use on a class to specify previous serialization versions to migrate from. This works in pair with IMigratable interface.</summary>
+    /// <summary>
+    ///     Use on a class to specify previous serialization versions to migrate from. This works in pair with
+    ///     IMigratable interface.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class fsMigrateVersionsAttribute : System.Attribute
+    public class fsMigrateVersionsAttribute : Attribute
     {
-        public readonly System.Type[] previousTypes;
-        public fsMigrateVersionsAttribute(params System.Type[] previousTypes) {
-            this.previousTypes = previousTypes;
-        }
+        public readonly Type[] previousTypes;
+        public fsMigrateVersionsAttribute(params Type[] previousTypes) => this.previousTypes = previousTypes;
     }
 
     ///<summary> Use on a class and field to request cycle references support</summary>
@@ -62,26 +58,27 @@ namespace ParadoxNotion.Serialization.FullSerializer
 
     ///<summary> Use on a class to mark it for creating instance unititialized (which is faster)</summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class fsUninitialized : System.Attribute { }
+    public class fsUninitialized : Attribute { }
 
     ///<summary> Use on a class to request try create instance automatically on serialization</summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class fsAutoInstance : Attribute
     {
         public readonly bool makeInstance;
-        public fsAutoInstance(bool makeInstance = true) {
-            this.makeInstance = makeInstance;
-        }
+        public fsAutoInstance(bool makeInstance = true) => this.makeInstance = makeInstance;
     }
 
-    ///<summary> This attribute controls some serialization behavior for a type. See the comments on each of the fields for more information.</summary>
+    /// <summary>
+    ///     This attribute controls some serialization behavior for a type. See the comments on each of the fields for
+    ///     more information.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public sealed class fsObjectAttribute : Attribute
     {
         //Converter override to use
         public Type Converter;
+
         //Processor to use
         public Type Processor;
     }
-
 }

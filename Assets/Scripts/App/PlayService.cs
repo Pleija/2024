@@ -11,7 +11,6 @@ namespace App
     public class PlayService : Singleton<PlayService>, IDontDestroyOnLoad
     {
 #if UNITY_ANDROID
-        
 
         //public string authCode { get; set; }
 
@@ -23,7 +22,7 @@ namespace App
             LoginGooglePlayGames();
         }
 
-        async Task LinkWithGooglePlayGamesAsync(string authCode)
+        private async Task LinkWithGooglePlayGamesAsync(string authCode)
         {
             try {
                 await AuthenticationService.Instance.LinkWithGooglePlayGamesAsync(authCode);
@@ -45,7 +44,7 @@ namespace App
             }
         }
 
-        async Task SignInWithGooglePlayGamesAsync(string authCode)
+        private async Task SignInWithGooglePlayGamesAsync(string authCode)
         {
             try {
                 await AuthenticationService.Instance.SignInWithGooglePlayGamesAsync(authCode);
@@ -81,20 +80,16 @@ namespace App
         {
             Debug.Log("Authorization code: " + code);
             Token = code;
-
-            if (AuthenticationService.Instance.IsSignedIn) {
+            if (AuthenticationService.Instance.IsSignedIn)
                 await LinkWithGooglePlayGamesAsync(code);
-            }
-            else {
+            else
                 await SignInWithGooglePlayGamesAsync(code);
-            }
 
             if (AuthenticationService.Instance.IsAuthorized) {
-                PlayGamesLocalUser user = (PlayGamesLocalUser)UnityEngine.Social.localUser;
+                var user = (PlayGamesLocalUser)Social.localUser;
                 Debug.LogFormat("UserName: {0} id: {1} Avatar URL: {2} ", //Email: {3} Token: {4}
-                    ((PlayGamesLocalUser)UnityEngine.Social.localUser).userName,
-                    ((PlayGamesLocalUser)UnityEngine.Social.localUser).id,
-                    ((PlayGamesLocalUser)UnityEngine.Social.localUser).AvatarURL
+                    ((PlayGamesLocalUser)Social.localUser).userName, ((PlayGamesLocalUser)Social.localUser).id,
+                    ((PlayGamesLocalUser)Social.localUser).AvatarURL
                     //,
                     // ((PlayGamesLocalUser)UnityEngine.Social.localUser).Email,
                     // ((PlayGamesLocalUser)UnityEngine.Social.localUser).GetIdToken()
@@ -107,7 +102,7 @@ namespace App
         public string Token { get; set; }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             // PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             //     .RequestEmail()
@@ -144,7 +139,7 @@ namespace App
         // 接入iOS Game Center账号
         private void AccessGameCenter()
         {
-            UnityEngine.Social.localUser.Authenticate(AccessGameCenterCallback);
+            Social.localUser.Authenticate(AccessGameCenterCallback);
         }
 
         private void AccessGameCenterCallback(bool success)

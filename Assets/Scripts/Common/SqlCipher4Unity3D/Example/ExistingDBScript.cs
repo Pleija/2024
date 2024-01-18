@@ -12,29 +12,27 @@ namespace SqlCipher4Unity3D.Example
         // Use this for initialization
         private void Start()
         {
-            DataService ds = new DataService("existing.db");
+            var ds = new DataService("existing.db");
             ds.CreateDB();
-            IEnumerable<Person> people = ds.GetPersons();
+            var people = ds.GetPersons();
             ToConsole(people);
-
             people = ds.GetPersonsNamedRoberto();
             ToConsole("Searching for Roberto ...");
             ToConsole(people);
-
             ds.CreatePerson();
             ToConsole("New person has been created");
-            Person p = ds.GetJohnny();
+            var p = ds.GetJohnny();
             ToConsole(p.ToString());
         }
 
         private void ToConsole(IEnumerable<Person> people)
         {
-            foreach (Person person in people) ToConsole(person.ToString());
+            foreach (var person in people) ToConsole(person.ToString());
         }
 
         private void ToConsole(string msg)
         {
-            this.DebugText.text += Environment.NewLine + msg;
+            DebugText.text += Environment.NewLine + msg;
             Debug.Log(msg);
         }
     }

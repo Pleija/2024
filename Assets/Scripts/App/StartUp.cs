@@ -25,10 +25,7 @@ namespace App
             if (Application.isEditor || Debug.isDebugBuild || PlayerPrefs.HasKey("App.Dev")) {
                 //Instantiate(Resources.Load("IngameDebugConsole"));
             }
-
-            if (self.disableLog && !(Debug.isDebugBuild || Application.isEditor)) {
-                Debug.unityLogger.logEnabled = false;
-            }
+            if (self.disableLog && !(Debug.isDebugBuild || Application.isEditor)) Debug.unityLogger.logEnabled = false;
         }
 
         public async void OnStart()
@@ -36,7 +33,7 @@ namespace App
             Debug.Log($"Initial Time: {Time.realtimeSinceStartup:F2}");
             await Addressables.InitializeAsync().Task;
 
-            if (useRemote && Res.Exists(prefab/*"StartContent"*/) is { } loc) {
+            if (useRemote && Res.Exists(prefab /*"StartContent"*/) is { } loc) {
                 Debug.Log("StartContent Found");
                 var handle = Addressables.LoadAssetAsync<GameObject>(loc);
                 var temp = await handle.Task;
@@ -47,10 +44,7 @@ namespace App
                     });
                     return;
                 }
-
-                if (handle.IsValid()) {
-                    Addressables.Release(handle);
-                }
+                if (handle.IsValid()) Addressables.Release(handle);
             }
             Debug.Log("Load DefaultLoading");
             Instantiate(Resources.Load("DefaultLoading"));

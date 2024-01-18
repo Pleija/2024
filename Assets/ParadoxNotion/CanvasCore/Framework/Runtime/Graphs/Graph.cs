@@ -23,23 +23,22 @@ using UndoUtility = ParadoxNotion.Design.UndoUtility;
 namespace NodeCanvas.Framework
 {
     ///<summary>This is the base and main class of NodeCanvas and graphs. All graph System are deriving from this.</summary>
-    [System.Serializable]
-    abstract public partial class Graph : ScriptableObject, ITaskSystem, ISerializationCallbackReceiver
+    [Serializable]
+    public abstract partial class Graph : ScriptableObject, ITaskSystem, ISerializationCallbackReceiver
     {
-        static System.Type FindType(string type)
+        private static System.Type FindType(string type)
         {
-            foreach (var a in AppDomain.CurrentDomain.GetAssemblies()) {
-                if (a.GetType(type, false) is { } result) return result;
-            }
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                if (a.GetType(type, false) is { } result)
+                    return result;
             return null;
         }
 
         public string CheckVarsFromTs(string mtsFile, IBlackboard bb)
         {
-            if (string.IsNullOrEmpty(mtsFile)) {
+            if (string.IsNullOrEmpty(mtsFile))
                 // Debug.Log($"file is empty");
                 return mtsFile;
-            }
             var ast = new TypeScriptAST(File.ReadAllText(mtsFile), mtsFile);
             var change = new ChangeAST();
             var imports = ast.OfKind(SyntaxKind.ImportEqualsDeclaration).ToArray();
@@ -49,17 +48,13 @@ namespace NodeCanvas.Framework
             //
             // });
             var module = ast.OfKind(SyntaxKind.ClassDeclaration).FirstOrDefault();
-
-            if (module == null) {
+            if (module == null)
                 // Debug.Log("class body not found");
                 return mtsFile;
-            }
             var props = module.OfKind(SyntaxKind.PropertyDeclaration).ToArray();
-
-            if (!props.Any()) {
+            if (!props.Any())
                 // Debug.Log($"properties not found");
                 return mtsFile;
-            }
             // props.ForEach(x => {
             //     x.GetDescendants().ForEach(t =>
             //         Debug.Log($"kind = {t.Kind} id = {t.IdentifierStr} text ={t.GetText()}"));
@@ -73,30 +68,20 @@ namespace NodeCanvas.Framework
                 var isBool = p.OfKind(SyntaxKind.BooleanKeyword).Any();
                 var isNum = p.OfKind(SyntaxKind.NumberKeyword).Any();
 
-                if ((isString || isBool || isNum) && ! p.GetText().Contains("=")) {
-                    var type = isNum ? typeof(float) : (isString ? typeof(string) : typeof(bool));
-
-                    if (bb.variables.TryGetValue(p.IdentifierStr, out var variable) && variable.varType != type) {
+                if ((isString || isBool || isNum) && !p.GetText().Contains("=")) {
+                    var type = isNum ? typeof(float) : isString ? typeof(string) : typeof(bool);
+                    if (bb.variables.TryGetValue(p.IdentifierStr, out var variable) && variable.varType != type)
                         bb.variables.Remove(p.IdentifierStr);
-                    }
-
-                    if (!bb.variables.TryGetValue(p.IdentifierStr, out _)) {
-                        bb.AddVariable(p.IdentifierStr, type);
-                    }
+                    if (!bb.variables.TryGetValue(p.IdentifierStr, out _)) bb.AddVariable(p.IdentifierStr, type);
                     return;
                 }
                 var key = p.OfKind(SyntaxKind.TypeReference).FirstOrDefault()?.GetText();
                 //Debug.Log($"check type: {p.IdentifierStr}=> {key}");
-
-                if (string.IsNullOrEmpty(key)) {
-                    return;
-                }
+                if (string.IsNullOrEmpty(key)) return;
                 key = Regex.Replace(key, @"<.*>", "");
-
                 if (p.OfKind(SyntaxKind.PrivateKeyword).Any() || p.OfKind(SyntaxKind.ProtectedKeyword).Any() ||
-                    p.GetText().Contains("=")) {
+                    p.GetText().Contains("="))
                     return;
-                }
                 var list = new Dictionary<string, System.Type>() {
                     // ["number"] = typeof(float),
                     // ["boolean"] = typeof(bool),
@@ -107,21 +92,15 @@ namespace NodeCanvas.Framework
                     im.OfKind(SyntaxKind.Identifier).FirstOrDefault()?.GetText() == key);
 
                 if (typedef != null /*|| list.TryGetValue(key, out _)*/) {
-                    var typeName = /*typedef == null ? key :*/ typedef.OfKind(SyntaxKind.QualifiedName).First().GetText();
+                    var typeName = /*typedef == null ? key :*/
+                        typedef.OfKind(SyntaxKind.QualifiedName).First().GetText();
                     var csName = typeName.Replace("CS.", "");
-
-                    if (typeName.StartsWith("CS.") && FindType(csName) is { } t) {
-                        list[csName] = t;
-                    }
+                    if (typeName.StartsWith("CS.") && FindType(csName) is { } t) list[csName] = t;
 
                     if (list.TryGetValue(csName, out var type)) {
-                        if (bb.variables.TryGetValue(p.IdentifierStr, out var variable) && variable.varType != type) {
+                        if (bb.variables.TryGetValue(p.IdentifierStr, out var variable) && variable.varType != type)
                             bb.variables.Remove(p.IdentifierStr);
-                        }
-
-                        if (!bb.variables.TryGetValue(p.IdentifierStr, out _)) {
-                            bb.AddVariable(p.IdentifierStr, type);
-                        }
+                        if (!bb.variables.TryGetValue(p.IdentifierStr, out _)) bb.AddVariable(p.IdentifierStr, type);
                     }
                 }
             });
@@ -138,10 +117,8 @@ namespace NodeCanvas.Framework
             var root = "Packages/tsproj/src";
             var filePath = $"{agent.gameObject.scene.name}/{FsmName}.mjs";
             var classPath = $"{root}/{filePath.Replace(".mjs", ".mts")}";
-
-            if (!Directory.Exists(Path.GetDirectoryName(classPath))) {
+            if (!Directory.Exists(Path.GetDirectoryName(classPath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(classPath)!);
-            }
 
             if (!File.Exists(classPath)) {
                 var content = @$"
@@ -188,7 +165,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         }
 
         ///<summary>Update mode of the graph (see 'StartGraph')</summary>
-        public enum UpdateMode { NormalUpdate = 0, LateUpdate = 1, FixedUpdate = 2, Manual = 3, }
+        public enum UpdateMode { NormalUpdate = 0, LateUpdate = 1, FixedUpdate = 2, Manual = 3 }
 
         ///----------------------------------------------------------------------------------------------
 
@@ -207,7 +184,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
         //the unity references used for json graph
         [SerializeField]
-        private List<UnityEngine.Object> _objectReferences;
+        private List<Object> _objectReferences;
 
         //the actual graph data. Mixed serialized by Unity/Json
         [SerializeField]
@@ -222,18 +199,18 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         private TextAsset _externalSerializationFile;
 
         public TextAsset externalSerializationFile {
-            get { return _externalSerializationFile; }
-            internal set { _externalSerializationFile = value; }
+            get => _externalSerializationFile;
+            internal set => _externalSerializationFile = value;
         }
 
-        [System.NonSerialized]
+        [NonSerialized]
         private bool haltForUndo;
 
         ///<summary>Invoked after graph serialization.</summary>
-        public static event System.Action<Graph> onGraphSerialized;
+        public static event Action<Graph> onGraphSerialized;
 
         ///<summary>Invoked after graph deserialization.</summary>
-        public static event System.Action<Graph> onGraphDeserialized;
+        public static event Action<Graph> onGraphDeserialized;
 
         ///----------------------------------------------------------------------------------------------
         void ISerializationCallbackReceiver.OnBeforeSerialize()
@@ -261,9 +238,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
         protected void OnDestroy()
         {
-            if (Threader.applicationIsPlaying) {
-                Stop();
-            }
+            if (Threader.applicationIsPlaying) Stop();
             OnGraphObjectDestroy();
         }
 
@@ -282,15 +257,10 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         public bool SelfSerialize()
         {
             //if something went wrong on deserialization, dont serialize back, but rather keep what we had until a deserialization attempt is successful.
-            if (_haltSerialization) {
-                return false;
-            }
-
-            if (haltForUndo /*|| Threader.applicationIsPlaying*/) {
-                return false;
-            }
-            var newReferences = new List<UnityEngine.Object>();
-            var newSerialization = this.Serialize(newReferences);
+            if (_haltSerialization) return false;
+            if (haltForUndo /*|| Threader.applicationIsPlaying*/) return false;
+            var newReferences = new List<Object>();
+            var newSerialization = Serialize(newReferences);
 
             if (newSerialization != _serializedGraph || !newReferences.SequenceEqual(_objectReferences)) {
                 haltForUndo = true;
@@ -306,22 +276,16 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                     var externalSerializationFilePath =
                         ParadoxNotion.Design.EditorUtils.AssetToSystemPath(
                             UnityEditor.AssetDatabase.GetAssetPath(_externalSerializationFile));
-                    System.IO.File.WriteAllText(externalSerializationFilePath,
-                        JSONSerializer.PrettifyJson(newSerialization));
+                    File.WriteAllText(externalSerializationFilePath, JSONSerializer.PrettifyJson(newSerialization));
                 }
 
                 //notify owner (this is basically used for bound graphs)
                 var owner = agent as GraphOwner;
-
-                if (owner != null) {
-                    owner.OnAfterGraphSerialized(this);
-                }
+                if (owner != null) owner.OnAfterGraphSerialized(this);
 #endif
 
                 //raise event
-                if (onGraphSerialized != null) {
-                    onGraphSerialized(this);
-                }
+                if (onGraphSerialized != null) onGraphSerialized(this);
 
                 //purge cache and refs
                 graphSource.PurgeRedundantReferences();
@@ -338,21 +302,20 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         {
             if (Deserialize(_serializedGraph, _objectReferences, false)) {
                 //raise event
-                if (onGraphDeserialized != null) {
-                    onGraphDeserialized(this);
-                }
+                if (onGraphDeserialized != null) onGraphDeserialized(this);
                 return true;
             }
             return false;
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Serialize the graph and returns the serialized json string. The provided objectReferences list will be cleared and populated with the found unity object references.</summary>
-        public string Serialize(List<UnityEngine.Object> references)
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Serialize the graph and returns the serialized json string. The provided objectReferences list will be cleared
+        ///     and populated with the found unity object references.
+        /// </summary>
+        public string Serialize(List<Object> references)
         {
-            if (references == null) {
-                references = new List<Object>();
-            }
+            if (references == null) references = new List<Object>();
             UpdateNodeIDs(true);
             var result = JSONSerializer.Serialize(typeof(GraphSource), graphSource.Pack(this), references);
             return result;
@@ -363,7 +326,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         //IMPORTANT: Validate should be called true in all deserialize cases outside of Unity's 'OnAfterDeserialize',
         //like for example when loading from json, or manualy calling this outside of OnAfterDeserialize.
         //Otherwise, Validate can also be called separately.
-        public bool Deserialize(string serializedGraph, List<UnityEngine.Object> references, bool validate)
+        public bool Deserialize(string serializedGraph, List<Object> references, bool validate)
         {
             if (string.IsNullOrEmpty(serializedGraph)) {
                 Logger.LogWarning("JSON is null or empty on graph when deserializing.", LogTag.SERIALIZATION, this);
@@ -371,61 +334,44 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             }
 
             //the list to load the references from. If not provided explicitely we load from the local list
-            if (references == null) {
-                references = this._objectReferences;
-            }
+            if (references == null) references = _objectReferences;
 
             try {
                 //deserialize provided serialized graph into a new GraphSerializationData object and load it
                 JSONSerializer.TryDeserializeOverwrite<GraphSource>(graphSource, serializedGraph, references);
 
-                if (graphSource.type != this.GetType().FullName) {
+                if (graphSource.type != GetType().FullName) {
                     Logger.LogError("Can't Load graph because of different Graph type serialized and required.",
                         LogTag.SERIALIZATION, this);
                     _haltSerialization = true;
                     return false;
                 }
-                this._graphSource = graphSource.Unpack(this);
-                this._serializedGraph = serializedGraph;
-                this._objectReferences = references;
-                this._haltSerialization = false;
-
-                if (validate) {
-                    Validate();
-                }
+                _graphSource = graphSource.Unpack(this);
+                _serializedGraph = serializedGraph;
+                _objectReferences = references;
+                _haltSerialization = false;
+                if (validate) Validate();
                 return true;
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 Logger.LogException(e, LogTag.SERIALIZATION, this);
-                this._haltSerialization = true;
+                _haltSerialization = true;
                 return false;
             }
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns the GraphSource object itself</summary>
-        public GraphSource GetGraphSource()
-        {
-            return _graphSource;
-        }
+        public GraphSource GetGraphSource() => _graphSource;
 
         ///<summary>Returns the serialization json</summary>
-        public string GetSerializedJsonData()
-        {
-            return _serializedGraph;
-        }
+        public string GetSerializedJsonData() => _serializedGraph;
 
         ///<summary>Return a copy of the serialized Unity object references</summary>
-        public List<UnityEngine.Object> GetSerializedReferencesData()
-        {
-            return _objectReferences?.ToList();
-        }
+        public List<Object> GetSerializedReferencesData() => _objectReferences?.ToList();
 
         ///<summary>Returns a new GraphSource with meta data copied from this GraphSource</summary>
-        public GraphSource GetGraphSourceMetaDataCopy()
-        {
-            return new GraphSource().SetMetaData(graphSource);
-        }
+        public GraphSource GetGraphSourceMetaDataCopy() => new GraphSource().SetMetaData(graphSource);
 
         ///<summary>Sets this GraphSource meta data from provided GraphSource</summary>
         public void SetGraphSourceMetaData(GraphSource source)
@@ -433,18 +379,19 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             graphSource.SetMetaData(source);
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Serialize the local blackboard of the graph alone. The provided references list will be cleared and populated anew.</summary>
-        public string SerializeLocalBlackboard(ref List<UnityEngine.Object> references)
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Serialize the local blackboard of the graph alone. The provided references list will be cleared and populated
+        ///     anew.
+        /// </summary>
+        public string SerializeLocalBlackboard(ref List<Object> references)
         {
-            if (references != null) {
-                references.Clear();
-            }
+            if (references != null) references.Clear();
             return JSONSerializer.Serialize(typeof(BlackboardSource), localBlackboard, references);
         }
 
         ///<summary>Deserialize the local blackboard of the graph alone.</summary>
-        public bool DeserializeLocalBlackboard(string json, List<UnityEngine.Object> references)
+        public bool DeserializeLocalBlackboard(string json, List<Object> references)
         {
             localBlackboard =
                 JSONSerializer.TryDeserializeOverwrite<BlackboardSource>(localBlackboard, json, references);
@@ -463,41 +410,39 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>Validate the graph, it's nodes and tasks. Also called from OnEnable callback.</summary>
         public void Validate()
         {
-            if (string.IsNullOrEmpty(_serializedGraph)) {
+            if (string.IsNullOrEmpty(_serializedGraph))
                 //we dont really have anything to validate in this case
                 return;
-            }
 #if UNITY_EDITOR
-            if (!Threader.applicationIsPlaying) {
-                UpdateReferences(this.agent, this.parentBlackboard, true);
-            }
+            if (!Threader.applicationIsPlaying) UpdateReferences(agent, parentBlackboard, true);
 #endif
 
-            for (var i = 0; i < allNodes.Count; i++) {
+            for (var i = 0; i < allNodes.Count; i++)
                 try {
                     allNodes[i].Validate(this);
                 } //validation could be critical. we always continue
-                catch (System.Exception e) {
+                catch (Exception e) {
                     Logger.LogException(e, LogTag.VALIDATION, allNodes[i]);
                     continue;
                 }
-            }
 
-            for (var i = 0; i < allTasks.Count; i++) {
+            for (var i = 0; i < allTasks.Count; i++)
                 try {
                     allTasks[i].Validate(this);
                 } //validation could be critical. we always continue
-                catch (System.Exception e) {
+                catch (Exception e) {
                     Logger.LogException(e, LogTag.VALIDATION, allTasks[i]);
                     continue;
                 }
-            }
             OnGraphValidate();
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Raised when the graph is Stoped/Finished if it was Started at all. Important: After the event raised, it is also cleared from all subscribers!</summary>
-        public event System.Action<bool> onFinish;
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Raised when the graph is Stoped/Finished if it was Started at all. Important: After the event raised, it is
+        ///     also cleared from all subscribers!
+        /// </summary>
+        public event Action<bool> onFinish;
 
         private static List<Graph> _runningGraphs;
 
@@ -514,73 +459,73 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>The base type of all nodes that can live in this system</summary>
-        abstract public System.Type baseNodeType { get; }
+        public abstract System.Type baseNodeType { get; }
 
         ///<summary>Is this system allowed to start with a null agent?</summary>
-        abstract public bool requiresAgent { get; }
+        public abstract bool requiresAgent { get; }
 
         ///<summary>Does the system needs a prime Node to be set for it to start?</summary>
-        abstract public bool requiresPrimeNode { get; }
+        public abstract bool requiresPrimeNode { get; }
 
         ///<summary>Is the graph considered to be a tree? (and thus nodes auto sorted on position x)</summary>
-        abstract public bool isTree { get; }
+        public abstract bool isTree { get; }
 
         ///<summary>The (visual) direction of the connections (also affects auto sorting for trees)</summary>
-        abstract public PlanarDirection flowDirection { get; }
+        public abstract PlanarDirection flowDirection { get; }
 
         ///<summary>Is overriding local blackboard and parametrizing local blackboard variables allowed?</summary>
-        abstract public bool allowBlackboardOverrides { get; }
+        public abstract bool allowBlackboardOverrides { get; }
 
         ///<summary>Whether the graph can accept variables Drag&Drop</summary>
-        abstract public bool canAcceptVariableDrops { get; }
+        public abstract bool canAcceptVariableDrops { get; }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>The graph data container</summary>
         private GraphSource graphSource {
-            get { return _graphSource; }
-            set { _graphSource = value; }
+            get => _graphSource;
+            set => _graphSource = value;
         }
 
         ///<summary>Graph category</summary>
         public string category {
-            get { return graphSource.category; }
-            set { graphSource.category = value; }
+            get => graphSource.category;
+            set => graphSource.category = value;
         }
 
         ///<summary>Graph Comments</summary>
         public string comments {
-            get { return graphSource.comments; }
-            set { graphSource.comments = value; }
+            get => graphSource.comments;
+            set => graphSource.comments = value;
         }
 
         ///<summary>The translation of the graph in the total canvas</summary>
         public Vector2 translation {
-            get { return graphSource.translation; }
-            set { graphSource.translation = value; }
+            get => graphSource.translation;
+            set => graphSource.translation = value;
         }
 
         ///<summary>The zoom of the graph</summary>
         public float zoomFactor {
-            get { return graphSource.zoomFactor; }
-            set { graphSource.zoomFactor = value; }
+            get => graphSource.zoomFactor;
+            set => graphSource.zoomFactor = value;
         }
 
         ///<summary>All nodes assigned to this graph</summary>
         public List<Node> allNodes {
-            get { return graphSource.nodes; }
-            set { graphSource.nodes = value; }
+            get => graphSource.nodes;
+            set => graphSource.nodes = value;
         }
 
         ///<summary>The canvas groups of the graph</summary>
         public List<CanvasGroup> canvasGroups {
-            get { return graphSource.canvasGroups; }
-            set { graphSource.canvasGroups = value; }
+            get => graphSource.canvasGroups;
+            set => graphSource.canvasGroups = value;
         }
 
         ///<summary>The local blackboard of the graph</summary>
         private BlackboardSource localBlackboard {
-            get { return graphSource.localBlackboard; }
-            set { graphSource.localBlackboard = value; }
+            get => graphSource.localBlackboard;
+            set => graphSource.localBlackboard = value;
         }
 
         private List<Task> allTasks => graphSource.allTasks;
@@ -592,10 +537,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         public Graph rootGraph {
             get {
                 var current = this;
-
-                while (current.parentGraph != null) {
-                    current = current.parentGraph;
-                }
+                while (current.parentGraph != null) current = current.parentGraph;
                 return current;
             }
         }
@@ -606,7 +548,10 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>All currently running graphs</summary>
         public static IEnumerable<Graph> runningGraphs => _runningGraphs;
 
-        ///<summary>The parent Graph if any when this graph is a nested one. Set in runtime only after the nested graph (this) is instantiated via 'Clone' method.</summary>
+        /// <summary>
+        ///     The parent Graph if any when this graph is a nested one. Set in runtime only after the nested graph (this) is
+        ///     instantiated via 'Clone' method.
+        /// </summary>
         public Graph parentGraph { get; private set; }
 
         ///<summary>The time in seconds this graph is running</summary>
@@ -619,7 +564,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         public int lastUpdateFrame { get; private set; }
 
         ///<summary>Did the graph update this or the previous frame?</summary>
-        public bool didUpdateLastFrame => (lastUpdateFrame >= Time.frameCount - 1);
+        public bool didUpdateLastFrame => lastUpdateFrame >= Time.frameCount - 1;
 
         ///<summary>Is the graph running?</summary>
         public bool isRunning { get; private set; }
@@ -635,19 +580,14 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             get {
                 if (allNodes.Count > 0) {
                     var first = allNodes[0];
-
-                    if (first.allowAsPrime) {
-                        return first;
-                    }
+                    if (first.allowAsPrime) return first;
                 }
                 return null;
             }
             set {
                 if (primeNode != value && value != null && value.allowAsPrime && allNodes.Contains(value)) {
                     if (isRunning) {
-                        if (primeNode != null) {
-                            primeNode.Reset();
-                        }
+                        if (primeNode != null) primeNode.Reset();
                         value.Reset();
                     }
                     UndoUtility.RecordObjectComplete(this, "Set Start");
@@ -665,11 +605,14 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>The local blackboard of the graph where parentBlackboard if any is parented to</summary>
         public IBlackboard blackboard => localBlackboard;
 
-        ///<summary>The blackboard which is parented to the graph's local blackboard Should be the same as '.blackboard.parent' and usually refers to the GraphOwner (agent) .blackboard</summary>
+        /// <summary>
+        ///     The blackboard which is parented to the graph's local blackboard Should be the same as '.blackboard.parent'
+        ///     and usually refers to the GraphOwner (agent) .blackboard
+        /// </summary>
         public IBlackboard parentBlackboard { get; private set; }
 
         ///<summary>The UnityObject of the ITaskSystem. In this case the graph itself</summary>
-        UnityEngine.Object ITaskSystem.contextObject => this;
+        Object ITaskSystem.contextObject => this;
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>See UpdateReferences</summary>
@@ -678,67 +621,55 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             UpdateReferences(owner, owner != null ? owner.blackboard : null, force);
         }
 
-        ///<summary>Update the Agent/Component and Blackboard references. This is done when the graph initialize or start, and in the editor for convenience.</summary>
+        /// <summary>
+        ///     Update the Agent/Component and Blackboard references. This is done when the graph initialize or start, and in
+        ///     the editor for convenience.
+        /// </summary>
         public void UpdateReferences(Component newAgent, IBlackboard newParentBlackboard, bool force = false)
         {
-            if (!ReferenceEquals(this.agent, newAgent) ||
-                !ReferenceEquals(this.parentBlackboard, newParentBlackboard) || force) {
-                this.agent = newAgent;
-                this.parentBlackboard = newParentBlackboard;
-
-                if (!ReferenceEquals(newParentBlackboard, this.localBlackboard) && allowBlackboardOverrides) {
-                    this.localBlackboard.parent = newParentBlackboard;
-                }
-                else {
-                    this.localBlackboard.parent = null;
-                }
-                this.localBlackboard.propertiesBindTarget = newAgent;
-                this.localBlackboard.unityContextObject = this;
+            if (!ReferenceEquals(agent, newAgent) || !ReferenceEquals(parentBlackboard, newParentBlackboard) || force) {
+                agent = newAgent;
+                parentBlackboard = newParentBlackboard;
+                if (!ReferenceEquals(newParentBlackboard, localBlackboard) && allowBlackboardOverrides)
+                    localBlackboard.parent = newParentBlackboard;
+                else
+                    localBlackboard.parent = null;
+                localBlackboard.propertiesBindTarget = newAgent;
+                localBlackboard.unityContextObject = this;
                 UpdateNodeBBFields();
                 ((ITaskSystem)this).UpdateTasksOwner();
             }
         }
 
         ///<summary>Update all graph node's BBFields for current Blackboard.</summary>
-        void UpdateNodeBBFields()
+        private void UpdateNodeBBFields()
         {
-            for (var i = 0; i < allParameters.Count; i++) {
-                allParameters[i].bb = blackboard;
-            }
+            for (var i = 0; i < allParameters.Count; i++) allParameters[i].bb = blackboard;
         }
 
         ///<summary>Sets all graph Tasks' owner system (which is this graph).</summary>
         void ITaskSystem.UpdateTasksOwner()
         {
-            for (var i = 0; i < allTasks.Count; i++) {
-                allTasks[i].SetOwnerSystem(this);
-            }
+            for (var i = 0; i < allTasks.Count; i++) allTasks[i].SetOwnerSystem(this);
         }
 
-        ///<summary>Update the IDs of the nodes in the graph. Is automatically called whenever a change happens in the graph by the adding, removing, connecting etc.</summary>
+        /// <summary>
+        ///     Update the IDs of the nodes in the graph. Is automatically called whenever a change happens in the graph by
+        ///     the adding, removing, connecting etc.
+        /// </summary>
         public void UpdateNodeIDs(bool alsoReorderList)
         {
-            if (allNodes.Count == 0) {
-                return;
-            }
+            if (allNodes.Count == 0) return;
             var lastID = -1;
             var parsed = new Node[allNodes.Count];
-
-            if (primeNode != null) {
-                lastID = AssignNodeID(primeNode, lastID, ref parsed);
-            }
-
-            foreach (var node in allNodes.OrderBy(n => (n.inConnections.Count == 0 ? 0 : 1) + n.priority * -1)) {
+            if (primeNode != null) lastID = AssignNodeID(primeNode, lastID, ref parsed);
+            foreach (var node in allNodes.OrderBy(n => (n.inConnections.Count == 0 ? 0 : 1) + n.priority * -1))
                 lastID = AssignNodeID(node, lastID, ref parsed);
-            }
-
-            if (alsoReorderList) {
-                allNodes = parsed.ToList();
-            }
+            if (alsoReorderList) allNodes = parsed.ToList();
         }
 
         //Used above to assign a node's ID and list order
-        int AssignNodeID(Node node, int lastID, ref Node[] parsed)
+        private int AssignNodeID(Node node, int lastID, ref Node[] parsed)
         {
             if (!parsed.Contains(node)) {
                 lastID++;
@@ -755,21 +686,19 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>used for thread safe init calls</summary>
-        private event System.Action delayedInitCalls;
+        private event Action delayedInitCalls;
 
         ///<summary>used for thread safe init calls</summary>
-        protected void ThreadSafeInitCall(System.Action call)
+        protected void ThreadSafeInitCall(Action call)
         {
-            if (Threader.isMainThread) {
+            if (Threader.isMainThread)
                 call();
-            }
-            else {
+            else
                 delayedInitCalls += call;
-            }
         }
 
         ///<summary>Load overwrite the graph async. Used by GraphOwner.</summary>
-        public async void LoadOverwriteAsync(GraphLoadData data, System.Action callback)
+        public async void LoadOverwriteAsync(GraphLoadData data, Action callback)
         {
             await System.Threading.Tasks.Task.Run(() => LoadOverwrite(data));
 
@@ -790,51 +719,49 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             OnGraphInitialize();
 
             // TODO: Make subgraphs instance in main thread and init them as parallel tasks
-            if (data.preInitializeSubGraphs) {
-                ThreadSafeInitCall(PreInitializeSubGraphs);
-            }
+            if (data.preInitializeSubGraphs) ThreadSafeInitCall(PreInitializeSubGraphs);
             ThreadSafeInitCall(() => localBlackboard.InitializePropertiesBinding(data.agent, false));
             hasInitialized = true;
         }
 
-        ///<summary>Initialize the graph for target agent/blackboard with option to preload subgraphs. This is called from StartGraph as well if Initialize has not been called before.</summary>
+        /// <summary>
+        ///     Initialize the graph for target agent/blackboard with option to preload subgraphs. This is called from
+        ///     StartGraph as well if Initialize has not been called before.
+        /// </summary>
         public void Initialize(Component newAgent, IBlackboard newParentBlackboard, bool preInitializeSubGraphs)
         {
             Debug.Assert(Threader.applicationIsPlaying, "Initialize should have been called in play mode only.");
             Debug.Assert(!hasInitialized, "Graph is already initialized.");
             UpdateReferences(newAgent, newParentBlackboard);
             OnGraphInitialize();
-
-            if (preInitializeSubGraphs) {
-                PreInitializeSubGraphs();
-            }
+            if (preInitializeSubGraphs) PreInitializeSubGraphs();
             localBlackboard.InitializePropertiesBinding(newAgent, false);
             hasInitialized = true;
         }
 
         ///<summary>Preloads and initialize all subgraphs of this graph recursively</summary>
-        void PreInitializeSubGraphs()
+        private void PreInitializeSubGraphs()
         {
             foreach (var assignable in allNodes.OfType<IGraphAssignable>()) {
                 var instance = assignable.CheckInstance();
-
-                if (instance != null) {
-                    instance.Initialize(this.agent, this.blackboard.parent, /*Preinit Subs:*/ true);
-                }
+                if (instance != null) instance.Initialize(agent, blackboard.parent, /*Preinit Subs:*/ true);
             }
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Start the graph for the agent and blackboard provided with specified update mode. Optionally provide a callback for when the graph stops/ends</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Start the graph for the agent and blackboard provided with specified update mode. Optionally provide a
+        ///     callback for when the graph stops/ends
+        /// </summary>
         public void StartGraph(Component newAgent, IBlackboard newParentBlackboard, UpdateMode newUpdateMode,
-            System.Action<bool> callback = null)
+            Action<bool> callback = null)
         {
 #if UNITY_EDITOR
             Debug.Assert(Application.isPlaying, "StartGraph should have been called in play mode only.");
             Debug.Assert(!UnityEditor.EditorUtility.IsPersistent(this),
                 "You have tried to start a graph which is an asset, not an instance! You should Instantiate the graph first.");
 #endif
-            Debug.Assert(newParentBlackboard != this.blackboard,
+            Debug.Assert(newParentBlackboard != blackboard,
                 "StartGraph called with blackboard parameter being the same as the graph blackboard");
 
             if (newAgent == null && requiresAgent) {
@@ -843,7 +770,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             }
 
             if (primeNode == null && requiresPrimeNode && GetType().Name != "FSM") {
-                Logger.LogError($"{GetType().Name}: You've tried to start graph without a 'Start' node.", LogTag.GRAPH, this);
+                Logger.LogError($"{GetType().Name}: You've tried to start graph without a 'Start' node.", LogTag.GRAPH,
+                    this);
                 return;
             }
 
@@ -851,78 +779,52 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                 Logger.LogWarning("Graph is already Active and not Paused.", LogTag.GRAPH, this);
                 return;
             }
-
-            if (!hasInitialized) {
+            if (!hasInitialized)
                 Initialize(newAgent, newParentBlackboard, false);
-            }
-            else {
+            else
                 //if the graph has pre-initialized with same targets, this call does basically nothing,
                 //but we still need to call it in case the graph is started with different targets.
                 UpdateReferences(newAgent, newParentBlackboard);
-            }
-
-            if (callback != null) {
-                onFinish = callback;
-            }
+            if (callback != null) onFinish = callback;
 
             if (isRunning && isPaused) {
                 Resume();
                 return;
             }
-
-            if (_runningGraphs == null) {
-                _runningGraphs = new List<Graph>();
-            }
+            if (_runningGraphs == null) _runningGraphs = new List<Graph>();
             _runningGraphs.Add(this);
             elapsedTime = 0;
             isRunning = true;
             isPaused = false;
             OnGraphStarted();
-
-            for (var i = 0; i < allNodes.Count; i++) {
-                allNodes[i].OnGraphStarted();
-            }
-
-            for (var i = 0; i < allNodes.Count; i++) {
-                allNodes[i].OnPostGraphStarted();
-            }
+            for (var i = 0; i < allNodes.Count; i++) allNodes[i].OnGraphStarted();
+            for (var i = 0; i < allNodes.Count; i++) allNodes[i].OnPostGraphStarted();
 
             if (isRunning) {
                 //check isRunning  before adding the update call for in case the graph immediately ended in the same frame that it started
                 updateMode = newUpdateMode;
-
-                if (updateMode != UpdateMode.Manual) {
+                if (updateMode != UpdateMode.Manual)
                     MonoManager.current.AddUpdateCall((MonoManager.UpdateMode)updateMode, UpdateGraph);
-                }
             }
         }
 
         ///<summary>Stops the graph completely and resets all nodes.</summary>
         public void Stop(bool success = true)
         {
-            if (!isRunning) {
-                return;
-            }
+            if (!isRunning) return;
             _runningGraphs.Remove(this);
-
-            if (updateMode != UpdateMode.Manual && MonoManager.current) {
+            if (updateMode != UpdateMode.Manual && MonoManager.current)
                 MonoManager.current.RemoveUpdateCall((MonoManager.UpdateMode)updateMode, UpdateGraph);
-            }
 
             for (var i = 0; i < allNodes.Count; i++) {
                 var node = allNodes[i];
 
                 //try stop subgraphs first
-                if (node is IGraphAssignable) {
-                    (node as IGraphAssignable).TryStopSubGraph();
-                }
+                if (node is IGraphAssignable) (node as IGraphAssignable).TryStopSubGraph();
                 node.Reset(false);
                 node.OnGraphStoped();
             }
-
-            for (var i = 0; i < allNodes.Count; i++) {
-                allNodes[i].OnPostGraphStoped();
-            }
+            for (var i = 0; i < allNodes.Count; i++) allNodes[i].OnPostGraphStoped();
             OnGraphStoped();
             isRunning = false;
             isPaused = false;
@@ -939,22 +841,15 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>Pauses the graph from updating as well as notifying all nodes.</summary>
         public void Pause()
         {
-            if (!isRunning || isPaused) {
-                return;
-            }
-
-            if (updateMode != UpdateMode.Manual) {
+            if (!isRunning || isPaused) return;
+            if (updateMode != UpdateMode.Manual)
                 MonoManager.current.RemoveUpdateCall((MonoManager.UpdateMode)updateMode, UpdateGraph);
-            }
             isRunning = true;
             isPaused = true;
 
             for (var i = 0; i < allNodes.Count; i++) {
                 var node = allNodes[i];
-
-                if (node is IGraphAssignable) {
-                    (node as IGraphAssignable).TryPauseSubGraph();
-                }
+                if (node is IGraphAssignable) (node as IGraphAssignable).TryPauseSubGraph();
                 node.OnGraphPaused();
             }
             OnGraphPaused();
@@ -963,25 +858,18 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>Resumes a paused graph</summary>
         public void Resume()
         {
-            if (!isRunning || !isPaused) {
-                return;
-            }
+            if (!isRunning || !isPaused) return;
             isRunning = true;
             isPaused = false;
             OnGraphUnpaused();
 
             for (var i = 0; i < allNodes.Count; i++) {
                 var node = allNodes[i];
-
-                if (node is IGraphAssignable) {
-                    (node as IGraphAssignable).TryResumeSubGraph();
-                }
+                if (node is IGraphAssignable) (node as IGraphAssignable).TryResumeSubGraph();
                 node.OnGraphUnpaused();
             }
-
-            if (updateMode != UpdateMode.Manual) {
+            if (updateMode != UpdateMode.Manual)
                 MonoManager.current.AddUpdateCall((MonoManager.UpdateMode)updateMode, UpdateGraph);
-            }
         }
 
         ///<summary>Same as Stop - Start</summary>
@@ -991,7 +879,10 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             StartGraph(agent, blackboard, updateMode, onFinish);
         }
 
-        ///<summary>Updates the graph. Normaly this is updated by MonoManager since at StartGraph, this method is registered for updating by GraphOwner.</summary>
+        /// <summary>
+        ///     Updates the graph. Normaly this is updated by MonoManager since at StartGraph, this method is registered for
+        ///     updating by GraphOwner.
+        /// </summary>
         public void UpdateGraph()
         {
             UpdateGraph(Time.deltaTime);
@@ -1016,142 +907,112 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Graph can override this for derived data serialization if needed</summary>
-        virtual public object OnDerivedDataSerialization()
-        {
-            return null;
-        }
+        public virtual object OnDerivedDataSerialization() => null;
 
         ///<summary>Graph can override this for derived data deserialization if needed</summary>
-        virtual public void OnDerivedDataDeserialization(object data) { }
+        public virtual void OnDerivedDataDeserialization(object data) { }
 
         ///<summary>Override for graph initialization</summary>
-        virtual protected void OnGraphInitialize() { }
+        protected virtual void OnGraphInitialize() { }
 
         ///<summary>Override for graph specific stuff to run when the graph is started</summary>
-        virtual protected void OnGraphStarted() { }
+        protected virtual void OnGraphStarted() { }
 
         ///<summary>Override for graph specific per frame logic. Called every frame if the graph is running</summary>
-        virtual protected void OnGraphUpdate() { }
+        protected virtual void OnGraphUpdate() { }
 
         ///<summary>Override for graph specific stuff to run when the graph is stoped</summary>
-        virtual protected void OnGraphStoped() { }
+        protected virtual void OnGraphStoped() { }
 
         ///<summary>Override for graph stuff to run when the graph is paused</summary>
-        virtual protected void OnGraphPaused() { }
+        protected virtual void OnGraphPaused() { }
 
         ///<summary>Override for graph stuff to run when the graph is resumed</summary>
-        virtual protected void OnGraphUnpaused() { }
+        protected virtual void OnGraphUnpaused() { }
 
         ///<summary>Called when the unity object graph is enabled</summary>
-        virtual protected void OnGraphObjectEnable() { }
+        protected virtual void OnGraphObjectEnable() { }
 
         ///<summary>Called when the unity object graph is disabled</summary>
-        virtual protected void OnGraphObjectDisable() { }
+        protected virtual void OnGraphObjectDisable() { }
 
         ///<summary>Called when the unity object graph is destroyed</summary>
-        virtual protected void OnGraphObjectDestroy() { }
+        protected virtual void OnGraphObjectDestroy() { }
 
         ///<summary>Use this for derived graph Validation</summary>
-        virtual protected void OnGraphValidate() { }
+        protected virtual void OnGraphValidate() { }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Invokes named onCustomEvent on EventRouter</summary>
         public void SendEvent(string name, object value, object sender)
         {
-            if (agent == null || !isRunning) {
-                return;
-            }
+            if (agent == null || !isRunning) return;
 #if UNITY_EDITOR
             Logger.Log(string.Format("Event '{0}' Send to '{1}'", name, agent.gameObject.name), LogTag.EVENT, agent);
 #endif
             var router = agent.GetComponent<EventRouter>();
-
-            if (router != null) {
-                router.InvokeCustomEvent(name, value, sender);
-            }
+            if (router != null) router.InvokeCustomEvent(name, value, sender);
         }
 
         ///<summary>Invokes named onCustomEvent on EventRouter</summary>
         public void SendEvent<T>(string name, T value, object sender)
         {
-            if (agent == null || !isRunning) {
-                return;
-            }
+            if (agent == null || !isRunning) return;
 #if UNITY_EDITOR
             Logger.Log(string.Format("Event '{0}' Send to '{1}'", name, agent.gameObject.name), LogTag.EVENT, agent);
 #endif
             var router = agent.GetComponent<EventRouter>();
-
-            if (router != null) {
-                router.InvokeCustomEvent(name, value, sender);
-            }
+            if (router != null) router.InvokeCustomEvent(name, value, sender);
         }
 
         ///<summary>Invokes named onCustomEvent on EventRouter globaly for all running graphs</summary>
         public static void SendGlobalEvent(string name, object value, object sender)
         {
-            if (_runningGraphs == null) {
-                return;
-            }
+            if (_runningGraphs == null) return;
             var sent = new List<GameObject>();
 
-            foreach (var graph in _runningGraphs.ToArray()) {
+            foreach (var graph in _runningGraphs.ToArray())
                 if (graph.agent != null && !sent.Contains(graph.agent.gameObject)) {
                     sent.Add(graph.agent.gameObject);
                     graph.SendEvent(name, value, sender);
                 }
-            }
         }
 
         ///<summary>Invokes named onCustomEvent on EventRouter globaly for all running graphs</summary>
         public static void SendGlobalEvent<T>(string name, T value, object sender)
         {
-            if (_runningGraphs == null) {
-                return;
-            }
+            if (_runningGraphs == null) return;
             var sent = new List<GameObject>();
 
-            foreach (var graph in _runningGraphs.ToArray()) {
+            foreach (var graph in _runningGraphs.ToArray())
                 if (graph.agent != null && !sent.Contains(graph.agent.gameObject)) {
                     sent.Add(graph.agent.gameObject);
                     graph.SendEvent(name, value, sender);
                 }
-            }
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns all BBParameters serialized in the graph</summary>
-        public IEnumerable<BBParameter> GetAllParameters()
-        {
-            return allParameters;
-        }
+        public IEnumerable<BBParameter> GetAllParameters() => allParameters;
 
         ///<summary>Returns all connections</summary>
-        public IEnumerable<Connection> GetAllConnections()
-        {
-            return allConnections;
-        }
+        public IEnumerable<Connection> GetAllConnections() => allConnections;
 
         ///<summary>Returns all tasks of type T</summary>
-        public IEnumerable<T> GetAllTasksOfType<T>() where T : Task
-        {
-            return allTasks.OfType<T>();
-        }
+        public IEnumerable<T> GetAllTasksOfType<T>() where T : Task => allTasks.OfType<T>();
 
-        ///<summary>Get a node by it's ID, null if not found. The ID should always be the same as the node's index in allNodes list.</summary>
+        /// <summary>
+        ///     Get a node by it's ID, null if not found. The ID should always be the same as the node's index in allNodes
+        ///     list.
+        /// </summary>
         public Node GetNodeWithID(int searchID)
         {
-            if (searchID < allNodes.Count && searchID >= 0) {
-                return allNodes.Find(n => n.ID == searchID);
-            }
+            if (searchID < allNodes.Count && searchID >= 0) return allNodes.Find(n => n.ID == searchID);
             return null;
         }
 
         ///<summary>Get all nodes of a specific type</summary>
-        public IEnumerable<T> GetAllNodesOfType<T>() where T : Node
-        {
-            return allNodes.OfType<T>();
-        }
+        public IEnumerable<T> GetAllNodesOfType<T>() where T : Node => allNodes.OfType<T>();
 
         ///<summary>Get a node by it's tag name</summary>
         public T GetNodeWithTag<T>(string tagName) where T : Node
@@ -1188,15 +1049,11 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         {
             var graphs = new List<T>();
 
-            foreach (var node in allNodes.OfType<IGraphAssignable>()) {
+            foreach (var node in allNodes.OfType<IGraphAssignable>())
                 if (node.subGraph is T) {
                     graphs.Add((T)node.subGraph);
-
-                    if (recursive) {
-                        graphs.AddRange(node.subGraph.GetAllNestedGraphs<T>(recursive));
-                    }
+                    if (recursive) graphs.AddRange(node.subGraph.GetAllNestedGraphs<T>(recursive));
                 }
-            }
             return graphs.Distinct();
         }
 
@@ -1205,16 +1062,13 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         {
             var instances = new List<Graph>();
 
-            foreach (var node in allNodes.OfType<IGraphAssignable>()) {
+            foreach (var node in allNodes.OfType<IGraphAssignable>())
                 if (node.instances != null) {
                     var subInstances = node.instances.Values;
                     instances.AddRange(subInstances);
-
-                    foreach (var subInstance in subInstances) {
+                    foreach (var subInstance in subInstances)
                         instances.AddRange(subInstance.GetAllInstancedNestedGraphs());
-                    }
                 }
-            }
             return instances;
         }
 
@@ -1227,78 +1081,53 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>Utility function to create all defined parameters of this graph as variables into the provided blackboard.</summary>
         public void PromoteMissingParametersToVariables(IBlackboard bb)
         {
-            foreach (var bbParam in GetDefinedParameters()) {
-                if (bbParam.varRef == null && !bbParam.isPresumedDynamic) {
+            foreach (var bbParam in GetDefinedParameters())
+                if (bbParam.varRef == null && !bbParam.isPresumedDynamic)
                     bbParam.PromoteToVariable(bb);
-                }
-            }
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Given an object returns the relevant graph if any can be resolved</summary>
         public static Graph GetElementGraph(object obj)
         {
-            if (obj is GraphOwner) {
-                return (obj as GraphOwner).graph;
-            }
-
-            if (obj is Graph) {
-                return (Graph)obj;
-            }
-
-            if (obj is Node) {
-                return (obj as Node).graph;
-            }
-
-            if (obj is Connection) {
-                return (obj as Connection).graph;
-            }
-
-            if (obj is Task) {
-                return (obj as Task).ownerSystem as Graph;
-            }
-
-            if (obj is BlackboardSource) {
-                return (obj as BlackboardSource).unityContextObject as Graph;
-            }
+            if (obj is GraphOwner) return (obj as GraphOwner).graph;
+            if (obj is Graph) return (Graph)obj;
+            if (obj is Node) return (obj as Node).graph;
+            if (obj is Connection) return (obj as Connection).graph;
+            if (obj is Task) return (obj as Task).ownerSystem as Graph;
+            if (obj is BlackboardSource) return (obj as BlackboardSource).unityContextObject as Graph;
             return null;
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Returns a structure of the graph that includes Nodes, Connections, Tasks and BBParameters, but with nodes elements all being root to the graph (instead of respective parent connections).</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns a structure of the graph that includes Nodes, Connections, Tasks and BBParameters, but with nodes
+        ///     elements all being root to the graph (instead of respective parent connections).
+        /// </summary>
         public HierarchyTree.Element GetFlatMetaGraph()
         {
-            if (flatMetaGraph != null) {
-                return flatMetaGraph;
-            }
+            if (flatMetaGraph != null) return flatMetaGraph;
             var root = new HierarchyTree.Element(this);
-            int lastID = 0;
-
-            for (var i = 0; i < allNodes.Count; i++) {
-                root.AddChild(GetTreeNodeElement(allNodes[i], false, ref lastID));
-            }
+            var lastID = 0;
+            for (var i = 0; i < allNodes.Count; i++) root.AddChild(GetTreeNodeElement(allNodes[i], false, ref lastID));
             return flatMetaGraph = root;
         }
 
-        ///<summary>Returns a structure of the graph that includes Nodes, Connections, Tasks and BBParameters, but where node elements are parent to their respetive connections. Only possible for tree-like graphs.</summary>
+        /// <summary>
+        ///     Returns a structure of the graph that includes Nodes, Connections, Tasks and BBParameters, but where node
+        ///     elements are parent to their respetive connections. Only possible for tree-like graphs.
+        /// </summary>
         public HierarchyTree.Element GetFullMetaGraph()
         {
-            if (fullMetaGraph != null) {
-                return fullMetaGraph;
-            }
+            if (fullMetaGraph != null) return fullMetaGraph;
             var root = new HierarchyTree.Element(this);
-            int lastID = 0;
-
-            if (primeNode != null) {
-                root.AddChild(GetTreeNodeElement(primeNode, true, ref lastID));
-            }
+            var lastID = 0;
+            if (primeNode != null) root.AddChild(GetTreeNodeElement(primeNode, true, ref lastID));
 
             for (var i = 0; i < allNodes.Count; i++) {
                 var node = allNodes[i];
-
-                if (node.ID > lastID && node.inConnections.Count == 0) {
+                if (node.ID > lastID && node.inConnections.Count == 0)
                     root.AddChild(GetTreeNodeElement(node, true, ref lastID));
-                }
             }
             return fullMetaGraph = root;
         }
@@ -1306,29 +1135,25 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>Returns a structure of all nested graphs recursively, contained within this graph.</summary>
         public HierarchyTree.Element GetNestedMetaGraph()
         {
-            if (nestedMetaGraph != null) {
-                return nestedMetaGraph;
-            }
+            if (nestedMetaGraph != null) return nestedMetaGraph;
             var root = new HierarchyTree.Element(this);
             DigNestedGraphs(this, root);
             return nestedMetaGraph = root;
         }
 
         //Used above
-        static void DigNestedGraphs(Graph currentGraph, HierarchyTree.Element currentElement)
+        private static void DigNestedGraphs(Graph currentGraph, HierarchyTree.Element currentElement)
         {
             for (var i = 0; i < currentGraph.allNodes.Count; i++) {
                 var assignable = currentGraph.allNodes[i] as IGraphAssignable;
-
-                if (assignable != null && assignable.subGraph != null) {
+                if (assignable != null && assignable.subGraph != null)
                     DigNestedGraphs(assignable.subGraph,
                         currentElement.AddChild(new HierarchyTree.Element(assignable)));
-                }
             }
         }
 
         ///<summary>Used above. Returns a node hierarchy element optionaly along with all it's children recursively</summary>
-        static HierarchyTree.Element GetTreeNodeElement(Node node, bool recurse, ref int lastID)
+        private static HierarchyTree.Element GetTreeNodeElement(Node node, bool recurse, ref int lastID)
         {
             var nodeElement = CollectSubElements(node);
 
@@ -1338,11 +1163,9 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
                 if (recurse) {
                     var targetNode = node.outConnections[i].targetNode;
-
-                    if (targetNode.ID > node.ID) {
+                    if (targetNode.ID > node.ID)
                         //ensure no recursion loop
                         connectionElement.AddChild(GetTreeNodeElement(targetNode, recurse, ref lastID));
-                    }
                 }
             }
             lastID = node.ID;
@@ -1350,23 +1173,18 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         }
 
         ///<summary>Returns an element that includes tasks and parameters for target object recursively</summary>
-        static HierarchyTree.Element CollectSubElements(IGraphElement obj)
+        private static HierarchyTree.Element CollectSubElements(IGraphElement obj)
         {
             HierarchyTree.Element parentElement = null;
             var stack = new Stack<HierarchyTree.Element>();
             JSONSerializer.SerializeAndExecuteNoCycles(obj.GetType(), obj, (o) => {
                 if (o is ISerializationCollectable) {
                     var e = new HierarchyTree.Element(o);
-
-                    if (stack.Count > 0) {
-                        stack.Peek().AddChild(e);
-                    }
+                    if (stack.Count > 0) stack.Peek().AddChild(e);
                     stack.Push(e);
                 }
             }, (o, d) => {
-                if (o is ISerializationCollectable) {
-                    parentElement = stack.Pop();
-                }
+                if (o is ISerializationCollectable) parentElement = stack.Pop();
             });
             return parentElement;
         }
@@ -1391,9 +1209,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         {
             var result = new List<Task>();
             JSONSerializer.SerializeAndExecuteNoCycles(target.GetType(), target, (o, d) => {
-                if (o is Task) {
-                    result.Add((Task)o);
-                }
+                if (o is Task) result.Add((Task)o);
             });
             return result;
         }
@@ -1403,44 +1219,29 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         {
             var result = new List<BBParameter>();
             JSONSerializer.SerializeAndExecuteNoCycles(target.GetType(), target, (o, d) => {
-                if (o is BBParameter) {
-                    result.Add((BBParameter)o);
-                }
+                if (o is BBParameter) result.Add((BBParameter)o);
             });
             return result;
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Add a new node to this graph</summary>
-        public T AddNode<T>() where T : Node
-        {
-            return (T)AddNode(typeof(T));
-        }
+        public T AddNode<T>() where T : Node => (T)AddNode(typeof(T));
 
-        public T AddNode<T>(Vector2 pos) where T : Node
-        {
-            return (T)AddNode(typeof(T), pos);
-        }
-
-        public Node AddNode(System.Type nodeType)
-        {
-            return AddNode(nodeType, new Vector2(0, 0));
-        }
+        public T AddNode<T>(Vector2 pos) where T : Node => (T)AddNode(typeof(T), pos);
+        public Node AddNode(System.Type nodeType) => AddNode(nodeType, new Vector2(0, 0));
 
         public Node AddNode(System.Type nodeType, Vector2 pos)
         {
             if (!nodeType.RTIsSubclassOf(baseNodeType)) {
-                Logger.LogWarning(nodeType + " can't be added to " + this.GetType().FriendlyName() + " graph.",
-                    LogTag.GRAPH, this);
+                Logger.LogWarning(nodeType + " can't be added to " + GetType().FriendlyName() + " graph.", LogTag.GRAPH,
+                    this);
                 return null;
             }
             var newNode = Node.Create(this, nodeType, pos);
             UndoUtility.RecordObject(this, "New Node");
             allNodes.Add(newNode);
-
-            if (primeNode == null) {
-                primeNode = newNode;
-            }
+            if (primeNode == null) primeNode = newNode;
             UpdateNodeIDs(false);
             UndoUtility.SetDirty(this);
             return newNode;
@@ -1449,18 +1250,16 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///<summary>Disconnects and then removes a node from this graph</summary>
         public void RemoveNode(Node node, bool recordUndo = true, bool force = false)
         {
-            if (!force && node.GetType().RTIsDefined<ParadoxNotion.Design.ProtectedSingletonAttribute>(true)) {
-                if (allNodes.Where(n => n.GetType() == node.GetType()).Count() == 1) {
+            if (!force && node.GetType().RTIsDefined<ParadoxNotion.Design.ProtectedSingletonAttribute>(true))
+                if (allNodes.Where(n => n.GetType() == node.GetType()).Count() == 1)
                     return;
-                }
-            }
 
             if (!allNodes.Contains(node)) {
                 Logger.LogWarning("Node is not part of this graph.", "NodeCanvas", this);
                 return;
             }
 
-            if (!Application.isPlaying) {
+            if (!Application.isPlaying)
                 //auto reconnect parent & child of deleted node. Just a workflow convenience
                 if (isTree && node.inConnections.Count == 1 && node.outConnections.Count == 1) {
                     var relinkNode = node.outConnections[0].targetNode;
@@ -1470,44 +1269,32 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                         node.inConnections[0].SetTargetNode(relinkNode);
                     }
                 }
-            }
 #if UNITY_EDITOR
-            if (NodeCanvas.Editor.GraphEditorUtility.activeElement == node) {
-                NodeCanvas.Editor.GraphEditorUtility.activeElement = null;
-            }
+            if (Editor.GraphEditorUtility.activeElement == node) Editor.GraphEditorUtility.activeElement = null;
 #endif
 
             //callback
             node.OnDestroy();
 
             //disconnect parents
-            for (var i = node.inConnections.Count; i-- > 0;) {
-                RemoveConnection(node.inConnections[i]);
-            }
+            for (var i = node.inConnections.Count; i-- > 0;) RemoveConnection(node.inConnections[i]);
 
             //disconnect children
-            for (var i = node.outConnections.Count; i-- > 0;) {
-                RemoveConnection(node.outConnections[i]);
-            }
-
-            if (recordUndo) {
-                UndoUtility.RecordObject(this, "Delete Node");
-            }
+            for (var i = node.outConnections.Count; i-- > 0;) RemoveConnection(node.outConnections[i]);
+            if (recordUndo) UndoUtility.RecordObject(this, "Delete Node");
             allNodes.Remove(node);
-
-            if (node == primeNode) {
-                primeNode = GetNodeWithID(primeNode.ID + 1);
-            }
+            if (node == primeNode) primeNode = GetNodeWithID(primeNode.ID + 1);
             UpdateNodeIDs(false);
             UndoUtility.SetDirty(this);
         }
 
-        ///<summary>Connect two nodes together to a specific port index of the source and target node. Leave index at -1 to add at the end of the list.</summary>
+        /// <summary>
+        ///     Connect two nodes together to a specific port index of the source and target node. Leave index at -1 to add at
+        ///     the end of the list.
+        /// </summary>
         public Connection ConnectNodes(Node sourceNode, Node targetNode, int sourceIndex = -1, int targetIndex = -1)
         {
-            if (Node.IsNewConnectionAllowed(sourceNode, targetNode) == false) {
-                return null;
-            }
+            if (Node.IsNewConnectionAllowed(sourceNode, targetNode) == false) return null;
             UndoUtility.RecordObject(this, "Add Connection");
             var newConnection = Connection.Create(sourceNode, targetNode, sourceIndex, targetIndex);
             UpdateNodeIDs(false);
@@ -1519,13 +1306,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         public void RemoveConnection(Connection connection, bool recordUndo = true)
         {
             //for live editing
-            if (Application.isPlaying) {
-                connection.Reset();
-            }
-
-            if (recordUndo) {
-                UndoUtility.RecordObject(this, "Remove Connection");
-            }
+            if (Application.isPlaying) connection.Reset();
+            if (recordUndo) UndoUtility.RecordObject(this, "Remove Connection");
 
             //callbacks
             connection.OnDestroy();
@@ -1534,9 +1316,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             connection.sourceNode.outConnections.Remove(connection);
             connection.targetNode.inConnections.Remove(connection);
 #if UNITY_EDITOR
-            if (NodeCanvas.Editor.GraphEditorUtility.activeElement == connection) {
-                NodeCanvas.Editor.GraphEditorUtility.activeElement = null;
-            }
+            if (Editor.GraphEditorUtility.activeElement == connection) Editor.GraphEditorUtility.activeElement = null;
 #endif
             UpdateNodeIDs(false);
             UndoUtility.SetDirty(this);
@@ -1544,13 +1324,11 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 
         ///<summary>Makes a copy of provided nodes and if targetGraph is provided, puts those new nodes in that graph.</summary>
         public static List<Node> CloneNodes(List<Node> originalNodes, Graph targetGraph = null,
-            Vector2 originPosition = default(Vector2))
+            Vector2 originPosition = default)
         {
-            if (targetGraph != null) {
-                if (originalNodes.Any(n => n.GetType().IsSubclassOf(targetGraph.baseNodeType) == false)) {
+            if (targetGraph != null)
+                if (originalNodes.Any(n => n.GetType().IsSubclassOf(targetGraph.baseNodeType) == false))
                     return null;
-                }
-            }
             var newNodes = new List<Node>();
             var linkInfo = new Dictionary<Connection, KeyValuePair<int, int>>();
 
@@ -1569,36 +1347,30 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             }
 
             //duplicate all connections that we stored as 'need duplicating' providing new source and target
-            foreach (var linkPair in linkInfo) {
+            foreach (var linkPair in linkInfo)
                 if (linkPair.Value.Value != -1) {
                     //we check this to see if the target node is part of the duplicated nodes since IndexOf returns -1 if element is not part of the list
                     var newSource = newNodes[linkPair.Value.Key];
                     var newTarget = newNodes[linkPair.Value.Value];
                     linkPair.Key.Duplicate(newSource, newTarget);
                 }
-            }
 
             //position nodes nicely
-            if (originPosition != default(Vector2) && newNodes.Count > 0) {
+            if (originPosition != default && newNodes.Count > 0) {
                 if (newNodes.Count == 1) {
                     newNodes[0].position = originPosition;
                 }
                 else {
                     var diff = newNodes[0].position - originPosition;
                     newNodes[0].position = originPosition;
-
-                    for (var i = 1; i < newNodes.Count; i++) {
-                        newNodes[i].position -= diff;
-                    }
+                    for (var i = 1; i < newNodes.Count; i++) newNodes[i].position -= diff;
                 }
             }
 
             //revalidate all new nodes in their new graph
-            if (targetGraph != null) {
-                for (var i = 0; i < newNodes.Count; i++) {
+            if (targetGraph != null)
+                for (var i = 0; i < newNodes.Count; i++)
                     newNodes[i].Validate(targetGraph);
-                }
-            }
             return newNodes;
         }
 
@@ -1607,16 +1379,13 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         {
             UndoUtility.RecordObject(this, "Clear");
             canvasGroups = null;
-
-            foreach (var node in allNodes.ToArray()) {
-                RemoveNode(node);
-            }
+            foreach (var node in allNodes.ToArray()) RemoveNode(node);
             UndoUtility.SetDirty(this);
         }
 
-        [System.Obsolete("Use 'Graph.StartGraph' with the 'Graph.UpdateMode' parameter.")]
+        [Obsolete("Use 'Graph.StartGraph' with the 'Graph.UpdateMode' parameter.")]
         public void StartGraph(Component newAgent, IBlackboard newBlackboard, bool autoUpdate,
-            System.Action<bool> callback = null)
+            Action<bool> callback = null)
         {
             StartGraph(newAgent, newBlackboard, autoUpdate ? UpdateMode.NormalUpdate : UpdateMode.Manual, callback);
         }

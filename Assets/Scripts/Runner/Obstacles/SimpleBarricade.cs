@@ -37,10 +37,11 @@ namespace Runner.Obstacles
                     Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                     yield break;
                 }
-                var obj = Instantiate(op.Result, position, rotation);//  as GameObject;
+                var obj = Instantiate(op.Result, position, rotation); //  as GameObject;
                 obj.OnDestroyAsObservable().Subscribe(() => {
                     if (op.IsValid()) Addressables.Release(op);
-                }); 
+                });
+
                 if (obj == null) {
                     Debug.Log(gameObject.name);
                 }

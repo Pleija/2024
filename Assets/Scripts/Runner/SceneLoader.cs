@@ -19,9 +19,7 @@ namespace Runner
             if (Application.isEditor) {
 #if UNITY_EDITOR
                 var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode($"Assets/Scenes/{aName}.unity",
-                    new LoadSceneParameters() {
-                        loadSceneMode = mode,
-                    });
+                    new LoadSceneParameters() { loadSceneMode = mode });
 #endif
                 return;
             }
@@ -37,7 +35,7 @@ namespace Runner
                 if (handle.IsValid()) Addressables.Release(handle);
             }
             await Addressables.DownloadDependenciesAsync(aName).Task;
-             JsMain.self.Reload(true);
+            JsMain.self.Reload(true);
             Addressables.LoadSceneAsync(aName, mode);
         }
     }

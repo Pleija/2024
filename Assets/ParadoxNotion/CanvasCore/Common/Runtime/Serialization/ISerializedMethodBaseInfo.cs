@@ -2,7 +2,6 @@
 
 namespace ParadoxNotion.Serialization
 {
-
     public interface ISerializedMethodBaseInfo : ISerializedReflectedInfo
     {
         MethodBase GetMethodBase();

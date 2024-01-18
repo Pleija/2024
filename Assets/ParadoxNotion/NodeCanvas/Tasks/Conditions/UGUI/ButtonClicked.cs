@@ -5,24 +5,25 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-
     [Category("UGUI")]
     public class ButtonClicked : ConditionTask
     {
-
         [RequiredField]
-        public BBParameter<UnityEngine.UI.Button> button;
+        public BBParameter<Button> button;
 
-        protected override string info {
-            get { return string.Format("Button {0} Clicked", button.ToString()); }
-        }
+        protected override string info => string.Format("Button {0} Clicked", button.ToString());
 
-        protected override string OnInit() {
+        protected override string OnInit()
+        {
             button.value.onClick.AddListener(OnClick);
             return null;
         }
 
-        protected override bool OnCheck() { return false; }
-        void OnClick() { YieldReturn(true); }
+        protected override bool OnCheck() => false;
+
+        private void OnClick()
+        {
+            YieldReturn(true);
+        }
     }
 }

@@ -85,16 +85,14 @@ namespace Runner.Game
             var transactionContext = "gameplay";
             var level = PlayerData.instance.rank.ToString();
             var itemType = "consumable";
-
-            if (trackManager.characterController.coins > 0) {
+            if (trackManager.characterController.coins > 0)
                 AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, // Currency type
-                    transactionContext, trackManager.characterController.coins, "fishbone", PlayerData.instance.coins, itemType, level, transactionId);
-            }
-
-            if (trackManager.characterController.premium > 0) {
+                    transactionContext, trackManager.characterController.coins, "fishbone", PlayerData.instance.coins,
+                    itemType, level, transactionId);
+            if (trackManager.characterController.premium > 0)
                 AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
-                    transactionContext, trackManager.characterController.premium, "anchovies", PlayerData.instance.premium, itemType, level, transactionId);
-            }
+                    transactionContext, trackManager.characterController.premium, "anchovies",
+                    PlayerData.instance.premium, itemType, level, transactionId);
 #endif
         }
 
@@ -108,15 +106,16 @@ namespace Runner.Game
             var de = trackManager.characterController.characterCollider.deathData;
             //register data to analytics
 #if UNITY_ANALYTICS
-            AnalyticsEvent.GameOver(null, new Dictionary<string, object> {
-                { "coins", de.coins },
-                { "premium", de.premium },
-                { "score", de.score },
-                { "distance", de.worldDistance },
-                { "obstacle", de.obstacleType },
-                { "theme", de.themeUsed },
-                { "character", de.character },
-            });
+            AnalyticsEvent.GameOver(null,
+                new Dictionary<string, object> {
+                    { "coins", de.coins },
+                    { "premium", de.premium },
+                    { "score", de.score },
+                    { "distance", de.worldDistance },
+                    { "obstacle", de.obstacleType },
+                    { "theme", de.themeUsed },
+                    { "character", de.character },
+                });
 #endif
             PlayerData.instance.Save();
             trackManager.End();

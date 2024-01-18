@@ -21,25 +21,19 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
     public static class ReflectionExtensions
     {
-        public static T GetAttribute<T>(this Type type) where T: Attribute
+        public static T GetAttribute<T>(this Type type) where T : Attribute
         {
             T attribute = null;
-            var attributes = (T[]) type.GetTypeInfo().GetCustomAttributes(typeof(T), true);
-            if (attributes.Length > 0) {
-                attribute = attributes[0];
-            }
-
+            var attributes = (T[])type.GetTypeInfo().GetCustomAttributes(typeof(T), true);
+            if (attributes.Length > 0) attribute = attributes[0];
             return attribute;
         }
 
-        public static T GetAttribute<T>(this PropertyInfo property) where T: Attribute
+        public static T GetAttribute<T>(this PropertyInfo property) where T : Attribute
         {
             T attribute = null;
-            var attributes = (T[]) property.GetCustomAttributes(typeof(T), true);
-            if (attributes.Length > 0) {
-                attribute = attributes[0];
-            }
-
+            var attributes = (T[])property.GetCustomAttributes(typeof(T), true);
+            if (attributes.Length > 0) attribute = attributes[0];
             return attribute;
         }
 
@@ -48,54 +42,43 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var type = property.PropertyType;
             enclosedType = EnclosedType.None;
             var typeInfo = type.GetTypeInfo();
+
             if (type.IsArray) {
                 type = type.GetElementType();
                 enclosedType = EnclosedType.Array;
             }
-            else if (typeInfo.IsGenericType &&
-                     typeof(List<>).GetTypeInfo()
+            else if (typeInfo.IsGenericType && typeof(List<>).GetTypeInfo()
                          .IsAssignableFrom(type.GetGenericTypeDefinition().GetTypeInfo())) {
                 type = typeInfo.GenericTypeArguments[0];
                 enclosedType = EnclosedType.List;
             }
-            else if (typeInfo.IsGenericType &&
-                     typeof(ObservableCollection<>).GetTypeInfo()
+            else if (typeInfo.IsGenericType && typeof(ObservableCollection<>).GetTypeInfo()
                          .IsAssignableFrom(type.GetTypeInfo().GetGenericTypeDefinition().GetTypeInfo())) {
                 type = typeInfo.GenericTypeArguments[0];
                 enclosedType = EnclosedType.ObservableCollection;
             }
-
             return type;
         }
 
-        public static object GetDefault(this Type type)
-        {
-            return type.GetTypeInfo().IsValueType ? Activator.CreateInstance(type) : null;
-        }
+        public static object GetDefault(this Type type) =>
+            type.GetTypeInfo().IsValueType ? Activator.CreateInstance(type) : null;
 
-        static PropertyInfo GetExplicitForeignKeyProperty(this Type type, Type destinationType)
-        {
-            return (from property in type.GetRuntimeProperties()
-                where property.IsPublicInstance()
-                let foreignKeyAttribute = property.GetAttribute<ForeignKeyAttribute>()
-                where foreignKeyAttribute != null &&
-                    foreignKeyAttribute.ForeignType.GetTypeInfo()
-                        .IsAssignableFrom(destinationType.GetTypeInfo())
-                select property).FirstOrDefault();
-        }
+        private static PropertyInfo GetExplicitForeignKeyProperty(this Type type, Type destinationType) =>
+            (from property in type.GetRuntimeProperties() where property.IsPublicInstance() let foreignKeyAttribute =
+                    property.GetAttribute<ForeignKeyAttribute>()
+                where foreignKeyAttribute != null && foreignKeyAttribute.ForeignType.GetTypeInfo()
+                    .IsAssignableFrom(destinationType.GetTypeInfo()) select property).FirstOrDefault();
 
-        static PropertyInfo GetConventionForeignKeyProperty(this Type type, string destinationTypeName)
+        private static PropertyInfo GetConventionForeignKeyProperty(this Type type, string destinationTypeName)
         {
             var conventionFormats = new List<string> { "{0}Id", "{0}Key", "{0}ForeignKey" };
             var conventionNames = conventionFormats
-                .Select(format => string.Format(format, destinationTypeName))
-                .ToList();
+                .Select(format => string.Format(format, destinationTypeName)).ToList();
 
             // No explicit declaration, search for convention names
-            return (from property in type.GetRuntimeProperties()
-                where property.IsPublicInstance() &&
-                    conventionNames.Contains(property.Name, StringComparer.OrdinalIgnoreCase)
-                select property).FirstOrDefault();
+            return (from property in type.GetRuntimeProperties() where property.IsPublicInstance() &&
+                    conventionNames.Contains(property.Name, StringComparer.OrdinalIgnoreCase) select property)
+                .FirstOrDefault();
         }
 
         public static PropertyInfo GetForeignKeyProperty(this Type type, PropertyInfo relationshipProperty,
@@ -111,71 +94,53 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
             // Inverse relationships may have the foreign key declared in the inverse property relationship attribute
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
-            if (inverseProperty != null) {
-                inverseAttribute = inverseProperty.GetAttribute<RelationshipAttribute>();
-            }
-
-            if (!inverse && !string.IsNullOrEmpty(attribute.ForeignKey)) {
+            if (inverseProperty != null) inverseAttribute = inverseProperty.GetAttribute<RelationshipAttribute>();
+            if (!inverse && !string.IsNullOrEmpty(attribute.ForeignKey))
                 // Explicitly declared foreign key name
                 result = originType.GetRuntimeProperty(attribute.ForeignKey);
-            }
-            else if (!inverse &&
-                     inverseAttribute != null &&
-                     !string.IsNullOrEmpty(inverseAttribute.InverseForeignKey)) {
+            else if (!inverse && inverseAttribute != null && !string.IsNullOrEmpty(inverseAttribute.InverseForeignKey))
                 // Explicitly declared inverse foreign key name in inverse property (double inverse refers to current entity foreign key)
                 result = originType.GetRuntimeProperty(inverseAttribute.InverseForeignKey);
-            }
-            else if (inverse && !string.IsNullOrEmpty(attribute.InverseForeignKey)) {
+            else if (inverse && !string.IsNullOrEmpty(attribute.InverseForeignKey))
                 // Explicitly declared inverse foreign key name
                 result = originType.GetRuntimeProperty(attribute.InverseForeignKey);
-            }
-            else if (inverse &&
-                     inverseAttribute != null &&
-                     !string.IsNullOrEmpty(inverseAttribute.ForeignKey)) {
+            else if (inverse && inverseAttribute != null && !string.IsNullOrEmpty(inverseAttribute.ForeignKey))
                 // Explicitly declared foreign key name in inverse property
                 result = originType.GetRuntimeProperty(inverseAttribute.ForeignKey);
-            }
-            else {
+            else
                 // Explicitly declared attribute
                 result = originType.GetExplicitForeignKeyProperty(destinationType) ??
                     originType.GetConventionForeignKeyProperty(destinationType.Name);
-            }
-
             return result;
         }
 
         public static PropertyInfo GetInverseProperty(this Type elementType, PropertyInfo property)
         {
             var attribute = property.GetAttribute<RelationshipAttribute>();
-            if (attribute == null ||
-                attribute.InverseProperty != null && attribute.InverseProperty.Equals("")) {
+            if (attribute == null || (attribute.InverseProperty != null && attribute.InverseProperty.Equals("")))
                 // Relationship not reversible
                 return null;
-            }
-
             EnclosedType enclosedType;
             var propertyType = property.GetEntityType(out enclosedType);
             PropertyInfo result = null;
+
             if (attribute.InverseProperty != null) {
                 result = propertyType.GetRuntimeProperty(attribute.InverseProperty);
             }
             else {
-                var properties = from p in propertyType.GetRuntimeProperties()
-                    where p.IsPublicInstance()
-                    select p;
+                var properties = from p in propertyType.GetRuntimeProperties() where p.IsPublicInstance() select p;
 
                 foreach (var inverseProperty in properties) {
                     var inverseAttribute = inverseProperty.GetAttribute<RelationshipAttribute>();
                     EnclosedType enclosedInverseType;
                     var inverseType = inverseProperty.GetEntityType(out enclosedInverseType);
-                    if (inverseAttribute != null &&
-                        inverseType.GetTypeInfo().Equals(elementType.GetTypeInfo())) {
+
+                    if (inverseAttribute != null && inverseType.GetTypeInfo().Equals(elementType.GetTypeInfo())) {
                         result = inverseProperty;
                         break;
                     }
                 }
             }
-
             return result;
         }
 
@@ -202,28 +167,21 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             };
         }
 
-        public static List<PropertyInfo> GetRelationshipProperties(this Type type)
-        {
-            return (from property in type.GetRuntimeProperties()
+        public static List<PropertyInfo> GetRelationshipProperties(this Type type) =>
+            (from property in type.GetRuntimeProperties()
                 where property.IsPublicInstance() && property.GetAttribute<RelationshipAttribute>() != null
                 select property).ToList();
-        }
 
-        public static PropertyInfo GetPrimaryKey(this Type type)
-        {
-            return (from property in type.GetRuntimeProperties()
+        public static PropertyInfo GetPrimaryKey(this Type type) => (from property in type.GetRuntimeProperties()
                 where property.IsPublicInstance() && property.GetAttribute<PrimaryKeyAttribute>() != null
-                select property).FirstOrDefault();
-        }
+                select property)
+            .FirstOrDefault();
 
         public static string GetTableName(this Type type)
         {
             var tableName = type.Name;
             var tableAttribute = type.GetAttribute<TableAttribute>();
-            if (tableAttribute != null && tableAttribute.Name != null) {
-                tableName = tableAttribute.Name;
-            }
-
+            if (tableAttribute != null && tableAttribute.Name != null) tableName = tableAttribute.Name;
             return tableName;
         }
 
@@ -231,23 +189,13 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         {
             var column = property.Name;
             var columnAttribute = property.GetAttribute<ColumnAttribute>();
-            if (columnAttribute != null && columnAttribute.Name != null) {
-                column = columnAttribute.Name;
-            }
-
+            if (columnAttribute != null && columnAttribute.Name != null) column = columnAttribute.Name;
             return column;
         }
 
         // Equivalent to old GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        static bool IsPublicInstance(this PropertyInfo propertyInfo)
-        {
-            return propertyInfo != null &&
-                propertyInfo.GetMethod != null &&
-                !propertyInfo.GetMethod.IsStatic &&
-                propertyInfo.GetMethod.IsPublic &&
-                propertyInfo.SetMethod != null &&
-                !propertyInfo.SetMethod.IsStatic &&
-                propertyInfo.SetMethod.IsPublic;
-        }
+        private static bool IsPublicInstance(this PropertyInfo propertyInfo) => propertyInfo != null &&
+            propertyInfo.GetMethod != null && !propertyInfo.GetMethod.IsStatic && propertyInfo.GetMethod.IsPublic &&
+            propertyInfo.SetMethod != null && !propertyInfo.SetMethod.IsStatic && propertyInfo.SetMethod.IsPublic;
     }
 }

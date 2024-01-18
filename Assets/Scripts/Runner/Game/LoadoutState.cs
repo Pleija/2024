@@ -280,7 +280,7 @@ namespace Runner.Game
                         var op = Addressables.LoadAssetAsync<GameObject>(c.characterName);
                         yield return op;
 
-                        if (!(op.Result is { }) ) {
+                        if (!(op.Result is { })) {
                             Debug.LogWarning(string.Format("Unable to load character {0}.", c.characterName));
                             yield break;
                         }
@@ -288,10 +288,7 @@ namespace Runner.Game
                         Helpers.SetRendererLayerRecursive(newChar, /*k_UILayer*/LayerMask.NameToLayer("Character"));
                         newChar.transform.SetParent(charPosition, false);
                         newChar.transform.rotation = k_FlippedYAxisRotation;
-
-                        if (m_Character != null) {
-                            Destroy(m_Character);
-                        }
+                        if (m_Character != null) Destroy(m_Character);
                         //Addressables.ReleaseInstance(m_Character);
                         m_Character = newChar;
                         OnCharacterCreate.Invoke(newChar);

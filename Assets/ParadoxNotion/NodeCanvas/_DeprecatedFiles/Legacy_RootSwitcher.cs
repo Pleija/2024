@@ -3,48 +3,42 @@ using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEngine;
 
-
 namespace NodeCanvas.BehaviourTrees
 {
-
-    [System.Obsolete]
-    [Category("Mutators (beta)")]
-    [Name("Root Switcher")]
-    [Description("Switch the root node of the behaviour tree to a new one defined by tag\nBeta Feature!")]
+    [System.Obsolete, Category("Mutators (beta)"), Name("Root Switcher"),
+     Description("Switch the root node of the behaviour tree to a new one defined by tag\nBeta Feature!")]
     public class RootSwitcher : BTNode
     {
-
         public string targetNodeTag;
-
         private Node targetNode;
 
-        public override void OnGraphStarted() {
+        public override void OnGraphStarted()
+        {
             targetNode = graph.GetNodeWithTag<Node>(targetNodeTag);
         }
 
-        protected override Status OnExecute(Component agent, IBlackboard blackboard) {
-
-            if ( string.IsNullOrEmpty(targetNodeTag) )
+        protected override Status OnExecute(Component agent, IBlackboard blackboard)
+        {
+            if (string.IsNullOrEmpty(targetNodeTag))
                 return Status.Failure;
-
-            if ( targetNode == null ) return Status.Failure;
-
-            if ( graph.primeNode != targetNode )
+            if (targetNode == null) return Status.Failure;
+            if (graph.primeNode != targetNode)
                 graph.primeNode = targetNode;
-
             return Status.Success;
         }
 
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-
-        protected override void OnNodeGUI() {
+        protected override void OnNodeGUI()
+        {
             GUILayout.Label("Switch To '" + targetNodeTag + "'");
         }
 
-        protected override void OnNodeInspectorGUI() {
-            targetNodeTag = EditorUtils.Popup<string>("Node Tag", targetNodeTag, graph.GetAllTagedNodes<Node>().Select(n => n.tag));
+        protected override void OnNodeInspectorGUI()
+        {
+            targetNodeTag = EditorUtils.Popup<string>("Node Tag", targetNodeTag,
+                graph.GetAllTagedNodes<Node>().Select(n => n.tag));
         }
 
 #endif

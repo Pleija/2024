@@ -4,29 +4,25 @@ using System.Collections;
 
 namespace NodeCanvas.Tasks.Actions
 {
-
-    [Category("✫ Blackboard")]
-    [Description("Triggers a boolean variable for 1 frame to True then back to False")]
+    [Category("✫ Blackboard"), Description("Triggers a boolean variable for 1 frame to True then back to False")]
     public class TriggerBoolean : ActionTask
     {
-
-        [RequiredField]
-        [BlackboardOnly]
+        [RequiredField, BlackboardOnly]
         public BBParameter<bool> variable;
 
-        protected override string info {
-            get { return string.Format("Trigger {0}", variable); }
-        }
+        protected override string info => string.Format("Trigger {0}", variable);
 
-        protected override void OnExecute() {
-            if ( variable.value == false ) {
+        protected override void OnExecute()
+        {
+            if (variable.value == false) {
                 variable.value = true;
                 StartCoroutine(Flip());
             }
             EndAction();
         }
 
-        IEnumerator Flip() {
+        private IEnumerator Flip()
+        {
             yield return null;
             variable.value = false;
         }

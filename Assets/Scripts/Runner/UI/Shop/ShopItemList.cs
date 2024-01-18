@@ -90,19 +90,16 @@ namespace Runner.UI.Shop
             var itemId = c.GetConsumableName();
             var itemType = "consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level, transactionId);
-
-            if (c.GetPrice() > 0) {
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level,
+                transactionId);
+            if (c.GetPrice() > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                           // Currency type
                     transactionContext, c.GetPrice(), itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
-            }
-
-            if (c.GetPremiumCost() > 0) {
+            if (c.GetPremiumCost() > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                                // Currency type
                     transactionContext, c.GetPremiumCost(), itemId, PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);
-            }
 #endif
             Refresh();
         }

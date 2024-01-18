@@ -18,7 +18,7 @@ namespace NodeCanvas.Editor
     public class BlackboardEditor : EditorObjectWrapper<IBlackboard>
     {
         private static readonly GUILayoutOption[] layoutOptions = new GUILayoutOption[] {
-            GUILayout.MaxWidth(100), GUILayout.ExpandWidth(true), GUILayout.MinHeight(18)
+            GUILayout.MaxWidth(100), GUILayout.ExpandWidth(true), GUILayout.MinHeight(18),
         };
 
         public static Variable pickedVariable { get; private set; }
@@ -43,7 +43,7 @@ namespace NodeCanvas.Editor
         }
 
         //...
-        void OnGraphSelectionChange(IGraphElement element)
+        private void OnGraphSelectionChange(IGraphElement element)
         {
             elementDefinedParameterIDs = element != null ? Graph.GetParametersInElement(element)
                 .Where(p => p != null && p.isDefined).Select(p => p.targetVariableID) : null;
@@ -63,20 +63,20 @@ namespace NodeCanvas.Editor
         }
 
         ///<summary>Show variables inspector for target bb. Optionally provide override serialization context object</summary>
-        void InspectorGUI(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
+        private void InspectorGUI(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
         {
             if (bb.parent != null) {
                 ShowVariables(bb.parent);
                 EditorUtils.Separator();
             }
-            this.contextObject = overrideContextObject != null ? overrideContextObject : bb.unityContextObject;
+            contextObject = overrideContextObject != null ? overrideContextObject : bb.unityContextObject;
             this.bb = bb;
-            this.variablesProperty = null;
+            variablesProperty = null;
 
             if (contextObject != null && PrefabUtility.IsPartOfPrefabInstance(contextObject) &&
                 bb.independantVariablesFieldName != null) {
-                this.serializedContext = new SerializedObject(contextObject);
-                this.variablesProperty = serializedContext.FindProperty(bb.independantVariablesFieldName);
+                serializedContext = new SerializedObject(contextObject);
+                variablesProperty = serializedContext.FindProperty(bb.independantVariablesFieldName);
             }
 
             //Add variable button
@@ -101,9 +101,8 @@ namespace NodeCanvas.Editor
             }
 
             //temp list to work with
-            if (tempVariablesList == null || !tempVariablesList.SequenceEqual(bb.variables.Values)) {
+            if (tempVariablesList == null || !tempVariablesList.SequenceEqual(bb.variables.Values))
                 tempVariablesList = bb.variables.Values.ToList();
-            }
 
             //The actual variables reorderable list
             var options = new EditorUtils.ReorderableListOptions();
@@ -125,10 +124,8 @@ namespace NodeCanvas.Editor
                 GUILayout.EndHorizontal();
                 GUI.color = Color.white;
                 GUI.backgroundColor = Color.white;
-
-                if (elementDefinedParameterIDs != null && elementDefinedParameterIDs.Contains(data.ID)) {
+                if (elementDefinedParameterIDs != null && elementDefinedParameterIDs.Contains(data.ID))
                     EditorUtils.HighlightLastField();
-                }
             });
 
             //apply temp list reconstruct the dictionary
@@ -147,7 +144,7 @@ namespace NodeCanvas.Editor
         }
 
         //...
-        void DoVariableGUI(Variable data, int index, bool isPicked)
+        private void DoVariableGUI(Variable data, int index, bool isPicked)
         {
             if (data is MissingVariableType) {
                 var missingVariableType = (MissingVariableType)data;
@@ -178,15 +175,13 @@ namespace NodeCanvas.Editor
             }
 
             //Make name field red if same name exists
-            if (tempVariablesList.Where(v => v != data).Select(v => v.name).Contains(data.name)) {
-                GUI.color = Color.red;
-            }
+            if (tempVariablesList.Where(v => v != data).Select(v => v.name).Contains(data.name)) GUI.color = Color.red;
             ShowDataLabelGUI(data, index);
             ShowDataFieldGUI(data, index);
         }
 
         //Data label (left side)
-        void ShowDataLabelGUI(Variable data, int index)
+        private void ShowDataLabelGUI(Variable data, int index)
         {
             var e = Event.current;
             var separator = data.value as VariableSeperator;
@@ -241,13 +236,11 @@ namespace NodeCanvas.Editor
             }
 
             //show a prefab override marker on the left side
-            if (isVariablePrefabInstanceModified) {
-                EditorUtils.MarkLastFieldOverride();
-            }
+            if (isVariablePrefabInstanceModified) EditorUtils.MarkLastFieldOverride();
         }
 
         //show variable data
-        void ShowDataFieldGUI(Variable data, int index)
+        private void ShowDataFieldGUI(Variable data, int index)
         {
             //Prop Bind info
             if (data.isPropertyBound) {
@@ -276,7 +269,7 @@ namespace NodeCanvas.Editor
             //     // }
             // } else 
             if (!Equals(data.value, newVal)) {
-                  Debug.Log("changed");
+                Debug.Log("changed");
                 UndoUtility.RecordObject(contextObject, "Variable Value Change");
                 data.value = newVal;
                 UndoUtility.SetDirty(contextObject);
@@ -285,31 +278,28 @@ namespace NodeCanvas.Editor
         }
 
         ///<summary>Return get add variable menu</summary>
-        GenericMenu GetAddVariableMenu(IBlackboard bb, UnityEngine.Object contextParent)
+        private GenericMenu GetAddVariableMenu(IBlackboard bb, UnityEngine.Object contextParent)
         {
-            System.Action<System.Type> AddNewVariable = (t) => {
+            Action<Type> AddNewVariable = (t) => {
                 UndoUtility.RecordObject(contextParent, "Variable Added");
                 var name = "my" + t.FriendlyName();
-
-                while (bb.GetVariable(name) != null) {
-                    name += ".";
-                }
+                while (bb.GetVariable(name) != null) name += ".";
                 bb.AddVariable(name, t);
                 UndoUtility.SetDirty(contextParent);
             };
-            System.Action<PropertyInfo> AddBoundProp = (p) => {
+            Action<PropertyInfo> AddBoundProp = (p) => {
                 UndoUtility.RecordObject(contextParent, "Variable Added");
                 var newVar = bb.AddVariable(p.Name, p.PropertyType);
                 newVar.BindProperty(p);
                 UndoUtility.SetDirty(contextParent);
             };
-            System.Action<FieldInfo> AddBoundField = (f) => {
+            Action<FieldInfo> AddBoundField = (f) => {
                 UndoUtility.RecordObject(contextParent, "Variable Added");
                 var newVar = bb.AddVariable(f.Name, f.FieldType);
                 newVar.BindProperty(f);
                 UndoUtility.SetDirty(contextParent);
             };
-            System.Action AddSeparator = () => {
+            Action AddSeparator = () => {
                 UndoUtility.RecordObject(contextParent, "Separator Added");
                 bb.AddVariable("Separator (Double Click To Rename)", new VariableSeperator());
                 UndoUtility.SetDirty(contextParent);
@@ -329,7 +319,7 @@ namespace NodeCanvas.Editor
             }
 
             foreach (var type in TypePrefs.GetPreferedTypesList()) {
-                if (bb.propertiesBindTarget != null && typeof(UnityEngine.Component).RTIsAssignableFrom(type)) {
+                if (bb.propertiesBindTarget != null && typeof(Component).RTIsAssignableFrom(type)) {
                     menu = EditorUtils.GetInstanceFieldSelectionMenu(type, typeof(object), AddBoundField, menu,
                         "Bound (Self)");
                     menu = EditorUtils.GetInstancePropertySelectionMenu(type, typeof(object), AddBoundProp, false,
@@ -348,7 +338,7 @@ namespace NodeCanvas.Editor
         }
 
         ///<summary>Get a menu for variable</summary>
-        GenericMenu GetVariableMenu(Variable data, int index)
+        private GenericMenu GetVariableMenu(Variable data, int index)
         {
             var menu = new GenericMenu();
 
@@ -363,12 +353,12 @@ namespace NodeCanvas.Editor
                 });
                 return menu;
             }
-            System.Action<PropertyInfo> BindProp = (p) => {
+            Action<PropertyInfo> BindProp = (p) => {
                 UndoUtility.RecordObject(contextObject, "Bind Variable");
                 data.BindProperty(p);
                 UndoUtility.SetDirty(contextObject);
             };
-            System.Action<FieldInfo> BindField = (f) => {
+            Action<FieldInfo> BindField = (f) => {
                 UndoUtility.RecordObject(contextObject, "Bind Variable");
                 data.BindProperty(f);
                 UndoUtility.SetDirty(contextObject);
@@ -386,7 +376,7 @@ namespace NodeCanvas.Editor
             }
 
             foreach (var type in TypePrefs.GetPreferedTypesList()) {
-                if (bb.propertiesBindTarget != null && typeof(UnityEngine.Component).RTIsAssignableFrom(type)) {
+                if (bb.propertiesBindTarget != null && typeof(Component).RTIsAssignableFrom(type)) {
                     menu = EditorUtils.GetInstanceFieldSelectionMenu(type, typeof(object), BindField, menu,
                         "Bind (Self)");
                     menu = EditorUtils.GetInstancePropertySelectionMenu(type, typeof(object), BindProp, false, false,
@@ -404,16 +394,14 @@ namespace NodeCanvas.Editor
 
             if (bb is BlackboardSource) {
                 //TODO: avoid this check
-                if (!data.isPropertyBound) {
+                if (!data.isPropertyBound)
                     menu.AddItem(new GUIContent("Exposed Public"), data.isExposedPublic, () => {
                         UndoUtility.RecordObject(contextObject, "Modify Variable");
                         data.isExposedPublic = !data.isExposedPublic;
                         UndoUtility.SetDirty(contextObject);
                     });
-                }
-                else {
+                else
                     menu.AddDisabledItem(new GUIContent("Bound Variables Can't Be Exposed"));
-                }
             }
             menu.AddSeparator("/");
 
@@ -450,7 +438,7 @@ namespace NodeCanvas.Editor
                     UndoUtility.SetDirty(contextObject);
                 });
             }
-            System.Action<System.Type> ChangeType = (t) => {
+            Action<Type> ChangeType = (t) => {
                 UndoUtility.RecordObject(contextObject, "Change Variable Type");
                 bb.ChangeVariableType(data, t);
                 UndoUtility.SetDirty(contextObject);
@@ -469,7 +457,7 @@ namespace NodeCanvas.Editor
         }
 
         //the variable data field
-        object VariableField(Variable data, UnityEngine.Object contextParent, GUILayoutOption[] layoutOptions)
+        private object VariableField(Variable data, UnityEngine.Object contextParent, GUILayoutOption[] layoutOptions)
         {
             var o = data.value;
             var t = data.varType;
@@ -483,37 +471,31 @@ namespace NodeCanvas.Editor
 
             //allow creation of derived classes for abstract classes via button
             if (o == null && t.IsAbstract && !typeof(UnityEngine.Object).IsAssignableFrom(t) && !t.IsInterface &&
-                t != typeof(System.Type)) {
-                if (GUILayout.Button("(null) Create-1", layoutOptions)) {
+                t != typeof(Type)) {
+                if (GUILayout.Button("(null) Create-1", layoutOptions))
                     EditorUtils.GetTypeSelectionMenu(t, (derived) => {
-                        data.value = System.Activator.CreateInstance(derived);
+                        data.value = Activator.CreateInstance(derived);
                     }).ShowAsBrowser("Select Derived Type");
-                }
                 return o;
             }
             ///----------------------------------------------------------------------------------------------
             bool handled;
             o = EditorUtils.DirectFieldControl(GUIContent.none, o, t, contextParent, null, out handled, data,
                 layoutOptions);
-
-            if (handled) {
-                return o;
-            }
+            if (handled) return o;
             ///----------------------------------------------------------------------------------------------
 
             //If some other type, show it in the generic object editor window with its true value type
             t = o != null ? o.GetType() : t;
-
             if (GUILayout.Button(
-                    string.Format("{0} {1}", t.FriendlyName(),
-                        (o is IList) ? ((IList)o).Count.ToString() : string.Empty), layoutOptions)) {
+                    string.Format("{0} {1}", t.FriendlyName(), o is IList ? ((IList)o).Count.ToString() : string.Empty),
+                    layoutOptions))
                 //we use bb.GetVariableByID to avoid undo creating new instance of variable and thus generic inspector, left inspecting something else
                 GenericInspectorWindow.Show(data.name, t, contextParent, () => {
                     return bb.GetVariableByID(data.ID).value;
                 }, (newValue) => {
                     bb.GetVariableByID(data.ID).value = newValue;
                 });
-            }
             return o;
         }
     }

@@ -1,6 +1,4 @@
 ﻿#if UNITY_EDITOR
-
-
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -19,10 +17,7 @@ namespace MoreTags
             m_Color = TagSystem.GetTagColor(tag);
         }
 
-        public override Vector2 GetWindowSize()
-        {
-            return new Vector2(80, EditorGUIUtility.singleLineHeight + 4);
-        }
+        public override Vector2 GetWindowSize() => new Vector2(80, EditorGUIUtility.singleLineHeight + 4);
 
         public override void OnGUI(Rect rect)
         {
@@ -31,13 +26,12 @@ namespace MoreTags
             r.yMin += 2;
             r.xMax -= 2;
             r.yMax -= 2;
-
             var col = EditorGUI.ColorField(r, m_Color);
-            if (m_Color != col)
-            {
+
+            if (m_Color != col) {
                 m_Color = col;
                 TagSystem.SetTagColor(m_Tag, m_Color);
-                for (int i = 0; i < EditorSceneManager.loadedSceneCount; i++)
+                for (var i = 0; i < EditorSceneManager.loadedSceneCount; i++)
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetSceneAt(i));
             }
         }

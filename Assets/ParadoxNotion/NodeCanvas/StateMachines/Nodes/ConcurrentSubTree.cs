@@ -5,14 +5,11 @@ using NodeCanvas.BehaviourTrees;
 
 namespace NodeCanvas.StateMachines
 {
-
-    [Name("Parallel Sub Behaviour Tree", -1)]
-    [Description("Execute a Sub Behaviour Tree in parallel and for as long as this FSM is running.")]
-    [Category("SubGraphs")]
-    [Color("ff64cb")]
+    [Name("Parallel Sub Behaviour Tree", -1),
+     Description("Execute a Sub Behaviour Tree in parallel and for as long as this FSM is running."),
+     Category("SubGraphs"), Color("ff64cb")]
     public class ConcurrentSubTree : FSMNodeNested<BehaviourTree>, IUpdatable
     {
-
         [SerializeField, ExposeField, Name("Parallel Tree")]
         protected BBParameter<BehaviourTree> _subTree = null;
 
@@ -21,18 +18,25 @@ namespace NodeCanvas.StateMachines
         public override int maxOutConnections => 0;
         public override bool allowAsPrime => false;
 
-        public override BehaviourTree subGraph { get { return _subTree.value; } set { _subTree.value = value; } }
+        public override BehaviourTree subGraph {
+            get => _subTree.value;
+            set => _subTree.value = value;
+        }
+
         public override BBParameter subGraphParameter => _subTree;
 
         ///----------------------------------------------------------------------------------------------
-
-        public override void OnGraphStarted() {
-            if ( subGraph == null ) { return; }
+        public override void OnGraphStarted()
+        {
+            if (subGraph == null) return;
             status = Status.Running;
-            this.TryStartSubGraph(graphAgent, (result) => { status = result ? Status.Success : Status.Failure; });
+            this.TryStartSubGraph(graphAgent, (result) => {
+                status = result ? Status.Success : Status.Failure;
+            });
         }
 
-        void IUpdatable.Update() {
+        void IUpdatable.Update()
+        {
             this.TryUpdateSubGraph();
         }
     }

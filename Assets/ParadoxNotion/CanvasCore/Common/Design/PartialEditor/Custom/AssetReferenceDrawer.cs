@@ -22,7 +22,7 @@ namespace ParadoxNotion
                 property = serializedObject.FindProperty("Reference");
             }
             serializedObject.Update();
-            EditorGUILayout.PropertyField(property, content,false);
+            EditorGUILayout.PropertyField(property, content, false);
             serializedObject.ApplyModifiedProperties();
             return target.Reference;
             //return EditorUtils.DrawEditorFieldDirect(content, instance, objectType, info) as AssetReference;

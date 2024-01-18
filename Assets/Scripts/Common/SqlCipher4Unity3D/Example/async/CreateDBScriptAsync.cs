@@ -13,9 +13,8 @@ namespace SqlCipher4Unity3D.Example.async
         // Use this for initialization
         private async void Start()
         {
-            DataServiceAsync ds = new DataServiceAsync("tempDatabase.db");
+            var ds = new DataServiceAsync("tempDatabase.db");
             await ds.CreateDB();
-
             IEnumerable<Person> people = await ds.GetPersons().ToListAsync();
             ToConsole(people);
             people = await ds.GetPersonsNamedRoberto().ToListAsync();
@@ -25,12 +24,12 @@ namespace SqlCipher4Unity3D.Example.async
 
         private void ToConsole(IEnumerable<Person> people)
         {
-            foreach (Person person in people) ToConsole(person.ToString());
+            foreach (var person in people) ToConsole(person.ToString());
         }
 
         private void ToConsole(string msg)
         {
-            this.DebugText.text += Environment.NewLine + msg;
+            DebugText.text += Environment.NewLine + msg;
             Debug.Log(msg);
         }
     }

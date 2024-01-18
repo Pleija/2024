@@ -93,11 +93,8 @@ namespace Runner.Characters
             }
         }
 
-        
-
         public void Update()
         {
-         
             // Every coin registered to the magnetCoin list (used by the magnet powerup exclusively, but could be used by other power up) is dragged toward the player.
             for (var i = 0; i < magnetCoins.Count; ++i)
                 magnetCoins[i].transform.position = Vector3.MoveTowards(magnetCoins[i].transform.position,
@@ -133,12 +130,10 @@ namespace Runner.Characters
                     ob.Impacted();
                 else
                     Addressables.ReleaseInstance(c.gameObject);
-
                 if (TrackManager.instance.isTutorial)
                     m_TutorialHitObstacle = true;
-                else {
+                else
                     controller.currentLife -= 1;
-                }
                 controller.character.animator.SetTrigger(s_HitHash);
 
                 if (controller.currentLife > 0) {

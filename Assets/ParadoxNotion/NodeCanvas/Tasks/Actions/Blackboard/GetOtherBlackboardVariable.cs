@@ -5,28 +5,25 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-
-    [Category("✫ Blackboard")]
-    [Description("Use this to get a variable on any blackboard by overriding the agent")]
+    [Category("✫ Blackboard"), Description("Use this to get a variable on any blackboard by overriding the agent")]
     public class GetOtherBlackboardVariable : ActionTask<Blackboard>
     {
-
         [RequiredField]
         public BBParameter<string> targetVariableName;
+
         [BlackboardOnly]
         public BBObjectParameter saveAs;
 
-        protected override string info {
-            get { return string.Format("{0} = {1}", saveAs, targetVariableName); }
-        }
+        protected override string info => string.Format("{0} = {1}", saveAs, targetVariableName);
 
-        protected override void OnExecute() {
+        protected override void OnExecute()
+        {
             var targetVar = agent.GetVariable(targetVariableName.value);
-            if ( targetVar == null ) {
+
+            if (targetVar == null) {
                 EndAction(false);
                 return;
             }
-
             saveAs.value = targetVar.value;
             EndAction(true);
         }
@@ -34,14 +31,13 @@ namespace NodeCanvas.Tasks.Actions
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-
-        protected override void OnTaskInspectorGUI() {
-            if ( GUILayout.Button("Select Target Variable Type") ) {
-                EditorUtils.ShowPreferedTypesSelectionMenu(typeof(object), (t) => { saveAs.SetType(t); });
-            }
-            if ( saveAs.varType != typeof(object) ) {
-                DrawDefaultInspector();
-            }
+        protected override void OnTaskInspectorGUI()
+        {
+            if (GUILayout.Button("Select Target Variable Type"))
+                EditorUtils.ShowPreferedTypesSelectionMenu(typeof(object), (t) => {
+                    saveAs.SetType(t);
+                });
+            if (saveAs.varType != typeof(object)) DrawDefaultInspector();
         }
 
 #endif

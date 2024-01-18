@@ -12,7 +12,7 @@ public class PressMjs : AssetPostprocessor
     private static string[] files;
 
     [InitializeOnLoadMethod]
-    static void Setup()
+    private static void Setup()
     {
         EditorApplication.delayCall += () => ready = true;
     }
@@ -22,13 +22,10 @@ public class PressMjs : AssetPostprocessor
     {
         if (EditorApplication.isCompiling) return;
         files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist")).ToArray();
-
-        if (files.Any()) {
-            EditorApplication.delayCall += Push;
-        }
+        if (files.Any()) EditorApplication.delayCall += Push;
     }
 
-    static void Push()
+    private static void Push()
     {
         EditorApplication.delayCall -= Push;
         files.ForEach(path => {

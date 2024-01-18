@@ -21,46 +21,14 @@ namespace MoreTags
         public abstract TagPattern With(string tag);
         public abstract TagPattern Both(params string[] tags);
         public abstract TagPattern Either(params string[] tags);
-
-        public static implicit operator TagPattern(string pattern)
-        {
-            return TagHelper.StringToPattern(pattern);
-        }
-
-        public static TagPattern operator &(TagPattern a, TagPattern b)
-        {
-            return a.And(b);
-        }
-
-        public static TagPattern operator |(TagPattern a, TagPattern b)
-        {
-            return a.Or(b);
-        }
-
-        public static TagPattern operator -(TagPattern a, TagPattern b)
-        {
-            return a.Exclude(b);
-        }
-
-        public static TagPattern operator -(TagPattern a)
-        {
-            return TagSystem.pattern.All().Exclude(a);
-        }
-
-        public static TagPattern operator &(TagName a, TagPattern b)
-        {
-            return (TagPattern)a & b;
-        }
-
-        public static TagPattern operator |(TagName a, TagPattern b)
-        {
-            return (TagPattern)a | b;
-        }
-
-        public static TagPattern operator -(TagName a, TagPattern b)
-        {
-            return (TagPattern)a - b;
-        }
+        public static implicit operator TagPattern(string pattern) => TagHelper.StringToPattern(pattern);
+        public static TagPattern operator &(TagPattern a, TagPattern b) => a.And(b);
+        public static TagPattern operator |(TagPattern a, TagPattern b) => a.Or(b);
+        public static TagPattern operator -(TagPattern a, TagPattern b) => a.Exclude(b);
+        public static TagPattern operator -(TagPattern a) => TagSystem.pattern.All().Exclude(a);
+        public static TagPattern operator &(TagName a, TagPattern b) => (TagPattern)a & b;
+        public static TagPattern operator |(TagName a, TagPattern b) => (TagPattern)a | b;
+        public static TagPattern operator -(TagName a, TagPattern b) => (TagPattern)a - b;
     }
 
     public class TagTableData
@@ -79,15 +47,9 @@ namespace MoreTags
 
     public static class TagSystem
     {
-        public static TagPattern pattern {
-            get { return new TagPatternImpl(); }
-        }
-
+        public static TagPattern pattern => new TagPatternImpl();
         private static TagManager s_TagManager => TagManager.self;
-
-        private static Dictionary<string, TagTableData> s_TagTable =
-            new Dictionary<string, TagTableData>();
-
+        private static Dictionary<string, TagTableData> s_TagTable = new Dictionary<string, TagTableData>();
         private static GameObject[] s_SearchFrom = null;
 
         public static void Reset()
@@ -95,7 +57,7 @@ namespace MoreTags
             s_TagTable.Clear();
         }
 
-        public static void BeforeSerialize(ref List<TagData>  tags /*, Scene scene*/)
+        public static void BeforeSerialize(ref List<TagData> tags /*, Scene scene*/)
         {
             var origin = tags;
             tags = s_TagTable.Select((kv) => new TagData() {
@@ -111,11 +73,11 @@ namespace MoreTags
             //Debug.Log("[TagSystem] Save");
         }
 
-        public static void LoadDataToTable(List<TagData>  tags)
+        public static void LoadDataToTable(List<TagData> tags)
         {
-            foreach(var data in tags) {
+            foreach (var data in tags) {
                 var list = data.gameObjects;
-                if(s_TagTable.ContainsKey(data.name))
+                if (s_TagTable.ContainsKey(data.name))
                     list = s_TagTable[data.name].gameObjects.Union(list).ToArray();
                 else
                     s_TagTable[data.name] = new TagTableData();
@@ -142,22 +104,21 @@ namespace MoreTags
         public static void CheckGameObjectTag(GameObject go)
         {
             var tags = go.GetComponent<Tags>();
-            if(tags == null)
+            if (tags == null)
                 go.AddComponent<Tags>();
         }
 
         public static void RemoveUnusedTag()
         {
             RemoveNullGameObject();
-            var remove = s_TagTable.Where(kv => !s_TagTable[kv.Key].gameObjects.Any())
-                .Select(kv => kv.Key).ToArray();
-            foreach(var key in remove)
+            var remove = s_TagTable.Where(kv => !s_TagTable[kv.Key].gameObjects.Any()).Select(kv => kv.Key).ToArray();
+            foreach (var key in remove)
                 s_TagTable.Remove(key);
         }
 
         public static void RemoveNullGameObject()
         {
-            foreach(var data in s_TagTable)
+            foreach (var data in s_TagTable)
                 data.Value.gameObjects.RemoveWhere(go => go == null);
         }
 
@@ -169,44 +130,38 @@ namespace MoreTags
         public static void AddTag(params string[] tags)
         {
             s_TagManager.AddTag(tags);
-
-            foreach(var tag in tags)
-                if(!s_TagTable.ContainsKey(tag)) {
+            foreach (var tag in tags)
+                if (!s_TagTable.ContainsKey(tag))
                     s_TagTable.Add(tag, new TagTableData());
-                }
         }
 
         public static void RemoveTag(params string[] tags)
         {
             s_TagManager.RemoveTag(tags);
-            foreach(var tag in tags)
-                if(s_TagTable.ContainsKey(tag))
+            foreach (var tag in tags)
+                if (s_TagTable.ContainsKey(tag))
                     s_TagTable.Remove(tag);
         }
 
         public static void RenameTag(string old, string tag)
         {
-            if(string.IsNullOrEmpty(tag)) return;
-            if(!s_TagTable.ContainsKey(old)) return;
-            if(s_TagTable.ContainsKey(tag)) return;
+            if (string.IsNullOrEmpty(tag)) return;
+            if (!s_TagTable.ContainsKey(old)) return;
+            if (s_TagTable.ContainsKey(tag)) return;
             s_TagTable[tag] = s_TagTable[old];
             s_TagTable.Remove(old);
-            s_TagManager.RenameTag(old,tag);
+            s_TagManager.RenameTag(old, tag);
         }
 
         public static void SetTagColor(string tag, Color col)
         {
-            if(!s_TagTable.ContainsKey(tag)) {
-                AddTag(tag);
-            }
+            if (!s_TagTable.ContainsKey(tag)) AddTag(tag);
             s_TagTable[tag].color = col;
         }
 
         public static Color GetTagColor(string tag)
         {
-            if(!s_TagTable.ContainsKey(tag)) {
-                AddTag(tag);
-            }
+            if (!s_TagTable.ContainsKey(tag)) AddTag(tag);
             return s_TagTable[tag].color;
         }
 
@@ -214,7 +169,7 @@ namespace MoreTags
         {
             CheckTagManager(go.scene);
             AddTag(tags);
-            foreach(var tag in tags)
+            foreach (var tag in tags)
                 s_TagTable[tag].gameObjects.Add(go);
             CheckGameObjectTag(go);
         }
@@ -222,42 +177,27 @@ namespace MoreTags
         public static void RemoveGameObjectTag(GameObject go, params string[] tags)
         {
             CheckTagManager(go.scene);
-            foreach(var tag in tags)
-                if(s_TagTable.ContainsKey(tag))
+            foreach (var tag in tags)
+                if (s_TagTable.ContainsKey(tag))
                     s_TagTable[tag].gameObjects.Remove(go);
             CheckGameObjectTag(go);
         }
 
         public static string[] GetGameObjectTags(GameObject go)
         {
-            return s_TagTable.Where(kv => kv.Value.gameObjects.Contains(go)).Select(kv => kv.Key)
-                .ToArray();
+            return s_TagTable.Where(kv => kv.Value.gameObjects.Contains(go)).Select(kv => kv.Key).ToArray();
         }
 
-        public static string[] GetAllTags()
-        {
-            return s_TagTable.Keys.ToArray();
-        }
-
-        public static GameObject GetGameObject(string tag)
-        {
-            return pattern.With(tag).GameObject();
-        }
-
-        public static GameObject[] GetGameObjects(string tag)
-        {
-            return pattern.With(tag).GameObjects();
-        }
+        public static string[] GetAllTags() => s_TagTable.Keys.ToArray();
+        public static GameObject GetGameObject(string tag) => pattern.With(tag).GameObject();
+        public static GameObject[] GetGameObjects(string tag) => pattern.With(tag).GameObjects();
 
         public static IEnumerable<string> GameObjectTags(GameObject go)
         {
             return s_TagTable.Where(kv => kv.Value.gameObjects.Contains(go)).Select(kv => kv.Key);
         }
 
-        public static IEnumerable<string> AllTags()
-        {
-            return s_TagTable.Keys.AsEnumerable();
-        }
+        public static IEnumerable<string> AllTags() => s_TagTable.Keys.AsEnumerable();
 
 #region TagPattern
         private class TagPatternImpl : TagPattern
@@ -268,20 +208,12 @@ namespace MoreTags
 
             private HashSet<GameObject> AllGameObject()
             {
-                var e = new HashSet<GameObject>(Object.FindObjectsOfType<GameObject>()
-                    .Where(go => go.scene.isLoaded));
+                var e = new HashSet<GameObject>(Object.FindObjectsOfType<GameObject>().Where(go => go.scene.isLoaded));
                 return s_SearchFrom == null ? e : e.And(s_SearchFrom);
             }
 
-            private HashSet<GameObject> Empty()
-            {
-                return new HashSet<GameObject>();
-            }
-
-            public override GameObject GameObject()
-            {
-                return GameObjects().FirstOrDefault();
-            }
+            private HashSet<GameObject> Empty() => new HashSet<GameObject>();
+            public override GameObject GameObject() => GameObjects().FirstOrDefault();
 
             public override GameObject[] GameObjects()
             {
@@ -289,10 +221,7 @@ namespace MoreTags
                 return list.ToArray();
             }
 
-            public override int Count()
-            {
-                return m_List.Count;
-            }
+            public override int Count() => m_List.Count;
 
             public override TagPattern And()
             {
@@ -312,25 +241,10 @@ namespace MoreTags
                 return this;
             }
 
-            public override TagPattern And(TagPattern pattern)
-            {
-                return Combine(pattern, Mode.And);
-            }
-
-            public override TagPattern Or(TagPattern pattern)
-            {
-                return Combine(pattern, Mode.Or);
-            }
-
-            public override TagPattern Exclude(TagPattern pattern)
-            {
-                return Combine(pattern, Mode.Exclude);
-            }
-
-            public override TagPattern Combine(TagPattern pattern)
-            {
-                return Combine(pattern, m_Mode);
-            }
+            public override TagPattern And(TagPattern pattern) => Combine(pattern, Mode.And);
+            public override TagPattern Or(TagPattern pattern) => Combine(pattern, Mode.Or);
+            public override TagPattern Exclude(TagPattern pattern) => Combine(pattern, Mode.Exclude);
+            public override TagPattern Combine(TagPattern pattern) => Combine(pattern, m_Mode);
 
             private TagPattern Combine(TagPattern pattern, Mode mode)
             {
@@ -338,16 +252,13 @@ namespace MoreTags
                 return Combine(pat.m_List, mode);
             }
 
-            private TagPattern Combine(HashSet<GameObject> list)
-            {
-                return Combine(list, m_Mode);
-            }
+            private TagPattern Combine(HashSet<GameObject> list) => Combine(list, m_Mode);
 
             private TagPattern Combine(HashSet<GameObject> list, Mode mode)
             {
                 list = list == null ? Empty() : list;
 
-                switch(mode) {
+                switch (mode) {
                     case Mode.And:
                         m_List = m_List == null ? list : m_List.And(list);
                         break;
@@ -355,8 +266,7 @@ namespace MoreTags
                         m_List = m_List == null ? list : m_List.Or(list);
                         break;
                     case Mode.Exclude:
-                        m_List = m_List == null ? AllGameObject().Exclude(list)
-                            : m_List.Exclude(list);
+                        m_List = m_List == null ? AllGameObject().Exclude(list) : m_List.Exclude(list);
                         break;
                 }
                 return this;
@@ -368,10 +278,7 @@ namespace MoreTags
                 return this;
             }
 
-            public override TagPattern With(string tag)
-            {
-                return Combine(WithInternal(tag));
-            }
+            public override TagPattern With(string tag) => Combine(WithInternal(tag));
 
             private HashSet<GameObject> WithInternal(string tag)
             {
@@ -380,37 +287,31 @@ namespace MoreTags
                 return s_SearchFrom == null ? e : e.And(s_SearchFrom);
             }
 
-            public override TagPattern Both(params string[] tags)
-            {
-                return Combine(BothInternal(tags));
-            }
+            public override TagPattern Both(params string[] tags) => Combine(BothInternal(tags));
 
             private HashSet<GameObject> BothInternal(IEnumerable<string> tags)
             {
-                if(!tags.Any()) return Empty();
-                foreach(var tag in tags)
-                    if(!s_TagTable.ContainsKey(tag))
+                if (!tags.Any()) return Empty();
+                foreach (var tag in tags)
+                    if (!s_TagTable.ContainsKey(tag))
                         return Empty();
                 var e = WithInternal(tags.First());
-                foreach(var tag in tags.Skip(1))
+                foreach (var tag in tags.Skip(1))
                     e = e.And(s_TagTable[tag].gameObjects, s_SearchFrom);
                 return e;
             }
 
-            public override TagPattern Either(params string[] tags)
-            {
-                return Combine(EitherInternal(tags));
-            }
+            public override TagPattern Either(params string[] tags) => Combine(EitherInternal(tags));
 
             private HashSet<GameObject> EitherInternal(IEnumerable<string> tags)
             {
                 var list = new List<string>();
-                foreach(var tag in tags)
-                    if(s_TagTable.ContainsKey(tag))
+                foreach (var tag in tags)
+                    if (s_TagTable.ContainsKey(tag))
                         list.Add(tag);
-                if(list.Count == 0) return Empty();
+                if (list.Count == 0) return Empty();
                 var e = WithInternal(list.First());
-                foreach(var tag in list.Skip(1))
+                foreach (var tag in list.Skip(1))
                     e = e.Or(s_TagTable[tag].gameObjects, s_SearchFrom);
                 return e;
             }
@@ -423,8 +324,8 @@ namespace MoreTags
             var less = a.Count < b.Count ? a : b;
             var more = a.Count >= b.Count ? a : b;
             var result = new HashSet<T>();
-            foreach(var item in less)
-                if(more.Contains(item))
+            foreach (var item in less)
+                if (more.Contains(item))
                     result.Add(item);
             return result;
         }
@@ -434,7 +335,7 @@ namespace MoreTags
             var less = a.Count < b.Count ? a : b;
             var more = a.Count >= b.Count ? a : b;
             var result = new HashSet<T>(more);
-            foreach(var item in less)
+            foreach (var item in less)
                 result.Add(item);
             return result;
         }
@@ -442,7 +343,7 @@ namespace MoreTags
         private static HashSet<T> Exclude<T>(this HashSet<T> a, HashSet<T> b)
         {
             var result = new HashSet<T>(a);
-            foreach(var item in b)
+            foreach (var item in b)
                 result.Remove(item);
             return result;
         }
@@ -450,28 +351,28 @@ namespace MoreTags
         private static HashSet<T> And<T>(this HashSet<T> a, IEnumerable<T> b)
         {
             var result = new HashSet<T>();
-            foreach(var item in b)
-                if(a.Contains(item))
+            foreach (var item in b)
+                if (a.Contains(item))
                     result.Add(item);
             return result;
         }
 
         private static HashSet<T> And<T>(this HashSet<T> a, HashSet<T> b, IEnumerable<T> c)
         {
-            if(c == null) return a.And(b);
+            if (c == null) return a.And(b);
             var result = new HashSet<T>();
-            foreach(var item in c)
-                if(a.Contains(item) && b.Contains(item))
+            foreach (var item in c)
+                if (a.Contains(item) && b.Contains(item))
                     result.Add(item);
             return result;
         }
 
         private static HashSet<T> Or<T>(this HashSet<T> a, HashSet<T> b, IEnumerable<T> c)
         {
-            if(c == null) return a.Or(b);
+            if (c == null) return a.Or(b);
             var result = new HashSet<T>(a);
-            foreach(var item in c)
-                if(b.Contains(item))
+            foreach (var item in c)
+                if (b.Contains(item))
                     result.Add(item);
             return result;
         }

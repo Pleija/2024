@@ -7,18 +7,16 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 {
     public static class TextBlobOperations
     {
-        static ITextBlobSerializer _serializer;
+        private static ITextBlobSerializer _serializer;
 
         public static void SetTextSerializer(ITextBlobSerializer serializer)
         {
             _serializer = serializer;
         }
 
-        public static ITextBlobSerializer GetTextSerializer()
-        {
+        public static ITextBlobSerializer GetTextSerializer() =>
             // If not specified, use default JSON serializer
-            return _serializer ?? (_serializer = new JsonBlobSerializer());
-        }
+            _serializer ?? (_serializer = new JsonBlobSerializer());
 
         public static void GetTextBlobChild(object element, PropertyInfo relationshipProperty)
         {
@@ -29,12 +27,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var textProperty = type.GetRuntimeProperty(textblobAttribute.TextProperty);
             Debug.Assert(textProperty != null && textProperty.PropertyType == typeof(string),
                 "Text property for TextBlob relationship not found");
-
-            var textValue = (string) textProperty.GetValue(element, null);
-            var value = textValue != null
-                ? GetTextSerializer().Deserialize(textValue, relationshipType)
-                : null;
-
+            var textValue = (string)textProperty.GetValue(element, null);
+            var value = textValue != null ? GetTextSerializer().Deserialize(textValue, relationshipType) : null;
             relationshipProperty.SetValue(element, value, null);
         }
 
@@ -47,7 +41,6 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var textProperty = type.GetRuntimeProperty(textblobAttribute.TextProperty);
             Debug.Assert(textProperty != null && textProperty.PropertyType == typeof(string),
                 "Text property for TextBlob relationship not found");
-
             var value = relationshipProperty.GetValue(element, null);
             var textValue = value != null ? GetTextSerializer().Serialize(value) : null;
             textProperty.SetValue(element, textValue, null);

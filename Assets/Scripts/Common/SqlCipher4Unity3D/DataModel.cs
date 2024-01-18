@@ -25,17 +25,13 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SqlCipher4Unity3D
 {
-    [ShowOdinSerializedPropertiesInInspector]
-    [System.Serializable, Preserve]
+    [ShowOdinSerializedPropertiesInInspector, Serializable, Preserve]
     public class ModelBase : ScriptableObject, ISerializationCallbackReceiver
     {
         public static readonly Dictionary<Type, ModelBase> Defaults = new Dictionary<Type, ModelBase>();
 
-        public static string Md5(string observedText)
-        {
-            return string.Join("",
-                from ba in MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(observedText)) select ba.ToString("x2"));
-        }
+        public static string Md5(string observedText) => string.Join("",
+            from ba in MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(observedText)) select ba.ToString("x2"));
 
         private static SQLiteConnection m_Connection;
         private static string dbPath => $"{Application.persistentDataPath}/{Md5("System")}.db";
@@ -52,20 +48,16 @@ namespace SqlCipher4Unity3D
             }
         }
 
-      
-
         [AutoIncrement, PrimaryKey]
         public int Id = 1;
 
         [FoldoutGroup("Default")]
         public string Version = "1.0";
 
-        [FoldoutGroup("Default")]
-        [TextArea]
+        [FoldoutGroup("Default"), TextArea]
         public string Extra = "{}";
 
-        [FoldoutGroup("Default")]
-        [TextArea]
+        [FoldoutGroup("Default"), TextArea]
         public string localExtra = "{}";
 
         [FoldoutGroup("Default")]
@@ -91,13 +83,13 @@ namespace SqlCipher4Unity3D
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (this == null) return;
-            UnitySerializationUtility.DeserializeUnityObject(this, ref this.serializationData);
+            UnitySerializationUtility.DeserializeUnityObject(this, ref serializationData);
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (this == null) return;
-            UnitySerializationUtility.SerializeUnityObject(this, ref this.serializationData);
+            UnitySerializationUtility.SerializeUnityObject(this, ref serializationData);
         }
     }
 
@@ -128,30 +120,24 @@ namespace SqlCipher4Unity3D
                         AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x))).FirstOrDefault();
                     // }
 #endif
-                    if (Application.isPlaying && !Application.isEditor) {
+                    if (Application.isPlaying && !Application.isEditor)
                         if (result == null && Res.Exists<T>() is { } locations) {
                             result = Defaults[typeof(T)] = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey)
                                 .WaitForCompletion();
                             Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
                         }
-                    }
-
-                    if (result == null) {
-                        Debug.Log($"{typeof(T).Name} asset not found");
-                    }
+                    if (result == null) Debug.Log($"{typeof(T).Name} asset not found");
                 }
 #if UNITY_EDITOR
                 // if(!Application.isEditor) return;
 
-                if ((result == null || AssetDatabase.GetAssetPath(result) == null)) {
+                if (result == null || AssetDatabase.GetAssetPath(result) == null) {
                     var settings = AddressableAssetSettingsDefaultObject.Settings;
                     //var entries = settings.groups.SelectMany(x => x.entries);
                     result = Defaults[typeof(T)] = table; //CreateInstance<T>();
                     var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
-
-                    if (!Directory.Exists(Path.GetDirectoryName(path))) {
+                    if (!Directory.Exists(Path.GetDirectoryName(path)))
                         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                    }
                     AssetDatabase.CreateAsset(table, path);
                     AssetDatabase.Refresh();
                     //AssetDatabase.SaveAssets();
@@ -233,7 +219,7 @@ namespace SqlCipher4Unity3D
                 .Where(x => !x.IsDefined(typeof(IgnoreAttribute), true)).ForEach(x => {
                     object value = null;
 
-                    if (!Regex.IsMatch(x.Name, @"^[A-Z]")) {
+                    if (!Regex.IsMatch(x.Name, @"^[A-Z]"))
                         switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                                 value = propertyInfo.GetValue(table, null) ??
@@ -247,8 +233,7 @@ namespace SqlCipher4Unity3D
                                 fieldInfo.SetValue(asset, value);
                                 break;
                         }
-                    }
-                    else {
+                    else
                         switch (x) {
                             case PropertyInfo { CanRead: true, CanWrite: true } propertyInfo:
                                 //Debug.Log($"check property: {x.Name}");
@@ -259,7 +244,6 @@ namespace SqlCipher4Unity3D
                                 value = fieldInfo.GetValue(asset);
                                 break;
                         }
-                    }
 
                     void ToSave(object t)
                     {
@@ -287,7 +271,7 @@ namespace SqlCipher4Unity3D
         }
 
         [ButtonGroup("2")]
-        void TestSave()
+        private void TestSave()
         {
             Save();
             Debug.Log(JsonConvert.SerializeObject(conn.Table<T>().FirstOrDefault(), Formatting.Indented));

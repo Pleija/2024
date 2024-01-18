@@ -17,7 +17,6 @@ namespace Runner.Obstacles
             var op = Addressables.LoadAssetAsync<GameObject>(gameObject.name);
             yield return op;
 
-
             if (!(op.Result is { })) {
                 Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                 yield break;

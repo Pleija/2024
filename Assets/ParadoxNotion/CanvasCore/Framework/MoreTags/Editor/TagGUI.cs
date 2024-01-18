@@ -26,16 +26,12 @@ namespace MoreTags
             void AddTag( /*List<string> tags,*/ string tag)
             {
                 TagSystem.AddTag(tag);
-
-                if(!data.Select(x => x.name).ToList().Contains(tag)) {
-                    data.Add(new TagData() {
-                        name = tag
-                    });
-                }
+                if (!data.Select(x => x.name).ToList().Contains(tag))
+                    data.Add(new TagData() { name = tag });
             }
 
             /*var*/
-            if(!tagGUI.Initial) {
+            if (!tagGUI.Initial) {
                 tagGUI.Initial = true;
                 TagSystem.AddTag(data.Select(x => x.name).ToArray());
                 // var tagGUI = new TagGUI();
@@ -50,16 +46,15 @@ namespace MoreTags
                     // return TagPreset.GetPresetColor(item);
                 };
                 tagGUI.OnAddItem += (item) => {
-                    if(!string.IsNullOrEmpty(item))
+                    if (!string.IsNullOrEmpty(item)) {
                         AddTag(item);
+                    }
                     else {
                         var menu = new GenericMenu();
-                        foreach(var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags())
-                                    .Except(data.Select(x => x.name).ToList())
-                                    .OrderBy(t => t.Contains(".") ? 0 : 1).ThenBy(tag =>
-                                        tag /*TagPreset.GetTagOrder(tag)*/))
-                            menu.AddItem(new GUIContent(tag.Replace(".", "/")), false,
-                                () => AddTag(tag));
+                        foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags())
+                                     .Except(data.Select(x => x.name).ToList()).OrderBy(t => t.Contains(".") ? 0 : 1)
+                                     .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
+                            menu.AddItem(new GUIContent(tag.Replace(".", "/")), false, () => AddTag(tag));
                         menu.ShowAsContext();
                     }
                 };
@@ -75,20 +70,18 @@ namespace MoreTags
                             data.RemoveAll(t => t.name == item);
                         });
                         menu.AddSeparator("");
-                        menu.AddItem(new GUIContent("[NONE]"), string.IsNullOrEmpty(t.value),
-                            () => {
-                                t.value = null;
+                        menu.AddItem(new GUIContent("[NONE]"), string.IsNullOrEmpty(t.value), () => {
+                            t.value = null;
+                            //AddTag(tag);
+                        });
+                        foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags()).Except(new[] { item })
+                                     .OrderBy(t => t.Contains(".") ? 0 : 1)
+                                     .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
+                            menu.AddItem(new GUIContent(tag.Replace(".", "/")), t.value == tag, () => {
+                                //var t = data.First(x => x.name == item);
+                                t.value = tag;
                                 //AddTag(tag);
                             });
-                        foreach(var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags())
-                                    .Except(new[] { item }).OrderBy(t => t.Contains(".") ? 0 : 1)
-                                    .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
-                            menu.AddItem(new GUIContent(tag.Replace(".", "/")), t.value == tag,
-                                () => {
-                                    //var t = data.First(x => x.name == item);
-                                    t.value = tag;
-                                    //AddTag(tag);
-                                });
                         menu.ShowAsContext();
                     };
             }
@@ -99,12 +92,12 @@ namespace MoreTags
 
         public void InitStyle()
         {
-            if(m_BgStyle != null) return;
+            if (m_BgStyle != null) return;
             m_BgStyle = new GUIStyle("CN CountBadge" /*"CN CountBadge"*/);
-            if(!EditorGUIUtility.isProSkin) return;
+            if (!EditorGUIUtility.isProSkin) return;
             var res = Resources.FindObjectsOfTypeAll<Texture2D>();
-            foreach(var tex in res)
-                if(tex.name.Equals("ConsoleCountBadge") && tex != m_BgStyle.normal.background)
+            foreach (var tex in res)
+                if (tex.name.Equals("ConsoleCountBadge") && tex != m_BgStyle.normal.background)
                     m_BgStyle.normal.background = tex;
         }
 
@@ -129,7 +122,7 @@ namespace MoreTags
             var bgrect = new Rect(newrect);
             bgrect.xMin = 16;
 
-            if(!string.IsNullOrEmpty(header)) {
+            if (!string.IsNullOrEmpty(header)) {
                 var gc = new GUIContent(header);
                 var w = headstyle.CalcSize(gc).x + 4;
                 bgrect.width = w;
@@ -142,12 +135,12 @@ namespace MoreTags
                 bgrect.xMin = bgrect.xMax;
             }
 
-            foreach(var item in list) {
+            foreach (var item in list) {
                 var s = item is string ? item as string : item.ToString();
                 var gc = OnItemString != null ? OnItemString(item) : new GUIContent(s);
                 var w = tagstyle.CalcSize(gc).x + 4;
 
-                if(bgrect.xMin + w > xMax) {
+                if (bgrect.xMin + w > xMax) {
                     newrect = EditorGUILayout.GetControlRect(GUILayout.Height(height));
                     bgrect = new Rect(newrect);
                     bgrect.xMin = string.IsNullOrEmpty(header) ? 16 : 30;
@@ -155,7 +148,7 @@ namespace MoreTags
                 bgrect.xMin += 2;
                 bgrect.width = w + 2;
                 var col = Color.white;
-                if(OnItemColor != null) col = OnItemColor(item);
+                if (OnItemColor != null) col = OnItemColor(item);
                 GUI.color = col;
                 GUI.Box(bgrect, GUIContent.none, m_BgStyle);
                 //var lum = col.grayscale > 0.5 ? col.grayscale - 0.5f : col.grayscale + 0.5f;
@@ -165,18 +158,18 @@ namespace MoreTags
                 rect.position += new Vector2(3, 0);
                 tagstyle.hover.textColor = Color.yellow;
 
-                if(GUI.Button(rect, gc, tagstyle)) {
-                    if(Event.current.button == 0 && OnClickItem != null)
+                if (GUI.Button(rect, gc, tagstyle)) {
+                    if (Event.current.button == 0 && OnClickItem != null)
                         OnClickItem(item);
-                    if(Event.current.button == 1 && OnRightClickItem != null)
+                    if (Event.current.button == 1 && OnRightClickItem != null)
                         OnRightClickItem(rect, item);
                 }
                 bgrect.xMin = bgrect.xMax;
                 GUI.color = guicolor;
             }
 
-            if(OnAddItem != null) {
-                if(bgrect.xMin + 150 > xMax) {
+            if (OnAddItem != null) {
+                if (bgrect.xMin + 150 > xMax) {
                     newrect = EditorGUILayout.GetControlRect(GUILayout.Height(height));
                     bgrect = new Rect(newrect);
                     bgrect.xMin = string.IsNullOrEmpty(header) ? 16 : 30;
@@ -192,7 +185,7 @@ namespace MoreTags
                 rect.position += new Vector2(5, 0);
                 rect.width = w + 3;
 
-                if(GUI.Button(rect, gc, addstyle)) {
+                if (GUI.Button(rect, gc, addstyle)) {
                     OnAddItem(m_NewItem);
                     m_NewItem = string.Empty;
                 }

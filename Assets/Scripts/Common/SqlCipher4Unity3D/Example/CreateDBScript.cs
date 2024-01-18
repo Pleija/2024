@@ -20,10 +20,9 @@ namespace SqlCipher4Unity3D.Example
         [Button]
         private void StartSync()
         {
-            DataService ds = new DataService("tempDatabase.db");
+            var ds = new DataService("tempDatabase.db");
             ds.CreateDB();
-
-            IEnumerable<Person> people = ds.GetPersons();
+            var people = ds.GetPersons();
             ToConsole(people);
             people = ds.GetPersonsNamedRoberto();
             ToConsole("Searching for Roberto ...");
@@ -32,12 +31,12 @@ namespace SqlCipher4Unity3D.Example
 
         private void ToConsole(IEnumerable<Person> people)
         {
-            foreach (Person person in people) ToConsole(person.ToString());
+            foreach (var person in people) ToConsole(person.ToString());
         }
 
         private void ToConsole(string msg)
         {
-            this.DebugText.text += Environment.NewLine + msg;
+            DebugText.text += Environment.NewLine + msg;
             Debug.Log(msg);
         }
     }

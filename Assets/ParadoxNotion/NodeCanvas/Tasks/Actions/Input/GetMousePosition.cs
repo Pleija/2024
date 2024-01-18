@@ -2,23 +2,30 @@ using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEngine;
 
-
 namespace NodeCanvas.Tasks.Actions
 {
-
     [Category("Input (Legacy System)")]
     public class GetMousePosition : ActionTask
     {
+        [BlackboardOnly]
+        public BBParameter<Vector3> saveAs;
 
-        [BlackboardOnly] public BBParameter<Vector3> saveAs;
         public bool repeat;
 
-        protected override void OnExecute() { Do(); }
-        protected override void OnUpdate() { Do(); }
+        protected override void OnExecute()
+        {
+            Do();
+        }
 
-        void Do() {
+        protected override void OnUpdate()
+        {
+            Do();
+        }
+
+        private void Do()
+        {
             saveAs.value = Input.mousePosition;
-            if ( !repeat ) { EndAction(); }
+            if (!repeat) EndAction();
         }
     }
 }

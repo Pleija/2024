@@ -8,92 +8,91 @@ using Logger = ParadoxNotion.Services.Logger;
 
 namespace NodeCanvas.DialogueTrees
 {
-
     ///<summary> Use DialogueTrees to create Dialogues between Actors</summary>
-    [GraphInfo(
-        packageName = "NodeCanvas",
-        docsURL = "https://nodecanvas.paradoxnotion.com/documentation/",
-        resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/",
-        forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/"
-        )]
-    [CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Dialogue Tree Asset")]
+    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/",
+         resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/",
+         forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/"),
+     CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Dialogue Tree Asset")]
     public class DialogueTree : Graph
     {
-
         ///----------------------------------------------------------------------------------------------
-        [System.Serializable]
-        class DerivedSerializationData
+        [Serializable]
+        private class DerivedSerializationData
         {
             public List<ActorParameter> actorParameters;
         }
 
-        public override object OnDerivedDataSerialization() {
+        public override object OnDerivedDataSerialization()
+        {
             var data = new DerivedSerializationData();
-            data.actorParameters = this.actorParameters;
+            data.actorParameters = actorParameters;
             return data;
         }
 
-        public override void OnDerivedDataDeserialization(object data) {
-            if ( data is DerivedSerializationData ) {
-                this.actorParameters = ( (DerivedSerializationData)data ).actorParameters;
-            }
+        public override void OnDerivedDataDeserialization(object data)
+        {
+            if (data is DerivedSerializationData) actorParameters = ((DerivedSerializationData)data).actorParameters;
         }
-        ///----------------------------------------------------------------------------------------------
 
+        ///----------------------------------------------------------------------------------------------
         ///<summary>An Actor Parameter</summary>
-        [System.Serializable]
+        [Serializable]
         public class ActorParameter
         {
-            [SerializeField] private string _keyName;
-            [SerializeField] private string _id;
-            [SerializeField] private UnityEngine.Object _actorObject;
-            [System.NonSerialized] private IDialogueActor _actor;
+            [SerializeField]
+            private string _keyName;
 
+            [SerializeField]
+            private string _id;
+
+            [SerializeField]
+            private UnityEngine.Object _actorObject;
+
+            [NonSerialized]
+            private IDialogueActor _actor;
 
             ///<summary>Key name of the parameter</summary>
             public string name {
-                get { return _keyName; }
-                set { _keyName = value; }
+                get => _keyName;
+                set => _keyName = value;
             }
 
             ///<summary>ID of the parameter</summary>
-            public string ID => string.IsNullOrEmpty(_id) ? _id = System.Guid.NewGuid().ToString() : _id;
+            public string ID => string.IsNullOrEmpty(_id) ? _id = Guid.NewGuid().ToString() : _id;
 
             ///<summary>The reference actor of the parameter</summary>
             public IDialogueActor actor {
-                get
-                {
-                    if ( _actor == null ) {
-                        _actor = _actorObject as IDialogueActor;
-                    }
+                get {
+                    if (_actor == null) _actor = _actorObject as IDialogueActor;
                     return _actor;
                 }
-                set
-                {
+                set {
                     _actor = value;
                     _actorObject = value as UnityEngine.Object;
                 }
             }
 
             public ActorParameter() { }
-            public ActorParameter(string name) { this.name = name; }
-            public ActorParameter(string name, IDialogueActor actor) {
+            public ActorParameter(string name) => this.name = name;
+
+            public ActorParameter(string name, IDialogueActor actor)
+            {
                 this.name = name;
                 this.actor = actor;
             }
 
-            public override string ToString() { return name; }
+            public override string ToString() => name;
         }
 
         ///----------------------------------------------------------------------------------------------
-
         ///<summary>The string used for the starting actor"</summary>
         public const string INSTIGATOR_NAME = "SELF";
 
         ///<summary>The dialogue actor parameters. We let Unity serialize this as well</summary>
-        [SerializeField] public List<ActorParameter> actorParameters = new List<ActorParameter>();
-        private bool enterStartNodeFlag;
+        [SerializeField]
+        public List<ActorParameter> actorParameters = new List<ActorParameter>();
 
+        private bool enterStartNodeFlag;
         public static event Action<DialogueTree> OnDialogueStarted;
         public static event Action<DialogueTree> OnDialoguePaused;
         public static event Action<DialogueTree> OnDialogueFinished;
@@ -102,6 +101,7 @@ namespace NodeCanvas.DialogueTrees
 
         ///<summary>The current DialogueTree running</summary>
         public static DialogueTree currentDialogue { get; private set; }
+
         ///<summary>The previous DialogueTree running</summary>
         public static DialogueTree previousDialogue { get; private set; }
 
@@ -109,19 +109,19 @@ namespace NodeCanvas.DialogueTrees
         public DTNode currentNode { get; private set; }
 
         ///----------------------------------------------------------------------------------------------
-        public override System.Type baseNodeType => typeof(DTNode);
+        public override Type baseNodeType => typeof(DTNode);
+
         public override bool requiresAgent => false;
         public override bool requiresPrimeNode => true;
         public override bool isTree => true;
         public override bool allowBlackboardOverrides => true;
-        sealed public override bool canAcceptVariableDrops => false;
+        public sealed override bool canAcceptVariableDrops => false;
         public sealed override PlanarDirection flowDirection => PlanarDirection.Vertical;
-        ///----------------------------------------------------------------------------------------------
 
+        ///----------------------------------------------------------------------------------------------
         ///<summary>A list of the defined names for the involved actor parameters</summary>
         public List<string> definedActorParameterNames {
-            get
-            {
+            get {
                 var list = actorParameters.Select(r => r.name).ToList();
                 list.Insert(0, INSTIGATOR_NAME);
                 return list;
@@ -129,68 +129,72 @@ namespace NodeCanvas.DialogueTrees
         }
 
         ///<summary>Returns the ActorParameter by id</summary>
-        public ActorParameter GetParameterByID(string id) {
+        public ActorParameter GetParameterByID(string id)
+        {
             return actorParameters.Find(p => p.ID == id);
         }
 
         ///<summary>Returns the ActorParameter by name</summary>
-        public ActorParameter GetParameterByName(string paramName) {
+        public ActorParameter GetParameterByName(string paramName)
+        {
             return actorParameters.Find(p => p.name == paramName);
         }
 
         ///<summary>Returns the actor by parameter id.</summary>
-        public IDialogueActor GetActorReferenceByID(string id) {
+        public IDialogueActor GetActorReferenceByID(string id)
+        {
             var param = GetParameterByID(id);
             return param != null ? GetActorReferenceByName(param.name) : null;
         }
 
         ///<summary>Resolves and gets an actor based on the key name</summary>
-        public IDialogueActor GetActorReferenceByName(string paramName) {
-
+        public IDialogueActor GetActorReferenceByName(string paramName)
+        {
             //Check for INSTIGATOR selection
-            if ( paramName == INSTIGATOR_NAME ) {
-
+            if (paramName == INSTIGATOR_NAME) {
                 //return it directly if it implements IDialogueActor
-                if ( agent is IDialogueActor ) {
-                    return (IDialogueActor)agent;
-                }
+                if (agent is IDialogueActor) return (IDialogueActor)agent;
 
                 //Otherwise use the default actor and set name and transform from agent
-                if ( agent != null ) {
-                    return new ProxyDialogueActor(agent.gameObject.name, agent.transform);
-                }
-
+                if (agent != null) return new ProxyDialogueActor(agent.gameObject.name, agent.transform);
                 return new ProxyDialogueActor("NO ACTOR", null);
             }
 
             //Check for non INSTIGATOR selection. If there IS an actor reference return it
             var refData = actorParameters.Find(r => r.name == paramName);
-            if ( refData != null && refData.actor != null ) {
-                return refData.actor;
-            }
+            if (refData != null && refData.actor != null) return refData.actor;
 
             //Otherwise use the default actor and set the name to the key and null transform
-            Logger.Log(string.Format("An actor entry '{0}' on DialogueTree has no reference. A dummy Actor will be used with the entry Key for name", paramName), "Dialogue Tree", this);
+            Logger.Log(
+                string.Format(
+                    "An actor entry '{0}' on DialogueTree has no reference. A dummy Actor will be used with the entry Key for name",
+                    paramName), "Dialogue Tree", this);
             return new ProxyDialogueActor(paramName, null);
         }
 
-
         ///<summary>Set the target IDialogueActor for the provided key parameter name</summary>
-        public void SetActorReference(string paramName, IDialogueActor actor) {
+        public void SetActorReference(string paramName, IDialogueActor actor)
+        {
             var param = actorParameters.Find(p => p.name == paramName);
-            if ( param == null ) {
-                Logger.LogError(string.Format("There is no defined Actor key name '{0}'", paramName), "Dialogue Tree", this);
+
+            if (param == null) {
+                Logger.LogError(string.Format("There is no defined Actor key name '{0}'", paramName), "Dialogue Tree",
+                    this);
                 return;
             }
             param.actor = actor;
         }
 
         ///<summary>Set all target IDialogueActors at once by provided dictionary</summary>
-        public void SetActorReferences(Dictionary<string, IDialogueActor> actors) {
-            foreach ( var pair in actors ) {
+        public void SetActorReferences(Dictionary<string, IDialogueActor> actors)
+        {
+            foreach (var pair in actors) {
                 var param = actorParameters.Find(p => p.name == pair.Key);
-                if ( param == null ) {
-                    Logger.LogWarning(string.Format("There is no defined Actor key name '{0}'. Seting actor skiped", pair.Key), "Dialogue Tree", this);
+
+                if (param == null) {
+                    Logger.LogWarning(
+                        string.Format("There is no defined Actor key name '{0}'. Seting actor skiped", pair.Key),
+                        "Dialogue Tree", this);
                     continue;
                 }
                 param.actor = pair.Value;
@@ -198,8 +202,9 @@ namespace NodeCanvas.DialogueTrees
         }
 
         ///<summary>Continues the DialogueTree at provided child connection index of currentNode</summary>
-        public void Continue(int index = 0) {
-            if ( index < 0 || index > currentNode.outConnections.Count - 1 ) {
+        public void Continue(int index = 0)
+        {
+            if (index < 0 || index > currentNode.outConnections.Count - 1) {
                 Stop(true);
                 return;
             }
@@ -208,92 +213,88 @@ namespace NodeCanvas.DialogueTrees
         }
 
         ///<summary>Enters the provided node</summary>
-        public void EnterNode(DTNode node) {
+        public void EnterNode(DTNode node)
+        {
             currentNode = node;
             currentNode.Reset(false);
-            if ( currentNode.Execute(agent, blackboard) == Status.Error ) {
-                Stop(false);
-            }
+            if (currentNode.Execute(agent, blackboard) == Status.Error) Stop(false);
         }
 
         ///<summary>Raise the OnSubtitlesRequest event</summary>
-        public static void RequestSubtitles(SubtitlesRequestInfo info) {
-            if ( OnSubtitlesRequest != null )
+        public static void RequestSubtitles(SubtitlesRequestInfo info)
+        {
+            if (OnSubtitlesRequest != null)
                 OnSubtitlesRequest(info);
-            else Logger.LogWarning("Subtitle Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI.", "Dialogue Tree");
+            else
+                Logger.LogWarning(
+                    "Subtitle Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI.",
+                    "Dialogue Tree");
         }
 
         ///<summary>Raise the OnMultipleChoiceRequest event</summary>
-        public static void RequestMultipleChoices(MultipleChoiceRequestInfo info) {
-            if ( OnMultipleChoiceRequest != null )
+        public static void RequestMultipleChoices(MultipleChoiceRequestInfo info)
+        {
+            if (OnMultipleChoiceRequest != null)
                 OnMultipleChoiceRequest(info);
-            else Logger.LogWarning("Multiple Choice Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI.", "Dialogue Tree");
+            else
+                Logger.LogWarning(
+                    "Multiple Choice Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI.",
+                    "Dialogue Tree");
         }
 
-        protected override void OnGraphStarted() {
+        protected override void OnGraphStarted()
+        {
             previousDialogue = currentDialogue;
             currentDialogue = this;
-
-            Logger.Log(string.Format("Dialogue Started '{0}'", this.name), "Dialogue Tree", this);
-            if ( OnDialogueStarted != null ) {
-                OnDialogueStarted(this);
-            }
-
-            if ( !( agent is IDialogueActor ) ) {
-                Logger.Log("Agent used in DialogueTree does not implement IDialogueActor. A dummy actor will be used.", "Dialogue Tree", this);
-            }
-
+            Logger.Log(string.Format("Dialogue Started '{0}'", name), "Dialogue Tree", this);
+            if (OnDialogueStarted != null) OnDialogueStarted(this);
+            if (!(agent is IDialogueActor))
+                Logger.Log("Agent used in DialogueTree does not implement IDialogueActor. A dummy actor will be used.",
+                    "Dialogue Tree", this);
             enterStartNodeFlag = true;
         }
 
-        protected override void OnGraphUpdate() {
-            if ( enterStartNodeFlag ) {
+        protected override void OnGraphUpdate()
+        {
+            if (enterStartNodeFlag) {
                 //use a flag so that other nodes can do stuff on graph started
                 enterStartNodeFlag = false;
                 EnterNode(currentNode != null ? currentNode : (DTNode)primeNode);
             }
-
-            if ( currentNode is IUpdatable ) {
-                ( currentNode as IUpdatable ).Update();
-            }
+            if (currentNode is IUpdatable) (currentNode as IUpdatable).Update();
         }
 
-        protected override void OnGraphStoped() {
+        protected override void OnGraphStoped()
+        {
             currentDialogue = previousDialogue;
             previousDialogue = null;
             currentNode = null;
-
-            Logger.Log(string.Format("Dialogue Finished '{0}'", this.name), "Dialogue Tree", this);
-            if ( OnDialogueFinished != null ) {
-                OnDialogueFinished(this);
-            }
+            Logger.Log(string.Format("Dialogue Finished '{0}'", name), "Dialogue Tree", this);
+            if (OnDialogueFinished != null) OnDialogueFinished(this);
         }
 
-        protected override void OnGraphPaused() {
-            Logger.Log(string.Format("Dialogue Paused '{0}'", this.name), "Dialogue Tree", this);
-            if ( OnDialoguePaused != null ) {
-                OnDialoguePaused(this);
-            }
+        protected override void OnGraphPaused()
+        {
+            Logger.Log(string.Format("Dialogue Paused '{0}'", name), "Dialogue Tree", this);
+            if (OnDialoguePaused != null) OnDialoguePaused(this);
         }
 
-        protected override void OnGraphUnpaused() {
+        protected override void OnGraphUnpaused()
+        {
             EnterNode(currentNode != null ? currentNode : (DTNode)primeNode);
-
-            Logger.Log(string.Format("Dialogue Resumed '{0}'", this.name), "Dialogue Tree", this);
-            if ( OnDialogueStarted != null ) {
-                OnDialogueStarted(this);
-            }
+            Logger.Log(string.Format("Dialogue Resumed '{0}'", name), "Dialogue Tree", this);
+            if (OnDialogueStarted != null) OnDialogueStarted(this);
         }
 
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
         [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/Dialogue Tree Object", false, 2)]
-        static void Editor_CreateGraph() {
+        private static void Editor_CreateGraph()
+        {
             var dt = new GameObject("DialogueTree").AddComponent<DialogueTreeController>();
             UnityEditor.Selection.activeObject = dt;
         }
 #endif
-
     }
 }

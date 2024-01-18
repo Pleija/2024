@@ -42,11 +42,10 @@ namespace Runner.Obstacles
                 Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
                 yield break;
             }
-            var obj = Instantiate(op.Result, position, rotation);//  as GameObject;
+            var obj = Instantiate(op.Result, position, rotation); //  as GameObject;
             obj.OnDestroyAsObservable().Subscribe(() => {
                 if (op.IsValid()) Addressables.Release(op);
             });
-                
             obj.transform.SetParent(segment.objectRoot, true);
             var po = obj.GetComponent<PatrollingObstacle>();
             po.m_Segement = segment;

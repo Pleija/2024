@@ -12,15 +12,15 @@ namespace App
     public class IAPService : Singleton<IAPService>, IDetailedStoreListener, IDontDestroyOnLoad
     {
         public Text informationText;
-        const string k_Environment = "production";
+        private const string k_Environment = "production";
 
-        void Awake()
+        private void Awake()
         {
             // Uncomment this line to initialize Unity Gaming Services.
             Initialize(OnSuccess, OnError);
         }
 
-        void Initialize(Action onSuccess, Action<string> onError)
+        private void Initialize(Action onSuccess, Action<string> onError)
         {
             try {
                 var options = new InitializationOptions().SetEnvironmentName(k_Environment);
@@ -31,35 +31,29 @@ namespace App
             }
         }
 
-        void OnSuccess()
+        private void OnSuccess()
         {
             var text = "Congratulations!\nUnity Gaming Services has been successfully initialized.";
             if (informationText) informationText.text = text;
             Debug.Log(text);
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            builder.AddProduct("10_premium", ProductType.Consumable, new IDs {
-                { "10_premium_google_v1", GooglePlay.Name },
-                { "10_premium_ios", AppleAppStore.Name }
-            });
-            builder.AddProduct("50_premium", ProductType.Consumable, new IDs {
-                { "50_premium_google_v1", GooglePlay.Name },
-                { "50_premium_ios", AppleAppStore.Name }
-            });
-            builder.AddProduct("100_premium", ProductType.Consumable, new IDs {
-                { "100_premium_google_v1", GooglePlay.Name },
-                { "100_premium_ios", AppleAppStore.Name }
-            });
+            builder.AddProduct("10_premium", ProductType.Consumable,
+                new IDs { { "10_premium_google_v1", GooglePlay.Name }, { "10_premium_ios", AppleAppStore.Name } });
+            builder.AddProduct("50_premium", ProductType.Consumable,
+                new IDs { { "50_premium_google_v1", GooglePlay.Name }, { "50_premium_ios", AppleAppStore.Name } });
+            builder.AddProduct("100_premium", ProductType.Consumable,
+                new IDs { { "100_premium_google_v1", GooglePlay.Name }, { "100_premium_ios", AppleAppStore.Name } });
             UnityPurchasing.Initialize(this, builder);
         }
 
-        void OnError(string message)
+        private void OnError(string message)
         {
             var text = $"Unity Gaming Services failed to initialize with error: {message}.";
             if (informationText) informationText.text = text;
             Debug.LogError(text);
         }
 
-        void Start()
+        private void Start()
         {
             if (UnityServices.State == ServicesInitializationState.Uninitialized) {
                 var text = "Error: Unity Gaming Services not initialized.\n" +
@@ -91,7 +85,7 @@ namespace App
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            Debug.Log( $"OnPurchaseFailed: {product.definition.id} => {failureReason}");
+            Debug.Log($"OnPurchaseFailed: {product.definition.id} => {failureReason}");
         }
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
@@ -103,7 +97,7 @@ namespace App
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {
-            Debug.Log( $"OnPurchaseFailed: {product.definition.id} => {failureDescription}");
+            Debug.Log($"OnPurchaseFailed: {product.definition.id} => {failureDescription}");
         }
     }
 }

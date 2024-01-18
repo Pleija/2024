@@ -14,9 +14,9 @@ using Zu.TypeScript.TsTypes;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Action State", 100)]
-    [Description(
-        "Execute a number of Action Tasks OnEnter. All actions will be stoped OnExit. This state is Finished when all Actions are finished as well")]
+    [Name("Action State", 100),
+     Description(
+         "Execute a number of Action Tasks OnEnter. All actions will be stoped OnExit. This state is Finished when all Actions are finished as well")]
     public class ActionState : FSMState, ITaskAssignable, IUpdatable
     {
         [SerializeField]
@@ -26,18 +26,18 @@ namespace NodeCanvas.StateMachines
         private bool _repeatStateActions;
 
         public Task task {
-            get { return actionList; }
-            set { actionList = (ActionList)value; }
+            get => actionList;
+            set => actionList = (ActionList)value;
         }
 
         public ActionList actionList {
-            get { return _actionList; }
-            set { _actionList = value; }
+            get => _actionList;
+            set => _actionList = value;
         }
 
         public bool repeatStateActions {
-            get { return _repeatStateActions; }
-            set { _repeatStateActions = value; }
+            get => _repeatStateActions;
+            set => _repeatStateActions = value;
         }
 
         public override void OnValidate(Graph assignedGraph)
@@ -62,7 +62,7 @@ namespace NodeCanvas.StateMachines
         //public override void OnGraphStoped() { }
         protected override void OnInit()
         {
-            fsm.Invoke("bindNode",this);
+            fsm.Invoke("bindNode", this);
         }
 
         protected override void OnEnter()
@@ -71,20 +71,14 @@ namespace NodeCanvas.StateMachines
 
             //OnUpdate();
             var actionListStatus = actionList.Execute(graphAgent, graphBlackboard);
-
-            if (!repeatStateActions && actionListStatus != Status.Running) {
-                Finish(actionListStatus);
-            }
+            if (!repeatStateActions && actionListStatus != Status.Running) Finish(actionListStatus);
         }
 
         protected override void OnUpdate()
         {
             fsm.Invoke("updateNode", this);
             var actionListStatus = actionList.Execute(graphAgent, graphBlackboard);
-
-            if (!repeatStateActions && actionListStatus != Status.Running) {
-                Finish(actionListStatus);
-            }
+            if (!repeatStateActions && actionListStatus != Status.Running) Finish(actionListStatus);
         }
 
         protected override void OnExit()
@@ -108,19 +102,14 @@ namespace NodeCanvas.StateMachines
 #if UNITY_EDITOR
         protected override void OnNodeGUI()
         {
-            if (repeatStateActions) {
-                GUILayout.Label("<b>[REPEAT]</b>");
-            }
+            if (repeatStateActions) GUILayout.Label("<b>[REPEAT]</b>");
             base.OnNodeGUI();
         }
 
         protected override void OnNodeInspectorGUI()
         {
             ShowTransitionsInspector();
-
-            if (actionList == null) {
-                return;
-            }
+            if (actionList == null) return;
             EditorUtils.CoolLabel("Actions");
             GUI.color = repeatStateActions ? GUI.color : new Color(1, 1, 1, 0.5f);
             repeatStateActions = UnityEditor.EditorGUILayout.ToggleLeft("Repeat State Actions", repeatStateActions);

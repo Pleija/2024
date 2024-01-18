@@ -104,10 +104,7 @@ namespace Editors
                 GUILayout.FlexibleSpace();
                 SirenixEditorGUI.HorizontalLineSeparator(1);
                 GUILayout.BeginHorizontal();
-
-                if (GUILayout.Button("Select", GUILayoutOptions.Height(30))) {
-                    AssetDatabase.OpenAsset(previewObject);
-                }
+                if (GUILayout.Button("Select", GUILayoutOptions.Height(30))) AssetDatabase.OpenAsset(previewObject);
                 if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30))) CreateAsset();
                 GUILayout.EndHorizontal();
             }

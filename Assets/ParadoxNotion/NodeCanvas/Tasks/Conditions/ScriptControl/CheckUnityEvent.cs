@@ -12,38 +12,48 @@ namespace NodeCanvas.Tasks.Conditions
 {
     ///----------------------------------------------------------------------------------------------
     //previous versions
-    class CheckUnityEvent_0
+    internal class CheckUnityEvent_0
     {
-        [SerializeField] public System.Type targetType = null;
-        [SerializeField] public string eventName = null;
-    }
-    class CheckUnityEvent_0<T>
-    {
-        [SerializeField] public System.Type targetType = null;
-        [SerializeField] public string eventName = null;
+        [SerializeField]
+        public System.Type targetType = null;
+
+        [SerializeField]
+        public string eventName = null;
     }
 
-    class CheckUnityEventValue_0<T>
+    internal class CheckUnityEvent_0<T>
     {
-        [SerializeField] public System.Type targetType = null;
-        [SerializeField] public string eventName = null;
+        [SerializeField]
+        public System.Type targetType = null;
+
+        [SerializeField]
+        public string eventName = null;
     }
+
+    internal class CheckUnityEventValue_0<T>
+    {
+        [SerializeField]
+        public System.Type targetType = null;
+
+        [SerializeField]
+        public string eventName = null;
+    }
+
     ///----------------------------------------------------------------------------------------------
-
-
-    [Category("✫ Reflected/Events")]
-    [Description("Will subscribe to a public UnityEvent and return true when that event is raised.")]
-    [fsMigrateVersions(typeof(CheckUnityEvent_0))]
+    [Category("✫ Reflected/Events"),
+     Description("Will subscribe to a public UnityEvent and return true when that event is raised."),
+     fsMigrateVersions(typeof(CheckUnityEvent_0))]
     public class CheckUnityEvent : ConditionTask, IReflectedWrapper, IMigratable<CheckUnityEvent_0>
     {
-
         ///----------------------------------------------------------------------------------------------
-        void IMigratable<CheckUnityEvent_0>.Migrate(CheckUnityEvent_0 model) {
-            this._eventInfo = new SerializedUnityEventInfo(model.targetType?.RTGetField(model.eventName));
+        void IMigratable<CheckUnityEvent_0>.Migrate(CheckUnityEvent_0 model)
+        {
+            _eventInfo = new SerializedUnityEventInfo(model.targetType?.RTGetField(model.eventName));
         }
-        ///----------------------------------------------------------------------------------------------
 
-        [SerializeField] private SerializedUnityEventInfo _eventInfo = null;
+        ///----------------------------------------------------------------------------------------------
+        [SerializeField]
+        private SerializedUnityEventInfo _eventInfo = null;
 
         private MemberInfo targetMember => _eventInfo != null ? _eventInfo.AsMemberInfo() : null;
         private bool isStatic => _eventInfo != null ? _eventInfo.isStatic : false;
@@ -53,45 +63,51 @@ namespace NodeCanvas.Tasks.Conditions
         private UnityEvent unityEvent;
 
         public override System.Type agentType {
-            get
-            {
-                if ( targetMember == null ) { return typeof(Transform); }
+            get {
+                if (targetMember == null) return typeof(Transform);
                 return isStatic ? null : targetMember.RTReflectedOrDeclaredType();
             }
         }
 
         protected override string info {
-            get
-            {
-                if ( _eventInfo == null ) { return "No Event Selected"; }
-                if ( targetMember == null ) { return _eventInfo.AsString().FormatError(); }
+            get {
+                if (_eventInfo == null) return "No Event Selected";
+                if (targetMember == null) return _eventInfo.AsString().FormatError();
                 return string.Format("'{0}' Raised", targetMember.Name);
             }
         }
 
-        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() { return _eventInfo; }
+        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() => _eventInfo;
 
-        protected override string OnInit() {
-            if ( _eventInfo == null ) { return "No Event Selected"; }
-            if ( targetMember == null ) { return _eventInfo.AsString(); }
-            if ( targetEventField != null ) { unityEvent = (UnityEvent)targetEventField.GetValue(agent); }
-            if ( targetEventProp != null ) { unityEvent = (UnityEvent)targetEventProp.GetValue(agent); }
+        protected override string OnInit()
+        {
+            if (_eventInfo == null) return "No Event Selected";
+            if (targetMember == null) return _eventInfo.AsString();
+            if (targetEventField != null) unityEvent = (UnityEvent)targetEventField.GetValue(agent);
+            if (targetEventProp != null) unityEvent = (UnityEvent)targetEventProp.GetValue(agent);
             return null;
         }
 
-        protected override void OnEnable() {
-            if ( unityEvent != null ) { unityEvent.AddListener(Raised); }
+        protected override void OnEnable()
+        {
+            if (unityEvent != null) unityEvent.AddListener(Raised);
         }
 
-        protected override void OnDisable() {
-            if ( unityEvent != null ) { unityEvent.RemoveListener(Raised); }
+        protected override void OnDisable()
+        {
+            if (unityEvent != null) unityEvent.RemoveListener(Raised);
         }
 
-        public void Raised() { YieldReturn(true); }
-        protected override bool OnCheck() { return false; }
+        public void Raised()
+        {
+            YieldReturn(true);
+        }
 
-        void SetTargetEvent(MemberInfo newMember) {
-            if ( newMember != null ) {
+        protected override bool OnCheck() => false;
+
+        private void SetTargetEvent(MemberInfo newMember)
+        {
+            if (newMember != null) {
                 UndoUtility.RecordObject(ownerSystem.contextObject, "Set Reflection Member");
                 _eventInfo = new SerializedUnityEventInfo(newMember);
             }
@@ -100,30 +116,38 @@ namespace NodeCanvas.Tasks.Conditions
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-
-        protected override void OnTaskInspectorGUI() {
-            if ( !Application.isPlaying && GUILayout.Button("Select Event") ) {
+        protected override void OnTaskInspectorGUI()
+        {
+            if (!Application.isPlaying && GUILayout.Button("Select Event")) {
                 var menu = new UnityEditor.GenericMenu();
-                if ( agent != null ) {
-                    foreach ( var comp in agent.GetComponents(typeof(Component)).Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)) ) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent), SetTargetEvent, true, false, menu);
+
+                if (agent != null) {
+                    foreach (var comp in agent.GetComponents(typeof(Component))
+                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector))) {
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent),
+                            SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent),
+                            SetTargetEvent, true, false, menu);
                     }
                     menu.AddSeparator("/");
                 }
-                foreach ( var t in TypePrefs.GetPreferedTypesList(typeof(object)) ) {
+
+                foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(UnityEvent), SetTargetEvent, menu);
-                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true, false, menu);
-                    if ( typeof(Component).IsAssignableFrom(t) ) {
+                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true,
+                        false, menu);
+
+                    if (typeof(Component).IsAssignableFrom(t)) {
                         menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true, false, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true,
+                            false, menu);
                     }
                 }
-                menu.ShowAsBrowser("Select Event", this.GetType());
+                menu.ShowAsBrowser("Select Event", GetType());
                 Event.current.Use();
             }
 
-            if ( targetMember != null ) {
+            if (targetMember != null) {
                 GUILayout.BeginVertical("box");
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMember.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Event", targetMember.Name);
@@ -132,24 +156,24 @@ namespace NodeCanvas.Tasks.Conditions
             }
         }
 #endif
-
     }
 
     ///----------------------------------------------------------------------------------------------
-
-    [Category("✫ Reflected/Events")]
-    [Description("Will subscribe to a public UnityEvent<T> and return true when that event is raised.")]
-    [fsMigrateVersions(typeof(CheckUnityEvent_0<>))]
+    [Category("✫ Reflected/Events"),
+     Description("Will subscribe to a public UnityEvent<T> and return true when that event is raised."),
+     fsMigrateVersions(typeof(CheckUnityEvent_0<>))]
     public class CheckUnityEvent<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckUnityEvent_0<T>>
     {
         ///----------------------------------------------------------------------------------------------
-        void IMigratable<CheckUnityEvent_0<T>>.Migrate(CheckUnityEvent_0<T> model) {
-            this._eventInfo = new SerializedUnityEventInfo(model.targetType?.RTGetField(model.eventName));
+        void IMigratable<CheckUnityEvent_0<T>>.Migrate(CheckUnityEvent_0<T> model)
+        {
+            _eventInfo = new SerializedUnityEventInfo(model.targetType?.RTGetField(model.eventName));
         }
-        ///----------------------------------------------------------------------------------------------
 
+        ///----------------------------------------------------------------------------------------------
         [SerializeField]
         private SerializedUnityEventInfo _eventInfo = null;
+
         [SerializeField, BlackboardOnly]
         private BBParameter<T> saveAs = null;
 
@@ -161,107 +185,119 @@ namespace NodeCanvas.Tasks.Conditions
         private UnityEvent<T> unityEvent;
 
         public override System.Type agentType {
-            get
-            {
-                if ( targetMember == null ) { return typeof(Transform); }
+            get {
+                if (targetMember == null) return typeof(Transform);
                 return isStatic ? null : targetMember.RTReflectedOrDeclaredType();
             }
         }
 
         protected override string info {
-            get
-            {
-                if ( _eventInfo == null ) { return "No Event Selected"; }
-                if ( targetMember == null ) { return _eventInfo.AsString().FormatError(); }
+            get {
+                if (_eventInfo == null) return "No Event Selected";
+                if (targetMember == null) return _eventInfo.AsString().FormatError();
                 return string.Format("'{0}' Raised", targetMember.Name);
             }
         }
 
-        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() { return _eventInfo; }
+        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() => _eventInfo;
 
-        protected override string OnInit() {
-            if ( _eventInfo == null ) { return "No Event Selected"; }
-            if ( targetMember == null ) { return _eventInfo.AsString(); }
-            if ( targetEventField != null ) { unityEvent = (UnityEvent<T>)targetEventField.GetValue(agent); }
-            if ( targetEventProp != null ) { unityEvent = (UnityEvent<T>)targetEventProp.GetValue(agent); }
+        protected override string OnInit()
+        {
+            if (_eventInfo == null) return "No Event Selected";
+            if (targetMember == null) return _eventInfo.AsString();
+            if (targetEventField != null) unityEvent = (UnityEvent<T>)targetEventField.GetValue(agent);
+            if (targetEventProp != null) unityEvent = (UnityEvent<T>)targetEventProp.GetValue(agent);
             return null;
         }
 
-        protected override void OnEnable() {
-            if ( unityEvent != null ) { unityEvent.AddListener(Raised); }
+        protected override void OnEnable()
+        {
+            if (unityEvent != null) unityEvent.AddListener(Raised);
         }
 
-        protected override void OnDisable() {
-            if ( unityEvent != null ) { unityEvent.RemoveListener(Raised); }
+        protected override void OnDisable()
+        {
+            if (unityEvent != null) unityEvent.RemoveListener(Raised);
         }
 
-        public void Raised(T eventValue) {
+        public void Raised(T eventValue)
+        {
             saveAs.value = eventValue;
             YieldReturn(true);
         }
 
-        protected override bool OnCheck() { return false; }
+        protected override bool OnCheck() => false;
 
-        void SetTargetEvent(MemberInfo newMember) {
-            if ( newMember != null ) { _eventInfo = new SerializedUnityEventInfo(newMember); }
+        private void SetTargetEvent(MemberInfo newMember)
+        {
+            if (newMember != null) _eventInfo = new SerializedUnityEventInfo(newMember);
         }
 
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-
-        protected override void OnTaskInspectorGUI() {
-
-            if ( !Application.isPlaying && GUILayout.Button("Select Event") ) {
+        protected override void OnTaskInspectorGUI()
+        {
+            if (!Application.isPlaying && GUILayout.Button("Select Event")) {
                 var menu = new UnityEditor.GenericMenu();
-                if ( agent != null ) {
-                    foreach ( var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0) ) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>), SetTargetEvent, true, false, menu);
+
+                if (agent != null) {
+                    foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0)) {
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
+                            SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
+                            SetTargetEvent, true, false, menu);
                     }
                     menu.AddSeparator("/");
                 }
-                foreach ( var t in TypePrefs.GetPreferedTypesList(typeof(object)) ) {
+
+                foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, menu);
-                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true, false, menu);
-                    if ( typeof(Component).IsAssignableFrom(t) ) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true, false, menu);
+                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true,
+                        false, menu);
+
+                    if (typeof(Component).IsAssignableFrom(t)) {
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
+                            menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
+                            true, false, menu);
                     }
                 }
-                menu.ShowAsBrowser("Select Event", this.GetType());
+                menu.ShowAsBrowser("Select Event", GetType());
                 Event.current.Use();
             }
 
-            if ( targetMember != null ) {
+            if (targetMember != null) {
                 GUILayout.BeginVertical("box");
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMember.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Event", targetMember.Name);
                 UnityEditor.EditorGUILayout.LabelField("Event Type", eventType.FriendlyName());
                 GUILayout.EndVertical();
-
-                NodeCanvas.Editor.BBParameterEditor.ParameterField("Save Value As", saveAs, true);
+                Editor.BBParameterEditor.ParameterField("Save Value As", saveAs, true);
             }
         }
 #endif
-
     }
 
     ///----------------------------------------------------------------------------------------------
-
-    [Category("✫ Reflected/Events")]
-    [Description("Will subscribe to a public UnityEvent<T> and return true when that event is raised and it's value is equal to provided value as well.")]
-    [fsMigrateVersions(typeof(CheckUnityEventValue_0<>))]
+    [Category("✫ Reflected/Events"),
+     Description(
+         "Will subscribe to a public UnityEvent<T> and return true when that event is raised and it's value is equal to provided value as well."),
+     fsMigrateVersions(typeof(CheckUnityEventValue_0<>))]
     public class CheckUnityEventValue<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckUnityEventValue_0<T>>
     {
         ///----------------------------------------------------------------------------------------------
-        void IMigratable<CheckUnityEventValue_0<T>>.Migrate(CheckUnityEventValue_0<T> model) {
-            this._eventInfo = new SerializedUnityEventInfo(model.targetType?.RTGetField(model.eventName));
+        void IMigratable<CheckUnityEventValue_0<T>>.Migrate(CheckUnityEventValue_0<T> model)
+        {
+            _eventInfo = new SerializedUnityEventInfo(model.targetType?.RTGetField(model.eventName));
         }
-        ///----------------------------------------------------------------------------------------------
 
-        [SerializeField] private SerializedUnityEventInfo _eventInfo = null;
-        [SerializeField] private BBParameter<T> checkValue = null;
+        ///----------------------------------------------------------------------------------------------
+        [SerializeField]
+        private SerializedUnityEventInfo _eventInfo = null;
+
+        [SerializeField]
+        private BBParameter<T> checkValue = null;
 
         private MemberInfo targetMember => _eventInfo != null ? _eventInfo.AsMemberInfo() : null;
         private bool isStatic => _eventInfo != null ? _eventInfo.isStatic : false;
@@ -271,91 +307,96 @@ namespace NodeCanvas.Tasks.Conditions
         private UnityEvent<T> unityEvent;
 
         public override System.Type agentType {
-            get
-            {
-                if ( targetMember == null ) { return typeof(Transform); }
+            get {
+                if (targetMember == null) return typeof(Transform);
                 return isStatic ? null : targetMember.RTReflectedOrDeclaredType();
             }
         }
 
         protected override string info {
-            get
-            {
-                if ( _eventInfo == null ) { return "No Event Selected"; }
-                if ( targetMember == null ) { return _eventInfo.AsString().FormatError(); }
+            get {
+                if (_eventInfo == null) return "No Event Selected";
+                if (targetMember == null) return _eventInfo.AsString().FormatError();
                 return string.Format("'{0}' Raised && Value == {1}", targetMember.Name, checkValue);
             }
         }
 
-        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() { return _eventInfo; }
+        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() => _eventInfo;
 
-        protected override string OnInit() {
-            if ( _eventInfo == null ) { return "No Event Selected"; }
-            if ( targetEventField == null ) { return _eventInfo.AsString(); }
-            if ( targetEventField != null ) { unityEvent = (UnityEvent<T>)targetEventField.GetValue(agent); }
-            if ( targetEventProp != null ) { unityEvent = (UnityEvent<T>)targetEventProp.GetValue(agent); }
+        protected override string OnInit()
+        {
+            if (_eventInfo == null) return "No Event Selected";
+            if (targetEventField == null) return _eventInfo.AsString();
+            if (targetEventField != null) unityEvent = (UnityEvent<T>)targetEventField.GetValue(agent);
+            if (targetEventProp != null) unityEvent = (UnityEvent<T>)targetEventProp.GetValue(agent);
             return null;
         }
 
-        protected override void OnEnable() {
-            if ( unityEvent != null ) { unityEvent.AddListener(Raised); }
+        protected override void OnEnable()
+        {
+            if (unityEvent != null) unityEvent.AddListener(Raised);
         }
 
-        protected override void OnDisable() {
-            if ( unityEvent != null ) { unityEvent.RemoveListener(Raised); }
+        protected override void OnDisable()
+        {
+            if (unityEvent != null) unityEvent.RemoveListener(Raised);
         }
 
-        public void Raised(T eventValue) {
-            if ( ObjectUtils.AnyEquals(checkValue.value, eventValue) ) {
-                YieldReturn(true);
-            }
+        public void Raised(T eventValue)
+        {
+            if (ObjectUtils.AnyEquals(checkValue.value, eventValue)) YieldReturn(true);
         }
 
-        protected override bool OnCheck() { return false; }
+        protected override bool OnCheck() => false;
 
-        void SetTargetEvent(MemberInfo newMember) {
-            if ( newMember != null ) { _eventInfo = new SerializedUnityEventInfo(newMember); }
+        private void SetTargetEvent(MemberInfo newMember)
+        {
+            if (newMember != null) _eventInfo = new SerializedUnityEventInfo(newMember);
         }
 
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-
-        protected override void OnTaskInspectorGUI() {
-
-            if ( !Application.isPlaying && GUILayout.Button("Select Event") ) {
+        protected override void OnTaskInspectorGUI()
+        {
+            if (!Application.isPlaying && GUILayout.Button("Select Event")) {
                 var menu = new UnityEditor.GenericMenu();
-                if ( agent != null ) {
-                    foreach ( var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0) ) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>), SetTargetEvent, true, false, menu);
+
+                if (agent != null) {
+                    foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0)) {
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
+                            SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
+                            SetTargetEvent, true, false, menu);
                     }
                     menu.AddSeparator("/");
                 }
-                foreach ( var t in TypePrefs.GetPreferedTypesList(typeof(object)) ) {
+
+                foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, menu);
-                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true, false, menu);
-                    if ( typeof(Component).IsAssignableFrom(t) ) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true, false, menu);
+                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true,
+                        false, menu);
+
+                    if (typeof(Component).IsAssignableFrom(t)) {
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
+                            menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
+                            true, false, menu);
                     }
                 }
-                menu.ShowAsBrowser("Select Event", this.GetType());
+                menu.ShowAsBrowser("Select Event", GetType());
                 Event.current.Use();
             }
 
-            if ( targetMember != null ) {
+            if (targetMember != null) {
                 GUILayout.BeginVertical("box");
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMember.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Event", targetMember.Name);
                 UnityEditor.EditorGUILayout.LabelField("Event Type", eventType.FriendlyName());
                 GUILayout.EndVertical();
-
-                NodeCanvas.Editor.BBParameterEditor.ParameterField("Check Value", checkValue);
+                Editor.BBParameterEditor.ParameterField("Check Value", checkValue);
             }
         }
 #endif
-
     }
-
 }

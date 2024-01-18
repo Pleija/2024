@@ -2,31 +2,27 @@ using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEngine;
 
-
 namespace NodeCanvas.Tasks.Actions
 {
-
-    [Name("Play Animation")]
-    [Category("Animator")]
+    [Name("Play Animation"), Category("Animator")]
     public class MecanimPlayAnimation : ActionTask<Animator>
     {
-
         public BBParameter<int> layerIndex;
+
         [RequiredField]
         public BBParameter<string> stateName;
+
         [SliderField(0, 1)]
         public float transitTime = 0.25f;
-        public bool waitUntilFinish;
 
+        public bool waitUntilFinish;
         private AnimatorStateInfo stateInfo;
         private bool played;
+        protected override string info => "Anim '" + stateName.ToString() + "'";
 
-        protected override string info {
-            get { return "Anim '" + stateName.ToString() + "'"; }
-        }
-
-        protected override void OnExecute() {
-            if ( string.IsNullOrEmpty(stateName.value) ) {
+        protected override void OnExecute()
+        {
+            if (string.IsNullOrEmpty(stateName.value)) {
                 EndAction();
                 return;
             }
@@ -35,29 +31,21 @@ namespace NodeCanvas.Tasks.Actions
             agent.CrossFade(stateName.value, transitTime / current.length, layerIndex.value, 0, 0);
         }
 
-        protected override void OnUpdate() {
-
+        protected override void OnUpdate()
+        {
             stateInfo = agent.GetCurrentAnimatorStateInfo(layerIndex.value);
 
-            if ( waitUntilFinish ) {
-
-                if ( stateInfo.IsName(stateName.value) ) {
-
+            if (waitUntilFinish) {
+                if (stateInfo.IsName(stateName.value)) {
                     played = true;
-                    if ( elapsedTime >= ( stateInfo.length / agent.speed ) ) {
-                        EndAction();
-                    }
-
-                } else if ( played ) {
-
+                    if (elapsedTime >= stateInfo.length / agent.speed) EndAction();
+                }
+                else if (played) {
                     EndAction();
                 }
-
-            } else {
-
-                if ( elapsedTime >= transitTime ) {
-                    EndAction();
-                }
+            }
+            else {
+                if (elapsedTime >= transitTime) EndAction();
             }
         }
     }

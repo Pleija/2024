@@ -2,7 +2,6 @@
 #if UNITY_ANALYTICS
 using UnityEngine.Analytics;
 #endif
-
 #if UNITY_PURCHASING
 using UnityEngine.Purchasing;
 #endif

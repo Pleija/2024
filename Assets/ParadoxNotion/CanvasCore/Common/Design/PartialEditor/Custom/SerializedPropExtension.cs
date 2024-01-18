@@ -13,39 +13,39 @@ namespace Hefty.EditorExtension
     {
 #region Simple string path based extensions
         /// <summary>
-        /// Returns the path to the parent of a SerializedProperty
+        ///     Returns the path to the parent of a SerializedProperty
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
         public static string ParentPath(this SerializedProperty prop)
         {
-            int lastDot = prop.propertyPath.LastIndexOf('.');
+            var lastDot = prop.propertyPath.LastIndexOf('.');
             if (lastDot == -1) // No parent property
                 return "";
             return prop.propertyPath.Substring(0, lastDot);
         }
 
         /// <summary>
-        /// Returns the parent of a SerializedProperty, as another SerializedProperty
+        ///     Returns the parent of a SerializedProperty, as another SerializedProperty
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
         public static SerializedProperty GetParentProp(this SerializedProperty prop)
         {
-            string parentPath = prop.ParentPath();
+            var parentPath = prop.ParentPath();
             return prop.serializedObject.FindProperty(parentPath);
         }
 #endregion
 
         /// <summary>
-        /// Set isExpanded of the SerializedProperty and propogate the change up the hierarchy
+        ///     Set isExpanded of the SerializedProperty and propogate the change up the hierarchy
         /// </summary>
         /// <param name="prop"></param>
         /// <param name="expand">isExpanded value</param>
         public static void ExpandHierarchy(this SerializedProperty prop, bool expand = true)
         {
             prop.isExpanded = expand;
-            SerializedProperty parent = GetParentProp(prop);
+            var parent = GetParentProp(prop);
             if (parent != null)
                 ExpandHierarchy(parent);
         }
@@ -54,7 +54,7 @@ namespace Hefty.EditorExtension
         // http://answers.unity3d.com/questions/425012/get-the-instance-the-serializedproperty-belongs-to.html
 
         /// <summary>
-        /// Use reflection to get the actual data instance of a SerializedProperty
+        ///     Use reflection to get the actual data instance of a SerializedProperty
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="prop"></param>
@@ -65,7 +65,7 @@ namespace Hefty.EditorExtension
             object obj = prop.serializedObject.targetObject;
             var elements = path.Split('.');
 
-            foreach (var element in elements) {
+            foreach (var element in elements)
                 if (element.Contains("[")) {
                     var elementName = element.Substring(0, element.IndexOf("["));
                     var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "")
@@ -75,7 +75,6 @@ namespace Hefty.EditorExtension
                 else {
                     obj = GetValue(obj, element);
                 }
-            }
             if (obj is T)
                 return obj;
             return null;
@@ -83,21 +82,20 @@ namespace Hefty.EditorExtension
 
         public static Type GetTypeReflection(this SerializedProperty prop)
         {
-            object obj = GetParent<object>(prop);
+            var obj = GetParent<object>(prop);
             if (obj == null)
                 return null;
-            Type objType = obj.GetType();
-            const BindingFlags bindingFlags = System.Reflection.BindingFlags.GetField |
-                System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
-            FieldInfo field = objType.GetField(prop.name, bindingFlags);
+            var objType = obj.GetType();
+            const BindingFlags bindingFlags = BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.Instance |
+                BindingFlags.NonPublic | BindingFlags.Public;
+            var field = objType.GetField(prop.name, bindingFlags);
             if (field == null)
                 return null;
             return field.FieldType;
         }
 
         /// <summary>
-        /// Uses reflection to get the actual data instance of the parent of a SerializedProperty
+        ///     Uses reflection to get the actual data instance of the parent of a SerializedProperty
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="prop"></param>
@@ -108,7 +106,7 @@ namespace Hefty.EditorExtension
             object obj = prop.serializedObject.targetObject;
             var elements = path.Split('.');
 
-            foreach (var element in elements.Take(elements.Length - 1)) {
+            foreach (var element in elements.Take(elements.Length - 1))
                 if (element.Contains("[")) {
                     var elementName = element.Substring(0, element.IndexOf("["));
                     var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "")
@@ -118,7 +116,6 @@ namespace Hefty.EditorExtension
                 else {
                     obj = GetValue(obj, element);
                 }
-            }
             return (T)obj;
         }
 
@@ -126,11 +123,11 @@ namespace Hefty.EditorExtension
         {
             if (source == null)
                 return null;
-            Type type = source.GetType();
-            FieldInfo f = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var type = source.GetType();
+            var f = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
             if (f == null) {
-                PropertyInfo p = type.GetProperty(name,
+                var p = type.GetProperty(name,
                     BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                 if (p == null)
                     return null;
@@ -151,31 +148,28 @@ namespace Hefty.EditorExtension
         }
 
         /// <summary>
-        /// Use reflection to check if SerializedProperty has a given attribute
+        ///     Use reflection to check if SerializedProperty has a given attribute
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="prop"></param>
         /// <returns></returns>
         public static bool HasAttribute<T>(this SerializedProperty prop)
         {
-            object[] attributes = GetAttributes<T>(prop);
-
-            if (attributes != null) {
-                return attributes.Length > 0;
-            }
+            var attributes = GetAttributes<T>(prop);
+            if (attributes != null) return attributes.Length > 0;
             return false;
         }
 
         public static string FindAllProperty(this ScriptableObject target)
         {
             using var so = new SerializedObject(target);
-            SerializedProperty iterator = so.GetIterator();
+            var iterator = so.GetIterator();
             var sb = new StringBuilder();
             sb.AppendLine("Visible Internal Properties:");
 
             // GetIterator returns a root that is above all others (depth -1)
             // so first property is found by stepping into the children
-            bool visitChildren = true;
+            var visitChildren = true;
             iterator.NextVisible(visitChildren);
 
             // For rest of scan stay at the same level (depth 0)
@@ -199,33 +193,32 @@ namespace Hefty.EditorExtension
                     break;
                 sb.AppendLine($"\t{iterator.name}");
             } while (iterator.Next(visitChildren));
-            return (sb.ToString());
+            return sb.ToString();
         }
 
         /// <summary>
-        /// Use reflection to get the attributes of the SerializedProperty
+        ///     Use reflection to get the attributes of the SerializedProperty
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="prop"></param>
         /// <returns></returns>
         public static object[] GetAttributes<T>(this SerializedProperty prop)
         {
-            object obj = GetParent<object>(prop);
+            var obj = GetParent<object>(prop);
             if (obj == null)
                 return new object[0];
-            Type attrType = typeof(T);
-            Type objType = obj.GetType();
-            const BindingFlags bindingFlags = System.Reflection.BindingFlags.GetField |
-                System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
-            FieldInfo field = objType.GetField(prop.name, bindingFlags);
+            var attrType = typeof(T);
+            var objType = obj.GetType();
+            const BindingFlags bindingFlags = BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.Instance |
+                BindingFlags.NonPublic | BindingFlags.Public;
+            var field = objType.GetField(prop.name, bindingFlags);
             if (field != null)
                 return field.GetCustomAttributes(attrType, true);
             return new object[0];
         }
 
         /// <summary>
-        /// Find properties in the serialized object of the given type.
+        ///     Find properties in the serialized object of the given type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
@@ -233,27 +226,25 @@ namespace Hefty.EditorExtension
         /// <returns></returns>
         public static SerializedProperty[] FindPropsOfType<T>(this SerializedObject obj, bool enterChildren = false)
         {
-            List<SerializedProperty> foundProps = new List<SerializedProperty>();
-            Type propType = typeof(T);
+            var foundProps = new List<SerializedProperty>();
+            var propType = typeof(T);
             var iterProp = obj.GetIterator();
             iterProp.Next(true);
 
-            if (iterProp.NextVisible(enterChildren)) {
+            if (iterProp.NextVisible(enterChildren))
                 do {
                     var propValue = iterProp.GetValue<T>();
 
                     if (propValue == null) {
-                        if (iterProp.propertyType == SerializedPropertyType.ObjectReference) {
+                        if (iterProp.propertyType == SerializedPropertyType.ObjectReference)
                             if (iterProp.objectReferenceValue != null &&
                                 iterProp.objectReferenceValue.GetType() == propType)
                                 foundProps.Add(iterProp.Copy());
-                        }
                     }
                     else {
                         foundProps.Add(iterProp.Copy());
                     }
                 } while (iterProp.NextVisible(enterChildren));
-            }
             return foundProps.ToArray();
         }
 #endregion

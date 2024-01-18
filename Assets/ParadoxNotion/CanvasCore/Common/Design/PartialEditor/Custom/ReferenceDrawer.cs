@@ -5,86 +5,64 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public class ReferenceDrawer: AssetReferenceDrawer<AssetReference>{}
+public class ReferenceDrawer : AssetReferenceDrawer<AssetReference> { }
 
-public class AssetReferenceDrawer<T> : OdinValueDrawer<T>, IDisposable
-    where T : AssetReference
+public class AssetReferenceDrawer<T> : OdinValueDrawer<T>, IDisposable where T : AssetReference
 {
     private SerializedProperty serializedProperty;
     private UnityPropertyEmitter.Handle handle;
- 
+
     protected override void Initialize()
     {
-        if (this.Property.Tree.UnitySerializedObject != null)
-        {
-            this.serializedProperty = this.Property.Tree.UnitySerializedObject.FindProperty(this.Property.UnityPropertyPath);
-        }
- 
-        if (this.serializedProperty == null)
-        {
+        if (Property.Tree.UnitySerializedObject != null)
+            serializedProperty = Property.Tree.UnitySerializedObject.FindProperty(Property.UnityPropertyPath);
+
+        if (serializedProperty == null) {
             GameObject go = null;
- 
-            this.handle = UnityPropertyEmitter.CreateEmittedMonoBehaviourProperty(this.Property.Name, typeof(T), this.ValueEntry.ValueCount, ref go);
-            this.serializedProperty = this.handle.UnityProperty;
+            handle = UnityPropertyEmitter.CreateEmittedMonoBehaviourProperty(Property.Name, typeof(T),
+                ValueEntry.ValueCount, ref go);
+            serializedProperty = handle.UnityProperty;
         }
-        
     }
- 
+
     protected override void DrawPropertyLayout(GUIContent label)
     {
-        if (this.serializedProperty == null)
-        {
+        if (serializedProperty == null) {
             // This won't work, hope for the best further down
             SirenixEditorGUI.ErrorMessageBox("Failed to get property for AssetReference");
-            this.CallNextDrawer(label);
+            CallNextDrawer(label);
             return;
         }
- 
-        if (this.handle != null) // Emitted property preparation
+
+        if (handle != null) // Emitted property preparation
         {
-            for (int i = 0; i < this.ValueEntry.ValueCount; i++)
-            {
-                var emitted = this.handle.Objects[i] as EmittedMonoBehaviour<T>;
- 
-                if (emitted != null)
-                {
-                    emitted.SetValue(this.ValueEntry.Values[i]);
-                }
+            for (var i = 0; i < ValueEntry.ValueCount; i++) {
+                var emitted = handle.Objects[i] as EmittedMonoBehaviour<T>;
+                if (emitted != null) emitted.SetValue(ValueEntry.Values[i]);
             }
- 
-            this.serializedProperty.serializedObject.Update();
-            this.serializedProperty = this.serializedProperty.serializedObject.FindProperty(this.serializedProperty.propertyPath);
+            serializedProperty.serializedObject.Update();
+            serializedProperty = serializedProperty.serializedObject.FindProperty(serializedProperty.propertyPath);
         }
- 
-        if (this.handle == null) EditorGUI.BeginChangeCheck();
-        EditorGUILayout.PropertyField(this.serializedProperty, label);
-        if (this.handle == null && EditorGUI.EndChangeCheck())
+        if (handle == null) EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(serializedProperty, label);
+        if (handle == null && EditorGUI.EndChangeCheck()) ValueEntry.Values.ForceMarkDirty();
+
+        if (handle != null) // Emitted property post-drawing stuff
         {
-            this.ValueEntry.Values.ForceMarkDirty();
-        }
- 
-        if (this.handle != null) // Emitted property post-drawing stuff
-        {
-            this.serializedProperty.serializedObject.ApplyModifiedPropertiesWithoutUndo();
- 
-            for (int i = 0; i < this.ValueEntry.ValueCount; i++)
-            {
-                var emitted = this.handle.Objects[i] as EmittedMonoBehaviour<T>;
- 
-                if (emitted != null)
-                {
-                    this.ValueEntry.Values[i] = emitted.GetValue();
-                }
+            serializedProperty.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+
+            for (var i = 0; i < ValueEntry.ValueCount; i++) {
+                var emitted = handle.Objects[i] as EmittedMonoBehaviour<T>;
+                if (emitted != null) ValueEntry.Values[i] = emitted.GetValue();
             }
         }
     }
- 
+
     public void Dispose()
     {
-        if (this.handle != null)
-        {
-            this.handle.Dispose();
-            this.handle = null;
+        if (handle != null) {
+            handle.Dispose();
+            handle = null;
         }
     }
 }
