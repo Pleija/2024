@@ -80,9 +80,4 @@ public class Singleton<T> : Agent<T> where T : Singleton<T>
         }
     }
 
-    protected virtual void OnDestroy()
-    {
-        Dispose();
-        if (m_Instance == this) m_Instance = null;
-    }
 }

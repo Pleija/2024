@@ -111,7 +111,7 @@ namespace NodeCanvas.Framework
 
         [SerializeField]  public MtsFile mtsFile;
 
-        public static string ToFileName(string input) => Regex.Replace(input.Split(' ').First(), @"\W+", "");
+        public static string ToFileName(string input) => Regex.Replace(input.Replace("(Clone)","").Split(' ').First(), @"\W+", "");
         public Node Find(string aName) => allNodes.FirstOrDefault(x => x.NodeName == aName);
         public string FsmName => mtsFile ? Path.GetFileNameWithoutExtension(mtsFile.assetPath) : ToFileName(agent.name);
 

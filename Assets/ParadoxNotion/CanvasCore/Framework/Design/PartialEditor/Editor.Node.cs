@@ -9,8 +9,10 @@ using ParadoxNotion;
 using ParadoxNotion.Design;
 using ParadoxNotion.Serialization.FullSerializer;
 using Puerts.App;
+using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
+using WebSocketSharp;
 using Zu.TypeScript;
 using Zu.TypeScript.Change;
 using Zu.TypeScript.TsTypes;
@@ -19,6 +21,141 @@ namespace NodeCanvas.Framework
 {
     partial class Node
     {
+
+        public string MakeFile()
+        {
+            // if (string.IsNullOrWhiteSpace(customName)) {
+            //
+            //     return "";
+            // }
+            var src = "Packages/tsproj/src";
+            var file = $"{graph.FsmPath.Replace(".mjs", "")}/{NodeName}.mjs";
+            var nodeFilePath = Path.GetFullPath($"{src}/{file.Replace(".mjs", ".mts")}");
+            var basename = mtsFile ? Path.GetFileNameWithoutExtension(mtsFile.assetPath) : "";
+
+            if (mtsFile && customName != basename && !customName.IsNullOrEmpty()) {
+                if (!EditorUtility.DisplayDialog("", $"{basename}.mts => {customName}.mts?", "OK", "Cancel")) {
+                    nodeFilePath = Path.GetFullPath(mtsFile.assetPath);
+                }
+                else {
+                    var files = AssetDatabase.FindAssets($"t:MtsFile").Select(AssetDatabase.GUIDToAssetPath)
+                        .Where(x => x.StartsWith(mtsFile.assetPath.Replace(".mts", "")));
+                    files.ForEach(x => {
+                        File.WriteAllText(x, File.ReadAllText(x).Replace(basename, customName));
+                    });
+                    File.Move(mtsFile.assetPath, mtsFile.assetPath.Replace(basename, customName));
+                    AssetDatabase.ImportAsset(mtsFile.assetPath.Replace(basename, customName));
+                }
+            }
+            Debug.Log(
+                $"path: {nodeFilePath} dir: {Path.GetDirectoryName(nodeFilePath)} exists: {Directory.Exists(Path.GetDirectoryName(nodeFilePath))}");
+            if (!Directory.Exists(Path.GetDirectoryName(nodeFilePath))) Directory.CreateDirectory(Path.GetDirectoryName(nodeFilePath)!);
+
+            if (!File.Exists(nodeFilePath)) {
+                var content = @$"import {{ {graph.FsmName} }} from ""{graph.FsmPath}"";
+import {{ StateNode }} from ""Common/StateNode.mjs"";
+
+export class {NodeName} extends StateNode<{graph.FsmName}> {{
+
+    init() {{
+        console.log(`init ${{this.constructor.name}}`);
+    }}
+}}
+";
+                File.WriteAllText(nodeFilePath, content);
+            }
+            else {
+                var content = File.ReadAllText(nodeFilePath);
+                var root = new TypeScriptAST(content, nodeFilePath);
+                var changeAst = new ChangeAST();
+                var cls = root.OfKind(SyntaxKind.ClassDeclaration).First();
+                var extends = cls.OfKind(SyntaxKind.HeritageClause).First();
+                cls.LogDetail();
+                root.RootNode.LogDetail();
+                var ch = false;
+
+                if (bindComponent && !extends.GetText().Contains(bindComponent.GetType().Name)) {
+                    ch = true;
+                    changeAst.ChangeNode(extends, $"extends {bindComponent.GetType().Name}");
+
+                    if (root.OfKind(SyntaxKind.ImportEqualsDeclaration).All(x =>
+                            !x.GetText().Contains($"CS.{bindComponent.GetType().FullName}"))) {
+                        changeAst.InsertBefore(root.RootNode,
+                            $"import {bindComponent.GetType().Name} = CS.{bindComponent.GetType().FullName};\n");
+                    }
+                }
+                else if (!bindComponent) {
+                    if (!extends.GetText().Contains($"StateFSM<{FsmName}>")) {
+                        ch = true;
+                        changeAst.ChangeNode(extends, $"extends StateFSM<{FsmName}>");
+                    }
+                    var ims = root.OfKind(SyntaxKind.ImportDeclaration).ToArray();
+
+                    if (!ims.Any(t => t.GetText().Contains(file))) {
+                        ch = true;
+                        changeAst.InsertBefore(root.RootNode, $"import {{ {NodeName} }} from \"{file}\";\n");
+                    }
+                }
+
+                if (ch) {
+                    File.WriteAllText(nodeFilePath, changeAst.GetChangedSource(root.SourceStr));
+                }
+            }
+
+            var fsmFilePath = $"{src}/{graph.FsmPath.Replace(".mjs", ".mts")}";
+
+            var source = File.ReadAllText(fsmFilePath);
+            var ast = new TypeScriptAST(source, fsmFilePath);
+            var change = new ChangeAST();
+            var imports = ast.OfKind(SyntaxKind.ImportDeclaration).ToArray();
+
+            //.ForEach(x => Debug.Log(x.GetText()));
+            var changed = false;
+
+            if (!imports.Any(t => t.GetText().Contains(file))) {
+                changed = true;
+                change.InsertAfter(imports.Last(), $"\nimport {{ {NodeName} }} from \"{file}\";");
+            }
+            var module = ast.OfKind(SyntaxKind.ClassDeclaration).First();
+            var props = module.OfKind(SyntaxKind.PropertyDeclaration).ToArray();
+
+            if (props.All(x => x.IdentifierStr != NodeName)) {
+                changed = true;
+                change.InsertBefore(module.Children.Last(), $"\n    {NodeName}: {NodeName};");
+            }
+            var init = module.OfKind(SyntaxKind.MethodDeclaration).First(x => x.IdentifierStr == "init");
+            // init.Children.ForEach(x => {
+            //     Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+            // });
+
+            if (init.Children.All(x => !x.GetText().Contains($"this.{NodeName} = "))) {
+                changed = true;
+                //Debug.Log("not found");
+                // init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
+                //     Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+                // });
+                var code = init.OfKind(SyntaxKind.Block).First().Children.FirstOrDefault();
+
+                if (code != null) {
+                    change.InsertBefore(code, $"\n          this.{NodeName} = this.bind({NodeName});");
+                }
+                else {
+                    init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
+                        Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
+                    });
+                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),
+                        $"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
+                }
+            }
+
+            if (changed) {
+                var newSource = change.GetChangedSource(ast.SourceStr);
+                File.WriteAllText(fsmFilePath, newSource);
+            }
+            return nodeFilePath.Replace(Directory.GetCurrentDirectory() + "/", "");
+        }
+
+
         //Class for the nodeports GUI
         private class GUIPort
         {

@@ -30,10 +30,8 @@ namespace NodeCanvas.Framework
         [SerializeField, fsIgnoreInBuild]
         private bool _debugBoundValue;
 
-#if UNITY_EDITOR
         [SerializeField]
         public AssetObject assetObject;
-#endif
 
         ///<summary>Raised when name change</summary>
         public event Action<string> onNameChanged;

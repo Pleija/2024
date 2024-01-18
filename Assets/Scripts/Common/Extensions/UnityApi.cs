@@ -24,7 +24,14 @@ public static class UnityApi
 
     public static string JoinStr<T>(this IEnumerable<T> target, string s = ", ") => string.Join(s, target);
     public static string RegexReplace(this string input, string rule, string to) => Regex.Replace(input, rule, to);
-    public static T IsNull<T>(this T o) where T : UnityEngine.Object => o == null ? null : o;
+    public static T Null<T>(this T o) where T : UnityEngine.Object => o == null ? null : o;
+    public static bool IsNull<T>(this T o) where T : UnityEngine.Object => o == null;
+    public static GameObject Null(this GameObject o) => o == null ? null : o;
+    public static bool IsNull(this Component o) => o == null;
+    public static ScriptableObject Null(this ScriptableObject o) => o == null ? null : o;
+    public static bool IsNull(this ScriptableObject o) => o == null;
+    public static AssetReference Null(this AssetReference o) => o == null ? null : o;
+    public static bool IsNull(this AssetReference o) => o == null;
 
     public static string GetPath(this GameObject gameObject) => string.Join("/",
         gameObject.GetComponentsInParent<Transform>(true).Select(t => t.name).Reverse().ToArray());

@@ -66,10 +66,9 @@ namespace Network
             Call<long, long>(ApiFunc.GetTimestamp, r => DateTimeOffset.UtcNow.ToUnixTimeSeconds(), (r, t) => { });
         }
 
-        protected override void OnDestroy()
+        protected  void OnDestroy()
         {
             Hub?.StartClose();
-            base.OnDestroy();
         }
 
         public void AddText(string log)

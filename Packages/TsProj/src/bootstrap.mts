@@ -22,6 +22,14 @@ import "Common/Helpers.mjs";
 import "Common/TypeUtils.mjs";
 import "Game/BackupCard.mjs";
 import "Loading/StartUp.mjs";
+import JsMain = CS.App.JsMain;
+import SceneManager = CS.UnityEngine.SceneManagement.SceneManager;
+import LoadSceneMode = CS.UnityEngine.SceneManagement.LoadSceneMode;
+import Res = CS.Res;
+import $typeof = puer.$typeof;
+import GameObject = CS.UnityEngine.GameObject;
+import Addressables = CS.UnityEngine.AddressableAssets.Addressables;
+import $promise = puer.$promise;
 
 global.protobuf = require("protobufjs");
 
@@ -33,6 +41,21 @@ protobuf.load("awesome.proto", (err, root) => {
     const type = root.lookupType("awesome.AwesomeMessage");
     console.log(type, "test proto");
 });
+
+//todo 启动场景
+if (JsMain.needBoot) {
+    JsMain.needBoot = false;
+    const loc = Res.Exists("StartUp", $typeof(GameObject));
+    if (loc != null) {
+        loc.Inst(t => {
+            if (t == null) {
+                SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+            }
+        });
+    } else {
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+    }
+}
 
 
 // $Login.sayHello("puerts ready");

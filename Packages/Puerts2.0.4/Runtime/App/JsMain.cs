@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Org.BouncyCastle.Crypto.Engines;
 using Puerts;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -11,8 +13,10 @@ using UltEvents;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 using Task = System.Threading.Tasks.Task;
 
 namespace App
@@ -25,17 +29,48 @@ namespace App
         // public static bool assetsReady;
         private static JsMain m_Instance;
 
+        static IEnumerator LoadDefault()
+        {
+            var handle = Resources.LoadAsync<GameObject>("DefaultLoading");
+            yield return handle;
+            Instantiate(handle.asset);
+            self.Reload();
+        }
+
+        public static bool needBoot;
+
+        public static void ApplicationStart()
+        {
+            needBoot = true;
+
+            if (Res.Exists<GameObject>("JsMain") is { } loc) {
+                Addressables.LoadAssetAsync<GameObject>(loc).Completed += h => {
+                    if (h.Status == AsyncOperationStatus.Succeeded && h.Result) {
+                        Instantiate(h.Result).OnDestroyRelease(h);
+                        self.Reload();
+                    }
+                    else {
+                        LoadDefault().StartStaticCoroutine();
+                    }
+                };
+                return;
+            }
+            LoadDefault().StartStaticCoroutine();
+        }
+
         public static JsMain self {
             get {
                 if (isQuit) return m_Instance;
                 m_Instance ??= FindObjectOfType<JsMain>(true);
                 if (m_Instance) return m_Instance;
-                var go = Instantiate(Addressables.LoadAssetAsync<GameObject>("JsMain").WaitForCompletion());
-                m_Instance ??= go.GetComponent<JsMain>();
+                Instantiate(Resources.Load<GameObject>("DefaultLoading"));
 
-                if (!Application.isPlaying) {
-                    go.hideFlags = HideFlags.HideAndDontSave;
-                }
+                // var go = Instantiate(Addressables.LoadAssetAsync<GameObject>("JsMain").WaitForCompletion());
+                // m_Instance ??= go.GetComponent<JsMain>();
+
+                // if (!Application.isPlaying) {
+                //     go.hideFlags = HideFlags.HideAndDontSave;
+                // }
                 return m_Instance;
             }
         }
@@ -123,17 +158,22 @@ namespace App
             JsEnv.self.ExecuteModule(module.EndsWith(".mjs") ? module : module + ".mjs");
         }
 
-        private static bool isQuit;
+        public static bool isQuit;
+        private static bool initialed;
 
         private void Awake()
         {
-            Application.quitting += () => isQuit = true;
-
             if (m_Instance) {
-                Destroy(m_Instance.gameObject);
+                Destroy(gameObject);
+                return;
             }
             Debug.Log("Start JsMain");
             m_Instance = this;
+
+            if (!initialed) {
+                Application.quitting += () => isQuit = true;
+                initialed = true;
+            }
             if (transform.parent != null) transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
         }
@@ -203,15 +243,28 @@ namespace App
             Debug.Log($"all models: {string.Join(", ", types)}");
         }
 
-        public JsEnv Reload(bool force = false)
+        // [SerializeField, ReadOnly]
+        // private string typeName;
+        //
+        // [ShowInInspector]
+        // public Type AutoStaticCodeUsingType {
+        //     get => Type.GetType(typeName);
+        //     set => typeName = value.AssemblyQualifiedName;
+        // }
+
+        public static Action<JsEnv> AutoBind;
+
+        public void Reload(bool force = false)
         {
-            if (force) JsEnv._env.Dispose();
-            if (LoadModels) LoadAll();
-            if (IsGetAssets) GetAssets();
-            Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
-            if (TryGetType("PuertsStaticWrap.AutoStaticCodeUsing", out var type))
-                type.GetMethod("AutoUsing", BindingFlags.Static | BindingFlags.Public)
-                    ?.Invoke(null, new object[] { JsEnv.self });
+            if (force && JsEnv._env != null) JsEnv._env.Dispose();
+            // if (LoadModels) LoadAll();
+            // if (IsGetAssets) GetAssets();
+            //Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
+            // if (TryGetType("PuertsStaticWrap.AutoStaticCodeUsing", out var type))
+            // Assert.IsNotNull(AutoStaticCodeUsingType, "AutoStaticCodeUsingType != null");
+            // AutoStaticCodeUsingType.GetMethod("AutoUsing", BindingFlags.Static | BindingFlags.Public)
+            //     ?.Invoke(null, new object[] { JsEnv.self });
+            AutoBind?.Invoke(JsEnv.self);
             JsEnv.self.UsingAction<Vector2>();
             JsEnv.self.UsingAction<Vector3>();
             JsEnv.self.UsingAction<bool>();
@@ -219,7 +272,6 @@ namespace App
             JsEnv.self.UsingAction<float>();
             JsEnv.self.UsingAction<int>();
             JsEnv.self.ExecuteModule("bootstrap.mjs");
-            return JsEnv.self;
         }
 
         public void Update()

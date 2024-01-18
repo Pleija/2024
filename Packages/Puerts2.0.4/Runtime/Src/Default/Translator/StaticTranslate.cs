@@ -13,7 +13,7 @@ namespace Puerts
 {
     public static class StaticTranslate<T>
     {
-        public delegate void PushFunc(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr function, T o);
+        public delegate void PushFunc(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr func, T o);
 
         public delegate T GetFunc(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder, bool isByRef);
 
@@ -23,12 +23,12 @@ namespace Puerts
         public static GetFunc Get = DefaultGetResult;
         private static GeneralGetter Getter = null;
 
-        private static void DefaultPush(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr function, T o)
+        private static void DefaultPush(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr func, T o)
         {
             if (Setter == null) {
                 Setter = JsEnv.jsEnvs[jsEnvIdx].GeneralSetterManager.GetTranslateFunc(typeof(T));
             }
-            Setter(jsEnvIdx, isolate, setValueApi, function, o);
+            Setter(jsEnvIdx, isolate, setValueApi, func, o);
         }
 
         private static T DefaultGetResult(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr value, bool isByRef)

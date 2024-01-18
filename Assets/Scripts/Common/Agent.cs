@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 [ShowOdinSerializedPropertiesInInspector, Serializable]
-public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallbackReceiver, ISupportsPrefabSerialization
+public abstract class Agent : MonoBehaviour, ISerializationCallbackReceiver, ISupportsPrefabSerialization
 {
 #region Odin
     [SerializeField, HideInInspector]
@@ -29,16 +29,16 @@ public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallback
     }
 #endregion
 
-    public static bool isQuitting;
+    //public static bool isQuitting;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-    private static void BaseConfigOnLoad()
-    {
-        Application.quitting += () => isQuitting = true;
-#if UNITY_EDITOR
-        EditorApplication.playModeStateChanged += mode => isQuitting = false;
-#endif
-    }
+//     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+//     private static void BaseConfigOnLoad()
+//     {
+//         Application.quitting += () => isQuitting = true;
+// #if UNITY_EDITOR
+//         EditorApplication.playModeStateChanged += mode => isQuitting = false;
+// #endif
+//     }
 
     [AttributeUsage(AttributeTargets.Class)]
     public class AutoCreateAttribute : Attribute { }
@@ -46,10 +46,10 @@ public abstract class Agent : MonoBehaviour, IDisposable, ISerializationCallback
     [AttributeUsage(AttributeTargets.Class)]
     public class DontDestroyOnLoadAttribute : Attribute { }
 
-    public virtual void Dispose()
-    {
-        // TODO 在此释放托管资源
-    }
+    // public virtual void Dispose()
+    // {
+    //     // TODO 在此释放托管资源
+    // }
 }
 
 //public class AgentSample : Agent<AgentSample> { }

@@ -1,5 +1,6 @@
 ﻿namespace PuertsStaticWrap
 {
+    using UnityEngine;    
     using System;
     using System.Linq;
     using System.Collections.Generic;
@@ -8,6 +9,13 @@
 
     public static class AutoStaticCodeUsing
     {
+    
+#if UNITY_EDITOR
+        [UnityEditor.InitializeOnLoadMethod]
+#endif   
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        static void SetupAutoBind() => App.JsMain.AutoBind += t => t.AutoUsing();
+        
         public static void AutoUsing(this JsEnv jsEnv)
         {
             jsEnv.UsingAction<BestHTTP.Connections.HTTP2.HTTP2SettingsRegistry, BestHTTP.Connections.HTTP2.HTTP2Settings, System.UInt32, System.UInt32>();
@@ -60,6 +68,8 @@
             jsEnv.UsingAction<System.Int32, UnityEngine.Vector2>();
             jsEnv.UsingAction<System.Int64>();
             jsEnv.UsingAction<System.Int64, System.Threading.Tasks.ParallelLoopState>();
+            jsEnv.UsingAction<System.IntPtr, System.Int64>();
+            jsEnv.UsingAction<System.IntPtr, System.IntPtr, System.IntPtr, System.Int32>();
             jsEnv.UsingAction<System.Object, System.Boolean>();
             jsEnv.UsingAction<System.Object, System.Int32>();
             jsEnv.UsingAction<System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken>();
@@ -126,7 +136,10 @@
             jsEnv.UsingFunc<System.Int32, System.String, TMPro.TMP_SpriteAsset>();
             jsEnv.UsingFunc<System.Int64>();
             jsEnv.UsingFunc<System.IntPtr, System.IntPtr>();
+            jsEnv.UsingFunc<System.IntPtr, System.IntPtr, System.Int32, System.Int64, System.IntPtr>();
+            jsEnv.UsingFunc<System.IntPtr, System.IntPtr, System.Int32, System.Object>();
             jsEnv.UsingFunc<System.Object, Cysharp.Threading.Tasks.UniTask>();
+            jsEnv.UsingFunc<System.Object, System.Boolean>();
             jsEnv.UsingFunc<System.Reflection.Assembly, System.String, System.Boolean, System.Type>();
             jsEnv.UsingFunc<System.Reflection.FieldInfo, System.Boolean>();
             jsEnv.UsingFunc<System.Reflection.MemberInfo, System.Object, System.Boolean>();
