@@ -42,12 +42,34 @@ namespace App
 
         public static bool needBoot;
         public static bool modelReady;
+        public static void ApplicationStart() => ApplicationStart(true).StartStaticCoroutine();
 
-        public static void ApplicationStart()
+        public static IEnumerator ApplicationStart(bool run)
         {
             needBoot = true;
+            yield return Addressables.InitializeAsync();
+            var checkForCatalog = Addressables.CheckForCatalogUpdates(false);
+            yield return checkForCatalog;
+            // while (checkForCatalog.IsValid() && !checkForCatalog.IsDone) {
+            //    // Debug.Log($"check for catalog: {checkForCatalog.PercentComplete * 100}%");
+            // }
+
+            if (checkForCatalog.Result.Any()) {
+                var updateCatalogs = Addressables.UpdateCatalogs(checkForCatalog.Result, false);
+                yield return updateCatalogs;
+                // while (updateCatalogs.IsValid() && !updateCatalogs.IsDone) {
+                //     Debug.Log($"update catalog: {updateCatalogs.PercentComplete * 100}%");
+                //     yield return null;
+                // }
+                var all = updateCatalogs.Result.SelectMany(x =>
+                    x.Keys.Select(o => o.ToString()).Where(s => !Guid.TryParse(s, out _))).ToArray();
+                Debug.Log($"updated({all.Count()}): {all.JoinStr("\n")}");
+                if (updateCatalogs.IsValid()) Addressables.Release(updateCatalogs);
+            }
+            if (checkForCatalog.IsValid()) Addressables.Release(checkForCatalog);
 
             if (Res.Exists<GameObject>("JsMain") is { } loc) {
+                //yield return Addressables.DownloadDependenciesAsync(loc);
                 Addressables.LoadAssetAsync<GameObject>(loc).Completed += h => {
                     if (h.Status == AsyncOperationStatus.Succeeded && h.Result &&
                         h.Result.GetComponentInChildren<JsMain>() is { } instance) {
@@ -65,7 +87,7 @@ namespace App
                     }
                     LoadDefault().StartStaticCoroutine();
                 };
-                return;
+                yield break;
             }
             LoadDefault().StartStaticCoroutine();
         }
@@ -87,7 +109,7 @@ namespace App
             }
         }
 
-        public static string[] all => Res.ExistsAll<TextAsset>()
+        public static string[] AllMjsProto => Res.ExistsAll<TextAsset>()
             .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto")).Select(x => x.PrimaryKey)
             .Distinct().ToArray();
 

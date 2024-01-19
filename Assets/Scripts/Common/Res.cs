@@ -46,9 +46,9 @@ public static class Res
     }
 
     public static List<IResourceLocation> ExistsAll<T>() => ExistsAll(typeof(T));
-
     public static IResourceLocation Exists(Type type) => ExistsAll(type).FirstOrDefault();
     public static IResourceLocation Exists<T>() => ExistsAll(typeof(T)).FirstOrDefault();
+
     public static List<IResourceLocation> ExistsAll(Type type)
     {
         var result = new List<IResourceLocation>();
@@ -61,31 +61,32 @@ public static class Res
     }
 
 #region AssetReference
-    
-
-    public static void Check(this AssetReference assetReference, Action<GameObject> action)
+    public static void Check(this object assetReference, Action<GameObject> action)
     {
         action.Invoke(null);
     }
 
-    public static UniTask Inst(this AssetReference asset, Action<GameObject> callback) =>
+    public static UniTask Inst(this object asset, Action<GameObject> callback) =>
         Inst(asset, null, Vector3.zero, Quaternion.identity, callback);
 
-    public static UniTask Inst(this AssetReference asset, Transform parent, Action<GameObject> callback) =>
+    public static UniTask Inst(this object asset, Transform parent, Action<GameObject> callback) =>
         Inst(asset, parent, Vector3.zero, Quaternion.identity, callback);
 
-    public static UniTask LoadPrefab(this AssetReference asset, Action<GameObject> callback)
+    public static UniTask LoadPrefab(this object asset, Action<GameObject> callback)
     {
         return LoadAs(asset, typeof(GameObject), t => callback.Invoke(t as GameObject));
     }
 
-    public static UniTask LoadAs(this AssetReference asset, Type type = null, Action<UnityEngine.Object> callback = null)
+    public static UniTask LoadAs(this object asset, Type type = null, Action<UnityEngine.Object> callback = null)
     {
-        if (!asset.RuntimeKeyIsValid()) {
+        var key = asset is IResourceLocation location ? location.PrimaryKey : asset;
+
+        if ((asset is AssetReference assetReference) && !assetReference.RuntimeKeyIsValid() ||
+            (asset is IResourceLocation { PrimaryKey: "" })) {
             Debug.LogException(new Exception("key error"));
             return UniTask.WaitUntil(() => true);
         }
-        var h = Addressables.LoadAssetAsync<UnityEngine.Object>(asset);
+        var h = Addressables.LoadAssetAsync<UnityEngine.Object>(key);
         h.Completed += handle => {
             if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.GetType() == type) {
                 callback?.Invoke(handle.Result);
@@ -98,14 +99,16 @@ public static class Res
         return UniTask.WaitUntil(() => h.IsDone);
     }
 
-    public static UniTask Inst(this AssetReference asset, Transform parent, Vector3 position, Quaternion rotation,
+    public static UniTask Inst(this object asset, Transform parent, Vector3 position, Quaternion rotation,
         Action<GameObject> callback)
     {
-        if (!asset.RuntimeKeyIsValid()) {
+        var key = asset is IResourceLocation location ? location.PrimaryKey : asset;
+        if ((asset is AssetReference assetReference) && !assetReference.RuntimeKeyIsValid() ||
+            (asset is IResourceLocation { PrimaryKey: "" })) {
             Debug.LogException(new Exception("key error"));
             return UniTask.WaitUntil(() => true);
         }
-        var h = Addressables.LoadAssetAsync<GameObject>(asset);
+        var h = Addressables.LoadAssetAsync<GameObject>(key);
         //Addressables.InstantiateAsync(asset, position, rotation, parent);
         h.Completed += handle => {
             if (handle.Status == AsyncOperationStatus.Succeeded) {
@@ -123,70 +126,4 @@ public static class Res
         return UniTask.WaitUntil(() => h.IsDone);
     }
 #endregion
-
-#region IResourceLocation
-    
-
-    public static void Check(this IResourceLocation asset, Action<GameObject> action)
-    {
-        action.Invoke(null);
-    }
-
-    public static UniTask Inst(this IResourceLocation asset, Action<GameObject> callback) =>
-        Inst(asset, null, Vector3.zero, Quaternion.identity, callback);
-
-    public static UniTask Inst(this IResourceLocation asset, Transform parent, Action<GameObject> callback) =>
-        Inst(asset, parent, Vector3.zero, Quaternion.identity, callback);
-
-    public static UniTask LoadPrefab(this IResourceLocation asset, Action<GameObject> callback)
-    {
-        return LoadAs(asset, typeof(GameObject), t => callback.Invoke(t as GameObject));
-    }
-
-    public static UniTask LoadAs(this IResourceLocation asset, Type type = null, Action<UnityEngine.Object> callback = null)
-    {
-        if (asset == null) {
-            Debug.LogException(new Exception("key error"));
-            return UniTask.WaitUntil(() => true);
-        }
-        var h = Addressables.LoadAssetAsync<UnityEngine.Object>(asset);
-        h.Completed += handle => {
-            if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.GetType() == type) {
-                callback?.Invoke(handle.Result);
-            }
-            else {
-                callback?.Invoke(null);
-                Addressables.Release(handle);
-            }
-        };
-        return UniTask.WaitUntil(() => h.IsDone);
-    }
-
-    public static UniTask Inst(this IResourceLocation asset, Transform parent, Vector3 position, Quaternion rotation,
-        Action<GameObject> callback)
-    {
-        if (asset == null) {
-            Debug.LogException(new Exception("key error"));
-            return UniTask.WaitUntil(() => true);
-        }
-        var h = Addressables.LoadAssetAsync<GameObject>(asset);
-        //Addressables.InstantiateAsync(asset, position, rotation, parent);
-        h.Completed += handle => {
-            if (handle.Status == AsyncOperationStatus.Succeeded) {
-                var go = UnityEngine.Object.Instantiate(handle.Result, position, rotation, parent);
-                go.OnDestroyAsObservable().Subscribe(t => {
-                    if (handle.IsValid()) Addressables.Release(handle);
-                });
-                callback?.Invoke(go);
-            }
-            else {
-                callback?.Invoke(null);
-                Addressables.Release(handle);
-            }
-        };
-        return UniTask.WaitUntil(() => h.IsDone);
-    }
-#endregion
-
 }
-// }

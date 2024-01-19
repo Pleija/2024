@@ -29,6 +29,7 @@ import Res = CS.Res;
 import $typeof = puer.$typeof;
 import GameObject = CS.UnityEngine.GameObject;
 import Setting = CS.Models.Setting;
+import UnityApi = CS.UnityApi;
 
 export const Setup = async function () {
 
@@ -47,9 +48,9 @@ export const Setup = async function () {
     //todo 启动场景
     if (JsMain.needBoot) {
         JsMain.needBoot = false;
-        const loc = Res.Exists("StartUp", $typeof(GameObject));
-        if (loc != null && Setting.self.ResVersion.Value > JsMain.self.baseVersion) {
-            loc.Inst(t => {
+        const loc = Res.Exists("StartUp");
+        if (loc != null && UnityApi.CompareVersion(Setting.self.ResVersion.Value, JsMain.self.baseVersion) > 0) {
+            Res.Inst(loc, t => {
                 if (t == null) {
                     SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
                 }
