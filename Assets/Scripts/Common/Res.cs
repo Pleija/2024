@@ -33,28 +33,30 @@ public static class Res
     public static IEnumerable<string> Keys => ResourceLocators.SelectMany(x => x.Keys)
         .Select(key => Exists(key.ToString())?.PrimaryKey ?? null).Where(x => x != null).Distinct();
 
-    public static ResourceLocationBase Exists<T>(object key) => Exists(key, typeof(T));
+    public static IResourceLocation Exists<T>(object key) => Exists(key, typeof(T));
 
-    public static ResourceLocationBase Exists(object key, Type type = null)
+    public static IResourceLocation Exists(object key, Type type = null)
     {
-        var result = new List<ResourceLocationBase>();
+        var result = new List<IResourceLocator>();
         foreach (var locator in ResourceLocators)
             if (locator.Locate(key is AssetReference reference ? reference.RuntimeKey : $"{key}", type,
                     out var resourceLocations))
-                return resourceLocations.First() as ResourceLocationBase;
+                return resourceLocations.First();
         return null;
     }
 
-    public static List<ResourceLocationBase> Exists<T>() => Exists(typeof(T));
+    public static List<IResourceLocation> ExistsAll<T>() => ExistsAll(typeof(T));
 
-    public static List<ResourceLocationBase> Exists(Type type)
+    public static IResourceLocation Exists(Type type) => ExistsAll(type).FirstOrDefault();
+    public static IResourceLocation Exists<T>() => ExistsAll(typeof(T)).FirstOrDefault();
+    public static List<IResourceLocation> ExistsAll(Type type)
     {
-        var result = new List<ResourceLocationBase>();
+        var result = new List<IResourceLocation>();
         foreach (var locator in ResourceLocators)
         foreach (var key in locator.Keys)
             if (locator.Locate(key, type, out var resourceLocations))
                 if (resourceLocations.FirstOrDefault(x => !Guid.TryParse(x.PrimaryKey, out _)) is { } loc)
-                    result.Add(loc as ResourceLocationBase);
+                    result.Add(loc);
         return result.Any() ? result : null;
     }
 
@@ -125,23 +127,23 @@ public static class Res
 #region IResourceLocation
     
 
-    public static void Check(this ResourceLocationBase asset, Action<GameObject> action)
+    public static void Check(this IResourceLocation asset, Action<GameObject> action)
     {
         action.Invoke(null);
     }
 
-    public static UniTask Inst(this ResourceLocationBase asset, Action<GameObject> callback) =>
+    public static UniTask Inst(this IResourceLocation asset, Action<GameObject> callback) =>
         Inst(asset, null, Vector3.zero, Quaternion.identity, callback);
 
-    public static UniTask Inst(this ResourceLocationBase asset, Transform parent, Action<GameObject> callback) =>
+    public static UniTask Inst(this IResourceLocation asset, Transform parent, Action<GameObject> callback) =>
         Inst(asset, parent, Vector3.zero, Quaternion.identity, callback);
 
-    public static UniTask LoadPrefab(this ResourceLocationBase asset, Action<GameObject> callback)
+    public static UniTask LoadPrefab(this IResourceLocation asset, Action<GameObject> callback)
     {
         return LoadAs(asset, typeof(GameObject), t => callback.Invoke(t as GameObject));
     }
 
-    public static UniTask LoadAs(this ResourceLocationBase asset, Type type = null, Action<UnityEngine.Object> callback = null)
+    public static UniTask LoadAs(this IResourceLocation asset, Type type = null, Action<UnityEngine.Object> callback = null)
     {
         if (asset == null) {
             Debug.LogException(new Exception("key error"));
@@ -160,7 +162,7 @@ public static class Res
         return UniTask.WaitUntil(() => h.IsDone);
     }
 
-    public static UniTask Inst(this ResourceLocationBase asset, Transform parent, Vector3 position, Quaternion rotation,
+    public static UniTask Inst(this IResourceLocation asset, Transform parent, Vector3 position, Quaternion rotation,
         Action<GameObject> callback)
     {
         if (asset == null) {

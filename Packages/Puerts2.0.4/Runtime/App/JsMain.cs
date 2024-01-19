@@ -87,7 +87,7 @@ namespace App
             }
         }
 
-        public static string[] all => Res.Exists<TextAsset>()
+        public static string[] all => Res.ExistsAll<TextAsset>()
             .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto")).Select(x => x.PrimaryKey)
             .Distinct().ToArray();
 
@@ -255,7 +255,7 @@ namespace App
         {
             var types = new List<string>();
 
-            foreach (var x in Res.Exists<ModelBase>()) {
+            foreach (var x in Res.ExistsAll<ModelBase>()) {
                 // await Addressables.DownloadDependenciesAsync(x).Task;
                 //if (Defaults.ContainsKey(x.ResourceType)) continue;
                 types.Add($"{x.ResourceType.FullName} => {x.PrimaryKey}");

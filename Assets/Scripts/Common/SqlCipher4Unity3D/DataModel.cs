@@ -136,8 +136,8 @@ namespace SqlCipher4Unity3D
 #endif
                     if (Application.isPlaying && !Application.isEditor)
                         if (result == null && Res.Exists<T>() is { } locations) {
-                            result = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey).WaitForCompletion();
-                            Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
+                            result = Addressables.LoadAssetAsync<T>(locations.PrimaryKey).WaitForCompletion();
+                            Debug.Log($"Load: {typeof(T).Name} => {locations.PrimaryKey}");
                         }
 
                     if (result == null) {

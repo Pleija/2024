@@ -27,7 +27,7 @@ export class StartUp extends StateFsm {
     async init() {
         this.下载更新 = this.bind(下载更新);
 
-        console.log("init StartUp", `Initial Time: ${Time.realtimeSinceStartup.toFixed(2)}`);
+        console.log("init StartUp test2", `Initial Time: ${Time.realtimeSinceStartup.toFixed(2)}`);
         await $promise(Addressables.InitializeAsync().Task);
 
         const loc = Res.Exists(this.prefab);
