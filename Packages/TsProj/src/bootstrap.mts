@@ -22,7 +22,6 @@ import "Common/Helpers.mjs";
 import "Common/TypeUtils.mjs";
 import "Game/BackupCard.mjs";
 import "Loading/StartUp.mjs";
-import JsMain = CS.App.JsMain;
 import SceneManager = CS.UnityEngine.SceneManagement.SceneManager;
 import LoadSceneMode = CS.UnityEngine.SceneManagement.LoadSceneMode;
 import Res = CS.Res;
@@ -30,6 +29,7 @@ import $typeof = puer.$typeof;
 import GameObject = CS.UnityEngine.GameObject;
 import Setting = CS.Models.Setting;
 import UnityApi = CS.UnityApi;
+import JsMain = CS.JsMain;
 
 export const Setup = async function () {
 

@@ -14,7 +14,7 @@
         [UnityEditor.InitializeOnLoadMethod]
 #endif   
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        static void SetupAutoBind() => App.JsMain.AutoBind += t => t.AutoUsing();
+        static void SetupAutoBind() => JsMain.AutoBind += t => t.AutoUsing();
         
         public static void AutoUsing(this JsEnv jsEnv)
         {
@@ -110,6 +110,7 @@
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode>();
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.Scene>();
             jsEnv.UsingAction<UnityEngine.Scripting.GarbageCollector.Mode>();
+            jsEnv.UsingAction<UnityEngine.Transform, System.Int32>();
             jsEnv.UsingAction<UnityEngine.Transform, UnityEngine.Transform, System.Boolean, System.Object[]>();
             jsEnv.UsingAction<UnityEngine.Vector2>();
             jsEnv.UsingAction<UnityEngine.Vector3>();
@@ -163,6 +164,7 @@
             jsEnv.UsingFunc<UnityEngine.Color>();
             jsEnv.UsingFunc<UnityEngine.GameObject, System.Boolean>();
             jsEnv.UsingFunc<UnityEngine.LogType, System.Object, System.Boolean>();
+            jsEnv.UsingFunc<UnityEngine.Object, System.Boolean>();
             jsEnv.UsingFunc<UnityEngine.Quaternion>();
             jsEnv.UsingFunc<UnityEngine.Rect>();
             jsEnv.UsingFunc<UnityEngine.Rendering.BatchRendererGroup, UnityEngine.Rendering.BatchCullingContext, Unity.Jobs.JobHandle>();

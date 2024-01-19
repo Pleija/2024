@@ -33,14 +33,18 @@ namespace Editors
             //
             //foreach (var str in deletedAssets)
             if (deletedAssets.Any()) Debug.Log("Deleted Asset: " + deletedAssets.JoinStr("\n"));
+            var moved = movedAssets.Where(x => !movedFromAssetPaths.Contains(x)).ToArray();
 
-            if (movedAssets.Any()) {
+            if (moved.Any()) {
                 var s = new List<string>();
-                for (var i = 0; i < movedAssets.Length; i++)
-                    s.Add("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
+
+                for (var i = 0; i < moved.Length; i++) {
+                    var index = movedAssets.ToList().IndexOf(moved[i]);
+                    s.Add("Moved Asset: " + moved[i] + " from: " + movedFromAssetPaths[index]);
+                }
                 Debug.Log(s.JoinStr("\n"));
             }
-            if (deletedAssets.Any() || movedAssets.Any()) RemoveEmptyFolders.Clear();
+            if (deletedAssets.Any() || moved.Any()) RemoveEmptyFolders.Clear();
         }
     }
 }

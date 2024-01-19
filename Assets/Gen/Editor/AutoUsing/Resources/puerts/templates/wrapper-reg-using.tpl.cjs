@@ -23,7 +23,7 @@ namespace PuertsStaticWrap
         [UnityEditor.InitializeOnLoadMethod]
 #endif   
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        static void SetupAutoBind() => App.JsMain.AutoBind += t => t.AutoUsing();
+        static void SetupAutoBind() => JsMain.AutoBind += t => t.AutoUsing();
         
         public static void AutoUsing(this JsEnv jsEnv)
         {

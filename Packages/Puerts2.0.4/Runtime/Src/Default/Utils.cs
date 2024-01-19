@@ -159,7 +159,7 @@ namespace Puerts
 
         public static bool IsNotGenericOrValidGeneric(MethodInfo method, ParameterInfo[] pinfos = null)
         {
-            // 不包含泛型参数，肯定支持
+            // 不包含泛型参数，肯定支持  todo 开启所有泛型
             if (!method.ContainsGenericParameters)
                 return true;
 

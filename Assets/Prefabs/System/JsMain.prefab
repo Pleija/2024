@@ -54,7 +54,7 @@ MonoBehaviour:
     SerializationNodes: []
   OnStart:
     _PersistentCalls: []
-  baseVersion: 1.0.0
+  baseVersion: 1.0.1
   models:
   - {fileID: 11400000, guid: 389dc0164690641f38276896efeea3c6, type: 2}
   - {fileID: 11400000, guid: 13fb58bb806094c7eb54bd0e38bd5596, type: 2}

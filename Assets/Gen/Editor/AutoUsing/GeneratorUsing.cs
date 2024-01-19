@@ -143,8 +143,15 @@ namespace Puerts.AutoUsing
             content = content.Replace("public static get self(): any;", "public static get self(): T;");
             content = Regex.Replace(content, @"(public static get .*\: )any", "$1T");
             content = Regex.Replace(content, @"(public static set \w+\(value\: )any(\);)", "$1T$2");
-            File.WriteAllText(dts,content);
+            File.WriteAllText(dts,StripComments(content));
         }
+
+        static string StripComments(string code)
+        {
+            var re = @"(@(?:""[^""]*"")+|""(?:[^""\n\\]+|\\.)*""|'(?:[^'\n\\]+|\\.)*')|//.*|/\*(?s:.*?)\*/";
+            return Regex.Replace(code, re, "$1");
+        }
+
 
         private static void GenerateCode(string saveTo)
         {

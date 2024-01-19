@@ -4,7 +4,7 @@ using NodeCanvas.Framework.Internal;
 using UnityEngine;
 using UnityEngine.Serialization;
 using ParadoxNotion.Serialization;
-using Puerts.App;
+using Puerts;
 
 namespace NodeCanvas.Framework
 {

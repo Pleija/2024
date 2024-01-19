@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1654188126431081046}
   - component: {fileID: 1654188126431081044}
   - component: {fileID: 1654188126431081047}
+  - component: {fileID: 8567568866534255814}
   m_Layer: 0
   m_Name: StartUp
   m_TagString: Untagged
@@ -50,13 +51,12 @@ MonoBehaviour:
   _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[{"log":{"_value":"Hello
     World"},"secondsToRun":0.0,"$type":"NodeCanvas.Tasks.Actions.DebugLogText"}]},"_color":{"r":0.453016,"g":0.509434,"b":0.4445532,"a":1.0},"bindComponent":1,"mtsFile":2,"localBlackboard":{"_variables":{"testVar":{"_name":"testVar","_id":"ed6438d1-7a77-44c6-b29e-fa3a2c3f177e","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}},"_name":"\u4e0b\u8f7d\u66f4\u65b0","_preTags":[],"_postTags":[],"_position":{"x":768.3031,"y":243.3015},"_comment":"","$type":"NodeCanvas.StateMachines.ActionState"},{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.1988096,"b":0.1647059,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"_dpkz","_preTags":[],"_postTags":[],"_position":{"x":646.0,"y":421.5},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myString":{"_value":"test1","_name":"myString","_id":"1f728be1-a32f-47b3-8c4e-be9abc3db69e","$type":"NodeCanvas.Framework.Variable`1[[System.String,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"prefab":{"_value":{"m_AssetGUID":"b2b05e5486e5143f79e05f84c7462806","m_SubObjectName":"","m_SubObjectType":"","m_EditorAssetChanged":true},"_name":"prefab","_id":"4e54b263-9472-4a26-89d8-162f223ebf04","assetObject":3,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"prefab":{"_value":{},"_name":"prefab","_id":"4e54b263-9472-4a26-89d8-162f223ebf04","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
     Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
   - {fileID: 1654188126431081045}
   - {fileID: 93214019566545601, guid: e67a5c4ccfc4145d89d68ca4347b3c5d, type: 3}
-  - {fileID: 0}
   _boundGraphSource:
     _version: 3.29
     _category: 
@@ -87,6 +87,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &1654188126431081047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,3 +118,16 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+--- !u!114 &8567568866534255814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654188126431081067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd07c5fe37e4bd9be1a88a0d97812d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tags: []

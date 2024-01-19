@@ -2,7 +2,7 @@
 using NodeCanvas.Framework;
 using ParadoxNotion;
 using ParadoxNotion.Design;
-using Puerts.App;
+using Puerts;
 using UnityEditor;
 using UnityEngine;
 

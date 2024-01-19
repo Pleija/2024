@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using App;
 using Runner;
+using Sirenix.Utilities;
 using SqlCipher4Unity3D;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,7 +21,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
-using Xxtea;
 
 //1、配置类必须打[Configure]标签
 //2、必须放Editor目录
@@ -41,8 +41,12 @@ namespace Puerts
             // typeof(Singleton<SingletonSample>),
             // typeof(Agent<AgentSample>),
             //
+            typeof(System.Object),
+            typeof(UnityEngine.Object),
             typeof(XXTEA),
             typeof(Addressables),
+            typeof(Enumerable),
+            typeof(LinqExtensions),
             typeof(AsyncOperationHandle<SceneInstance>),
             typeof(AsyncOperationHandle<UnityEngine.Object>),
             typeof(AsyncOperationHandle<GameObject>),

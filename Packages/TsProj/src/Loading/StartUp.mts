@@ -9,7 +9,7 @@ import GameObject = CS.UnityEngine.GameObject;
 import $typeof = puer.$typeof;
 import Resources = CS.UnityEngine.Resources;
 import Setting = CS.Models.Setting;
-import JsMain = CS.App.JsMain;
+import JsMain = CS.JsMain;
 import Version = CS.System.Version;
 import UnityApi = CS.UnityApi;
 

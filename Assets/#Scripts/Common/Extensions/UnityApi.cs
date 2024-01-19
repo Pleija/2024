@@ -8,13 +8,49 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zu.TypeScript.TsTypes;
+using Type = System.Type;
 
-public static class UnityApi
+public  static partial class UnityApi
 {
     // public static object where<T, T2>(this T value, Func<T2, bool> func) where T : IEnumerable
     // {
     //     return null;
     // }
+
+    public static void ForEach(this Transform transform, Action<Transform> action)
+    {
+        //transform.name
+        if (!transform || action == null) return;
+
+        foreach (Transform child in transform) {
+            action.Invoke(child);
+        }
+    }
+
+    public static void ForEach(this Transform transform, Action<Transform, int> action)
+    {
+        if (!transform || action == null) return;
+
+        for (int i = 0; i < transform.childCount; i++) {
+            action.Invoke(transform.GetChild(i), i);
+        }
+    }
+
+    public static IEnumerable<Transform> Children(this Component component, Func<Transform, bool> filter = null) =>
+        component.transform.Cast<Transform>().Where(filter ?? (t => true));
+
+    public static IEnumerable<Transform> Children(this GameObject gameObject, Func<Transform, bool> filter = null) =>
+        gameObject.transform.Cast<Transform>().Where(filter ?? (t => true));
+
+    public static Component RequireComponent(this Component component, Type type) =>
+        component.TryGetComponent(type, out var ret) ? ret : component.gameObject.AddComponent(type);
+
+    public static T RequireComponent<T>(this Component component) where T: Component => component.RequireComponent(typeof(T)) as T;
+
+    public static Component RequireComponent(this GameObject gameObject, Type type) =>
+        gameObject.TryGetComponent(type, out var ret) ? ret : gameObject.gameObject.AddComponent(type);
+
+    public static T RequireComponent<T>(this GameObject gameObject) where T: Component => gameObject.RequireComponent(typeof(T)) as T;
 
     public static Color ToColor(this string hexString)
     {
