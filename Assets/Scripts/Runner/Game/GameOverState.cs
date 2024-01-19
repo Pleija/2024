@@ -61,7 +61,7 @@ namespace Runner.Game
 
         public void GoToStore()
         {
-            SceneLoader.LoadScene("Shop", LoadSceneMode.Additive);
+            Res.LoadScene("Shop", LoadSceneMode.Additive);
             //UnityEngine.SceneManagement.SceneManager.LoadScene("Shop", UnityEngine.SceneManagement.LoadSceneMode.Additive);
         }
 

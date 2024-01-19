@@ -15,8 +15,8 @@ global.getAllMethod = function getAllMethod(toCheck: any): string[] {
     });
 }
 
-import JsEnv = CS.Puerts.JsEnv;
+import Js = CS.Js;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
 
-JsEnv.self.UsingFunc($typeof(FSMState), $typeof(CS.System.Boolean));
-JsEnv.self.UsingFunc($typeof(CS.System.Object), $typeof(CS.System.Boolean));
+Js.Env.UsingFunc($typeof(FSMState), $typeof(CS.System.Boolean));
+Js.Env.UsingFunc($typeof(CS.System.Object), $typeof(CS.System.Boolean));

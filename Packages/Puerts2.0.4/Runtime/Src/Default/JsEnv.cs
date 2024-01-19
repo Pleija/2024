@@ -806,7 +806,7 @@ namespace Puerts
 #endif
         }
 
-        private bool disposed = false;
+        public bool disposed = false;
 
         protected virtual void Dispose(bool dispose)
         {

@@ -2,6 +2,7 @@
     "name": "com.tencent.puerts.core.Editor",
     "rootNamespace": "",
     "references": [
+        "Helpers",
         "Unity.ResourceManager",
         "Unity.Addressables",
         "com.tencent.puerts.core"

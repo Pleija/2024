@@ -1,6 +1,8 @@
 {
   "name": "Helpers",
   "references": [
+    "UltEvents",
+    "com.tencent.puerts.core",
     "Unity.Addressables.Editor",
     "Unity.Addressables",
     "Unity.ResourceManager",

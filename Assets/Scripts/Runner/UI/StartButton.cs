@@ -23,7 +23,7 @@ namespace Runner.UI
             var module = StandardPurchasingModule.Instance();
 #endif
             //SceneManager.LoadScene("main");
-            SceneLoader.LoadScene("Main");
+            Res.LoadScene("Main");
         }
     }
 }

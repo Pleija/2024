@@ -6,7 +6,7 @@ namespace Runner
     {
         public void LoadLevel(string name)
         {
-            SceneLoader.LoadScene(name);
+            Res.LoadScene(name);
             //SceneManager.LoadScene(name);
         }
     }

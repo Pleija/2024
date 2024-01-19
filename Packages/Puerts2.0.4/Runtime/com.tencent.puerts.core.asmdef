@@ -1,20 +1,17 @@
 {
-    "name": "com.tencent.puerts.core",
-    "rootNamespace": "Puerts",
-    "references": [
-        "UltEvents",
-        "Helpers",
-        "Unity.ResourceManager",
-        "Unity.Addressables",
-        "UniRx"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "com.tencent.puerts.core",
+  "rootNamespace": "Puerts",
+  "references": [
+    "Unity.ResourceManager",
+    "Unity.Addressables"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

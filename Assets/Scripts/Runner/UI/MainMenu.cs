@@ -6,7 +6,7 @@ namespace Runner.UI
     {
         public void LoadScene(string name)
         {
-            SceneLoader.LoadScene(name);
+            Res.LoadScene(name);
             //SceneManager.LoadScene(name);
         }
     }

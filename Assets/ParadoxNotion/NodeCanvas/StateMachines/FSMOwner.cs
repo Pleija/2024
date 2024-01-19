@@ -31,7 +31,7 @@ namespace NodeCanvas.StateMachines
         {
             base.OnDisable();
 
-            if (JsEnv._env is { isDisposed: false }) {
+            if (Js._env is { disposed: false }) {
                 graph.allNodes.OfType<FSMNode>().ForEach(node => {
                     (graph as FSM)?.Invoke("disableNode", node);
                 });

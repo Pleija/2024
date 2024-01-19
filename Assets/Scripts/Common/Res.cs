@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using App;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEngine.SceneManagement;
 
 // namespace Common
 // {
@@ -58,6 +62,32 @@ public static class Res
                 if (resourceLocations.FirstOrDefault(x => !Guid.TryParse(x.PrimaryKey, out _)) is { } loc)
                     result.Add(loc);
         return result.Any() ? result : null;
+    }
+
+    public static async UniTask LoadScene(string aName, LoadSceneMode mode = LoadSceneMode.Single)
+    {
+        //SceneManager.LoadScene(aName);
+        if (Application.isEditor) {
+#if UNITY_EDITOR
+            var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode($"Assets/Scenes/{aName}.unity",
+                new LoadSceneParameters() { loadSceneMode = mode });
+#endif
+            return;
+        }
+
+        if (Debug.isDebugBuild) {
+            var handle = Addressables.CheckForCatalogUpdates(false);
+            await handle.Task;
+
+            if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.Any()) {
+                Debug.Log("Catalog updating");
+                await Addressables.UpdateCatalogs(handle.Result).Task;
+            }
+            if (handle.IsValid()) Addressables.Release(handle);
+        }
+        await Addressables.DownloadDependenciesAsync(aName).Task;
+        JsMain.self.Reload(true);
+        Addressables.LoadSceneAsync(aName, mode);
     }
 
 #region AssetReference

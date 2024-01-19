@@ -89,7 +89,7 @@ namespace Runner.UI.Shop
 
         public void LoadScene(string scene)
         {
-            SceneLoader.LoadScene(scene);
+            Res.LoadScene(scene);
             //SceneManager.LoadScene(scene, LoadSceneMode.Single);
         }
 

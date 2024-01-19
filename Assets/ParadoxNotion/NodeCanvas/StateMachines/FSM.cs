@@ -166,27 +166,27 @@ namespace NodeCanvas.StateMachines
 
         public void Invoke(string fn, params object[] param)
         {
-            if (JsEnv.self.Eval<JSObject>($"${FsmName}?.{fn}") == null)
+            if (Js.Env.Eval<JSObject>($"${FsmName}?.{fn}") == null)
                 //Debug.Log($"${FsmName}.{fn} is undefined");
                 return;
 
             switch (param.Length) {
                 case 0:
-                    JsEnv.self.Eval<Action>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke();
+                    Js.Env.Eval<Action>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke();
                     break;
                 case 1:
-                    JsEnv.self.Eval<Action<object>>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke(param[0]);
+                    Js.Env.Eval<Action<object>>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke(param[0]);
                     break;
                 case 2:
-                    JsEnv.self.Eval<Action<object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    Js.Env.Eval<Action<object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1]);
                     break;
                 case 3:
-                    JsEnv.self.Eval<Action<object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    Js.Env.Eval<Action<object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1], param[2]);
                     break;
                 case 4:
-                    JsEnv.self.Eval<Action<object, object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    Js.Env.Eval<Action<object, object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1], param[2], param[4]);
                     break;
                 default: return;
@@ -195,15 +195,15 @@ namespace NodeCanvas.StateMachines
 
         public T InvokeFunc<T>(string fn, params object[] param)
         {
-            if (JsEnv.self.Eval<JSObject>($"${FsmName}?.{fn}") != null)
+            if (Js.Env.Eval<JSObject>($"${FsmName}?.{fn}") != null)
                 return param.Length switch {
-                    0 => JsEnv.self.Eval<Func<T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(),
-                    1 => JsEnv.self.Eval<Func<object, T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(param[0]),
-                    2 => JsEnv.self.Eval<Func<object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    0 => Js.Env.Eval<Func<T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(),
+                    1 => Js.Env.Eval<Func<object, T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(param[0]),
+                    2 => Js.Env.Eval<Func<object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1]),
-                    3 => JsEnv.self.Eval<Func<object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    3 => Js.Env.Eval<Func<object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1], param[2]),
-                    4 => JsEnv.self.Eval<Func<object, object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    4 => Js.Env.Eval<Func<object, object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1], param[2], param[4]),
                     _ => default,
                 };
