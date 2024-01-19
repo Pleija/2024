@@ -167,6 +167,7 @@
             jsEnv.UsingFunc<UnityEngine.Rect>();
             jsEnv.UsingFunc<UnityEngine.Rendering.BatchRendererGroup, UnityEngine.Rendering.BatchCullingContext, Unity.Jobs.JobHandle>();
             jsEnv.UsingFunc<UnityEngine.ResourceManagement.AsyncOperations.DownloadStatus>();
+            jsEnv.UsingFunc<UnityEngine.Transform, System.Boolean>();
             jsEnv.UsingFunc<UnityEngine.UI.ILayoutElement, System.Single>();
             jsEnv.UsingFunc<UnityEngine.Vector2>();
             jsEnv.UsingFunc<UnityEngine.Vector3>();

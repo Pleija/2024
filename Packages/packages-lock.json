@@ -64,7 +64,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.film-internal-utilities": {
-      "version": "file:com.unity.film-internal-utilities@0.18.4-preview",
+      "version": "file:com.unity.film-internal-utilities@0.19.1-preview",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -161,6 +161,14 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.selection-groups": {
+      "version": "file:com.unity.selection-groups@0.9.3-preview",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.film-internal-utilities": "0.19.1"
+      }
+    },
     "com.unity.services.authentication": {
       "version": "2.7.2",
       "depth": 0,
@@ -206,7 +214,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -231,7 +239,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.film-internal-utilities": "1.18.4",
+        "com.unity.film-internal-utilities": "0.19.1",
         "com.unity.render-pipelines.core": "10.0.0"
       }
     },

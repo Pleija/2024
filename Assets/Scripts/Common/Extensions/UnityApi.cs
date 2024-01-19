@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
@@ -10,6 +11,11 @@ using Zu.TypeScript.TsTypes;
 
 public static class UnityApi
 {
+    public static object where<T, T2>(this T value, Func<T2, bool> func) where T : IEnumerable
+    {
+        return null;
+    }
+
     public static Color ToColor(this string hexString)
     {
         return ColorUtility.TryParseHtmlString(hexString, out var color) ? color : Color.white;
