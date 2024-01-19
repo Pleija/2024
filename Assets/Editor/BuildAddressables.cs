@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using App;
+using Models;
 using MS.Shell.Editor;
 using Sirenix.Utilities;
 using UnityEditor;
@@ -77,10 +78,7 @@ namespace Editors
 
         static void PressMjs_old()
         {
-            var extensions = new List<string> {
-                ".mjs",
-                ".proto"
-            };
+            var extensions = new List<string> { ".mjs", ".proto" };
             var sDir = $"Assets/Resources";
             var res = "Assets/Res";
 
@@ -110,17 +108,14 @@ namespace Editors
             }
         }
 
-      
-
         static void GitUpdate()
         {
-            var operation = EditorShell.Execute("art git update 2>&1", new EditorShell.Options() {
-                workDirectory = "Packages/HostedData",
-                encoding = System.Text.Encoding.UTF8,
-                environmentVars = new Dictionary<string, string>() {
-                    { "PATH", "/usr/bin:/usr/local/bin" },
-                }
-            });
+            var operation = EditorShell.Execute("art git update 2>&1",
+                new EditorShell.Options() {
+                    workDirectory = "Packages/HostedData",
+                    encoding = System.Text.Encoding.UTF8,
+                    environmentVars = new Dictionary<string, string>() { { "PATH", "/usr/bin:/usr/local/bin" }, }
+                });
             operation.onExit += (exitCode) => {
                 Debug.Log("finish");
                 EditorUtility.DisplayDialog("", "git finish", "ok");
@@ -148,6 +143,7 @@ namespace Editors
                     "Build with Addressables", "Cancel")) {
                 return;
             }
+            Setting.self.ResVersion.Value = Setting.self.ResVersion.Value.VersionAdd();
             EditorSceneManager.SaveOpenScenes();
             PreExport();
             EditorShell.GitUpdate();
@@ -164,9 +160,10 @@ namespace Editors
             //options.options |= BuildOptions.CleanBuildCache;
             PlayerSettings.Android.bundleVersionCode += 1;
             PlayerSettings.iOS.buildNumber = (int.Parse(PlayerSettings.iOS.buildNumber) + 1).ToString();
-            var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
-            version[version.Length - 1] = (int.Parse(version[version.Length - 1]) + 1).ToString();
-            UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);
+            PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.VersionAdd();
+            // var version = UnityEditor.PlayerSettings.bundleVersion.Split('.');
+            // version[version.Length - 1] = (int.Parse(version[version.Length - 1]) + 1).ToString();
+            // UnityEditor.PlayerSettings.bundleVersion = string.Join(".", version);
             AssetDatabase.SaveAssets();
             Debug.Log($"Version: {PlayerSettings.bundleVersion} => {Application.version}");
             //BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);

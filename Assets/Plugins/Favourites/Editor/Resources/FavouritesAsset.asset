@@ -93,6 +93,10 @@ MonoBehaviour:
     obj: {fileID: 1654188126431081067, guid: d837fbe721f534558a89bcb2721d7236, type: 3}
   - categoryId: 6
     obj: {fileID: 1654188126431081067, guid: d837fbe721f534558a89bcb2721d7236, type: 3}
+  - categoryId: 6
+    obj: {fileID: 3253386712440380917, guid: efab889f6a93c4fa0b32114fa00ec23d, type: 3}
+  - categoryId: 6
+    obj: {fileID: 5950315625506153904, guid: 756ee54202146436885b80a2e8c01730, type: 3}
   categories:
   - id: 0
     name: Scenes

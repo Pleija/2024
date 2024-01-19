@@ -5,7 +5,8 @@
         "UltEvents",
         "Helpers",
         "Unity.ResourceManager",
-        "Unity.Addressables"
+        "Unity.Addressables",
+        "UniRx"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

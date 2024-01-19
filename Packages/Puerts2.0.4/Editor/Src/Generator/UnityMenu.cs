@@ -49,7 +49,7 @@ namespace Puerts.Editor
                 var start = DateTime.Now;
                 var saveTo = Configure.GetCodeOutputDirectory();
                 Directory.CreateDirectory(saveTo);
-                Directory.CreateDirectory(Path.Combine(saveTo, "Typing/csharp"));
+                Directory.CreateDirectory(Path.Combine(saveTo, "Typing~/csharp"));
                 FileExporter.ExportDTS(saveTo);
                 Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms");
                 AssetDatabase.Refresh();
@@ -61,7 +61,7 @@ namespace Puerts.Editor
                 var start = DateTime.Now;
                 var saveTo = Configure.GetCodeOutputDirectory();
                 Directory.CreateDirectory(saveTo);
-                Directory.CreateDirectory(Path.Combine(saveTo, "Typing/csharp"));
+                Directory.CreateDirectory(Path.Combine(saveTo, "Typing~/csharp"));
                 FileExporter.ExportDTS(saveTo, null, true);
                 Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms");
                 AssetDatabase.Refresh();

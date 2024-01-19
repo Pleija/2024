@@ -52,7 +52,7 @@ namespace Puerts.Editor
                 {
                     jsEnv.UsingFunc<DTS.TypingGenInfo, bool, string>();
                     var typingRender = jsEnv.ExecuteModule<Func<DTS.TypingGenInfo, bool, string>>("puerts/templates/dts.tpl.mjs", "default");
-                    using (StreamWriter textWriter = new StreamWriter(saveTo + "Typing/csharp/index.d.ts", false, Encoding.UTF8))
+                    using (StreamWriter textWriter = new StreamWriter(saveTo + "Typing~/csharp/index.d.ts", false, Encoding.UTF8))
                     {
                         string fileContext = typingRender(DTS.TypingGenInfo.FromTypes(tsTypes), csharpModuleWillGen);
                         textWriter.Write(fileContext);
@@ -79,7 +79,7 @@ namespace Puerts.Editor
                     genTypes = configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
                         .Where(o => o is Type)
                         .Cast<Type>()
-                        .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
+                        .Where(t => /*!t.IsGenericTypeDefinition &&*/ !t.Name.StartsWith("<"))
                         .Distinct()
                         .ToList();
                 }
@@ -158,7 +158,7 @@ namespace Puerts.Editor
                 var genTypes = configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
                     .Where(o => o is Type)
                     .Cast<Type>()
-                    .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
+                    .Where(t => /*!t.IsGenericTypeDefinition &&*/ !t.Name.StartsWith("<"))
                     .Distinct()
                     .ToList();
 

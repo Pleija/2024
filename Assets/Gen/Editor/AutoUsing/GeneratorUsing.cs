@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Puerts.Editor.Generator;
 using UnityEditor;
 using UnityEngine;
@@ -136,10 +137,13 @@ namespace Puerts.AutoUsing
             Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms");
             //AssetDatabase.Refresh();
             UnityMenu.GenerateDTS();
-            var dts = Configure.GetCodeOutputDirectory() + "/Typing/csharp/index.d.ts";
-            File.WriteAllText(dts,
-                File.ReadAllText(dts).Replace("declare namespace CS {",
-                    "declare namespace CS {\n" + File.ReadAllText("Assets/Gen/Editor/Extra.d.ts")));
+            var dts = Configure.GetCodeOutputDirectory() + "/Typing~/csharp/index.d.ts";
+            var content = File.ReadAllText(dts).Replace("declare namespace CS {",
+                "declare namespace CS {\n" + File.ReadAllText("Assets/Gen/Editor/Extra.d.ts"));
+            content = content.Replace("public static get self(): any;", "public static get self(): T;");
+            content = Regex.Replace(content, @"(public static get .*\: )any", "$1T");
+            content = Regex.Replace(content, @"(public static set \w+\(value\: )any(\);)", "$1T$2");
+            File.WriteAllText(dts,content);
         }
 
         private static void GenerateCode(string saveTo)

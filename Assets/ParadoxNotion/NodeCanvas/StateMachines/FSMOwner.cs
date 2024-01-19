@@ -1,5 +1,7 @@
 using System.Linq;
+using App;
 using NodeCanvas.Framework;
+using Puerts;
 using Sirenix.Utilities;
 using UnityEngine;
 
@@ -28,9 +30,12 @@ namespace NodeCanvas.StateMachines
         protected override void OnDisable()
         {
             base.OnDisable();
-            graph.allNodes.OfType<FSMNode>().ForEach(node => {
-                (graph as FSM)?.Invoke("disableNode", node);
-            });
+
+            if (JsEnv._env is { isDisposed: false }) {
+                graph.allNodes.OfType<FSMNode>().ForEach(node => {
+                    (graph as FSM)?.Invoke("disableNode", node);
+                });
+            }
         }
 
         protected override void Start()

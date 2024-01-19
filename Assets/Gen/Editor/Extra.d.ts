@@ -1,7 +1,3 @@
-declare interface Singleton$1<T> {
-    get $self(): T;
-    set $self(value: T);
-}
 
 declare namespace UnityEngine {
 

@@ -62,7 +62,7 @@ namespace UniRx
         {
             var sourceList = Interlocked.Exchange(ref list, null);
 
-            if(sourceList != null) {
+            if (sourceList != null) {
                 sourceList.UnsubscribeNode(this);
                 sourceList = null;
             }
@@ -77,8 +77,7 @@ namespace UniRx
         IObserverLinkedList<T>
     {
 #if !UniRxLibrary
-        static readonly IEqualityComparer<T> defaultEqualityComparer =
-            UnityEqualityComparer.GetDefault<T>();
+        static readonly IEqualityComparer<T> defaultEqualityComparer = UnityEqualityComparer.GetDefault<T>();
 #else
         static readonly IEqualityComparer<T> defaultEqualityComparer = EqualityComparer<T>.Default;
 #endif
@@ -100,14 +99,17 @@ namespace UniRx
             get { return defaultEqualityComparer; }
         }
 
+        public Func<T, T> OnGet;
+        public Func<T, T> OnSet;
+
         public T Value {
-            get { return value; }
+            get => OnGet != null ? OnGet(value) : value;
             set {
-                if(!EqualityComparer.Equals(this.value, value)) {
+                if (!EqualityComparer.Equals(this.value, value)) {
                     SetValue(value);
-                    if(isDisposed)
+                    if (isDisposed)
                         return;
-                    RaiseOnNext(ref value);
+                    RaiseOnNext(ref this.value);
                 }
             }
         }
@@ -125,32 +127,32 @@ namespace UniRx
             SetValue(initialValue);
         }
 
-        void RaiseOnNext(ref T value)
+        void RaiseOnNext(ref T aValue)
         {
             var node = root;
 
-            while(node != null) {
-                node.OnNext(value);
+            while (node != null) {
+                node.OnNext(aValue);
                 node = node.Next;
             }
         }
 
-        protected virtual void SetValue(T value)
+        protected virtual void SetValue(T aValue)
         {
-            this.value = value;
+            value = OnSet != null ? OnSet(aValue) : aValue;
         }
 
-        public void SetValueAndForceNotify(T value)
+        public void SetValueAndForceNotify(T aValue)
         {
-            SetValue(value);
-            if(isDisposed)
+            SetValue(aValue);
+            if (isDisposed)
                 return;
             RaiseOnNext(ref value);
         }
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            if(isDisposed) {
+            if (isDisposed) {
                 observer.OnCompleted();
                 return Disposable.Empty;
             }
@@ -161,7 +163,7 @@ namespace UniRx
             // subscribe node, node as subscription.
             var next = new ObserverNode<T>(this, observer);
 
-            if(root == null) {
+            if (root == null) {
                 root = last = next;
             }
             else {
@@ -174,19 +176,19 @@ namespace UniRx
 
         void IObserverLinkedList<T>.UnsubscribeNode(ObserverNode<T> node)
         {
-            if(node == root) {
+            if (node == root) {
                 root = node.Next;
             }
 
-            if(node == last) {
+            if (node == last) {
                 last = node.Previous;
             }
 
-            if(node.Previous != null) {
+            if (node.Previous != null) {
                 node.Previous.Next = node.Next;
             }
 
-            if(node.Next != null) {
+            if (node.Next != null) {
                 node.Next.Previous = node.Previous;
             }
         }
@@ -199,12 +201,12 @@ namespace UniRx
 
         protected virtual void Dispose(bool disposing)
         {
-            if(isDisposed) return;
+            if (isDisposed) return;
             var node = root;
             root = last = null;
             isDisposed = true;
 
-            while(node != null) {
+            while (node != null) {
                 node.OnCompleted();
                 node = node.Next;
             }
@@ -234,12 +236,11 @@ namespace UniRx
     /// <summary>
     /// Lightweight property broker.
     /// </summary>
-    public class ReadOnlyReactiveProperty<T> : IReadOnlyReactiveProperty<T>, IDisposable,
-        IOptimizedObservable<T>, IObserverLinkedList<T>, IObserver<T>
+    public class ReadOnlyReactiveProperty<T> : IReadOnlyReactiveProperty<T>, IDisposable, IOptimizedObservable<T>,
+        IObserverLinkedList<T>, IObserver<T>
     {
 #if !UniRxLibrary
-        static readonly IEqualityComparer<T> defaultEqualityComparer =
-            UnityEqualityComparer.GetDefault<T>();
+        static readonly IEqualityComparer<T> defaultEqualityComparer = UnityEqualityComparer.GetDefault<T>();
 #else
         static readonly IEqualityComparer<T> defaultEqualityComparer = EqualityComparer<T>.Default;
 #endif
@@ -283,8 +284,7 @@ namespace UniRx
             this.sourceConnection = source.Subscribe(this);
         }
 
-        public ReadOnlyReactiveProperty(IObservable<T> source, T initialValue,
-            bool distinctUntilChanged)
+        public ReadOnlyReactiveProperty(IObservable<T> source, T initialValue, bool distinctUntilChanged)
         {
             this.distinctUntilChanged = distinctUntilChanged;
             this.latestValue = initialValue;
@@ -294,13 +294,13 @@ namespace UniRx
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            if(lastException != null) {
+            if (lastException != null) {
                 observer.OnError(lastException);
                 return Disposable.Empty;
             }
 
-            if(isSourceCompleted) {
-                if(canPublishValueOnSubscribe) {
+            if (isSourceCompleted) {
+                if (canPublishValueOnSubscribe) {
                     observer.OnNext(latestValue);
                     observer.OnCompleted();
                     return Disposable.Empty;
@@ -311,19 +311,19 @@ namespace UniRx
                 }
             }
 
-            if(isDisposed) {
+            if (isDisposed) {
                 observer.OnCompleted();
                 return Disposable.Empty;
             }
 
-            if(canPublishValueOnSubscribe) {
+            if (canPublishValueOnSubscribe) {
                 observer.OnNext(latestValue);
             }
 
             // subscribe node, node as subscription.
             var next = new ObserverNode<T>(this, observer);
 
-            if(root == null) {
+            if (root == null) {
                 root = last = next;
             }
             else {
@@ -342,13 +342,13 @@ namespace UniRx
 
         protected virtual void Dispose(bool disposing)
         {
-            if(isDisposed) return;
+            if (isDisposed) return;
             sourceConnection.Dispose();
             var node = root;
             root = last = null;
             isDisposed = true;
 
-            while(node != null) {
+            while (node != null) {
                 node.OnCompleted();
                 node = node.Next;
             }
@@ -356,29 +356,29 @@ namespace UniRx
 
         void IObserverLinkedList<T>.UnsubscribeNode(ObserverNode<T> node)
         {
-            if(node == root) {
+            if (node == root) {
                 root = node.Next;
             }
 
-            if(node == last) {
+            if (node == last) {
                 last = node.Previous;
             }
 
-            if(node.Previous != null) {
+            if (node.Previous != null) {
                 node.Previous.Next = node.Next;
             }
 
-            if(node.Next != null) {
+            if (node.Next != null) {
                 node.Next.Previous = node.Previous;
             }
         }
 
         void IObserver<T>.OnNext(T value)
         {
-            if(isDisposed) return;
+            if (isDisposed) return;
 
-            if(canPublishValueOnSubscribe) {
-                if(distinctUntilChanged && EqualityComparer.Equals(this.latestValue, value)) {
+            if (canPublishValueOnSubscribe) {
+                if (distinctUntilChanged && EqualityComparer.Equals(this.latestValue, value)) {
                     return;
                 }
             }
@@ -390,7 +390,7 @@ namespace UniRx
             // call source.OnNext
             var node = root;
 
-            while(node != null) {
+            while (node != null) {
                 node.OnNext(value);
                 node = node.Next;
             }
@@ -403,7 +403,7 @@ namespace UniRx
             // call source.OnError
             var node = root;
 
-            while(node != null) {
+            while (node != null) {
                 node.OnError(error);
                 node = node.Next;
             }
@@ -425,7 +425,6 @@ namespace UniRx
         {
             return false;
         }
-        
     }
 
     /// <summary>
@@ -438,14 +437,12 @@ namespace UniRx
             return new ReadOnlyReactiveProperty<T>(source);
         }
 
-        public static IReadOnlyReactiveProperty<T> ToReactiveProperty<T>(this IObservable<T> source,
-            T initialValue)
+        public static IReadOnlyReactiveProperty<T> ToReactiveProperty<T>(this IObservable<T> source, T initialValue)
         {
             return new ReadOnlyReactiveProperty<T>(source, initialValue);
         }
 
-        public static ReadOnlyReactiveProperty<T> ToReadOnlyReactiveProperty<T>(
-            this IObservable<T> source)
+        public static ReadOnlyReactiveProperty<T> ToReadOnlyReactiveProperty<T>(this IObservable<T> source)
         {
             return new ReadOnlyReactiveProperty<T>(source);
         }
@@ -460,18 +457,17 @@ namespace UniRx
             tuple.Item1.TrySetCanceled();
         }
 
-        public static Task<T> WaitUntilValueChangedAsync<T>(
-            this IReadOnlyReactiveProperty<T> source,
+        public static Task<T> WaitUntilValueChangedAsync<T>(this IReadOnlyReactiveProperty<T> source,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tcs = new CancellableTaskCompletionSource<T>();
             var disposable = new SingleAssignmentDisposable();
 
-            if(source.HasValue) {
+            if (source.HasValue) {
                 // Skip first value
                 var isFirstValue = true;
                 disposable.Disposable = source.Subscribe(x => {
-                    if(isFirstValue) {
+                    if (isFirstValue) {
                         isFirstValue = false;
                         return;
                     }
@@ -502,14 +498,13 @@ namespace UniRx
         /// <summary>
         /// Create ReadOnlyReactiveProperty with distinctUntilChanged: false.
         /// </summary>
-        public static ReadOnlyReactiveProperty<T> ToSequentialReadOnlyReactiveProperty<T>(
-            this IObservable<T> source)
+        public static ReadOnlyReactiveProperty<T> ToSequentialReadOnlyReactiveProperty<T>(this IObservable<T> source)
         {
             return new ReadOnlyReactiveProperty<T>(source, distinctUntilChanged: false);
         }
 
-        public static ReadOnlyReactiveProperty<T> ToReadOnlyReactiveProperty<T>(
-            this IObservable<T> source, T initialValue)
+        public static ReadOnlyReactiveProperty<T> ToReadOnlyReactiveProperty<T>(this IObservable<T> source,
+            T initialValue)
         {
             return new ReadOnlyReactiveProperty<T>(source, initialValue);
         }
@@ -517,15 +512,13 @@ namespace UniRx
         /// <summary>
         /// Create ReadOnlyReactiveProperty with distinctUntilChanged: false.
         /// </summary>
-        public static ReadOnlyReactiveProperty<T> ToSequentialReadOnlyReactiveProperty<T>(
-            this IObservable<T> source, T initialValue)
+        public static ReadOnlyReactiveProperty<T> ToSequentialReadOnlyReactiveProperty<T>(this IObservable<T> source,
+            T initialValue)
         {
-            return new ReadOnlyReactiveProperty<T>(source, initialValue,
-                distinctUntilChanged: false);
+            return new ReadOnlyReactiveProperty<T>(source, initialValue, distinctUntilChanged: false);
         }
 
-        public static IObservable<T> SkipLatestValueOnSubscribe<T>(
-            this IReadOnlyReactiveProperty<T> source)
+        public static IObservable<T> SkipLatestValueOnSubscribe<T>(this IReadOnlyReactiveProperty<T> source)
         {
             return source.HasValue ? source.Skip(1) : source;
         }
@@ -535,12 +528,11 @@ namespace UniRx
         /// <summary>
         /// Lastest values of each sequence are all true.
         /// </summary>
-        public static IObservable<bool> CombineLatestValuesAreAllTrue(
-            this IEnumerable<IObservable<bool>> sources)
+        public static IObservable<bool> CombineLatestValuesAreAllTrue(this IEnumerable<IObservable<bool>> sources)
         {
             return sources.CombineLatest().Select(xs => {
-                foreach(var item in xs) {
-                    if(item == false)
+                foreach (var item in xs) {
+                    if (item == false)
                         return false;
                 }
                 return true;
@@ -550,12 +542,11 @@ namespace UniRx
         /// <summary>
         /// Lastest values of each sequence are all false.
         /// </summary>
-        public static IObservable<bool> CombineLatestValuesAreAllFalse(
-            this IEnumerable<IObservable<bool>> sources)
+        public static IObservable<bool> CombineLatestValuesAreAllFalse(this IEnumerable<IObservable<bool>> sources)
         {
             return sources.CombineLatest().Select(xs => {
-                foreach(var item in xs) {
-                    if(item == true)
+                foreach (var item in xs) {
+                    if (item == true)
                         return false;
                 }
                 return true;

@@ -22,6 +22,19 @@ public static class UnityApi
         });
     }
 
+    public static string VersionAdd(this string value, int number = 1)
+    {
+        var version = value.Split('.');
+        version[version.Length - 1] =
+            ((int.TryParse(version[version.Length - 1], out var v) ? v : 0) + number).ToString();
+        return string.Join(".", version);
+    }
+
+    public static int CompareVersion(this string current, string old)
+    {
+        return new Version(current).CompareTo(new Version(old));
+    }
+
     public static string JoinStr<T>(this IEnumerable<T> target, string s = ", ") => string.Join(s, target);
     public static string RegexReplace(this string input, string rule, string to) => Regex.Replace(input, rule, to);
     public static T Null<T>(this T o) where T : UnityEngine.Object => o == null ? null : o;

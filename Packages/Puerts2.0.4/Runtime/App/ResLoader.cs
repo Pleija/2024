@@ -25,20 +25,23 @@ namespace Puerts
                 : filepath;
         }
 
+        public string AssetPath(string filepath) =>
+            filepath.EndsWith(".proto") ? $"Assets/Res/proto/{filepath}" : $"{root}/{filepath}";
+
         public bool FileExists(string filepath)
         {
+            var assetPath = AssetPath(filepath);
 #if UNITY_EDITOR
-            if (File.Exists($"{root}/{filepath}")) {
+            if (File.Exists(assetPath)) {
                 return true;
             }
 #endif
             var pathToUse = PathToUse(filepath);
             var exist =
                 ((Application.isEditor || Debug.isDebugBuild) &&
-                    !string.IsNullOrEmpty(RedisData.Database.StringGet($"{root}/{filepath}"))) ||
-                Cache.TryGetValue(filepath, out var result) || assets.Any(x => x.path == $"{root}/{filepath}") ||
-                Res.Exists<TextAsset>($"{root}/{filepath}") != null ||
-                Res.Exists<TextAsset>($"Assets/Res/proto/{filepath}") != null || Resources.Load<TextAsset>(pathToUse);
+                    !string.IsNullOrEmpty(RedisData.Database.StringGet(assetPath))) ||
+                Cache.TryGetValue(filepath, out var result) || assets.Any(x => x.path == assetPath) ||
+                Res.Exists<TextAsset>(assetPath) != null || Resources.Load<TextAsset>(pathToUse);
             return exist;
         }
 
@@ -46,16 +49,17 @@ namespace Puerts
 
         public string ReadFile(string filepath, out string debugPath)
         {
-            debugPath = Path.GetFullPath(Path.Combine(root, filepath));
+            var assetPath = AssetPath(filepath);
+            debugPath = Path.GetFullPath(assetPath);
             TextAsset file = null;
 #if UNITY_EDITOR
-            if (File.Exists($"{root}/{filepath}")) {
-                file = AssetDatabase.LoadAssetAtPath<TextAsset>($"{root}/{filepath}");
+            if (File.Exists(assetPath)) {
+                file = AssetDatabase.LoadAssetAtPath<TextAsset>(assetPath);
             }
 #endif
 
             if (file == null && (Application.isEditor || Debug.isDebugBuild)) {
-                var content = RedisData.Database.StringGet($"{root}/{filepath}");
+                var content = RedisData.Database.StringGet(assetPath);
 
                 if (!string.IsNullOrEmpty(content)) {
                     return content;
@@ -65,20 +69,19 @@ namespace Puerts
             if (Cache.TryGetValue(filepath, out var result)) {
                 return result;
             }
-            file ??= assets.FirstOrDefault(x => x.path == $"{root}/{filepath}")?.file;
+            file ??= assets.FirstOrDefault(x => x.path == assetPath)?.file;
 
             if (!file) {
-                if (Res.Exists<TextAsset>($"{root}/{filepath}") is { } loc) {
+                if (Res.Exists<TextAsset>(assetPath) is { } loc) {
                     file = Addressables.LoadAssetAsync<TextAsset>(loc.PrimaryKey).WaitForCompletion();
                 }
-                else if (Res.Exists<TextAsset>($"Assets/Res/proto/{filepath}") is { } location) {
-                    file = Addressables.LoadAssetAsync<TextAsset>(location.PrimaryKey).WaitForCompletion();
-                }
+                // else if (Res.Exists<TextAsset>($"Assets/Res/proto/{filepath}") is { } location) {
+                //     file = Addressables.LoadAssetAsync<TextAsset>(location.PrimaryKey).WaitForCompletion();
+                // }
             }
             file ??= Resources.Load<TextAsset>(PathToUse(filepath));
 
-            if (file && (Path.GetExtension(filepath) == ".proto" || Path.GetExtension(filepath) == ".mjs") &&
-                file.text.IsBase64()) {
+            if (file && file.text.IsBase64()) {
                 return Cache[filepath] = file.text.FromBase64();
                 //XXTEA.DecryptBase64StringToString(file.text);
             }

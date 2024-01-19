@@ -16,7 +16,7 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 09000000140000000d000000
-  lastScan: 638412265468144760
+  lastScan: 638412624564151750
   supportSerializedTypes:
   - TypeName: SqlCipher4Unity3D.Model, SqlCipher4Unity3D
     IsCustom: 1

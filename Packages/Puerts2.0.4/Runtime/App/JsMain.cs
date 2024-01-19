@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Models;
 using Org.BouncyCastle.Crypto.Engines;
 using Puerts;
 using Sirenix.OdinInspector;
@@ -17,6 +18,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Task = System.Threading.Tasks.Task;
 
 namespace App
@@ -25,6 +27,7 @@ namespace App
     public class JsMain : Agent<JsMain>
     {
         public UltEvent OnStart;
+        public string baseVersion = "1.0.1";
 
         // public static bool assetsReady;
         private static JsMain m_Instance;
@@ -38,6 +41,7 @@ namespace App
         }
 
         public static bool needBoot;
+        public static bool modelReady;
 
         public static void ApplicationStart()
         {
@@ -45,13 +49,21 @@ namespace App
 
             if (Res.Exists<GameObject>("JsMain") is { } loc) {
                 Addressables.LoadAssetAsync<GameObject>(loc).Completed += h => {
-                    if (h.Status == AsyncOperationStatus.Succeeded && h.Result) {
-                        Instantiate(h.Result).OnDestroyRelease(h);
-                        self.Reload();
+                    if (h.Status == AsyncOperationStatus.Succeeded && h.Result &&
+                        h.Result.GetComponentInChildren<JsMain>() is { } instance) {
+                        instance.models.Where(x => x).ForEach(x => {
+                            ModelBase.Defaults[x.GetType()] = x;
+                            x.ResetSelf();
+                        });
+
+                        if (Setting.self.ResVersion.Value.CompareVersion(instance.baseVersion) > 0) {
+                            modelReady = true;
+                            Instantiate(h.Result).OnDestroyRelease(h);
+                            self.Reload();
+                            return;
+                        }
                     }
-                    else {
-                        LoadDefault().StartStaticCoroutine();
-                    }
+                    LoadDefault().StartStaticCoroutine();
                 };
                 return;
             }
@@ -79,7 +91,8 @@ namespace App
             .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto")).Select(x => x.PrimaryKey)
             .Distinct().ToArray();
 
-        public List<ScriptableObject> preload = new List<ScriptableObject>();
+        [FormerlySerializedAs("preload")]
+        public List<ModelBase> models = new List<ModelBase>();
 
         [Serializable]
         public class Item
@@ -114,12 +127,12 @@ namespace App
         [Button]
         public void SetupModelPreload()
         {
-            preload ??= new List<ScriptableObject>();
-            preload.RemoveAll(x => !x);
+            models ??= new List<ModelBase>();
+            models.RemoveAll(x => !x);
             AssetDatabase.FindAssets($"t:{typeof(ModelBase).FullName}").Select(x =>
-                AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(x))).ForEach(asset => {
-                if (preload.All(t => t != asset)) {
-                    preload.Add(asset);
+                AssetDatabase.LoadAssetAtPath<ModelBase>(AssetDatabase.GUIDToAssetPath(x))).ForEach(asset => {
+                if (models.All(t => t != asset)) {
+                    models.Add(asset);
                 }
             });
             var assets = AssetDatabase.FindAssets($"t:TextAsset").Select(AssetDatabase.GUIDToAssetPath)
@@ -169,6 +182,14 @@ namespace App
             }
             Debug.Log("Start JsMain");
             m_Instance = this;
+
+            if (!modelReady) {
+                modelReady = true;
+                models.Where(x => x).ForEach(x => {
+                    ModelBase.Defaults[x.GetType()] = x;
+                    x.ResetSelf();
+                });
+            }
 
             if (!initialed) {
                 Application.quitting += () => isQuit = true;
@@ -251,7 +272,6 @@ namespace App
         //     get => Type.GetType(typeName);
         //     set => typeName = value.AssemblyQualifiedName;
         // }
-
         public static Action<JsEnv> AutoBind;
 
         public void Reload(bool force = false)
@@ -271,7 +291,7 @@ namespace App
             JsEnv.self.UsingAction<string>();
             JsEnv.self.UsingAction<float>();
             JsEnv.self.UsingAction<int>();
-            JsEnv.self.ExecuteModule("bootstrap.mjs");
+            JsEnv.self.ExecuteModule<Action>("bootstrap.mjs", "Setup")?.Invoke();
         }
 
         public void Update()

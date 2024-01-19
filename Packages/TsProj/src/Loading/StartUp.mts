@@ -8,6 +8,10 @@ import AssetReference = CS.UnityEngine.AddressableAssets.AssetReference;
 import GameObject = CS.UnityEngine.GameObject;
 import $typeof = puer.$typeof;
 import Resources = CS.UnityEngine.Resources;
+import Setting = CS.Models.Setting;
+import JsMain = CS.App.JsMain;
+import Version = CS.System.Version;
+import UnityApi = CS.UnityApi;
 
 export class StartUp extends StateFsm {
     useRemote: boolean = true;
@@ -27,7 +31,11 @@ export class StartUp extends StateFsm {
         await $promise(Addressables.InitializeAsync().Task);
 
         const loc = Res.Exists(this.prefab);
-        if (this.useRemote && loc) {
+        const resVer = Setting.self.ResVersion.Value;
+        const baseVer = JsMain.self.baseVersion;
+        const isNew = UnityApi.CompareVersion(resVer,baseVer) > 0; //resVer.localeCompare(baseVer, undefined, {numeric: true, sensitivity: 'base'})
+        console.log(`ResVersion: ${resVer} baseVersion: ${baseVer} new: ${isNew}`)
+        if (this.useRemote && loc && isNew) {
             console.log("StartContent Found");
             this.prefab.Check(x => {
                 console.log("check ok");

@@ -26,8 +26,7 @@ namespace Puerts
 
         private static IEnumerable<Type> Bindings => new List<Type>() {
             //直接指定的类型
-            typeof(JsEnv),
-            typeof(ILoader),
+            typeof(JsEnv), typeof(ILoader),
         };
 
         [Binding]
@@ -43,6 +42,8 @@ namespace Puerts
                 //     from type in assembly.GetExportedTypes() where type.Namespace != null &&
                 //         namespaces.Contains(type.Namespace) && !IsExcluded(type) select type;
                 var customAssemblys = new string[] {
+                    "sfloat",
+                    "smath",
                     "com.tencent.puerts.core",
                     "DOTween.Modules",
                     "UltEvents",
@@ -75,36 +76,32 @@ namespace Puerts
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 var customTypes =
                     from assembly in customAssemblys.Distinct()
-                        .Where(a =>
-                            (from x in assemblies where x.GetName().Name == a select a)
-                            .SingleOrDefault() != null).Select(s => Assembly.Load(s))
+                        .Where(a => (from x in assemblies where x.GetName().Name == a select a).SingleOrDefault() !=
+                            null).Select(s => Assembly.Load(s))
                     where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
                     from type in assembly.GetExportedTypes() where /*type.Namespace == null ||*/
-                        ( /*!type.Namespace.StartsWith("Puerts") &&*/ !IsExcluded(type))
-                    select type;
+                        ( /*!type.Namespace.StartsWith("Puerts") &&*/ !IsExcluded(type)) select type;
                 return /*unityTypes.Concat(*/customTypes /*)*/.Concat(Bindings).Distinct();
             }
         }
 
         public static bool IsExcluded(Type type)
         {
-            if(type == null)
+            if (type == null)
                 return false;
             var assemblyName = Path.GetFileName(type.Assembly.Location);
-            if(excludeAssemblys.Contains(assemblyName))
+            if (excludeAssemblys.Contains(assemblyName))
                 return true;
             var fullname = type.FullName != null ? type.FullName.Replace("+", ".") : "";
-            if(excludeTypes.Contains(fullname) || excludeTypes.Where(x => x.Contains("*"))
-                   .Any(x => fullname.StartsWith(x.Replace("*", ""))))
+            if (excludeTypes.Contains(fullname) || excludeTypes.Where(x => x.Contains("*"))
+                    .Any(x => fullname.StartsWith(x.Replace("*", ""))))
                 return true;
             return IsExcluded(type.BaseType);
         }
 
         //需要排除的程序集
         private static List<string> excludeAssemblys = new List<string> {
-            "UnityEditor.dll",
-            "Assembly-CSharp-Editor.dll",
-            "com.tencent.puerts.core.Editor.dll",
+            "UnityEditor.dll", "Assembly-CSharp-Editor.dll", "com.tencent.puerts.core.Editor.dll",
         };
 
         //需要排除的类型

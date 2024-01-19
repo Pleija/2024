@@ -76,7 +76,7 @@ namespace App
         private void Awake()
         {
             OnAwake?.Invoke();
-            if (Application.isEditor) DebugLogManager.Instance.gameObject.SetActive(false);
+            if (Application.isEditor && DebugLogManager.Instance) DebugLogManager.Instance.gameObject.SetActive(false);
         }
 
         public static void Restart()

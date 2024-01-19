@@ -46,8 +46,8 @@ namespace App
                 }
                 if (handle.IsValid()) Addressables.Release(handle);
             }
-            Debug.Log("Load DefaultLoading");
-            Instantiate(Resources.Load("DefaultLoading"));
+            Debug.Log("Load Backup");
+            Instantiate(Resources.Load("Backup"));
         }
     }
 }

@@ -28,36 +28,38 @@ import LoadSceneMode = CS.UnityEngine.SceneManagement.LoadSceneMode;
 import Res = CS.Res;
 import $typeof = puer.$typeof;
 import GameObject = CS.UnityEngine.GameObject;
-import Addressables = CS.UnityEngine.AddressableAssets.Addressables;
-import $promise = puer.$promise;
+import Setting = CS.Models.Setting;
 
-global.protobuf = require("protobufjs");
-
-//console.log(getAllMethod(protobuf).join(", "));
+export const Setup = async function () {
 
 
-protobuf.load("awesome.proto", (err, root) => {
-    if (err) throw err;
-    const type = root.lookupType("awesome.AwesomeMessage");
-    console.log(type, "test proto");
-});
+    global.protobuf = require("protobufjs");
 
-//todo 启动场景
-if (JsMain.needBoot) {
-    JsMain.needBoot = false;
-    const loc = Res.Exists("StartUp", $typeof(GameObject));
-    if (loc != null) {
-        loc.Inst(t => {
-            if (t == null) {
-                SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-            }
-        });
-    } else {
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+    //console.log(getAllMethod(protobuf).join(", "));
+
+
+    protobuf.load("awesome.proto", (err, root) => {
+        if (err) throw err;
+        const type = root.lookupType("awesome.AwesomeMessage");
+        console.log(type, "test proto");
+    });
+
+    //todo 启动场景
+    if (JsMain.needBoot) {
+        JsMain.needBoot = false;
+        const loc = Res.Exists("StartUp", $typeof(GameObject));
+        if (loc != null && Setting.self.ResVersion.Value > JsMain.self.baseVersion) {
+            loc.Inst(t => {
+                if (t == null) {
+                    SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+                }
+            });
+        } else {
+            SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        }
     }
 }
 
-
-// $Login.sayHello("puerts ready");
+//Setup().catch(console.error);
 
 

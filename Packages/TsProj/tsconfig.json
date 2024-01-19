@@ -41,13 +41,13 @@
             ]
         },
         "typeRoots": [
-            "Typing",
-            "./package~/node_modules/@types"
+            "Typing~",
+            "package~/node_modules/@types"
         ],
         "outDir": "../../Assets/Res/dist"
     },
     "include": [
         "src/**/*",
-        "Typing/**/*"
+        "Typing~/**/*"
     ]
 }

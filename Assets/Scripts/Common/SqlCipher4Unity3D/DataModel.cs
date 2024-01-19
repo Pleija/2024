@@ -75,6 +75,7 @@ namespace SqlCipher4Unity3D
             return this;
         }
 
+        public virtual void OnEnable() { }
         public virtual void SetupFromRedis() { }
 
         [SerializeField, HideInInspector, Ignore]
@@ -102,9 +103,22 @@ namespace SqlCipher4Unity3D
         public static T self {
             get {
                 if (m_Instance) return m_Instance;
+                // #if UNITY_EDITOR
+                //                 if (EditorApplication.isCompiling || EditorApplication.isUpdating) return m_Instance;
+                // #endif
                 InnerResetSelf();
                 return m_Instance;
             }
+        }
+
+        public override void OnEnable()
+        {
+            //             base.OnEnable();
+            //             Defaults[GetType()] = m_Instance = this as T;
+            // #if UNITY_EDITOR
+            //             if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+            // #endif
+            //             InnerResetSelf();
         }
 
         public override void ResetSelf() => InnerResetSelf();
@@ -122,11 +136,13 @@ namespace SqlCipher4Unity3D
 #endif
                     if (Application.isPlaying && !Application.isEditor)
                         if (result == null && Res.Exists<T>() is { } locations) {
-                            result = Defaults[typeof(T)] = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey)
-                                .WaitForCompletion();
+                            result = Addressables.LoadAssetAsync<T>(locations.First().PrimaryKey).WaitForCompletion();
                             Debug.Log($"Load: {typeof(T).Name} => {locations.First().PrimaryKey}");
                         }
-                    if (result == null) Debug.Log($"{typeof(T).Name} asset not found");
+
+                    if (result == null) {
+                        Debug.Log($"{typeof(T).Name} asset not found");
+                    }
                 }
 #if UNITY_EDITOR
                 // if(!Application.isEditor) return;
@@ -148,14 +164,14 @@ namespace SqlCipher4Unity3D
                 }
 #endif
 
-                if (result) {
-                    Defaults[typeof(T)] = m_Instance = result as T;
-                    Setup(result, table);
-                    if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying) result.SetupFromRedis();
-                }
-                else {
-                    Debug.Log($"{typeof(T).FullName} asset not found");
-                }
+                //if (result) {
+                Defaults[typeof(T)] = m_Instance = result as T;
+                Setup(result, table);
+                if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying) result.SetupFromRedis();
+                // }
+                // else {
+                //     Debug.Log($"{typeof(T).FullName} asset not found");
+                // }
             });
         }
 
