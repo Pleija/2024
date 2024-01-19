@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Models.CSV;
 using NodeCanvas.Framework;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion;
@@ -66,7 +67,8 @@ namespace NodeCanvas.Editor
         ///<summary>Show variables inspector for target bb. Optionally provide override serialization context object</summary>
         private void InspectorGUI(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
         {
-            if (bb.parent != null) {
+            //todo 不要显示monobehaviour的bb在窗口里
+            if (bb.parent != null && !(bb.parent is Blackboard)) {
                 ShowVariables(bb.parent);
                 EditorUtils.Separator();
             }
@@ -83,6 +85,16 @@ namespace NodeCanvas.Editor
             if (bb.unityContextObject is Graph graph) {
                 //todo
                 graph.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, graph.mtsFile, typeof(MtsFile));
+            }
+            else if (bb is Blackboard mb) {
+                GUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Edit", GUILayout.Width(60))) {
+                    //todo edit excel
+                }
+                mb.excelFile = (ExcelFile)EditorGUILayout.ObjectField(GUIContent.none, mb.excelFile, typeof(ExcelFile),GUILayout.Width(120),GUILayout.ExpandWidth(true));
+                mb.csvFile = (CsvFile)EditorGUILayout.ObjectField(GUIContent.none, mb.csvFile, typeof(CsvFile), GUILayout.Width(120),GUILayout.ExpandWidth(true));
+                GUILayout.EndHorizontal();
             }
             //Debug.Log(bb.unityContextObject.GetType().Name); 
 

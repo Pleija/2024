@@ -7513,7 +7513,6 @@ GameObject:
   - component: {fileID: 590897651}
   - component: {fileID: 590897650}
   - component: {fileID: 590897649}
-  - component: {fileID: 590897647}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -7521,22 +7520,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &590897647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590897646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _parentBlackboard: {fileID: 0}
-  _serializedBlackboard: '{"_variables":{}}'
-  _objectReferences: []
-  _serializedVariables: []
 --- !u!4 &590897648
 Transform:
   m_ObjectHideFlags: 0
@@ -7567,9 +7550,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentBlackboard: {fileID: 0}
-  _serializedBlackboard: '{"_variables":{}}'
+  _serializedBlackboard: '{"_variables":{"myInteger":{"_name":"myInteger","_id":"17eec412-6802-40d4-8cd3-48f02824d639","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   _objectReferences: []
-  _serializedVariables: []
+  _serializedVariables:
+  - _json: '{"_name":"myInteger","_id":"17eec412-6802-40d4-8cd3-48f02824d639","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &590897650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7584,7 +7573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mtsFile: {fileID: 0}
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"GameStart","_preTags":[],"_postTags":[],"_position":{"x":428.0,"y":302.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myAssetReference":{"_value":{"m_AssetGUID":"94cb557246c11d14388842cc08be79a8","m_SubObjectName":"","m_SubObjectType":""},"_name":"myAssetReference","_id":"080e93f7-82a9-4f42-85d8-6918e385e205","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"GameStart","_preTags":[],"_postTags":[],"_position":{"x":381.0,"y":327.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{"myAssetReference":{"_value":{"m_AssetGUID":"94cb557246c11d14388842cc08be79a8","m_SubObjectName":"","m_SubObjectType":""},"_name":"myAssetReference","_id":"080e93f7-82a9-4f42-85d8-6918e385e205","assetObject":1,"$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.AddressableAssets.AssetReference,
     Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
@@ -7593,7 +7582,7 @@ MonoBehaviour:
     _version: 3.29
     _category: 
     _comments: 
-    _translation: {x: 18.196348, y: 6.4030166}
+    _translation: {x: 18, y: 6}
     _zoomFactor: 1
   _firstActivation: 1
   _enableAction: 0
@@ -10667,6 +10656,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &764160788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12592,6 +12583,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &892439667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20049,6 +20042,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &1386862356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31168,6 +31163,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &2026388879
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -560,6 +560,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!82 &1745866278949839476
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4081,6 +4083,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1 &4988753507214752532
 GameObject:
   m_ObjectHideFlags: 0
@@ -4668,6 +4672,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!114 &4988753507282275529
 MonoBehaviour:
   m_ObjectHideFlags: 0

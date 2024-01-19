@@ -4,7 +4,7 @@
 #if UNITY_EDITOR
 
 // ReSharper disable All
-#define SLNMERGE_DEBUG
+//#define SLNMERGE_DEBUG
 using System.Threading;
 
 #if UNITY_EDITOR

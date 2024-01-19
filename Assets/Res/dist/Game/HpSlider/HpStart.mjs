@@ -1,6 +1,0 @@
-import { StateNode } from "Common/StateNode.mjs";
-export class HpStart extends StateNode {
-    init() {
-    }
-}
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiSHBTdGFydC5tanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi9QYWNrYWdlcy9Uc1Byb2ovc3JjL0dhbWUvSHBTbGlkZXIvSHBTdGFydC5tdHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0EsT0FBTyxFQUFFLFNBQVMsRUFBRSxNQUFNLHNCQUFzQixDQUFDO0FBRWpELE1BQU0sT0FBTyxPQUFRLFNBQVEsU0FBbUI7SUFFNUMsSUFBSTtJQUVKLENBQUM7Q0FDSiJ9

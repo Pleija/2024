@@ -1,0 +1,35 @@
+import { Utils } from '../../utils.mjs';
+import { DialectBase } from './index.mjs';
+export class ReadDialect extends DialectBase {
+    constructor(info, sql, kind, aliases, map) {
+        super(info);
+        this.kind = kind;
+        this.sql = sql;
+        this.aliases = aliases;
+        this.map = map;
+    }
+    limit(limit, offset) {
+        this.sql += ` LIMIT ${limit}`;
+        if (offset !== undefined) {
+            this.sql += ` OFFSET ${offset}`;
+        }
+        return this;
+    }
+    orderBy(order) {
+        if (order) {
+            this.sql +=
+                ' ORDER BY ' +
+                    Object.keys(order)
+                        .map(k => `${Utils.quote(k)} ${order[k]}`)
+                        .join(' ');
+        }
+        return this;
+    }
+    where(condition) {
+        if (condition) {
+            this.sql += ` WHERE ${this._condSql(condition)}`;
+        }
+        return this;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVhZC5tanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi9QYWNrYWdlcy9Uc1Byb2ovc3JjL1NxbGl0ZS10cy9kaWFsZWN0cy9iYXNlL3JlYWQubXRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLE9BQU8sRUFBRSxLQUFLLEVBQUUsTUFBTSxpQkFBaUIsQ0FBQTtBQUN2QyxPQUFPLEVBQUUsV0FBVyxFQUE2QixNQUFNLGFBQWEsQ0FBQTtBQWtCcEUsTUFBTSxPQUFPLFdBQWtCLFNBQVEsV0FBaUI7SUFDdEQsWUFDRSxJQUFrQixFQUNsQixHQUFXLEVBQ1gsSUFBaUIsRUFDakIsT0FBZ0MsRUFDaEMsR0FBUztRQUVULEtBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQTtRQUNYLElBQUksQ0FBQyxJQUFJLEdBQUcsSUFBSSxDQUFBO1FBQ2hCLElBQUksQ0FBQyxHQUFHLEdBQUcsR0FBRyxDQUFBO1FBQ2QsSUFBSSxDQUFDLE9BQU8sR0FBRyxPQUFPLENBQUE7UUFDdEIsSUFBSSxDQUFDLEdBQUcsR0FBRyxHQUFHLENBQUE7SUFDaEIsQ0FBQztJQUVNLEtBQUssQ0FBQyxLQUFhLEVBQUUsTUFBZTtRQUN6QyxJQUFJLENBQUMsR0FBRyxJQUFJLFVBQVUsS0FBSyxFQUFFLENBQUE7UUFDN0IsSUFBSSxNQUFNLEtBQUssU0FBUyxFQUFFLENBQUM7WUFDekIsSUFBSSxDQUFDLEdBQUcsSUFBSSxXQUFXLE1BQU0sRUFBRSxDQUFBO1FBQ2pDLENBQUM7UUFFRCxPQUFPLElBQUksQ0FBQTtJQUNiLENBQUM7SUFFTSxPQUFPLENBQ1osS0FBMkM7UUFFM0MsSUFBSSxLQUFLLEVBQUUsQ0FBQztZQUNWLElBQUksQ0FBQyxHQUFHO2dCQUNOLFlBQVk7b0JBQ1osTUFBTSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUM7eUJBQ2YsR0FBRyxDQUFDLENBQUMsQ0FBQyxFQUFFLENBQUMsR0FBRyxLQUFLLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxJQUFLLEtBQWEsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDO3lCQUNsRCxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUE7UUFDaEIsQ0FBQztRQUVELE9BQU8sSUFBSSxDQUFBO0lBQ2IsQ0FBQztJQUVNLEtBQUssQ0FDVixTQUFnQztRQUVoQyxJQUFJLFNBQVMsRUFBRSxDQUFDO1lBQ2QsSUFBSSxDQUFDLEdBQUcsSUFBSSxVQUFVLElBQUksQ0FBQyxRQUFRLENBQUMsU0FBUyxDQUFDLEVBQUUsQ0FBQTtRQUNsRCxDQUFDO1FBRUQsT0FBTyxJQUFJLENBQUE7SUFDYixDQUFDO0NBQ0YifQ==

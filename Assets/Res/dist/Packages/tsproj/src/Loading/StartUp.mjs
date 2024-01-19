@@ -1,8 +1,0 @@
-import { StateFsm } from "Common/StateFsm.mjs";
-export class StartUp extends StateFsm {
-    init() {
-        console.log("init StartUp");
-    }
-}
-export const self = global.$StartUp ??= new StartUp();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3RhcnRVcC5tanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9QYWNrYWdlcy9Uc1Byb2ovc3JjL1BhY2thZ2VzL3RzcHJvai9zcmMvTG9hZGluZy9TdGFydFVwLm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQSxPQUFPLEVBQUUsUUFBUSxFQUFFLE1BQU0scUJBQXFCLENBQUM7QUFFL0MsTUFBTSxPQUFPLE9BQVEsU0FBUSxRQUFRO0lBRS9CLElBQUk7UUFDQSxPQUFPLENBQUMsR0FBRyxDQUFDLGNBQWMsQ0FBQyxDQUFDO0lBQ2hDLENBQUM7Q0FDTjtBQUVELE1BQU0sQ0FBQyxNQUFNLElBQUksR0FBVyxNQUFNLENBQUMsUUFBUSxLQUFLLElBQUksT0FBTyxFQUFFLENBQUMifQ==

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -30,11 +31,16 @@ namespace Editors
             ////            Debug.Log("File type: " + extension);
             //        }
             //
-            foreach(var str in deletedAssets)
-                Debug.Log("Deleted Asset: " + str);
-            for(var i = 0; i < movedAssets.Length; i++)
-                Debug.Log("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
-            if(deletedAssets.Any()) RemoveEmptyFolders.ClearDirect();
+            //foreach (var str in deletedAssets)
+            if (deletedAssets.Any()) Debug.Log("Deleted Asset: " + deletedAssets.JoinStr("\n"));
+
+            if (movedAssets.Any()) {
+                var s = new List<string>();
+                for (var i = 0; i < movedAssets.Length; i++)
+                    s.Add("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
+                Debug.Log(s.JoinStr("\n"));
+            }
+            if (deletedAssets.Any() || movedAssets.Any()) RemoveEmptyFolders.Clear();
         }
     }
 }

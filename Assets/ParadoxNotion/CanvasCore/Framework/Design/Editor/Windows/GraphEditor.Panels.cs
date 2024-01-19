@@ -202,7 +202,7 @@ namespace NodeCanvas.Editor
             if (GUI.Button(headerRect, string.Empty, GUIStyle.none)) Prefs.showBlackboard = !Prefs.showBlackboard;
             var groupRect = blackboardPanel.ExpandBy(0, 0, scrollWidth, 0);
             GUI.Box(groupRect, string.Empty, StyleSheet.windowShadow);
-            GUI.Box(groupRect, "Blackboard Variables", StyleSheet.editorPanel);
+            GUI.Box(groupRect, "Blackboard Variables #1", StyleSheet.editorPanel);
             GUI.BeginGroup(groupRect);
 
             if (Prefs.showBlackboard) {

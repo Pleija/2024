@@ -981,6 +981,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1 &2126691668573020180
 GameObject:
   m_ObjectHideFlags: 0
@@ -7105,6 +7107,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1001 &2126691668404464720
 PrefabInstance:
   m_ObjectHideFlags: 0

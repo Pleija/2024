@@ -141,7 +141,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
 ";
                 File.WriteAllText(classPath, content);
             }
-            var dtsPath = $"Packages/tsproj/Typing/globals.d.ts";
+            var dtsPath = $"Packages/tsproj/Typing~/globals.d.ts";
             var ast = new TypeScriptAST(File.ReadAllText(dtsPath), dtsPath);
             var change = new ChangeAST();
             var module = ast.OfKind(SyntaxKind.ModuleDeclaration).First();

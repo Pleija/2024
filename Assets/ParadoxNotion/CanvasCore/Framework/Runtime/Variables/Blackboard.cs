@@ -5,6 +5,7 @@ using ParadoxNotion.Design;
 using ParadoxNotion.Serialization;
 using UnityEngine;
 using System.Linq;
+using Models.CSV;
 
 namespace NodeCanvas.Framework
 {
@@ -20,7 +21,6 @@ namespace NodeCanvas.Framework
         //there is still the old one to fallback to.
 
         [Tooltip("An optional Parent Blackboard Asset to 'inherit' variables from."), SerializeField]
-        
         private AssetBlackboard _parentBlackboard = null;
 
         [SerializeField]
@@ -40,6 +40,14 @@ namespace NodeCanvas.Framework
 
         [NonSerialized]
         private string _identifier;
+
+        [SerializeField]
+        public CsvFile csvFile;
+
+#if UNITY_EDITOR
+        [SerializeField]
+        public ExcelFile excelFile;
+#endif
 
         ///----------------------------------------------------------------------------------------------
         void ISerializationCallbackReceiver.OnBeforeSerialize()

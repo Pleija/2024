@@ -3530,6 +3530,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1 &8321980888314853923
 GameObject:
   m_ObjectHideFlags: 0

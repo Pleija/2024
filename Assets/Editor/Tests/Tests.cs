@@ -2,6 +2,7 @@ using System.Linq;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Tests
 {
@@ -12,7 +13,7 @@ namespace Tests
         {
             var files = AssetDatabase.FindAssets($"t:MtsFile").Select(AssetDatabase.GUIDToAssetPath)
                 .Where(x => x.StartsWith("Packages/tsproj/src/"));
-            Debug.Log(string.Join(", ",files));
+            Debug.Log(string.Join(", ", files));
         }
 
         [MenuItem("Debug/Test Addressables Exist")]
@@ -20,6 +21,13 @@ namespace Tests
         {
             var t = Res.Exists("JsMain");
             Debug.Log(t.GetType().GetNiceFullName());
+        }
+
+        [MenuItem("Game/当前场景物体数量")]
+        static void 当前场景物体数量()
+        {
+            Debug.Log(SceneManager.GetActiveScene().GetRootGameObjects()
+                .SelectMany(x => x.GetComponentsInChildren<Transform>(true)).Count());
         }
     }
 }

@@ -7244,6 +7244,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1 &8507704232678407883
 GameObject:
   m_ObjectHideFlags: 0
@@ -13007,6 +13009,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1 &8507704233407334901
 GameObject:
   m_ObjectHideFlags: 0
@@ -18547,6 +18551,8 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{}}'
   _objectReferences: []
   _serializedVariables: []
+  csvFile: {fileID: 0}
+  excelFile: {fileID: 0}
 --- !u!1 &8507704234171021658
 GameObject:
   m_ObjectHideFlags: 0

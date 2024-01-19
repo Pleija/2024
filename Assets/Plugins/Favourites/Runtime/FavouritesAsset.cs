@@ -19,7 +19,7 @@ namespace Runtime.Favourites.Runtime
         public Action RefleshAction;
 
         void OnEnable() {
-            Debug.Log("Favourites loaded");
+            //Debug.Log("Favourites loaded");
             instance = this;
         }
 

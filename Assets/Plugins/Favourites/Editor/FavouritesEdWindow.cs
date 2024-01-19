@@ -95,7 +95,7 @@ namespace Favourites.Editor
             };
 
             if (!firstUpdate) {
-                Debug.Log("Repaint Favorites");
+                //Debug.Log("Repaint Favorites");
                 firstUpdate = true;
             }
         }
