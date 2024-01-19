@@ -14,7 +14,6 @@
     "@types/node": "^20.8.8",
     "buffer": "^6.0.3",
     "protobufjs": "^7.2.5",
-    "rdb": "^3.4.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
     "typescript": "^5.2.2"
