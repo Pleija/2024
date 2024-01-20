@@ -1,9 +1,16 @@
+#if UNITY_EDITOR
+
+
 using System.IO;
 using System.Linq;
 using ParadoxNotion;
 using Sirenix.Utilities;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -68,18 +75,27 @@ namespace MoreTags
                     EditorApplication.delayCall -= OnDelayCall;
                     var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
 
-                    if (!prefab || prefab.TryGetComponent(typeof(TagsRef), out _)) {
-                        //Debug.Log($"Cannot load: {path}");
+                    if (prefab.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault() is { }) {
                         return;
                     }
-                    var go = Object.Instantiate(prefab);
-                    if (!go || go.TryGetComponent(typeof(TagsRef), out _)) {
-                        //Debug.Log($"Cannot load: {path}");
-                        return;
-                    }
-                    go.AddComponent<TagsRef>();
-                    PrefabUtility.ReplacePrefab(go, prefab);
+                    var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                    var target = go.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault()?.gameObject;
+
+                    // if (target && target.hideFlags != HideFlags.HideInHierarchy) {
+                    //     Object.DestroyImmediate(target);
+                    // }
+                    if (!target)
+                        target = new GameObject(nameof(TagsRef), typeof(TagsRef)).Of(x => {
+                            x.transform.SetParent(go.transform);
+                        });
+                    target.hideFlags = HideFlags.HideInHierarchy;
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(go, path, InteractionMode.AutomatedAction); 
+                    // This save will affect all prefab in Scene!
                     Object.DestroyImmediate(go);
+
+                    //go.AddComponent<TagsRef>();
+                    //PrefabUtility.SavePrefabAsset(go);
+                    //Object.DestroyImmediate(go);
 
                     // if (origin.TryGetComponent<TagsRef>(out var component)) {
                     Debug.Log($"added: {Path.GetFileNameWithoutExtension(path)}:{nameof(TagsRef)}");
@@ -130,7 +146,16 @@ namespace MoreTags
                     SceneManager.MoveGameObjectToScene(refs, scene);
                     Debug.Log($"Create: {scene.name}:{nameof(TagsRef)}", refs);
                 }
+                var ids = scene.GetRootGameObjects().FirstOrDefault(x => x.name == nameof(ObjectIds));
+
+                if (ids == null) {
+                    ids = new GameObject(nameof(ObjectIds));
+                    SceneManager.MoveGameObjectToScene(ids, scene);
+                }
+                ids.hideFlags = HideFlags.HideInHierarchy;
+                ids.RequireComponent<ObjectIds>().Save();
             };
         }
     }
 }
+#endif

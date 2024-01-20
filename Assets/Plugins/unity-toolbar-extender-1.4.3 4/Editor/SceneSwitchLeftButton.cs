@@ -226,7 +226,7 @@ namespace UnityToolbarExtender
                 EditorSceneManager.SaveOpenScenes();
                 UpdateBuild();
                 EditorShell.GitUpdate(() => {
-                    RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"resource updated"));
+                    Redis.Publish("js", $"resource updated");
                 });
                 GUIUtility.ExitGUI();
             }

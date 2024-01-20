@@ -177,8 +177,8 @@ namespace SqlCipher4Unity3D
 
         public override void SetupFromRedis()
         {
-            RedisData.self.Data(database => {
-                var json = database.StringGet(GetType().FullName);
+          
+                var json = Redis.Database.StringGet(GetType().FullName);
                 var value = CreateInstance<T>();
                 JsonUtility.FromJsonOverwrite(json, value);
                 value.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
@@ -223,7 +223,7 @@ namespace SqlCipher4Unity3D
                         }
                     });
                 Debug.Log($"setup finish: {GetType().FullName}");
-            });
+      
         }
 
         public override ModelBase GetSelf() => self;
@@ -317,8 +317,8 @@ namespace SqlCipher4Unity3D
         {
             if (!EditorApplication.isCompiling && !EditorApplication.isUpdating) {
                 //Debug.Log($"OnValidate: {GetType().Name}");
-                RedisData.self.Data(t => t.StringSet(typeof(T).FullName, JsonUtility.ToJson(this)));
-                RedisData.self.Redis(t => t.GetSubscriber().Publish("update", typeof(T).FullName));
+                Redis.Database.StringSet(typeof(T).FullName, JsonUtility.ToJson(this));
+                Redis.Publish("update", typeof(T).FullName);
             }
         }
 #endif

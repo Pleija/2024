@@ -94,8 +94,12 @@ namespace MS.Shell.Editor
             var operation = EditorShell.Execute($"art git {comment} 2>&1", new EditorShell.Options() {
                 workDirectory = "Packages/HostedData",
                 encoding = System.Text.Encoding.UTF8,
+                //https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
                 environmentVars = new Dictionary<string, string>() {
                     { "PATH", "/usr/bin:/usr/local/bin" },
+                    { "https_proxy", "http://192.168.1.65:7890" },
+                    { "http_proxy", "http://192.168.1.65:7890" },
+                    { "all_proxy", "socks5://192.168.1.65:7890" }
                 }
             });
             operation.onExit += (exitCode) => {

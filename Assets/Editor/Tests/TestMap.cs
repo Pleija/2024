@@ -20,7 +20,7 @@ namespace Tests
         [MenuItem("Debug/Test Redis")]
         static void TestRedis()
         {
-            RedisData.self.Redis(t => t.GetSubscriber().Publish("js","test"));
+            Redis.Publish("js","test");
         }
 
         [MenuItem("Debug/Map")]

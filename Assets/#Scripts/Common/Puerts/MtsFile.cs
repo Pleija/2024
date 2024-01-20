@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AssetImporters;
+#endif
 using UnityEngine;
 
 public class MtsFile : ScriptableObject

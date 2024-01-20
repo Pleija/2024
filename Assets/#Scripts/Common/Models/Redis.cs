@@ -12,19 +12,18 @@ using UnityEngine;
 
 namespace Models
 {
-    public class RedisData
+    public class Redis
     {
-        private static RedisData m_Instance;
-        public static RedisData self => m_Instance ??= new RedisData();
+        private static Redis m_Instance;
+        public static Redis self => m_Instance ??= new Redis();
         private IDatabase m_Database;
         public static IDatabase Database => self.m_Database ??= Instance.GetDatabase();
 
-        public void Data(Action<IDatabase> fn)
-        {
-            Redis(t => fn.Invoke(m_Database ??= t.GetDatabase()));
-            //m_Database ??= redis?.GetDatabase();
-        }
-
+        // public void Data(Action<IDatabase> fn)
+        // {
+        //     Redis(t => fn.Invoke(m_Database ??= t.GetDatabase()));
+        //     //m_Database ??= redis?.GetDatabase();
+        // }
         private ConnectionMultiplexer m_Redis;
         public string host = "192.168.1.65";
         public string password = "admin";
@@ -86,27 +85,26 @@ namespace Models
             Instance.GetSubscriber().Publish(channel, message, flags);
         }
 
-        public void Redis(Action<ConnectionMultiplexer> fn)
-        {
-            fn.Invoke(Instance);
-
-            //if (m_Redis == null || !m_Redis.IsConnected) {
-            //GetRedis(fn);
-            //     return;
-            // }
-            // fn.Invoke(m_Redis);
-
-            // get {
-            //     // if (isQuitting) return m_Redis;
-            //     //ConnectionMultiplexer.ConnectAsync("")
-            //     if (m_Redis == null) {
-            //         GetRedis();
-            //     }
-            //     return m_Redis;
-            //     //return m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
-            // }
-        }
-
+        // public void Redis(Action<ConnectionMultiplexer> fn)
+        // {
+        //     fn.Invoke(Instance);
+        //
+        //     //if (m_Redis == null || !m_Redis.IsConnected) {
+        //     //GetRedis(fn);
+        //     //     return;
+        //     // }
+        //     // fn.Invoke(m_Redis);
+        //
+        //     // get {
+        //     //     // if (isQuitting) return m_Redis;
+        //     //     //ConnectionMultiplexer.ConnectAsync("")
+        //     //     if (m_Redis == null) {
+        //     //         GetRedis();
+        //     //     }
+        //     //     return m_Redis;
+        //     //     //return m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+        //     // }
+        // }
         private Queue<Action<ConnectionMultiplexer>> m_Queue = new Queue<Action<ConnectionMultiplexer>>();
 
         private async UniTask GetRedis(Action<ConnectionMultiplexer> fn)
@@ -144,22 +142,22 @@ namespace Models
             }
 #endif
             // 设置Key和对应的String值
-            Data(t => t.StringSet(testKey, testValue));
+            Database.StringSet(testKey, testValue);
 
             // 删除Key和对应的值
-            Data(t => t.KeyDelete(testKey));
+            Database.KeyDelete(testKey);
 
             // 生成随机Key
-            Data(t => someKey = t.KeyRandom());
-            Data(t => t.StringSet(testKey, testValue));
-            Data(t => t.StringGet(testKey)); // 将输出123
-            Data(t => t.StringIncrement(testKey));
-            Data(t => Debug.Log($"redis {testKey} => " + t.StringGet(testKey)));
+            someKey = Database.KeyRandom();
+            Database.StringSet(testKey, testValue);
+            Database.StringGet(testKey); // 将输出123
+            Database.StringIncrement(testKey);
+            Debug.Log($"redis {testKey} => " + Database.StringGet(testKey));
             // 将输出124
-            Redis(t => t.GetSubscriber().Subscribe("js", (channel, message) => {
+            Sub("js", (channel, message) => {
                 Debug.Log($"Redis Receive: {message} Invoked: {fn != null}");
                 fn?.Invoke(message);
-            }));
+            });
         }
 
         [Button]

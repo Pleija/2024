@@ -29,9 +29,9 @@ public class PressMjs : AssetPostprocessor
     {
         EditorApplication.delayCall -= Push;
         files.ForEach(path => {
-            RedisData.self.Data(t => t.StringSet(path, File.ReadAllText(path)));
+            Redis.Database.StringSet(path, File.ReadAllText(path));
         });
         Debug.Log($"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
-        RedisData.self.Redis(t => t.GetSubscriber().Publish("js", $"update js file(s): {files.Length}"));
+        Redis.Publish("js", $"update js file(s): {files.Length}");
     }
 }

@@ -36,7 +36,7 @@ public class ResLoader : ILoader, IModuleChecker
         var pathToUse = PathToUse(filepath);
         var exist =
             ((Application.isEditor || Debug.isDebugBuild) &&
-                !string.IsNullOrEmpty(RedisData.Database.StringGet(assetPath))) ||
+                !string.IsNullOrEmpty(Redis.Database.StringGet(assetPath))) ||
             Cache.TryGetValue(filepath, out var result) || assets.Any(x => x.path == assetPath) ||
             Res.Exists<TextAsset>(assetPath) != null || Resources.Load<TextAsset>(pathToUse);
         return exist;
@@ -56,7 +56,7 @@ public class ResLoader : ILoader, IModuleChecker
 #endif
 
         if (file == null && (Application.isEditor || Debug.isDebugBuild)) {
-            var content = RedisData.Database.StringGet(assetPath);
+            var content = Redis.Database.StringGet(assetPath);
 
             if (!string.IsNullOrEmpty(content)) {
                 return content;
