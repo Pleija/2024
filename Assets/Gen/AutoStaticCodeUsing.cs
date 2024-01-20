@@ -43,6 +43,7 @@
             jsEnv.UsingAction<BestHTTP.WebSocket.WebSocketResponse, BestHTTP.WebSocket.Frames.WebSocketFrameReader>();
             jsEnv.UsingAction<BestHTTP.WebSocket.WebSocketResponse, System.UInt16, System.String>();
             jsEnv.UsingAction<DG.Tweening.Plugins.Options.PathOptions, DG.Tweening.Tween, UnityEngine.Quaternion, UnityEngine.Transform>();
+            jsEnv.UsingAction<FlowCanvas.Flow>();
             jsEnv.UsingAction<NodeCanvas.BehaviourTrees.BehaviourTree, NodeCanvas.Framework.Status>();
             jsEnv.UsingAction<NodeCanvas.Framework.Status>();
             jsEnv.UsingAction<ParadoxNotion.EventData>();
@@ -78,6 +79,7 @@
             jsEnv.UsingAction<System.String, System.Boolean, System.String>();
             jsEnv.UsingAction<System.String, System.Boolean, UnityEngine.Profiling.Experimental.DebugScreenCapture>();
             jsEnv.UsingAction<System.String, System.String, UnityEngine.LogType>();
+            jsEnv.UsingAction<System.String, UnityEngine.Color>();
             jsEnv.UsingAction<System.String, UnityEngine.Rect>();
             jsEnv.UsingAction<System.UInt32>();
             jsEnv.UsingAction<System.UInt64>();
@@ -110,6 +112,8 @@
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode>();
             jsEnv.UsingAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.Scene>();
             jsEnv.UsingAction<UnityEngine.Scripting.GarbageCollector.Mode>();
+            jsEnv.UsingAction<UnityEngine.Texture, System.Single>();
+            jsEnv.UsingAction<UnityEngine.Texture, UnityEngine.Color, UnityEngine.Vector2, UnityEngine.Vector2>();
             jsEnv.UsingAction<UnityEngine.Transform, System.Int32>();
             jsEnv.UsingAction<UnityEngine.Transform, UnityEngine.Transform, System.Boolean, System.Object[]>();
             jsEnv.UsingAction<UnityEngine.Vector2>();
@@ -156,7 +160,9 @@
             jsEnv.UsingFunc<System.Threading.CancellationToken, Cysharp.Threading.Tasks.UniTask>();
             jsEnv.UsingFunc<System.Threading.CancellationToken, Cysharp.Threading.Tasks.UniTaskVoid>();
             jsEnv.UsingFunc<System.Threading.CancellationToken, System.Collections.IEnumerator>();
+            jsEnv.UsingFunc<System.Type, System.Boolean>();
             jsEnv.UsingFunc<System.Type, System.Object, System.Boolean>();
+            jsEnv.UsingFunc<System.Type, System.String, System.String, System.Boolean>();
             jsEnv.UsingFunc<System.UInt32>();
             jsEnv.UsingFunc<System.UInt64>();
             jsEnv.UsingFunc<System.ValueTuple<System.Single, System.Single>>();
