@@ -2,20 +2,36 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Text.RegularExpressions;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zu.TypeScript.TsTypes;
+using Object = UnityEngine.Object;
 using Type = System.Type;
 
-public  static partial class UnityApi
+public static partial class UnityApi
 {
     // public static object where<T, T2>(this T value, Func<T2, bool> func) where T : IEnumerable
     // {
     //     return null;
     // }
+
+    public static T HasComponent<T>(this GameObject gameObject) where T : Component =>
+        gameObject.TryGetComponent(typeof(T), out var ret) ? ret as T : null;
+
+    public static Component HasComponent(this GameObject gameObject, Type type) =>
+        gameObject.TryGetComponent(type, out var ret) ? ret : null;
+
+    public static T HasComponent<T>(this Component component) where T : Component =>
+        component.TryGetComponent(typeof(T), out var ret) ? ret as T : null;
+
+    public static Component HasComponent(this Component component, Type type) =>
+        component.TryGetComponent(type, out var ret) ? ret : null;
 
     public static void ForEach(this Transform transform, Action<Transform> action)
     {
@@ -45,12 +61,52 @@ public  static partial class UnityApi
     public static Component RequireComponent(this Component component, Type type) =>
         component.TryGetComponent(type, out var ret) ? ret : component.gameObject.AddComponent(type);
 
-    public static T RequireComponent<T>(this Component component) where T: Component => component.RequireComponent(typeof(T)) as T;
+    public static T RequireComponent<T>(this Component component) where T : Component =>
+        component.RequireComponent(typeof(T)) as T;
 
-    public static Component RequireComponent(this GameObject gameObject, Type type) =>
-        gameObject.TryGetComponent(type, out var ret) ? ret : gameObject.gameObject.AddComponent(type);
+    public static Component RequireComponent(this GameObject gameObject, Type type)
+    {
+        return gameObject.TryGetComponent(type, out var ret) ? ret : gameObject.gameObject.AddComponent(type);
+    }
 
-    public static T RequireComponent<T>(this GameObject gameObject) where T: Component => gameObject.RequireComponent(typeof(T)) as T;
+    public static T RequireComponent<T>(this GameObject gameObject) where T : Component =>
+        gameObject.RequireComponent(typeof(T)) as T;
+
+    public static bool RemoveComponent<T>(this GameObject value) where T : Component =>
+        RemoveComponent(value, typeof(T));
+
+    public static bool RemoveComponent<T>(this Component value) where T : Component =>
+        RemoveComponent(value ? value.gameObject : null, typeof(T));
+
+    public static bool RemoveComponent(this Component value, Type type) =>
+        RemoveComponent(value ? value.gameObject : null, type);
+
+    public static bool RemoveComponent(this GameObject value, Type type)
+    {
+        if (value && value.HasComponent(type) is { } component) {
+            var scene = component.gameObject.scene;
+            if (Application.isPlaying) Object.Destroy(component);
+            else Object.DestroyImmediate(component);
+#if UNITY_EDITOR
+            if (scene != default) EditorSceneManager.MarkSceneDirty(scene);
+#endif
+            return true;
+        }
+        return false;
+    }
+
+    public static bool DestroySelf(this Object value)
+    {
+        if (!value) return false;
+        var scene = value is Component component ? component.gameObject.scene
+            : (value is GameObject gameObject ? gameObject.scene : default);
+        if (Application.isPlaying) Object.Destroy(value);
+        else Object.DestroyImmediate(value);
+#if UNITY_EDITOR
+        if (scene != default) EditorSceneManager.MarkSceneDirty(scene);
+#endif
+        return true;
+    }
 
     public static Color ToColor(this string hexString)
     {

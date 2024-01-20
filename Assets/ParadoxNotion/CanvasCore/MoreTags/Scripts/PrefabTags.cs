@@ -17,7 +17,7 @@ namespace MoreTags
 #if UNITY_EDITOR
         private void Reset()
         {
-            Invoke("RemoveSelf", 0);
+            Invoke(nameof(RemoveSelf), 0);
         }
 #endif
         private void RemoveSelf()

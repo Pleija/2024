@@ -26,7 +26,20 @@ namespace MoreTags
             if (editor.targets.Length == 0) return;
             if (editor.targets[0].GetType() != typeof(GameObject))
                 return;
-            GUILayout.Button("Test#1");
+            var go = editor.targets[0] as GameObject;
+            var component = go.HasComponent<Tags>();
+
+            if (!EditorGUILayout.ToggleLeft("#tags", component)) {
+                if (component) {
+                    go.RemoveTag(component.tags);
+                    component.DestroySelf();
+                }
+                return;
+            }
+            component = go.RequireComponent<Tags>();
+            TagGUI.SetTags(component.tagData, component.tagGUI ??= new TagGUI());
+
+            //GUILayout.Button("Test#1");
         }
     }
 }
