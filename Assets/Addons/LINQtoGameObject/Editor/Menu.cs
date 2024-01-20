@@ -9,7 +9,7 @@ namespace Assets.Editor
 {
     public class Menu
     {
-        [UnityEditor.MenuItem("LINQ/Destroy")]
+        [UnityEditor.MenuItem("Tools/LINQ To GameObject/Destroy")]
         public static void DestroyClone()
         {
             var go = UnityEngine.GameObject.Find("Root");
@@ -23,7 +23,7 @@ namespace Assets.Editor
             }
         }
 
-        [UnityEditor.MenuItem("LINQ/Add")]
+        [UnityEditor.MenuItem("Tools/LINQ To GameObject/Add")]
         public static void Add()
         {
             var go = UnityEngine.GameObject.Find("Origin");
@@ -40,7 +40,7 @@ namespace Assets.Editor
             }
         }
 
-        [UnityEditor.MenuItem("LINQ/Adds")]
+        [UnityEditor.MenuItem("Tools/LINQ To GameObject/Adds")]
         public static void Adds()
         {
             var go = UnityEngine.GameObject.Find("Origin");
