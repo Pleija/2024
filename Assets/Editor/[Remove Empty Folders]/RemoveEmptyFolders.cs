@@ -27,16 +27,16 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
     // }
 
     [MenuItem("Assets/Clear All Empty Folder Direct")]
-    public static void Clear() => OnWillSaveAssets(new string[]{});
+    public static void Clear() => __OnWillSaveAssets(new string[]{});
 
     /// <summary>
     /// Raises the will save assets event.
     /// </summary>
-    static string[] OnWillSaveAssets(string[] paths)
+    public static string[] __OnWillSaveAssets(string[] paths)
     {
         //Debug.Log($"check clear directory: {paths.JoinStr()}");
         // If menu is unchecked, do nothing.
-        if (!EditorPrefs.GetBool(kMenuText, false) || paths.Any())
+        if (!EditorPrefs.GetBool(kMenuText, false))
             return paths;
 
         // Get empty directories in Assets directory
@@ -87,7 +87,7 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
 
         // Save to EditorPrefs.
         EditorPrefs.SetBool(kMenuText, isChecked);
-        OnWillSaveAssets(null);
+        __OnWillSaveAssets(new string[]{});
     }
 
     [MenuItem(kMenuText, true)]

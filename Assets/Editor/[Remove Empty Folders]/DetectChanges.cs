@@ -44,7 +44,11 @@ namespace Editors
                 }
                 Debug.Log(s.JoinStr("\n"));
             }
-            if (deletedAssets.Any() || moved.Any()) RemoveEmptyFolders.Clear();
+
+            if ((deletedAssets.Any() || moved.Any()) && !EditorApplication.isCompiling &&
+                !EditorApplication.isUpdating) {
+                RemoveEmptyFolders.__OnWillSaveAssets(importedAssets);
+            }
         }
     }
 }

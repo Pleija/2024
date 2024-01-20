@@ -9,9 +9,11 @@ using SqlCipher4Unity3D;
 using StackExchange.Redis;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Models
 {
+    [Preserve]
     public class Redis
     {
         private static Redis m_Instance;

@@ -7,8 +7,8 @@ import Addressables = CS.UnityEngine.AddressableAssets.Addressables;
 import AsyncOperationStatus = CS.UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus;
 import $promise = puer.$promise;
 import Application = CS.UnityEngine.Application;
-import Redis = CS.App.Redis;
 import Loading = CS.App.Loading;
+import RedisAdapter = CS.App.RedisAdapter;
 
 export class Game extends StateFsm {
     GameStart: GameStart;
@@ -32,7 +32,7 @@ export class Game extends StateFsm {
                 }
             }
         });
-        (Redis.self as Redis).OnUpdate.AddListener(()=> {
+        RedisAdapter.self.OnUpdate.AddListener(()=> {
             console.log("restart app");
             Loading.Restart();
         });
