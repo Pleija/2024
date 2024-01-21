@@ -1,7 +1,7 @@
 {
   "name": "SqlCipher4Unity3D.Tests",
   "references": [
-    "Helpers",
+    "Core",
     "SqlCipher4Unity3D",
     "ICEROCK.Framework"
   ],

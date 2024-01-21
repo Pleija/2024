@@ -18,292 +18,460 @@ MonoBehaviour:
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.StartButton
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: Test
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: Hello
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Main
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Login
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.SeededRun
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.LoadoutState
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.GameManager
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.GameOverState
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.GameState
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Modifier
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Loading
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: AutoUpdate
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: MenuButton
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Updating
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Misson
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Mission
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.MenuArea
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Navbar
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Game
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.MainHP
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.MissonBtn
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.LevelStart
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.MissionPage
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.ShopPage
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.HeroesPage
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.CardsPage
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.ClanPage
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.CardAgent
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.UICamera
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Settings
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.HpSlider
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.LoadingCharPos
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.ChangeCharacterBtn
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.ChangeCharcter
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.ChangeCharacter
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.BackupCard
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.StartUp
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.Test
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: MainMenu
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []
   - name: FSM.CardManager
     value: 
     cost: 0
     number: 0
     enable: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color:
+      r: 0
+      g: 0
+      b: 0
+      a: 0
     gameObjects: []

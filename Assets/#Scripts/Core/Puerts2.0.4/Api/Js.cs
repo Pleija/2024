@@ -88,12 +88,14 @@ public partial class Js
             EditorApplication.update -= EditorUpdate;
             EditorApplication.update += EditorUpdate;
             EditorApplication.playModeStateChanged += mode => {
-                _env?.Dispose();
+                if (mode == PlayModeStateChange.ExitingEditMode || mode == PlayModeStateChange.ExitingPlayMode)
+                    Dispose();
             };
         }
 #endif
         //JsMain.self.Reload();
         JsMain.AutoBind?.Invoke(_env);
+
         //_env.UsingAction<Action, Action<string>>();
         var action = _env.ExecuteModule<Action>("bootstrap.mjs", "setup");
         if (Application.isPlaying) action.Invoke();
@@ -106,8 +108,8 @@ public partial class Js
         return self;
     }
 
-    public static void EditorUpdate() => Tick();
 #if UNITY_EDITOR
+    public static void EditorUpdate() => Tick();
     [InitializeOnEnterPlayMode]
     static void OnRun() => Dispose();
 #endif

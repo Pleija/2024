@@ -3,7 +3,7 @@
     "rootNamespace": "UnityToolbarExtender",
     "references": [
         "ParadoxNotion",
-        "Helpers",
+        "Core",
         "Unity.Addressables.Editor",
         "MS.Shell.Editor",
         "com.tencent.puerts.core"

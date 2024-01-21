@@ -1,5 +1,5 @@
 {
-  "name": "Helpers",
+  "name": "Core",
   "references": [
     "UltEvents",
     "com.tencent.puerts.core",
