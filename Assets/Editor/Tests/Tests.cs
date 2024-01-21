@@ -35,6 +35,7 @@ namespace Tests
         static void TestJs()
         {
             Js.Require("debug", "DevDebug");
+            Js.Require("debug", "say", "hello");
         }
 
         

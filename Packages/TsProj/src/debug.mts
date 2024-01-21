@@ -9,3 +9,7 @@ export const DevDebug = async function () {
         }
     });
 }
+
+export const say = function (...args: any[]) {
+    console.log(...args);
+}
