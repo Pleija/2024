@@ -30,7 +30,7 @@ namespace Runner.Sounds
             // As this is one of the first script executed, set that here.
             Application.targetFrameRate = 30;
             AudioListener.pause = false;
-            DontDestroyOnLoad(gameObject);
+            gameObject.DontDestroyOnLoad();
         }
 
         private void Start()

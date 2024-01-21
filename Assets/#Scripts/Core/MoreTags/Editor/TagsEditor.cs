@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 using System.Linq;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -7,12 +8,15 @@ using UnityEngine;
 namespace MoreTags
 {
     [CanEditMultipleObjects, CustomEditor(typeof(Tags))]
-    public class TagsEditor : Editor
+    public class TagsEditor : OdinEditor
     {
         private TagGUI m_GameObjectTag;
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
+            return;
             var go = (target as Tags).gameObject;
 
             if (!go.scene.isLoaded) {
@@ -29,8 +33,11 @@ namespace MoreTags
                 TagManagerEditor.ShowGameObjectsTag(list);
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
+            return;
             var go = (target as Tags).gameObject;
             m_GameObjectTag = new TagGUI();
             m_GameObjectTag.OnItemString += TagManagerEditor.OnItemString;

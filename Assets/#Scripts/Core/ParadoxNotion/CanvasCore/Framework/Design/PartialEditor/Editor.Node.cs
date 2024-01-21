@@ -956,13 +956,12 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             if (GUILayout.Button($"#1 Node Tags")) {
                 //Debug.Log(ownerSystem.GetType().GetNiceFullName());
             }
-            TagGUI.SetTags(node.preTags, node.preTagGUI ??= new TagGUI(), "Get: ");
-            TagGUI.SetTags(node.postTags, node.postTagGUI ??= new TagGUI(), "Set: ");
+            node.preTags.TagGUI("Get: ");
+            node.postTags.TagGUI("Set: ");
             BlackboardEditor.ShowVariables(node.blackboard, node.graph);
         }
 
-        public TagGUI preTagGUI { get; set; }
-        public TagGUI postTagGUI { get; set; }
+    
 
         //If the node implements ITaskAssignable...
         private static void TaskAssignableInspectorGUI(Node node)

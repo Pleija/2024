@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,14 @@ namespace MoreTags
 {
     public static class Extensions
     {
+
+#if UNITY_EDITOR
+         public static void TagGUI(this TagDataList data, string header = null, Action<TagGUI> onCreate = null)
+          {
+              MoreTags.TagGUI.SetTags(onCreate, data, header);
+          }
+#endif
+ 
         public static void AddTag(this GameObject go, params string[] tags)
         {
             TagSystem.AddGameObjectTag(go, tags);

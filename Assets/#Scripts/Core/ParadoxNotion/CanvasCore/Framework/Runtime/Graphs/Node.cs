@@ -72,10 +72,10 @@ namespace NodeCanvas.Framework
         private string _tag;
 
         [SerializeField]
-        private List<TagData> _preTags = new List<TagData>();
+        private TagDataList _preTags = new TagDataList();
 
         [SerializeField]
-        private List<TagData> _postTags = new List<TagData>();
+        private TagDataList _postTags = new TagDataList();
 
         [SerializeField, fsIgnoreInBuild]
         private Vector2 _position;
@@ -156,13 +156,13 @@ namespace NodeCanvas.Framework
             set => _tag = value;
         }
 
-        public List<TagData> preTags {
-            get => _preTags ??= new List<TagData>();
+        public TagDataList preTags {
+            get => _preTags ??= new TagDataList();
             set => _preTags = value;
         }
 
-        public List<TagData> postTags {
-            get => _postTags ??= new List<TagData>();
+        public TagDataList postTags {
+            get => _postTags ??= new TagDataList();
             set => _postTags = value;
         }
 

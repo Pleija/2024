@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.Utilities;
@@ -7,6 +8,15 @@ using UnityEngine;
 
 namespace MoreTags
 {
+    [Serializable]
+    public class TagDataList 
+    {
+        public List<TagData> data = new List<TagData>();
+#if UNITY_EDITOR
+        public TagGUI tagGUI { get; set; }
+#endif
+    }
+
     [Serializable]
     public class TagData
     {

@@ -34,18 +34,18 @@ namespace NodeCanvas.Framework
         private bool _isDisabled;
 
         [SerializeField]
-        private List<TagData> _preTags = new List<TagData>();
+        private TagDataList _preTags = new TagDataList();
 
         [SerializeField]
-        private List<TagData> _postTags = new List<TagData>();
+        private TagDataList _postTags = new TagDataList();
 
-        public List<TagData> preTags {
-            get => _preTags ??= new List<TagData>();
+        public TagDataList preTags {
+            get => _preTags ??= new TagDataList();
             set => _preTags = value;
         }
 
-        public List<TagData> postTags {
-            get => _postTags ??= new List<TagData>();
+        public TagDataList postTags {
+            get => _postTags ??= new TagDataList();
             set => _postTags = value;
         }
 

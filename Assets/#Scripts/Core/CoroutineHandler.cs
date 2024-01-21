@@ -21,7 +21,7 @@ public class CoroutineHandler : MonoBehaviour
         get {
             if (m_Instance != null) return m_Instance;
             var o = new GameObject("CoroutineHandler");
-            DontDestroyOnLoad(o);
+            o.DontDestroyOnLoad();
             m_Instance = o.AddComponent<CoroutineHandler>();
             return m_Instance;
         }

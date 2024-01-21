@@ -291,8 +291,8 @@ namespace NodeCanvas.Framework
             if (GUILayout.Button($"#1 Connection Tags")) {
                 //Debug.Log(ownerSystem.GetType().GetNiceFullName());
             }
-            TagGUI.SetTags(c.preTags, c.preTagGUI ??= new TagGUI(), "Get: ");
-            TagGUI.SetTags(c.postTags, c.postTagGUI ??= new TagGUI(), "Set: ");
+            c.preTags.TagGUI( "Get: ");
+            c.postTags.TagGUI( "Set: ");
         }
 
         ///<summary>Editor. The information to show in the middle area of the connection</summary>

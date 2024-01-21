@@ -12,37 +12,40 @@ namespace MoreTags
     {
         public Action<string> OnAddItem;
         public Action<string> OnClickItem;
+        public Action<string> OnRemoveItem;
         public Action<Rect, string> OnRightClickItem;
         public Func<string, GUIContent> OnItemString;
         public Func<string, Color> OnItemColor;
         private string m_NewItem = string.Empty;
         private GUIStyle m_BgStyle = null;
+        private static readonly SortedDictionary<object, TagGUI> instances = new SortedDictionary<object, TagGUI>();
 
-        public static void SetTags(List<TagData> data, TagGUI tagGUI, string header = null)
+        public static void SetTags(Action<TagGUI> onCreate, TagDataList data, string header = null)
         {
+            TagGUI tagGUI = data.tagGUI ??= new TagGUI();
             // var tags = (target as PrefabTags);
             //var tags = data.Select(x => x.name).ToList();
 
             void AddTag( /*List<string> tags,*/ string tag)
             {
                 TagSystem.AddTag(tag);
-                if (!data.Select(x => x.name).ToList().Contains(tag))
-                    data.Add(new TagData() { name = tag });
+                if (!data.data.Select(x => x.name).ToList().Contains(tag))
+                    data.data.Add(new TagData() { name = tag });
             }
 
             /*var*/
             if (!tagGUI.Initial) {
                 tagGUI.Initial = true;
-                TagSystem.AddTag(data.Select(x => x.name).ToArray());
+                TagSystem.AddTag(data.data.Select(x => x.name).ToArray());
                 // var tagGUI = new TagGUI();
                 tagGUI.OnItemString += //TagManagerEditor.OnItemString;
                     item => {
-                        var t = data.First(x => x.name == item);
+                        var t = data.data.First(x => x.name == item);
                         return new GUIContent(string.IsNullOrEmpty(t.value) ? item.Replace(".", "/")
                             : $"{item} = {t.value}");
                     };
                 tagGUI.OnItemColor += (item) => {
-                    return data.First(x => x.name == item).enable ? Color.green : Color.red;
+                    return data.data.First(x => x.name == item).enable ? Color.green : Color.red;
                     // return TagPreset.GetPresetColor(item);
                 };
                 tagGUI.OnAddItem += (item) => {
@@ -52,22 +55,23 @@ namespace MoreTags
                     else {
                         var menu = new GenericMenu();
                         foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags())
-                                     .Except(data.Select(x => x.name).ToList()).OrderBy(t => t.Contains(".") ? 0 : 1)
+                                     .Except(data.data.Select(x => x.name).ToList()).OrderBy(t => t.Contains(".") ? 0 : 1)
                                      .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
                             menu.AddItem(new GUIContent(tag.Replace(".", "/")), false, () => AddTag(tag));
                         menu.ShowAsContext();
                     }
                 };
                 tagGUI.OnClickItem += (item) => {
-                    var t = data.First(x => x.name == item);
+                    var t = data.data.First(x => x.name == item);
                     t.enable = !t.enable;
                 };
                 tagGUI.OnRightClickItem += //TagManagerEditor.OnRightClickItem;
                     (Rect rect, string item) => {
-                        var t = data.First(x => x.name == item);
+                        var t = data.data.First(x => x.name == item);
                         var menu = new GenericMenu();
                         menu.AddItem(new GUIContent("Remove"), false, () => {
-                            data.RemoveAll(t => t.name == item);
+                            data.data.RemoveAll(t => t.name == item);
+                            tagGUI.OnRemoveItem?.Invoke(item);
                         });
                         menu.AddSeparator("");
                         menu.AddItem(new GUIContent("[NONE]"), string.IsNullOrEmpty(t.value), () => {
@@ -84,8 +88,9 @@ namespace MoreTags
                             });
                         menu.ShowAsContext();
                     };
+                onCreate?.Invoke(tagGUI);
             }
-            tagGUI.OnGUI(data.Select(x => x.name).ToList(), header);
+            tagGUI.OnGUI(data.data.Select(x => x.name).ToList(), header);
         }
 
         public bool Initial { get; set; }

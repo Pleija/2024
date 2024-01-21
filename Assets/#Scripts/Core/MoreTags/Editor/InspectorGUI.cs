@@ -1,5 +1,7 @@
 #if UNITY_EDITOR
+using System;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -32,7 +34,13 @@ namespace MoreTags
                 return;
             }
             component = go.RequireComponent<Tags>();
-            TagGUI.SetTags(component.tagData, component.tagGUI ??= new TagGUI());
+            component.tagData.TagGUI(null, gui => {
+                Action<string> onChange = s => EditorSceneManager.MarkSceneDirty(component.gameObject.scene);
+                gui.OnAddItem += onChange;
+                gui.OnClickItem += onChange;
+                gui.OnRemoveItem += onChange;
+                gui.OnRightClickItem += (r, s) => onChange.Invoke(s);
+            });
 
             //GUILayout.Button("Test#1");
         }
