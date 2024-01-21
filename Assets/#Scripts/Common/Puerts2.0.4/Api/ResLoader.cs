@@ -27,6 +27,8 @@ public class ResLoader : ILoader, IModuleChecker
 
     public bool FileExists(string filepath)
     {
+        if (!Path.HasExtension(filepath)) filepath += ".mjs";
+
         var assetPath = AssetPath(filepath);
 #if UNITY_EDITOR
         if (File.Exists(assetPath)) {
@@ -46,6 +48,8 @@ public class ResLoader : ILoader, IModuleChecker
 
     public string ReadFile(string filepath, out string debugPath)
     {
+        if (!Path.HasExtension(filepath)) filepath += ".mjs";
+
         var assetPath = AssetPath(filepath);
         debugPath = Path.GetFullPath(assetPath);
         TextAsset file = null;

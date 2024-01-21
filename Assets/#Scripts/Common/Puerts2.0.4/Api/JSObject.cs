@@ -85,7 +85,7 @@ namespace Puerts
             if (reader.TokenType == JsonToken.Null) {
                 return null;
             }
-            return Js.Call<object, JSObject>("s => JSON.parse(s)", reader.Value);
+            return Js.Call<JSObject>("s => JSON.parse(s)", reader.Value);
         }
 
         public override bool CanConvert(Type objectType) => objectType == typeof(JSObject);

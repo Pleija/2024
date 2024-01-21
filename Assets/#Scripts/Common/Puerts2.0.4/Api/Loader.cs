@@ -82,6 +82,8 @@ namespace Puerts
 #endif
         public bool FileExists(string filepath)
         {
+            if (!Path.HasExtension(filepath)) filepath += ".mjs";
+
 #if UNITY_WEBGL && !UNTIY_EDITOR
             return true;
 #endif
@@ -105,6 +107,7 @@ namespace Puerts
 #endif
         public string ReadFile(string filepath, out string debugPath)
         {
+            if (!Path.HasExtension(filepath)) filepath += ".mjs";
 #if PUERTS_GENERAL
             debugpath = Path.Combine(root, filepath);
             return File.ReadAllText(debugpath);

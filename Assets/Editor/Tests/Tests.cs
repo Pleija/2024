@@ -34,7 +34,7 @@ namespace Tests
         [MenuItem("Tests/JsEnv")]
         static void TestJs()
         {
-            Js.Require<Action>("debug.mjs", "DevDebug").Invoke();
+            Js.Require("debug", "DevDebug");
         }
 
         
