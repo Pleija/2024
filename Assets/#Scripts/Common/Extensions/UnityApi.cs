@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Puerts;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -16,6 +17,13 @@ using Type = System.Type;
 
 public static partial class UnityApi
 {
+
+    public static void Log(this JSObject jsObject)
+    {
+        Debug.Log(jsObject.Safe);
+    }
+
+
     // public static object where<T, T2>(this T value, Func<T2, bool> func) where T : IEnumerable
     // {
     //     return null;

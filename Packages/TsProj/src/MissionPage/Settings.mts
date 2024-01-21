@@ -28,7 +28,7 @@ export class Settings extends StateFsm {
             });
         });
         this.dropDataBtn.onClick.AddListener(() => {
-            PlayerData.conn.DropTable($typeof(PlayerData));
+            PlayerData.Connection.DropTable($typeof(PlayerData));
             console.log("drop PlayerData ok.");
         });
         this.settingsPop.SetActive(false);

@@ -43,7 +43,11 @@ export class StateFsm {
             //console.log(n.toString());
             const state = this.fsm.GetState($class.name);
             const component = state.bindComponent;
-            return bindClass(component, $class) as any as T;
+            const ret = bindClass(component, $class) as any as T;
+            // if (typeof ret['init'] == 'function') {
+            //     ret['init']();
+            // }
+            return ret;
         }
         return new $class(this);
     }
@@ -52,6 +56,7 @@ export class StateFsm {
     sayHello() {
         console.log(...arguments)
     }
+    
 
     bindFsm(f: FSM, bb: Blackboard) {
         this.fsm = f;
@@ -74,6 +79,7 @@ export class StateFsm {
         //
         const keys = Object.keys(this);
         keys.forEach(key => {
+            //console.log(`check key: ${key}`);
             if (!this[key]) {
                 console.log(`${this.constructor.name}.${key} is null`);
                 return;
@@ -84,6 +90,7 @@ export class StateFsm {
                     this[key][k] = v.value;
                 });
             }
+            
             if (typeof this[key]['init'] == 'function') {
                 //console.log("Init Node:", key);
                 this[key].init();
@@ -95,22 +102,22 @@ export class StateFsm {
 
     }
 
-    bindNode(s: FSMState) {
-        return;
-        if (!this[s.NodeName]) return;
-        iterator(this[s.NodeName].node.blackboard.variables).forEach((v, k) => {
-            console.log(`[${this[s.NodeName].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
-            this[s.NodeName][k] = v.value;
-        });
-        console.log("Init Node2:", s.NodeName);
-        // if(this[s.NodeName]){
-        s.jsBind = this[s.NodeName];
-        this[s.NodeName].init?.();
-        //     return;
-        // }
-        // console.log(`Node: ${s.NodeName} is undefined`)
-
-    }
+    // bindNode(s: FSMState) {
+    //     return;
+    //     if (!this[s.NodeName]) return;
+    //     iterator(this[s.NodeName].node.blackboard.variables).forEach((v, k) => {
+    //         console.log(`[${this[s.NodeName].constructor.name}: bind ${k} => ${v.varType.FullName} null = ${v.value == null}`);
+    //         this[s.NodeName][k] = v.value;
+    //     });
+    //     console.log("Init Node2:", s.NodeName);
+    //     // if(this[s.NodeName]){
+    //     s.jsBind = this[s.NodeName];
+    //     this[s.NodeName].init?.();
+    //     //     return;
+    //     // }
+    //     // console.log(`Node: ${s.NodeName} is undefined`)
+    //
+    // }
 
     exitNode(s: FSMState) {
         if (!this[s.NodeName]) return;

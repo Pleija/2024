@@ -6,7 +6,7 @@ import {
   ResultSet,
   Transaction
 } from '../types.mjs'
-import {Sqlite3Database} from "./Sqlite3Database.mjs";
+import {Database} from "./Database.mjs";
 
 interface SQLite3ResultSet {
   changes: number
@@ -16,9 +16,9 @@ interface SQLite3ResultSet {
 }
 
 export class SQLite3Driver implements DbDriver {
-  db: Sqlite3Database
+  db: Database
 
-  constructor(db: Sqlite3Database) {
+  constructor(db: Database) {
     this.db = db
   }
 

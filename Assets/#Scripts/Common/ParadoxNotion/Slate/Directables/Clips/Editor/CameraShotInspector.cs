@@ -23,7 +23,8 @@ namespace Slate
         SerializedObject shotSerializedObject;
         SerializedProperty shotControllerProp;
 
-        void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             blendInEffectProp = serializedObject.FindProperty("blendInEffect");
             blendOutEffectProp = serializedObject.FindProperty("blendOutEffect");
             steadyCamEffectProp = serializedObject.FindProperty("steadyCamEffect");
@@ -33,7 +34,8 @@ namespace Slate
             action.lookThrough = false;
         }
 
-        void OnDisable() {
+        protected override void OnDisable() {
+            base.OnDisable();
             action.lookThrough = false;
         }
 

@@ -4,12 +4,13 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector.Editor;
 
 namespace Slate
 {
 
     [CustomEditor(typeof(Character))]
-    public class CharacterInspector : Editor
+    public class CharacterInspector : OdinEditor
     {
 
         private Dictionary<BlendShapeGroup, bool> foldStates = new Dictionary<BlendShapeGroup, bool>();
@@ -23,7 +24,8 @@ namespace Slate
             get { return (Character)target; }
         }
 
-        void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             neckProp = serializedObject.FindProperty("_neckTransform");
             headProp = serializedObject.FindProperty("_headTransform");
             upVectorProp = serializedObject.FindProperty("_upVector");
@@ -34,7 +36,8 @@ namespace Slate
             }
         }
 
-        void OnDisable() {
+        protected override void OnDisable() {
+            base.OnEnable();
             SetWireframeHidden(false);
             if ( !Application.isPlaying && character != null ) {
                 character.ResetExpressions();

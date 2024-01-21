@@ -137,7 +137,7 @@ public static class Res
             if (handle.IsValid()) Addressables.Release(handle);
         }
         await Addressables.DownloadDependenciesAsync(aName).Task;
-        JsMain.self.Reload(true);
+        JsMain.self.Reload();
         Addressables.LoadSceneAsync(aName, mode);
     }
 

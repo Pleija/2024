@@ -23,7 +23,7 @@ namespace Tests
             Debug.Log(t.GetType().GetNiceFullName());
         }
 
-        [MenuItem("Game/当前场景物体数量")]
+        [MenuItem("Debug/Game/当前场景物体数量")]
         static void 当前场景物体数量()
         {
             Debug.Log(SceneManager.GetActiveScene().GetRootGameObjects()

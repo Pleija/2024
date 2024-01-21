@@ -30,8 +30,13 @@ import GameObject = CS.UnityEngine.GameObject;
 import Setting = CS.Models.Setting;
 import UnityApi = CS.UnityApi;
 import JsMain = CS.JsMain;
+import Application = CS.UnityEngine.Application;
+import Debug = CS.UnityEngine.Debug;
+import { DevDebug } from "./debug.mjs";
 
-export const Setup = async function () {
+export const setup =  function () {
+    
+    console.log("Js Start");
 
 
     global.protobuf = require("protobufjs");
@@ -58,6 +63,10 @@ export const Setup = async function () {
         } else {
             SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         }
+    }
+
+    if (Application.isEditor || Debug.isDebugBuild) {
+        DevDebug().catch(console.error);
     }
 }
 

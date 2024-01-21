@@ -498,6 +498,10 @@ namespace SqlCipher4Unity3D
         /// </returns>
         public CreateTableResult CreateTable(Type ty, CreateFlags createFlags = CreateFlags.None) =>
             CreateTable(GetMapping(ty, createFlags), ty.FullName, createFlags);
+
+        public CreateTableResult CreateTable(Variable[] ty, string tableName,
+            CreateFlags createFlags = CreateFlags.None) =>
+            CreateTable(GetMapping(ty, tableName, createFlags), tableName, createFlags);
         /*
         {
             var map = GetMapping(ty, createFlags);
@@ -1775,8 +1779,16 @@ namespace SqlCipher4Unity3D
             if (obj == null || objType == null) {
                 return 0;
             }
-            CreateTable(obj.GetType(), CreateFlags.AllImplicit);
-            var map = GetMapping(objType);
+            TableMapping map = null;
+
+            if (obj is (Variable[] variables, string tableName)) {
+                CreateTable(variables, tableName, CreateFlags.AllImplicit);
+                map = GetMapping(variables, tableName);
+            }
+            else {
+                CreateTable(obj.GetType(), CreateFlags.AllImplicit);
+                map = GetMapping(objType);
+            }
 
             if (map.PK != null && map.PK.IsAutoGuid) {
                 if (map.PK.GetValue(obj).Equals(Guid.Empty)) {
@@ -2003,15 +2015,12 @@ namespace SqlCipher4Unity3D
         /// <typeparam name='T'>
         ///     The type of object.
         /// </typeparam>
+        public int Delete<T>(object primaryKey) => Delete(primaryKey, typeof(T));
 
-        public int Delete<T>(object primaryKey) => Delete(primaryKey, typeof(T)); 
-                                                                                  
         public int Delete(object primaryKey, Type type)
         {
             return Delete(primaryKey, GetMapping(type));
         }
-
-
 
         /// <summary>
         ///     Deletes the object with the specified primary key.
@@ -2049,8 +2058,8 @@ namespace SqlCipher4Unity3D
         /// <typeparam name='T'>
         ///     The type of objects to delete.
         /// </typeparam>
-
         public int DeleteAll<T>() => DeleteAll(typeof(T));
+
         public int DeleteAll(Type type)
         {
             var map = GetMapping(type);
@@ -2348,7 +2357,7 @@ namespace SqlCipher4Unity3D
             OnCreateRow = () => {
                 var value = new System.Collections.Generic.List<Variable>();
                 variables.ForEach((t, i) => {
-                    value.Add(new Variable<object>(variables[i].name, variables[i].varType)); 
+                    value.Add(new Variable<object>(variables[i].name, variables[i].varType));
                 });
                 return value.ToArray();
             };
@@ -2901,6 +2910,7 @@ namespace SqlCipher4Unity3D
             return new SQLiteReader();
         }
 
+
         public void ClearBind()
         {
             _bindings = new List<Binding>();
@@ -2949,7 +2959,7 @@ namespace SqlCipher4Unity3D
 
         public IEnumerable<T> ExecuteDeferredQuery<T>()
         {
-            return ExecuteDeferredQuery<T>(_conn.GetMapping(typeof(T)));
+            return ExecuteDeferredQuery(typeof(T)).Cast<T>();
         }
 
         public IEnumerable<object> ExecuteDeferredQuery(Type type)
@@ -2959,7 +2969,12 @@ namespace SqlCipher4Unity3D
 
         public List<T> ExecuteQuery<T>()
         {
-            return ExecuteDeferredQuery<T>(_conn.GetMapping(typeof(T))).ToList();
+            return ExecuteQuery(typeof(T)).Cast<T>().ToList();
+        }
+
+        public List<object> ExecuteQuery(string tableName, params Variable[] variables )
+        {
+            return ExecuteDeferredQuery<object>(_conn.GetMapping(variables, tableName)).ToList();
         }
 
         public List<object> ExecuteQuery(Type type)
@@ -2969,7 +2984,7 @@ namespace SqlCipher4Unity3D
 
         public List<T> ExecuteQuery<T>(TableMapping map)
         {
-            return ExecuteDeferredQuery<T>(map).ToList();
+            return ExecuteDeferredQuery(map, typeof(T)).Cast<T>().ToList();
         }
 
         public List<object> ExecuteQuery(TableMapping map, Type type)
@@ -3016,7 +3031,7 @@ namespace SqlCipher4Unity3D
                 }
 
                 while (SQLite3.Step(stmt) == SQLite3.Result.Row) {
-                    var obj =  map.OnCreateRow.Invoke();
+                    var obj = map.OnCreateRow.Invoke();
 
                     for (int i = 0; i < cols.Length; i++) {
                         if (cols[i] == null) continue;

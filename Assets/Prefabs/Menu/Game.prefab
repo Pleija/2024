@@ -4731,6 +4731,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04998e75720e24003b13a720c1946d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: test
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[System.String, mscorlib]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 1
+      Data: hello
+    - Name: 
+      Entry: 1
+      Data: test
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OnCardUsed
+      Entry: 6
+      Data: 
   mainCamera: {fileID: 0}
   playingFieldMask:
     serializedVersion: 2

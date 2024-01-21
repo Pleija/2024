@@ -1,11 +1,12 @@
 ﻿#if UNITY_EDITOR
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace ParadoxNotion.Design
 {
     ///<summary>A generic popup editor</summary>
-    public class GenericInspectorWindow : EditorWindow
+    public class GenericInspectorWindow : OdinEditorWindow
     {
         private static GenericInspectorWindow current;
         private string friendlyTitle;
@@ -17,8 +18,9 @@ namespace ParadoxNotion.Design
         private bool willRepaint;
 
         // ...
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             titleContent = new GUIContent("Object Editor");
             current = this;
 #if UNITY_2017_2_OR_NEWER
@@ -31,8 +33,9 @@ namespace ParadoxNotion.Design
         }
 
         //...
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
 #if UNITY_2017_2_OR_NEWER
             EditorApplication.playModeStateChanged -= PlayModeChange;
 #else
@@ -75,8 +78,9 @@ namespace ParadoxNotion.Design
         }
 
         //...
-        private void OnGUI()
+        protected override void OnGUI()
         {
+            base.OnGUI();
             if (targetType == null) return;
             var e = Event.current;
 

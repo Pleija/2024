@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
-
+using Sirenix.OdinInspector.Editor;
 #if SLATE_USE_FRAMECAPTURER
 using RenderSettings = Slate.Prefs.RenderSettings;
 using RenderFormat = Slate.UTJ.FrameCapturer.MovieEncoder.Type;
@@ -13,13 +13,15 @@ using Slate.UTJ.FrameCapturer;
 namespace Slate
 {
 
-    public class RenderWindow : EditorWindow
+    public class RenderWindow : OdinEditorWindow
     {
 
 #if !SLATE_USE_FRAMECAPTURER
 
         public static void Open() { CreateInstance<RenderWindow>().ShowUtility(); }
-        void OnGUI() {
+
+        protected override void OnGUI() {
+            base.OnGUI();
             EditorGUILayout.HelpBox("To enable Rendering, please download and import the free Rendering Extension package from the website.", MessageType.Info);
             if ( GUILayout.Button("DOWNLOAD") ) { Help.BrowseURL("https://slate.paradoxnotion.com/downloads/"); }
             GUILayout.Space(20);

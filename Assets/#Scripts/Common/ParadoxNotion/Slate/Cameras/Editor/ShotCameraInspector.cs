@@ -3,12 +3,13 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
+using Sirenix.OdinInspector.Editor;
 
 namespace Slate
 {
 
     [CustomEditor(typeof(ShotCamera))]
-    public class ShotCameraInspector : Editor
+    public class ShotCameraInspector : OdinEditor
     {
 
         private SerializedProperty focalDistanceProp;
@@ -20,7 +21,8 @@ namespace Slate
             get { return (ShotCamera)target; }
         }
 
-        void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             focalDistanceProp = serializedObject.FindProperty("_focalDistance");
             focalLengthProp = serializedObject.FindProperty("_focalLength");
             focalApertureProp = serializedObject.FindProperty("_focalAperture");

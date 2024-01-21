@@ -35,7 +35,8 @@ namespace NodeCanvas.StateMachines
         public event Action<IState> onStateExit;
         public event Action<IState> onStateTransition;
 
-        public FSMState GetState(string nodeName) => allNodes.OfType<FSMState>().FirstOrDefault(x => x.name == nodeName);
+        public FSMState GetState(string nodeName) =>
+            allNodes.OfType<FSMState>().FirstOrDefault(x => x.name == nodeName);
 
         ///<summary>The current FSM state</summary>
         public FSMState currentState { get; private set; }
@@ -85,8 +86,10 @@ namespace NodeCanvas.StateMachines
         {
             stateStack = new Stack<FSMState>();
             enterStartStateFlag = true;
-            if (!agent.GetComponent<GraphOwner>().startCalled)
+
+            if (!agent.GetComponent<GraphOwner>().startCalled ) {
                 Invoke("bindFsm", this, blackboard);
+            }
             else
                 Invoke("enable");
         }
@@ -178,8 +181,7 @@ namespace NodeCanvas.StateMachines
                     Js.Env.Eval<Action<object>>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke(param[0]);
                     break;
                 case 2:
-                    Js.Env.Eval<Action<object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
-                        .Invoke(param[0], param[1]);
+                    Js.Env.Eval<Action<object, object>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(param[0], param[1]);
                     break;
                 case 3:
                     Js.Env.Eval<Action<object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")

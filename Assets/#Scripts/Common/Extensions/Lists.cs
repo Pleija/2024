@@ -1,11 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Puerts;
 using Sirenix.Utilities;
 using UnityEngine;
 
 public static partial class UnityApi
 {
+    /*
+    public static string[] Keys(this JSObject jsObject)
+    {
+        var keys = new List<string>();
+        Js.Env.Eval<Action<object, Action<string>>>("(o,fn) => Object.keys(o).map(fn)")
+            .Invoke(jsObject, t => keys.Add(t));
+        return keys.ToArray();
+    }
+
+    public static void Log(JSObject jsObject)
+    {
+        Debug.Log(jsObject);
+    }
+
+    public static Dictionary<string, object> Map(this JSObject jsObject) => Map<object>(jsObject);
+
+    public static Dictionary<string, T> Map<T>(this JSObject jsObject)
+    {
+        return jsObject.Keys().ToDictionary(t => t, jsObject.Get<T>);
+    }
+
+*/
     // public static IEnumerable<T> AsWhere<T>(this IEnumerable<T> data, Func<T, bool> cb, T _ = default)
     // {
     //     return data.Where(cb);

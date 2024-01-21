@@ -40,7 +40,7 @@ namespace SqlCipher4Unity3D
         [Ignore]
         public bool isSetup { get; set; }
 
-        public static SQLiteConnection conn {
+        public static SQLiteConnection Connection {
             get {
                 if (m_Connection != null) return m_Connection;
                 m_Connection = new SQLiteConnection(dbPath, pwd);
@@ -71,7 +71,7 @@ namespace SqlCipher4Unity3D
 
         public ModelBase Save()
         {
-            conn.Save(this);
+            Connection.Save(this);
             return this;
         }
 
@@ -125,7 +125,7 @@ namespace SqlCipher4Unity3D
 
         public static void InnerResetSelf()
         {
-            conn.Table<T>().FirstOrInsert(table => {
+            Connection.Table<T>().FirstOrInsert(table => {
                 //value ??= CreateInstance<T>();
                 if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
@@ -290,24 +290,24 @@ namespace SqlCipher4Unity3D
         private void TestSave()
         {
             Save();
-            Debug.Log(JsonConvert.SerializeObject(conn.Table<T>().FirstOrDefault(), Formatting.Indented));
+            Debug.Log(JsonConvert.SerializeObject(Connection.Table<T>().FirstOrDefault(), Formatting.Indented));
         }
 
         [ButtonGroup("2")]
         public void Drop()
         {
-            conn.DropTable<T>();
+            Connection.DropTable<T>();
         }
 
         public new T Save()
         {
-            conn.Save(this);
+            Connection.Save(this);
             return (T)this;
         }
 
         public static T Load(Expression<Func<T, bool>> predExpr, Action<T> aAction = null)
         {
-            var result = conn.Table<T>().FirstOrInsert(predExpr, aAction);
+            var result = Connection.Table<T>().FirstOrInsert(predExpr, aAction);
             Setup(self, result);
             return result;
         }

@@ -76,7 +76,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                 if (bindComponent && !extends.GetText().Contains(bindComponent.GetType().Name)) {
                     ch = true;
-                    changeAst.ChangeNode(extends, $"extends {bindComponent.GetType().Name}");
+                    changeAst.ChangeNode(extends, $" extends {bindComponent.GetType().Name}");
 
                     if (root.OfKind(SyntaxKind.ImportEqualsDeclaration).All(x =>
                             !x.GetText().Contains($"CS.{bindComponent.GetType().FullName}"))) {
@@ -85,15 +85,15 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     }
                 }
                 else if (!bindComponent) {
-                    if (!extends.GetText().Contains($"StateFSM<{FsmName}>")) {
+                    if (!extends.GetText().Contains($"StateNode<{FsmName}>")) {
                         ch = true;
-                        changeAst.ChangeNode(extends, $"extends StateFSM<{FsmName}>");
+                        changeAst.ChangeNode(extends, $" extends StateNode<{FsmName}>");
                     }
                     var ims = root.OfKind(SyntaxKind.ImportDeclaration).ToArray();
 
-                    if (!ims.Any(t => t.GetText().Contains(file))) {
+                    if (!ims.Any(t => t.GetText().Contains(graph.FsmPath))) {
                         ch = true;
-                        changeAst.InsertBefore(root.RootNode, $"import {{ {NodeName} }} from \"{file}\";\n");
+                        changeAst.InsertBefore(root.RootNode, $"import {{ {FsmName} }} from \"{graph.FsmPath}\";\n");
                     }
                 }
 

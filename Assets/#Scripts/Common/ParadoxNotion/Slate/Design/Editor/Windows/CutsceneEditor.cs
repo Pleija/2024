@@ -4,11 +4,12 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using Sirenix.OdinInspector.Editor;
 
 namespace Slate
 {
 
-    public class CutsceneEditor : EditorWindow
+    public class CutsceneEditor : OdinEditorWindow
     {
 
         enum EditorPlaybackState
@@ -299,7 +300,8 @@ namespace Slate
         }
 
         //...
-        void OnEnable() {
+        protected override void OnEnable() {
+            base.OnEnable();
             Styles.Load();
 
 #if UNITY_2018_3_OR_NEWER
@@ -337,7 +339,8 @@ namespace Slate
         }
 
         //...
-        void OnDisable() {
+        protected override void OnDisable() {
+            base.OnDisable();
             UnityEditor.SceneManagement.EditorSceneManager.sceneSaving -= OnWillSaveScene;
 
 #pragma warning disable 618
@@ -689,8 +692,8 @@ namespace Slate
         }
 
         //...
-        void OnGUI() {
-
+        protected override void OnGUI() {
+           base.OnGUI();
             GUI.skin.label.richText = true;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
             EditorStyles.label.richText = true;

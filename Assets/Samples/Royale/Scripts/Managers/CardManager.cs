@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using System;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
 namespace UnityRoyale
 {
-    public class CardManager : MonoBehaviour
+    public class CardManager : Agent<CardManager>
     {
+        public HashSet<string> test;
         public Camera mainCamera; //public reference
         public LayerMask playingFieldMask;
         public GameObject cardPrefab;

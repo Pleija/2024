@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Models;
 using Puerts;
 using Sirenix.OdinInspector;
@@ -48,7 +49,7 @@ public class JsMain : Agent<JsMain>
         //    // Debug.Log($"check for catalog: {checkForCatalog.PercentComplete * 100}%");
         // }
 
-        if (checkForCatalog.Result.Any()) {
+        if (checkForCatalog.IsValid() && checkForCatalog.Result.Any()) {
             var updateCatalogs = Addressables.UpdateCatalogs(checkForCatalog.Result, false);
             yield return updateCatalogs;
             // while (updateCatalogs.IsValid() && !updateCatalogs.IsDone) {
@@ -132,7 +133,6 @@ public class JsMain : Agent<JsMain>
             return false;
         }
         var path = AssetDatabase.GUIDToAssetPath(prefab);
-
         var go = AssetDatabase.LoadAssetAtPath<GameObject>(path);
         //  var go = Resources.Load<GameObject>("JsMain");
         Assert.IsNotNull(go, $"{path} != null");
@@ -154,9 +154,8 @@ public class JsMain : Agent<JsMain>
             }
         });
         var files = Directory.GetFiles("Assets/Res/dist/", "*.*", SearchOption.AllDirectories);
-        files.Where(x =>
-            !File.Exists(x.Replace("Assets/Res/dist/", "Packages/tsproj/src/").Replace(".mjs", ".mts"))).ForEach(
-            file => {
+        files.Where(x => !File.Exists(x.Replace("Assets/Res/dist/", "Packages/tsproj/src/").Replace(".mjs", ".mts")))
+            .ForEach(file => {
                 Debug.Log($"delete: {file}");
                 AssetDatabase.DeleteAsset(file);
             });
@@ -300,25 +299,15 @@ public class JsMain : Agent<JsMain>
     //     set => typeName = value.AssemblyQualifiedName;
     // }
     public static Action<JsEnv> AutoBind;
+    public void Reload() => Js.Reload();
+    private static HashSet<string> callers = new HashSet<string>();
 
-    public void Reload(bool force = false)
+    public static void CallOnce(Action action, [CallerFilePath] string path = "", [CallerLineNumber] int number = 0,
+        [CallerMemberName] string method = "")
     {
-        if (force && Js._env != null) Js._env.Dispose();
-        // if (LoadModels) LoadAll();
-        // if (IsGetAssets) GetAssets();
-        //Debug.Log(@$"Js Assets: {all.Length} bootstrap: {all.Any(t => t.EndsWith("bootstrap.mjs"))}");
-        // if (TryGetType("PuertsStaticWrap.AutoStaticCodeUsing", out var type))
-        // Assert.IsNotNull(AutoStaticCodeUsingType, "AutoStaticCodeUsingType != null");
-        // AutoStaticCodeUsingType.GetMethod("AutoUsing", BindingFlags.Static | BindingFlags.Public)
-        //     ?.Invoke(null, new object[] { JsEnv.self });
-        AutoBind?.Invoke(Js.Env);
-        Js.Env.UsingAction<Vector2>();
-        Js.Env.UsingAction<Vector3>();
-        Js.Env.UsingAction<bool>();
-        Js.Env.UsingAction<string>();
-        Js.Env.UsingAction<float>();
-        Js.Env.UsingAction<int>();
-        Js.Env.ExecuteModule<Action>("bootstrap.mjs", "Setup")?.Invoke();
+        if (callers.Add($"{path}:{number}:{method}")) {
+            action?.Invoke();
+        }
     }
 
     public void Update()

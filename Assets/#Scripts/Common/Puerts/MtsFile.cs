@@ -28,7 +28,7 @@ public class ProtoImporter : ScriptedImporter
         MtsFile subAsset = ScriptableObject.CreateInstance<MtsFile>();
         subAsset.assetPath = assetPath;
         var icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
-            "Assets/Design/UI/Layer Lab/GUI PRO Kit - Fantasy RPG/ResourcesData/Sprites/Component/Icon_Icons_(Original)/icon_flag_skull.png");
+            "Assets/Design/UI/GUI Mobile Hyper-Casual/Sprites/Items PSD + PNG/Mushroom/Mushroom.psd");
         // typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static)
         //    ?.Invoke(null, new object[] { subAsset, icon });
         var editorGUIUtilityType = typeof(EditorGUIUtility);
