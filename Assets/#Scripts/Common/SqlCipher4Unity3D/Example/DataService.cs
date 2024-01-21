@@ -15,7 +15,7 @@ namespace SqlCipher4Unity3D.Example
     {
         private readonly SQLiteConnection _connection;
 #if UNITY_EDITOR
-        [MenuItem("Debug/Tests/Database/Create Database")]
+        [MenuItem("Tests/Tests/Database/Create Database")]
         private static void TestCreateDatabase()
         {
             var databaseName = "test_password.sqlite";

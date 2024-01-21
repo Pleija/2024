@@ -6,13 +6,13 @@ using UnityEditor;
 
 public class BundleAndBuild
 {
-    [MenuItem("Debug/Build with Bundle/Build")]
+    [MenuItem("Tests/Build with Bundle/Build")]
     static void Build() { }
 
-    [MenuItem("Debug/Build with Bundle/Build and Run")]
+    [MenuItem("Tests/Build with Bundle/Build and Run")]
     static void BuildAndRun() { }
 
-    [MenuItem("Debug/Shell Test")]
+    [MenuItem("Tests/Shell Test")]
     static void TestShell()
     {
         EditorShell.GitUpdate();

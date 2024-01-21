@@ -1,19 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using NodeCanvas.Framework;
 using Sirenix.Serialization;
-using Sirenix.Utilities;
 using SqlCipher4Unity3D.SQLite.Attribute;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Zu.TypeScript.TsTypes;
 using BinaryExpression = System.Linq.Expressions.BinaryExpression;
 using Debug = UnityEngine.Debug;
 using Expression = System.Linq.Expressions.Expression;
@@ -306,7 +304,7 @@ namespace SqlCipher4Unity3D
                         0x4B, 0x65, 0x79, 0x20, 0x6D, 0x75, 0x73, 0x74, 0x20, 0x62,
                         0x65, 0x20, 0x33, 0x32,0x20, 0x62, 0x79, 0x74, 0x65, 0x73,
                         0x20, 0x28, 0x32, 0x35, 0x36, 0x2D, 0x62, 0x69, 0x74, 0x29,
-                        //@formatter:on
+//@formatter:on
                     }), nameof(key));
             var s = String.Join("", key.Select(x => x.ToString("X2")));
             Execute( /* "pragma key = " */ Encoding.UTF8.GetString(new byte[] {
@@ -397,22 +395,22 @@ namespace SqlCipher4Unity3D
             return map;
         }
 
-        public TableMapping GetMapping(Variable[] type, string key, CreateFlags createFlags = CreateFlags.None)
+        public TableMapping GetMapping(SortedDictionary<string,Type> type, string key, CreateFlags createFlags = CreateFlags.None)
         {
             TableMapping map;
             //var key = type.FullName;
 
             lock (_mappings) {
-                if (_mappings.TryGetValue(key, out map)) {
-                    if (createFlags != CreateFlags.None && createFlags != map.CreateFlags) {
-                        map = new TableMapping(type, key, createFlags);
-                        _mappings[key] = map;
-                    }
-                }
-                else {
+                // if (_mappings.TryGetValue(key, out map)) {
+                //     if (createFlags != CreateFlags.None && createFlags != map.CreateFlags) {
+                //         map = new TableMapping(type, key, createFlags);
+                //         _mappings[key] = map;
+                //     }
+                // }
+                // else {
                     map = new TableMapping(type, key, createFlags);
-                    _mappings.Add(key, map);
-                }
+                //     _mappings.Add(key, map);
+                // }
             }
             return map;
         }
@@ -499,7 +497,7 @@ namespace SqlCipher4Unity3D
         public CreateTableResult CreateTable(Type ty, CreateFlags createFlags = CreateFlags.None) =>
             CreateTable(GetMapping(ty, createFlags), ty.FullName, createFlags);
 
-        public CreateTableResult CreateTable(Variable[] ty, string tableName,
+        public CreateTableResult CreateTable(SortedDictionary<string, Type> ty, string tableName,
             CreateFlags createFlags = CreateFlags.None) =>
             CreateTable(GetMapping(ty, tableName, createFlags), tableName, createFlags);
         /*
@@ -915,7 +913,7 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     A <see cref="SQLiteCommand" />
         /// </returns>
-        public SQLiteCommand CreateCommand(string cmdText, Dictionary<string, object> args)
+        public SQLiteCommand CreateCommand(string cmdText, SortedDictionary<string, object> args)
         {
             if (!_open)
                 throw SQLiteException.New(SQLite3.Result.Error, "Cannot create commands from unopened database");
@@ -1781,9 +1779,9 @@ namespace SqlCipher4Unity3D
             }
             TableMapping map = null;
 
-            if (obj is (Variable[] variables, string tableName)) {
-                CreateTable(variables, tableName, CreateFlags.AllImplicit);
-                map = GetMapping(variables, tableName);
+            if (obj is (SortedDictionary<string,Type> type, string tableName)) {
+                CreateTable(type, tableName, CreateFlags.AllImplicit);
+                map = GetMapping(type, tableName);
             }
             else {
                 CreateTable(obj.GetType(), CreateFlags.AllImplicit);
@@ -2352,19 +2350,16 @@ namespace SqlCipher4Unity3D
         readonly Column[] _insertColumns;
         readonly Column[] _insertOrReplaceColumns;
 
-        public TableMapping(Variable[] variables, string tableName, CreateFlags createFlags = CreateFlags.None)
+        public TableMapping(SortedDictionary<string,Type> type, string tableName, CreateFlags createFlags = CreateFlags.None)
         {
             OnCreateRow = () => {
-                var value = new System.Collections.Generic.List<Variable>();
-                variables.ForEach((t, i) => {
-                    value.Add(new Variable<object>(variables[i].name, variables[i].varType));
-                });
-                return value.ToArray();
+                var value = new SortedDictionary<string,object>();
+                return value;
             };
             CreateFlags = createFlags;
             TableName = tableName;
             WithoutRowId = false;
-            Columns = variables.Select(x => new Column(x, createFlags)).ToArray();
+            Columns = type.Select(x => new Column(x.Key,x.Value, createFlags)).ToArray();
 
             foreach (var c in Columns) {
                 if (c.IsAutoInc && c.IsPK) {
@@ -2511,8 +2506,7 @@ namespace SqlCipher4Unity3D
                 get { return _prop.Name; }
             }
 
-            (string name, Type type) _variable;
-            public (string name, Type type) Variable => _variable;
+            public Type type;
             public Type ColumnType { get; private set; }
             public string Collation { get; private set; }
             public bool IsAutoInc { get; private set; }
@@ -2523,9 +2517,9 @@ namespace SqlCipher4Unity3D
             public int? MaxStringLength { get; private set; }
             public bool StoreAsText { get; private set; }
 
-            public Column(Variable variable, CreateFlags createFlags = CreateFlags.None)
+            public Column(string name, Type type, CreateFlags createFlags = CreateFlags.None)
             {
-                Name = variable.name;
+                Name = name;
                 //                 var colAttr = prop.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(ColumnAttribute));
                 //                 _prop = prop;
                 // #if ENABLE_IL2CPP
@@ -2537,9 +2531,9 @@ namespace SqlCipher4Unity3D
                 // #endif
                 //If this type is Nullable<T> then Nullable.GetUnderlyingType returns the T, otherwise it returns null, so get the actual type instead
                 //Nullable.GetUnderlyingType(prop.GetUnderlyingType()) ?? prop.PropertyType;
-                ColumnType = variable.varType; //FastColumnSetter.GetUnderlyingType(prop); 
+                ColumnType = type; //FastColumnSetter.GetUnderlyingType(prop); 
                 Collation = "";                // Orm.Collation(prop);
-                IsPK = variable.name == "Id" || variable.name == "id";
+                IsPK = name == "Id" || name == "id";
                 /*Orm.IsPK(prop) || (((createFlags & CreateFlags.ImplicitPK) == CreateFlags.ImplicitPK) &&
                         string.Compare(prop.Name, Orm.ImplicitPkName, StringComparison.OrdinalIgnoreCase) == 0);*/
                 var isAuto = IsPK; /*Orm.IsAutoInc(prop) ||
@@ -2597,8 +2591,8 @@ namespace SqlCipher4Unity3D
 
             public void SetValue(object obj, object val)
             {
-                if (Variable.type != null) {
-                    ((Variable)obj).value = val;
+                if (type != null) {
+                   ((SortedDictionary<string, object>)obj)[Name]  = val;
                 }
                 else if (_prop is PropertyInfo propertyInfo) {
                     if (val != null && ColumnType.GetTypeInfo().IsEnum) {
@@ -2620,8 +2614,8 @@ namespace SqlCipher4Unity3D
 
             public object GetValue(object obj)
             {
-                if (Variable.type != null) {
-                    return ((Variable)obj).value;
+                if (type != null) {
+                    return ((SortedDictionary<string, object>)obj)[Name];
                 }
                 return _prop switch {
                     PropertyInfo propertyInfo => propertyInfo.GetValue(obj, null),
@@ -2972,9 +2966,9 @@ namespace SqlCipher4Unity3D
             return ExecuteQuery(typeof(T)).Cast<T>().ToList();
         }
 
-        public List<object> ExecuteQuery(string tableName, params Variable[] variables )
+        public List<object> ExecuteQuery(string tableName, SortedDictionary<string, Type> type)
         {
-            return ExecuteDeferredQuery<object>(_conn.GetMapping(variables, tableName)).ToList();
+            return ExecuteDeferredQuery<object>(_conn.GetMapping(type, tableName)).ToList();
         }
 
         public List<object> ExecuteQuery(Type type)
@@ -3037,12 +3031,12 @@ namespace SqlCipher4Unity3D
                         if (cols[i] == null) continue;
 
                         if (fastColumnSetters[i] != null) {
-                            fastColumnSetters[i].Invoke((obj is Variable[] variables) ? variables[i] : obj, stmt, i);
+                            fastColumnSetters[i].Invoke( obj, stmt, i);
                         }
                         else {
                             var colType = SQLite3.ColumnType(stmt, i);
                             var val = ReadCol(stmt, i, colType, cols[i].ColumnType);
-                            cols[i].SetValue((obj is Variable[] variables) ? variables[i] : obj, val);
+                            cols[i].SetValue( obj, val);
                         }
                     }
                     OnInstanceCreated(obj);
@@ -3480,7 +3474,7 @@ namespace SqlCipher4Unity3D
             TableMapping.Column column)
         {
             Action<object, Sqlite3Statement, int> fastSetter = null;
-            Type clrType = column.Variable.type ?? GetUnderlyingType(column.PropertyInfo);
+            Type clrType = column.type ?? GetUnderlyingType(column.PropertyInfo);
             var clrTypeInfo = clrType.GetTypeInfo();
 
             if (clrTypeInfo.IsGenericType && clrTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>)) {
@@ -3657,15 +3651,15 @@ namespace SqlCipher4Unity3D
             TableMapping.Column column, Type objectType, Type columnMemberType,
             Func<Sqlite3Statement, int, object> getColumnValue)
         {
-            var clrTypeInfo = (column.Variable.type ?? GetUnderlyingType(column.PropertyInfo)).GetTypeInfo();
+            var clrTypeInfo = (column.type ?? GetUnderlyingType(column.PropertyInfo)).GetTypeInfo();
             bool isNullable = clrTypeInfo.IsGenericType && clrTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
 
             if (isNullable) {
-                if (column.Variable.type != default) {
+                if (column.type != default) {
                     return (o, stmt, i) => {
                         var colType = SQLite3.ColumnType(stmt, i);
                         if (colType != SQLite3.ColType.Null)
-                            /*setProperty.Invoke*/ ((Variable)o).value = getColumnValue.Invoke(stmt, i);
+                            /*setProperty.Invoke*/ ((SortedDictionary<string,object>)o)[column.Name] = getColumnValue.Invoke(stmt, i);
                     };
                 }
                 else if (column.PropertyInfo is PropertyInfo propertyInfo) {
@@ -3715,11 +3709,11 @@ namespace SqlCipher4Unity3D
         private static Action<object, Sqlite3Statement, int> CreateTypedSetterDelegate(TableMapping.Column column,
             Type objectType, Type columnMemberType, Func<Sqlite3Statement, int, object> getColumnValue)
         {
-            if (column.Variable.type != default) {
+            if (column.type != default) {
                 return (o, stmt, i) => {
                     var colType = SQLite3.ColumnType(stmt, i);
                     if (colType != SQLite3.ColType.Null)
-                        ((Variable)o).value = getColumnValue.Invoke(stmt, i);
+                        ((SortedDictionary<string,object>)o)[column.Name] = getColumnValue.Invoke(stmt, i);
                     //propertyInfo.SetValue/*setProperty.Invoke*/(o, getColumnValue.Invoke(stmt, i),null);
                 };
             }

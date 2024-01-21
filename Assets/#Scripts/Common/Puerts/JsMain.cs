@@ -92,7 +92,14 @@ public class JsMain : Agent<JsMain>
             if (isQuit) return m_Instance;
             m_Instance ??= FindObjectOfType<JsMain>(true);
             if (m_Instance) return m_Instance;
-            Instantiate(Resources.Load<GameObject>("DefaultLoading"));
+
+            if (!Application.isPlaying) {
+#if UNITY_EDITOR
+                m_Instance = Res.FindAsset<GameObject>("t:prefab JsMain")?.GetComponentInChildren<JsMain>();
+#endif
+            }
+            else
+                Instantiate(Resources.Load<GameObject>("DefaultLoading"));
 
             // var go = Instantiate(Addressables.LoadAssetAsync<GameObject>("JsMain").WaitForCompletion());
             // m_Instance ??= go.GetComponent<JsMain>();
@@ -194,7 +201,7 @@ public class JsMain : Agent<JsMain>
 
     public void ExecuteModule(string module)
     {
-        Js.Env.ExecuteModule(module.EndsWith(".mjs") ? module : module + ".mjs");
+        Js.self.ExecuteModule(module.EndsWith(".mjs") ? module : module + ".mjs");
     }
 
     public static bool isQuit;
@@ -312,13 +319,13 @@ public class JsMain : Agent<JsMain>
 
     public void Update()
     {
-        if (Js._env is { disposed: false })
-            Js._env.Tick();
+        if (Js.isAlive)
+            Js.self.Tick();
     }
 
     protected void OnDestroy()
     {
-        Js._env?.Dispose();
+        Js.Dispose();
         // if (JsEnv._env is { isDisposed: false })
         //     JsEnv._env.Dispose();
     }

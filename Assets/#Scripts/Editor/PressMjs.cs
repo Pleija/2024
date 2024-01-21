@@ -28,6 +28,7 @@ public class PressMjs : AssetPostprocessor
     private static void Push()
     {
         EditorApplication.delayCall -= Push;
+        Js.Dispose();
         files.ForEach(path => {
             Redis.Database.StringSet(path, File.ReadAllText(path));
         });

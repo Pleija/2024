@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Sirenix.Utilities;
 using UnityEditor;
@@ -8,7 +9,7 @@ namespace Tests
 {
     public class Tests
     {
-        [MenuItem("Debug/Find Mts")]
+        [MenuItem("Tests/Find Mts")]
         static void TestFindMtsFile()
         {
             var files = AssetDatabase.FindAssets($"t:MtsFile").Select(AssetDatabase.GUIDToAssetPath)
@@ -16,18 +17,26 @@ namespace Tests
             Debug.Log(string.Join(", ", files));
         }
 
-        [MenuItem("Debug/Test Addressables Exist")]
+        [MenuItem("Tests/Test Addressables Exist")]
         static void TestExists()
         {
             var t = Res.Exists("JsMain");
             Debug.Log(t.GetType().GetNiceFullName());
         }
 
-        [MenuItem("Debug/Game/当前场景物体数量")]
+        [MenuItem("Tests/Game/当前场景物体数量")]
         static void 当前场景物体数量()
         {
             Debug.Log(SceneManager.GetActiveScene().GetRootGameObjects()
                 .SelectMany(x => x.GetComponentsInChildren<Transform>(true)).Count());
         }
+
+        [MenuItem("Tests/JsEnv")]
+        static void TestJs()
+        {
+            Js.Require<Action>("debug.mjs", "DevDebug").Invoke();
+        }
+
+        
     }
 }

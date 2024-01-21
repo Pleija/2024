@@ -17,13 +17,13 @@ namespace Tests
                 yield return str.Substring(i, Math.Min(maxChunkSize, str.Length-i));
         }
 
-        [MenuItem("Debug/Test Redis")]
+        [MenuItem("Tests/Test Redis")]
         static void TestRedis()
         {
             Redis.Publish("js","test");
         }
 
-        [MenuItem("Debug/Map")]
+        [MenuItem("Tests/Map")]
         static void Map()
         {
             var mapstr = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Res/maps/data/03.txt").text;

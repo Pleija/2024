@@ -105,8 +105,8 @@ public static class Res
             .FirstOrDefault(fn ?? (x => true));
     }
 
-    public static T FindAsset<T>(string filter, Func<T, bool> fn = null, Type type = null)
-        where T : UnityEngine.Object => FindAsset(filter, (Func<Object, bool>)fn, typeof(T)) as T;
+    // public static T FindAsset<T>(string filter, Func<T, bool> fn = null)
+    //     where T : UnityEngine.Object => FindAsset(filter, (Func<Object, bool>)fn, typeof(T)) as T;
 
 #endif
 

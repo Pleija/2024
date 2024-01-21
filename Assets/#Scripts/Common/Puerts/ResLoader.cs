@@ -9,7 +9,7 @@ using UnityEngine.AddressableAssets;
 
 public class ResLoader : ILoader, IModuleChecker
 {
-    public static List<JsMain.Item> assets = JsMain.self.scripts;
+    public static List<JsMain.Item> assets => JsMain.self.scripts;
 
     //new Dictionary<string, TextAsset>();
     public static string root = "Assets/Res/dist";

@@ -17,7 +17,7 @@ public class TestRandom
 {
     private static long seed;
 
-    [MenuItem("Debug/Test Random"), Test]
+    [MenuItem("Tests/Test Random"), Test]
     public static void Test()
     {
         if(seed == 0) {

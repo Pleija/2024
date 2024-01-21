@@ -8,9 +8,14 @@
 #if !EXPERIMENTAL_IL2CPP_PUERTS || !ENABLE_IL2CPP
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Puerts
@@ -47,6 +52,99 @@ namespace Puerts
         }
     }
 
+    public class JsObjectConverter : JsonConverter
+    {
+        // omitted for brevity
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            switch (value) {
+                case null:
+                    writer.WriteNull();
+                    break;
+                case JSObject jsObject:
+                    Parse(jsObject).WriteTo(writer);
+                    break;
+                default: throw new JsonSerializationException("Expected JsObject object value");
+            }
+        }
+
+        static JObject Parse(JSObject value)
+        {
+            JObject jo = new JObject();
+
+            foreach (var kvp in value.Map()) {
+                if (kvp.Value is JSObject js) {
+                    jo.Add(kvp.Key, Parse(js));
+                }
+                else {
+                    jo.Add(new JProperty(kvp.Key, kvp.Value));
+                }
+            }
+            return jo;
+        }
+
+        [CanBeNull]
+        public override object ReadJson(JsonReader reader, Type objectType, [CanBeNull] object existingValue,
+            JsonSerializer serializer)
+        {
+            return null;
+        }
+
+        public override bool CanConvert(Type objectType) => objectType == typeof(JSObject);
+        public override bool CanWrite => true;
+        public override bool CanRead => false;
+    }
+
+    // public class JsObjectConverter : JsonCreationConverter<JSObject>
+    // {
+    //     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) { }
+    //
+    //     protected override JSObject Create(Type objectType, JObject jObject)
+    //     {
+    //
+    //     };
+    // }
+    //
+    // public abstract class JsonCreationConverter<T> : JsonConverter
+    // {
+    //     /// <summary>
+    //     /// Create an instance of objectType, based properties in the JSON object
+    //     /// </summary>
+    //     /// <param name="objectType">type of object expected</param>
+    //     /// <param name="jObject">
+    //     /// contents of JSON object that will be deserialized
+    //     /// </param>
+    //     /// <returns></returns>
+    //     protected abstract T Create(Type objectType, JObject jObject);
+    //
+    //     public override bool CanConvert(Type objectType)
+    //     {
+    //         return typeof(T).IsAssignableFrom(objectType);
+    //     }
+    //
+    //     public override bool CanWrite
+    //     {
+    //         get { return false; }
+    //     }
+    //
+    //     public override object ReadJson(JsonReader reader, 
+    //         Type objectType, 
+    //         object existingValue, 
+    //         JsonSerializer serializer)
+    //     {
+    //         // Load JObject from stream
+    //         JObject jObject = JObject.Load(reader);
+    //
+    //         // Create target object based on JObject
+    //         T target = Create(objectType, jObject);
+    //
+    //         // Populate the object properties
+    //         serializer.Populate(jObject.CreateReader(), target);
+    //
+    //         return target;
+    //     }
+    // }
+
     public static class JsObjectHelper
     {
         public static string[] Keys(this JSObject jsObject)
@@ -54,10 +152,8 @@ namespace Puerts
             var keys = new List<string>();
             jsObject.Safe?.jsEnv.Eval<Action<object, Action<string>>>("(o,fn) => Object.keys(o).map(t => fn.Invoke(t))")
                 .Invoke(jsObject, t => keys.Add(t));
-
             return keys.ToArray();
         }
-
 
         public static Dictionary<string, object> Map(this JSObject jsObject) => Map<object>(jsObject);
 
@@ -94,7 +190,7 @@ namespace Puerts
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(Safe.Map());
+            return JsonConvert.SerializeObject(Safe.Map(), new JsObjectConverter());
         }
 
         ~JSObject()

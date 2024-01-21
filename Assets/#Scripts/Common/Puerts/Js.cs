@@ -2,20 +2,47 @@ using System;
 using Puerts;
 using UnityEditor;
 using UnityEngine;
+using WebSocketSharp;
 
 public partial class Js
 {
-    public static JsEnv _env;
+    static JsEnv _env;
+    public static JsEnv self => isAlive ? _env : Init();
+    public static bool isAlive => _env is { disposed: false };
+    public static void Dispose() => _env?.Dispose();
+    public static void Run(string code) => self.Eval(code);
+    public static void Run<T>(string code, T p1) => self.Eval<Action<T>>(code).Invoke(p1);
+    public static void Run<T1, T2>(string code, T1 p1, T2 p2) => self.Eval<Action<T1, T2>>(code).Invoke(p1, p2);
 
-    public static JsEnv Env {
-        get {
-            if (_env is { disposed: false }) return _env;
-            Init();
-            return _env;
-        }
+    public static void Run<T1, T2, T3>(string code, T1 p1, T2 p2, T3 p3) =>
+        self.Eval<Action<T1, T2, T3>>(code).Invoke(p1, p2, p3);
+
+    public static void Run<T1, T2, T3, T4>(string code, T1 p1, T2 p2, T3 p3, T4 p4) =>
+        self.Eval<Action<T1, T2, T3, T4>>(code).Invoke(p1, p2, p3, p4);
+
+    public static void Call<T>(string code) => self.Eval<Func<T>>(code).Invoke();
+    public static TResult Call<T1, TResult>(string code, T1 p1) => self.Eval<Func<T1, TResult>>(code).Invoke(p1);
+
+    public static TResult Call<T1, T2, TResult>(string code, T1 p1, T2 p2) =>
+        self.Eval<Func<T1, T2, TResult>>(code).Invoke(p1, p2);
+
+    public static TResult Call<T1, T2, T3, TResult>(string code, T1 p1, T2 p2, T3 p3) =>
+        self.Eval<Func<T1, T2, T3, TResult>>(code).Invoke(p1, p2, p3);
+
+    public static TResult Call<T1, T2, T3, T4, TResult>(string code, T1 p1, T2 p2, T3 p3, T4 p4) =>
+        self.Eval<Func<T1, T2, T3, T4, TResult>>(code).Invoke(p1, p2, p3, p4);
+
+    public static JSObject Require(string filename, string export = "") => export.IsNullOrEmpty()
+        ? self.ExecuteModule(filename) : self.ExecuteModule<JSObject>(filename, export);
+
+    public static T Require<T>(string filename, string export) => self.ExecuteModule<T>(filename, export);
+
+    public static void Tick()
+    {
+        if (isAlive) _env.Tick();
     }
 
-    static void Init()
+    static JsEnv Init()
     {
         _env = new JsEnv(new ResLoader());
         CommonJS.InjectSupportForCJS(_env);
@@ -36,20 +63,20 @@ public partial class Js
         //JsMain.self.Reload();
         JsMain.AutoBind?.Invoke(_env);
         //_env.UsingAction<Action, Action<string>>();
-        _env.ExecuteModule<Action>("bootstrap.mjs", "setup")?.Invoke();
+        var action = _env.ExecuteModule<Action>("bootstrap.mjs", "setup");
+        if (Application.isPlaying) action.Invoke();
+        return _env;
     }
 
-    public static void Reload()
+    public static JsEnv Reload()
     {
-        _env?.Dispose();
-        Init();
+        Dispose();
+        return self;
     }
-    //public bool isDisposed => _env.disposed;
 
-    public static void EditorUpdate()
-    {
-        if (_env is { disposed: false }) {
-            _env.Tick();
-        }
-    }
+    public static void EditorUpdate() => Tick();
+#if UNITY_EDITOR
+    [InitializeOnEnterPlayMode]
+    static void OnRun() => Dispose();
+#endif
 }
