@@ -24,7 +24,11 @@ public static partial class UnityApi
     }
 
 
-
+    public static void DontDestroyOnLoad(this GameObject gameObject)
+    {
+        if(gameObject.transform.parent != null) gameObject.transform.SetParent(null);
+        Object.DontDestroyOnLoad(gameObject);
+    }
 
     // public static object where<T, T2>(this T value, Func<T2, bool> func) where T : IEnumerable
     // {

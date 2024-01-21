@@ -25,6 +25,8 @@ declare global {
     import {ChangeCharacter} from "Game/ChangeCharacter.mjs";
     import {BackupCard} from "Game/BackupCard.mjs";
     import {StartUp} from "Loading/StartUp.mjs";
+    import { CardAgent } from "Game/CardAgent.mjs";
+    declare var $CardAgent: CardAgent;
     declare var $StartUp: StartUp;
     declare var $BackupCard: BackupCard;
     declare var $ChangeCharacter: ChangeCharacter;

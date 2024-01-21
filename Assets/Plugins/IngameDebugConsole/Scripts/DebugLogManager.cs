@@ -411,8 +411,11 @@ namespace IngameDebugConsole
 				Instance = this;
 
 				// If it is a singleton object, don't destroy it between scene changes
-				if( singleton )
+				if (singleton) {
+					if(transform.parent != null) transform.SetParent(null);
 					DontDestroyOnLoad( gameObject );
+				}
+					
 			}
 			else if( Instance != this )
 			{
