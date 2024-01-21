@@ -42,6 +42,8 @@ namespace Puerts
                 //     from type in assembly.GetExportedTypes() where type.Namespace != null &&
                 //         namespaces.Contains(type.Namespace) && !IsExcluded(type) select type;
                 var customAssemblys = new string[] {
+                    "Core",
+                    //"System",
                     "sfloat",
                     "smath",
                     "com.tencent.puerts.core",

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Puerts;
+using Sirenix.Utilities;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -17,16 +18,39 @@ using Type = System.Type;
 
 public static partial class UnityApi
 {
-
     public static void Log(this JSObject jsObject)
     {
         Debug.Log(jsObject.Safe);
     }
 
+    public static IList CreateList(this Type type, params object[] args)
+    {
+        var listType = typeof(List<>);
+        var constructedListType = listType.MakeGenericType(type);
+        var instance = (IList)Activator.CreateInstance(constructedListType);
+        args.ForEach(t => instance.Add(t));
+        return instance;
+    }
+
+    public static IDictionary CreateDictionary(this Type keyType, Type valueType, Action<IDictionary> callback = null)
+    {
+        Type dictToCreate = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+        var ret = (IDictionary)Activator.CreateInstance(dictToCreate);
+        callback?.Invoke(ret);
+        return ret;
+    }
+
+    public static Array CreateArray(this Type type, params object[] args)
+    {
+        var ret = Array.CreateInstance(type, args.Length);
+        args.ForEach((t, i) => ret.SetValue(t, i));
+        return ret;
+    }
 
     public static void DontDestroyOnLoad(this GameObject gameObject)
     {
-        if(gameObject.transform.parent != null) gameObject.transform.SetParent(null);
+        if (gameObject.transform.parent != null)
+            gameObject.transform.SetParent(null);
         Object.DontDestroyOnLoad(gameObject);
     }
 
@@ -50,7 +74,8 @@ public static partial class UnityApi
     public static void ForEach(this Transform transform, Action<Transform> action)
     {
         //transform.name
-        if (!transform || action == null) return;
+        if (!transform || action == null)
+            return;
 
         foreach (Transform child in transform) {
             action.Invoke(child);
@@ -59,7 +84,8 @@ public static partial class UnityApi
 
     public static void ForEach(this Transform transform, Action<Transform, int> action)
     {
-        if (!transform || action == null) return;
+        if (!transform || action == null)
+            return;
 
         for (int i = 0; i < transform.childCount; i++) {
             action.Invoke(transform.GetChild(i), i);
@@ -99,10 +125,13 @@ public static partial class UnityApi
     {
         if (value && value.HasComponent(type) is { } component) {
             var scene = component.gameObject.scene;
-            if (Application.isPlaying) Object.Destroy(component);
-            else Object.DestroyImmediate(component);
+            if (Application.isPlaying)
+                Object.Destroy(component);
+            else
+                Object.DestroyImmediate(component);
 #if UNITY_EDITOR
-            if (scene != default) EditorSceneManager.MarkSceneDirty(scene);
+            if (scene != default)
+                EditorSceneManager.MarkSceneDirty(scene);
 #endif
             return true;
         }
@@ -111,13 +140,17 @@ public static partial class UnityApi
 
     public static bool DestroySelf(this Object value)
     {
-        if (!value) return false;
+        if (!value)
+            return false;
         var scene = value is Component component ? component.gameObject.scene
             : (value is GameObject gameObject ? gameObject.scene : default);
-        if (Application.isPlaying) Object.Destroy(value);
-        else Object.DestroyImmediate(value);
+        if (Application.isPlaying)
+            Object.Destroy(value);
+        else
+            Object.DestroyImmediate(value);
 #if UNITY_EDITOR
-        if (scene != default) EditorSceneManager.MarkSceneDirty(scene);
+        if (scene != default)
+            EditorSceneManager.MarkSceneDirty(scene);
 #endif
         return true;
     }
@@ -173,7 +206,8 @@ public static partial class UnityApi
 
     public static GameObject OnDestroyRelease(this GameObject go, AsyncOperationHandle<GameObject> handle)
     {
-        if (handle.IsValid()) Addressables.Release(handle);
+        if (handle.IsValid())
+            Addressables.Release(handle);
         return go;
     }
 

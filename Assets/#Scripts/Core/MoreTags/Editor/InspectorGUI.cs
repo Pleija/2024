@@ -20,9 +20,20 @@ namespace MoreTags
         [ExcludeFromCoverage]
         private static void OnPostHeaderGUI(Editor editor)
         {
-            if (editor.targets.Length == 0) return;
-            if (editor.targets[0].GetType() != typeof(GameObject))
+            if (editor.targets.Length == 0)
                 return;
+
+            var target = editor.targets[0];
+            if (target.GetType() != typeof(GameObject)) {
+                if (GUILayout.Button(target.GetType().FullName))
+                {
+                    if (target is ScriptableObject scriptableObject) {
+                        var script = MonoScript.FromScriptableObject(scriptableObject);
+                        AssetDatabase.OpenAsset(script);
+                    }
+                }
+                return;
+            }
             var go = editor.targets[0] as GameObject;
             var component = go.HasComponent<Tags>();
 

@@ -13,6 +13,9 @@
 |                                                          |
 \**********************************************************/
 
+#if !UNITY
+
+
 using System;
 using System.Text;
 using Newtonsoft.Json;
@@ -27,16 +30,16 @@ public static partial class XJson
     static readonly Byte[] bytes = { 0x54, 0x86, 0x5B, 0x40, 0xF2, 0x0B, 0x62, 0x44, 0x93, 0xE6, 0xF7, 0x7B, 0x29, 0x0F, 0x24, 0x9D, };
     // @formatter:on
 
-    public static string FromBase64(this string data)
+    public static string XFromBase64(this string data)
     {
         if(string.IsNullOrWhiteSpace(data)) return data;
         var org = LZMAtools.DecompressLZMAByteArrayToByteArray(DecryptBase64String(data, bytes));
-        return data.IsBase64()
+        return data.XIsBase64()
             //? Encoding.UTF8.GetString(Convert.FromBase64String(data)) 
             ? utf8.GetString(org) : data; // DecryptBase64StringToString(org, bytes) : data;
     }
 
-    public static bool IsBase64(this string base64String)
+    public static bool XIsBase64(this string base64String)
     {
         // Credit: oybek https://stackoverflow.com/users/794764/oybek
         if(string.IsNullOrEmpty(base64String) || base64String.Length % 4 != 0 ||
@@ -54,7 +57,7 @@ public static partial class XJson
         return false;
     }
 
-    public static string ToBase64(this string data)
+    public static string XToBase64(this string data)
     {
         var org = LZMAtools.CompressByteArrayToLZMAByteArray(utf8.GetBytes(data));
         return EncryptToBase64String(org, bytes);
@@ -63,19 +66,19 @@ public static partial class XJson
 
     public static T FromJson<T>(string json)
     {
-        var ret = JsonConvert.DeserializeObject<T>(json.FromBase64());
+        var ret = JsonConvert.DeserializeObject<T>(json.XFromBase64());
         return ret;
     }
 
     public static string ToJson(object value, bool pretty = false)
     {
-        var ret = JsonConvert.SerializeObject(value).ToBase64();
+        var ret = JsonConvert.SerializeObject(value).XToBase64();
         return ret;
     }
 
     public static object FromJson(string json, System.Type type)
     {
-        var ret = JsonConvert.DeserializeObject(json.FromBase64(), type);
+        var ret = JsonConvert.DeserializeObject(json.XFromBase64(), type);
         return ret;
     }
 #endregion
@@ -132,11 +135,11 @@ public static partial class XJson
         !string.IsNullOrEmpty(key) ? utf8.GetBytes(key) : bytes);
 
     public static byte[] DecryptBase64String(object data, byte[] key = null) => Decrypt(
-        $"{data}".IsBase64() ? Convert.FromBase64String($"{data}") : utf8.GetBytes($"{data}"),
+        $"{data}".XIsBase64() ? Convert.FromBase64String($"{data}") : utf8.GetBytes($"{data}"),
         key ?? bytes);
 
     public static byte[] DecryptBase64String(object data, string key = null) => Decrypt(
-        $"{data}".IsBase64() ? Convert.FromBase64String($"{data}") : utf8.GetBytes($"{data}"),
+        $"{data}".XIsBase64() ? Convert.FromBase64String($"{data}") : utf8.GetBytes($"{data}"),
         !string.IsNullOrEmpty(key) ? utf8.GetBytes(key) : bytes);
 
     public static string DecryptToString(byte[] data, byte[] key = null) =>
@@ -243,3 +246,4 @@ public static partial class XJson
         return result;
     }
 }
+#endif

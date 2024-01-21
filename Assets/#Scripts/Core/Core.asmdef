@@ -2,6 +2,7 @@
   "name": "Core",
   "references": [
     "UltEvents",
+    "Shared",
     "com.tencent.puerts.core",
     "Unity.Addressables.Editor",
     "Unity.Addressables",

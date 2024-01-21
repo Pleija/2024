@@ -10,6 +10,7 @@ using NodeCanvas.Framework.Internal;
 using ParadoxNotion;
 using ParadoxNotion.Design;
 using Puerts;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -64,6 +65,8 @@ namespace NodeCanvas.Editor
             EditorWrapperFactory.GetEditor<BlackboardEditor>(bb).InspectorGUI(bb, overrideContextObject);
         }
 
+        private UnityEditor.Editor editor;
+
         ///<summary>Show variables inspector for target bb. Optionally provide override serialization context object</summary>
         private void InspectorGUI(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
         {
@@ -82,6 +85,20 @@ namespace NodeCanvas.Editor
                 variablesProperty = serializedContext.FindProperty(bb.independantVariablesFieldName);
             }
 
+            if (bb is AssetBlackboard assetBlackboard) {
+                assetBlackboard.showFold = EditorGUILayout.Foldout(assetBlackboard.showFold, "#Database");
+
+                if (assetBlackboard.showFold) {
+                    //GUILayout.Label("test");
+                    GUILayout.Box($"table: " + assetBlackboard.tableName, GUILayout.ExpandWidth(true));
+                    GUILayout.BeginVertical();
+                    if (!editor)
+                        editor = UnityEditor.Editor.CreateEditor(assetBlackboard);
+                    editor.DrawDefaultInspector();
+                    GUILayout.EndVertical();
+                }
+            }
+
             if (bb.unityContextObject is Graph graph) {
                 //todo
                 graph.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, graph.mtsFile, typeof(MtsFile));
@@ -92,8 +109,10 @@ namespace NodeCanvas.Editor
                 if (GUILayout.Button("Edit", GUILayout.Width(60))) {
                     //todo edit excel
                 }
-                mb.excelFile = (ExcelFile)EditorGUILayout.ObjectField(GUIContent.none, mb.excelFile, typeof(ExcelFile),GUILayout.Width(120),GUILayout.ExpandWidth(true));
-                mb.csvFile = (CsvFile)EditorGUILayout.ObjectField(GUIContent.none, mb.csvFile, typeof(CsvFile), GUILayout.Width(120),GUILayout.ExpandWidth(true));
+                mb.excelFile = (ExcelFile)EditorGUILayout.ObjectField(GUIContent.none, mb.excelFile, typeof(ExcelFile),
+                    GUILayout.Width(120), GUILayout.ExpandWidth(true));
+                mb.csvFile = (CsvFile)EditorGUILayout.ObjectField(GUIContent.none, mb.csvFile, typeof(CsvFile),
+                    GUILayout.Width(120), GUILayout.ExpandWidth(true));
                 GUILayout.EndHorizontal();
             }
             //Debug.Log(bb.unityContextObject.GetType().Name); 
@@ -194,7 +213,8 @@ namespace NodeCanvas.Editor
             }
 
             //Make name field red if same name exists
-            if (tempVariablesList.Where(v => v != data).Select(v => v.name).Contains(data.name)) GUI.color = Color.red;
+            if (tempVariablesList.Where(v => v != data).Select(v => v.name).Contains(data.name))
+                GUI.color = Color.red;
             ShowDataLabelGUI(data, index);
             ShowDataFieldGUI(data, index);
         }
@@ -232,7 +252,7 @@ namespace NodeCanvas.Editor
                     }
 
                     if ((e.isKey && e.keyCode == KeyCode.Return) || (e.rawType == EventType.MouseUp &&
-                            !GUILayoutUtility.GetLastRect().Contains(e.mousePosition))) {
+                        !GUILayoutUtility.GetLastRect().Contains(e.mousePosition))) {
                         separator.isEditingName = false;
                         GUIUtility.keyboardControl = 0;
                         e.Use();
@@ -255,7 +275,8 @@ namespace NodeCanvas.Editor
             }
 
             //show a prefab override marker on the left side
-            if (isVariablePrefabInstanceModified) EditorUtils.MarkLastFieldOverride();
+            if (isVariablePrefabInstanceModified)
+                EditorUtils.MarkLastFieldOverride();
         }
 
         //show variable data
@@ -302,7 +323,8 @@ namespace NodeCanvas.Editor
             Action<Type> AddNewVariable = (t) => {
                 UndoUtility.RecordObject(contextParent, "Variable Added");
                 var name = "my" + t.FriendlyName();
-                while (bb.GetVariable(name) != null) name += ".";
+                while (bb.GetVariable(name) != null)
+                    name += ".";
                 bb.AddVariable(name, t);
                 UndoUtility.SetDirty(contextParent);
             };
@@ -328,7 +350,7 @@ namespace NodeCanvas.Editor
 
             if (bb.propertiesBindTarget != null) {
                 foreach (var comp in bb.propertiesBindTarget.GetComponents(typeof(Component))
-                             .Where(c => c.hideFlags == 0)) {
+                    .Where(c => c.hideFlags == 0)) {
                     menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object), AddBoundField,
                         menu, "Bound (Self)");
                     menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(object), AddBoundProp,
@@ -501,7 +523,8 @@ namespace NodeCanvas.Editor
             bool handled;
             o = EditorUtils.DirectFieldControl(GUIContent.none, o, t, contextParent, null, out handled, data,
                 layoutOptions);
-            if (handled) return o;
+            if (handled)
+                return o;
             ///----------------------------------------------------------------------------------------------
 
             //If some other type, show it in the generic object editor window with its true value type

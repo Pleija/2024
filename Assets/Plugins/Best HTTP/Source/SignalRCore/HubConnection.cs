@@ -604,7 +604,8 @@ namespace BestHTTP.SignalRCore
         }
 
 #endif
-
+        public IFuture<object> Invoke(string target, params object[] args) => Invoke<object>(target, args);
+        
         public IFuture<TResult> Invoke<TResult>(string target, params object[] args)
         {
             Future<TResult> future = new Future<TResult>();
@@ -636,10 +637,15 @@ namespace BestHTTP.SignalRCore
 
 #if CSHARP_7_OR_LATER
 
+        public Task<object> InvokeAsync(string target, params object[] args) => InvokeAsync<object>(target, args);
+
         public Task<TResult> InvokeAsync<TResult>(string target, params object[] args)
         {
             return InvokeAsync<TResult>(target, default(CancellationToken), args);
         }
+
+        public Task<object> InvokeAsync(string target, CancellationToken cancellationToken = default,
+            params object[] args) => InvokeAsync<object>(target, cancellationToken, args);
 
         public Task<TResult> InvokeAsync<TResult>(string target, CancellationToken cancellationToken = default, params object[] args)
         {
@@ -808,6 +814,9 @@ namespace BestHTTP.SignalRCore
             }
         }
 
+        public DownStreamItemController<object> GetDownStreamController(string target, params object[] args) =>
+            GetDownStreamController<object>(target, args);
+
         public DownStreamItemController<TDown> GetDownStreamController<TDown>(string target, params object[] args)
         {
             long invocationId = System.Threading.Interlocked.Increment(ref this.lastInvocationId);
@@ -879,6 +888,9 @@ namespace BestHTTP.SignalRCore
 
             return controller;
         }
+
+        public UpStreamItemController<object> GetUpStreamController(string target, int paramCount, bool downStream,
+            object[] args) => GetUpStreamController<object>(target, paramCount, downStream, args);
 
         public UpStreamItemController<TResult> GetUpStreamController<TResult>(string target, int paramCount, bool downStream, object[] args)
         {
@@ -968,11 +980,23 @@ namespace BestHTTP.SignalRCore
             On(methodName, new Type[] { typeof(T1) }, (args) => callback((T1)args[0]));
         }
 
+        public void On(string methodName, Action<object> callback)
+        {
+            On(methodName, new Type[] { typeof(object) }, (args) => callback(args[0]));
+        }
+
         public void On<T1, T2>(string methodName, Action<T1, T2> callback)
         {
             On(methodName,
                 new Type[] { typeof(T1), typeof(T2) },
                 (args) => callback((T1)args[0], (T2)args[1]));
+        }
+
+        public void On(string methodName, Action<object, object> callback)
+        {
+            On(methodName,
+                new Type[] { typeof(object), typeof(object) },
+                (args) => callback(args[0], args[1]));
         }
 
         public void On<T1, T2, T3>(string methodName, Action<T1, T2, T3> callback)
@@ -982,12 +1006,26 @@ namespace BestHTTP.SignalRCore
                 (args) => callback((T1)args[0], (T2)args[1], (T3)args[2]));
         }
 
+        public void On(string methodName, Action<object, object, object> callback)
+        {
+            On(methodName,
+                new Type[] { typeof(object), typeof(object), typeof(object) },
+                (args) => callback(args[0], args[1], args[2]));
+        }
+
         public void On<T1, T2, T3, T4>(string methodName, Action<T1, T2, T3, T4> callback)
         {
             On(methodName,
                 new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) },
                 (args) => callback((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]));
         }
+        public void On(string methodName, Action<object, object, object, object> callback)
+        {
+            On(methodName,
+                new Type[] { typeof(object), typeof(object), typeof(object), typeof(object) },
+                (args) => callback(args[0], args[1], args[2], args[3]));
+        }
+
 
         public void On(string methodName, Type[] paramTypes, Action<object[]> callback)
         {

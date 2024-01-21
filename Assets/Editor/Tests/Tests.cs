@@ -38,6 +38,14 @@ namespace Tests
             Js.Require("debug", "say", "hello");
         }
 
+        [MenuItem("Tests/Network")]
+        static void TestNetwork()
+        {
+           // Js.Require("debug", "DevDebug");
+            Js.Reload();
+            Js.Require("debug", "network");
+        }
+
         
     }
 }

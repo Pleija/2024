@@ -1,3 +1,6 @@
+
+// @ts-nocheck 
+
 declare namespace System {
     interface Object {
         [__keep_incompatibility]: never;

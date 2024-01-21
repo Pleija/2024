@@ -1,24 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using CSharpVitamins;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion.Serialization;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
+using Sirenix.Serialization;
+using UnityEditor;
 
 namespace NodeCanvas.Framework
 {
+#if UNITY_EDITOR
+    [CustomEditor(typeof(AssetBlackboard))]
+    public class AssetBlackboardEditor: OdinEditor
+    {
+        
+    }
+#endif
     [CreateAssetMenu(menuName = "ParadoxNotion/CanvasCore/Blackboard Asset")]
+    [ShowOdinSerializedPropertiesInInspector]
     public class AssetBlackboard : ScriptableObject, ISerializationCallbackReceiver, IGlobalBlackboard
     {
         public event System.Action<Variable> onVariableAdded;
         public event System.Action<Variable> onVariableRemoved;
 
+        public bool showFold = false;
+
+
         [SerializeField]
         private string _serializedBlackboard;
+
+        [SerializeField]
+        private string _version;
 
         [SerializeField]
         private List<Object> _objectReferences;
 
         [SerializeField]
         private string _UID = System.Guid.NewGuid().ToString();
+
+        public string tableName => "_" + ShortGuid.Encode(_UID).RegexReplace(@"\W+","");
 
         [System.NonSerialized]
         private string _identifier;
@@ -29,12 +50,19 @@ namespace NodeCanvas.Framework
         ///----------------------------------------------------------------------------------------------
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
+            if (this != null)
+                UnitySerializationUtility.SerializeUnityObject(this, ref this.serializationData);
             SelfSerialize();
         }
+
+        [SerializeField, HideInInspector]
+        private SerializationData serializationData;
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             SelfDeserialize();
+            if (this != null)
+                UnitySerializationUtility.DeserializeUnityObject(this, ref this.serializationData);
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -47,7 +75,8 @@ namespace NodeCanvas.Framework
         private void SelfDeserialize()
         {
             _blackboard = JSONSerializer.Deserialize<BlackboardSource>(_serializedBlackboard, _objectReferences);
-            if (_blackboard == null) _blackboard = new BlackboardSource();
+            if (_blackboard == null)
+                _blackboard = new BlackboardSource();
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -63,12 +92,14 @@ namespace NodeCanvas.Framework
 
         void IBlackboard.TryInvokeOnVariableAdded(Variable variable)
         {
-            if (onVariableAdded != null) onVariableAdded(variable);
+            if (onVariableAdded != null)
+                onVariableAdded(variable);
         }
 
         void IBlackboard.TryInvokeOnVariableRemoved(Variable variable)
         {
-            if (onVariableRemoved != null) onVariableRemoved(variable);
+            if (onVariableRemoved != null)
+                onVariableRemoved(variable);
         }
 
         public string identifier => _identifier;
@@ -120,7 +151,8 @@ namespace NodeCanvas.Framework
             if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode) {
                 tempJson = _serializedBlackboard;
                 tempObjects = _objectReferences;
-                if (!bindingInit) this.InitializePropertiesBinding(null, false);
+                if (!bindingInit)
+                    this.InitializePropertiesBinding(null, false);
             }
 
             if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode) {

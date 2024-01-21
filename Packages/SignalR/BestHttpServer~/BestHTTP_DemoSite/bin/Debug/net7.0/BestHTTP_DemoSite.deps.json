@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "BestHTTP_DemoSite/1.0.0": {
         "dependencies": {
+          "FormatWith": "3.0.1",
           "Hashids.net": "1.7.0",
           "MessagePack.UnityShims": "2.5.129",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.13",
@@ -23,6 +24,14 @@
         },
         "runtime": {
           "BestHTTP_DemoSite.dll": {}
+        }
+      },
+      "FormatWith/3.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/FormatWith.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.1.0"
+          }
         }
       },
       "Hashids.net/1.7.0": {
@@ -678,6 +687,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "FormatWith/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qAgVI8A9l33ZoOS/16slW82YktWWezb4sx535lGqdHSPB3ULVKWg6BJ4oi3FltFjNiMa3bypqFdmoFFgHZxkdA==",
+      "path": "formatwith/3.0.1",
+      "hashPath": "formatwith.3.0.1.nupkg.sha512"
     },
     "Hashids.net/1.7.0": {
       "type": "package",

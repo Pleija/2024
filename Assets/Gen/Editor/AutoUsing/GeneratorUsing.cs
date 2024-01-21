@@ -138,12 +138,12 @@ namespace Puerts.AutoUsing
             //AssetDatabase.Refresh();
             UnityMenu.GenerateDTS();
             var dts = Configure.GetCodeOutputDirectory() + "/Typing~/csharp/index.d.ts";
-            var content = File.ReadAllText(dts).Replace("declare namespace CS {",
-                "declare namespace CS {\n" + File.ReadAllText("Assets/Gen/Editor/Extra.d.ts"));
+            var content = File.ReadAllText(dts);
             content = content.Replace("public static get self(): any;", "public static get self(): T;");
             content = Regex.Replace(content, @"(public static get .*\: )any", "$1T");
             content = Regex.Replace(content, @"(public static set \w+\(value\: )any(\);)", "$1T$2");
-            File.WriteAllText(dts,StripComments(content));
+            File.WriteAllText(dts,StripComments(content).Replace("declare namespace CS {",
+                "declare namespace CS {\n" + File.ReadAllText("Assets/Gen/Editor/Extra.d.ts")));
         }
 
         static string StripComments(string code)

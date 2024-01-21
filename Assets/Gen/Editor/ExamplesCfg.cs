@@ -41,6 +41,7 @@ namespace Puerts
             // typeof(Singleton<SingletonSample>),
             // typeof(Agent<AgentSample>),
             //
+            typeof(Uri),
             typeof(System.Object),
             typeof(UnityEngine.Object),
             typeof(XXTEA),

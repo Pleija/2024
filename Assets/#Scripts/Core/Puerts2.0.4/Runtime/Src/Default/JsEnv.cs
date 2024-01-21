@@ -367,7 +367,7 @@ namespace Puerts
             {
                 foreach (var jsEnv in jsEnvs)
                 {
-                    jsEnv.ClearModuleCache();
+                  if(jsEnv is {disposed: false})  jsEnv.ClearModuleCache();
                 }
             }
         }

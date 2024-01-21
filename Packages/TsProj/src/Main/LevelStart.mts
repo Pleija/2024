@@ -4,9 +4,6 @@ import Button = CS.UnityEngine.UI.Button;
 import {iterator} from "Common/Iterator.mjs";
 import Array$1 = CS.System.Array$1;
 import PlayerData = CS.Runner.PlayerData;
-import GameManager = CS.Runner.Game.GameManager;
-import SceneLoader = CS.Runner.SceneLoader;
-import AnalyticsEvent = CS.UnityEngine.Analytics.AnalyticsEvent;
 import LoadoutState = CS.Runner.Game.LoadoutState;
 
 export class LevelStart extends StateFsm {

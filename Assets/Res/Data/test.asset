@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4fa5caed5fb2b43b903ef7859c9bf9, type: 3}
   m_Name: test
   m_EditorClassIdentifier: 
+  showFold: 1
   _serializedBlackboard: '{"_variables":{"myString":{"_value":"hjgjyh","_name":"myString","_id":"8debd406-7d3c-4637-b2c6-848a77daa4f3","$type":"NodeCanvas.Framework.Variable`1[[System.String,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+  _version: kuhiu8888
   _objectReferences: []
   _UID: c6560c82-a679-4b3a-ae38-61eba349f232
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
