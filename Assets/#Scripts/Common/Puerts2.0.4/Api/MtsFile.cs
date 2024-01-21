@@ -19,7 +19,7 @@ public class MtsFile : ScriptableObject
 
 #if UNITY_EDITOR
 [ScriptedImporter(1, "mts")]
-public class ProtoImporter : ScriptedImporter
+public class MtsImporter : ScriptedImporter
 {
     public override void OnImportAsset(AssetImportContext ctx)
     {

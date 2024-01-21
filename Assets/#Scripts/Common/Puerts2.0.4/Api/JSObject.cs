@@ -8,15 +8,10 @@
 #if !EXPERIMENTAL_IL2CPP_PUERTS || !ENABLE_IL2CPP
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 
 namespace Puerts
 {
@@ -87,12 +82,15 @@ namespace Puerts
         public override object ReadJson(JsonReader reader, Type objectType, [CanBeNull] object existingValue,
             JsonSerializer serializer)
         {
-            return null;
+            if (reader.TokenType == JsonToken.Null) {
+                return null;
+            }
+            return Js.Call<object, JSObject>("s => JSON.parse(s)", reader.Value);
         }
 
         public override bool CanConvert(Type objectType) => objectType == typeof(JSObject);
         public override bool CanWrite => true;
-        public override bool CanRead => false;
+        public override bool CanRead => true;
     }
 
     // public class JsObjectConverter : JsonCreationConverter<JSObject>

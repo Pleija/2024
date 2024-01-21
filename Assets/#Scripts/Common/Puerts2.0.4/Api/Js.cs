@@ -2,7 +2,6 @@ using System;
 using Puerts;
 using UnityEditor;
 using UnityEngine;
-using WebSocketSharp;
 
 public partial class Js
 {
