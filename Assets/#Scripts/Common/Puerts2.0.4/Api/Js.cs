@@ -39,31 +39,31 @@ public partial class Js
         //@formatter:on       
     }
 
-    public static JSObject Require(string filename) => self.ExecuteModule(filename);
+    public static JSObject Require(string file) => self.ExecuteModule(file);
 
-    public static T Require<T>(string filename, string export, params object[] args)
+    public static T Require<T>(string file, string export, params object[] args)
     {
         //@formatter:off
         switch (args.Length) {
-           case 0: return self.ExecuteModule<T>(filename, export);
-           case 1: return self.ExecuteModule<Func<object,T>>(filename, export).Invoke(args[0]);
-           case 2: return self.ExecuteModule<Func<object,object,T>>(filename, export).Invoke(args[0],args[1]);
-           case 3: return self.ExecuteModule<Func<object,object,object,T>>(filename, export).Invoke(args[0],args[1],args[2]);
-           case 4: return self.ExecuteModule<Func<object,object,object,object,T>>(filename, export).Invoke(args[0],args[1],args[2],args[3]);
+           case 0: return self.ExecuteModule<T>(file, export);
+           case 1: return self.ExecuteModule<Func<object,T>>(file, export).Invoke(args[0]);
+           case 2: return self.ExecuteModule<Func<object,object,T>>(file, export).Invoke(args[0],args[1]);
+           case 3: return self.ExecuteModule<Func<object,object,object,T>>(file, export).Invoke(args[0],args[1],args[2]);
+           case 4: return self.ExecuteModule<Func<object,object,object,object,T>>(file, export).Invoke(args[0],args[1],args[2],args[3]);
            default: throw new Exception("Parameters max is 4");
         }
         //@formatter:on      
     }
 
-    public static void Require(string filename, string export, params object[] args)
+    public static void Require(string file, string export, params object[] args)
     {
         //@formatter:off
         switch (args.Length) {
-            case 0: self.ExecuteModule<Action>(filename,export).Invoke(); break;
-            case 1: self.ExecuteModule<Action<object>>(filename, export).Invoke(args[0]); break;
-            case 2: self.ExecuteModule<Action<object,object>>(filename, export).Invoke(args[0],args[1]); break;
-            case 3: self.ExecuteModule<Action<object,object,object>>(filename, export).Invoke(args[0],args[1],args[3]); break;
-            case 4: self.ExecuteModule<Action<object,object,object,object>>(filename, export).Invoke(args[0],args[1],args[3],args[4]); break;
+            case 0: self.ExecuteModule<Action>(file,export).Invoke(); break;
+            case 1: self.ExecuteModule<Action<object>>(file, export).Invoke(args[0]); break;
+            case 2: self.ExecuteModule<Action<object,object>>(file, export).Invoke(args[0],args[1]); break;
+            case 3: self.ExecuteModule<Action<object,object,object>>(file, export).Invoke(args[0],args[1],args[3]); break;
+            case 4: self.ExecuteModule<Action<object,object,object,object>>(file, export).Invoke(args[0],args[1],args[3],args[4]); break;
             default: throw new Exception("Parameters max is 4");
         }
         //@formatter:on       
