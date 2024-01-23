@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Puerts;
+using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEditor;
@@ -44,6 +45,7 @@ public static class Res
 
     public static IResourceLocation Exists(object key, Type type = null)
     {
+        new List<string>().ForEach((v, i) => { });
         var result = new List<IResourceLocator>();
         foreach (var locator in ResourceLocators)
             if (locator.Locate(key is AssetReference reference ? reference.RuntimeKey : $"{key}", type,

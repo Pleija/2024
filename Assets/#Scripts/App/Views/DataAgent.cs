@@ -14,7 +14,7 @@ using UnityEngine.UI;
 namespace App
 {
     [DefaultExecutionOrder(-1)]
-    public class DataAgent<T> : Agent
+    public class DataAgent<T> : BehaviourBase
     {
         [ReadOnly]
         public ReactiveProperty<T> Value;

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace App
 {
     [ExecuteInEditMode]
-    public class StickScrollRect : Agent<StickScrollRect>
+    public class StickScrollRect : View<StickScrollRect>
     {
         public float value = -1294f;
         private RectTransform rt;

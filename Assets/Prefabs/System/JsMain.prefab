@@ -65,6 +65,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 201316fa81d2d478bb7368f2389ed404, type: 2}
   - {fileID: 11400000, guid: d93aafdecfde346069cca3cc4381dcd1, type: 2}
   - {fileID: 11400000, guid: 62138ce5dfaf8447cba7a5ced5edf6b3, type: 2}
+  - {fileID: 11400000, guid: 9dc71a8f7d5484ae889b006d5f913be5, type: 2}
   scripts:
   - path: Assets/Res/dist/bootstrap.mjs
     file: {fileID: 2811297602134710623, guid: c9b64664cbe9e4e99bdc4258b05acffc, type: 3}
@@ -88,6 +89,8 @@ MonoBehaviour:
     file: {fileID: 2811297602134710623, guid: cf616d7ceac224da1b3b30f52acb3789, type: 3}
   - path: Assets/Res/dist/Game/BackupCard.mjs
     file: {fileID: 2811297602134710623, guid: 8bcd477e8ce574c539b691fd92453e66, type: 3}
+  - path: Assets/Res/dist/Game/CardAgent.mjs
+    file: {fileID: 2811297602134710623, guid: a12d5736992a04d08a6a240546107b23, type: 3}
   - path: Assets/Res/dist/Game/ChangeCharacter.mjs
     file: {fileID: 2811297602134710623, guid: b56907133e5a943cb9584c0a728cf1e4, type: 3}
   - path: Assets/Res/dist/Game/HpSlider/Start.mjs
@@ -118,6 +121,8 @@ MonoBehaviour:
     file: {fileID: 2811297602134710623, guid: a7b8c715c90574f3aa4b10b1b7955cd8, type: 3}
   - path: Assets/Res/dist/Main/LoadingCharPos.mjs
     file: {fileID: 2811297602134710623, guid: ccbba2b17fb91483782499717f901f73, type: 3}
+  - path: Assets/Res/dist/Main/Main.mjs
+    file: {fileID: 2811297602134710623, guid: 58ef0bac4a5f5413e905de7bf4d359f8, type: 3}
   - path: Assets/Res/dist/Main/MainHP.mjs
     file: {fileID: 2811297602134710623, guid: df9d9e277893d4c6faa5bd28974cb8cb, type: 3}
   - path: Assets/Res/dist/Main/MenuArea/MenuAreaStart.mjs

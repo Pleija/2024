@@ -613,7 +613,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                         assignable.subGraphParameter.ToString()));
 
                     if (assignable.subGraph == null)
-                        if (!Application.isPlaying && GUILayout.Button("CREATE NEW")) {
+                        if (!Application.isPlaying && GUILayout.Button("CREATE NEW #2")) {
                             var newGraph = (Graph)EditorUtils.CreateAsset(assignable.subGraphParameter.varType);
 
                             if (newGraph != null) {

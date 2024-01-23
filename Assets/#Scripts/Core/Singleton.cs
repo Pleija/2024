@@ -8,7 +8,7 @@ public interface IDontDestroyOnLoad { }
 public interface IEditorUpdate { }
 public class SingletonSample : Singleton<SingletonSample> { }
 
-public class Singleton<T> : Agent<T> where T : Singleton<T>
+public class Singleton<T> : View<T> where T : Singleton<T>
 {
     private static T m_Instance;
     public static bool HasInstance => m_Instance;

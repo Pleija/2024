@@ -58,6 +58,24 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
-  }
+    "com.unity.modules.xr": "1.0.0",
+    "com.cathei.bakingsheet": "4.1.2"
+  },
+  "scopedRegistries": [
+    {
+      "name": "https://registry.npmjs.org",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "io.realm.unity"
+      ]
+    },
+    {
+      "name": "package.openupm.cn",
+      "url": "https://package.openupm.cn",
+      "scopes": [
+        "com.cathei.bakingsheet",
+        "com.openupm"
+      ]
+    }
+  ]
 }

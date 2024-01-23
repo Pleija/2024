@@ -62,13 +62,12 @@ namespace NodeCanvas.Editor
         ///<summary>Show variables inspector for target bb. Optionally provide override serialization context object</summary>
         public static void ShowVariables(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
         {
-            EditorWrapperFactory.GetEditor<BlackboardEditor>(bb).InspectorGUI(bb, overrideContextObject);
+            EditorWrapperFactory.GetEditor<BlackboardEditor>(bb)._InspectorGUI(bb, overrideContextObject);
         }
 
-        private UnityEditor.Editor editor;
 
         ///<summary>Show variables inspector for target bb. Optionally provide override serialization context object</summary>
-        private void InspectorGUI(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
+        private void _InspectorGUI(IBlackboard bb, UnityEngine.Object overrideContextObject = null)
         {
             //todo 不要显示monobehaviour的bb在窗口里
             if (bb.parent != null && !(bb.parent is Blackboard)) {
@@ -85,19 +84,7 @@ namespace NodeCanvas.Editor
                 variablesProperty = serializedContext.FindProperty(bb.independantVariablesFieldName);
             }
 
-            if (bb is AssetBlackboard assetBlackboard) {
-                assetBlackboard.showFold = EditorGUILayout.Foldout(assetBlackboard.showFold, "#Database");
-
-                if (assetBlackboard.showFold) {
-                    //GUILayout.Label("test");
-                    GUILayout.Box($"table: " + assetBlackboard.tableName, GUILayout.ExpandWidth(true));
-                    GUILayout.BeginVertical();
-                    if (!editor)
-                        editor = UnityEditor.Editor.CreateEditor(assetBlackboard);
-                    editor.DrawDefaultInspector();
-                    GUILayout.EndVertical();
-                }
-            }
+    
 
             if (bb.unityContextObject is Graph graph) {
                 //todo

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Puerts;
 using Sirenix.Utilities;
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
@@ -22,6 +23,38 @@ public static partial class UnityApi
     {
         Debug.Log(jsObject.Safe);
     }
+
+    public static Object ToNull(this Object obj) => obj ? obj : null;
+    public static Object AsNull(this Object obj) => obj ? obj : null;
+    public static bool IsNull(this Object obj) => obj;
+    public static List<object> ToList(this JSObject obj) => null;
+    public static object ToAny(this JSObject obj) => null;
+    public static object ToObject(this JSObject obj) => null;
+    public static HashSet<object> ToHashSet(this JSObject obj) => null;
+    public static object[] ToArray(this JSObject obj) => null;
+    public static Dictionary<object, object> ToDictionary(this JSObject obj) => null;
+    public static JSObject ToMap(this Dictionary<object, object> dictionary) => null;
+    public static JSObject ToArray(this Dictionary<object, object> dictionary) => null;
+#if UNITY_EDITOR
+    public static string GuidToAssetPath(this string guid) => AssetDatabase.GUIDToAssetPath(guid);
+    public static T LoadAssetFromGuid<T>(this string guid) where T : Object => guid.GuidToAssetPath().LoadAssetAtPath<T>();
+    public static T LoadAssetAtPath<T>(this string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(path);
+
+    public static string FullPathToAssetPath(this string path) =>
+        path.Replace(Directory.GetCurrentDirectory() + "/", "");
+
+    public static string GetAssetPath(this Object asset) => AssetDatabase.GetAssetPath(asset);
+    public static string MakeDir(this string path)
+    {
+        var dir = !Path.HasExtension(path) ? path : Path.GetDirectoryName(path)!;
+
+        if (!Directory.Exists(dir)) {
+            Directory.CreateDirectory(dir);
+            AssetDatabase.ImportAsset(dir);
+        }
+        return path;
+    }
+#endif
 
     public static IList CreateList(this Type type, params object[] args)
     {
@@ -49,8 +82,7 @@ public static partial class UnityApi
 
     public static void DontDestroyOnLoad(this GameObject gameObject)
     {
-        if (gameObject.transform.parent != null)
-            gameObject.transform.SetParent(null);
+        if (gameObject.transform.parent != null) gameObject.transform.SetParent(null);
         Object.DontDestroyOnLoad(gameObject);
     }
 
@@ -74,8 +106,7 @@ public static partial class UnityApi
     public static void ForEach(this Transform transform, Action<Transform> action)
     {
         //transform.name
-        if (!transform || action == null)
-            return;
+        if (!transform || action == null) return;
 
         foreach (Transform child in transform) {
             action.Invoke(child);
@@ -84,8 +115,7 @@ public static partial class UnityApi
 
     public static void ForEach(this Transform transform, Action<Transform, int> action)
     {
-        if (!transform || action == null)
-            return;
+        if (!transform || action == null) return;
 
         for (int i = 0; i < transform.childCount; i++) {
             action.Invoke(transform.GetChild(i), i);
@@ -130,8 +160,7 @@ public static partial class UnityApi
             else
                 Object.DestroyImmediate(component);
 #if UNITY_EDITOR
-            if (scene != default)
-                EditorSceneManager.MarkSceneDirty(scene);
+            if (scene != default) EditorSceneManager.MarkSceneDirty(scene);
 #endif
             return true;
         }
@@ -140,8 +169,7 @@ public static partial class UnityApi
 
     public static bool DestroySelf(this Object value)
     {
-        if (!value)
-            return false;
+        if (!value) return false;
         var scene = value is Component component ? component.gameObject.scene
             : (value is GameObject gameObject ? gameObject.scene : default);
         if (Application.isPlaying)
@@ -149,8 +177,7 @@ public static partial class UnityApi
         else
             Object.DestroyImmediate(value);
 #if UNITY_EDITOR
-        if (scene != default)
-            EditorSceneManager.MarkSceneDirty(scene);
+        if (scene != default) EditorSceneManager.MarkSceneDirty(scene);
 #endif
         return true;
     }
@@ -206,8 +233,7 @@ public static partial class UnityApi
 
     public static GameObject OnDestroyRelease(this GameObject go, AsyncOperationHandle<GameObject> handle)
     {
-        if (handle.IsValid())
-            Addressables.Release(handle);
+        if (handle.IsValid()) Addressables.Release(handle);
         return go;
     }
 

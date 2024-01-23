@@ -19,7 +19,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Serialization;
 
 [DefaultExecutionOrder(-9000)]
-public class JsMain : Agent<JsMain>
+public class JsMain : View<JsMain>
 {
     public UltEvent OnStart;
     public string baseVersion = "1.0.1";

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace MoreTags
 {
     [AddComponentMenu("MoreTags/Tags", 0), ExecuteAlways, DefaultExecutionOrder(-10000)]
-    public class Tags : Agent<Tags>
+    public class Tags : View<Tags>
     {
         // public List<string> tags = new List<string>();
         [SerializeField]

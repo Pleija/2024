@@ -8,7 +8,7 @@ using UnityEngine.UI.Extensions;
 
 namespace App
 {
-    public class LevelAgent : Agent<LevelAgent>
+    public class LevelAgent : View<LevelAgent>
     {
         public TMP_Text text;
         public Slider slider;

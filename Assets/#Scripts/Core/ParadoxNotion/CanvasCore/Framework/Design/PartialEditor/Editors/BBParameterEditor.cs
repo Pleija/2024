@@ -154,7 +154,7 @@ namespace NodeCanvas.Editor
                                 bbParam.SetTargetVariable(globalBB, variable);
                             });
                     menu.AddSeparator(globalBB.identifier + "/");
-                    menu.AddItem(new GUIContent(globalBB.identifier + "/(Create New)"), false, () => {
+                    menu.AddItem(new GUIContent(globalBB.identifier + "/(Create New #1)"), false, () => {
                         UndoUtility.RecordObject((globalBB as IBlackboard).unityContextObject, "New Variable");
                         if (globalBB.AddVariable(cachedContentTextForNew, bbParam.varType) != null)
                             bbParam.name = globalBB.identifier + "/" + cachedContentTextForNew;
@@ -173,7 +173,7 @@ namespace NodeCanvas.Editor
                                     bbParam.SetTargetVariable(actualBB, variable);
                                 });
                         menu.AddSeparator(actualBB.identifier + "/");
-                        menu.AddItem(new GUIContent(actualBB.identifier + "/(Create New)"), false, () => {
+                        menu.AddItem(new GUIContent(actualBB.identifier + "/(Create New #2)"), false, () => {
                             UndoUtility.RecordObject(actualBB.unityContextObject, "New Variable");
                             if (actualBB.AddVariable(cachedContentTextForNew, bbParam.varType) != null)
                                 bbParam.name = cachedContentTextForNew;

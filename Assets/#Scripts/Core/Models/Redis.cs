@@ -119,6 +119,7 @@ namespace Models
             else if (m_Redis.IsConnected)
                 while (m_Queue.Any())
                     m_Queue.Dequeue()?.Invoke(m_Redis);
+            
 
             // if (m_Redis.IsConnected) {
             //     fn.Invoke(m_Redis);

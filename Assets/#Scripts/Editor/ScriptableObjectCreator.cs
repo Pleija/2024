@@ -29,7 +29,8 @@ namespace Editors
 
             if (obj && AssetDatabase.Contains(obj)) {
                 path = AssetDatabase.GetAssetPath(obj);
-                if (!Directory.Exists(path)) path = Path.GetDirectoryName(path);
+                if (!Directory.Exists(path))
+                    path = Path.GetDirectoryName(path);
             }
             var window = GetWindow<ScriptableObjectCreator>();
             window.Show();
@@ -39,7 +40,7 @@ namespace Editors
         }
 
         private ScriptableObject previewObject;
-        private string targetFolder;
+        public string targetFolder;
         private Vector2 scroll;
 
         private Type SelectedType {
@@ -62,7 +63,8 @@ namespace Editors
             tree.Selection.SelectionChanged += e => {
                 // if(previewObject && !AssetDatabase.Contains(previewObject))
                 //     DestroyImmediate(previewObject);
-                if (e != SelectionChangedType.ItemAdded) return;
+                if (e != SelectionChangedType.ItemAdded)
+                    return;
                 var t = SelectedType;
                 if (t != null && !t.IsAbstract)
                     previewObject =
@@ -89,7 +91,8 @@ namespace Editors
 
         protected override void DrawEditor(int index)
         {
-            if (previewObject) GUILayout.Box(AssetDatabase.GetAssetPath(previewObject));
+            if (previewObject)
+                GUILayout.Box(AssetDatabase.GetAssetPath(previewObject), GUILayout.ExpandWidth(true));
             scroll = GUILayout.BeginScrollView(scroll);
             {
                 var myStyle = new GUIStyle();
@@ -104,8 +107,10 @@ namespace Editors
                 GUILayout.FlexibleSpace();
                 SirenixEditorGUI.HorizontalLineSeparator(1);
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Select", GUILayoutOptions.Height(30))) AssetDatabase.OpenAsset(previewObject);
-                if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30))) CreateAsset();
+                if (GUILayout.Button("Select", GUILayoutOptions.Height(30)))
+                    AssetDatabase.OpenAsset(previewObject);
+                if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30)))
+                    CreateAsset();
                 GUILayout.EndHorizontal();
             }
         }

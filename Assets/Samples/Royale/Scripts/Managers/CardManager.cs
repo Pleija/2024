@@ -9,7 +9,7 @@ using Sirenix.Serialization;
 
 namespace UnityRoyale
 {
-    public class CardManager : Agent<CardManager>
+    public class CardManager : View<CardManager>
     {
         public HashSet<string> test;
         public Camera mainCamera; //public reference

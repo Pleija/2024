@@ -1,10 +1,10 @@
-
-// @ts-nocheck 
+// @ts-nocheck
 
 declare namespace System {
-    interface Object {
-        [__keep_incompatibility]: never;
 
+    //type Array = System.Array & [];
+
+    interface Object {
         Equals($obj: any): boolean
 
         Equals($objA: any, $objB: any): boolean
@@ -24,7 +24,6 @@ declare namespace System {
 declare namespace UnityEngine {
     interface Object {
 
-        [__keep_incompatibility]: never;
 
         get name(): string;
 
@@ -90,7 +89,23 @@ declare namespace UnityEngine {
 }
 
 declare namespace System.Collections.Generic {
-    interface IEnumerable$1<T> {
+    // type IEnumerable$1<T> = IEnumerable$1<T> & T[];
+    // type Dictionary<T, V> = Dictionary<T, V> & Map<T, V>;
+
+    interface IDictionary$2<K, V> extends MapConstructor, Map<K, V> {
+
+    }
+
+    interface IList$1<T> extends ArrayConstructor, TypedPropertyDescriptor<T> {
+
+    }
+
+    interface IEnumerable extends ArrayConstructor {
+
+    }
+
+    interface IEnumerable$1<T> extends ArrayConstructor, TypedPropertyDescriptor<T> {
+
         AsWhere($cb: (v: T) => boolean): System.Collections.Generic.IEnumerable$1<T>
 
         AsFirstOrDefault($cb?: (v: T) => boolean): T

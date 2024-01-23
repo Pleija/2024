@@ -34,6 +34,8 @@ import Application = CS.UnityEngine.Application;
 import Debug = CS.UnityEngine.Debug;
 import { DevDebug } from "./debug.mjs";
 import "Game/CardAgent.mjs";
+import "Main/Main.mjs";
+
 
 
 export const setup =  function () {

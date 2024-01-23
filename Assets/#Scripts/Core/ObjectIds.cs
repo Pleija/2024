@@ -6,7 +6,7 @@ using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-public class ObjectIds : Agent<ObjectIds>
+public class ObjectIds : View<ObjectIds>
 {
     [Serializable]
     public class Item

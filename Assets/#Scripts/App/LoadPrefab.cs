@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public class LoadPrefab : Agent<LoadPrefab>
+public class LoadPrefab : View<LoadPrefab>
 {
     [Serializable]
     public class Item

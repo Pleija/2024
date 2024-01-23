@@ -11,7 +11,7 @@ namespace App
     using UnityEngine.EventSystems;
 
     // 挂载在子item上
-    public class ScrollRectFix : Agent<ScrollRectFix>, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class ScrollRectFix : View<ScrollRectFix>, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         public GameObject Parent; //当子item是动态对象，需要动态去设置这个parent
 

@@ -97,6 +97,12 @@ public partial class Js
         JsMain.AutoBind?.Invoke(_env);
 
         //_env.UsingAction<Action, Action<string>>();
+        _env.UsingFunc<JSObject, bool>();
+        _env.UsingFunc<JSObject, int>();
+        _env.UsingFunc<JSObject, int, JSObject>();
+        _env.UsingFunc<JSObject, int, string>();
+        _env.UsingFunc<JSObject, int, bool>();
+        _env.UsingFunc<JSObject, int, float>();
         var action = _env.ExecuteModule<Action>("bootstrap.mjs", "setup");
         if (Application.isPlaying) action.Invoke();
         return _env;

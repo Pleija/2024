@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.cathei.bakingsheet": {
+      "version": "file:com.cathei.bakingsheet@4.1.2",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
+      }
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

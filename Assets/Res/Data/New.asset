@@ -12,10 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4fa5caed5fb2b43b903ef7859c9bf9, type: 3}
   m_Name: New
   m_EditorClassIdentifier: 
+  showFold: 1
   _serializedBlackboard: '{"_variables":{"myInteger":{"_name":"myInteger","_id":"7012461e-6c9c-4a29-9801-9201492d1168","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myAssetBlackboard":{"_value":1,"_name":"myAssetBlackboard","_id":"6a583e76-7a01-4a17-8adf-b412d548a2ba","$type":"NodeCanvas.Framework.Variable`1[[NodeCanvas.Framework.AssetBlackboard,
-    Helpers, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+    Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _version: 11121
   _objectReferences:
   - {fileID: 0}
   - {fileID: 11400000, guid: ef3bd7e6a33c645d8af393526b5252ca, type: 2}
   _UID: 1108c360-88d9-407b-9426-4a3c4858ffdf
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []

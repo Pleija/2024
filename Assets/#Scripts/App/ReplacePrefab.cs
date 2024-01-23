@@ -7,7 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 [DefaultExecutionOrder(-9100)]
-public class ReplacePrefab : Agent<ReplacePrefab>
+public class ReplacePrefab : View<ReplacePrefab>
 {
     [Serializable]
     public class Item

@@ -26,6 +26,7 @@ namespace NodeCanvas.Framework
 
         public bool showFold = false;
 
+        public BlackBoardData Data;
 
         [SerializeField]
         private string _serializedBlackboard;
@@ -39,6 +40,7 @@ namespace NodeCanvas.Framework
         [SerializeField]
         private string _UID = System.Guid.NewGuid().ToString();
 
+        [ShowInInspector]
         public string tableName => "_" + ShortGuid.Encode(_UID).RegexReplace(@"\W+","");
 
         [System.NonSerialized]

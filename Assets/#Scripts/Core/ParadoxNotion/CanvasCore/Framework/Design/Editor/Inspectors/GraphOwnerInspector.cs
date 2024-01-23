@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System.IO;
 using NodeCanvas.Framework;
 using ParadoxNotion;
 using ParadoxNotion.Design;
@@ -63,9 +64,10 @@ namespace NodeCanvas.Editor
         }
 
         //create new graph asset and assign it to owner
-        public Graph NewAsAsset()
+        public Graph NewAsAsset(string path = null)
         {
-            var newGraph = (Graph)EditorUtils.CreateAsset(owner.graphType);
+            var newGraph = path.IsNullOrEmpty() ? (Graph)EditorUtils.CreateAsset(owner.graphType) :
+                (Graph)EditorUtils.CreateAsset(owner.graphType, path);
 
             if (newGraph != null) {
                 UndoUtility.RecordObject(owner, "New Asset Graph");
@@ -193,16 +195,37 @@ namespace NodeCanvas.Editor
                 owner.GetType().Name + " needs a " + graphTypeName + ".\nAssign or Create a new one...",
                 MessageType.Info);
 
-            if (!Application.isPlaying && GUILayout.Button("CREATE NEW")) {
+            if (!Application.isPlaying) {
                 Graph newGraph = null;
-                if (EditorUtility.DisplayDialog("Create Graph",
-                        "Create a Bound or an Asset Graph?\n\n" +
-                        "Bound Graph is saved with the GraphOwner and you can use direct scene references within it.\n\n" +
-                        "Asset Graph is an asset file and can be reused amongst any number of GraphOwners.\n\n" +
-                        "You can convert from one type to the other at any time.", "Bound", "Asset"))
-                    newGraph = NewAsBound();
-                else
-                    newGraph = NewAsAsset();
+                GUILayout.BeginHorizontal();
+                {
+                    if (GUILayout.Button("Asset")) {
+                        var assetPath = @$"Assets/Res/{
+                            owner.gameObject.scene.name.RegexReplace(@"\W+", "")
+                        }/{
+                            owner.gameObject.name.Replace("(Clone)", "")
+                                .RegexReplace(@"\W+", "")
+                        }.asset".MakeDir();
+                        if (File.Exists(assetPath)) newGraph = assetPath.LoadAssetAtPath<Graph>();
+                        if (!newGraph) newGraph = NewAsAsset(assetPath);
+                    }
+
+                    if (GUILayout.Button("Bound")) {
+                        newGraph = NewAsBound();
+                    }
+
+                    if (GUILayout.Button("NEW #1")) {
+                        if (EditorUtility.DisplayDialog("Create Graph",
+                            "Create a Bound or an Asset Graph?\n\n" +
+                            "Bound Graph is saved with the GraphOwner and you can use direct scene references within it.\n\n" +
+                            "Asset Graph is an asset file and can be reused amongst any number of GraphOwners.\n\n" +
+                            "You can convert from one type to the other at any time.", "Bound", "Asset"))
+                            newGraph = NewAsBound();
+                        else
+                            newGraph = NewAsAsset();
+                    }
+                }
+                GUILayout.EndHorizontal();
 
                 if (newGraph != null) {
                     owner.Validate();
@@ -284,8 +307,8 @@ namespace NodeCanvas.Editor
                 if (!owner.graphIsBound) {
                     if (GUILayout.Button("Bind Graph"))
                         if (EditorUtility.DisplayDialog("Bind Graph",
-                                "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?",
-                                "YES", "NO"))
+                            "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?",
+                            "YES", "NO"))
                             AssetToBound();
                 }
                 else {
@@ -348,14 +371,13 @@ namespace NodeCanvas.Editor
                 if (exposedParam == null) {
                     GUILayout.BeginHorizontal();
                     GUI.enabled = false;
-                    EditorUtils.DrawEditorFieldDirect(
-                        new GUIContent(variable.name,
+                    EditorUtils.DrawEditorFieldDirect(new GUIContent(variable.name,
                             "This is an Exposed Public variable of the graph local blackboard. You can use the arrows button on the right side to override/parametrize the default value."),
                         variable.value, variable.varType, default);
                     GUI.enabled = true;
 
                     if (GUILayout.Button(EditorUtils.GetTempContent("▽△", null, "Override Variable"),
-                            Styles.centerLabel, GUILayout.Width(24))) {
+                        Styles.centerLabel, GUILayout.Width(24))) {
                         UndoUtility.RecordObject(owner, "Add Override");
                         exposedParam = ExposedParameter.CreateInstance(variable);
                         owner.exposedParameters.Add(exposedParam);
@@ -374,7 +396,7 @@ namespace NodeCanvas.Editor
                     exposedParam.valueBoxed, variable.varType, info);
 
                 if (GUILayout.Button(EditorUtils.GetTempContent("▼▲", null, "Remove Override"), Styles.centerLabel,
-                        GUILayout.Width(24))) {
+                    GUILayout.Width(24))) {
                     UndoUtility.RecordObject(owner, "Remove Override");
                     // DISABLE: was creating confusion when editing multiple graphowner instances using asset graphs and having different variable overrides
                     // exposedParam.UnBind(owner.graph.blackboard);
@@ -439,14 +461,18 @@ namespace NodeCanvas.Editor
                 GUI.color = Colors.Grey(owner.isRunning ? 1f : 0.7f);
 
                 if (GUILayout.Button(Icons.playIcon, Styles.buttonLeft)) {
-                    if (owner.isRunning) owner.StopBehaviour();
-                    else owner.StartBehaviour();
+                    if (owner.isRunning)
+                        owner.StopBehaviour();
+                    else
+                        owner.StartBehaviour();
                 }
                 GUI.color = Colors.Grey(owner.isPaused ? 1f : 0.7f);
 
                 if (GUILayout.Button(Icons.pauseIcon, Styles.buttonMid)) {
-                    if (owner.isPaused) owner.StartBehaviour();
-                    else owner.PauseBehaviour();
+                    if (owner.isPaused)
+                        owner.StartBehaviour();
+                    else
+                        owner.PauseBehaviour();
                 }
                 GUI.color = Colors.Grey(0.7f);
 

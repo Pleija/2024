@@ -48,8 +48,7 @@ namespace Puerts.AutoUsing
                 var argTypenames = type.GetGenericArguments().Select(x => GetFullname(x)).ToArray();
                 return parts[0] + "<" + string.Join(", ", argTypenames) + ">";
             }
-            if (!string.IsNullOrEmpty(type.FullName))
-                return type.FullName.Replace('+', '.');
+            if (!string.IsNullOrEmpty(type.FullName)) return type.FullName.Replace('+', '.');
             return type.ToString();
         }
 
@@ -58,8 +57,7 @@ namespace Puerts.AutoUsing
             var invoke = type.GetMethod("Invoke", Flags);
             var parameters = (from p in invoke.GetParameters() select GetFullname(p.ParameterType)).ToList();
             var hasReturn = invoke.ReturnType != typeof(void);
-            if (hasReturn)
-                parameters.Add(GetFullname(invoke.ReturnType));
+            if (hasReturn) parameters.Add(GetFullname(invoke.ReturnType));
             return new GenInfo() {
                 Name = hasReturn ? "UsingFunc" : "UsingAction",
                 Parameters = parameters.ToArray(),
@@ -82,7 +80,7 @@ namespace Puerts.AutoUsing
             if (type.IsArray)
                 AddRef(refs, type.GetElementType());
             else if (IsDelegate(type) && !type.IsGenericParameter && type != typeof(Delegate) &&
-                     type != typeof(MulticastDelegate))
+                type != typeof(MulticastDelegate))
                 refs.Add(type);
         }
 
@@ -96,8 +94,7 @@ namespace Puerts.AutoUsing
 
         private static bool IsGenericType(Type type)
         {
-            if (type.IsGenericParameter)
-                return true;
+            if (type.IsGenericParameter) return true;
             if (type.IsGenericType)
                 return type.GetGenericArguments().FirstOrDefault(argType => IsGenericType(argType)) != null;
             return false;
@@ -111,10 +108,8 @@ namespace Puerts.AutoUsing
                 var containsValueType = invoke.ReturnType != typeof(void) && invoke.ReturnType.IsValueType;
 
                 foreach (var param in invoke.GetParameters()) {
-                    if (IsGenericType(param.ParameterType) || !IsSafeType(param.ParameterType))
-                        return false;
-                    if (param.ParameterType.IsValueType)
-                        containsValueType = true;
+                    if (IsGenericType(param.ParameterType) || !IsSafeType(param.ParameterType)) return false;
+                    if (param.ParameterType.IsValueType) containsValueType = true;
                 }
                 return containsValueType && !IsGenericType(invoke.ReturnType) && IsSafeType(invoke.ReturnType);
             }
@@ -142,8 +137,9 @@ namespace Puerts.AutoUsing
             content = content.Replace("public static get self(): any;", "public static get self(): T;");
             content = Regex.Replace(content, @"(public static get .*\: )any", "$1T");
             content = Regex.Replace(content, @"(public static set \w+\(value\: )any(\);)", "$1T$2");
-            File.WriteAllText(dts,StripComments(content).Replace("declare namespace CS {",
-                "declare namespace CS {\n" + File.ReadAllText("Assets/Gen/Editor/Extra.d.ts")));
+            File.WriteAllText(dts, File.ReadAllText("Assets/Gen/Editor/Reference.d.ts") + StripComments(content)
+                .Replace("declare namespace CS {",
+                    "declare namespace CS {\n" + File.ReadAllText("Assets/Gen/Editor/Extra.d.ts")));
         }
 
         static string StripComments(string code)
@@ -151,7 +147,6 @@ namespace Puerts.AutoUsing
             var re = @"(@(?:""[^""]*"")+|""(?:[^""\n\\]+|\\.)*""|'(?:[^'\n\\]+|\\.)*')|//.*|/\*(?s:.*?)\*/";
             return Regex.Replace(code, re, "$1");
         }
-
 
         private static void GenerateCode(string saveTo)
         {
@@ -170,14 +165,12 @@ namespace Puerts.AutoUsing
 
                 foreach (var method in type.GetMethods(Flags)) {
                     AddRef(refTypes, method.ReturnType);
-                    foreach (var param in method.GetParameters())
-                        AddRef(refTypes, param.ParameterType);
+                    foreach (var param in method.GetParameters()) AddRef(refTypes, param.ParameterType);
                 }
             }
             var allowVoid = AllowArgumentsLength("UsingAction");
             var allowReturn = AllowArgumentsLength("UsingFunc");
             var genInfos = new List<GenInfo>();
-
             var failed = new List<string>();
 
             foreach (var type in refTypes.Distinct())
@@ -186,15 +179,14 @@ namespace Puerts.AutoUsing
 
                     if ((info.HasReturn && !allowReturn.Contains(info.Parameters.Length)) ||
                         (!info.HasReturn && !allowVoid.Contains(info.Parameters.Length))) {
-                        failed.Add(string.Format("Method parameter length don't match:{0} \nSource  type: {1} ", info, type.ToString()));
+                        failed.Add(string.Format("Method parameter length don't match:{0} \nSource  type: {1} ", info,
+                            type.ToString()));
                         continue;
                     }
-                    if (genInfos.Contains(info))
-                        continue;
+                    if (genInfos.Contains(info)) continue;
                     genInfos.Add(info);
                 }
-
-            if(failed.Any()) Debug.Log(failed.JoinStr("\n"));
+            if (failed.Any()) Debug.Log(failed.JoinStr("\n"));
 
             using (var jsEnv = new JsEnv()) {
                 var autoRegisterRender =

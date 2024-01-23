@@ -12,6 +12,8 @@ using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Zu.TypeScript.TsTypes;
+using Type = System.Type;
 
 namespace Puerts
 {
@@ -57,19 +59,64 @@ namespace Puerts
                     writer.WriteNull();
                     break;
                 case JSObject jsObject:
-                    Parse(jsObject).WriteTo(writer);
+                    writer.WriteRaw(jsObject.jsEnv.Eval<Func<JSObject, string>>("o => JSON.stringify(o)")
+                        .Invoke(jsObject));
+                    // if (jsObject.IsArray()) {
+                    //     ParseArray(jsObject).WriteTo(writer);
+                    // }
+                    // else
+                    //     Parse(jsObject).WriteTo(writer);
                     break;
                 default: throw new JsonSerializationException("Expected JsObject object value");
             }
         }
 
-        static JObject Parse(JSObject value)
+        static JArray ParseArray(JSObject jsObject)
+        {
+            var arr = new JArray();
+            var count = jsObject.jsEnv.Eval<Func<JSObject, int>>("o => o.length").Invoke(jsObject);
+
+            for (int i = 0; i < count; i++) {
+                var type = jsObject.jsEnv.Eval<Func<JSObject, int, string>>("(o,i)=>typeof o[i]").Invoke(jsObject, i);
+
+                if (type == "number") {
+                    arr.Add(jsObject.jsEnv.Eval<Func<JSObject, int, float>>("(o,i)=>o[i]").Invoke(jsObject, i));
+                    continue;
+                }
+
+                if (type == "string") {
+                    arr.Add(jsObject.jsEnv.Eval<Func<JSObject, int, string>>("(o,i)=>o[i]").Invoke(jsObject, i));
+                    continue;
+                }
+
+                if (type == "boolean") {
+                    arr.Add(jsObject.jsEnv.Eval<Func<JSObject, int, bool>>("(o,i)=>o[i]").Invoke(jsObject, i));
+                    continue;
+                }
+                if (type == "function") continue;
+                var v = jsObject.jsEnv.Eval<Func<JSObject, int, JSObject>>("(o,i)=>o[i]").Invoke(jsObject, i);
+
+                if (v.IsArray()) {
+                    arr.Add(ParseArray(v));
+                }
+                else
+                    arr.Add(Parse(v));
+            }
+            return arr;
+        }
+
+        static JObject Parse(JSObject jsObject)
         {
             JObject jo = new JObject();
 
-            foreach (var kvp in value.Map()) {
+            foreach (var kvp in jsObject.Map()) {
                 if (kvp.Value is JSObject js) {
-                    jo.Add(kvp.Key, Parse(js));
+                    if (js.IsArray()) {
+                        jo.Add(kvp.Key, ParseArray(js));
+                    }
+                    else {
+                        jo.Add(kvp.Key, Parse(js));
+                    }
                 }
                 else {
                     jo.Add(new JProperty(kvp.Key, kvp.Value));
@@ -142,33 +189,23 @@ namespace Puerts
     //         return target;
     //     }
     // }
-
-    public static class JsObjectHelper
-    {
-        public static string[] Keys(this JSObject jsObject)
-        {
-            var keys = new List<string>();
-            jsObject.Safe?.jsEnv.Eval<Action<object, Action<string>>>("(o,fn) => Object.keys(o).map(t => fn.Invoke(t))")
-                .Invoke(jsObject, t => keys.Add(t));
-            return keys.ToArray();
-        }
-
-        public static Dictionary<string, object> Map(this JSObject jsObject) => Map<object>(jsObject);
-
-        public static Dictionary<string, T> Map<T>(this JSObject jsObject)
-        {
-            return jsObject.Safe?.Keys().ToDictionary(t => t, jsObject.Get<T>) ?? new Dictionary<string, T>();
-        }
-    }
+    public static class JsObjectHelper { }
 
     public class JSObject
     {
-        internal readonly JsEnv jsEnv;
+        // internal readonly 
+        private JsEnv _env;
+
+        internal JsEnv jsEnv {
+            get => _env is { disposed: false } ? _env : throw new Exception("JsEnv Disposed");
+            set => _env = value;
+        }
+
         private IntPtr nativeJsObjectPtr;
 
         public IntPtr getJsObjPtr()
         {
-            return nativeJsObjectPtr;
+            return jsEnv is { disposed: false } ? nativeJsObjectPtr : IntPtr.Zero;
         }
 
         internal JSObject(IntPtr nativeJsObjectPtr, JsEnv jsEnv)
@@ -186,9 +223,40 @@ namespace Puerts
         public bool IsAlive => jsEnv is { disposed: false };
         public JSObject Safe => IsAlive ? this : null;
 
+        public T[] ToArray<T>() => ((object[])this).Cast<T>().ToArray();
+
+        public static implicit operator object[](JSObject value)
+        {
+            if (value.Safe == null || value.IsArray() != true) return Array.Empty<object>();
+            return value.jsEnv
+                .Eval<Func<JSObject, object[]>>("o => CS.UnityApi.CreateArray(puer.$typeof(CS.System.Object),...o)")
+                .Invoke(value);
+        }
+
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(Safe.Map(), new JsObjectConverter());
+            return jsEnv.Eval<Func<JSObject, string>>("o => JSON.stringify(o)").Invoke(this);
+            //JsonConvert.SerializeObject(Safe, new JsObjectConverter());
+        }
+
+        public string[] Keys()
+        {
+            var keys = new List<string>();
+            jsEnv.Eval<Action<object, Action<string>>>("(o,fn) => Object.keys(o).map(t => fn.Invoke(t))")
+                .Invoke(this, t => keys.Add(t));
+            return keys.ToArray();
+        }
+
+        public Dictionary<string, object> Map() => Map<object>();
+
+        public Dictionary<string, T> Map<T>()
+        {
+            return Keys().ToDictionary(t => t, Get<T>) ?? new Dictionary<string, T>();
+        }
+
+        public bool IsArray()
+        {
+            return jsEnv.Eval<Func<JSObject, bool>>("o => Array.isArray(o)").Invoke(this);
         }
 
         ~JSObject()
@@ -204,5 +272,4 @@ namespace Puerts
         }
     }
 }
-
 #endif
