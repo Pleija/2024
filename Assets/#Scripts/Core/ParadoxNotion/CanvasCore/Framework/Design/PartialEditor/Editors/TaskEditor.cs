@@ -26,21 +26,30 @@ namespace NodeCanvas.Editor
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Show a Task's field without ability to add if null or add multiple tasks to form a list.</summary>
-        public static void TaskFieldSingle(Task task, Action<Task> callback, bool showTitlebar = true)
+        public static void TaskFieldSingle(Task task, Action<Task> callback,
+            bool showTitlebar = true)
         {
             if (task != null) ShowTaskInspectorGUI(task, callback, showTitlebar);
         }
 
-        ///<summary>Show a Task's field. If task null allow add task. Multiple tasks can be added to form a list.</summary>
-        public static void TaskFieldMulti<T>(T task, ITaskSystem ownerSystem, Action<T> callback) where T : Task
+        /// <summary>
+        ///     Show a Task's field. If task null allow add task. Multiple tasks can be added to form a
+        ///     list.
+        /// </summary>
+        public static void TaskFieldMulti<T>(T task, ITaskSystem ownerSystem, Action<T> callback)
+            where T : Task
         {
             TaskFieldMulti(task, ownerSystem, typeof(T), (Task t) => {
                 callback((T)t);
             });
         }
 
-        ///<summary>Show a Task's field. If task null allow add task. Multiple tasks can be added to form a list.</summary>
-        public static void TaskFieldMulti(Task task, ITaskSystem ownerSystem, Type baseType, Action<Task> callback)
+        /// <summary>
+        ///     Show a Task's field. If task null allow add task. Multiple tasks can be added to form a
+        ///     list.
+        /// </summary>
+        public static void TaskFieldMulti(Task task, ITaskSystem ownerSystem, Type baseType,
+            Action<Task> callback)
         {
             //if null simply show an assignment button
             if (task == null) {
@@ -100,13 +109,15 @@ namespace NodeCanvas.Editor
         }
 
         ///<summary>Show the editor inspector of target task</summary>
-        private static void ShowTaskInspectorGUI(Task task, Action<Task> callback, bool showTitlebar = true)
+        private static void ShowTaskInspectorGUI(Task task, Action<Task> callback,
+            bool showTitlebar = true)
         {
             EditorWrapperFactory.GetEditor<TaskEditor>(task).ShowInspector(callback, showTitlebar);
         }
 
         //Shows a button that when clicked, pops a context menu with a list of tasks deriving the base type specified. When something is selected the callback is called
-        public static void ShowCreateTaskSelectionButton<T>(ITaskSystem ownerSystem, Action<T> callback) where T : Task
+        public static void ShowCreateTaskSelectionButton<T>(ITaskSystem ownerSystem,
+            Action<T> callback) where T : Task
         {
             ShowCreateTaskSelectionButton(ownerSystem, typeof(T), (Task t) => {
                 callback((T)t);
@@ -115,7 +126,8 @@ namespace NodeCanvas.Editor
 
         //Shows a button that when clicked, pops a context menu with a list of tasks deriving the base type specified. When something is selected the callback is called
         //On top of that it also shows a search field for Tasks
-        public static void ShowCreateTaskSelectionButton(ITaskSystem ownerSystem, Type baseType, Action<Task> callback)
+        public static void ShowCreateTaskSelectionButton(ITaskSystem ownerSystem, Type baseType,
+            Action<Task> callback)
         {
             GUI.backgroundColor = Colors.lightBlue;
             var label = "#1 Assign " + baseType.Name.SplitCamelCase();
@@ -128,11 +140,13 @@ namespace NodeCanvas.Editor
                 };
                 var menu = EditorUtils.GetTypeSelectionMenu(baseType, TaskTypeSelected);
 
-                if (CopyBuffer.TryGetCache<Task>(out var copy) && baseType.IsAssignableFrom(copy.GetType())) {
+                if (CopyBuffer.TryGetCache<Task>(out var copy) &&
+                    baseType.IsAssignableFrom(copy.GetType())) {
                     menu.AddSeparator("/");
-                    menu.AddItem(new GUIContent(string.Format("Paste ({0})", copy.name)), false, () => {
-                        callback(copy.Duplicate(ownerSystem));
-                    });
+                    menu.AddItem(new GUIContent(string.Format("Paste ({0})", copy.name)), false,
+                        () => {
+                            callback(copy.Duplicate(ownerSystem));
+                        });
                 }
                 menu.ShowAsBrowser(label, typeof(Task));
             }
@@ -155,8 +169,9 @@ namespace NodeCanvas.Editor
             if (task.agentIsOverride && agentParameterProp.value == null)
                 agentParameterProp.value = new TaskAgentParameter();
             if (task.obsolete != string.Empty)
-                EditorGUILayout.HelpBox(string.Format("This is an obsolete Task:\n\"{0}\"", task.obsolete)
-                    , MessageType.Warning);
+                EditorGUILayout.HelpBox(
+                    string.Format("This is an obsolete Task:\n\"{0}\"", task.obsolete),
+                    MessageType.Warning);
 
             if (!showTitlebar || ShowTitlebar(callback) == true) {
                 if (!string.IsNullOrEmpty(task.description))
@@ -175,14 +190,16 @@ namespace NodeCanvas.Editor
             if (task is ActionTask)
                 if (Application.isPlaying) {
                     if ((task as ActionTask).elapsedTime > 0) GUI.color = Color.yellow;
-                    EditorGUILayout.LabelField("Elapsed Time", (task as ActionTask).elapsedTime.ToString());
+                    EditorGUILayout.LabelField("Elapsed Time",
+                        (task as ActionTask).elapsedTime.ToString());
                     GUI.color = Color.white;
                 }
 
             if (task is ConditionTask) {
-                GUI.color = (task as ConditionTask).invert ? Color.white : Color.white.WithAlpha(0.5f);
-                (task as ConditionTask).invert =
-                    EditorGUILayout.ToggleLeft("Invert Condition", (task as ConditionTask).invert);
+                GUI.color = (task as ConditionTask).invert ? Color.white
+                    : Color.white.WithAlpha(0.5f);
+                (task as ConditionTask).invert = EditorGUILayout.ToggleLeft("Invert Condition",
+                    (task as ConditionTask).invert);
                 GUI.color = Color.white;
             }
         }
@@ -190,34 +207,36 @@ namespace NodeCanvas.Editor
         //a Custom titlebar for tasks
         private bool ShowTitlebar(Action<Task> callback)
         {
-            GUI.backgroundColor =
-                EditorGUIUtility.isProSkin ? Color.black.WithAlpha(0.3f) : Color.white.WithAlpha(0.5f);
+            GUI.backgroundColor = EditorGUIUtility.isProSkin ? Color.black.WithAlpha(0.3f)
+                : Color.white.WithAlpha(0.5f);
             GUILayout.BeginHorizontal(GUI.skin.box);
             {
                 GUI.backgroundColor = Color.white;
                 GUILayout.Label(
-                    "<b>" + (isUnfolded ? "▼ " : "► ") + task.name + "</b>" +
-                    (isUnfolded ? "" : "\n<i><size=10>(" + task.summaryInfo + ")</size></i>"), Styles.leftLabel);
+                    "<b>" + (isUnfolded ? "▼ " : "► ") + task.name + "</b>" + (isUnfolded ? ""
+                        : "\n<i><size=10>(" + task.summaryInfo + ")</size></i>"), Styles.leftLabel);
                 var taskType = task.GetType();
 
                 if (taskType.IsGenericType) {
                     var isBase = taskType.GetFirstGenericParameterConstraintType() ==
                         taskType.GetSingleGenericArgument();
 
-                    if (isBase && GUILayout.Button(StyleSheet.genericType, GUI.skin.label, GUILayout.Width(20)
-                        , GUILayout.Height(20))) {
+                    if (isBase && GUILayout.Button(StyleSheet.genericType, GUI.skin.label,
+                        GUILayout.Width(20), GUILayout.Height(20))) {
                         var menu = new GenericMenu();
-                        menu = EditorUtils.GetPreferedTypesSelectionMenu(taskType.GetGenericTypeDefinition(), (t) => {
-                            callback(Task.Create(t, task.ownerSystem));
-                        }, menu, "Set Generic Type");
+                        menu = EditorUtils.GetPreferedTypesSelectionMenu(
+                            taskType.GetGenericTypeDefinition(), (t) => {
+                                callback(Task.Create(t, task.ownerSystem));
+                            }, menu, "Set Generic Type");
                         menu.ShowAsContext();
                     }
                 }
-                if (GUILayout.Button(Icons.csIcon, GUI.skin.label, GUILayout.Width(20), GUILayout.Height(20)))
+                if (GUILayout.Button(Icons.csIcon, GUI.skin.label, GUILayout.Width(20),
+                    GUILayout.Height(20)))
                     EditorUtils.OpenScriptOfType(task.GetType());
                 GUI.color = EditorGUIUtility.isProSkin ? Color.white : Color.grey;
-                if (GUILayout.Button(Icons.gearPopupIcon, Styles.centerLabel, GUILayout.Width(20)
-                    , GUILayout.Height(20)))
+                if (GUILayout.Button(Icons.gearPopupIcon, Styles.centerLabel, GUILayout.Width(20),
+                    GUILayout.Height(20)))
                     GetMenu(callback).ShowAsContext();
                 GUI.color = Color.white;
             }
@@ -225,7 +244,8 @@ namespace NodeCanvas.Editor
             var titleRect = GUILayoutUtility.GetLastRect();
             EditorGUIUtility.AddCursorRect(titleRect, MouseCursor.Link);
             GUI.color = Color.black.WithAlpha(0.25f);
-            GUI.DrawTexture(new Rect(titleRect.x, titleRect.yMax - 1, titleRect.width, 1), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(titleRect.x, titleRect.yMax - 1, titleRect.width, 1),
+                Texture2D.whiteTexture);
             GUI.color = Color.white;
             var e = Event.current;
 
@@ -234,7 +254,8 @@ namespace NodeCanvas.Editor
                 e.Use();
             }
 
-            if (e.button == 0 && e.type == EventType.MouseUp && titleRect.Contains(e.mousePosition)) {
+            if (e.button == 0 && e.type == EventType.MouseUp &&
+                titleRect.Contains(e.mousePosition)) {
                 isUnfolded = !isUnfolded;
                 e.Use();
             }
@@ -262,9 +283,10 @@ namespace NodeCanvas.Editor
                     });
             }
             if (taskType.IsGenericType)
-                menu = EditorUtils.GetPreferedTypesSelectionMenu(taskType.GetGenericTypeDefinition(), (t) => {
-                    callback(Task.Create(t, task.ownerSystem));
-                }, menu, "Change Generic Type");
+                menu = EditorUtils.GetPreferedTypesSelectionMenu(
+                    taskType.GetGenericTypeDefinition(), (t) => {
+                        callback(Task.Create(t, task.ownerSystem));
+                    }, menu, "Change Generic Type");
             menu.AddSeparator("/");
             menu.AddItem(new GUIContent("Delete"), false, () => {
                 if (callback != null) {
@@ -298,7 +320,8 @@ namespace NodeCanvas.Editor
                 var icon = TypePrefs.GetTypeIcon(task.agentType);
                 var label = string.Format("Use Self ({0})", compInfo);
                 var content = EditorUtils.GetTempContent(label, icon);
-                GUILayout.Label(content, GUILayout.Height(18), GUILayout.Width(0), GUILayout.ExpandWidth(true));
+                GUILayout.Label(content, GUILayout.Height(18), GUILayout.Width(0),
+                    GUILayout.ExpandWidth(true));
             }
             GUI.color = Color.white;
 

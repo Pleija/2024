@@ -137,8 +137,10 @@ namespace Runner.Game
                 Debug.LogError("Can't pop states, only one in stack.");
                 return;
             }
-            m_StateStack[m_StateStack.Count - 1].DoExit(t => t.Exit(m_StateStack[m_StateStack.Count - 2]));
-            m_StateStack[m_StateStack.Count - 2].DoEnter(t => t.Enter(m_StateStack[m_StateStack.Count - 2]));
+            m_StateStack[m_StateStack.Count - 1]
+                .DoExit(t => t.Exit(m_StateStack[m_StateStack.Count - 2]));
+            m_StateStack[m_StateStack.Count - 2]
+                .DoEnter(t => t.Enter(m_StateStack[m_StateStack.Count - 2]));
             m_StateStack.RemoveAt(m_StateStack.Count - 1);
         }
 

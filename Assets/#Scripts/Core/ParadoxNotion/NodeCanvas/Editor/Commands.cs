@@ -15,8 +15,8 @@ namespace NodeCanvas.Editor
         }
 
         ///----------------------------------------------------------------------------------------------
-        [MenuItem("Assets/Create/ParadoxNotion/NodeCanvas/New Task")
-         , MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/New Task", false, 90)]
+        [MenuItem("Assets/Create/ParadoxNotion/NodeCanvas/New Task"),
+         MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/New Task", false, 90)]
         public static void ShowTaskWizard()
         {
             TaskWizardWindow.ShowWindow();

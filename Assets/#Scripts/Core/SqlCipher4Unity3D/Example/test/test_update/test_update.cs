@@ -16,7 +16,8 @@ namespace SqlCipher4Unity3D.Example.test.test_update
         public int active_player { get; set; }
 
         public override string ToString() =>
-            string.Format("[level_story: save_name={0}, active_player={1}]", save_name, active_player);
+            string.Format("[level_story: save_name={0}, active_player={1}]", save_name,
+                active_player);
     }
 
     public class test_update : MonoBehaviour
@@ -30,9 +31,9 @@ namespace SqlCipher4Unity3D.Example.test.test_update
             _dbconn1.DropTable<player_profile>();
             _dbconn1.CreateTable<player_profile>();
             _dbconn1.InsertAll(new[] {
-                new player_profile { save_name = "p1", active_player = 1 }
-                , new player_profile { save_name = "p2", active_player = 1 }
-                , new player_profile { save_name = "p3", active_player = 1 },
+                new player_profile { save_name = "p1", active_player = 1 },
+                new player_profile { save_name = "p2", active_player = 1 },
+                new player_profile { save_name = "p3", active_player = 1 },
             });
             foreach (var x in _dbconn1.Table<player_profile>().ToList()) Debug.Log($"before : {x}");
             wannabe_set_active_player("p2");
@@ -42,17 +43,20 @@ namespace SqlCipher4Unity3D.Example.test.test_update
         public void set_active_player(string player_name)
         {
             IEnumerable<player_profile> all_active_players = _dbconn1.Table<player_profile>()
-                .Where<player_profile>(x => x.active_player > 0 || x.save_name == player_name).ToList();
+                .Where<player_profile>(x => x.active_player > 0 || x.save_name == player_name)
+                .ToList();
             _dbconn1.BeginTransaction();
 
             if (all_active_players != null)
                 foreach (var player in all_active_players) {
                     if (player_name.Equals(player.save_name)) {
-                        Debug.LogWarning("Attempting to set the active_player field to: " + player.save_name);
+                        Debug.LogWarning("Attempting to set the active_player field to: " +
+                            player.save_name);
                         player.active_player = 1;
                     }
                     else {
-                        Debug.LogWarning("Attempting to clear the active_player field for: " + player.save_name);
+                        Debug.LogWarning("Attempting to clear the active_player field for: " +
+                            player.save_name);
                         player.active_player = 0;
                     }
                     _dbconn1.Update(player);
@@ -66,7 +70,8 @@ namespace SqlCipher4Unity3D.Example.test.test_update
             //        .Where<player_profile>(x => x.active_player > 0 || x.save_name == player_name);
             // because, SqlCipher4Unity's Linq's where result's will be delayed until tolist.
             var active_players = _dbconn1.Table<player_profile>()
-                .Where<player_profile>(x => x.active_player > 0 || x.save_name == player_name).ToList();
+                .Where<player_profile>(x => x.active_player > 0 || x.save_name == player_name)
+                .ToList();
 
             // UpdateAll runs Update within RunInTransaction, so it is okay to skip begintransaction/commit.
             //this.dbconn1.BeginTransaction();
@@ -76,11 +81,13 @@ namespace SqlCipher4Unity3D.Example.test.test_update
 
                     //if (player_name.Equals(player))
                     if (player_name.Equals(player.save_name)) {
-                        Debug.LogWarning($"Attempting to set the active_player field to: {player_name} -> {player}");
+                        Debug.LogWarning(
+                            $"Attempting to set the active_player field to: {player_name} -> {player}");
                         player.active_player = 1;
                     }
                     else {
-                        Debug.LogWarning($"Attempting to clear the active_player field for: {player_name} -> {player}");
+                        Debug.LogWarning(
+                            $"Attempting to clear the active_player field for: {player_name} -> {player}");
                         player.active_player = 0;
                     }
             _dbconn1.UpdateAll(active_players);

@@ -16,8 +16,8 @@ namespace MoreTags
 
             if (go.scene.isLoaded) {
                 EditorGUILayout.HelpBox(
-                    "Prefab Tags should not be attached to on scene GameObject. Please use Tags for on scene GameObject."
-                    , MessageType.Warning);
+                    "Prefab Tags should not be attached to on scene GameObject. Please use Tags for on scene GameObject.",
+                    MessageType.Warning);
                 return;
             }
             var tags = (target as PrefabTags).Tags;
@@ -37,7 +37,8 @@ namespace MoreTags
                 }
                 else {
                     var menu = new GenericMenu();
-                    foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags()).Except(go.GetTags()))
+                    foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags())
+                        .Except(go.GetTags()))
                         menu.AddItem(new GUIContent(tag), false, () => AddTag(tags, tag));
                     menu.ShowAsContext();
                 }

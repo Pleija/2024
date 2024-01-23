@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Composites")
-     , Description("Executes one child based on the provided int or enum case and returns its status.")
-     , Icon("IndexSwitcher"), Color("b3ff7f")]
+    [Category("Composites"),
+     Description(
+         "Executes one child based on the provided int or enum case and returns its status."),
+     Icon("IndexSwitcher"), Color("b3ff7f")]
     public class Switch : BTComposite
     {
         public enum CaseSelectionMode { IndexBased = 0, EnumBased = 1 }
@@ -43,7 +44,8 @@ namespace NodeCanvas.BehaviourTrees
                 if (enumValue != null) {
                     enumCasePairing = new Dictionary<int, int>();
                     var enumValues = System.Enum.GetValues(enumValue.GetType());
-                    for (var i = 0; i < enumValues.Length; i++) enumCasePairing[(int)enumValues.GetValue(i)] = i;
+                    for (var i = 0; i < enumValues.Length; i++)
+                        enumCasePairing[(int)enumValues.GetValue(i)] = i;
                 }
             }
         }
@@ -55,7 +57,8 @@ namespace NodeCanvas.BehaviourTrees
             if (status == Status.Resting || dynamic) {
                 if (selectionMode == CaseSelectionMode.IndexBased) {
                     current = intCase.value;
-                    if (outOfRangeMode == OutOfRangeMode.LoopIndex) current = Mathf.Abs(current) % outConnections.Count;
+                    if (outOfRangeMode == OutOfRangeMode.LoopIndex)
+                        current = Mathf.Abs(current) % outConnections.Count;
                 }
                 else {
                     current = enumCasePairing[(int)enumCase.value];
@@ -85,8 +88,8 @@ namespace NodeCanvas.BehaviourTrees
         protected override void OnNodeGUI()
         {
             if (dynamic) GUILayout.Label("<b>DYNAMIC</b>");
-            GUILayout.Label(selectionMode == CaseSelectionMode.IndexBased ? "Current = " + intCase.ToString()
-                : enumCase.ToString());
+            GUILayout.Label(selectionMode == CaseSelectionMode.IndexBased
+                ? "Current = " + intCase.ToString() : enumCase.ToString());
         }
 
         protected override void OnNodeInspectorGUI()
@@ -96,7 +99,8 @@ namespace NodeCanvas.BehaviourTrees
             if (selectionMode == CaseSelectionMode.EnumBased)
                 if (enumCase.value != null) {
                     GUILayout.BeginVertical("box");
-                    foreach (var s in System.Enum.GetNames(enumCase.value.GetType())) GUILayout.Label(s);
+                    foreach (var s in System.Enum.GetNames(enumCase.value.GetType()))
+                        GUILayout.Label(s);
                     GUILayout.EndVertical();
                 }
         }

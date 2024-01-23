@@ -2,7 +2,8 @@
 
 namespace FlowCanvas.Nodes
 {
-    [Name("UI Slider"), Category("Events/Object/UI"), Description("Called when the target UI Slider value changed.")]
+    [Name("UI Slider"), Category("Events/Object/UI"),
+     Description("Called when the target UI Slider value changed.")]
     public class UISliderEvent : EventNode<UnityEngine.UI.Slider>
     {
         private FlowOutput o;

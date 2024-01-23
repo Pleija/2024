@@ -34,7 +34,10 @@ namespace Slate
         ///<summary>Raised when a global message has been send by this cutscene.</summary>
         public event System.Action<string, object> OnGlobalMessageSend;
 
-        ///<summary>Raised when the cutscene is stopped. Important: Subscribers are cleared once the event is raised.</summary>
+        /// <summary>
+        ///     Raised when the cutscene is stopped. Important: Subscribers are cleared once the event is
+        ///     raised.
+        /// </summary>
         public event System.Action OnStop;
 
         [SerializeField, Tooltip("When is the cutscene updated.")]
@@ -46,18 +49,20 @@ namespace Slate
         [SerializeField, Tooltip("What will happen when the cutscene is stopped.")]
         private StopMode _defaultStopMode;
 
-        [SerializeField, Tooltip("The speed at which the cutscene is playing. Can be both positive or negative.")]
+        [SerializeField,
+         Tooltip("The speed at which the cutscene is playing. Can be both positive or negative.")]
         private float _playbackSpeed = 1f;
 
         [SerializeField, Tooltip("If enabled, the cutscene will start playing when enter play.")]
         private bool _playOnStart = false;
 
-        [SerializeField
-         , Tooltip("If enabled, you can set only some layers to be active for the duration of this cutscene.")]
+        [SerializeField,
+         Tooltip(
+             "If enabled, you can set only some layers to be active for the duration of this cutscene.")]
         private bool _explicitActiveLayers;
 
-        [SerializeField
-         , Tooltip(
+        [SerializeField,
+         Tooltip(
              "The layers to enable, all other layers will be disabled. Only affects gameobjects in the scene root.")]
         private LayerMask _activeLayers = -1;
 
@@ -95,7 +100,8 @@ namespace Slate
         private Dictionary<GameObject, bool> affectedLayerGOStates;
 
         [System.NonSerialized]
-        private static Dictionary<string, Cutscene> allSceneCutscenes = new Dictionary<string, Cutscene>();
+        private static Dictionary<string, Cutscene> allSceneCutscenes =
+            new Dictionary<string, Cutscene>();
 
         [System.NonSerialized]
         private bool preInitialized;
@@ -115,10 +121,11 @@ namespace Slate
                         _groupsRoot.SetParent(transform);
                     }
 #if UNITY_EDITOR
-                    _groupsRoot.gameObject.hideFlags =
-                        Prefs.showTransforms ? HideFlags.None : HideFlags.HideInHierarchy;
+                    _groupsRoot.gameObject.hideFlags = Prefs.showTransforms ? HideFlags.None
+                        : HideFlags.HideInHierarchy;
 #endif
-                    _groupsRoot.gameObject.SetActive(false); //we dont need it or it's children active at all
+                    _groupsRoot.gameObject
+                        .SetActive(false); //we dont need it or it's children active at all
                 }
                 return _groupsRoot;
             }
@@ -155,7 +162,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     The layers that will be active when the cutscene is active. Everything else is disabled for the duration of
+        ///     The layers that will be active when the cutscene is active. Everything else is disabled for the
+        ///     duration of
         ///     the cutscene
         /// </summary>
         public LayerMask activeLayers {
@@ -217,7 +225,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     The speed at which the cutscene is played back. Can be positive or negative. Not applicaple when Sampled
+        ///     The speed at which the cutscene is played back. Can be positive or negative. Not applicaple
+        ///     when Sampled
         ///     manually without calling Play().
         /// </summary>
         public float playbackSpeed {
@@ -256,7 +265,8 @@ namespace Slate
         public float remainingTime {
             get {
                 if (playingDirection == PlayingDirection.Forwards) return playTimeMax - currentTime;
-                if (playingDirection == PlayingDirection.Backwards) return currentTime - playTimeMin;
+                if (playingDirection == PlayingDirection.Backwards)
+                    return currentTime - playTimeMin;
                 return 0;
             }
         }
@@ -290,7 +300,8 @@ namespace Slate
         //UNITY CALLBACK
         protected void LateUpdate()
         {
-            if (isActive && (updateMode == UpdateMode.Normal || updateMode == UpdateMode.UnscaledTime)) {
+            if (isActive && (updateMode == UpdateMode.Normal ||
+                updateMode == UpdateMode.UnscaledTime)) {
                 if (isPaused) {
                     Sample();
                     return;
@@ -342,7 +353,10 @@ namespace Slate
             return timePointers.Select(t => t.time).ToArray();
         }
 
-        ///<summary>Start or resume playing the cutscene at optional start time and optional provided callback for when it stops</summary>
+        /// <summary>
+        ///     Start or resume playing the cutscene at optional start time and optional provided callback
+        ///     for when it stops
+        /// </summary>
         public void Play()
         {
             Play(0);
@@ -363,8 +377,9 @@ namespace Slate
             Play(startTime, length, defaultWrapMode, callback);
         }
 
-        public void Play(float startTime, float endTime, WrapMode wrapMode = WrapMode.Once
-            , System.Action callback = null, PlayingDirection playDirection = PlayingDirection.Forwards)
+        public void Play(float startTime, float endTime, WrapMode wrapMode = WrapMode.Once,
+            System.Action callback = null,
+            PlayingDirection playDirection = PlayingDirection.Forwards)
         {
             if (startTime > endTime && playDirection != PlayingDirection.Backwards) {
                 Debug.LogError("End Time must be greater than Start Time.", gameObject);
@@ -373,7 +388,9 @@ namespace Slate
 
             if (isPaused) {
                 //if it's paused resume.
-                Debug.LogWarning("Play called on a Paused cutscene. Cutscene will now resume instead.", gameObject);
+                Debug.LogWarning(
+                    "Play called on a Paused cutscene. Cutscene will now resume instead.",
+                    gameObject);
                 playingDirection = playDirection;
                 Resume();
                 return;
@@ -433,7 +450,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Start or resume playing the cutscene at reverse, at optional new start time and optional provided callback for
+        ///     Start or resume playing the cutscene at reverse, at optional new start time and optional
+        ///     provided callback for
         ///     when it stops
         /// </summary>
         public void PlayReverse()
@@ -477,7 +495,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Rewinds the cutscene to it's initial 0 time state without undoing anything, thus keeping current state as
+        ///     Rewinds the cutscene to it's initial 0 time state without undoing anything, thus keeping
+        ///     current state as
         ///     finalized.
         /// </summary>
         public void RewindNoUndo()
@@ -488,13 +507,19 @@ namespace Slate
             Sample();
         }
 
-        ///<summary>Breaks out of the cutscene Loop (or PingPong) in case the Cutscene was looping in the first place</summary>
+        /// <summary>
+        ///     Breaks out of the cutscene Loop (or PingPong) in case the Cutscene was looping in the
+        ///     first place
+        /// </summary>
         public void BreakCutsceneLoop()
         {
             playingWrapMode = WrapMode.Once;
         }
 
-        ///<summary>Breaks out of the current Section Loop, in case the current Section is looping in the first place</summary>
+        /// <summary>
+        ///     Breaks out of the current Section Loop, in case the current Section is looping in the
+        ///     first place
+        /// </summary>
         public void BreakSectionLoop(bool alsoSkip = false)
         {
             var currentSection = directorGroup.GetSectionBefore(currentTime);
@@ -552,7 +577,8 @@ namespace Slate
         }
 
         ///<summary>Play a specific Section only</summary>
-        public bool PlaySection(string name) => PlaySection(GetSectionByName(name), defaultWrapMode);
+        public bool PlaySection(string name) =>
+            PlaySection(GetSectionByName(name), defaultWrapMode);
 
         public bool PlaySection(string name, WrapMode wrap, System.Action callback = null) =>
             PlaySection(GetSectionByName(name), wrap, callback);
@@ -573,7 +599,8 @@ namespace Slate
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Sample cutscene state at time specified (currentTime by default). You can call this however and whenever you
+        ///     Sample cutscene state at time specified (currentTime by default). You can call this however and
+        ///     whenever you
         ///     like without any pre-requirements
         /// </summary>
         public void Sample()
@@ -592,14 +619,16 @@ namespace Slate
             if (!preInitialized && currentTime > 0 && previousTime == 0) InitializeTimePointers();
 
             //Sample started
-            if (currentTime > 0 && currentTime < length && (previousTime == 0 || previousTime == length))
+            if (currentTime > 0 && currentTime < length &&
+                (previousTime == 0 || previousTime == length))
                 OnSampleStarted();
 
             //Sample pointers
             if (timePointers != null) Internal_SamplePointers(currentTime, previousTime);
 
             //Sample ended
-            if ((currentTime == 0 || currentTime == length) && previousTime > 0 && previousTime < length)
+            if ((currentTime == 0 || currentTime == length) && previousTime > 0 &&
+                previousTime < length)
                 OnSampleEnded();
             previousTime = currentTime;
         }
@@ -672,7 +701,8 @@ namespace Slate
                 _isReSampleFrame = true;
 #if UNITY_EDITOR
                 List<CutsceneUtility.ChangedParameterCallbacks> cache = null;
-                if (!Prefs.autoKey) cache = CutsceneUtility.changedParameterCallbacks.Values.ToList();
+                if (!Prefs.autoKey)
+                    cache = CutsceneUtility.changedParameterCallbacks.Values.ToList();
 #endif
                 Internal_SamplePointers(0, currentTime);
                 Internal_SamplePointers(currentTime, 0);
@@ -686,7 +716,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Gather and validate directables. This is done in Awake as well as in editor when a directable is added or
+        ///     Gather and validate directables. This is done in Awake as well as in editor when a directable
+        ///     is added or
         ///     removed and OnValidate.
         /// </summary>
         public void Validate()
@@ -838,12 +869,14 @@ namespace Slate
             switch (playingWrapMode) {
                 //handle Once
                 case WrapMode.Once:
-                    if (currentTime >= playTimeMax && playingDirection == PlayingDirection.Forwards) {
+                    if (currentTime >= playTimeMax &&
+                        playingDirection == PlayingDirection.Forwards) {
                         Stop();
                         return;
                     }
 
-                    if (currentTime <= playTimeMin && playingDirection == PlayingDirection.Backwards) {
+                    if (currentTime <= playTimeMin &&
+                        playingDirection == PlayingDirection.Backwards) {
                         Stop();
                         return;
                     }
@@ -867,13 +900,15 @@ namespace Slate
                     if (currentTime >= playTimeMax) {
                         Sample(playTimeMax);
                         currentTime = playTimeMax - delta;
-                        playingDirection = playbackSpeed >= 0 ? PlayingDirection.Backwards : PlayingDirection.Forwards;
+                        playingDirection = playbackSpeed >= 0 ? PlayingDirection.Backwards
+                            : PlayingDirection.Forwards;
                     }
 
                     if (currentTime <= playTimeMin) {
                         Sample(playTimeMin);
                         currentTime = playTimeMin + delta;
-                        playingDirection = playbackSpeed >= 0 ? PlayingDirection.Forwards : PlayingDirection.Backwards;
+                        playingDirection = playbackSpeed >= 0 ? PlayingDirection.Forwards
+                            : PlayingDirection.Backwards;
                     }
                     break;
             }
@@ -882,7 +917,10 @@ namespace Slate
             Sample();
         }
 
-        ///<summary>Play a cutscene of specified name that exists either in the Resources folder or in the scene. In that order.</summary>
+        /// <summary>
+        ///     Play a cutscene of specified name that exists either in the Resources folder or in the
+        ///     scene. In that order.
+        /// </summary>
         public static Cutscene Play(string name) => Play(name, null);
 
         public static Cutscene Play(string name, System.Action callback)
@@ -917,7 +955,9 @@ namespace Slate
                 var cut = go.GetComponent<Cutscene>();
                 if (cut != null) return cut;
             }
-            Debug.LogWarning(string.Format("Cutscene of name '{0}' does not exists in the Resources folder", name));
+            Debug.LogWarning(
+                string.Format("Cutscene of name '{0}' does not exists in the Resources folder",
+                    name));
             return null;
         }
 
@@ -926,7 +966,8 @@ namespace Slate
         {
             Cutscene cutscene = null;
             if (allSceneCutscenes.TryGetValue(name, out cutscene)) return cutscene;
-            Debug.LogError(string.Format("Cutscene of name '{0}' does not exists in the scene", name));
+            Debug.LogError(string.Format("Cutscene of name '{0}' does not exists in the scene",
+                name));
             return null;
         }
 
@@ -939,7 +980,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Sends a message to all affected gameObject actors (including Director Camera), as well as the cutscene
+        ///     Sends a message to all affected gameObject actors (including Director Camera), as well as the
+        ///     cutscene
         ///     gameObject itself.
         /// </summary>
         public void SendGlobalMessage(string message, object value = null)
@@ -950,7 +992,9 @@ namespace Slate
                     actor.SendMessage(message, value, SendMessageOptions.DontRequireReceiver);
             if (OnGlobalMessageSend != null) OnGlobalMessageSend(message, value);
 #if UNITY_EDITOR
-            Debug.Log(string.Format("<b>({0}) Global Message Send:</b> '{1}' ({2})", name, message, value), gameObject);
+            Debug.Log(
+                string.Format("<b>({0}) Global Message Send:</b> '{1}' ({2})", name, message,
+                    value), gameObject);
 #endif
         }
 
@@ -958,15 +1002,18 @@ namespace Slate
         public void SetGroupActorOfName(string groupName, GameObject newActor)
         {
             if (currentTime > 0) {
-                Debug.LogError("Setting a Group Actor is only allowed when the Cutscene is not active and is rewinded"
-                    , gameObject);
+                Debug.LogError(
+                    "Setting a Group Actor is only allowed when the Cutscene is not active and is rewinded",
+                    gameObject);
                 return;
             }
-            var group = groups.OfType<ActorGroup>().FirstOrDefault(g => g.name.ToLower() == groupName.ToLower());
+            var group = groups.OfType<ActorGroup>()
+                .FirstOrDefault(g => g.name.ToLower() == groupName.ToLower());
 
             if (group == null) {
-                Debug.LogError(string.Format("Actor Group with name '{0}' doesn't exist in cutscene", groupName)
-                    , gameObject);
+                Debug.LogError(
+                    string.Format("Actor Group with name '{0}' doesn't exist in cutscene",
+                        groupName), gameObject);
                 return;
             }
             group.actor = newActor;
@@ -985,14 +1032,17 @@ namespace Slate
         public IDirectable FindElement(string path)
         {
             var split = path.Split('/');
-            var result = groups.FirstOrDefault(g => g.name.ToLower() == split[0].ToLower()) as IDirectable;
+            var result =
+                groups.FirstOrDefault(g => g.name.ToLower() == split[0].ToLower()) as IDirectable;
 
             if (result != null)
                 for (var i = 1; i < split.Length; i++) {
                     result = result.FindChild(split[i]);
                     if (result == null) break;
                 }
-            if (result == null) Debug.LogWarning(string.Format("Cutscene element path to '{0}', was not found", path));
+            if (result == null)
+                Debug.LogWarning(string.Format("Cutscene element path to '{0}', was not found",
+                    path));
             return result;
         }
 
@@ -1015,7 +1065,8 @@ namespace Slate
 
             if (section != null) {
                 var nextSection = directorGroup.GetSectionAfter(section.time);
-                return nextSection != null ? nextSection.time - section.time : length - section.time;
+                return nextSection != null ? nextSection.time - section.time
+                    : length - section.time;
             }
             return -1;
         }
@@ -1033,7 +1084,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     By default cutscene is initialized when it starts playing. You can pre-initialize it if you want so for
+        ///     By default cutscene is initialized when it starts playing. You can pre-initialize it if you
+        ///     want so for
         ///     performance in case there is any lag when cutscene is started.
         /// </summary>
         public void PreInitialize()
@@ -1043,28 +1095,34 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Render the cutscene to an image sequence in runtime and get a Texture2D[] of the rendered frames. This
-        ///     operation will take several frames to complete. Use the callback parameter to get the result when rendering is
+        ///     Render the cutscene to an image sequence in runtime and get a Texture2D[] of the rendered
+        ///     frames. This
+        ///     operation will take several frames to complete. Use the callback parameter to get the result
+        ///     when rendering is
         ///     done.
         /// </summary>
-        public void RenderCutscene(int width, int height, int frameRate, System.Action<Texture2D[]> callback)
+        public void RenderCutscene(int width, int height, int frameRate,
+            System.Action<Texture2D[]> callback)
         {
             if (!Application.isPlaying) {
-                Debug.LogError("Rendering Cutscene with RenderCutscene function is only meant for runtime", this);
+                Debug.LogError(
+                    "Rendering Cutscene with RenderCutscene function is only meant for runtime",
+                    this);
                 return;
             }
 
             if (isActive) {
                 Debug.LogWarning(
-                    "You called RenderCutscene to an actively playing Cutscene. The cutscene will now Stop.", this);
+                    "You called RenderCutscene to an actively playing Cutscene. The cutscene will now Stop.",
+                    this);
                 Stop();
             }
             StartCoroutine(Internal_RenderCutscene(width, height, frameRate, callback));
         }
 
         //runtime rendering to Texture2D[]
-        private IEnumerator Internal_RenderCutscene(int width, int height, int frameRate
-            , System.Action<Texture2D[]> callback)
+        private IEnumerator Internal_RenderCutscene(int width, int height, int frameRate,
+            System.Action<Texture2D[]> callback)
         {
             var renderSequence = new List<Texture2D>();
             var sampleRate = 1f / frameRate;
@@ -1133,7 +1191,8 @@ namespace Slate
         [ContextMenu("Remove Component")] //override
         private void RemoveComponent()
         {
-            Debug.LogWarning("Removing the Cutscene Component is not possible. Please delete the GameObject instead");
+            Debug.LogWarning(
+                "Removing the Cutscene Component is not possible. Please delete the GameObject instead");
         }
 
         [ContextMenu("Show Transforms")]
@@ -1211,8 +1270,10 @@ namespace Slate
             Validate();
 
             if (type != typeof(DirectorGroup) && targetActor != null) {
-                if (targetActor.GetComponent<Animator>() != null) newGroup.AddTrack<AnimatorTrack>();
-                if (targetActor.GetComponent<Animation>() != null) newGroup.AddTrack<AnimationTrack>();
+                if (targetActor.GetComponent<Animator>() != null)
+                    newGroup.AddTrack<AnimatorTrack>();
+                if (targetActor.GetComponent<Animation>() != null)
+                    newGroup.AddTrack<AnimationTrack>();
             }
             CutsceneUtility.selectedObject = newGroup;
             return newGroup;
@@ -1222,14 +1283,15 @@ namespace Slate
         public void DeleteGroup(CutsceneGroup group)
         {
             if (!group.gameObject.IsSafePrefabDelete()) {
-                UnityEditor.EditorUtility.DisplayDialog("Delete Group"
-                    , "This group is part of the prefab asset and can not be deleted from within the prefab instance. If you want to delete the group, please open the prefab asset for editing."
-                    , "OK");
+                UnityEditor.EditorUtility.DisplayDialog("Delete Group",
+                    "This group is part of the prefab asset and can not be deleted from within the prefab instance. If you want to delete the group, please open the prefab asset for editing.",
+                    "OK");
                 return;
             }
 
             if (group is DirectorGroup) {
-                Debug.LogWarning("The Director Group can't be removed from the Cutscene", gameObject);
+                Debug.LogWarning("The Director Group can't be removed from the Cutscene",
+                    gameObject);
                 return;
             }
             UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Delete Group");

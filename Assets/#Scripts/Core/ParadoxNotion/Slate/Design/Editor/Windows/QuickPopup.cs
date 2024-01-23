@@ -21,14 +21,17 @@ namespace Slate
         }
 
         public QuickPopup(System.Action Call) => this.Call = Call;
-        public override Vector2 GetWindowSize() => new Vector2(myRect.xMin + myRect.xMax, myRect.yMin + myRect.yMax);
+
+        public override Vector2 GetWindowSize() =>
+            new Vector2(myRect.xMin + myRect.xMax, myRect.yMin + myRect.yMax);
 
         public override void OnGUI(Rect rect)
         {
             GUILayout.BeginVertical("box");
             Call();
             GUILayout.EndVertical();
-            if (Event.current.type == EventType.Repaint) myRect.yMax = GUILayoutUtility.GetLastRect().yMax;
+            if (Event.current.type == EventType.Repaint)
+                myRect.yMax = GUILayoutUtility.GetLastRect().yMax;
         }
     }
 }

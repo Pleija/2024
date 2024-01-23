@@ -51,7 +51,8 @@ namespace Models
                     foreach (var ip in item.GetIPProperties().UnicastAddresses)
                         //IPv4
                         if (type == AddressType.IPv4) {
-                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork) output = ip.Address.ToString();
+                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                                output = ip.Address.ToString();
                         }
                         //IPv6
                         else if (type == AddressType.IPv6) {
@@ -66,13 +67,14 @@ namespace Models
         public static ConnectionMultiplexer Instance {
             get {
                 if (!(self.m_Redis is { IsConnected: true }))
-                    self.m_Redis = ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
+                    self.m_Redis =
+                        ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
                 return self.m_Redis;
             }
         }
 
-        public static void Sub(RedisChannel channel, Action<RedisChannel, RedisValue> handler
-            , CommandFlags flags = CommandFlags.None)
+        public static void Sub(RedisChannel channel, Action<RedisChannel, RedisValue> handler,
+            CommandFlags flags = CommandFlags.None)
         {
             Instance.GetSubscriber().Subscribe(channel, handler, flags);
         }
@@ -82,7 +84,8 @@ namespace Models
             Instance.GetSubscriber().Subscribe(channel, flags);
         }
 
-        public static void Publish(RedisChannel channel, RedisValue message, CommandFlags flags = CommandFlags.None)
+        public static void Publish(RedisChannel channel, RedisValue message,
+            CommandFlags flags = CommandFlags.None)
         {
             Instance.GetSubscriber().Publish(channel, message, flags);
         }
@@ -107,13 +110,15 @@ namespace Models
         //     //     //return m_Redis ??= ConnectionMultiplexer.Connect($"{self.host},password={self.password}");
         //     // }
         // }
-        private Queue<Action<ConnectionMultiplexer>> m_Queue = new Queue<Action<ConnectionMultiplexer>>();
+        private Queue<Action<ConnectionMultiplexer>> m_Queue =
+            new Queue<Action<ConnectionMultiplexer>>();
 
         private async UniTask GetRedis(Action<ConnectionMultiplexer> fn)
         {
             m_Queue.Enqueue(fn);
             if (m_Redis == null)
-                m_Redis = await ConnectionMultiplexer.ConnectAsync($"{self.host},password={self.password}");
+                m_Redis = await ConnectionMultiplexer.ConnectAsync(
+                    $"{self.host},password={self.password}");
             else if (m_Redis.IsConnecting)
                 return;
             else if (m_Redis.IsConnected)

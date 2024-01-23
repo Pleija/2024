@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Particle Collision 2D"), Category("Events/Object")
-     , Description("Called when any Particle System collided with the target collider 2D object")]
+    [Name("Particle Collision 2D"), Category("Events/Object"),
+     Description("Called when any Particle System collided with the target collider 2D object")]
     public class ParticleCollision2DEvents : RouterEventNode<Collider2D>
     {
         private FlowOutput onCollision;

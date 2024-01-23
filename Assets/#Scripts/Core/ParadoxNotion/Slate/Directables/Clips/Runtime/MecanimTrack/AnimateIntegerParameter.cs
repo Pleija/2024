@@ -49,7 +49,8 @@ namespace Slate.ActionClips
 
         protected override void OnUpdate(float deltaTime)
         {
-            actor.SetInteger(parameterName, (int)Mathf.Lerp(lastValue, value, GetClipWeight(deltaTime)));
+            actor.SetInteger(parameterName,
+                (int)Mathf.Lerp(lastValue, value, GetClipWeight(deltaTime)));
         }
 
         protected override void OnReverse()

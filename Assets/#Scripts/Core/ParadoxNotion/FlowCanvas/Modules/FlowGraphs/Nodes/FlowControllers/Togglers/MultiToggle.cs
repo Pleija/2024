@@ -4,10 +4,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Toggle (Multi)")
-     , Description(
-         "Whenever In is called the 'current' output is called as well. Calling '+' or '-' changes the current output respectively up or down.")
-     , Category("Flow Controllers/Togglers"), ContextDefinedOutputs(typeof(int))]
+    [Name("Toggle (Multi)"),
+     Description(
+         "Whenever In is called the 'current' output is called as well. Calling '+' or '-' changes the current output respectively up or down."),
+     Category("Flow Controllers/Togglers"), ContextDefinedOutputs(typeof(int))]
     public class MultiToggle : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

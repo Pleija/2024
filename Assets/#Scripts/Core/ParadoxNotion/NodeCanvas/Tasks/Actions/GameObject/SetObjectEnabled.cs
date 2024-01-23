@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Enabled"), Category("GameObject"), Description("Set the monobehaviour's enabled state.")]
+    [Name("Set Enabled"), Category("GameObject"),
+     Description("Set the monobehaviour's enabled state.")]
     public class SetObjectEnabled : ActionTask<MonoBehaviour>
     {
         public enum SetEnableMode { Disable = 0, Enable = 1, Toggle = 2 }

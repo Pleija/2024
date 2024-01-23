@@ -21,8 +21,8 @@ namespace NodeCanvas.Tasks.Actions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected"), Description("Set a variable on a script"), Name("Set Field", 5)
-     , fsMigrateVersions(typeof(SetField_0))]
+    [Category("✫ Reflected"), Description("Set a variable on a script"), Name("Set Field", 5),
+     fsMigrateVersions(typeof(SetField_0))]
     public class SetField : ActionTask, IReflectedWrapper, IMigratable<SetField_0>
     {
         ///----------------------------------------------------------------------------------------------
@@ -51,7 +51,8 @@ namespace NodeCanvas.Tasks.Actions
             get {
                 if (field == null) return "No Field Selected";
                 if (targetField == null) return field.AsString().FormatError();
-                var mInfo = targetField.IsStatic ? targetField.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                var mInfo = targetField.IsStatic
+                    ? targetField.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
                 return string.Format("{0}.{1} = {2}", mInfo, targetField.Name, setValue);
             }
         }
@@ -91,15 +92,17 @@ namespace NodeCanvas.Tasks.Actions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object), SetTargetField
-                            , menu);
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(),
+                            typeof(object), SetTargetField, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(object), SetTargetField, menu);
+                    menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(object),
+                        SetTargetField, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(object), SetTargetField, menu);
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(object),
+                            SetTargetField, menu);
                 }
                 menu.ShowAsBrowser("Select Field", GetType());
                 Event.current.Use();
@@ -107,11 +110,13 @@ namespace NodeCanvas.Tasks.Actions
 
             if (targetField != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetField.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetField.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Field", targetField.Name);
-                UnityEditor.EditorGUILayout.LabelField("Field Type", targetField.FieldType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetField)
-                    , UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.LabelField("Field Type",
+                    targetField.FieldType.FriendlyName());
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetField),
+                    UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Set Value", setValue);
             }

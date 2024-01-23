@@ -32,7 +32,8 @@ namespace Runner.UI.Shop
         private void LoadedCharacter(AsyncOperationHandle<GameObject> op, int currentIndex)
         {
             if (op.Result == null) {
-                Debug.LogWarning(string.Format("Unable to load header {0}.", headerPrefab.RuntimeKey));
+                Debug.LogWarning(string.Format("Unable to load header {0}.",
+                    headerPrefab.RuntimeKey));
             }
             else {
                 var c = m_CharacterList[currentIndex];
@@ -46,12 +47,14 @@ namespace Runner.UI.Shop
             }
         }
 
-        private void LoadedAccessory(AsyncOperationHandle<GameObject> op, int characterIndex, int accessoryIndex)
+        private void LoadedAccessory(AsyncOperationHandle<GameObject> op, int characterIndex,
+            int accessoryIndex)
         {
             var c = m_CharacterList[characterIndex];
 
             if (op.Result == null) {
-                Debug.LogWarning(string.Format("Unable to load shop accessory list {0}.", prefabItem.Asset.name));
+                Debug.LogWarning(string.Format("Unable to load shop accessory list {0}.",
+                    prefabItem.Asset.name));
             }
             else {
                 var accessory = c.accessories[accessoryIndex];
@@ -85,9 +88,10 @@ namespace Runner.UI.Shop
                 //we finish the current character accessory, load the next character
                 characterIndex++;
                 if (characterIndex < m_CharacterList.Count)
-                    Addressables.LoadAssetAsync<GameObject>(headerPrefab).Completed += (innerOp) => {
-                        LoadedCharacter(innerOp, characterIndex);
-                    };
+                    Addressables.LoadAssetAsync<GameObject>(headerPrefab).Completed +=
+                        (innerOp) => {
+                            LoadedCharacter(innerOp, characterIndex);
+                        };
             }
             else {
                 Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (innerOp) => {
@@ -96,7 +100,8 @@ namespace Runner.UI.Shop
             }
         }
 
-        public void RefreshButton(ShopItemListItem itm, CharacterAccessories accessory, string compoundName)
+        public void RefreshButton(ShopItemListItem itm, CharacterAccessories accessory,
+            string compoundName)
         {
             if (accessory.cost > PlayerData.instance.coins) {
                 itm.buyButton.interactable = false;
@@ -117,7 +122,8 @@ namespace Runner.UI.Shop
             if (PlayerData.instance.characterAccessories.Contains(compoundName)) {
                 itm.buyButton.interactable = false;
                 itm.buyButton.image.sprite = itm.disabledButtonSprite;
-                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = "Owned";
+                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text =
+                    "Owned";
             }
         }
 
@@ -134,14 +140,14 @@ namespace Runner.UI.Shop
             var itemId = name;
             var itemType = "non_consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level
-                , transactionId);
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId,
+                itemType, level, transactionId);
             if (cost > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                   // Currency type
                     transactionContext, cost, itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
             if (premiumCost > 0)
-                AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                         // Currency type
+                AnalyticsEvent.ItemSpent(AcquisitionType.Premium, // Currency type
                     transactionContext, premiumCost, itemId, PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);
 #endif

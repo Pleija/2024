@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("OSC Pulse"), Category("Events/Other")
-     , Description(
+    [Name("OSC Pulse"), Category("Events/Other"),
+     Description(
          "Calls Hi when curve value is greater than 0, else calls Low.\nThe curve is evaluated over time and it's evaluated value is exposed")]
     public class OscillatorEvent : EventNode, IUpdatable
     {

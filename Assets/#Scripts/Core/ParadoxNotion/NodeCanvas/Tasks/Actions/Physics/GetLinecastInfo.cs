@@ -28,7 +28,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnExecute()
         {
-            if (Physics.Linecast(agent.position, target.value.transform.position, out hit, layerMask.value)) {
+            if (Physics.Linecast(agent.position, target.value.transform.position, out hit,
+                layerMask.value)) {
                 saveHitGameObjectAs.value = hit.collider.gameObject;
                 saveDistanceAs.value = hit.distance;
                 savePointAs.value = hit.point;
@@ -41,7 +42,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public override void OnDrawGizmosSelected()
         {
-            if (agent && target.value) Gizmos.DrawLine(agent.position, target.value.transform.position);
+            if (agent && target.value)
+                Gizmos.DrawLine(agent.position, target.value.transform.position);
         }
     }
 }

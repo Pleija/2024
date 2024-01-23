@@ -5,8 +5,9 @@ using NodeCanvas.StateMachines;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility")
-     , Description("Check the parent state status. This condition is only meant to be used along with an FSM system.")]
+    [Category("✫ Utility"),
+     Description(
+         "Check the parent state status. This condition is only meant to be used along with an FSM system.")]
     public class CheckStateStatus : ConditionTask
     {
         public CompactStatus status = CompactStatus.Success;

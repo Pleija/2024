@@ -8,7 +8,8 @@ using UnityEngine;
 namespace NodeCanvas.Framework
 {
     /// <summary>
-    ///     Base class for Conditions. Conditions dont span multiple frames like actions and return true or false
+    ///     Base class for Conditions. Conditions dont span multiple frames like actions and return true or
+    ///     false
     ///     immediately on execution. Derive this to create your own.
     /// </summary>
     //Generic version to define the AgentType where T is the agentType (Component or Interface) required by the Condition.
@@ -58,7 +59,8 @@ namespace NodeCanvas.Framework
         }
 
         [Obsolete("Use 'Check'")]
-        public bool CheckCondition(Component agent, IBlackboard blackboard) => Check(agent, blackboard);
+        public bool CheckCondition(Component agent, IBlackboard blackboard) =>
+            Check(agent, blackboard);
 
         ///<summary>Check the condition for the provided agent and with the provided blackboard</summary>
         public bool Check(Component agent, IBlackboard blackboard)
@@ -84,7 +86,10 @@ namespace NodeCanvas.Framework
             return result;
         }
 
-        ///<summary>Helper method that holds the return value provided for one frame, for the condition to return.</summary>
+        /// <summary>
+        ///     Helper method that holds the return value provided for one frame, for the condition to
+        ///     return.
+        /// </summary>
         protected void YieldReturn(bool value)
         {
             if (isRuntimeEnabled) {
@@ -109,7 +114,10 @@ namespace NodeCanvas.Framework
         ///<summary>Override to do things when condition is disabled</summary>
         protected virtual void OnDisable() { }
 
-        ///<summary>Override to return whether the condition is true or false. The result will be inverted if Invert is checked.</summary>
+        /// <summary>
+        ///     Override to return whether the condition is true or false. The result will be inverted if
+        ///     Invert is checked.
+        /// </summary>
         protected virtual bool OnCheck() => true;
 
         ///----------------------------------------------------------------------------------------------

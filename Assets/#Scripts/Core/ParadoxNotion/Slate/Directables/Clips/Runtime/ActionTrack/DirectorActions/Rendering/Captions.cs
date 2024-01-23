@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Rendering")
-     , Description(
+    [Category("Rendering"),
+     Description(
          "Shows closed captions at the bottom of the screen. Note that the Play Audio clips of the Audio Track are also able to show subtitles in sync with the audio. Use this for non audible subtitles or captions.")]
     public class Captions : DirectorActionClip
     {

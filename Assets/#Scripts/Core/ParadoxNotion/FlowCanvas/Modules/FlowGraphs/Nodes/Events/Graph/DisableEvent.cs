@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Disable", 4), Category("Events/Graph"), Description("Called whenever the Graph is Disabled")
-     , ExecutionPriority(4)]
+    [Name("On Disable", 4), Category("Events/Graph"),
+     Description("Called whenever the Graph is Disabled"), ExecutionPriority(4)]
     public class DisableEvent : EventNode
     {
         private FlowOutput disable;

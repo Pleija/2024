@@ -2,8 +2,8 @@
 
 namespace Slate
 {
-    [Attachable(typeof(RuntimeRecorderTrack))
-     , Description(
+    [Attachable(typeof(RuntimeRecorderTrack)),
+     Description(
          "Use the runtime recorder clip to record transform animation (position, rotation, scale) of the actor and its children objects in runtime.\n\nIt is highly recomended to group multiple objects if they are related (like for example a character or chunks of a physics shatter) under an empty root gameobject and use that empty root gameobject as the actor of this group.")]
     public class RuntimeRecorderClip : ActionClip, ISubClipContainable
     {
@@ -55,7 +55,8 @@ namespace Slate
         ///----------------------------------------------------------------------------------------------
         private void Open()
         {
-            if (armed && Application.isPlaying) recorder = new RuntimeRecorder(actor, track.recorderOptions);
+            if (armed && Application.isPlaying)
+                recorder = new RuntimeRecorder(actor, track.recorderOptions);
         }
 
         protected override void OnUpdate(float time, float previousTime)
@@ -89,7 +90,8 @@ namespace Slate
         private void PlayModeChange(UnityEditor.PlayModeStateChange state)
         {
             if (state == UnityEditor.PlayModeStateChange.EnteredEditMode) armed = false;
-            if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode && armed) dataClip.ClearCurves();
+            if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode && armed)
+                dataClip.ClearCurves();
         }
 
         protected override void OnClipGUI(Rect rect)
@@ -99,7 +101,8 @@ namespace Slate
                 GUI.Label(rect, "<b>ARMED</b>", Styles.centerLabel);
             }
             if (dataClip != null)
-                EditorTools.DrawLoopedLines(rect, dataClip.length / subClipSpeed, length, subClipOffset);
+                EditorTools.DrawLoopedLines(rect, dataClip.length / subClipSpeed, length,
+                    subClipOffset);
         }
 #endif
         ///----------------------------------------------------------------------------------------------

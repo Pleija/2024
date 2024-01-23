@@ -16,7 +16,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
             // Enum.ToObject(Type, int) are not -- so we get around this by boxing the value.
             Enum.ToObject(storageType, (object)0);
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             if (fsGlobalConfig.SerializeEnumsAsInteger) {
                 serialized = new fsData(Convert.ToInt64(instance));
@@ -47,7 +48,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
         public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType)
         {
             if (data.IsString) {
-                var enumValues = data.AsString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var enumValues =
+                    data.AsString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 long instanceValue = 0;
 
                 for (var i = 0; i < enumValues.Length; ++i) {
@@ -56,8 +58,10 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     // Verify that the enum name exists; Enum.TryParse is only available in .NET 4.0
                     // and above :(.
                     if (ArrayContains(Enum.GetNames(storageType), enumValue) == false)
-                        return fsResult.Fail("Cannot find enum name " + enumValue + " on type " + storageType);
-                    var flagValue = (long)Convert.ChangeType(Enum.Parse(storageType, enumValue), typeof(long));
+                        return fsResult.Fail("Cannot find enum name " + enumValue + " on type " +
+                            storageType);
+                    var flagValue = (long)Convert.ChangeType(Enum.Parse(storageType, enumValue),
+                        typeof(long));
                     instanceValue |= flagValue;
                 }
                 instance = Enum.ToObject(storageType, (object)instanceValue);

@@ -28,7 +28,8 @@ namespace ParadoxNotion
         {
             for (var i = list.Count; i-- > 0;) {
                 var element = list[i];
-                if (element.TryGetTarget(out var reference) && ReferenceEquals(reference, item)) list.Remove(element);
+                if (element.TryGetTarget(out var reference) && ReferenceEquals(reference, item))
+                    list.Remove(element);
             }
         }
 

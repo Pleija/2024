@@ -15,9 +15,10 @@ using Puerts.TypeMapping;
 public class InstructionsFilter
 {
     private static HashSet<string> skipAssembles = new HashSet<string>() {
-        "mscorlib", "System.Core", "System.Xml", "System.Data", "System.Windows.Forms"
-        , "System.ComponentModel.DataAnnotations", "UnityEngine.CoreModule", "UnityEditor.CoreModule"
-        , "UnityEditor.Graphs", "Unity.Plastic.Newtonsoft.Json", "nunit.framework", "UnityEditor.GraphViewModule",
+        "mscorlib", "System.Core", "System.Xml", "System.Data", "System.Windows.Forms",
+        "System.ComponentModel.DataAnnotations", "UnityEngine.CoreModule", "UnityEditor.CoreModule",
+        "UnityEditor.Graphs", "Unity.Plastic.Newtonsoft.Json", "nunit.framework",
+        "UnityEditor.GraphViewModule",
     };
 
     [Filter]

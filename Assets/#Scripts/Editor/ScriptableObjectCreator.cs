@@ -15,10 +15,11 @@ namespace Editors
 {
     public class ScriptableObjectCreator : OdinMenuEditorWindow
     {
-        private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(AssemblyUtilities
-            .GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
-                t.IsClass && !t.IsAbstract && typeof(ModelBase).IsAssignableFrom(t) && t != typeof(ModelBase) &&
-                !t.IsGenericType && !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
+        private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(
+            AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
+                t.IsClass && !t.IsAbstract && typeof(ModelBase).IsAssignableFrom(t) &&
+                t != typeof(ModelBase) && !t.IsGenericType &&
+                !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
         //.ToHashSet();
 
         [MenuItem("Tools/Models Manager", priority = -10000)]
@@ -66,9 +67,11 @@ namespace Editors
                 var t = SelectedType;
                 if (t != null && !t.IsAbstract)
                     previewObject =
-                        t.GetProperty("self"
-                                , BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)!
-                            .GetValue(null, null) as ScriptableObject; //CreateInstance(t) as ScriptableObject;
+                        t.GetProperty("self",
+                                    BindingFlags.Public | BindingFlags.Static |
+                                    BindingFlags.FlattenHierarchy)!
+                                .GetValue(null, null) as
+                            ScriptableObject; //CreateInstance(t) as ScriptableObject;
             };
             return tree;
         }
@@ -89,7 +92,9 @@ namespace Editors
 
         protected override void DrawEditor(int index)
         {
-            if (previewObject) GUILayout.Box(AssetDatabase.GetAssetPath(previewObject), GUILayout.ExpandWidth(true));
+            if (previewObject)
+                GUILayout.Box(AssetDatabase.GetAssetPath(previewObject),
+                    GUILayout.ExpandWidth(true));
             scroll = GUILayout.BeginScrollView(scroll);
             {
                 var myStyle = new GUIStyle();
@@ -104,7 +109,8 @@ namespace Editors
                 GUILayout.FlexibleSpace();
                 SirenixEditorGUI.HorizontalLineSeparator(1);
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Select", GUILayoutOptions.Height(30))) AssetDatabase.OpenAsset(previewObject);
+                if (GUILayout.Button("Select", GUILayoutOptions.Height(30)))
+                    AssetDatabase.OpenAsset(previewObject);
                 if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30))) CreateAsset();
                 GUILayout.EndHorizontal();
             }

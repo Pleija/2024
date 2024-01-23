@@ -94,25 +94,27 @@ namespace FlowCanvas.Nodes
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Name("Per Second (Float)"), Category("Time")
-     , Description("Mutliply input value by Time.deltaTime and optional multiplier")]
+    [Name("Per Second (Float)"), Category("Time"),
+     Description("Mutliply input value by Time.deltaTime and optional multiplier")]
     public class DeltaTimed : PureFunctionNode<float, float, float>
     {
-        public override float Invoke(float value, float multiplier = 1) => value * multiplier * Time.deltaTime;
+        public override float Invoke(float value, float multiplier = 1) =>
+            value * multiplier * Time.deltaTime;
     }
 
-    [Name("Per Second (Vector3)"), Category("Time")
-     , Description("Mutliply input value by Time.deltaTime and optional multiplier")]
+    [Name("Per Second (Vector3)"), Category("Time"),
+     Description("Mutliply input value by Time.deltaTime and optional multiplier")]
     public class DeltaTimedVector3 : PureFunctionNode<Vector3, Vector3, float>
     {
-        public override Vector3 Invoke(Vector3 value, float multiplier = 1) => value * multiplier * Time.deltaTime;
+        public override Vector3 Invoke(Vector3 value, float multiplier = 1) =>
+            value * multiplier * Time.deltaTime;
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("Time")
-     , Description(
-         "Input values are buffered and returned in order of buffering once the buffered amount reaches the buffer size. In practice this creates a delayed value output when the node is constantly updated per-frame.\nWhen the node ceases to update, a new buffer is created.")
-     , ExposeAsDefinition]
+    [Category("Time"),
+     Description(
+         "Input values are buffered and returned in order of buffering once the buffered amount reaches the buffer size. In practice this creates a delayed value output when the node is constantly updated per-frame.\nWhen the node ceases to update, a new buffer is created."),
+     ExposeAsDefinition]
     public class Buffer<T> : PureFunctionNode<T, T, int>
     {
         private int lastFrame = -10;
@@ -130,16 +132,16 @@ namespace FlowCanvas.Nodes
         }
     }
 
-    [Name("Damp (Float)"), Category("Time")
-     , Description("Returns a smoothly interpolated value towards the input value.")]
+    [Name("Damp (Float)"), Category("Time"),
+     Description("Returns a smoothly interpolated value towards the input value.")]
     public class DampFloat : PureFunctionNode<float, float, float, float>
     {
         public override float Invoke(float current, float target, float damp = 1f) =>
             Mathf.Lerp(current, target, damp * Time.deltaTime);
     }
 
-    [Name("Damp (Vector3)"), Category("Time")
-     , Description("Returns a smoothly interpolated value towards the input value.")]
+    [Name("Damp (Vector3)"), Category("Time"),
+     Description("Returns a smoothly interpolated value towards the input value.")]
     public class DampVector3 : PureFunctionNode<Vector3, Vector3, Vector3, float>
     {
         public override Vector3 Invoke(Vector3 current, Vector3 target, float damp = 1f) =>

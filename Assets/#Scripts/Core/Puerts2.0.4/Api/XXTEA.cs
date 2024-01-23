@@ -30,30 +30,54 @@ public sealed class XXTEA
     public static byte[] Encrypt(byte[] data, byte[] key)
     {
         if (data.Length == 0) return data;
-        return ToByteArray(Encrypt(ToUInt32Array(data, true), ToUInt32Array(FixKey(key), false)), false);
+        return ToByteArray(Encrypt(ToUInt32Array(data, true), ToUInt32Array(FixKey(key), false)),
+            false);
     }
 
     public static byte[] Encrypt(string data, byte[] key) => Encrypt(utf8.GetBytes(data), key);
     public static byte[] Encrypt(byte[] data, string key) => Encrypt(data, utf8.GetBytes(key));
-    public static byte[] Encrypt(string data, string key) => Encrypt(utf8.GetBytes(data), utf8.GetBytes(key));
-    public static string EncryptToBase64String(byte[] data, byte[] key) => Convert.ToBase64String(Encrypt(data, key));
-    public static string EncryptToBase64String(string data, byte[] key) => Convert.ToBase64String(Encrypt(data, key));
-    public static string EncryptToBase64String(byte[] data, string key) => Convert.ToBase64String(Encrypt(data, key));
-    public static string EncryptToBase64String(byte[] data) => Convert.ToBase64String(Encrypt(data, Key));
-    public static string EncryptToBase64String(string data, string key) => Convert.ToBase64String(Encrypt(data, key));
-    public static string EncryptToBase64String(string data) => Convert.ToBase64String(Encrypt(data, Key));
+
+    public static byte[] Encrypt(string data, string key) =>
+        Encrypt(utf8.GetBytes(data), utf8.GetBytes(key));
+
+    public static string EncryptToBase64String(byte[] data, byte[] key) =>
+        Convert.ToBase64String(Encrypt(data, key));
+
+    public static string EncryptToBase64String(string data, byte[] key) =>
+        Convert.ToBase64String(Encrypt(data, key));
+
+    public static string EncryptToBase64String(byte[] data, string key) =>
+        Convert.ToBase64String(Encrypt(data, key));
+
+    public static string EncryptToBase64String(byte[] data) =>
+        Convert.ToBase64String(Encrypt(data, Key));
+
+    public static string EncryptToBase64String(string data, string key) =>
+        Convert.ToBase64String(Encrypt(data, key));
+
+    public static string EncryptToBase64String(string data) =>
+        Convert.ToBase64String(Encrypt(data, Key));
 
     public static byte[] Decrypt(byte[] data, byte[] key)
     {
         if (data.Length == 0) return data;
-        return ToByteArray(Decrypt(ToUInt32Array(data, false), ToUInt32Array(FixKey(key), false)), true);
+        return ToByteArray(Decrypt(ToUInt32Array(data, false), ToUInt32Array(FixKey(key), false)),
+            true);
     }
 
     public static byte[] Decrypt(byte[] data, string key) => Decrypt(data, utf8.GetBytes(key));
-    public static byte[] DecryptBase64String(string data, byte[] key) => Decrypt(Convert.FromBase64String(data), key);
-    public static byte[] DecryptBase64String(string data, string key) => Decrypt(Convert.FromBase64String(data), key);
-    public static string DecryptToString(byte[] data, byte[] key) => utf8.GetString(Decrypt(data, key));
-    public static string DecryptToString(byte[] data, string key) => utf8.GetString(Decrypt(data, key));
+
+    public static byte[] DecryptBase64String(string data, byte[] key) =>
+        Decrypt(Convert.FromBase64String(data), key);
+
+    public static byte[] DecryptBase64String(string data, string key) =>
+        Decrypt(Convert.FromBase64String(data), key);
+
+    public static string DecryptToString(byte[] data, byte[] key) =>
+        utf8.GetString(Decrypt(data, key));
+
+    public static string DecryptToString(byte[] data, string key) =>
+        utf8.GetString(Decrypt(data, key));
 
     public static string DecryptBase64StringToString(string data, byte[] key) =>
         utf8.GetString(DecryptBase64String(data, key));
@@ -61,7 +85,8 @@ public sealed class XXTEA
     public static string DecryptBase64StringToString(string data, string key) =>
         utf8.GetString(DecryptBase64String(data, key));
 
-    public static string DecryptBase64StringToString(string data) => utf8.GetString(DecryptBase64String(data, Key));
+    public static string DecryptBase64StringToString(string data) =>
+        utf8.GetString(DecryptBase64String(data, Key));
 
     private static uint[] Encrypt(uint[] v, uint[] k)
     {

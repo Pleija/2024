@@ -44,7 +44,8 @@ namespace App
         private static bool updated;
 
         public bool isAgreed {
-            get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) && PlayerPrefs.HasKey(PrivacyKey);
+            get => (!(Application.isEditor || Debug.isDebugBuild) || clicked) &&
+                PlayerPrefs.HasKey(PrivacyKey);
             set {
                 clicked = value;
                 if (value)
@@ -76,7 +77,8 @@ namespace App
         private void Awake()
         {
             OnAwake?.Invoke();
-            if (Application.isEditor && DebugLogManager.Instance) DebugLogManager.Instance.gameObject.SetActive(false);
+            if (Application.isEditor && DebugLogManager.Instance)
+                DebugLogManager.Instance.gameObject.SetActive(false);
         }
 
         public static void Restart()
@@ -207,7 +209,8 @@ namespace App
                 Debug.Log("Catalog updated");
                 if (p2.IsValid()) Addressables.Release(p2);
             }
-            else if (p1.Status != AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey)) {
+            else if (p1.Status != AsyncOperationStatus.Succeeded &&
+                !PlayerPrefs.HasKey(FirstUpdateKey)) {
                 StartCoroutine(Offline());
                 yield break;
             }
@@ -228,21 +231,25 @@ namespace App
                 Debug.Log($"items({changes.Count}):\n" + string.Join("\n", changes));
                 Debug.Log($"total size: {p3.Result / 1024f / 1024f:f3}MB");
                 var p4 = Res.DownloadAll();
-                var total = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
+                var total = (float)p4.GetDownloadStatus().TotalBytes -
+                    p4.GetDownloadStatus().DownloadedBytes;
                 Debug.Log($"download total size: {total / 1024 / 1024:f2}Mb");
 
                 while (p4.IsValid() && !p4.IsDone) {
-                    var current = (float)p4.GetDownloadStatus().TotalBytes - p4.GetDownloadStatus().DownloadedBytes;
+                    var current = (float)p4.GetDownloadStatus().TotalBytes -
+                        p4.GetDownloadStatus().DownloadedBytes;
                     text = $"{(int)((1 - current / total) * 100)}%" +
                         (current != 0 ? $" ({current / 1024 / 1024:f0}MB)" : "");
                     progress.value = 1f - current / total;
                     yield return null;
                 }
                 Debug.Log($"Download Finish: {p4.Status}");
-                if (p4.Status == AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey))
+                if (p4.Status == AsyncOperationStatus.Succeeded &&
+                    !PlayerPrefs.HasKey(FirstUpdateKey))
                     PlayerPrefs.SetInt(FirstUpdateKey, 1);
 
-                if (p4.Status != AsyncOperationStatus.Succeeded && !PlayerPrefs.HasKey(FirstUpdateKey)) {
+                if (p4.Status != AsyncOperationStatus.Succeeded &&
+                    !PlayerPrefs.HasKey(FirstUpdateKey)) {
                     StartCoroutine(Offline());
                     yield break;
                 }
@@ -306,7 +313,8 @@ namespace App
             if (Application.isEditor) {
 #if UNITY_EDITOR
                 var path = AssetDatabase.GetAssetPath(scene.editorAsset);
-                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(path /*"Assets/Scenes/Start.unity"*/
+                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(
+                    path /*"Assets/Scenes/Start.unity"*/
                     , new LoadSceneParameters() { loadSceneMode = LoadSceneMode.Single });
 
                 // while(!p1.isDone && p1.) {

@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [System.Obsolete, Category("Mutators (beta)"), Name("Node Toggler")
-     , Description(
+    [System.Obsolete, Category("Mutators (beta)"), Name("Node Toggler"),
+     Description(
          "Enable, Disable or Toggle one or more nodes with provided tag. In practise their incomming connections are disabled\nBeta Feature!")]
     public class NodeToggler : BTNode
     {
@@ -47,9 +47,10 @@ namespace NodeCanvas.BehaviourTrees
 
         protected override void OnNodeInspectorGUI()
         {
-            targetNodeTag = EditorUtils.Popup<string>("Node Tag", targetNodeTag
-                , graph.GetAllTagedNodes<Node>().Select(n => n.tag));
-            toggleMode = (ToggleMode)UnityEditor.EditorGUILayout.EnumPopup("Toggle Mode", toggleMode);
+            targetNodeTag = EditorUtils.Popup<string>("Node Tag", targetNodeTag,
+                graph.GetAllTagedNodes<Node>().Select(n => n.tag));
+            toggleMode =
+                (ToggleMode)UnityEditor.EditorGUILayout.EnumPopup("Toggle Mode", toggleMode);
         }
 
 #endif

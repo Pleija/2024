@@ -57,14 +57,15 @@ namespace SqlCipher4Unity3D
                 if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
                     //if (!Application.isPlaying) {
-                    result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}")
-                        .Select(x => AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x)))
+                    result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}").Select(x =>
+                            AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x)))
                         .FirstOrDefault();
                     // }
 #endif
                     if (Application.isPlaying && !Application.isEditor)
                         if (result == null && Res.Exists<T>() is { } locations) {
-                            result = Addressables.LoadAssetAsync<T>(locations.PrimaryKey).WaitForCompletion();
+                            result = Addressables.LoadAssetAsync<T>(locations.PrimaryKey)
+                                .WaitForCompletion();
                             Debug.Log($"Load: {typeof(T).Name} => {locations.PrimaryKey}");
                         }
                     if (result == null) Debug.Log($"{typeof(T).Name} asset not found");
@@ -92,7 +93,8 @@ namespace SqlCipher4Unity3D
                 //if (result) {
                 Defaults[typeof(T)] = m_Instance = result as T;
                 Setup(result, table);
-                if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying) result.SetupFromRedis();
+                if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying)
+                    result.SetupFromRedis();
                 // }
                 // else {
                 //     Debug.Log($"{typeof(T).FullName} asset not found");
@@ -105,7 +107,8 @@ namespace SqlCipher4Unity3D
             var json = Redis.Database.StringGet(GetType().FullName);
             var value = CreateInstance<T>();
             JsonUtility.FromJsonOverwrite(json, value);
-            value.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            value.GetType()
+                .GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(x => Regex.IsMatch(x.Name, @"^[A-Z]")).ForEach(mi => {
                     if (mi is PropertyInfo { CanRead: true, CanWrite: true } propertyInfo) {
                         var newValue = propertyInfo.GetValue(value, null);
@@ -167,8 +170,9 @@ namespace SqlCipher4Unity3D
                                 propertyInfo.SetValue(asset, value);
                                 break;
                             case FieldInfo fieldInfo:
-                                value = fieldInfo.GetValue(table) ?? (fieldInfo.FieldType == typeof(string) ? ""
-                                    : Activator.CreateInstance(fieldInfo.FieldType));
+                                value = fieldInfo.GetValue(table) ??
+                                    (fieldInfo.FieldType == typeof(string) ? ""
+                                        : Activator.CreateInstance(fieldInfo.FieldType));
                                 fieldInfo.SetValue(asset, value);
                                 break;
                         }
@@ -213,7 +217,8 @@ namespace SqlCipher4Unity3D
         private void TestSave()
         {
             Save();
-            Debug.Log(JsonConvert.SerializeObject(Connection.Table<T>().FirstOrDefault(), Formatting.Indented));
+            Debug.Log(JsonConvert.SerializeObject(Connection.Table<T>().FirstOrDefault(),
+                Formatting.Indented));
         }
 
         [ButtonGroup("2")]

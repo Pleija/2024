@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace NodeCanvas.Framework.Internal
 {
-    ///<summary>Wraps a MethodInfo with the relevant BBParameters to be called within a Reflection based Task</summary>
+    /// <summary>
+    ///     Wraps a MethodInfo with the relevant BBParameters to be called within a Reflection based
+    ///     Task
+    /// </summary>
     public abstract class ReflectedWrapper : IReflectedWrapper
     {
         //required
@@ -39,7 +42,10 @@ namespace NodeCanvas.Framework.Internal
         public abstract void Init(object instance);
     }
 
-    ///<summary>Wraps a MethodInfo Action with the relevant BBVariables to be commonly called within a Reflection based Task</summary>
+    /// <summary>
+    ///     Wraps a MethodInfo Action with the relevant BBVariables to be commonly called within a
+    ///     Reflection based Task
+    /// </summary>
     public abstract class ReflectedActionWrapper : ReflectedWrapper
     {
         public new static ReflectedActionWrapper Create(MethodInfo method, IBlackboard bb)
@@ -58,8 +64,8 @@ namespace NodeCanvas.Framework.Internal
 
             for (var i = 0; i < parameters.Length; i++) {
                 var parameter = parameters[i];
-                var pType = parameter.ParameterType.IsByRef ? parameter.ParameterType.GetElementType()
-                    : parameter.ParameterType;
+                var pType = parameter.ParameterType.IsByRef
+                    ? parameter.ParameterType.GetElementType() : parameter.ParameterType;
                 argTypes[i] = pType;
             }
             var o = (ReflectedActionWrapper)Activator.CreateInstance(argTypes.Length > 0
@@ -78,7 +84,10 @@ namespace NodeCanvas.Framework.Internal
         public abstract void Call();
     }
 
-    ///<summary>Wraps a MethodInfo Function with the relevant BBVariables to be commonly called within a Reflection based Task</summary>
+    /// <summary>
+    ///     Wraps a MethodInfo Function with the relevant BBVariables to be commonly called within a
+    ///     Reflection based Task
+    /// </summary>
     public abstract class ReflectedFunctionWrapper : ReflectedWrapper
     {
         public new static ReflectedFunctionWrapper Create(MethodInfo method, IBlackboard bb)
@@ -98,11 +107,12 @@ namespace NodeCanvas.Framework.Internal
 
             for (var i = 0; i < parameters.Length; i++) {
                 var parameter = parameters[i];
-                var pType = parameter.ParameterType.IsByRef ? parameter.ParameterType.GetElementType()
-                    : parameter.ParameterType;
+                var pType = parameter.ParameterType.IsByRef
+                    ? parameter.ParameterType.GetElementType() : parameter.ParameterType;
                 argTypes[i + 1] = pType;
             }
-            var o = (ReflectedFunctionWrapper)Activator.CreateInstance(type.RTMakeGenericType(argTypes.ToArray()));
+            var o = (ReflectedFunctionWrapper)Activator.CreateInstance(
+                type.RTMakeGenericType(argTypes.ToArray()));
             o._targetMethod = new SerializedMethodInfo(method);
             BBParameter.SetBBFields(o, bb);
             var bbParams = o.GetVariables();

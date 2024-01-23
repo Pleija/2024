@@ -32,7 +32,8 @@ namespace Slate.ActionClips
                 actor.transform.localScale = targetScale;
                 return;
             }
-            actor.transform.localScale = Easing.Ease(interpolation, originalPos, targetScale, deltaTime / length);
+            actor.transform.localScale = Easing.Ease(interpolation, originalPos, targetScale,
+                deltaTime / length);
         }
 
         protected override void OnReverse()

@@ -109,8 +109,10 @@ namespace Puerts
                 if (parameterConstraints.Length == 0) return false;
                 foreach (var parameterConstraint in parameterConstraints)
                     // the constraint could not be another genericType #533
-                    if (!parameterConstraint.IsClass() || parameterConstraint == typeof(ValueType) ||
-                        (parameterConstraint.IsGenericType && !parameterConstraint.IsGenericTypeDefinition))
+                    if (!parameterConstraint.IsClass() ||
+                        parameterConstraint == typeof(ValueType) ||
+                        (parameterConstraint.IsGenericType &&
+                            !parameterConstraint.IsGenericTypeDefinition))
                         return false;
                 validTypes.Add(type);
                 return true;
@@ -120,7 +122,8 @@ namespace Puerts
             }
         }
 
-        public static bool IsNotGenericOrValidGeneric(MethodInfo method, ParameterInfo[] pinfos = null)
+        public static bool IsNotGenericOrValidGeneric(MethodInfo method,
+            ParameterInfo[] pinfos = null)
         {
             // 不包含泛型参数，肯定支持  todo 开启所有泛型
             if (!method.ContainsGenericParameters) return true;
@@ -133,7 +136,8 @@ namespace Puerts
             }
             return validGenericParameter.Count > 0 && (
                 // 返回值也需要判断，必须是非泛型，或者是可用泛型参数里正好也包括返回类型
-                !method.ReturnType.IsGenericParameter || validGenericParameter.Contains(method.ReturnType));
+                !method.ReturnType.IsGenericParameter ||
+                validGenericParameter.Contains(method.ReturnType));
         }
 
         public static bool IsSupportedMethod(MethodInfo method)
@@ -155,14 +159,16 @@ namespace Puerts
                 if (parameterType.IsGenericParameter) {
                     // 所有参数的基类都不是值类型，且不是另一个泛型
                     if (parameterType.BaseType != null && (parameterType.BaseType.IsValueType ||
-                        (parameterType.BaseType.IsGenericType && !parameterType.BaseType.IsGenericTypeDefinition)))
+                        (parameterType.BaseType.IsGenericType &&
+                            !parameterType.BaseType.IsGenericTypeDefinition)))
                         return false;
                     var parameterConstraints = parameterType.GetGenericParameterConstraints();
                     // 所有泛型参数都有值类型约束
                     if (parameterConstraints.Length == 0) return false;
                     foreach (var parameterConstraint in parameterConstraints)
                         // 所有泛型参数的类型约束都不是值类型
-                        if (!parameterConstraint.IsClass() || parameterConstraint == typeof(ValueType))
+                        if (!parameterConstraint.IsClass() ||
+                            parameterConstraint == typeof(ValueType))
                             return false;
                     hasValidGenericParameter = true;
                     if (!returnTypeValid)
@@ -176,9 +182,11 @@ namespace Puerts
         public static MethodInfo[] GetMethodAndOverrideMethodByName(Type type, string name)
         {
             var allMethods = type.GetMember(name).Select(m => (MethodInfo)m).ToArray();
-            var errorMethods = type.GetMethods().Where(m => m.DeclaringType != type && IsObsoleteError(m))
-                .GroupBy(m => m.Name).ToDictionary(i => i.Key
-                    , i => i.Cast<MethodInfo>().Select(m => m.GetParameters().Select(o => o.ParameterType).ToArray()));
+            var errorMethods = type.GetMethods()
+                .Where(m => m.DeclaringType != type && IsObsoleteError(m)).GroupBy(m => m.Name)
+                .ToDictionary(i => i.Key,
+                    i => i.Cast<MethodInfo>().Select(m =>
+                        m.GetParameters().Select(o => o.ParameterType).ToArray()));
             IEnumerable<Type[]> matchTypes;
             var objType = typeof(object);
 
@@ -186,8 +194,10 @@ namespace Puerts
                 type = type.BaseType;
                 var methods = type.GetMember(name).Select(m => (MethodInfo)m)
                     .Where(m => !IsObsoleteError(m) && !IsVirtualMethod(m)).Where(m =>
-                        !errorMethods.TryGetValue(m.Name, out matchTypes) || !IsMatchParameters(matchTypes
-                            , m.GetParameters().Select(o => o.ParameterType).ToArray())) //filter override method
+                        !errorMethods.TryGetValue(m.Name, out matchTypes) ||
+                        !IsMatchParameters(matchTypes,
+                            m.GetParameters().Select(o => o.ParameterType)
+                                .ToArray())) //filter override method
                     .ToArray();
                 if (methods.Length > 0) allMethods = allMethods.Concat(methods).ToArray();
             }
@@ -198,20 +208,27 @@ namespace Puerts
         {
             var allMethods = type.GetMethods(flag);
             var methodNames = allMethods.Select(m => m.Name).ToArray();
-            var errorMethods = type.GetMethods().Where(m => m.DeclaringType != type && IsObsoleteError(m))
-                .GroupBy(m => m.Name).ToDictionary(i => i.Key
-                    , i => i.Cast<MethodInfo>().Select(m => m.GetParameters().Select(o => o.ParameterType).ToArray()));
+            var errorMethods = type.GetMethods()
+                .Where(m => m.DeclaringType != type && IsObsoleteError(m)).GroupBy(m => m.Name)
+                .ToDictionary(i => i.Key,
+                    i => i.Cast<MethodInfo>().Select(m =>
+                        m.GetParameters().Select(o => o.ParameterType).ToArray()));
             IEnumerable<Type[]> matchTypes;
             var objType = typeof(object);
 
             while (type.BaseType != null && type.BaseType != objType) {
                 type = type.BaseType;
-                var methods = type.GetMethods(flag).Where(m => Array.IndexOf<string>(methodNames, m.Name) != -1)
+                var methods = type.GetMethods(flag)
+                    .Where(m => Array.IndexOf<string>(methodNames, m.Name) != -1)
                     .Where(m => !IsObsoleteError(m) && !IsVirtualMethod(m)).Where(m =>
                         !m.IsSpecialName ||
-                        (!m.Name.StartsWith("get_") && !m.Name.StartsWith("set_"))) //filter property
-                    .Where(m => !errorMethods.TryGetValue(m.Name, out matchTypes) || !IsMatchParameters(matchTypes
-                        , m.GetParameters().Select(o => o.ParameterType).ToArray())) //filter override method
+                        (!m.Name.StartsWith("get_") &&
+                            !m.Name.StartsWith("set_"))) //filter property
+                    .Where(m =>
+                        !errorMethods.TryGetValue(m.Name, out matchTypes) ||
+                        !IsMatchParameters(matchTypes,
+                            m.GetParameters().Select(o => o.ParameterType)
+                                .ToArray())) //filter override method
                     .ToArray();
                 if (methods.Length > 0) allMethods = allMethods.Concat(methods).ToArray();
             }
@@ -224,7 +241,8 @@ namespace Puerts
         private static bool IsObsoleteError(MemberInfo memberInfo)
         {
             var obsolete =
-                memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), true).FirstOrDefault() as ObsoleteAttribute;
+                memberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), true).FirstOrDefault() as
+                    ObsoleteAttribute;
             return obsolete != null && obsolete.IsError;
         }
 
@@ -249,10 +267,11 @@ namespace Puerts
 
                 while (enumerator.MoveNext()) {
                     var type = enumerator.Current;
-                    if (type.IsDefined(typeof(ExtensionAttribute), false)) type_def_extention_method.Add(type);
+                    if (type.IsDefined(typeof(ExtensionAttribute), false))
+                        type_def_extention_method.Add(type);
                     if (!type.IsAbstract() || !type.IsSealed()) continue;
-                    var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic |
-                        BindingFlags.DeclaredOnly);
+                    var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public |
+                        BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
                     for (var i = 0; i < fields.Length; i++) {
                         var field = fields[i];
@@ -264,8 +283,8 @@ namespace Puerts
                                     t != null && t.IsDefined(typeof(ExtensionAttribute), false)));
                         }
                     }
-                    var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic |
-                        BindingFlags.DeclaredOnly);
+                    var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public |
+                        BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
                     for (var i = 0; i < props.Length; i++) {
                         var prop = props[i];
@@ -280,15 +299,16 @@ namespace Puerts
                     }
                 }
                 enumerator.Dispose();
-                Utils_Internal.extensionMethodMap = (
-                        from type in type_def_extention_method.Distinct()
+                Utils_Internal.extensionMethodMap =
+                    (from type in type_def_extention_method.Distinct()
                         // #if UNITY_EDITOR
                         //                                       where !type.Assembly.Location.Contains("Editor")
                         // #endif
                         from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                        where method.IsDefined(typeof(ExtensionAttribute), false) && IsSupportedMethod(method)
-                        group method by GetExtendedType(method))
-                    .ToDictionary(g => g.Key, g => g as IEnumerable<MethodInfo>);
+                        where method.IsDefined(typeof(ExtensionAttribute), false) &&
+                            IsSupportedMethod(method)
+                        group method by GetExtendedType(method)).ToDictionary(g => g.Key,
+                        g => g as IEnumerable<MethodInfo>);
             }
             IEnumerable<MethodInfo> ret = null;
             Utils_Internal.extensionMethodMap.TryGetValue(type_to_be_extend, out ret);
@@ -308,8 +328,8 @@ namespace Puerts
 
         public delegate object GetValueForCheck();
 
-        public static bool IsJsValueTypeMatchType(JsValueType jsType, Type csType, JsValueType csTypeMask
-            , GetValueForCheck valueGetter = null, object value = null)
+        public static bool IsJsValueTypeMatchType(JsValueType jsType, Type csType,
+            JsValueType csTypeMask, GetValueForCheck valueGetter = null, object value = null)
         {
             if (jsType == JsValueType.NativeObject) {
                 if (csType == typeof(JSObject)) // 非要把一个NativeObject赋值给JSObject是允许的。
@@ -396,7 +416,8 @@ namespace Puerts
 
     internal static class Utils_Internal
     {
-        internal static volatile Dictionary<Type, IEnumerable<MethodInfo>> extensionMethodMap = null;
+        internal static volatile Dictionary<Type, IEnumerable<MethodInfo>>
+            extensionMethodMap = null;
     }
 }
 

@@ -3,10 +3,10 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Name("Animation Clip")
-     , Description(
-         "Play an Animation Clip on target actor with Animator component attached.\nIf this is the Layer 0 Animator Track, you can choose to explicitely set a 'Starting Position' and a 'Starting Rotation' for when the clip starts. This also takes into account Root Motion if enabled in the Animator Track.")
-     , Attachable(typeof(AnimatorTrack))]
+    [Name("Animation Clip"),
+     Description(
+         "Play an Animation Clip on target actor with Animator component attached.\nIf this is the Layer 0 Animator Track, you can choose to explicitely set a 'Starting Position' and a 'Starting Rotation' for when the clip starts. This also takes into account Root Motion if enabled in the Animator Track."),
+     Attachable(typeof(AnimatorTrack))]
     public class PlayAnimatorClip : ActorActionClip, ISubClipContainable
     {
         public enum StartingTransformsMode { AutoMatchTransforms = 0, ManualSetTransforms = 1 }
@@ -45,16 +45,16 @@ namespace Slate.ActionClips
         [ShowIf(nameof(isMasterAndManualSet), 1)]
         public Vector3 startingRotation;
 
-        [Header("Offsets"), AnimatableParameter("Local Rotation Offset")
-         , HelpBox(
+        [Header("Offsets"), AnimatableParameter("Local Rotation Offset"),
+         HelpBox(
              "'Local Rotation Offset' is only used if this clip is part of the Layer 0 Track and RootMotion is enabled in that Track.\nYou can animate this parameter to rotate the actor while using it's RootMotion within the Animation Clip.\nThis can be very useful for animations like Walk or Run. Most of the times, simply animating 'Y' will suffice.")]
         public Vector2 steerLocalRotation;
 
         private Vector3 wasPosition;
         private Quaternion wasRotation;
 
-        private bool isMasterAndManualSet =>
-            isMasterTrack && startingTransformsMode == StartingTransformsMode.ManualSetTransforms;
+        private bool isMasterAndManualSet => isMasterTrack &&
+            startingTransformsMode == StartingTransformsMode.ManualSetTransforms;
 
         ///----------------------------------------------------------------------------------------------
         float ISubClipContainable.subClipOffset {
@@ -66,8 +66,8 @@ namespace Slate.ActionClips
         float ISubClipContainable.subClipSpeed => playbackSpeed;
         public override string info => animationClip != null ? animationClip.name : base.info;
 
-        public override bool isValid =>
-            base.isValid && animator != null && animationClip != null && !animationClip.legacy;
+        public override bool isValid => base.isValid && animator != null && animationClip != null &&
+            !animationClip.legacy;
 
         public override float length {
             get => _length;
@@ -95,14 +95,17 @@ namespace Slate.ActionClips
             wasPosition = animator.transform.position;
             wasRotation = animator.transform.rotation;
 
-            if (!isMasterTrack || startingTransformsMode == StartingTransformsMode.AutoMatchTransforms) {
+            if (!isMasterTrack ||
+                startingTransformsMode == StartingTransformsMode.AutoMatchTransforms) {
                 startingPosition = animator.transform.position;
                 startingRotation = animator.transform.eulerAngles;
             }
 
             if (startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
-                animator.transform.position = TransformPosition(startingPosition, (TransformSpace)transformSpace);
-                animator.transform.rotation = TransformRotation(startingRotation, (TransformSpace)transformSpace);
+                animator.transform.position =
+                    TransformPosition(startingPosition, (TransformSpace)transformSpace);
+                animator.transform.rotation =
+                    TransformRotation(startingRotation, (TransformSpace)transformSpace);
             }
             track.EnableClip(this, GetClipWeight(0) * clipWeight);
         }
@@ -115,17 +118,20 @@ namespace Slate.ActionClips
         protected override void OnUpdate(float time, float previousTime)
         {
             if (track.useRootMotion && steerLocalRotation != default) {
-                var rot = TransformRotation(startingRotation + (Vector3)steerLocalRotation
-                    , (TransformSpace)transformSpace);
+                var rot = TransformRotation(startingRotation + (Vector3)steerLocalRotation,
+                    (TransformSpace)transformSpace);
                 animator.transform.localRotation = rot;
             }
             var doLerp = time <= blendIn || previousTime <= blendIn;
 
-            if (doLerp && isMasterTrack && startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
+            if (doLerp && isMasterTrack &&
+                startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
                 var blend = blendIn > 0 ? time / blendIn : 1;
-                var targetPosition = TransformPosition(startingPosition, (TransformSpace)transformSpace);
+                var targetPosition =
+                    TransformPosition(startingPosition, (TransformSpace)transformSpace);
                 animator.transform.position = Vector3.Lerp(wasPosition, targetPosition, blend);
-                var targetRotation = TransformRotation(startingRotation, (TransformSpace)transformSpace);
+                var targetRotation =
+                    TransformRotation(startingRotation, (TransformSpace)transformSpace);
                 animator.transform.rotation = Quaternion.Lerp(wasRotation, targetRotation, blend);
             }
             var clipTime = (time - clipOffset) * playbackSpeed;
@@ -158,16 +164,17 @@ namespace Slate.ActionClips
         protected override void OnClipGUI(Rect rect)
         {
             if (animationClip != null)
-                EditorTools.DrawLoopedLines(rect, animationClip.length / playbackSpeed, length, clipOffset);
+                EditorTools.DrawLoopedLines(rect, animationClip.length / playbackSpeed, length,
+                    clipOffset);
         }
 
         protected override void OnSceneGUI()
         {
             if (startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
-                pendingResample |= SceneGUIUtility.DoVectorPositionHandle(this, (TransformSpace)transformSpace
-                    , startingRotation, ref startingPosition);
-                pendingResample |= SceneGUIUtility.DoVectorRotationHandle(this, (TransformSpace)transformSpace
-                    , startingPosition, ref startingRotation);
+                pendingResample |= SceneGUIUtility.DoVectorPositionHandle(this,
+                    (TransformSpace)transformSpace, startingRotation, ref startingPosition);
+                pendingResample |= SceneGUIUtility.DoVectorRotationHandle(this,
+                    (TransformSpace)transformSpace, startingPosition, ref startingRotation);
             }
 
             if (pendingResample && GUIUtility.hotControl == 0) {

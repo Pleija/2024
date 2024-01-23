@@ -5,8 +5,10 @@ using System.Linq;
 namespace ParadoxNotion.Serialization.FullSerializer
 {
     /// <summary>
-    ///     The result of some sort of operation. A result is either successful or not, but if it is successful then
-    ///     there may be a set of warnings/messages associated with it. These warnings describe the performed error recovery
+    ///     The result of some sort of operation. A result is either successful or not, but if it is
+    ///     successful then
+    ///     there may be a set of warnings/messages associated with it. These warnings describe the
+    ///     performed error recovery
     ///     operations.
     /// </summary>
     public struct fsResult
@@ -39,7 +41,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         /// <summary>
-        ///     Adds only the messages from the other result into this result, ignoring the success/failure status of the
+        ///     Adds only the messages from the other result into this result, ignoring the success/failure
+        ///     status of the
         ///     other result.
         /// </summary>
         public void AddMessages(fsResult result)
@@ -49,7 +52,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
             _messages.AddRange(result._messages);
         }
 
-        ///<summary> Merges the other result into this one. If the other result failed, then this one too will have failed.</summary>
+        /// <summary>
+        ///     Merges the other result into this one. If the other result failed, then this one too will
+        ///     have failed.
+        /// </summary>
         private fsResult Merge(fsResult other)
         {
             // Copy success/messages over
@@ -71,19 +77,22 @@ namespace ParadoxNotion.Serialization.FullSerializer
         public bool Failed => _success == false;
 
         /// <summary>
-        ///     Was the result a success? Note that even successful operations may have warning messages (`RawMessages`)
+        ///     Was the result a success? Note that even successful operations may have warning messages
+        ///     (`RawMessages`)
         ///     associated with them.
         /// </summary>
         public bool Succeeded => _success;
 
         /// <summary>
-        ///     Does this result have any warnings? This says nothing about if it failed or succeeded, just if it has warning
+        ///     Does this result have any warnings? This says nothing about if it failed or succeeded, just if
+        ///     it has warning
         ///     messages associated with it.
         /// </summary>
         public bool HasWarnings => _messages != null && _messages.Any();
 
         /// <summary>
-        ///     A simply utility method that will assert that this result is successful. If it is not, then an exception is
+        ///     A simply utility method that will assert that this result is successful. If it is not, then an
+        ///     exception is
         ///     thrown.
         /// </summary>
         public fsResult AssertSuccess()
@@ -93,7 +102,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         /// <summary>
-        ///     A simple utility method that will assert that this result is successful and that there are no warning
+        ///     A simple utility method that will assert that this result is successful and that there are no
+        ///     warning
         ///     messages. This throws an exception if either of those asserts are false.
         /// </summary>
         public fsResult AssertSuccessWithoutWarnings()
@@ -102,7 +112,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
             return this;
         }
 
-        ///<summary> Utility method to convert the result to an exception. This method is only defined is `Failed` returns true.</summary>
+        /// <summary>
+        ///     Utility method to convert the result to an exception. This method is only defined is
+        ///     `Failed` returns true.
+        /// </summary>
         public Exception AsException {
             get {
                 if (!Failed && !RawMessages.Any())

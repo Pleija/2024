@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Parallel")
-     , Description(
-         "Execute a number of Actions with optional conditional requirement and in parallel to any other state, as soon as the FSM is started. All actions will prematurely be stoped as soon as the FSM stops as well. This is not a state.")
-     , Color("ff64cb"), Icon("Repeat"), System.Obsolete("Use On FSM Update node")]
+    [Name("Parallel"),
+     Description(
+         "Execute a number of Actions with optional conditional requirement and in parallel to any other state, as soon as the FSM is started. All actions will prematurely be stoped as soon as the FSM stops as well. This is not a state."),
+     Color("ff64cb"), Icon("Repeat"), System.Obsolete("Use On FSM Update node")]
     public class ConcurrentState : FSMNode, IUpdatable
     {
         [SerializeField]
@@ -110,7 +110,8 @@ namespace NodeCanvas.StateMachines
 
         protected override void OnNodeInspectorGUI()
         {
-            repeatStateActions = UnityEditor.EditorGUILayout.ToggleLeft("Repeat", repeatStateActions);
+            repeatStateActions =
+                UnityEditor.EditorGUILayout.ToggleLeft("Repeat", repeatStateActions);
             EditorUtils.Separator();
             EditorUtils.CoolLabel("Conditions (optional)");
             conditionList.ShowListGUI();

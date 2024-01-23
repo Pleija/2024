@@ -23,8 +23,8 @@ namespace NodeCanvas.Tasks.Actions
         private int buttonID;
         private RaycastHit2D hit;
 
-        protected override string info =>
-            string.Format("Wait Object '{0}' Click. Save As {1}", buttonKey, saveObjectAs);
+        protected override string info => string.Format("Wait Object '{0}' Click. Save As {1}",
+            buttonKey, saveObjectAs);
 
         protected override void OnUpdate()
         {

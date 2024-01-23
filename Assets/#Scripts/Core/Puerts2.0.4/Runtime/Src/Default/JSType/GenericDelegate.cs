@@ -95,7 +95,8 @@ namespace Puerts
             PrimitiveTypeTranslate.Init();
         }
 
-        private Dictionary<IntPtr, WeakReference> nativePtrToGenericDelegate = new Dictionary<IntPtr, WeakReference>();
+        private Dictionary<IntPtr, WeakReference> nativePtrToGenericDelegate =
+            new Dictionary<IntPtr, WeakReference>();
 
         internal GenericDelegate ToGenericDelegate(IntPtr ptr)
         {
@@ -128,7 +129,8 @@ namespace Puerts
             return nativePtrToGenericDelegate.TryGetValue(ptr, out maybeOne) && maybeOne.IsAlive;
         }
 
-        private Delegate CreateDelegate(Type type, GenericDelegate genericDelegate, MethodInfo method)
+        private Delegate CreateDelegate(Type type, GenericDelegate genericDelegate,
+            MethodInfo method)
         {
             Delegate ret;
 
@@ -146,15 +148,17 @@ namespace Puerts
         {
             Func<Type, IntPtr, Delegate> genericDelegateCreator;
 
-            if (!genericDelegateCreatorCache.TryGetValue(delegateType, out genericDelegateCreator)) {
+            if (!genericDelegateCreatorCache.TryGetValue(delegateType,
+                out genericDelegateCreator)) {
                 //如果泛型方法数组未初始化
                 if (genericAction == null) {
                     PreventStripping(null);
-                    var methods = typeof(GenericDelegate).GetMethods(BindingFlags.Instance | BindingFlags.Public |
-                        BindingFlags.DeclaredOnly);
-                    genericAction = methods.Where(m => m.Name == "Action").OrderBy(m => m.GetParameters().Length)
-                        .ToArray();
-                    genericFunc = methods.Where(m => m.Name == "Func").OrderBy(m => m.GetParameters().Length).ToArray();
+                    var methods = typeof(GenericDelegate).GetMethods(BindingFlags.Instance |
+                        BindingFlags.Public | BindingFlags.DeclaredOnly);
+                    genericAction = methods.Where(m => m.Name == "Action")
+                        .OrderBy(m => m.GetParameters().Length).ToArray();
+                    genericFunc = methods.Where(m => m.Name == "Func")
+                        .OrderBy(m => m.GetParameters().Length).ToArray();
                 }
                 var delegateMethod = delegateType.GetMethod("Invoke");
                 var parameters = delegateMethod.GetParameters();
@@ -164,7 +168,8 @@ namespace Puerts
                     if (parameters.Length == 0) {
                         //对无参无返回值特殊处理
                         var methodInfo = genericAction[0];
-                        genericDelegateCreator = (dt, ptr) => CreateDelegate(dt, ToGenericDelegate(ptr), methodInfo);
+                        genericDelegateCreator = (dt, ptr) =>
+                            CreateDelegate(dt, ToGenericDelegate(ptr), methodInfo);
                     }
                     else {
                         genericDelegateCreator = ActionCreatorTree.Find(typeArgs);
@@ -178,8 +183,8 @@ namespace Puerts
 
                 if (genericDelegateCreator == null) {
 #if UNITY_EDITOR && !EXPERIMENTAL_IL2CPP_PUERTS
-                    if ((delegateMethod.ReturnType.IsValueType && delegateMethod.ReturnType != typeof(void)) ||
-                        parameters.Length > 4 ||
+                    if ((delegateMethod.ReturnType.IsValueType &&
+                            delegateMethod.ReturnType != typeof(void)) || parameters.Length > 4 ||
                         typeArgs.Any(paramType => paramType.IsValueType || paramType.IsByRef)) {
                         // 如果不在支持的范围，则生成一个永远返回空的构造器
                         genericDelegateCreator = (dt, x) => null;
@@ -196,7 +201,8 @@ namespace Puerts
                         //实例化泛型方法
                         var methodInfo = genericMethodInfo.MakeGenericMethod(typeArgs);
                         //构造器
-                        genericDelegateCreator = (dt, ptr) => CreateDelegate(dt, ToGenericDelegate(ptr), methodInfo);
+                        genericDelegateCreator = (dt, ptr) =>
+                            CreateDelegate(dt, ToGenericDelegate(ptr), methodInfo);
                     }
                 }
                 //缓存构造器，下次调用直接返回
@@ -213,7 +219,8 @@ namespace Puerts
         {
             ActionCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate, new Action<T1>(genericDelegate.Action<T1>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Action<T1>(genericDelegate.Action<T1>).Method);
             }, typeof(T1));
         }
 
@@ -221,7 +228,8 @@ namespace Puerts
         {
             ActionCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate, new Action<T1, T2>(genericDelegate.Action<T1, T2>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Action<T1, T2>(genericDelegate.Action<T1, T2>).Method);
             }, typeof(T1), typeof(T2));
         }
 
@@ -229,8 +237,8 @@ namespace Puerts
         {
             ActionCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate
-                    , new Action<T1, T2, T3>(genericDelegate.Action<T1, T2, T3>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Action<T1, T2, T3>(genericDelegate.Action<T1, T2, T3>).Method);
             }, typeof(T1), typeof(T2), typeof(T3));
         }
 
@@ -238,8 +246,8 @@ namespace Puerts
         {
             ActionCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate
-                    , new Action<T1, T2, T3, T4>(genericDelegate.Action<T1, T2, T3, T4>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Action<T1, T2, T3, T4>(genericDelegate.Action<T1, T2, T3, T4>).Method);
             }, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
         }
 
@@ -247,7 +255,8 @@ namespace Puerts
         {
             FuncCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate, new Func<TResult>(genericDelegate.Func<TResult>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Func<TResult>(genericDelegate.Func<TResult>).Method);
             }, typeof(TResult));
         }
 
@@ -255,8 +264,8 @@ namespace Puerts
         {
             FuncCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate
-                    , new Func<T1, TResult>(genericDelegate.Func<T1, TResult>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Func<T1, TResult>(genericDelegate.Func<T1, TResult>).Method);
             }, typeof(T1), typeof(TResult));
         }
 
@@ -264,8 +273,8 @@ namespace Puerts
         {
             FuncCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate
-                    , new Func<T1, T2, TResult>(genericDelegate.Func<T1, T2, TResult>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Func<T1, T2, TResult>(genericDelegate.Func<T1, T2, TResult>).Method);
             }, typeof(T1), typeof(T2), typeof(TResult));
         }
 
@@ -273,8 +282,9 @@ namespace Puerts
         {
             FuncCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate
-                    , new Func<T1, T2, T3, TResult>(genericDelegate.Func<T1, T2, T3, TResult>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Func<T1, T2, T3, TResult>(genericDelegate.Func<T1, T2, T3, TResult>)
+                        .Method);
             }, typeof(T1), typeof(T2), typeof(T3), typeof(TResult));
         }
 
@@ -282,8 +292,9 @@ namespace Puerts
         {
             FuncCreatorTree.Add((type, ptr) => {
                 var genericDelegate = ToGenericDelegate(ptr);
-                return CreateDelegate(type, genericDelegate
-                    , new Func<T1, T2, T3, T4, TResult>(genericDelegate.Func<T1, T2, T3, T4, TResult>).Method);
+                return CreateDelegate(type, genericDelegate,
+                    new Func<T1, T2, T3, T4, TResult>(genericDelegate.Func<T1, T2, T3, T4, TResult>)
+                        .Method);
             }, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(TResult));
         }
     }
@@ -350,7 +361,8 @@ namespace Puerts
         public void AddDelegate(Type key, Delegate value)
         {
             if (key == firstKey)
-                throw new ArgumentException("An element with the same key already exists in the dictionary.");
+                throw new ArgumentException(
+                    "An element with the same key already exists in the dictionary.");
 
             if (firstKey == null && bindTo == null) // nothing 
             {
@@ -397,7 +409,8 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, false);
 
             if (resultInfo == IntPtr.Zero) {
@@ -417,8 +430,10 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
-            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p2);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
+            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p2);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, false);
 
             if (resultInfo == IntPtr.Zero) {
@@ -438,9 +453,12 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
-            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p2);
-            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p3);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
+            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p2);
+            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p3);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, false);
 
             if (resultInfo == IntPtr.Zero) {
@@ -460,10 +478,14 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
-            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p2);
-            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p3);
-            StaticTranslate<T4>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p4);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
+            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p2);
+            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p3);
+            StaticTranslate<T4>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p4);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, false);
 
             if (resultInfo == IntPtr.Zero) {
@@ -489,8 +511,8 @@ namespace Puerts
                 var exceptionInfo = PuertsDLL.GetFunctionLastExceptionInfo(nativeJsFuncPtr);
                 throw new Exception(exceptionInfo);
             }
-            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate, NativeValueApi.GetValueFromResult, resultInfo
-                , false);
+            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate,
+                NativeValueApi.GetValueFromResult, resultInfo, false);
             PuertsDLL.ResetResult(resultInfo);
             return result;
 #if THREAD_SAFE
@@ -506,15 +528,16 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, true);
 
             if (resultInfo == IntPtr.Zero) {
                 var exceptionInfo = PuertsDLL.GetFunctionLastExceptionInfo(nativeJsFuncPtr);
                 throw new Exception(exceptionInfo);
             }
-            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate, NativeValueApi.GetValueFromResult, resultInfo
-                , false);
+            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate,
+                NativeValueApi.GetValueFromResult, resultInfo, false);
             PuertsDLL.ResetResult(resultInfo);
             return result;
 #if THREAD_SAFE
@@ -530,16 +553,18 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
-            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p2);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
+            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p2);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, true);
 
             if (resultInfo == IntPtr.Zero) {
                 var exceptionInfo = PuertsDLL.GetFunctionLastExceptionInfo(nativeJsFuncPtr);
                 throw new Exception(exceptionInfo);
             }
-            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate, NativeValueApi.GetValueFromResult, resultInfo
-                , false);
+            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate,
+                NativeValueApi.GetValueFromResult, resultInfo, false);
             PuertsDLL.ResetResult(resultInfo);
             return result;
 #if THREAD_SAFE
@@ -555,17 +580,20 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
-            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p2);
-            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p3);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
+            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p2);
+            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p3);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, true);
 
             if (resultInfo == IntPtr.Zero) {
                 var exceptionInfo = PuertsDLL.GetFunctionLastExceptionInfo(nativeJsFuncPtr);
                 throw new Exception(exceptionInfo);
             }
-            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate, NativeValueApi.GetValueFromResult, resultInfo
-                , false);
+            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate,
+                NativeValueApi.GetValueFromResult, resultInfo, false);
             PuertsDLL.ResetResult(resultInfo);
             return result;
 #if THREAD_SAFE
@@ -581,18 +609,22 @@ namespace Puerts
 #if THREAD_SAFE
             lock (jsEnv) {
 #endif
-            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p1);
-            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p2);
-            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p3);
-            StaticTranslate<T4>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument, nativeJsFuncPtr, p4);
+            StaticTranslate<T1>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p1);
+            StaticTranslate<T2>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p2);
+            StaticTranslate<T3>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p3);
+            StaticTranslate<T4>.Set(jsEnv.Idx, isolate, NativeValueApi.SetValueToArgument,
+                nativeJsFuncPtr, p4);
             var resultInfo = PuertsDLL.InvokeJSFunction(nativeJsFuncPtr, true);
 
             if (resultInfo == IntPtr.Zero) {
                 var exceptionInfo = PuertsDLL.GetFunctionLastExceptionInfo(nativeJsFuncPtr);
                 throw new Exception(exceptionInfo);
             }
-            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate, NativeValueApi.GetValueFromResult, resultInfo
-                , false);
+            var result = StaticTranslate<TResult>.Get(jsEnv.Idx, isolate,
+                NativeValueApi.GetValueFromResult, resultInfo, false);
             PuertsDLL.ResetResult(resultInfo);
             return result;
 #if THREAD_SAFE

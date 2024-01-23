@@ -27,7 +27,8 @@ namespace App
             });
             Redis.Sub("update", (channel, data) => {
                 Debug.Log($"redis update: {data}");
-                var type = ModelBase.Defaults.Keys.FirstOrDefault(x => x.FullName == data.ToString());
+                var type =
+                    ModelBase.Defaults.Keys.FirstOrDefault(x => x.FullName == data.ToString());
                 if (type == null) return;
                 Debug.Log($"found: {data}");
                 ModelBase.Defaults[type].SetupFromRedis();

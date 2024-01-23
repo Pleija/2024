@@ -21,7 +21,10 @@ namespace MoreTags
         public abstract TagPattern With(string tag);
         public abstract TagPattern Both(params string[] tags);
         public abstract TagPattern Either(params string[] tags);
-        public static implicit operator TagPattern(string pattern) => TagHelper.StringToPattern(pattern);
+
+        public static implicit operator TagPattern(string pattern) =>
+            TagHelper.StringToPattern(pattern);
+
         public static TagPattern operator &(TagPattern a, TagPattern b) => a.And(b);
         public static TagPattern operator |(TagPattern a, TagPattern b) => a.Or(b);
         public static TagPattern operator -(TagPattern a, TagPattern b) => a.Exclude(b);
@@ -49,7 +52,10 @@ namespace MoreTags
     {
         public static TagPattern pattern => new TagPatternImpl();
         private static TagManager s_TagManager => TagManager.self;
-        private static Dictionary<string, TagTableData> s_TagTable = new Dictionary<string, TagTableData>();
+
+        private static Dictionary<string, TagTableData> s_TagTable =
+            new Dictionary<string, TagTableData>();
+
         private static GameObject[] s_SearchFrom = null;
 
         public static void Reset()
@@ -61,8 +67,8 @@ namespace MoreTags
         {
             var origin = tags;
             tags = s_TagTable.Select((kv) => new TagData() {
-                name = kv.Key, color = kv.Value.color, value = kv.Value.value, cost = kv.Value.cost
-                , enable = kv.Value.enable, number = kv.Value.number,
+                name = kv.Key, color = kv.Value.color, value = kv.Value.value, cost = kv.Value.cost,
+                enable = kv.Value.enable, number = kv.Value.number,
                 //gameObjects = kv.Value.gameObjects.ToArray(), //.Where(go => go != null && go.scene == scene)
                 //     .ToArray()
             }).Where(x => origin.All(t => t.name != x.name)).Union(tags).ToList();
@@ -106,7 +112,8 @@ namespace MoreTags
         public static void RemoveUnusedTag()
         {
             RemoveNullGameObject();
-            var remove = s_TagTable.Where(kv => !s_TagTable[kv.Key].gameObjects.Any()).Select(kv => kv.Key).ToArray();
+            var remove = s_TagTable.Where(kv => !s_TagTable[kv.Key].gameObjects.Any())
+                .Select(kv => kv.Key).ToArray();
             foreach (var key in remove) s_TagTable.Remove(key);
         }
 
@@ -177,7 +184,8 @@ namespace MoreTags
 
         public static string[] GetGameObjectTags(GameObject go)
         {
-            return s_TagTable.Where(kv => kv.Value.gameObjects.Contains(go)).Select(kv => kv.Key).ToArray();
+            return s_TagTable.Where(kv => kv.Value.gameObjects.Contains(go)).Select(kv => kv.Key)
+                .ToArray();
         }
 
         public static string[] GetAllTags() => s_TagTable.Keys.ToArray();
@@ -200,7 +208,8 @@ namespace MoreTags
 
             private HashSet<GameObject> AllGameObject()
             {
-                var e = new HashSet<GameObject>(Object.FindObjectsOfType<GameObject>().Where(go => go.scene.isLoaded));
+                var e = new HashSet<GameObject>(Object.FindObjectsOfType<GameObject>()
+                    .Where(go => go.scene.isLoaded));
                 return s_SearchFrom == null ? e : e.And(s_SearchFrom);
             }
 
@@ -235,7 +244,10 @@ namespace MoreTags
 
             public override TagPattern And(TagPattern pattern) => Combine(pattern, Mode.And);
             public override TagPattern Or(TagPattern pattern) => Combine(pattern, Mode.Or);
-            public override TagPattern Exclude(TagPattern pattern) => Combine(pattern, Mode.Exclude);
+
+            public override TagPattern Exclude(TagPattern pattern) =>
+                Combine(pattern, Mode.Exclude);
+
             public override TagPattern Combine(TagPattern pattern) => Combine(pattern, m_Mode);
 
             private TagPattern Combine(TagPattern pattern, Mode mode)
@@ -258,7 +270,8 @@ namespace MoreTags
                         m_List = m_List == null ? list : m_List.Or(list);
                         break;
                     case Mode.Exclude:
-                        m_List = m_List == null ? AllGameObject().Exclude(list) : m_List.Exclude(list);
+                        m_List = m_List == null ? AllGameObject().Exclude(list)
+                            : m_List.Exclude(list);
                         break;
                 }
                 return this;
@@ -288,11 +301,13 @@ namespace MoreTags
                     if (!s_TagTable.ContainsKey(tag))
                         return Empty();
                 var e = WithInternal(tags.First());
-                foreach (var tag in tags.Skip(1)) e = e.And(s_TagTable[tag].gameObjects, s_SearchFrom);
+                foreach (var tag in tags.Skip(1))
+                    e = e.And(s_TagTable[tag].gameObjects, s_SearchFrom);
                 return e;
             }
 
-            public override TagPattern Either(params string[] tags) => Combine(EitherInternal(tags));
+            public override TagPattern Either(params string[] tags) =>
+                Combine(EitherInternal(tags));
 
             private HashSet<GameObject> EitherInternal(IEnumerable<string> tags)
             {
@@ -302,7 +317,8 @@ namespace MoreTags
                         list.Add(tag);
                 if (list.Count == 0) return Empty();
                 var e = WithInternal(list.First());
-                foreach (var tag in list.Skip(1)) e = e.Or(s_TagTable[tag].gameObjects, s_SearchFrom);
+                foreach (var tag in list.Skip(1))
+                    e = e.Or(s_TagTable[tag].gameObjects, s_SearchFrom);
                 return e;
             }
         }

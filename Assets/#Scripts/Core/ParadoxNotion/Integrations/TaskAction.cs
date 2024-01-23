@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    ///<summary>Task Action is used to run ActionTasks within the flowscript in a simplified manner without exposing ports</summary>
+    /// <summary>
+    ///     Task Action is used to run ActionTasks within the flowscript in a simplified manner
+    ///     without exposing ports
+    /// </summary>
     [Description("Execute an encapsulated action without exposing any value ports")]
     public class TaskAction : FlowNode, ITaskAssignable<ActionTask>
     {
@@ -65,7 +68,8 @@ namespace FlowCanvas.Nodes
         private IEnumerator DoUpdate(Flow f)
         {
             SetStatus(Status.Running);
-            while (graph.isPaused || action.Execute(graphAgent, graphBlackboard) == Status.Running) yield return null;
+            while (graph.isPaused || action.Execute(graphAgent, graphBlackboard) == Status.Running)
+                yield return null;
             coroutine = null;
             onFinish.Call(f);
             SetStatus(Status.Resting);

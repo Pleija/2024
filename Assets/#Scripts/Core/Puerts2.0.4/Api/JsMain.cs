@@ -95,7 +95,8 @@ public class JsMain : View<JsMain>
 
             if (!Application.isPlaying) {
 #if UNITY_EDITOR
-                m_Instance = Res.FindAsset<GameObject>("t:prefab JsMain")?.GetComponentInChildren<JsMain>();
+                m_Instance = Res.FindAsset<GameObject>("t:prefab JsMain")
+                    ?.GetComponentInChildren<JsMain>();
 #endif
             }
             else {
@@ -113,8 +114,8 @@ public class JsMain : View<JsMain>
     }
 
     public static string[] AllMjsProto => Res.ExistsAll<TextAsset>()
-        .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto")).Select(x => x.PrimaryKey)
-        .Distinct().ToArray();
+        .Where(x => x.PrimaryKey.EndsWith(".mjs") || x.PrimaryKey.EndsWith(".proto"))
+        .Select(x => x.PrimaryKey).Distinct().ToArray();
 
     [FormerlySerializedAs("preload")]
     public List<ModelBase> models = new List<ModelBase>();
@@ -156,15 +157,17 @@ public class JsMain : View<JsMain>
         models ??= new List<ModelBase>();
         models.RemoveAll(x => !x);
         AssetDatabase.FindAssets($"t:{typeof(ModelBase).FullName}").Select(x =>
-            AssetDatabase.LoadAssetAtPath<ModelBase>(AssetDatabase.GUIDToAssetPath(x))).ForEach(asset => {
-            if (models.All(t => t != asset)) models.Add(asset);
-        });
-        var files = Directory.GetFiles("Assets/Res/dist/", "*.*", SearchOption.AllDirectories);
-        files.Where(x => !File.Exists(x.Replace("Assets/Res/dist/", "Packages/tsproj/src/").Replace(".mjs", ".mts")))
-            .ForEach(file => {
-                Debug.Log($"delete: {file}");
-                AssetDatabase.DeleteAsset(file);
+            AssetDatabase.LoadAssetAtPath<ModelBase>(AssetDatabase.GUIDToAssetPath(x))).ForEach(
+            asset => {
+                if (models.All(t => t != asset)) models.Add(asset);
             });
+        var files = Directory.GetFiles("Assets/Res/dist/", "*.*", SearchOption.AllDirectories);
+        files.Where(x =>
+            !File.Exists(x.Replace("Assets/Res/dist/", "Packages/tsproj/src/")
+                .Replace(".mjs", ".mts"))).ForEach(file => {
+            Debug.Log($"delete: {file}");
+            AssetDatabase.DeleteAsset(file);
+        });
 
         //
         var assets = AssetDatabase.FindAssets($"t:TextAsset").Select(AssetDatabase.GUIDToAssetPath)
@@ -236,7 +239,8 @@ public class JsMain : View<JsMain>
         Debug.Log("Start JsMain");
         if (transform.parent != null) transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
-        if (!Addressables.ResourceLocators.Any()) Addressables.InitializeAsync().WaitForCompletion();
+        if (!Addressables.ResourceLocators.Any())
+            Addressables.InitializeAsync().WaitForCompletion();
 
         if (updateCatalog) {
             var handle = Addressables.CheckForCatalogUpdates(false);
@@ -285,7 +289,8 @@ public class JsMain : View<JsMain>
             // await Addressables.DownloadDependenciesAsync(x).Task;
             //if (Defaults.ContainsKey(x.ResourceType)) continue;
             types.Add($"{x.ResourceType.FullName} => {x.PrimaryKey}");
-            ModelBase.Defaults[x.ResourceType] = Addressables.LoadAssetAsync<ModelBase>(x).WaitForCompletion();
+            ModelBase.Defaults[x.ResourceType] =
+                Addressables.LoadAssetAsync<ModelBase>(x).WaitForCompletion();
         }
         Debug.Log($"all models: {string.Join(", ", types)}");
     }
@@ -302,8 +307,8 @@ public class JsMain : View<JsMain>
     public void Reload() => Js.Reload();
     private static HashSet<string> callers = new HashSet<string>();
 
-    public static void CallOnce(Action action, [CallerFilePath] string path = "", [CallerLineNumber] int number = 0
-        , [CallerMemberName] string method = "")
+    public static void CallOnce(Action action, [CallerFilePath] string path = "",
+        [CallerLineNumber] int number = 0, [CallerMemberName] string method = "")
     {
         if (callers.Add($"{path}:{number}:{method}")) action?.Invoke();
     }

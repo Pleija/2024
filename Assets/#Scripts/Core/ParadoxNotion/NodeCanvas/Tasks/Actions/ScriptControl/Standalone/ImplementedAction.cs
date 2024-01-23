@@ -8,8 +8,9 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Implemented Action (Desktop Only)", 9), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
-     , Description(
+    [Name("Implemented Action (Desktop Only)", 9),
+     Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
+     Description(
          "This version works in destop/JIT platform only.\n\nCalls a function that has signature of 'public Status NAME()' or 'public Status NAME(T)'. You should return Status.Success, Failure or Running within that function.")]
     public class ImplementedAction : ActionTask, IReflectedWrapper
     {
@@ -17,7 +18,9 @@ namespace NodeCanvas.Tasks.Actions
         protected ReflectedFunctionWrapper functionWrapper;
 
         private Status actionStatus = Status.Resting;
-        private MethodInfo targetMethod => functionWrapper != null ? functionWrapper.GetMethod() : null;
+
+        private MethodInfo targetMethod =>
+            functionWrapper != null ? functionWrapper.GetMethod() : null;
 
         public override System.Type agentType {
             get {
@@ -30,18 +33,21 @@ namespace NodeCanvas.Tasks.Actions
             get {
                 if (functionWrapper == null) return "No Action Selected";
                 if (targetMethod == null) return functionWrapper.AsString().FormatError();
-                var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("[ {0}.{1}({2}) ]", mInfo, targetMethod.Name
-                    , functionWrapper.GetVariables().Length == 2 ? functionWrapper.GetVariables()[1].ToString() : "");
+                var mInfo = targetMethod.IsStatic
+                    ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                return string.Format("[ {0}.{1}({2}) ]", mInfo, targetMethod.Name,
+                    functionWrapper.GetVariables().Length == 2
+                        ? functionWrapper.GetVariables()[1].ToString() : "");
             }
         }
 
-        ParadoxNotion.Serialization.ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() =>
-            functionWrapper?.GetSerializedMethod();
+        ParadoxNotion.Serialization.ISerializedReflectedInfo IReflectedWrapper.
+            GetSerializedInfo() => functionWrapper?.GetSerializedMethod();
 
         public override void OnValidate(ITaskSystem ownerSystem)
         {
-            if (functionWrapper != null && functionWrapper.HasChanged()) SetMethod(functionWrapper.GetMethod());
+            if (functionWrapper != null && functionWrapper.HasChanged())
+                SetMethod(functionWrapper.GetMethod());
         }
 
         protected override string OnInit()
@@ -100,17 +106,17 @@ namespace NodeCanvas.Tasks.Actions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(Status), typeof(object)
-                            , SetMethod, 1, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(),
+                            typeof(Status), typeof(object), SetMethod, 1, false, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod, 1
-                        , false, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(Status),
+                        typeof(object), SetMethod, 1, false, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod
-                            , 1, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(Status),
+                            typeof(object), SetMethod, 1, false, true, menu);
                 }
                 menu.ShowAsBrowser("Select Action Method", GetType());
                 Event.current.Use();
@@ -118,13 +124,16 @@ namespace NodeCanvas.Tasks.Actions
 
             if (targetMethod != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
-                UnityEditor.EditorGUILayout.LabelField("Selected Action Method:", targetMethod.Name);
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetMethod.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Selected Action Method:",
+                    targetMethod.Name);
                 GUILayout.EndVertical();
 
                 if (targetMethod.GetParameters().Length == 1) {
                     var paramName = targetMethod.GetParameters()[0].Name.SplitCamelCase();
-                    Editor.BBParameterEditor.ParameterField(paramName, functionWrapper.GetVariables()[1]);
+                    Editor.BBParameterEditor.ParameterField(paramName,
+                        functionWrapper.GetVariables()[1]);
                 }
             }
         }

@@ -16,9 +16,10 @@ namespace NodeCanvas.Tasks.Conditions
         [SliderField(0, 0.1f)]
         public float differenceThreshold = 0.05f;
 
-        protected override string info => valueA + OperationTools.GetCompareString(checkType) + valueB;
+        protected override string info =>
+            valueA + OperationTools.GetCompareString(checkType) + valueB;
 
-        protected override bool OnCheck() =>
-            OperationTools.Compare((float)valueA.value, (float)valueB.value, checkType, differenceThreshold);
+        protected override bool OnCheck() => OperationTools.Compare((float)valueA.value,
+            (float)valueB.value, checkType, differenceThreshold);
     }
 }

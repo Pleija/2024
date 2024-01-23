@@ -3,8 +3,10 @@
 namespace NodeCanvas.Framework.Internal
 {
     /// <summary>
-    ///     A special BBParameter for the task agent used in Task. This should be a nested class of Task, but WSA has a
-    ///     bug in doing so. Remark: BBParameter has fsAutoInstance, but we exclude this from being auto instanced!
+    ///     A special BBParameter for the task agent used in Task. This should be a nested class of Task,
+    ///     but WSA has a
+    ///     bug in doing so. Remark: BBParameter has fsAutoInstance, but we exclude this from being auto
+    ///     instanced!
     /// </summary>
     [System.Serializable, ParadoxNotion.Serialization.FullSerializer.fsAutoInstance(false)]
     public sealed class TaskAgentParameter : BBParameter<Object>

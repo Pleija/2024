@@ -17,8 +17,8 @@ namespace NodeCanvas.Tasks.Conditions
         [BlackboardOnly]
         public BBParameter<T> saveValueAs;
 
-        protected override string info =>
-            string.Format("{0}.TryGetValue({1} as {2})", targetDictionary, key, saveValueAs);
+        protected override string info => string.Format("{0}.TryGetValue({1} as {2})",
+            targetDictionary, key, saveValueAs);
 
         protected override bool OnCheck()
         {

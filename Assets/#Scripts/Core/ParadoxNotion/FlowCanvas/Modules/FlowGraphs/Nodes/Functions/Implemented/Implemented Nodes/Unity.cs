@@ -7,8 +7,8 @@ using System.Collections.Generic;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Unity")
-     , Description(
+    [Category("Unity"),
+     Description(
          "If 'Try Get Existing' is true, then if there is an existing component of that type already attached to the gameobject, it will be returned instead of adding another instance.")]
     public class AddComponent<T> : CallableFunctionNode<T, GameObject, bool> where T : Component
     {
@@ -32,15 +32,18 @@ namespace FlowCanvas.Nodes
         public override T Invoke(GameObject gameObject)
         {
             if (gameObject == null) return null;
-            if (_component == null || _component.gameObject != gameObject) _component = gameObject.GetComponent<T>();
+            if (_component == null || _component.gameObject != gameObject)
+                _component = gameObject.GetComponent<T>();
             return _component;
         }
     }
 
     [Category("Unity"), Description("Instantiate an object"), ExposeAsDefinition]
-    public class Instantiate<T> : CallableFunctionNode<T, T, Vector3, Quaternion, Transform> where T : Object
+    public class Instantiate<T> : CallableFunctionNode<T, T, Vector3, Quaternion, Transform>
+        where T : Object
     {
-        public override T Invoke(T original, Vector3 position, Quaternion rotation, Transform parent)
+        public override T Invoke(T original, Vector3 position, Quaternion rotation,
+            Transform parent)
         {
             if (original == null) return null;
             return Object.Instantiate<T>(original, position, rotation, parent);
@@ -60,12 +63,14 @@ namespace FlowCanvas.Nodes
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("Unity"), Description("Moves a NavMeshAgent object with pathfinding to target destination")]
+    [Category("Unity"),
+     Description("Moves a NavMeshAgent object with pathfinding to target destination")]
     public class MoveTo : LatentActionNode<NavMeshAgent, Vector3, float, float>
     {
         private NavMeshAgent agent;
 
-        public override IEnumerator Invoke(NavMeshAgent agent, Vector3 destination, float speed, float stoppingDistance)
+        public override IEnumerator Invoke(NavMeshAgent agent, Vector3 destination, float speed,
+            float stoppingDistance)
         {
             this.agent = agent;
             agent.speed = speed;
@@ -74,7 +79,8 @@ namespace FlowCanvas.Nodes
                 agent.SetDestination(destination);
             else
                 agent.Warp(destination);
-            while (agent.pathPending || agent.remainingDistance > stoppingDistance) yield return null;
+            while (agent.pathPending || agent.remainingDistance > stoppingDistance)
+                yield return null;
         }
 
         public override void OnBreak()

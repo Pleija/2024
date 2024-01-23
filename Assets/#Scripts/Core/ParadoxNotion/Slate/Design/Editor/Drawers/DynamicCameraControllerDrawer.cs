@@ -21,7 +21,8 @@ namespace Slate
             GUI.color = new Color(0.5f, 0.5f, 0.5f, 0.2f);
             GUILayout.BeginVertical(Styles.clipBoxStyle);
             GUI.color = Color.white;
-            EditorGUILayout.PropertyField(prop, new GUIContent("<b>Dynamic Shot Controller</b>"), false);
+            EditorGUILayout.PropertyField(prop, new GUIContent("<b>Dynamic Shot Controller</b>"),
+                false);
 
             if (prop.isExpanded) {
                 EditorGUI.indentLevel++;
@@ -35,8 +36,8 @@ namespace Slate
 
                 if (transposerProp.isExpanded) {
                     EditorGUILayout.HelpBox(
-                        "Position Constraint can be used to automate positioning of the shot.\nIf so, keyframing Position Parameter of the shot will be disabled."
-                        , MessageType.None);
+                        "Position Constraint can be used to automate positioning of the shot.\nIf so, keyframing Position Parameter of the shot will be disabled.",
+                        MessageType.None);
                     EditorGUILayout.PropertyField(tModeProp, GUIContent.none);
 
                     if (tModeProp.intValue != 0) {
@@ -80,8 +81,8 @@ namespace Slate
 
                 if (composerProp.isExpanded) {
                     EditorGUILayout.HelpBox(
-                        "Rotation Constraint can be used to automate rotation of the shot.\nIf so, keyframing Rotation Parameter of the shot will be disabled."
-                        , MessageType.None);
+                        "Rotation Constraint can be used to automate rotation of the shot.\nIf so, keyframing Rotation Parameter of the shot will be disabled.",
+                        MessageType.None);
                     EditorGUILayout.PropertyField(cModeProp, GUIContent.none);
 
                     if (cModeProp.intValue != 0) {
@@ -115,8 +116,8 @@ namespace Slate
                         EditorGUILayout.PropertyField(cDampProp);
                         GUI.enabled = true;
                         EditorGUILayout.HelpBox(
-                            "You can also view the composition settings live in the Unity Game Window while a clip using this shot is selected and active (cutscene time within clip range)."
-                            , MessageType.None);
+                            "You can also view the composition settings live in the Unity Game Window while a clip using this shot is selected and active (cutscene time within clip range).",
+                            MessageType.None);
                     }
                 }
                 GUILayout.EndVertical();

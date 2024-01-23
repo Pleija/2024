@@ -3,7 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform"), Description("Translate the actor by specified value and optionaly per second")]
+    [Category("Transform"),
+     Description("Translate the actor by specified value and optionaly per second")]
     public class TranslateBy : ActorActionClip
     {
         [SerializeField, HideInInspector]
@@ -14,8 +15,8 @@ namespace Slate.ActionClips
         public EaseType interpolation = EaseType.QuadraticInOut;
         private Vector3 originalPos;
 
-        public override string info =>
-            string.Format("Translate{0} By\n{1}", perSecond ? " Per Second" : "", translation);
+        public override string info => string.Format("Translate{0} By\n{1}",
+            perSecond ? " Per Second" : "", translation);
 
         public override float length {
             get => _length;
@@ -32,7 +33,8 @@ namespace Slate.ActionClips
         protected override void OnUpdate(float deltaTime)
         {
             var target = originalPos + translation * (perSecond ? length : 1);
-            actor.transform.localPosition = Easing.Ease(interpolation, originalPos, target, deltaTime / length);
+            actor.transform.localPosition =
+                Easing.Ease(interpolation, originalPos, target, deltaTime / length);
         }
 
         protected override void OnReverse()

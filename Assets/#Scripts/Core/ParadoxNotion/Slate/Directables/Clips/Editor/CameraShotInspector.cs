@@ -52,18 +52,21 @@ namespace Slate
             if (action.parent.children.OfType<CameraShot>().FirstOrDefault() == action) {
                 if (action.blendInEffect == CameraShot.BlendInEffectType.EaseIn)
                     EditorGUILayout.HelpBox(
-                        "The 'Ease In' option has no effect in the first shot clip of the track.\n\nIf you want to Blend in/out of the gameplay camera, please use the Blend In/Out found on the Camera Track inspector instead."
-                        , MessageType.Warning);
+                        "The 'Ease In' option has no effect in the first shot clip of the track.\n\nIf you want to Blend in/out of the gameplay camera, please use the Blend In/Out found on the Camera Track inspector instead.",
+                        MessageType.Warning);
                 if (action.blendInEffect == CameraShot.BlendInEffectType.CrossDissolve)
                     EditorGUILayout.HelpBox(
-                        "The 'Cross Dissolve' option has no usable effect in the first shot clip of the track."
-                        , MessageType.Warning);
+                        "The 'Cross Dissolve' option has no usable effect in the first shot clip of the track.",
+                        MessageType.Warning);
             }
             if (action.targetShot == null)
-                EditorGUILayout.HelpBox("Select or Create a Shot Camera to be used by this clip.", MessageType.Error);
-            if (GUILayout.Button(action.targetShot == null ? "Select Shot Camera" : "Replace Shot Camera"))
-                if (action.targetShot == null || EditorUtility.DisplayDialog("Replace Shot"
-                    , "Selecting a new target shot will reset all animation data of this clip.", "OK", "Cancel"))
+                EditorGUILayout.HelpBox("Select or Create a Shot Camera to be used by this clip.",
+                    MessageType.Error);
+            if (GUILayout.Button(action.targetShot == null ? "Select Shot Camera"
+                : "Replace Shot Camera"))
+                if (action.targetShot == null || EditorUtility.DisplayDialog("Replace Shot",
+                    "Selecting a new target shot will reset all animation data of this clip.", "OK",
+                    "Cancel"))
                     ShotPicker.Show(Event.current.mousePosition, action.root, (shot) => {
                         action.targetShot = shot;
                     });
@@ -71,7 +74,8 @@ namespace Slate
                 action.targetShot = ShotCamera.Create(action.root.context.transform);
 
             if (action.targetShot != null) {
-                if (GUILayout.Button("Find in Scene")) Selection.activeGameObject = action.targetShot.gameObject;
+                if (GUILayout.Button("Find in Scene"))
+                    Selection.activeGameObject = action.targetShot.gameObject;
                 var lastRect = GUILayoutUtility.GetLastRect();
                 var rect = new Rect(lastRect.x, lastRect.yMax + 5, lastRect.width, 200);
                 var res = EditorTools.GetGameViewSize();
@@ -92,7 +96,8 @@ namespace Slate
                 }
                 GUILayout.Space(205);
                 var helpRect = new Rect(rect.x + 10, rect.yMax - 20, rect.width - 20, 16);
-                GUI.color = EditorGUIUtility.isProSkin ? new Color(0, 0, 0, 0.6f) : new Color(1, 1, 1, 0.6f);
+                GUI.color = EditorGUIUtility.isProSkin ? new Color(0, 0, 0, 0.6f)
+                    : new Color(1, 1, 1, 0.6f);
                 GUI.DrawTexture(helpRect, Styles.whiteTexture);
                 GUI.color = Color.white;
                 GUI.Label(helpRect, "Left: Rotate, Middle: Pan, Right: Dolly, Alt+Right: Zoom");
@@ -118,7 +123,8 @@ namespace Slate
 
                         //pan
                         if (e.button == 2 || (e.button == 0 && in2DMode)) {
-                            var deltaPos = new Vector3(-e.delta.x, e.delta.y, 0) * (e.shift ? 0.01f : 0.05f);
+                            var deltaPos = new Vector3(-e.delta.x, e.delta.y, 0) *
+                                (e.shift ? 0.01f : 0.05f);
                             action.targetShot.transform.Translate(deltaPos);
                             e.Use();
                         }
@@ -139,17 +145,20 @@ namespace Slate
                         EditorUtility.SetDirty(action.targetShot);
                     }
                 }
-                EditorGUILayout.PropertyField(dynamicTargetProp, new GUIContent("Override Dynamic Shot Target (?)"));
+                EditorGUILayout.PropertyField(dynamicTargetProp,
+                    new GUIContent("Override Dynamic Shot Target (?)"));
                 EditorGUILayout.HelpBox(
-                    "With the 'Override Dynamic Shot Target' option above you can override the 'Target' transform of the 'Dynamic Shot Controller' bellow (if used), to be set to an Actor of the Cutscene dynamically when this clip is enabled."
-                    , MessageType.None);
+                    "With the 'Override Dynamic Shot Target' option above you can override the 'Target' transform of the 'Dynamic Shot Controller' bellow (if used), to be set to an Actor of the Cutscene dynamically when this clip is enabled.",
+                    MessageType.None);
                 serializedObject.ApplyModifiedProperties();
 
                 //The shot dynamic controller settings
-                if (shotSerializedObject == null || shotSerializedObject.targetObject != action.targetShot)
+                if (shotSerializedObject == null ||
+                    shotSerializedObject.targetObject != action.targetShot)
                     if (action.targetShot != null) {
                         shotSerializedObject = new SerializedObject(action.targetShot);
-                        shotControllerProp = shotSerializedObject.FindProperty("_dynamicController");
+                        shotControllerProp =
+                            shotSerializedObject.FindProperty("_dynamicController");
                     }
                 EditorGUI.BeginChangeCheck();
 

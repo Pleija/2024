@@ -189,10 +189,11 @@ namespace Runner.Characters
             }
             else {
                 // Use touch input on mobile
-                var isUI = Input.touches.Any(t => EventSystem.current.IsPointerOverGameObject(t.fingerId));
+                var isUI = Input.touches.Any(t =>
+                    EventSystem.current.IsPointerOverGameObject(t.fingerId));
 
-                if (!(isUI && EventSystem.current.currentSelectedGameObject) && Input.touchCount == 1 &&
-                    Time.timeScale > 0) {
+                if (!(isUI && EventSystem.current.currentSelectedGameObject) &&
+                    Input.touchCount == 1 && Time.timeScale > 0) {
                     if (m_IsSwiping) {
                         var diff = Input.GetTouch(0).position - m_StartingTouch;
 
@@ -260,8 +261,8 @@ namespace Runner.Characters
                     !AudioListener
                         .pause) //use AudioListener.pause as it is an easily accessible singleton & it is set when the app is in pause too
                 {
-                    verticalTargetPosition.y =
-                        Mathf.MoveTowards(verticalTargetPosition.y, 0, k_GroundingSpeed * Time.deltaTime);
+                    verticalTargetPosition.y = Mathf.MoveTowards(verticalTargetPosition.y, 0,
+                        k_GroundingSpeed * Time.deltaTime);
 
                     if (Mathf.Approximately(verticalTargetPosition.y, 0f)) {
                         character.animator.SetBool(s_JumpingHash, false);
@@ -269,14 +270,15 @@ namespace Runner.Characters
                     }
                 }
             }
-            characterCollider.transform.localPosition = Vector3.MoveTowards(characterCollider.transform.localPosition
-                , verticalTargetPosition, laneChangeSpeed * Time.deltaTime);
+            characterCollider.transform.localPosition = Vector3.MoveTowards(
+                characterCollider.transform.localPosition, verticalTargetPosition,
+                laneChangeSpeed * Time.deltaTime);
 
             // Put blob shadow under the character.
             RaycastHit hit;
 
-            if (Physics.Raycast(characterCollider.transform.position + Vector3.up, Vector3.down, out hit
-                , k_ShadowRaycastDistance, m_ObstacleLayer)) {
+            if (Physics.Raycast(characterCollider.transform.position + Vector3.up, Vector3.down,
+                out hit, k_ShadowRaycastDistance, m_ObstacleLayer)) {
                 blobShadow.transform.position = hit.point + Vector3.up * k_ShadowGroundOffset;
             }
             else {
@@ -294,7 +296,8 @@ namespace Runner.Characters
                 if (m_Sliding) StopSliding();
                 var correctJumpLength = jumpLength * (1.0f + trackManager.speedRatio);
                 m_JumpStart = trackManager.worldDistance;
-                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctJumpLength);
+                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio *
+                    (trackManager.speed / correctJumpLength);
                 character.animator.SetFloat(s_JumpingSpeedHash, animSpeed);
                 character.animator.SetBool(s_JumpingHash, true);
                 m_Audio.PlayOneShot(character.jumpSound);
@@ -318,7 +321,8 @@ namespace Runner.Characters
                 if (m_Jumping) StopJumping();
                 var correctSlideLength = slideLength * (1.0f + trackManager.speedRatio);
                 m_SlideStart = trackManager.worldDistance;
-                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctSlideLength);
+                var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio *
+                    (trackManager.speed / correctSlideLength);
                 character.animator.SetFloat(s_JumpingSpeedHash, animSpeed);
                 character.animator.SetBool(s_SlidingHash, true);
                 m_Audio.PlayOneShot(slideSound);

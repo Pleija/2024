@@ -37,8 +37,8 @@ namespace NodeCanvas.Framework
 
             for (var i = 0; i < _serializedExposedParameters.Length; i++) {
                 var serializedParam = new SerializationPair();
-                serializedParam._json = JSONSerializer.Serialize(typeof(ExposedParameter), exposedParameters[i]
-                    , serializedParam._references);
+                serializedParam._json = JSONSerializer.Serialize(typeof(ExposedParameter),
+                    exposedParameters[i], serializedParam._references);
                 _serializedExposedParameters[i] = serializedParam;
             }
         }
@@ -54,7 +54,8 @@ namespace NodeCanvas.Framework
 
                 for (var i = 0; i < _serializedExposedParameters.Length; i++) {
                     var exposedParam = JSONSerializer.Deserialize<ExposedParameter>(
-                        _serializedExposedParameters[i]._json, _serializedExposedParameters[i]._references);
+                        _serializedExposedParameters[i]._json,
+                        _serializedExposedParameters[i]._references);
                     exposedParameters.Add(exposedParam);
                 }
             }
@@ -76,29 +77,30 @@ namespace NodeCanvas.Framework
         [SerializeField]
         private GraphSource _boundGraphSource = new GraphSource();
 
-        [SerializeField, FormerlySerializedAs("firstActivation")
-         , Tooltip(
+        [SerializeField, FormerlySerializedAs("firstActivation"),
+         Tooltip(
              "When the graph will first activate. Async mode will load the graph on a separate thread (thus no spikes), but the graph will activate a few frames later.")]
         private FirstActivation _firstActivation = FirstActivation.OnStart;
 
-        [SerializeField, FormerlySerializedAs("enableAction")
-         , Tooltip("What will happen when the GraphOwner is enabled")]
+        [SerializeField, FormerlySerializedAs("enableAction"),
+         Tooltip("What will happen when the GraphOwner is enabled")]
         private EnableAction _enableAction = EnableAction.EnableBehaviour;
 
-        [SerializeField, FormerlySerializedAs("disableAction")
-         , Tooltip("What will happen when the GraphOwner is disabled")]
+        [SerializeField, FormerlySerializedAs("disableAction"),
+         Tooltip("What will happen when the GraphOwner is disabled")]
         private DisableAction _disableAction = DisableAction.DisableBehaviour;
 
-        [SerializeField, Tooltip("If enabled, bound graph prefab overrides in instances will not be possible")]
+        [SerializeField,
+         Tooltip("If enabled, bound graph prefab overrides in instances will not be possible")]
         private bool _lockBoundGraphPrefabOverrides = true;
 
-        [SerializeField
-         , Tooltip(
+        [SerializeField,
+         Tooltip(
              "If enabled, all subgraphs will be pre-initialized in Awake along with the root graph, but this may have a loading performance cost")]
         private bool _preInitializeSubGraphs;
 
-        [SerializeField
-         , Tooltip(
+        [SerializeField,
+         Tooltip(
              "Specify when (if) the behaviour is updated. Changes to this only work when the behaviour starts, or re-starts")]
         private Graph.UpdateMode _updateMode = Graph.UpdateMode.NormalUpdate;
 
@@ -130,7 +132,10 @@ namespace NodeCanvas.Framework
             private set => _boundGraphSerialization = value;
         }
 
-        ///<summary>The bound graph object references if any (this is a reference list. Dont touch if you are not sure how :) )</summary>
+        /// <summary>
+        ///     The bound graph object references if any (this is a reference list. Dont touch if you are
+        ///     not sure how :) )
+        /// </summary>
         public List<Object> boundGraphObjectReferences {
             get => _boundGraphObjectReferences;
             private set => _boundGraphObjectReferences = value;
@@ -166,7 +171,10 @@ namespace NodeCanvas.Framework
             set => _disableAction = value;
         }
 
-        ///<summary>When is the behaviour updated? Changes to this only work when the behaviour starts (or re-starts)</summary>
+        /// <summary>
+        ///     When is the behaviour updated? Changes to this only work when the behaviour starts (or
+        ///     re-starts)
+        /// </summary>
         public Graph.UpdateMode updateMode {
             get => _updateMode;
             set => _updateMode = value;
@@ -228,7 +236,8 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     Start the graph assigned, optionally autoUpdated or not, and providing a callback for when it's finished if at
+        ///     Start the graph assigned, optionally autoUpdated or not, and providing a callback for when it's
+        ///     finished if at
         ///     all.
         /// </summary>
         public void StartBehaviour(Graph.UpdateMode updateMode, System.Action<bool> callback = null)
@@ -272,8 +281,11 @@ namespace NodeCanvas.Framework
             StartBehaviour();
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Send an event to the graph. Note that this overload has no sender argument thus sender will be null.</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Send an event to the graph. Note that this overload has no sender argument thus sender
+        ///     will be null.
+        /// </summary>
         public void SendEvent(string eventName)
         {
             if (graph != null) graph.SendEvent(eventName, null, null);
@@ -295,14 +307,16 @@ namespace NodeCanvas.Framework
         ///<summary>Return an exposed parameter value</summary>
         public T GetExposedParameterValue<T>(string name)
         {
-            var param = exposedParameters.Find(x => x.varRefBoxed != null && x.varRefBoxed.name == name);
+            var param =
+                exposedParameters.Find(x => x.varRefBoxed != null && x.varRefBoxed.name == name);
             return param != null ? (param as ExposedParameter<T>).value : default;
         }
 
         ///<summary>Set an exposed parameter value</summary>
         public void SetExposedParameterValue<T>(string name, T value)
         {
-            var param = exposedParameters?.Find(x => x.varRefBoxed != null && x.varRefBoxed.name == name);
+            var param =
+                exposedParameters?.Find(x => x.varRefBoxed != null && x.varRefBoxed.name == name);
             if (param == null) param = MakeNewExposedParameter<T>(name);
             if (param != null) (param as ExposedParameter<T>).value = value;
         }
@@ -319,8 +333,8 @@ namespace NodeCanvas.Framework
                 exposedParameters.Add(exposedParam);
                 return exposedParam;
             }
-            ParadoxNotion.Services.Logger.LogWarning(string.Format("Exposed Graph Variable named '{0}' was not found"
-                , name));
+            ParadoxNotion.Services.Logger.LogWarning(
+                string.Format("Exposed Graph Variable named '{0}' was not found", name));
             return null;
         }
 
@@ -333,12 +347,14 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     Initialize the bound or asset graph. This is called in Awake automatically, but it's public so that you can
+        ///     Initialize the bound or asset graph. This is called in Awake automatically, but it's public so
+        ///     that you can
         ///     call this manually to pre-initialize when gameobject is deactive, if required.
         /// </summary>
         public void Initialize()
         {
-            Debug.Assert(Application.isPlaying, "GraphOwner Initialize should have been called in runtime only");
+            Debug.Assert(Application.isPlaying,
+                "GraphOwner Initialize should have been called in runtime only");
             if (initialized) return;
             if (graph == null && !graphIsBound) return;
             GraphSource finalSource;
@@ -376,7 +392,8 @@ namespace NodeCanvas.Framework
                     BindExposedParameters();
 
                     //remark: activeInHierarchy is checked in case user instantiate and disable gameobject instantly for pooling reasons
-                    if (!isRunning && enableAction == EnableAction.EnableBehaviour && gameObject.activeInHierarchy) {
+                    if (!isRunning && enableAction == EnableAction.EnableBehaviour &&
+                        gameObject.activeInHierarchy) {
                         StartBehaviour();
                         InvokeStartEvent();
                     }
@@ -449,7 +466,8 @@ namespace NodeCanvas.Framework
             if (ParadoxNotion.Services.Threader.applicationIsPlaying) StopBehaviour();
 
             foreach (var instanceGraph in instances.Values) {
-                foreach (var subGraph in instanceGraph.GetAllInstancedNestedGraphs()) Destroy(subGraph);
+                foreach (var subGraph in instanceGraph.GetAllInstancedNestedGraphs())
+                    Destroy(subGraph);
                 Destroy(instanceGraph);
             }
         }
@@ -468,25 +486,26 @@ namespace NodeCanvas.Framework
                 //--- This is basically only for showing the log...
                 if (UnityEditor.PrefabUtility.IsPartOfPrefabInstance(this)) {
                     var boundProp =
-                        new UnityEditor.SerializedObject(this).FindProperty(nameof(_boundGraphSerialization));
+                        new UnityEditor.SerializedObject(this).FindProperty(
+                            nameof(_boundGraphSerialization));
 
-                    if (!boundProp.prefabOverride &&
-                        boundGraphSerialization != serializedGraph.GetSerializedJsonData()) {
+                    if (!boundProp.prefabOverride && boundGraphSerialization !=
+                        serializedGraph.GetSerializedJsonData()) {
                         if (lockBoundGraphPrefabOverrides) {
                             ParadoxNotion.Services.Logger.LogWarning(
-                                "The Bound Graph is Prefab Locked!\nChanges you make are not saved!\nUnlock the Prefab Instance, or Edit the Prefab Asset."
-                                , LogTag.EDITOR, this);
+                                "The Bound Graph is Prefab Locked!\nChanges you make are not saved!\nUnlock the Prefab Instance, or Edit the Prefab Asset.",
+                                LogTag.EDITOR, this);
                             return;
                         }
                         else {
-                            ParadoxNotion.Services.Logger.LogWarning("Prefab Bound Graph just got overridden!"
-                                , LogTag.EDITOR, this);
+                            ParadoxNotion.Services.Logger.LogWarning(
+                                "Prefab Bound Graph just got overridden!", LogTag.EDITOR, this);
                         }
                     }
                 }
                 //---
-                ParadoxNotion.Design.UndoUtility.RecordObject(this
-                    , ParadoxNotion.Design.UndoUtility.GetLastOperationNameOr("Bound Graph Change"));
+                ParadoxNotion.Design.UndoUtility.RecordObject(this,
+                    ParadoxNotion.Design.UndoUtility.GetLastOperationNameOr("Bound Graph Change"));
                 boundGraphSource = serializedGraph.GetGraphSource();
                 boundGraphSerialization = serializedGraph.GetSerializedJsonData();
                 boundGraphObjectReferences = serializedGraph.GetSerializedReferencesData();
@@ -511,7 +530,8 @@ namespace NodeCanvas.Framework
                         boundGraphInstance = (Graph)ScriptableObject.CreateInstance(graphType);
                     boundGraphInstance.name = graphType.Name;
                     boundGraphInstance.SetGraphSourceMetaData(boundGraphSource);
-                    boundGraphInstance.Deserialize(boundGraphSerialization, boundGraphObjectReferences, false);
+                    boundGraphInstance.Deserialize(boundGraphSerialization,
+                        boundGraphObjectReferences, false);
                     boundGraphInstance.UpdateReferencesFromOwner(this);
                     boundGraphInstance.Validate();
                 }
@@ -631,10 +651,12 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     Start a new behaviour on this owner and optionally autoUpdated or not and optionally get a callback for when
+        ///     Start a new behaviour on this owner and optionally autoUpdated or not and optionally get a
+        ///     callback for when
         ///     it's finished if at all
         /// </summary>
-        public void StartBehaviour(T newGraph, Graph.UpdateMode updateMode, System.Action<bool> callback = null)
+        public void StartBehaviour(T newGraph, Graph.UpdateMode updateMode,
+            System.Action<bool> callback = null)
         {
             SwitchBehaviour(newGraph, updateMode, callback);
         }
@@ -645,14 +667,21 @@ namespace NodeCanvas.Framework
             SwitchBehaviour(newGraph, updateMode, null);
         }
 
-        ///<summary>Use to switch or set graphs at runtime and optionaly get a callback when it's finished if at all</summary>
+        /// <summary>
+        ///     Use to switch or set graphs at runtime and optionaly get a callback when it's finished if
+        ///     at all
+        /// </summary>
         public void SwitchBehaviour(T newGraph, System.Action<bool> callback)
         {
             SwitchBehaviour(newGraph, updateMode, callback);
         }
 
-        ///<summary>Use to switch or set graphs at runtime and optionaly get a callback when it's finished if at all</summary>
-        public void SwitchBehaviour(T newGraph, Graph.UpdateMode updateMode, System.Action<bool> callback = null)
+        /// <summary>
+        ///     Use to switch or set graphs at runtime and optionaly get a callback when it's finished if
+        ///     at all
+        /// </summary>
+        public void SwitchBehaviour(T newGraph, Graph.UpdateMode updateMode,
+            System.Action<bool> callback = null)
         {
             StopBehaviour();
             graph = newGraph;

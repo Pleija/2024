@@ -31,34 +31,30 @@ namespace ParadoxNotion.Design
             typeof(object), typeof(Type),
 
             //Primitives
-            typeof(string)
-            , typeof(float), typeof(int), typeof(bool),
+            typeof(string), typeof(float), typeof(int), typeof(bool),
 
             //Unity basics
-            typeof(Vector2)
-            , typeof(Vector3), typeof(Vector4), typeof(Quaternion), typeof(Color), typeof(LayerMask)
-            , typeof(AnimationCurve), typeof(RaycastHit), typeof(RaycastHit2D),
+            typeof(Vector2), typeof(Vector3), typeof(Vector4), typeof(Quaternion), typeof(Color),
+            typeof(LayerMask), typeof(AnimationCurve), typeof(RaycastHit), typeof(RaycastHit2D),
 
             //Unity functional classes
-            typeof(Debug)
-            , typeof(Application), typeof(Mathf), typeof(Physics), typeof(Physics2D), typeof(Input), typeof(NavMesh)
-            , typeof(PlayerPrefs), typeof(UnityEngine.Random), typeof(Time)
-            , typeof(UnityEngine.SceneManagement.SceneManager),
+            typeof(Debug), typeof(Application), typeof(Mathf), typeof(Physics), typeof(Physics2D),
+            typeof(Input), typeof(NavMesh), typeof(PlayerPrefs), typeof(UnityEngine.Random),
+            typeof(Time), typeof(UnityEngine.SceneManagement.SceneManager),
 
             //Unity Objects
-            typeof(UnityEngine.Object)
-            , typeof(MonoBehaviour), typeof(ScriptableObject), typeof(GameObject), typeof(Transform), typeof(Animator)
-            , typeof(Rigidbody), typeof(Rigidbody2D), typeof(Collider), typeof(Collider2D), typeof(NavMeshAgent)
-            , typeof(CharacterController), typeof(AudioSource), typeof(Camera), typeof(Light), typeof(Renderer),
+            typeof(UnityEngine.Object), typeof(MonoBehaviour), typeof(ScriptableObject),
+            typeof(GameObject), typeof(Transform), typeof(Animator), typeof(Rigidbody),
+            typeof(Rigidbody2D), typeof(Collider), typeof(Collider2D), typeof(NavMeshAgent),
+            typeof(CharacterController), typeof(AudioSource), typeof(Camera), typeof(Light),
+            typeof(Renderer),
 
             //UGUI
-            typeof(UnityEngine.UI.Button)
-            , typeof(UnityEngine.UI.Slider),
+            typeof(UnityEngine.UI.Button), typeof(UnityEngine.UI.Slider),
 
             //Unity Asset Objects
-            typeof(Texture2D)
-            , typeof(Sprite), typeof(Material), typeof(AudioClip), typeof(AnimationClip)
-            , typeof(UnityEngine.Audio.AudioMixer), typeof(TextAsset),
+            typeof(Texture2D), typeof(Sprite), typeof(Material), typeof(AudioClip),
+            typeof(AnimationClip), typeof(UnityEngine.Audio.AudioMixer), typeof(TextAsset),
         };
 
         //These types will be filtered out when requesting types with 'filterOutFunctionalOnlyTypes' true.
@@ -66,16 +62,17 @@ namespace ParadoxNotion.Design
         //Most of them are also probably singletons.
         //Hopefully this made sense :)
         public static readonly List<Type> functionalTypesBlacklist = new List<Type> {
-            typeof(Debug), typeof(Application), typeof(Mathf), typeof(Physics), typeof(Physics2D), typeof(Input)
-            , typeof(NavMesh), typeof(PlayerPrefs), typeof(UnityEngine.Random), typeof(Time)
-            , typeof(UnityEngine.SceneManagement.SceneManager),
+            typeof(Debug), typeof(Application), typeof(Mathf), typeof(Physics), typeof(Physics2D),
+            typeof(Input), typeof(NavMesh), typeof(PlayerPrefs), typeof(UnityEngine.Random),
+            typeof(Time), typeof(UnityEngine.SceneManagement.SceneManager),
         };
 
         //The default prefered types list
         private static string defaultTypesListString {
             get {
-                return string.Join("|"
-                    , defaultTypesList.OrderBy(t => t.Namespace).ThenBy(t => t.Name).Select(t => t.FullName).ToArray());
+                return string.Join("|",
+                    defaultTypesList.OrderBy(t => t.Namespace).ThenBy(t => t.Name)
+                        .Select(t => t.FullName).ToArray());
             }
         }
 
@@ -90,7 +87,8 @@ namespace ParadoxNotion.Design
                 return;
             }
 
-            foreach (var s in EditorPrefs.GetString(TYPES_PREFS_KEY, defaultTypesListString).Split('|')) {
+            foreach (var s in EditorPrefs.GetString(TYPES_PREFS_KEY, defaultTypesListString)
+                .Split('|')) {
                 var resolvedType = ReflectionTools.GetType(s, /*fallback?*/ true);
                 if (resolvedType != null)
                     _preferedTypesAll.Add(resolvedType);
@@ -105,26 +103,29 @@ namespace ParadoxNotion.Design
         public static List<Type> GetPreferedTypesList(bool filterOutFunctionalOnlyTypes = false) =>
             GetPreferedTypesList(typeof(object), filterOutFunctionalOnlyTypes);
 
-        public static List<Type> GetPreferedTypesList(Type baseType, bool filterOutFunctionalOnlyTypes = false)
+        public static List<Type> GetPreferedTypesList(Type baseType,
+            bool filterOutFunctionalOnlyTypes = false)
         {
             if (_preferedTypesAll == null || _preferedTypesFiltered == null) LoadTypes();
             if (baseType == typeof(object))
                 return filterOutFunctionalOnlyTypes ? _preferedTypesFiltered : _preferedTypesAll;
             if (filterOutFunctionalOnlyTypes)
-                return _preferedTypesFiltered.Where(t => t != null && baseType.IsAssignableFrom(t)).ToList();
+                return _preferedTypesFiltered.Where(t => t != null && baseType.IsAssignableFrom(t))
+                    .ToList();
             return _preferedTypesAll.Where(t => t != null && baseType.IsAssignableFrom(t)).ToList();
         }
 
         ///<summary>Set the prefered types list for the user</summary>
         public static void SetPreferedTypesList(List<Type> types)
         {
-            var finalTypes = types.Where(t => t != null && !t.IsGenericType).OrderBy(t => t.Namespace)
-                .ThenBy(t => t.Name).ToList();
+            var finalTypes = types.Where(t => t != null && !t.IsGenericType)
+                .OrderBy(t => t.Namespace).ThenBy(t => t.Name).ToList();
             var joined = string.Join("|", finalTypes.Select(t => t.FullName).ToArray());
             EditorPrefs.SetString(TYPES_PREFS_KEY, joined);
             _preferedTypesAll = finalTypes;
-            var finalTypesFiltered = finalTypes
-                .Where(t => !functionalTypesBlacklist.Contains(t) /*&& !t.IsInterface && !t.IsAbstract*/).ToList();
+            var finalTypesFiltered = finalTypes.Where(t =>
+                    !functionalTypesBlacklist.Contains(t) /*&& !t.IsInterface && !t.IsAbstract*/)
+                .ToList();
             _preferedTypesFiltered = finalTypesFiltered;
             TrySaveSyncFile(finalTypes);
             if (onPreferredTypesChanged != null) onPreferredTypesChanged();
@@ -187,12 +188,17 @@ namespace ParadoxNotion.Design
 
         ///<summary>A Type to color lookup initialized with some types already</summary>
         private static Dictionary<Type, Color> typeColors = new Dictionary<Type, Color>() {
-            { typeof(Delegate), new Color(1, 0.4f, 0.4f) }, { typeof(bool?), new Color(1, 0.4f, 0.4f) }
-            , { typeof(float?), new Color(0.6f, 0.6f, 1) }, { typeof(int?), new Color(0.5f, 1, 0.5f) }
-            , { typeof(string), new Color(0.55f, 0.55f, 0.55f) }, { typeof(Vector2?), new Color(1f, 0.7f, 0.2f) }
-            , { typeof(Vector3?), new Color(1f, 0.7f, 0.2f) }, { typeof(Vector4?), new Color(1f, 0.7f, 0.2f) }
-            , { typeof(Quaternion?), new Color(1f, 0.7f, 0.2f) }
-            , { typeof(GameObject), new Color(0.537f, 0.415f, 0.541f) }, { typeof(UnityEngine.Object), Color.grey },
+            { typeof(Delegate), new Color(1, 0.4f, 0.4f) },
+            { typeof(bool?), new Color(1, 0.4f, 0.4f) },
+            { typeof(float?), new Color(0.6f, 0.6f, 1) },
+            { typeof(int?), new Color(0.5f, 1, 0.5f) },
+            { typeof(string), new Color(0.55f, 0.55f, 0.55f) },
+            { typeof(Vector2?), new Color(1f, 0.7f, 0.2f) },
+            { typeof(Vector3?), new Color(1f, 0.7f, 0.2f) },
+            { typeof(Vector4?), new Color(1f, 0.7f, 0.2f) },
+            { typeof(Quaternion?), new Color(1f, 0.7f, 0.2f) },
+            { typeof(GameObject), new Color(0.537f, 0.415f, 0.541f) },
+            { typeof(UnityEngine.Object), Color.grey },
         };
 
         ///<summary>Get color for type</summary>
@@ -258,11 +264,13 @@ namespace ParadoxNotion.Design
 
                 if (texture == null && (typeof(MonoBehaviour).IsAssignableFrom(type) ||
                     typeof(ScriptableObject).IsAssignableFrom(type))) {
-                    texture = EditorGUIUtility.ObjectContent(EditorUtils.MonoScriptFromType(type), null).image;
+                    texture = EditorGUIUtility
+                        .ObjectContent(EditorUtils.MonoScriptFromType(type), null).image;
                     if (texture == null) texture = Icons.csIcon;
                 }
             }
-            if (texture == null) texture = Resources.Load<Texture>(IMPLICIT_ICONS_PATH + type.FullName);
+            if (texture == null)
+                texture = Resources.Load<Texture>(IMPLICIT_ICONS_PATH + type.FullName);
 
             ///<summary>Explicit icons not in dark theme</summary>
             if (EditorGUIUtility.isProSkin)
@@ -280,7 +288,8 @@ namespace ParadoxNotion.Design
                     if (texture != null) break;
                 }
             }
-            if (texture == null) texture = Resources.Load<Texture>(IMPLICIT_ICONS_PATH + DEFAULT_TYPE_ICON_NAME);
+            if (texture == null)
+                texture = Resources.Load<Texture>(IMPLICIT_ICONS_PATH + DEFAULT_TYPE_ICON_NAME);
             typeIcons[type.FullName] = texture;
             if (texture != null) //it should not be
                 if (texture.name != DEFAULT_TYPE_ICON_NAME || fallbackToDefault)
@@ -294,7 +303,8 @@ namespace ParadoxNotion.Design
             if (iconAttribute == null) return null;
 
             if (instance != null && !string.IsNullOrEmpty(iconAttribute.runtimeIconTypeCallback)) {
-                var callbackMethod = instance.GetType().RTGetMethod(iconAttribute.runtimeIconTypeCallback);
+                var callbackMethod = instance.GetType()
+                    .RTGetMethod(iconAttribute.runtimeIconTypeCallback);
                 return callbackMethod != null && callbackMethod.ReturnType == typeof(Type)
                     ? GetTypeIcon((Type)callbackMethod.Invoke(instance, null), false) : null;
             }

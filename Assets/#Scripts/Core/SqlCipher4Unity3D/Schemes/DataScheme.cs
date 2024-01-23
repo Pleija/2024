@@ -43,6 +43,8 @@ namespace SqlCipher4Unity3D
         public TableMapping.Column[] columns;
         public virtual object GetValue(TableMapping.Column column, object obj) => obj;
         public virtual void SetValue(TableMapping.Column column, object obj, object val) { }
-        public static explicit operator DataScheme(Type type) => CreateInstance<TypeDataScheme>().Create(type);
+
+        public static explicit operator DataScheme(Type type) =>
+            CreateInstance<TypeDataScheme>().Create(type);
     }
 }

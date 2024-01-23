@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Mouse"), Category("Events/Object")
-     , Description("Called when mouse based operations happen on target collider")]
+    [Name("Mouse"), Category("Events/Object"),
+     Description("Called when mouse based operations happen on target collider")]
     public class MouseAgentEvents : RouterEventNode<Collider>
     {
         private FlowOutput onEnter;
@@ -97,7 +97,8 @@ namespace FlowCanvas.Nodes
         private void StoreHit()
         {
             if (Camera.main != null)
-                Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity);
+                Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit,
+                    Mathf.Infinity);
         }
     }
 }

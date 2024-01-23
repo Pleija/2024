@@ -14,7 +14,8 @@ namespace FlowCanvas.Nodes
         [SerializeField]
         protected Type targetType;
 
-        protected EventInfo eventInfo => targetType != null ? targetType.RTGetEvent(eventName) : null;
+        protected EventInfo eventInfo =>
+            targetType != null ? targetType.RTGetEvent(eventName) : null;
 
         public void SetEvent(EventInfo e)
         {
@@ -55,7 +56,8 @@ namespace FlowCanvas.Nodes
 
         public override void OnGraphStoped()
         {
-            if (!string.IsNullOrEmpty(eventName) && eventInfo != null) eventInfo.RemoveEventHandler(null, pointer);
+            if (!string.IsNullOrEmpty(eventName) && eventInfo != null)
+                eventInfo.RemoveEventHandler(null, pointer);
         }
 
         private void Call()
@@ -86,7 +88,8 @@ namespace FlowCanvas.Nodes
 
         public override void OnGraphStoped()
         {
-            if (!string.IsNullOrEmpty(eventName) && eventInfo != null) eventInfo.RemoveEventHandler(null, pointer);
+            if (!string.IsNullOrEmpty(eventName) && eventInfo != null)
+                eventInfo.RemoveEventHandler(null, pointer);
         }
 
         private void Call(T value)

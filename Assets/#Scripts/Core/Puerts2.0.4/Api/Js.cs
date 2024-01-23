@@ -88,7 +88,8 @@ public partial class Js
             EditorApplication.update -= EditorUpdate;
             EditorApplication.update += EditorUpdate;
             EditorApplication.playModeStateChanged += mode => {
-                if (mode == PlayModeStateChange.ExitingEditMode || mode == PlayModeStateChange.ExitingPlayMode)
+                if (mode == PlayModeStateChange.ExitingEditMode ||
+                    mode == PlayModeStateChange.ExitingPlayMode)
                     Dispose();
             };
         }

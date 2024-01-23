@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("Environment"), Description("A quick way to create a slow-motion time effect."), System.Obsolete]
+    [Category("Environment"), Description("A quick way to create a slow-motion time effect."),
+     System.Obsolete]
     public class EasySlowMotion : DirectorActionClip
     {
         [SerializeField, HideInInspector]
@@ -46,7 +47,8 @@ namespace Slate.ActionClips
 
         protected override void OnUpdate(float deltaTime)
         {
-            Time.timeScale = Easing.Ease(interpolation, lastTimeScale, timeScale, GetClipWeight(deltaTime));
+            Time.timeScale = Easing.Ease(interpolation, lastTimeScale, timeScale,
+                GetClipWeight(deltaTime));
             Time.timeScale = Mathf.Max(Time.timeScale, 0.05f);
         }
 

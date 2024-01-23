@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Input Button"), Category("Events/Input (Legacy System)")
-     , Description(
+    [Name("Input Button"), Category("Events/Input (Legacy System)"),
+     Description(
          "Calls respective outputs when the defined Button is pressed down, held down or released.\nButtons are configured in Unity Input Manager.")]
     public class InputButtonEvents : EventNode, IUpdatable
     {

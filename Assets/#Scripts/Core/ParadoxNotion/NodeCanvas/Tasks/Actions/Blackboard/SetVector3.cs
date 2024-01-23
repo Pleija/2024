@@ -15,13 +15,13 @@ namespace NodeCanvas.Tasks.Actions
         public BBParameter<Vector3> valueB;
         public bool perSecond;
 
-        protected override string info => string.Format("{0} {1} {2}{3}", valueA
-            , OperationTools.GetOperationString(operation), valueB, perSecond ? " Per Second" : "");
+        protected override string info => string.Format("{0} {1} {2}{3}", valueA,
+            OperationTools.GetOperationString(operation), valueB, perSecond ? " Per Second" : "");
 
         protected override void OnExecute()
         {
-            valueA.value =
-                OperationTools.Operate(valueA.value, valueB.value, operation, perSecond ? Time.deltaTime : 1f);
+            valueA.value = OperationTools.Operate(valueA.value, valueB.value, operation,
+                perSecond ? Time.deltaTime : 1f);
             EndAction();
         }
     }

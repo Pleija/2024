@@ -45,7 +45,8 @@ namespace NodeCanvas.Tasks.Actions
                     return;
                 }
             lastRequest = pos;
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + keepDistance.value)
+            if (!agent.pathPending &&
+                agent.remainingDistance <= agent.stoppingDistance + keepDistance.value)
                 EndAction(true);
         }
 
@@ -62,7 +63,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public override void OnDrawGizmosSelected()
         {
-            if (target.value != null) Gizmos.DrawWireSphere(target.value.transform.position, keepDistance.value);
+            if (target.value != null)
+                Gizmos.DrawWireSphere(target.value.transform.position, keepDistance.value);
         }
     }
 }

@@ -18,7 +18,8 @@ namespace NodeCanvas.Editor
 
             if (owner.repeat) {
                 GUI.color = Color.white.WithAlpha(owner.updateInterval > 0 ? 1 : 0.5f);
-                owner.updateInterval = EditorGUILayout.FloatField("Update Interval", owner.updateInterval);
+                owner.updateInterval =
+                    EditorGUILayout.FloatField("Update Interval", owner.updateInterval);
                 GUI.color = Color.white;
             }
         }

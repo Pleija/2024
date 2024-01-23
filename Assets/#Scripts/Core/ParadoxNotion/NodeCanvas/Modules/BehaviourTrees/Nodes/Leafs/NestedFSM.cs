@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Sub FSM")
-     , Description(
-         "Executes a sub FSM. Returns Running while the sub FSM is active. If a Success or Failure State is selected, then it will return Success or Failure as soon as the Nested FSM enters that state at which point the sub FSM will also be stoped. If the sub FSM ends otherwise, this node will return Success.")
-     , Icon("FSM"), DropReferenceType(typeof(FSM))]
+    [Name("Sub FSM"),
+     Description(
+         "Executes a sub FSM. Returns Running while the sub FSM is active. If a Success or Failure State is selected, then it will return Success or Failure as soon as the Nested FSM enters that state at which point the sub FSM will also be stoped. If the sub FSM ends otherwise, this node will return Success."),
+     Icon("FSM"), DropReferenceType(typeof(FSM))]
     public class NestedFSM : BTNodeNested<FSM>
     {
         [SerializeField, ExposeField, Name("Sub FSM")]
@@ -39,12 +39,14 @@ namespace NodeCanvas.BehaviourTrees
             }
             if (status == Status.Running) currentInstance.UpdateGraph(graph.deltaTime);
 
-            if (!string.IsNullOrEmpty(successState) && currentInstance.currentStateName == successState) {
+            if (!string.IsNullOrEmpty(successState) &&
+                currentInstance.currentStateName == successState) {
                 currentInstance.Stop(true);
                 return Status.Success;
             }
 
-            if (!string.IsNullOrEmpty(failureState) && currentInstance.currentStateName == failureState) {
+            if (!string.IsNullOrEmpty(failureState) &&
+                currentInstance.currentStateName == failureState) {
                 currentInstance.Stop(false);
                 return Status.Failure;
             }
@@ -69,8 +71,10 @@ namespace NodeCanvas.BehaviourTrees
             base.OnNodeInspectorGUI();
 
             if (subGraph != null) {
-                successState = EditorUtils.Popup<string>("Success State", successState, subGraph.GetStateNames());
-                failureState = EditorUtils.Popup<string>("Failure State", failureState, subGraph.GetStateNames());
+                successState = EditorUtils.Popup<string>("Success State", successState,
+                    subGraph.GetStateNames());
+                failureState = EditorUtils.Popup<string>("Failure State", failureState,
+                    subGraph.GetStateNames());
             }
         }
 #endif

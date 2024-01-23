@@ -10,8 +10,8 @@ namespace NodeCanvas.Editor
         private static StyleSheet _styleSheet;
 
         private static StyleSheet styleSheet => _styleSheet ?? (_styleSheet =
-            Resources.Load<StyleSheet>(UnityEditor.EditorGUIUtility.isProSkin ? "StyleSheet/StyleSheetDark"
-                : "StyleSheet/StyleSheetLight"));
+            Resources.Load<StyleSheet>(UnityEditor.EditorGUIUtility.isProSkin
+                ? "StyleSheet/StyleSheetDark" : "StyleSheet/StyleSheetLight"));
 
         [ContextMenu("Lock")]
         private void Lock()

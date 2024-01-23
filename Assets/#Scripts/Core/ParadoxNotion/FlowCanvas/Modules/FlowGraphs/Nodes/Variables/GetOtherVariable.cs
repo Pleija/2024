@@ -3,9 +3,10 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Get Other Of Type"), Category("Variables/Blackboard")
-     , Description("Use this to get a variable value from blackboards other than the one this flowscript is using")
-     , ContextDefinedOutputs(typeof(Wild)), ContextDefinedInputs(typeof(IBlackboard))]
+    [Name("Get Other Of Type"), Category("Variables/Blackboard"),
+     Description(
+         "Use this to get a variable value from blackboards other than the one this flowscript is using"),
+     ContextDefinedOutputs(typeof(Wild)), ContextDefinedInputs(typeof(IBlackboard))]
     public class GetOtherVariable<T> : FlowNode
     {
         public override string name => "Get Variable";

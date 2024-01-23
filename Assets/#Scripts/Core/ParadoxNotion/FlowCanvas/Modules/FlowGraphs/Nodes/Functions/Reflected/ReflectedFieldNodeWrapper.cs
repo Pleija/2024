@@ -20,9 +20,10 @@ namespace FlowCanvas.Nodes
     }
 
     ///----------------------------------------------------------------------------------------------
-    [DoNotList, Icon(runtimeIconTypeCallback: nameof(GetRuntimeIconType))
-     , fsMigrateVersions(typeof(ReflectedFieldNodeWrapper_0))]
-    public class ReflectedFieldNodeWrapper : FlowNode, IReflectedWrapper, IMigratable<ReflectedFieldNodeWrapper_0>
+    [DoNotList, Icon(runtimeIconTypeCallback: nameof(GetRuntimeIconType)),
+     fsMigrateVersions(typeof(ReflectedFieldNodeWrapper_0))]
+    public class ReflectedFieldNodeWrapper : FlowNode, IReflectedWrapper,
+        IMigratable<ReflectedFieldNodeWrapper_0>
     {
         ///----------------------------------------------------------------------------------------------
         void IMigratable<ReflectedFieldNodeWrapper_0>.Migrate(ReflectedFieldNodeWrapper_0 model)
@@ -51,10 +52,12 @@ namespace FlowCanvas.Nodes
                     var isGet = accessMode == AccessMode.GetField;
                     var isStatic = field.IsStatic;
                     var isConstant = field.IsConstant();
-                    if (isConstant) return string.Format("{0}.{1}", field.DeclaringType.FriendlyName(), field.Name);
+                    if (isConstant)
+                        return string.Format("{0}.{1}", field.DeclaringType.FriendlyName(),
+                            field.Name);
                     if (isStatic)
-                        return string.Format("{0} {1}.{2}", isGet ? "Get" : "Set", field.DeclaringType.FriendlyName()
-                            , field.Name);
+                        return string.Format("{0} {1}.{2}", isGet ? "Get" : "Set",
+                            field.DeclaringType.FriendlyName(), field.Name);
                     return string.Format("{0} {1}", isGet ? "Get" : "Set", field.Name);
                 }
                 if (_field != null) return _field.AsString().FormatError();
@@ -63,7 +66,8 @@ namespace FlowCanvas.Nodes
         }
 
 #if UNITY_EDITOR
-        public override string description => field != null ? XMLDocs.GetMemberSummary(field) : "Missing Field";
+        public override string description =>
+            field != null ? XMLDocs.GetMemberSummary(field) : "Missing Field";
 #endif
 
         public void SetField(FieldInfo newField, AccessMode mode, object instance = null)

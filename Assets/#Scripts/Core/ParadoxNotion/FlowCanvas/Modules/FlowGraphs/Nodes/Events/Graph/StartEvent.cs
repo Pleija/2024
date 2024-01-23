@@ -3,10 +3,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Start", 8), Category("Events/Graph")
-     , Description(
-         "Called only once and the first time the Graph is enabled.\nThis is called after all OnAwake events of all graphs and after OnEnable events of this graph.")
-     , ExecutionPriority(8)]
+    [Name("On Start", 8), Category("Events/Graph"),
+     Description(
+         "Called only once and the first time the Graph is enabled.\nThis is called after all OnAwake events of all graphs and after OnEnable events of this graph."),
+     ExecutionPriority(8)]
     public class StartEvent : EventNode
     {
         private FlowOutput start;

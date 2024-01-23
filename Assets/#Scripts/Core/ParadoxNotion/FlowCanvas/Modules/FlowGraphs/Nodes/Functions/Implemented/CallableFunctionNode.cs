@@ -103,7 +103,8 @@
         }
     }
 
-    public abstract class CallableFunctionNode<TResult, T1, T2, T3, T4, T5> : CallableFunctionNodeBase
+    public abstract class
+        CallableFunctionNode<TResult, T1, T2, T3, T4, T5> : CallableFunctionNodeBase
     {
         private TResult result;
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e);
@@ -126,7 +127,8 @@
         }
     }
 
-    public abstract class CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6> : CallableFunctionNodeBase
+    public abstract class
+        CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6> : CallableFunctionNodeBase
     {
         private TResult result;
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f);
@@ -150,7 +152,8 @@
         }
     }
 
-    public abstract class CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7> : CallableFunctionNodeBase
+    public abstract class
+        CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7> : CallableFunctionNodeBase
     {
         private TResult result;
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g);
@@ -169,13 +172,15 @@
                 return result;
             });
             node.AddFlowInput(" ", (f) => {
-                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value);
+                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value,
+                    p7.value);
                 o.Call(f);
             });
         }
     }
 
-    public abstract class CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8> : CallableFunctionNodeBase
+    public abstract class
+        CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8> : CallableFunctionNodeBase
     {
         private TResult result;
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h);
@@ -195,13 +200,15 @@
                 return result;
             });
             node.AddFlowInput(" ", (f) => {
-                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value);
+                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value,
+                    p7.value, p8.value);
                 o.Call(f);
             });
         }
     }
 
-    public abstract class CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9> : CallableFunctionNodeBase
+    public abstract class
+        CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9> : CallableFunctionNodeBase
     {
         private TResult result;
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i);
@@ -222,15 +229,16 @@
                 return result;
             });
             node.AddFlowInput(" ", (f) => {
-                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value
-                    , p9.value);
+                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value,
+                    p7.value, p8.value, p9.value);
                 o.Call(f);
             });
         }
     }
 
     public abstract class
-        CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : CallableFunctionNodeBase
+        CallableFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9,
+            T10> : CallableFunctionNodeBase
     {
         private TResult result;
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i, T10 j);
@@ -252,8 +260,8 @@
                 return result;
             });
             node.AddFlowInput(" ", (f) => {
-                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value
-                    , p10.value);
+                result = Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value,
+                    p7.value, p8.value, p9.value, p10.value);
                 o.Call(f);
             });
         }

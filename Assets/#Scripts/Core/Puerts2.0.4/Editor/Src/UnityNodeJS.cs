@@ -14,7 +14,9 @@ namespace Puerts.Editor
 {
     public class NodeRunner
     {
-        protected static readonly string DefaultProjectPath = Application.dataPath + "/../Puer-Project/";
+        protected static readonly string DefaultProjectPath =
+            Application.dataPath + "/../Puer-Project/";
+
         public JsEnv env = null;
         private string ProjectPath;
 

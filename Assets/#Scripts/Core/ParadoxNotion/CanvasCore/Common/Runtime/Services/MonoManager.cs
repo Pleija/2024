@@ -4,7 +4,8 @@ using UnityEngine;
 namespace ParadoxNotion.Services
 {
     /// <summary>
-    ///     Singleton. Automatically added when needed, collectively calls methods that needs updating amongst other
+    ///     Singleton. Automatically added when needed, collectively calls methods that needs updating
+    ///     amongst other
     ///     things relevant to MonoBehaviours
     /// </summary>
     public class MonoManager : MonoBehaviour
@@ -28,7 +29,8 @@ namespace ParadoxNotion.Services
             get {
                 if (_current == null && Threader.applicationIsPlaying && !isQuiting) {
                     _current = FindObjectOfType<MonoManager>();
-                    if (_current == null) _current = new GameObject("_MonoManager").AddComponent<MonoManager>();
+                    if (_current == null)
+                        _current = new GameObject("_MonoManager").AddComponent<MonoManager>();
                 }
                 return _current;
             }

@@ -165,19 +165,22 @@ namespace MoreTags
             var catname = cat.Replace(".", string.Empty);
             code.AppendFormat("    public class {0}Group : TagGroup", catname).AppendLine();
             code.AppendLine("    {");
-            code.AppendFormat("        public {0}Group(string name) : base(name) {{ }}", catname).AppendLine();
+            code.AppendFormat("        public {0}Group(string name) : base(name) {{ }}", catname)
+                .AppendLine();
 
             foreach (var tag in tc.children.OrderBy(tag => GetTagOrder(tag))) {
                 var tagname = tag.Substring(cat.Length + 1).Replace(".", string.Empty);
                 catname = tag.Replace(".", string.Empty);
                 if (new TagGroup(tag).all.Any())
-                    code.AppendFormat("        public {2}Group {1} = new {2}Group(\"{0}\");", tag, tagname, catname)
-                        .AppendLine();
+                    code.AppendFormat("        public {2}Group {1} = new {2}Group(\"{0}\");", tag,
+                        tagname, catname).AppendLine();
                 else
-                    code.AppendFormat("        public TagName {1} = new TagName(\"{0}\");", tag, tagname).AppendLine();
+                    code.AppendFormat("        public TagName {1} = new TagName(\"{0}\");", tag,
+                        tagname).AppendLine();
             }
             code.AppendLine("    }").AppendLine();
-            foreach (var tag in tc.children.Where(tag => new TagGroup(tag).all.Any()).OrderBy(tag => GetTagOrder(tag)))
+            foreach (var tag in tc.children.Where(tag => new TagGroup(tag).all.Any())
+                .OrderBy(tag => GetTagOrder(tag)))
                 AutoClassGroup(tag, ref code);
         }
 
@@ -196,21 +199,25 @@ namespace MoreTags
             code.AppendLine("    {");
             code.AppendLine("        public static AllTags all = new AllTags();");
             var allname = tags.Where(tag => tag.Split('.').Count() < 2);
-            var allgroup = tags.Except(allname).Select(tag => tag.Split('.').FirstOrDefault() ?? string.Empty)
-                .Distinct();
+            var allgroup = tags.Except(allname)
+                .Select(tag => tag.Split('.').FirstOrDefault() ?? string.Empty).Distinct();
             allname = allname.Except(allgroup);
             foreach (var tag in allgroup)
-                code.AppendFormat("        public static {0}Group {0} = new {0}Group(\"{0}\");", tag).AppendLine();
+                code.AppendFormat("        public static {0}Group {0} = new {0}Group(\"{0}\");",
+                    tag).AppendLine();
             foreach (var tag in allname)
-                code.AppendFormat("        public static TagName {0} = new TagName(\"{0}\");", tag).AppendLine();
+                code.AppendFormat("        public static TagName {0} = new TagName(\"{0}\");", tag)
+                    .AppendLine();
             code.AppendLine("    }").AppendLine();
             foreach (var tag in allgroup) AutoClassGroup(tag, ref code);
             code.AppendLine("    public class AllTags : TagNames");
             code.AppendLine("    {");
             code.AppendLine("        public AllTags() : base(TagSystem.AllTags()) { }");
-            var allchildren = tags.Except(allname).SelectMany(tag => tag.Split('.').Skip(1)).Distinct();
+            var allchildren = tags.Except(allname).SelectMany(tag => tag.Split('.').Skip(1))
+                .Distinct();
             foreach (var tag in allchildren)
-                code.AppendFormat("        public TagChildren {0} = new TagChildren(\"{0}\");", tag).AppendLine();
+                code.AppendFormat("        public TagChildren {0} = new TagChildren(\"{0}\");", tag)
+                    .AppendLine();
             code.AppendLine("    }");
             code.AppendLine("}");
             File.WriteAllText(path, code.ToString());

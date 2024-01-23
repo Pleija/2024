@@ -23,7 +23,8 @@ namespace Slate
                         current = character.FindExpressionByUID(action.expressionUID);
                     else
                         current = character.FindExpressionByName(action.expressionName);
-                    var newExp = EditorTools.Popup<BlendShapeGroup>("Expression", current, character.expressions);
+                    var newExp = EditorTools.Popup<BlendShapeGroup>("Expression", current,
+                        character.expressions);
                     action.expressionName = newExp != null ? newExp.name : null;
                     action.expressionUID = newExp != null ? newExp.UID : null;
                 }

@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Guard"), Category("Decorators"), Icon("Shield")
-     , Description(
+    [Name("Guard"), Category("Decorators"), Icon("Shield"),
+     Description(
          "Protects the decorated child from running if another Guard with the same token is already guarding (Running) that token.\nGuarding is global for all of the agent Behaviour Trees.")]
     public class Guard : BTDecorator
     {
@@ -19,7 +19,10 @@ namespace NodeCanvas.BehaviourTrees
         public GuardMode ifGuarded = GuardMode.ReturnFailure;
 
         private bool isGuarding;
-        private static readonly Dictionary<GameObject, List<Guard>> guards = new Dictionary<GameObject, List<Guard>>();
+
+        private static readonly Dictionary<GameObject, List<Guard>> guards =
+            new Dictionary<GameObject, List<Guard>>();
+
         private static List<Guard> AgentGuards(Component agent) => guards[agent.gameObject];
 
         public override void OnGraphStarted()
@@ -30,7 +33,8 @@ namespace NodeCanvas.BehaviourTrees
         public override void OnGraphStoped()
         {
             foreach (var runningGraph in Graph.runningGraphs)
-                if (runningGraph.agent != null && runningGraph.agent.gameObject == graphAgent.gameObject)
+                if (runningGraph.agent != null &&
+                    runningGraph.agent.gameObject == graphAgent.gameObject)
                     return;
             guards.Remove(graphAgent.gameObject);
         }
@@ -62,7 +66,8 @@ namespace NodeCanvas.BehaviourTrees
 
         private void SetGuards(Component guardAgent)
         {
-            if (!guards.ContainsKey(guardAgent.gameObject)) guards[guardAgent.gameObject] = new List<Guard>();
+            if (!guards.ContainsKey(guardAgent.gameObject))
+                guards[guardAgent.gameObject] = new List<Guard>();
             if (!AgentGuards(guardAgent).Contains(this) && !string.IsNullOrEmpty(token.value))
                 AgentGuards(guardAgent).Add(this);
         }
@@ -72,7 +77,8 @@ namespace NodeCanvas.BehaviourTrees
 #if UNITY_EDITOR
         protected override void OnNodeGUI()
         {
-            GUILayout.Label(string.Format("<b>' {0} '</b>", string.IsNullOrEmpty(token.value) ? "NONE" : token.value));
+            GUILayout.Label(string.Format("<b>' {0} '</b>",
+                string.IsNullOrEmpty(token.value) ? "NONE" : token.value));
         }
 
 #endif

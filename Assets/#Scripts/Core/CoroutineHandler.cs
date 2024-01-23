@@ -30,5 +30,6 @@ public class CoroutineHandler : MonoBehaviour
         if (m_Instance) Destroy(m_Instance.gameObject);
     }
 
-    public static Coroutine StartStaticCoroutine(IEnumerator coroutine) => instance.StartCoroutine(coroutine);
+    public static Coroutine StartStaticCoroutine(IEnumerator coroutine) =>
+        instance.StartCoroutine(coroutine);
 }

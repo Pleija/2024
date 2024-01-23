@@ -4,10 +4,11 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Set Internal Var")
-     , Description(
-         "Can be used to set an internal variable, to later be retrieved with a 'Get Internal Var' node. If you do not call 'Set', then the input value will work as a relay instead.")
-     , Category("Variables/Internal"), Color("866693"), ContextDefinedInputs(typeof(Wild)), ExposeAsDefinition]
+    [Name("Set Internal Var"),
+     Description(
+         "Can be used to set an internal variable, to later be retrieved with a 'Get Internal Var' node. If you do not call 'Set', then the input value will work as a relay instead."),
+     Category("Variables/Internal"), Color("866693"), ContextDefinedInputs(typeof(Wild)),
+     ExposeAsDefinition]
     public abstract class RelayValueInputBase : FlowNode
     {
         public abstract System.Type relayType { get; }
@@ -37,20 +38,24 @@ namespace FlowCanvas.Nodes
         }
 
 #if UNITY_EDITOR
-        void IEditorMenuCallbackReceiver.OnMenu(UnityEditor.GenericMenu menu, Vector2 pos, Port contextPort
-            , object dropInstance)
+        void IEditorMenuCallbackReceiver.OnMenu(UnityEditor.GenericMenu menu, Vector2 pos,
+            Port contextPort, object dropInstance)
         {
             if (contextPort == null || contextPort.type.IsAssignableFrom(relayType))
-                menu.AddItem(new GUIContent(string.Format("Variables/Internal/Get '{0}'", identifier)), false, () => {
-                    flowGraph.AddFlowNode<RelayValueOutput<T>>(pos, contextPort, dropInstance).SetSource(this);
-                });
+                menu.AddItem(
+                    new GUIContent(string.Format("Variables/Internal/Get '{0}'", identifier)),
+                    false, () => {
+                        flowGraph.AddFlowNode<RelayValueOutput<T>>(pos, contextPort, dropInstance)
+                            .SetSource(this);
+                    });
         }
 #endif
     }
 
     ///----------------------------------------------------------------------------------------------
-    [DoNotList, Description("Returns the selected and previously set Internal Variable's input value."), Color("866693")
-     , ContextDefinedOutputs(typeof(Wild))]
+    [DoNotList,
+     Description("Returns the selected and previously set Internal Variable's input value."),
+     Color("866693"), ContextDefinedOutputs(typeof(Wild))]
     public abstract class RelayValueOutputBase : FlowNode
     {
         public abstract void SetSource(RelayValueInputBase source);
@@ -83,7 +88,8 @@ namespace FlowCanvas.Nodes
             }
         }
 
-        public override string name => string.Format("{0}", sourceInput != null ? sourceInput.ToString() : "@ NONE");
+        public override string name =>
+            string.Format("{0}", sourceInput != null ? sourceInput.ToString() : "@ NONE");
 
         public override void SetSource(RelayValueInputBase source)
         {
@@ -115,7 +121,9 @@ namespace FlowCanvas.Nodes
         protected override void OnNodeInspectorGUI()
         {
             var relayInputs = graph.GetAllNodesOfType<RelayValueInputBase>();
-            var newInput = EditorUtils.Popup<RelayValueInputBase>("Internal Var Source", sourceInput, relayInputs);
+            var newInput =
+                EditorUtils.Popup<RelayValueInputBase>("Internal Var Source", sourceInput,
+                    relayInputs);
 
             if (newInput != sourceInput) {
                 if (newInput == null) {
@@ -128,7 +136,8 @@ namespace FlowCanvas.Nodes
                     return;
                 }
                 var newNode =
-                    (RelayValueOutputBase)ReplaceWith(typeof(RelayValueOutput<>).MakeGenericType(newInput.relayType));
+                    (RelayValueOutputBase)ReplaceWith(
+                        typeof(RelayValueOutput<>).MakeGenericType(newInput.relayType));
                 newNode.SetSource((RelayValueInputBase)newInput);
             }
         }

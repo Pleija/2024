@@ -7,7 +7,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
 {
     public class AnimationCurve_DirectConverter : fsDirectConverter<AnimationCurve>
     {
-        protected override fsResult DoSerialize(AnimationCurve model, Dictionary<string, fsData> serialized)
+        protected override fsResult DoSerialize(AnimationCurve model,
+            Dictionary<string, fsData> serialized)
         {
             var result = fsResult.Success;
             result += SerializeMember(serialized, null, "keys", model.keys);
@@ -16,7 +17,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref AnimationCurve model)
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data,
+            ref AnimationCurve model)
         {
             var result = fsResult.Success;
             var t0 = model.keys;
@@ -31,7 +33,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new AnimationCurve();
+        public override object CreateInstance(fsData data, Type storageType) =>
+            new AnimationCurve();
     }
 }
 #endif

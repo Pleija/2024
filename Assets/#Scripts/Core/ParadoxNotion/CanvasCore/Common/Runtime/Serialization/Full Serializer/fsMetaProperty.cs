@@ -38,17 +38,22 @@ namespace ParadoxNotion.Serialization.FullSerializer
             ReadOnly = Field.RTIsDefined<fsReadOnlyAttribute>(true);
             WriteOnly = Field.RTIsDefined<fsWriteOnlyAttribute>(true);
             var autoInstanceAtt = StorageType.RTGetAttribute<fsAutoInstance>(true);
-            AutoInstance = autoInstanceAtt != null && autoInstanceAtt.makeInstance && !StorageType.IsAbstract;
+            AutoInstance = autoInstanceAtt != null && autoInstanceAtt.makeInstance &&
+                !StorageType.IsAbstract;
             AsReference = Field.RTIsDefined<fsSerializeAsReference>(true);
         }
 
         /// <summary>
-        ///     Reads a value from the property that this MetaProperty represents, using the given object instance as the
+        ///     Reads a value from the property that this MetaProperty represents, using the given object
+        ///     instance as the
         ///     context.
         /// </summary>
         public object Read(object context) => Field.GetValue(context);
 
-        ///<summary> Writes a value to the property that this MetaProperty represents, using given object instance as the context.</summary>
+        /// <summary>
+        ///     Writes a value to the property that this MetaProperty represents, using given object
+        ///     instance as the context.
+        /// </summary>
         public void Write(object context, object value)
         {
             Field.SetValue(context, value);

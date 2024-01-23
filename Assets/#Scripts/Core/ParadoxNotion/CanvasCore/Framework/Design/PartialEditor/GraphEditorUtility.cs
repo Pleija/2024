@@ -20,8 +20,12 @@ namespace NodeCanvas.Editor
         public static int lastConnectionID { get; private set; }
         public static event Action PostGUI;
         public static event Action<IGraphElement> onActiveElementChanged;
-        private static WeakReference<IGraphElement> _activeElement = new WeakReference<IGraphElement>(null);
-        private static WeakReferenceList<IGraphElement> _activeElements = new WeakReferenceList<IGraphElement>();
+
+        private static WeakReference<IGraphElement> _activeElement =
+            new WeakReference<IGraphElement>(null);
+
+        private static WeakReferenceList<IGraphElement> _activeElements =
+            new WeakReferenceList<IGraphElement>();
 
         ///----------------------------------------------------------------------------------------------
 
@@ -56,7 +60,9 @@ namespace NodeCanvas.Editor
 
                     if (value is Connection) {
                         lastNodeID = (value as Connection).sourceNode.ID;
-                        lastConnectionID = (value as Connection).sourceNode.outConnections.IndexOf(value as Connection);
+                        lastConnectionID =
+                            (value as Connection).sourceNode.outConnections.IndexOf(
+                                value as Connection);
                     }
                     SceneView.RepaintAll();
                     if (onActiveElementChanged != null) onActiveElementChanged(value);
@@ -100,7 +106,8 @@ namespace NodeCanvas.Editor
         ///----------------------------------------------------------------------------------------------
 
         //Find nodes of type (T) having the [DropReferenceType] attribute pointing to target unity object type
-        public static IEnumerable<Type> GetDropedReferenceNodeTypes<T>(UnityEngine.Object obj) where T : IGraphElement
+        public static IEnumerable<Type> GetDropedReferenceNodeTypes<T>(UnityEngine.Object obj)
+            where T : IGraphElement
         {
             var targetType = obj.GetType();
 
@@ -112,7 +119,8 @@ namespace NodeCanvas.Editor
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns the extension at which the graph will be saved with if exported to JSON</summary>
-        public static string GetGraphJSONFileExtension(this Graph graph) => graph.GetType().Name.GetCapitals();
+        public static string GetGraphJSONFileExtension(this Graph graph) =>
+            graph.GetType().Name.GetCapitals();
 
         ///<summary>Returns the selected nodes if any or all graph nodes</summary>
         public static IEnumerable<Node> GetSelectedOrAll(this Graph graph)
@@ -126,13 +134,13 @@ namespace NodeCanvas.Editor
         public static void ScanForStructTypesAndAppendThem(Graph graph)
         {
             var serializedTypes = new List<Type>();
-            JSONSerializer.SerializeAndExecuteNoCycles(typeof(NodeCanvas.Framework.Internal.GraphSource)
-                , graph.GetGraphSource(), (o, d) => {
+            JSONSerializer.SerializeAndExecuteNoCycles(
+                typeof(NodeCanvas.Framework.Internal.GraphSource), graph.GetGraphSource(),
+                (o, d) => {
                     if (o != null) serializedTypes.Add(o.GetType());
                 });
-            serializedTypes = serializedTypes
-                .Concat(serializedTypes.Where(t => t.IsGenericType).Select(t => t.RTGetGenericArguments().First()))
-                .ToList();
+            serializedTypes = serializedTypes.Concat(serializedTypes.Where(t => t.IsGenericType)
+                .Select(t => t.RTGetGenericArguments().First())).ToList();
             var preferredTypes = TypePrefs.GetPreferedTypesList();
             var resultTypes = new List<Type>();
 
@@ -144,12 +152,14 @@ namespace NodeCanvas.Editor
             }
 
             if (resultTypes.Count == 0) {
-                EditorUtility.DisplayDialog("Scan Results:"
-                    , "All found struct types serialized in the graph are already in your Preferred Types list.", "OK");
+                EditorUtility.DisplayDialog("Scan Results:",
+                    "All found struct types serialized in the graph are already in your Preferred Types list.",
+                    "OK");
                 return;
             }
-            var userInfo = string.Join("\n"
-                , resultTypes.OrderBy(t => t.Namespace).ThenBy(t => t.Name).Select(t => t.FriendlyName()));
+            var userInfo = string.Join("\n",
+                resultTypes.OrderBy(t => t.Namespace).ThenBy(t => t.Name)
+                    .Select(t => t.FriendlyName()));
             userInfo =
                 "The following struct types serialized in the graph were found that are not already in your Preferred Types List\n\n\n----\n" +
                 userInfo + "\n----\n\n\nAdd them in your Preferred Types List?";
@@ -161,8 +171,8 @@ namespace NodeCanvas.Editor
         public static Graph DeepCopy(Graph root)
         {
             if (root == null) return null;
-            var path = EditorUtility.SaveFilePanelInProject("Copy of " + root.name, root.name + "_duplicate.asset"
-                , "asset", string.Empty);
+            var path = EditorUtility.SaveFilePanelInProject("Copy of " + root.name,
+                root.name + "_duplicate.asset", "asset", string.Empty);
             if (string.IsNullOrEmpty(path)) return null;
             var copy = (Graph)ScriptableObject.CreateInstance(root.GetType());
             AssetDatabase.CreateAsset(copy, path);

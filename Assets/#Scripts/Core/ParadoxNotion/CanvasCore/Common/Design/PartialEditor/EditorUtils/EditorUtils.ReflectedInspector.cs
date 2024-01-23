@@ -17,7 +17,8 @@ namespace ParadoxNotion.Design
         private static GUIContent tempContent;
 
         ///<summary>A cached temporary content</summary>
-        public static GUIContent GetTempContent(string text = "", Texture image = null, string tooltip = null)
+        public static GUIContent GetTempContent(string text = "", Texture image = null,
+            string tooltip = null)
         {
             if (tempContent == null) tempContent = new GUIContent();
             tempContent.text = text;
@@ -30,7 +31,10 @@ namespace ParadoxNotion.Design
         public static GUIContent GetTempContent(Texture image = null, string tooltip = null) =>
             GetTempContent(null, image, tooltip);
 
-        ///<summary>Show an automatic editor GUI inspector for target object, taking into account drawer attributes</summary>
+        /// <summary>
+        ///     Show an automatic editor GUI inspector for target object, taking into account drawer
+        ///     attributes
+        /// </summary>
         public static void ReflectedObjectInspector(object target, UnityObject unityObjectContext)
         {
             if (target == null) return;
@@ -51,10 +55,11 @@ namespace ParadoxNotion.Design
 
                     //Hide field?
                     if (attributes.Any(a => a is HideInInspector)) continue;
-                    var serializationInfo = new InspectedFieldInfo(unityObjectContext, field, target, attributes);
+                    var serializationInfo =
+                        new InspectedFieldInfo(unityObjectContext, field, target, attributes);
                     var currentValue = field.GetValue(target);
-                    var newValue =
-                        ReflectedFieldInspector(field.Name, currentValue, field.FieldType, serializationInfo);
+                    var newValue = ReflectedFieldInspector(field.Name, currentValue,
+                        field.FieldType, serializationInfo);
                     var changed = !Equals(newValue, currentValue);
                     if (changed) UndoUtility.RecordObject(unityObjectContext, field.Name);
                     if (changed || field.FieldType.IsValueType) field.SetValue(target, newValue);
@@ -63,23 +68,33 @@ namespace ParadoxNotion.Design
             }
         }
 
-        ///<summary>Draws an Editor field for object of type directly WITH taking into acount object drawers and drawer attributes</summary>
-        public static object ReflectedFieldInspector(string name, object value, Type t, InspectedFieldInfo info)
+        /// <summary>
+        ///     Draws an Editor field for object of type directly WITH taking into acount object drawers
+        ///     and drawer attributes
+        /// </summary>
+        public static object ReflectedFieldInspector(string name, object value, Type t,
+            InspectedFieldInfo info)
         {
             var content = GetTempContent(name.SplitCamelCase());
 
             if (info.attributes != null) {
                 //Create proper GUIContent
-                var nameAtt = info.attributes.FirstOrDefault(a => a is NameAttribute) as NameAttribute;
+                var nameAtt =
+                    info.attributes.FirstOrDefault(a => a is NameAttribute) as NameAttribute;
                 if (nameAtt != null) content.text = nameAtt.name;
-                var tooltipAtt = info.attributes.FirstOrDefault(a => a is TooltipAttribute) as TooltipAttribute;
+                var tooltipAtt =
+                    info.attributes.FirstOrDefault(a => a is TooltipAttribute) as TooltipAttribute;
                 if (tooltipAtt != null) content.tooltip = tooltipAtt.tooltip;
             }
             return ReflectedFieldInspector(content, value, t, info);
         }
 
-        ///<summary>Draws an Editor field for object of type directly WITH taking into acount object drawers and drawer attributes</summary>
-        public static object ReflectedFieldInspector(GUIContent content, object value, Type t, InspectedFieldInfo info)
+        /// <summary>
+        ///     Draws an Editor field for object of type directly WITH taking into acount object drawers
+        ///     and drawer attributes
+        /// </summary>
+        public static object ReflectedFieldInspector(GUIContent content, object value, Type t,
+            InspectedFieldInfo info)
         {
             if (t == null) {
                 GUILayout.Label("NO TYPE PROVIDED!");
@@ -90,34 +105,43 @@ namespace ParadoxNotion.Design
             var objectDrawer = PropertyDrawerFactory.GetObjectDrawer(t);
             var newValue = objectDrawer.DrawGUI(content, value, info);
             var changed = !Equals(newValue, value);
-            if (changed) UndoUtility.RecordObjectComplete(info.unityObjectContext, content.text + "Field Change");
+            if (changed)
+                UndoUtility.RecordObjectComplete(info.unityObjectContext,
+                    content.text + "Field Change");
             value = newValue;
             if (changed) UndoUtility.SetDirty(info.unityObjectContext);
             return value;
         }
 
         /// <summary>
-        ///     Draws an Editor field for object of type directly WITHOUT taking into acount object drawers and drawer
+        ///     Draws an Editor field for object of type directly WITHOUT taking into acount object drawers and
+        ///     drawer
         ///     attributes unless provided
         /// </summary>
-        public static object DrawEditorFieldDirect(GUIContent content, object value, Type t, InspectedFieldInfo info)
+        public static object DrawEditorFieldDirect(GUIContent content, object value, Type t,
+            InspectedFieldInfo info)
         {
             ///----------------------------------------------------------------------------------------------
             bool handled;
             EditorGUI.BeginChangeCheck();
-            var newValue = DirectFieldControl(content, value, t, info.unityObjectContext, info.attributes, out handled
-                , info);
+            var newValue = DirectFieldControl(content, value, t, info.unityObjectContext,
+                info.attributes, out handled, info);
             var changed = !Equals(newValue, value) || EditorGUI.EndChangeCheck();
-            if (changed) UndoUtility.RecordObjectComplete(info.unityObjectContext, content.text + "Field Change");
+            if (changed)
+                UndoUtility.RecordObjectComplete(info.unityObjectContext,
+                    content.text + "Field Change");
             value = newValue;
             if (changed) UndoUtility.SetDirty(info.unityObjectContext);
             if (handled) return value;
             ///----------------------------------------------------------------------------------------------
-            if (typeof(IList).IsAssignableFrom(t)) return ListEditor(content, (IList)value, t, info);
-            if (typeof(IDictionary).IsAssignableFrom(t)) return DictionaryEditor(content, (IDictionary)value, t, info);
+            if (typeof(IList).IsAssignableFrom(t))
+                return ListEditor(content, (IList)value, t, info);
+            if (typeof(IDictionary).IsAssignableFrom(t))
+                return DictionaryEditor(content, (IDictionary)value, t, info);
 
             //show nested class members recursively, avoid all collections not handles above manually
-            if (value != null && (t.IsClass || t.IsValueType) && !typeof(ICollection).IsAssignableFrom(t)) {
+            if (value != null && (t.IsClass || t.IsValueType) &&
+                !typeof(ICollection).IsAssignableFrom(t)) {
                 if (EditorGUI.indentLevel <= 8) {
                     if (!CachedFoldout(t, content)) return value;
                     EditorGUI.indentLevel++;
@@ -126,18 +150,19 @@ namespace ParadoxNotion.Design
                 }
             }
             else {
-                EditorGUILayout.LabelField(content
-                    , new GUIContent(string.Format("NonInspectable ({0})", t.FriendlyName())));
+                EditorGUILayout.LabelField(content,
+                    new GUIContent(string.Format("NonInspectable ({0})", t.FriendlyName())));
             }
             return value;
         }
 
-        private static Dictionary<object, AssetObject> caches = new Dictionary<object, AssetObject>();
+        private static Dictionary<object, AssetObject> caches =
+            new Dictionary<object, AssetObject>();
 
         //...
-        public static object DirectFieldControl(GUIContent content, object value, Type t
-            , UnityEngine.Object unityObjectContext, object[] attributes, out bool handled, object context
-            , params GUILayoutOption[] options)
+        public static object DirectFieldControl(GUIContent content, object value, Type t,
+            UnityEngine.Object unityObjectContext, object[] attributes, out bool handled,
+            object context, params GUILayoutOption[] options)
         {
             handled = true;
 
@@ -176,16 +201,18 @@ namespace ParadoxNotion.Design
             if (typeof(UnityObject).IsAssignableFrom(t) || t.IsInterface)
                 if (value == null || value is UnityObject) {
                     //check this to avoid case of interface but no unityobject
-                    var isSceneObjectType = typeof(Component).IsAssignableFrom(t) || t == typeof(GameObject) ||
-                        t == typeof(UnityObject) || t.IsInterface;
-                    var newValue =
-                        EditorGUILayout.ObjectField(content, (UnityObject)value, t, isSceneObjectType, options);
+                    var isSceneObjectType = typeof(Component).IsAssignableFrom(t) ||
+                        t == typeof(GameObject) || t == typeof(UnityObject) || t.IsInterface;
+                    var newValue = EditorGUILayout.ObjectField(content, (UnityObject)value, t,
+                        isSceneObjectType, options);
 
                     if (unityObjectContext != null && newValue != null)
-                        if (!Application.isPlaying && EditorUtility.IsPersistent(unityObjectContext) &&
+                        if (!Application.isPlaying &&
+                            EditorUtility.IsPersistent(unityObjectContext) &&
                             !EditorUtility.IsPersistent(newValue as UnityEngine.Object)) {
-                            Services.Logger.LogWarning("Assets can not have scene object references", "Editor"
-                                , unityObjectContext);
+                            Services.Logger.LogWarning(
+                                "Assets can not have scene object references", "Editor",
+                                unityObjectContext);
                             newValue = value as UnityObject;
                         }
                     return newValue;
@@ -193,7 +220,8 @@ namespace ParadoxNotion.Design
 
             //Check Type second
             if (t == typeof(Type))
-                return Popup<Type>(content, (Type)value, TypePrefs.GetPreferedTypesList(true), options);
+                return Popup<Type>(content, (Type)value, TypePrefs.GetPreferedTypesList(true),
+                    options);
 
             //get real current type
             t = value != null ? value.GetType() : t;
@@ -201,7 +229,8 @@ namespace ParadoxNotion.Design
             //for these just show type information
             if (t.IsAbstract || t == typeof(object) || typeof(Delegate).IsAssignableFrom(t) ||
                 typeof(UnityEngine.Events.UnityEventBase).IsAssignableFrom(t)) {
-                EditorGUILayout.LabelField(content, new GUIContent(string.Format("({0})", t.FriendlyName())), options);
+                EditorGUILayout.LabelField(content,
+                    new GUIContent(string.Format("({0})", t.FriendlyName())), options);
                 return value;
             }
 
@@ -216,12 +245,14 @@ namespace ParadoxNotion.Design
                     EditorGUILayout.PrefixLabel(content, GUI.skin.button);
                 }
                 if (GUILayout.Button("(null) Create-2", options))
-                    value = t.IsArray ? Array.CreateInstance(t.GetElementType(), 0) : Activator.CreateInstance(t);
+                    value = t.IsArray ? Array.CreateInstance(t.GetElementType(), 0)
+                        : Activator.CreateInstance(t);
                 if (content != GUIContent.none) GUILayout.EndHorizontal();
                 return value;
             }
             ///----------------------------------------------------------------------------------------------
-            if (t == typeof(string)) return EditorGUILayout.TextField(content, (string)value, options);
+            if (t == typeof(string))
+                return EditorGUILayout.TextField(content, (string)value, options);
 
             if (t == typeof(char)) {
                 var c = (char)value;
@@ -231,16 +262,24 @@ namespace ParadoxNotion.Design
             }
             if (t == typeof(bool)) return EditorGUILayout.Toggle(content, (bool)value, options);
             if (t == typeof(int)) return EditorGUILayout.IntField(content, (int)value, options);
-            if (t == typeof(float)) return EditorGUILayout.FloatField(content, (float)value, options);
+            if (t == typeof(float))
+                return EditorGUILayout.FloatField(content, (float)value, options);
             if (t == typeof(byte))
-                return Convert.ToByte(Mathf.Clamp(EditorGUILayout.IntField(content, (byte)value, options), 0, 255));
+                return Convert.ToByte(
+                    Mathf.Clamp(EditorGUILayout.IntField(content, (byte)value, options), 0, 255));
             if (t == typeof(long)) return EditorGUILayout.LongField(content, (long)value, options);
-            if (t == typeof(double)) return EditorGUILayout.DoubleField(content, (double)value, options);
-            if (t == typeof(Vector2)) return EditorGUILayout.Vector2Field(content, (Vector2)value, options);
-            if (t == typeof(Vector2Int)) return EditorGUILayout.Vector2IntField(content, (Vector2Int)value, options);
-            if (t == typeof(Vector3)) return EditorGUILayout.Vector3Field(content, (Vector3)value, options);
-            if (t == typeof(Vector3Int)) return EditorGUILayout.Vector3IntField(content, (Vector3Int)value, options);
-            if (t == typeof(Vector4)) return EditorGUILayout.Vector4Field(content, (Vector4)value, options);
+            if (t == typeof(double))
+                return EditorGUILayout.DoubleField(content, (double)value, options);
+            if (t == typeof(Vector2))
+                return EditorGUILayout.Vector2Field(content, (Vector2)value, options);
+            if (t == typeof(Vector2Int))
+                return EditorGUILayout.Vector2IntField(content, (Vector2Int)value, options);
+            if (t == typeof(Vector3))
+                return EditorGUILayout.Vector3Field(content, (Vector3)value, options);
+            if (t == typeof(Vector3Int))
+                return EditorGUILayout.Vector3IntField(content, (Vector3Int)value, options);
+            if (t == typeof(Vector4))
+                return EditorGUILayout.Vector4Field(content, (Vector4)value, options);
 
             if (t == typeof(Quaternion)) {
                 var quat = (Quaternion)value;
@@ -250,15 +289,21 @@ namespace ParadoxNotion.Design
             }
 
             if (t == typeof(Color)) {
-                var att = attributes?.FirstOrDefault(a => a is ColorUsageAttribute) as ColorUsageAttribute;
+                var att =
+                    attributes?.FirstOrDefault(a =>
+                        a is ColorUsageAttribute) as ColorUsageAttribute;
                 var hdr = att != null ? att.hdr : false;
                 var showAlpha = att != null ? att.showAlpha : true;
-                return EditorGUILayout.ColorField(content, (Color)value, true, showAlpha, hdr, options);
+                return EditorGUILayout.ColorField(content, (Color)value, true, showAlpha, hdr,
+                    options);
             }
-            if (t == typeof(Gradient)) return EditorGUILayout.GradientField(content, (Gradient)value, options);
+            if (t == typeof(Gradient))
+                return EditorGUILayout.GradientField(content, (Gradient)value, options);
             if (t == typeof(Rect)) return EditorGUILayout.RectField(content, (Rect)value, options);
-            if (t == typeof(AnimationCurve)) return EditorGUILayout.CurveField(content, (AnimationCurve)value, options);
-            if (t == typeof(Bounds)) return EditorGUILayout.BoundsField(content, (Bounds)value, options);
+            if (t == typeof(AnimationCurve))
+                return EditorGUILayout.CurveField(content, (AnimationCurve)value, options);
+            if (t == typeof(Bounds))
+                return EditorGUILayout.BoundsField(content, (Bounds)value, options);
             if (t == typeof(LayerMask)) return LayerMaskField(content, (LayerMask)value, options);
 
             if (t.IsSubclassOf(typeof(Enum))) {

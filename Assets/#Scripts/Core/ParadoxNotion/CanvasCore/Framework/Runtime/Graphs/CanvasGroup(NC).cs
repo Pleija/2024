@@ -44,7 +44,8 @@ namespace NodeCanvas.Framework
         public Rect AdjustToContainedNodes()
         {
             if (autoGroup && containedNodes != null && containedNodes.Length > 0)
-                rect = RectUtils.GetBoundRect(containedNodes.Select(n => n.rect).ToArray()).ExpandBy(30, 65, 30, 30);
+                rect = RectUtils.GetBoundRect(containedNodes.Select(n => n.rect).ToArray())
+                    .ExpandBy(30, 65, 30, 30);
             return rect;
         }
 

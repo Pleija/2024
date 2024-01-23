@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Set Of Type", 10), Category("Variables/Blackboard"), Description("Set a Blackboard variable value")
-     , ContextDefinedInputs(typeof(Wild))]
+    [Name("Set Of Type", 10), Category("Variables/Blackboard"),
+     Description("Set a Blackboard variable value"), ContextDefinedInputs(typeof(Wild))]
     public class SetVariable<T> : ParameterVariableNode
     {
         [BlackboardOnly]
@@ -20,8 +20,8 @@ namespace FlowCanvas.Nodes
         [HideInInspector]
         public bool perSecond = false;
 
-        public override string name => string.Format("{0}{1}{2}", targetVariable.ToString()
-            , OperationTools.GetOperationString(operation), "Value");
+        public override string name => string.Format("{0}{1}{2}", targetVariable.ToString(),
+            OperationTools.GetOperationString(operation), "Value");
 
         protected override void RegisterPorts()
         {
@@ -40,14 +40,17 @@ namespace FlowCanvas.Nodes
         {
             if (operation != OperationMethod.Set) {
                 if (typeof(T) == typeof(float))
-                    targetVariable.value = (T)(object)OperationTools.Operate((float)(object)targetVariable.value
-                        , (float)(object)value, operation, perSecond ? Time.deltaTime : 1f);
+                    targetVariable.value = (T)(object)OperationTools.Operate(
+                        (float)(object)targetVariable.value, (float)(object)value, operation,
+                        perSecond ? Time.deltaTime : 1f);
                 else if (typeof(T) == typeof(int))
-                    targetVariable.value = (T)(object)OperationTools.Operate((int)(object)targetVariable.value
-                        , (int)(object)value, operation);
+                    targetVariable.value =
+                        (T)(object)OperationTools.Operate((int)(object)targetVariable.value,
+                            (int)(object)value, operation);
                 else if (typeof(T) == typeof(Vector3))
-                    targetVariable.value = (T)(object)OperationTools.Operate((Vector3)(object)targetVariable.value
-                        , (Vector3)(object)value, operation, perSecond ? Time.deltaTime : 1f);
+                    targetVariable.value = (T)(object)OperationTools.Operate(
+                        (Vector3)(object)targetVariable.value, (Vector3)(object)value, operation,
+                        perSecond ? Time.deltaTime : 1f);
                 else
                     targetVariable.value = value;
             }
@@ -63,9 +66,12 @@ namespace FlowCanvas.Nodes
         {
             DrawDefaultInspector();
 
-            if (typeof(T) == typeof(float) || typeof(T) == typeof(int) || typeof(T) == typeof(Vector3)) {
-                operation = (OperationMethod)UnityEditor.EditorGUILayout.EnumPopup("Operation", operation);
-                if ((typeof(T) == typeof(float) || typeof(T) == typeof(Vector3)) && operation != OperationMethod.Set)
+            if (typeof(T) == typeof(float) || typeof(T) == typeof(int) ||
+                typeof(T) == typeof(Vector3)) {
+                operation =
+                    (OperationMethod)UnityEditor.EditorGUILayout.EnumPopup("Operation", operation);
+                if ((typeof(T) == typeof(float) || typeof(T) == typeof(Vector3)) &&
+                    operation != OperationMethod.Set)
                     perSecond = UnityEditor.EditorGUILayout.Toggle("Per Second", perSecond);
             }
             EditorUtils.BoldSeparator();

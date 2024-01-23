@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Object State"), Category("Events/Object")
-     , Description("OnEnable, OnDisable and OnDestroy callback events for target object")]
+    [Name("Object State"), Category("Events/Object"),
+     Description("OnEnable, OnDisable and OnDestroy callback events for target object")]
     public class ObjectStateEvents : RouterEventNode<Transform>
     {
         private FlowOutput onEnable;

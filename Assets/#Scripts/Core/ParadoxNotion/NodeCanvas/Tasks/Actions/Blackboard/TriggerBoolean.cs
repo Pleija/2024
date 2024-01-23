@@ -4,7 +4,8 @@ using System.Collections;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"), Description("Triggers a boolean variable for 1 frame to True then back to False")]
+    [Category("✫ Blackboard"),
+     Description("Triggers a boolean variable for 1 frame to True then back to False")]
     public class TriggerBoolean : ActionTask
     {
         [RequiredField, BlackboardOnly]

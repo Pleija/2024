@@ -34,15 +34,19 @@ namespace Puerts
                         sb.AppendLine(string.Format(" * {0}", line.Replace('\r', ' ')));
                 }
                 else {
-                    if (summary == null || summary.Length == 0 || string.IsNullOrEmpty(summary[0])) {
-                        if (parameters.Count == 0 && string.IsNullOrEmpty(returns)) return sb.ToString();
-                        if ((parameters != null || parameters.Count == 0) && string.IsNullOrEmpty(returns))
+                    if (summary == null || summary.Length == 0 ||
+                        string.IsNullOrEmpty(summary[0])) {
+                        if (parameters.Count == 0 && string.IsNullOrEmpty(returns))
+                            return sb.ToString();
+                        if ((parameters != null || parameters.Count == 0) &&
+                            string.IsNullOrEmpty(returns))
                             sb.Append("/**");
                         else
                             sb.AppendLine("/**");
                     }
                     else {
-                        if ((parameters != null || parameters.Count == 0) && string.IsNullOrEmpty(returns))
+                        if ((parameters != null || parameters.Count == 0) &&
+                                string.IsNullOrEmpty(returns))
                             //sb.Append($"/** {this.summary[0]}");
                             sb.AppendLine(string.Format("/** {0}", summary[0]));
                         else
@@ -65,7 +69,9 @@ namespace Puerts
             }
         }
 
-        private static Dictionary<Assembly, DocResolver> _resolvers = new Dictionary<Assembly, DocResolver>();
+        private static Dictionary<Assembly, DocResolver> _resolvers =
+            new Dictionary<Assembly, DocResolver>();
+
         private StringBuilder _sb = new StringBuilder();
         private Dictionary<string, DocBody> _tdocs = new Dictionary<string, DocBody>();
         private Dictionary<string, DocBody> _pdocs = new Dictionary<string, DocBody>();
@@ -94,7 +100,8 @@ namespace Puerts
                 var xmlFilePath = location.Substring(0, location.Length - ext.Length) + ".xml";
                 //增加文档查找路径 
                 if (!File.Exists(xmlFilePath))
-                    xmlFilePath = xmlFilePath.Replace("Library\\ScriptAssemblies\\", "Library\\CommonetDocs\\");
+                    xmlFilePath = xmlFilePath.Replace("Library\\ScriptAssemblies\\",
+                        "Library\\CommonetDocs\\");
                 return resolver.ParseXml(xmlFilePath);
             }
             catch (Exception) {
@@ -152,7 +159,9 @@ namespace Puerts
 
         public DocBody GetDocBody<T>(T methodBase) where T : MethodBase
         {
-            if (methodBase.IsGenericMethod || !methodBase.IsPublic || methodBase.ContainsGenericParameters) return null;
+            if (methodBase.IsGenericMethod || !methodBase.IsPublic ||
+                methodBase.ContainsGenericParameters)
+                return null;
             var declType = methodBase.DeclaringType;
             //_sb.Clear();
             _sb.Remove(0, _sb.Length);
@@ -178,7 +187,8 @@ namespace Puerts
 
         public DocBody GetDocBody(PropertyInfo propertyInfo)
         {
-            if (propertyInfo.GetGetMethod() == null || !propertyInfo.GetGetMethod().IsPublic) return null;
+            if (propertyInfo.GetGetMethod() == null || !propertyInfo.GetGetMethod().IsPublic)
+                return null;
             var declType = propertyInfo.DeclaringType;
             var xName = declType.FullName + "." + propertyInfo.Name;
             DocBody body;
@@ -239,7 +249,8 @@ namespace Puerts
             return lines.ToArray();
         }
 
-        private string ReadElementContentAsString(XmlReader reader, DocBody body, string elementName)
+        private string ReadElementContentAsString(XmlReader reader, DocBody body,
+            string elementName)
         {
             var text = string.Empty;
 

@@ -6,10 +6,11 @@ namespace FlowCanvas.Nodes
 {
     public abstract class BaseReflectedConstructorNode
     {
-        protected static event Func<ConstructorInfo, BaseReflectedConstructorNode> OnGetAotReflectedConstructorNode;
+        protected static event Func<ConstructorInfo, BaseReflectedConstructorNode>
+            OnGetAotReflectedConstructorNode;
 
-        public static BaseReflectedConstructorNode GetConstructorNode(ConstructorInfo targetConstructor
-            , ReflectedMethodRegistrationOptions options)
+        public static BaseReflectedConstructorNode GetConstructorNode(
+            ConstructorInfo targetConstructor, ReflectedMethodRegistrationOptions options)
         {
             ParametresDef paramDef;
             if (!ReflectedNodesHelper.InitParams(targetConstructor, out paramDef)) return null;
@@ -39,9 +40,11 @@ namespace FlowCanvas.Nodes
 
         protected bool Init(ConstructorInfo constructor, ParametresDef parametres)
         {
-            if (constructor == null || constructor.ContainsGenericParameters || constructor.IsGenericMethodDefinition)
+            if (constructor == null || constructor.ContainsGenericParameters ||
+                constructor.IsGenericMethodDefinition)
                 return false;
-            paramDefinitions = parametres.paramDefinitions == null ? new List<ParamDef>() : parametres.paramDefinitions;
+            paramDefinitions = parametres.paramDefinitions == null ? new List<ParamDef>()
+                : parametres.paramDefinitions;
             instanceDef = parametres.instanceDef;
             resultDef = parametres.resultDef;
             constructorInfo = constructor;
@@ -49,6 +52,8 @@ namespace FlowCanvas.Nodes
         }
 
         protected abstract bool InitInternal(ConstructorInfo constructor);
-        public abstract void RegisterPorts(FlowNode node, ReflectedMethodRegistrationOptions options);
+
+        public abstract void RegisterPorts(FlowNode node,
+            ReflectedMethodRegistrationOptions options);
     }
 }

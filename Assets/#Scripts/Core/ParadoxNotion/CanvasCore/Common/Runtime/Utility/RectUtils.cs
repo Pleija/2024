@@ -51,32 +51,34 @@ namespace ParadoxNotion
             rect.ExpandBy(xMargin, yMargin, xMargin, yMargin);
 
         ///<summary>Expands rect by x-y margin</summary>
-        public static Rect ExpandBy(this Rect rect, float left, float top, float right, float bottom) =>
-            Rect.MinMaxRect(rect.xMin - left, rect.yMin - top, rect.xMax + right, rect.yMax + bottom);
+        public static Rect ExpandBy(this Rect rect, float left, float top, float right,
+            float bottom) => Rect.MinMaxRect(rect.xMin - left, rect.yMin - top, rect.xMax + right,
+            rect.yMax + bottom);
 
         //Transforms rect from one container to another container rect
         public static Rect TransformSpace(this Rect rect, Rect oldContainer, Rect newContainer)
         {
             var result = new Rect();
-            result.xMin = Mathf.Lerp(newContainer.xMin, newContainer.xMax
-                , Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMin));
-            result.xMax = Mathf.Lerp(newContainer.xMin, newContainer.xMax
-                , Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMax));
-            result.yMin = Mathf.Lerp(newContainer.yMin, newContainer.yMax
-                , Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMin));
-            result.yMax = Mathf.Lerp(newContainer.yMin, newContainer.yMax
-                , Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMax));
+            result.xMin = Mathf.Lerp(newContainer.xMin, newContainer.xMax,
+                Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMin));
+            result.xMax = Mathf.Lerp(newContainer.xMin, newContainer.xMax,
+                Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMax));
+            result.yMin = Mathf.Lerp(newContainer.yMin, newContainer.yMax,
+                Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMin));
+            result.yMax = Mathf.Lerp(newContainer.yMin, newContainer.yMax,
+                Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMax));
             return result;
         }
 
         //Transforms vector from one container to another container rect
-        public static Vector2 TransformSpace(this Vector2 vector, Rect oldContainer, Rect newContainer)
+        public static Vector2 TransformSpace(this Vector2 vector, Rect oldContainer,
+            Rect newContainer)
         {
             var result = new Vector2();
-            result.x = Mathf.Lerp(newContainer.xMin, newContainer.xMax
-                , Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, vector.x));
-            result.y = Mathf.Lerp(newContainer.yMin, newContainer.yMax
-                , Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, vector.y));
+            result.x = Mathf.Lerp(newContainer.xMin, newContainer.xMax,
+                Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, vector.x));
+            result.y = Mathf.Lerp(newContainer.yMin, newContainer.yMax,
+                Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, vector.y));
             return result;
         }
 
@@ -92,10 +94,12 @@ namespace ParadoxNotion
             GUI.color = Color.black;
             GUI.Label(rect, rect.x.ToString(), Design.Styles.leftLabel);
             GUI.Label(rect, rect.y.ToString(), Design.Styles.topCenterLabel);
-            GUI.Label(rect, string.Format("{0}\nWidth:{1}", rect.xMax.ToString(), rect.width.ToString())
-                , Design.Styles.rightLabel);
-            GUI.Label(rect, string.Format("{0}\nHeight:{1}", rect.yMax.ToString(), rect.height.ToString())
-                , Design.Styles.bottomCenterLabel);
+            GUI.Label(rect,
+                string.Format("{0}\nWidth:{1}", rect.xMax.ToString(), rect.width.ToString()),
+                Design.Styles.rightLabel);
+            GUI.Label(rect,
+                string.Format("{0}\nHeight:{1}", rect.yMax.ToString(), rect.height.ToString()),
+                Design.Styles.bottomCenterLabel);
             GUI.Label(rect, label, Design.Styles.centerLabel);
             GUI.color = Color.white;
         }

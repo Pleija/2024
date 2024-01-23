@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"), Description("Create a new Vector out of 3 floats and save it to the blackboard")]
+    [Category("✫ Blackboard"),
+     Description("Create a new Vector out of 3 floats and save it to the blackboard")]
     public class ComposeVector : ActionTask
     {
         public BBParameter<float> x;

@@ -13,8 +13,8 @@ namespace NodeCanvas.Framework
     }
 
     ///<summary>A utility to have nodes weak reference other nodes</summary>
-    [Serializable, ParadoxNotion.Serialization.FullSerializer.fsForward(nameof(_targetNodeUID))
-     , ParadoxNotion.Serialization.FullSerializer.fsAutoInstance]
+    [Serializable, ParadoxNotion.Serialization.FullSerializer.fsForward(nameof(_targetNodeUID)),
+     ParadoxNotion.Serialization.FullSerializer.fsAutoInstance]
     public class NodeReference<T> : INodeReference where T : Node
     {
         [SerializeField]
@@ -45,7 +45,8 @@ namespace NodeCanvas.Framework
 
             if (_targetNodeRef == null) {
                 var _this = this;
-                reference = graph.GetAllNodesOfType<T>().FirstOrDefault(x => x.UID == _this._targetNodeUID);
+                reference = graph.GetAllNodesOfType<T>()
+                    .FirstOrDefault(x => x.UID == _this._targetNodeUID);
                 _targetNodeRef = new WeakReference<T>(reference);
             }
             _targetNodeRef.TryGetTarget(out reference);

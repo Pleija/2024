@@ -28,8 +28,8 @@ namespace FlowCanvas.Nodes
             var key = ReflectedNodesHelper.GetGeneratedKey(fieldInfo);
 
             if (!GetDelegates.TryGetValue(key, out getDelegat) || getDelegat == null) {
-                var dynamicMethod = new DynamicMethod(fieldInfo.Name + "_DynamicGet", null, DynParamTypes
-                    , typeof(JitFieldNode));
+                var dynamicMethod = new DynamicMethod(fieldInfo.Name + "_DynamicGet", null,
+                    DynParamTypes, typeof(JitFieldNode));
                 var ilGen = dynamicMethod.GetILGenerator();
                 var instanceId = -1;
                 var returnId = -1;
@@ -90,13 +90,15 @@ namespace FlowCanvas.Nodes
                     ilGen.Emit(OpCodes.Stfld, delegateParams[returnId].ValueField);
                 }
                 ilGen.Emit(OpCodes.Ret);
-                getDelegat = (UniversalDelegate)dynamicMethod.CreateDelegate(typeof(UniversalDelegate));
+                getDelegat =
+                    (UniversalDelegate)dynamicMethod.CreateDelegate(typeof(UniversalDelegate));
                 GetDelegates[key] = getDelegat;
             }
 
-            if ((!SetDelegates.TryGetValue(key, out setDelegat) || setDelegat == null) && !fieldInfo.IsReadOnly()) {
-                var dynamicMethod = new DynamicMethod(fieldInfo.Name + "_DynamicSet", null, DynParamTypes
-                    , typeof(JitFieldNode));
+            if ((!SetDelegates.TryGetValue(key, out setDelegat) || setDelegat == null) &&
+                !fieldInfo.IsReadOnly()) {
+                var dynamicMethod = new DynamicMethod(fieldInfo.Name + "_DynamicSet", null,
+                    DynParamTypes, typeof(JitFieldNode));
                 var ilGen = dynamicMethod.GetILGenerator();
                 var instanceId = -1;
                 var valueId = -1;
@@ -152,8 +154,8 @@ namespace FlowCanvas.Nodes
                     if (instanceId >= 0) {
                         //set instance for set field value
                         ilGen.Emit(
-                            delegateParams[instanceId].GetCurrentType().RTIsValueType() ? OpCodes.Ldloca : OpCodes.Ldloc
-                            , instanceLocId);
+                            delegateParams[instanceId].GetCurrentType().RTIsValueType()
+                                ? OpCodes.Ldloca : OpCodes.Ldloc, instanceLocId);
                         //set new value for field
                         ilGen.Emit(OpCodes.Ldloc, valueLocId);
                         //set field value
@@ -180,7 +182,8 @@ namespace FlowCanvas.Nodes
                     ilGen.Emit(OpCodes.Stfld, delegateParams[instanceId].ValueField);
                 }
                 ilGen.Emit(OpCodes.Ret);
-                setDelegat = (UniversalDelegate)dynamicMethod.CreateDelegate(typeof(UniversalDelegate));
+                setDelegat =
+                    (UniversalDelegate)dynamicMethod.CreateDelegate(typeof(UniversalDelegate));
                 SetDelegates[key] = setDelegat;
             }
         }
@@ -192,8 +195,8 @@ namespace FlowCanvas.Nodes
             if (isConstant) {
                 delegateParams = new UniversalDelegateParam[1];
                 tmpTypes[0] = field.FieldType;
-                delegateParams[0] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
-                    .CreateObjectUninitialized();
+                delegateParams[0] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                    .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 delegateParams[0].paramDef = resultDef;
                 delegateParams[0].SetFromValue(field.GetValue(null));
                 return true;
@@ -208,16 +211,16 @@ namespace FlowCanvas.Nodes
 
             if (instanceDef.paramMode != ParamMode.Undefined) {
                 tmpTypes[0] = instanceDef.paramType;
-                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
-                    .CreateObjectUninitialized();
+                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                    .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 delegateParams[i].paramDef = instanceDef;
                 i++;
             }
 
             if (resultDef.paramMode != ParamMode.Undefined) {
                 tmpTypes[0] = resultDef.paramType;
-                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
-                    .CreateObjectUninitialized();
+                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                    .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 delegateParams[i].paramDef = resultDef;
             }
 
@@ -233,7 +236,8 @@ namespace FlowCanvas.Nodes
         private void SetValue()
         {
             if (setDelegat != null && !fieldInfo.IsReadOnly()) {
-                for (var i = 0; i <= delegateParams.Length - 1; i++) delegateParams[i].SetFromInput();
+                for (var i = 0; i <= delegateParams.Length - 1; i++)
+                    delegateParams[i].SetFromInput();
                 setDelegat(delegateParams);
             }
         }
@@ -241,17 +245,20 @@ namespace FlowCanvas.Nodes
         private void GetValue()
         {
             if (getDelegat != null) {
-                for (var i = 0; i <= delegateParams.Length - 1; i++) delegateParams[i].SetFromInput();
+                for (var i = 0; i <= delegateParams.Length - 1; i++)
+                    delegateParams[i].SetFromInput();
                 getDelegat(delegateParams);
             }
         }
 
-        public override void RegisterPorts(FlowNode node, ReflectedFieldNodeWrapper.AccessMode accessMode)
+        public override void RegisterPorts(FlowNode node,
+            ReflectedFieldNodeWrapper.AccessMode accessMode)
         {
             if (isConstant) delegateParams[0].RegisterAsOutput(node);
             if (getValue == null) getValue = GetValue;
 
-            if (accessMode == ReflectedFieldNodeWrapper.AccessMode.SetField && !fieldInfo.IsReadOnly()) {
+            if (accessMode == ReflectedFieldNodeWrapper.AccessMode.SetField &&
+                !fieldInfo.IsReadOnly()) {
                 var output = node.AddFlowOutput(" ");
                 node.AddFlowInput(" ", flow => {
                     SetValue();
@@ -265,12 +272,14 @@ namespace FlowCanvas.Nodes
 
                 if (def.paramMode == ParamMode.Instance) {
                     param.RegisterAsInput(node);
-                    if (accessMode == ReflectedFieldNodeWrapper.AccessMode.SetField && !fieldInfo.IsReadOnly())
+                    if (accessMode == ReflectedFieldNodeWrapper.AccessMode.SetField &&
+                        !fieldInfo.IsReadOnly())
                         param.RegisterAsOutput(node);
                 }
 
                 if (def.paramMode == ParamMode.Result) {
-                    if (accessMode == ReflectedFieldNodeWrapper.AccessMode.SetField && !fieldInfo.IsReadOnly())
+                    if (accessMode == ReflectedFieldNodeWrapper.AccessMode.SetField &&
+                        !fieldInfo.IsReadOnly())
                         param.RegisterAsInput(node);
                     else
                         param.RegisterAsOutput(node, getValue);

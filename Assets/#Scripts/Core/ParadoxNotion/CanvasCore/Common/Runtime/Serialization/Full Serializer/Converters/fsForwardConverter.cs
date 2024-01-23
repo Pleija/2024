@@ -24,7 +24,9 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
     public class fsForwardConverter : fsConverter
     {
         private string _memberName;
-        public fsForwardConverter(fsForwardAttribute attribute) => _memberName = attribute.MemberName;
+
+        public fsForwardConverter(fsForwardAttribute attribute) =>
+            _memberName = attribute.MemberName;
 
         public override bool CanProcess(Type type) =>
             throw new NotSupportedException("Please use the [fsForward(...)] attribute.");
@@ -39,10 +41,12 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     return fsResult.Success;
                 }
             property = default;
-            return fsResult.Fail("No property named \"" + _memberName + "\" on " + instance.GetType().FriendlyName());
+            return fsResult.Fail("No property named \"" + _memberName + "\" on " +
+                instance.GetType().FriendlyName());
         }
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             serialized = fsData.Null;
             var result = fsResult.Success;
@@ -58,7 +62,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
             fsMetaProperty property;
             if ((result += GetProperty(instance, out property)).Failed) return result;
             object actualInstance = null;
-            if ((result += Serializer.TryDeserialize(data, property.StorageType, ref actualInstance)).Failed)
+            if ((result +=
+                Serializer.TryDeserialize(data, property.StorageType, ref actualInstance)).Failed)
                 return result;
             property.Write(instance, actualInstance);
             return result;

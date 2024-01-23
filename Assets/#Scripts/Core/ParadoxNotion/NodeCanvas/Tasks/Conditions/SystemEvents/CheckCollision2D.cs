@@ -24,8 +24,12 @@ namespace NodeCanvas.Tasks.Conditions
         public BBParameter<Vector3> saveContactNormal;
 
         private bool stay;
-        protected override string info => checkType.ToString() + (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
-        protected override bool OnCheck() => checkType == CollisionTypes.CollisionStay ? stay : false;
+
+        protected override string info => checkType.ToString() +
+            (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
+
+        protected override bool OnCheck() =>
+            checkType == CollisionTypes.CollisionStay ? stay : false;
 
         protected override void OnEnable()
         {
@@ -44,7 +48,8 @@ namespace NodeCanvas.Tasks.Conditions
             if (!specifiedTagOnly || data.value.gameObject.CompareTag(objectTag)) {
                 stay = true;
 
-                if (checkType == CollisionTypes.CollisionEnter || checkType == CollisionTypes.CollisionStay) {
+                if (checkType == CollisionTypes.CollisionEnter ||
+                    checkType == CollisionTypes.CollisionStay) {
                     saveGameObjectAs.value = data.value.gameObject;
                     saveContactPoint.value = data.value.contacts[0].point;
                     saveContactNormal.value = data.value.contacts[0].normal;
@@ -86,8 +91,12 @@ namespace NodeCanvas.Tasks.Conditions
         public BBParameter<Vector3> saveContactNormal;
 
         private bool stay;
-        protected override string info => checkType.ToString() + (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
-        protected override bool OnCheck() => checkType == CollisionTypes.CollisionStay ? stay : false;
+
+        protected override string info => checkType.ToString() +
+            (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
+
+        protected override bool OnCheck() =>
+            checkType == CollisionTypes.CollisionStay ? stay : false;
 
         protected override void OnEnable()
         {
@@ -106,7 +115,8 @@ namespace NodeCanvas.Tasks.Conditions
             if (!specifiedTagOnly || data.value.gameObject.CompareTag(objectTag)) {
                 stay = true;
 
-                if (checkType == CollisionTypes.CollisionEnter || checkType == CollisionTypes.CollisionStay) {
+                if (checkType == CollisionTypes.CollisionEnter ||
+                    checkType == CollisionTypes.CollisionStay) {
                     saveGameObjectAs.value = data.value.gameObject;
                     saveContactPoint.value = data.value.contacts[0].point;
                     saveContactNormal.value = data.value.contacts[0].normal;

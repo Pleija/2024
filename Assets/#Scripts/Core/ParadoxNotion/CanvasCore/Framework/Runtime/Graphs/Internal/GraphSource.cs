@@ -10,7 +10,8 @@ namespace NodeCanvas.Framework.Internal
     {
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     We are already parsing everything on serialization/deserialization, so we might just as well collect things at
+        ///     We are already parsing everything on serialization/deserialization, so we might just as well
+        ///     collect things at
         ///     the same time.
         /// </summary>
         public List<Task> allTasks { get; private set; }

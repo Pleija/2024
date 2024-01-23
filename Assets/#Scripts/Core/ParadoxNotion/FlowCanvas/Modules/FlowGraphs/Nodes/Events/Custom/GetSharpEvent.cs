@@ -7,7 +7,9 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [DoNotList, Description("Returns a reference of a C# event, which can be used with the C# Event Callback node.")]
+    [DoNotList,
+     Description(
+         "Returns a reference of a C# event, which can be used with the C# Event Callback node.")]
     public class GetSharpEvent : FlowNode, IReflectedWrapper
     {
         [SerializeField]
@@ -21,7 +23,8 @@ namespace FlowCanvas.Nodes
                 if (_event == null) return "No event";
                 if (eventInfo == null) return _event.AsString().FormatError();
                 if (eventInfo.IsStatic())
-                    return string.Format("{0}.{1}", eventInfo.DeclaringType.FriendlyName(), eventInfo.Name);
+                    return string.Format("{0}.{1}", eventInfo.DeclaringType.FriendlyName(),
+                        eventInfo.Name);
                 return eventInfo.Name;
             }
         }
@@ -38,8 +41,8 @@ namespace FlowCanvas.Nodes
         {
             if (eventInfo == null) return;
             if (!eventInfo.IsStatic())
-                instancePort = AddValueInput(eventInfo.RTReflectedOrDeclaredType().FriendlyName()
-                    , eventInfo.RTReflectedOrDeclaredType(), "Instance");
+                instancePort = AddValueInput(eventInfo.RTReflectedOrDeclaredType().FriendlyName(),
+                    eventInfo.RTReflectedOrDeclaredType(), "Instance");
             var wrapper = SharpEvent.Create(eventInfo);
             AddValueOutput("Value", wrapper.GetType(), () => {
                 wrapper.SetInstance(instancePort != null ? instancePort.value : null);

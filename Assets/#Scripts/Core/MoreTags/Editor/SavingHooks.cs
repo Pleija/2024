@@ -23,7 +23,8 @@ namespace MoreTags
             PrefabUtility.prefabInstanceUpdated = delegate(GameObject instance) {
                 if (isApply) return;
                 isApply = true;
-                if (instance && !instance.TryGetComponent(typeof(TagsRef), out _)) SavePrefab(instance);
+                if (instance && !instance.TryGetComponent(typeof(TagsRef), out _))
+                    SavePrefab(instance);
                 isApply = false;
             };
         }
@@ -67,9 +68,12 @@ namespace MoreTags
                 {
                     EditorApplication.delayCall -= OnDelayCall;
                     var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                    if (prefab.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault() is { }) return;
+                    if (prefab.Children(x => x.gameObject.name == nameof(TagsRef))
+                        .FirstOrDefault() is { })
+                        return;
                     var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-                    var target = go.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault()?.gameObject;
+                    var target = go.Children(x => x.gameObject.name == nameof(TagsRef))
+                        .FirstOrDefault()?.gameObject;
 
                     // if (target && target.hideFlags != HideFlags.HideInHierarchy) {
                     //     Object.DestroyImmediate(target);
@@ -79,7 +83,8 @@ namespace MoreTags
                             x.transform.SetParent(go.transform);
                         });
                     target.hideFlags = HideFlags.HideInHierarchy;
-                    PrefabUtility.SaveAsPrefabAssetAndConnect(go, path, InteractionMode.AutomatedAction);
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(go, path,
+                        InteractionMode.AutomatedAction);
                     // This save will affect all prefab in Scene!
                     Object.DestroyImmediate(go);
 
@@ -128,7 +133,8 @@ namespace MoreTags
         {
             EditorSceneManager.sceneSaving += (scene, path) => {
                 Debug.Log($"Saving: {path}");
-                var refs = scene.GetRootGameObjects().FirstOrDefault(t => t.name == nameof(TagsRef));
+                var refs = scene.GetRootGameObjects()
+                    .FirstOrDefault(t => t.name == nameof(TagsRef));
 
                 if (!refs) {
                     refs = new GameObject(nameof(TagsRef), typeof(TagsRef));
@@ -136,7 +142,8 @@ namespace MoreTags
                     SceneManager.MoveGameObjectToScene(refs, scene);
                     Debug.Log($"Create: {scene.name}:{nameof(TagsRef)}", refs);
                 }
-                var ids = scene.GetRootGameObjects().FirstOrDefault(x => x.name == nameof(ObjectIds));
+                var ids = scene.GetRootGameObjects()
+                    .FirstOrDefault(x => x.name == nameof(ObjectIds));
 
                 if (ids == null) {
                     ids = new GameObject(nameof(ObjectIds));

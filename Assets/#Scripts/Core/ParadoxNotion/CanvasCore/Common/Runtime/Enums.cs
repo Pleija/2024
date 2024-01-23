@@ -39,6 +39,14 @@
     ///<summary> Enumeration Alignment 3x3</summary>
     public enum Alignment3x3
     {
-        TopLeft, TopCenter, TopRight, MiddleLeft, MiddleCenter, MiddleRight, BottomLeft, BottomCenter, BottomRight,
+        TopLeft,
+        TopCenter,
+        TopRight,
+        MiddleLeft,
+        MiddleCenter,
+        MiddleRight,
+        BottomLeft,
+        BottomCenter,
+        BottomRight,
     }
 }

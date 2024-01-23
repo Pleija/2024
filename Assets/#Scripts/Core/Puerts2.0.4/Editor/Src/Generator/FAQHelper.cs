@@ -55,7 +55,8 @@ namespace Puerts.Editor
             CompilationPipeline.assemblyCompilationFinished += ProcessBatchModeCompileFinish;
         }
 
-        private static void ProcessBatchModeCompileFinish(string s, CompilerMessage[] compilerMessages)
+        private static void ProcessBatchModeCompileFinish(string s,
+            CompilerMessage[] compilerMessages)
         {
             foreach (var message in compilerMessages)
                 if (message.type == CompilerMessageType.Error)
@@ -98,7 +99,8 @@ namespace Puerts.Editor
             }
 
             if (print012MacroHeader) {
-                Debug.Log("[Puer012] Build error detected, please use 'PuerTS->Generate->il2cpp macro.h'.");
+                Debug.Log(
+                    "[Puer012] Build error detected, please use 'PuerTS->Generate->il2cpp macro.h'.");
                 print012MacroHeader = false;
             }
         }

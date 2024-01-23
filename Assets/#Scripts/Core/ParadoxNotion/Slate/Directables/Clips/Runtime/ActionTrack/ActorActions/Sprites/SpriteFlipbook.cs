@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("Sprites"), Description("Animate a sprite object by altering between different sprites in order")]
+    [Category("Sprites"),
+     Description("Animate a sprite object by altering between different sprites in order")]
     public class SpriteFlipbook : ActorActionClip<SpriteRenderer>
     {
         [SerializeField, HideInInspector]
@@ -17,8 +18,8 @@ namespace Slate.ActionClips
         public bool endWithPrevious = true;
         private Sprite lastSprite;
 
-        public override string info =>
-            isValid ? string.Empty : actor == null ? "No SpriteRenderer on Actor" : "No Sprites Set";
+        public override string info => isValid ? string.Empty :
+            actor == null ? "No SpriteRenderer on Actor" : "No Sprites Set";
 
         public override float length {
             get => _length;
@@ -68,7 +69,8 @@ namespace Slate.ActionClips
                 if (sprites[i] == null) continue;
                 var t = sprites[i].texture;
                 var tr = sprites[i].textureRect;
-                var r = new Rect(tr.x / t.width, tr.y / t.height, tr.width / t.width, tr.height / t.height);
+                var r = new Rect(tr.x / t.width, tr.y / t.height, tr.width / t.width,
+                    tr.height / t.height);
                 var posX = Mathf.Lerp(0, rect.xMax, _i / (float)sprites.Count / loops);
                 var viewRect = new Rect(posX, rect.y, rect.height, rect.height);
 
@@ -79,7 +81,8 @@ namespace Slate.ActionClips
 
                 if (i == 0) {
                     UnityEditor.Handles.color = new Color(0, 0, 0, 0.5f);
-                    UnityEditor.Handles.DrawLine(new Vector2(posX, rect.y), new Vector2(posX, rect.yMax));
+                    UnityEditor.Handles.DrawLine(new Vector2(posX, rect.y),
+                        new Vector2(posX, rect.yMax));
                 }
             }
         }

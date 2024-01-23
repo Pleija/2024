@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Conditional Event"), Category("Events/Other")
-     , Description("Checks the condition boolean input per frame and calls outputs when the value has changed")]
+    [Name("Conditional Event"), Category("Events/Other"),
+     Description(
+         "Checks the condition boolean input per frame and calls outputs when the value has changed")]
     public class ConditionalUpdateEvent : EventNode, IUpdatable
     {
         private FlowOutput becameTrue;

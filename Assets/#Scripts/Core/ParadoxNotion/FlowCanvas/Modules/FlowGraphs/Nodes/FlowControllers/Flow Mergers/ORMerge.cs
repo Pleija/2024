@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("OR"), Category("Flow Controllers/Flow Merge")
-     , Description(
+    [Name("OR"), Category("Flow Controllers/Flow Merge"),
+     Description(
          "Calls Out when either input is called, but only once per frame regardless of how many inputs are called.")]
     public class ORMerge : FlowControlNode
     {

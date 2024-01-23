@@ -4,7 +4,8 @@ using System;
 namespace ParadoxNotion
 {
     /// <summary>
-    ///     Auto "Convenience Converters" from type to type (boxing). This includes unconventional data conversions like
+    ///     Auto "Convenience Converters" from type to type (boxing). This includes unconventional data
+    ///     conversions like
     ///     for example GameObject to Vector3 (by transform.position).
     /// </summary>
     public static class TypeConverter
@@ -30,10 +31,12 @@ namespace ParadoxNotion
             if (toType.RTIsAssignableFrom(fromType)) return (value) => value;
 
             // Anything to string
-            if (toType == typeof(string)) return (value) => value != null ? value.ToString() : "NULL";
+            if (toType == typeof(string))
+                return (value) => value != null ? value.ToString() : "NULL";
 
             // Convertible to convertible.
-            if (typeof(IConvertible).RTIsAssignableFrom(toType) && typeof(IConvertible).RTIsAssignableFrom(fromType))
+            if (typeof(IConvertible).RTIsAssignableFrom(toType) &&
+                typeof(IConvertible).RTIsAssignableFrom(fromType))
                 return (value) => {
                     try {
                         return Convert.ChangeType(value, toType);
@@ -49,48 +52,56 @@ namespace ParadoxNotion
 
             // GameObject to Component.
             if (fromType == typeof(GameObject) && typeof(Component).RTIsAssignableFrom(toType))
-                return (value) => value as GameObject != null ? (value as GameObject).GetComponent(toType) : null;
+                return (value) => value as GameObject != null
+                    ? (value as GameObject).GetComponent(toType) : null;
 
             // Component to GameObject.
             if (typeof(Component).RTIsAssignableFrom(fromType) && toType == typeof(GameObject))
-                return (value) => value as Component != null ? (value as Component).gameObject : null;
+                return (value) =>
+                    value as Component != null ? (value as Component).gameObject : null;
 
             // Component to Component.
-            if (typeof(Component).RTIsAssignableFrom(fromType) && typeof(Component).RTIsAssignableFrom(toType))
-                return (value) => value as Component != null ? (value as Component).gameObject.GetComponent(toType)
-                    : null;
+            if (typeof(Component).RTIsAssignableFrom(fromType) &&
+                typeof(Component).RTIsAssignableFrom(toType))
+                return (value) => value as Component != null
+                    ? (value as Component).gameObject.GetComponent(toType) : null;
 
             // GameObject to Interface
             if (fromType == typeof(GameObject) && toType.RTIsInterface())
-                return (value) => value as GameObject != null ? (value as GameObject).GetComponent(toType) : null;
+                return (value) => value as GameObject != null
+                    ? (value as GameObject).GetComponent(toType) : null;
 
             // Component to Interface
             if (typeof(Component).RTIsAssignableFrom(fromType) && toType.RTIsInterface())
-                return (value) => value as Component != null ? (value as Component).gameObject.GetComponent(toType)
-                    : null;
+                return (value) => value as Component != null
+                    ? (value as Component).gameObject.GetComponent(toType) : null;
 
             // GameObject to Vector3 (position).
             if (fromType == typeof(GameObject) && toType == typeof(Vector3))
                 return (value) => {
-                    return value as GameObject != null ? (value as GameObject).transform.position : Vector3.zero;
+                    return value as GameObject != null ? (value as GameObject).transform.position
+                        : Vector3.zero;
                 };
 
             // Component to Vector3 (position).
             if (typeof(Component).RTIsAssignableFrom(fromType) && toType == typeof(Vector3))
                 return (value) => {
-                    return value as Component != null ? (value as Component).transform.position : Vector3.zero;
+                    return value as Component != null ? (value as Component).transform.position
+                        : Vector3.zero;
                 };
 
             // GameObject to Quaternion (rotation).
             if (fromType == typeof(GameObject) && toType == typeof(Quaternion))
                 return (value) => {
-                    return value as GameObject != null ? (value as GameObject).transform.rotation : Quaternion.identity;
+                    return value as GameObject != null ? (value as GameObject).transform.rotation
+                        : Quaternion.identity;
                 };
 
             // Component to Quaternion (rotation).
             if (typeof(Component).RTIsAssignableFrom(fromType) && toType == typeof(Quaternion))
                 return (value) => {
-                    return value as Component != null ? (value as Component).transform.rotation : Quaternion.identity;
+                    return value as Component != null ? (value as Component).transform.rotation
+                        : Quaternion.identity;
                 };
 
             // Quaternion to Vector3 (Euler angles).
@@ -102,10 +113,12 @@ namespace ParadoxNotion
                 return (value) => Quaternion.Euler((Vector3)value);
 
             // Vector2 to Vector3.
-            if (fromType == typeof(Vector2) && toType == typeof(Vector3)) return (value) => (Vector3)(Vector2)value;
+            if (fromType == typeof(Vector2) && toType == typeof(Vector3))
+                return (value) => (Vector3)(Vector2)value;
 
             // Vector3 to Vector2.
-            if (fromType == typeof(Vector3) && toType == typeof(Vector2)) return (value) => (Vector2)(Vector3)value;
+            if (fromType == typeof(Vector3) && toType == typeof(Vector2))
+                return (value) => (Vector2)(Vector3)value;
             return null;
         }
 

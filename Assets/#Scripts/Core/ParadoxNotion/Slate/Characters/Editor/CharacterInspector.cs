@@ -10,7 +10,9 @@ namespace Slate
     [CustomEditor(typeof(Character))]
     public class CharacterInspector : OdinEditor
     {
-        private Dictionary<BlendShapeGroup, bool> foldStates = new Dictionary<BlendShapeGroup, bool>();
+        private Dictionary<BlendShapeGroup, bool> foldStates =
+            new Dictionary<BlendShapeGroup, bool>();
+
         private SerializedProperty neckProp;
         private SerializedProperty headProp;
         private SerializedProperty upVectorProp;
@@ -61,13 +63,15 @@ namespace Slate
             GUILayout.Space(10);
             EditorTools.Header("Expressions");
             var skins = character.GetComponentsInChildren<Component>()
-                .Where(c => c is SkinnedMeshRenderer && (c as SkinnedMeshRenderer).sharedMesh.blendShapeCount > 0)
+                .Where(c =>
+                    c is SkinnedMeshRenderer &&
+                    (c as SkinnedMeshRenderer).sharedMesh.blendShapeCount > 0)
                 .Cast<SkinnedMeshRenderer>().ToList();
 
             if (skins == null || skins.Count == 0) {
                 EditorGUILayout.HelpBox(
-                    "There are no Skinned Mesh Renderers with blend shapes within the actor's GameObject hierarchy."
-                    , MessageType.Warning);
+                    "There are no Skinned Mesh Renderers with blend shapes within the actor's GameObject hierarchy.",
+                    MessageType.Warning);
                 return;
             }
 
@@ -80,12 +84,14 @@ namespace Slate
 
             foreach (var expression in character.expressions.ToArray()) {
                 var foldState = false;
-                if (!foldStates.TryGetValue(expression, out foldState)) foldStates[expression] = false;
+                if (!foldStates.TryGetValue(expression, out foldState))
+                    foldStates[expression] = false;
                 GUI.backgroundColor = new Color(0, 0, 0, 0.3f);
                 GUILayout.BeginVertical(Styles.headerBoxStyle);
                 GUI.backgroundColor = Color.white;
                 GUILayout.BeginHorizontal();
-                foldStates[expression] = EditorGUILayout.Foldout(foldStates[expression], expression.name);
+                foldStates[expression] =
+                    EditorGUILayout.Foldout(foldStates[expression], expression.name);
 
                 if (GUILayout.Button("X", GUILayout.Width(18))) {
                     Undo.RecordObject(character, "Remove Expression");
@@ -115,7 +121,8 @@ namespace Slate
                         skin = EditorTools.Popup<SkinnedMeshRenderer>("Skin", skin, skins);
 
                         if (skin != null) {
-                            name = EditorTools.Popup<string>("Shape", name, skin.GetBlendShapeNames().ToList());
+                            name = EditorTools.Popup<string>("Shape", name,
+                                skin.GetBlendShapeNames().ToList());
                             weight = EditorGUILayout.Slider("Weight", weight, -1, 2);
                         }
                         GUILayout.EndVertical();

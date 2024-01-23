@@ -14,8 +14,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public bool recursive = false;
 
-        protected override string info =>
-            string.Format("{0} = {1} Children Of {2}", saveAs, recursive ? "All" : "First", agentInfo);
+        protected override string info => string.Format("{0} = {1} Children Of {2}", saveAs,
+            recursive ? "All" : "First", agentInfo);
 
         protected override void OnExecute()
         {

@@ -2,8 +2,8 @@
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Filters")
-     , Description(
+    [Category("Flow Controllers/Filters"),
+     Description(
          "Filters Out to be called only once. After the first call, Out is no longer called until Reset is called")]
     public class DoOnce : FlowControlNode
     {

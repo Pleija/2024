@@ -31,12 +31,14 @@ namespace NodeCanvas.Framework
             var basename = mtsFile ? Path.GetFileNameWithoutExtension(mtsFile.assetPath) : "";
 
             if (mtsFile && customName != basename && !customName.IsNullOrEmpty()) {
-                if (!EditorUtility.DisplayDialog("", $"{basename}.mts => {customName}.mts?", "OK", "Cancel")) {
+                if (!EditorUtility.DisplayDialog("", $"{basename}.mts => {customName}.mts?", "OK",
+                    "Cancel")) {
                     nodeFilePath = Path.GetFullPath(mtsFile.assetPath);
                 }
                 else {
-                    var files = AssetDatabase.FindAssets($"t:MtsFile").Select(AssetDatabase.GUIDToAssetPath)
-                        .Where(x => x.StartsWith(mtsFile.assetPath.Replace(".mts", "")));
+                    var files = AssetDatabase.FindAssets($"t:MtsFile")
+                        .Select(AssetDatabase.GUIDToAssetPath).Where(x =>
+                            x.StartsWith(mtsFile.assetPath.Replace(".mts", "")));
                     files.ForEach(x => {
                         File.WriteAllText(x, File.ReadAllText(x).Replace(basename, customName));
                     });
@@ -77,8 +79,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     changeAst.ChangeNode(extends, $" extends {bindComponent.GetType().Name}");
                     if (root.OfKind(SyntaxKind.ImportEqualsDeclaration).All(x =>
                         !x.GetText().Contains($"CS.{bindComponent.GetType().FullName}")))
-                        changeAst.InsertBefore(root.RootNode
-                            , $"import {bindComponent.GetType().Name} = CS.{bindComponent.GetType().FullName};\n");
+                        changeAst.InsertBefore(root.RootNode,
+                            $"import {bindComponent.GetType().Name} = CS.{bindComponent.GetType().FullName};\n");
                 }
                 else if (!bindComponent) {
                     if (!extends.GetText().Contains($"StateNode<{FsmName}>")) {
@@ -89,7 +91,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                     if (!ims.Any(t => t.GetText().Contains(graph.FsmPath))) {
                         ch = true;
-                        changeAst.InsertBefore(root.RootNode, $"import {{ {FsmName} }} from \"{graph.FsmPath}\";\n");
+                        changeAst.InsertBefore(root.RootNode,
+                            $"import {{ {FsmName} }} from \"{graph.FsmPath}\";\n");
                     }
                 }
                 if (ch) File.WriteAllText(nodeFilePath, changeAst.GetChangedSource(root.SourceStr));
@@ -114,7 +117,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 changed = true;
                 change.InsertBefore(module.Children.Last(), $"\n    {NodeName}: {NodeName};");
             }
-            var init = module.OfKind(SyntaxKind.MethodDeclaration).First(x => x.IdentifierStr == "init");
+            var init = module.OfKind(SyntaxKind.MethodDeclaration)
+                .First(x => x.IdentifierStr == "init");
             // init.Children.ForEach(x => {
             //     Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
             // });
@@ -128,14 +132,15 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var code = init.OfKind(SyntaxKind.Block).First().Children.FirstOrDefault();
 
                 if (code != null) {
-                    change.InsertBefore(code, $"\n          this.{NodeName} = this.bind({NodeName});");
+                    change.InsertBefore(code,
+                        $"\n          this.{NodeName} = this.bind({NodeName});");
                 }
                 else {
                     init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
                         Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
                     });
-                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First()
-                        , $"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
+                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),
+                        $"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
                 }
             }
 
@@ -193,14 +198,16 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         private bool? _isHidden { get; set; }
 
         /// <summary>
-        ///     EDITOR! This is to be able to work with rects which is easier in many cases. Size is temporary to the node
+        ///     EDITOR! This is to be able to work with rects which is easier in many cases. Size is temporary
+        ///     to the node
         ///     since it's auto adjusted thus no need to serialize it
         /// </summary>
         public Rect rect {
             get => new Rect(_position.x, _position.y, size.x, size.y);
             private set {
                 _position = new Vector2(value.x, value.y);
-                size = new Vector2(Mathf.Max(value.width, MIN_SIZE.x), Mathf.Max(value.height, MIN_SIZE.y));
+                size = new Vector2(Mathf.Max(value.width, MIN_SIZE.x),
+                    Mathf.Max(value.height, MIN_SIZE.y));
             }
         }
 
@@ -222,7 +229,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     _collapsed = value;
 
                     //just reset all node isHidden cache is easier than other solutions
-                    for (var i = 0; i < graph.allNodes.Count; i++) graph.allNodes[i]._isHidden = null;
+                    for (var i = 0; i < graph.allNodes.Count; i++)
+                        graph.allNodes[i]._isHidden = null;
                 }
             }
         }
@@ -266,10 +274,12 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 if (_cachedHeaderContent == null || _nameCache != name) {
                     string hex;
                     if (nodeColor != default)
-                        hex = nodeColor.grayscale > 0.6f ? DEFAULT_HEX_COLOR_DARK : DEFAULT_HEX_COLOR_LIGHT;
+                        hex = nodeColor.grayscale > 0.6f ? DEFAULT_HEX_COLOR_DARK
+                            : DEFAULT_HEX_COLOR_LIGHT;
                     else
                         hex = EditorGUIUtility.isProSkin ? hexColor : DEFAULT_HEX_COLOR_DARK;
-                    var finalTitle = this is IGraphAssignable ? string.Format("{{ {0} }}", name) : name;
+                    var finalTitle = this is IGraphAssignable ? string.Format("{{ {0} }}", name)
+                        : name;
                     var text = string.Format("<b><color=#{0}>{1}</color></b>", hex, finalTitle);
                     var image = hasIcon && iconAlignment == Alignment2x2.Left ? icon : null;
                     _cachedHeaderContent = new GUIContent(text, image);
@@ -328,7 +338,9 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     }
                     customColor = value;
                     var temp = (Color32)value;
-                    hexColor = (temp.r.ToString("X2") + temp.g.ToString("X2") + temp.b.ToString("X2")).ToLower();
+                    hexColor =
+                        (temp.r.ToString("X2") + temp.g.ToString("X2") + temp.b.ToString("X2"))
+                        .ToLower();
                 }
             }
         }
@@ -350,12 +362,13 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///----------------------------------------------------------------------------------------------
 
         //The main function for drawing a node's gui.Fires off others.
-        public static void ShowNodeGUI(Node node, Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
-            , float zoomFactor)
+        public static void ShowNodeGUI(Node node, Rect drawCanvas, bool fullDrawPass,
+            Vector2 canvasMousePos, float zoomFactor)
         {
             if (node.isHidden) return;
 
-            if (fullDrawPass || drawCanvas.Overlaps(node.rect) || GraphEditorUtility.activeNode == node) {
+            if (fullDrawPass || drawCanvas.Overlaps(node.rect) ||
+                GraphEditorUtility.activeNode == node) {
                 DrawNodeWindow(node, canvasMousePos, zoomFactor);
                 DrawNodeTag(node);
                 DrawNodeComments(node);
@@ -378,11 +391,13 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 if (GUI.Button(r, "COLLAPSED", StyleSheet.box)) node.collapsed = false;
             }
             GUI.color = node.isActive ? Color.white : new Color(0.9f, 0.9f, 0.9f, 0.8f);
-            GUI.color = GraphEditorUtility.activeElement == node ? new Color(0.9f, 0.9f, 1) : GUI.color;
+            GUI.color = GraphEditorUtility.activeElement == node ? new Color(0.9f, 0.9f, 1)
+                : GUI.color;
             //Remark: using MaxWidth and MaxHeight makes GUILayout window contract width and height \o/
             node.rect = GUILayout.Window(node.ID, node.rect, (ID) => {
-                NodeWindowGUI(node, ID);
-            }, string.Empty, StyleSheet.window, GUILayout.MaxHeight(MIN_SIZE.y), GUILayout.MaxWidth(MIN_SIZE.x));
+                    NodeWindowGUI(node, ID);
+                }, string.Empty, StyleSheet.window, GUILayout.MaxHeight(MIN_SIZE.y),
+                GUILayout.MaxWidth(MIN_SIZE.x));
             GUI.color = Color.white;
             Styles.Draw(node.rect, StyleSheet.windowShadow);
 
@@ -399,8 +414,9 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             GUI.color = Color.white;
             if (GraphEditorUtility.allowClick)
                 if (zoomFactor == 1f)
-                    EditorGUIUtility.AddCursorRect(new Rect(node.rect.x, node.rect.y, node.rect.width, node.rect.height)
-                        , MouseCursor.Link);
+                    EditorGUIUtility.AddCursorRect(
+                        new Rect(node.rect.x, node.rect.y, node.rect.width, node.rect.height),
+                        MouseCursor.Link);
         }
 
         //This is the callback function of the GUILayout.window. Everything here is called INSIDE the node Window callback.
@@ -427,18 +443,21 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     //Remark: CalcHeight does not take into account SetIconSize. CalcSize does.
                     var headerHeight = StyleSheet.windowTitle.CalcSize(node.cachedHeaderContent).y;
                     // node.nodeColor todo
-                    var nodeColor = node.bindComponent ? "#2A77FF".ToColor() : node.nodeColor; // "#FF6B52".ToColor();
+                    var nodeColor =
+                        node.bindComponent ? "#2A77FF".ToColor()
+                            : node.nodeColor; // "#FF6B52".ToColor();
 
                     if (nodeColor != default) {
                         GUI.color = nodeColor;
                         if (node.rect.height <= 35) headerHeight = 35;
-                        Styles.Draw(new Rect(0, 0, node.rect.width, headerHeight), StyleSheet.windowHeader);
+                        Styles.Draw(new Rect(0, 0, node.rect.width, headerHeight),
+                            StyleSheet.windowHeader);
                         GUI.color = Color.white;
                     }
                     else {
                         Handles.color = Color.black.WithAlpha(0.5f);
-                        Handles.DrawPolyLine(new Vector3(5, headerHeight, 0)
-                            , new Vector3(node.rect.width - 5, headerHeight, 0));
+                        Handles.DrawPolyLine(new Vector3(5, headerHeight, 0),
+                            new Vector3(node.rect.width - 5, headerHeight, 0));
                         Handles.color = Color.white;
                     }
                     GUILayout.Label(node.cachedHeaderContent, StyleSheet.windowTitle);
@@ -446,8 +465,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 }
 
             //icon
-            if (node.hasIcon &&
-                (node.iconAlignment == Alignment2x2.Default || node.iconAlignment == Alignment2x2.Bottom)) {
+            if (node.hasIcon && (node.iconAlignment == Alignment2x2.Default ||
+                node.iconAlignment == Alignment2x2.Bottom)) {
                 GUI.color = node.nodeColor.a > 0.2f ? node.nodeColor : Color.white;
 
                 //TODO: can be expensive for the light theme -> handle somehow else
@@ -457,7 +476,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     if (assignable != null && assignable.task != null)
                         att = assignable.task.GetType().RTGetAttribute<IconAttribute>(true);
                     if (att == null) att = node.GetType().RTGetAttribute<IconAttribute>(true);
-                    if (att != null && att.fixedColor == false) GUI.color = Color.black.WithAlpha(0.7f);
+                    if (att != null && att.fixedColor == false)
+                        GUI.color = Color.black.WithAlpha(0.7f);
                 }
                 GUI.backgroundColor = Color.clear;
                 GUILayout.Box(node.icon, StyleSheet.box, GUILayout.MaxHeight(32));
@@ -548,18 +568,18 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var markRect = new Rect(5, 5, 16, 16);
 
                 if (node.status == Status.Success) {
-                    GUI.color = EditorGUIUtility.isProSkin ? StyleSheet.GetStatusColor(Status.Success)
-                        : Colors.Grey(0.25f);
+                    GUI.color = EditorGUIUtility.isProSkin
+                        ? StyleSheet.GetStatusColor(Status.Success) : Colors.Grey(0.25f);
                     GUI.DrawTexture(markRect, StyleSheet.statusSuccess);
                 }
                 else if (node.status == Status.Running) {
-                    GUI.color = EditorGUIUtility.isProSkin ? StyleSheet.GetStatusColor(Status.Running)
-                        : Colors.Grey(0.25f);
+                    GUI.color = EditorGUIUtility.isProSkin
+                        ? StyleSheet.GetStatusColor(Status.Running) : Colors.Grey(0.25f);
                     GUI.DrawTexture(markRect, StyleSheet.statusRunning);
                 }
                 else if (node.status == Status.Failure) {
-                    GUI.color = EditorGUIUtility.isProSkin ? StyleSheet.GetStatusColor(Status.Failure)
-                        : Colors.Grey(0.25f);
+                    GUI.color = EditorGUIUtility.isProSkin
+                        ? StyleSheet.GetStatusColor(Status.Failure) : Colors.Grey(0.25f);
                     GUI.DrawTexture(markRect, StyleSheet.statusFailure);
                 }
             }
@@ -596,12 +616,15 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                 if (assignable.subGraphParameter != null) {
                     GUILayout.BeginVertical(Styles.roundedBox);
-                    GUILayout.Label(string.Format("Sub{0}\n{1}", assignable.subGraphParameter.varType.Name
-                        , assignable.subGraphParameter.ToString()));
+                    GUILayout.Label(string.Format("Sub{0}\n{1}",
+                        assignable.subGraphParameter.varType.Name,
+                        assignable.subGraphParameter.ToString()));
 
                     if (assignable.subGraph == null)
                         if (!Application.isPlaying && GUILayout.Button("CREATE NEW #2")) {
-                            var newGraph = (Graph)EditorUtils.CreateAsset(assignable.subGraphParameter.varType);
+                            var newGraph =
+                                (Graph)EditorUtils.CreateAsset(assignable.subGraphParameter
+                                    .varType);
 
                             if (newGraph != null) {
                                 UndoUtility.RecordObjectComplete(node.graph, "New SubGraph");
@@ -620,7 +643,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         //Handles and shows the right click mouse button for the node context menu
         private static void HandleContextMenu(Node node, Event e)
         {
-            var isContextClick = (e.type == EventType.MouseUp && e.button == 1) || e.type == EventType.ContextClick;
+            var isContextClick = (e.type == EventType.MouseUp && e.button == 1) ||
+                e.type == EventType.ContextClick;
 
             if (GraphEditorUtility.allowClick && isContextClick) {
                 GenericMenu menu;
@@ -644,16 +668,20 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         {
             var menu = new GenericMenu();
             menu.AddItem(new GUIContent("Duplicate Selected Nodes"), false, () => {
-                var newNodes = Graph.CloneNodes(GraphEditorUtility.activeElements.OfType<Node>().ToList(), graph);
+                var newNodes =
+                    Graph.CloneNodes(GraphEditorUtility.activeElements.OfType<Node>().ToList(),
+                        graph);
                 GraphEditorUtility.activeElements = newNodes.Cast<IGraphElement>().ToList();
             });
             menu.AddItem(new GUIContent("Copy Selected Nodes"), false, () => {
-                CopyBuffer.SetCache<Node[]>(Graph.CloneNodes(GraphEditorUtility.activeElements.OfType<Node>().ToList())
+                CopyBuffer.SetCache<Node[]>(Graph
+                    .CloneNodes(GraphEditorUtility.activeElements.OfType<Node>().ToList())
                     .ToArray());
             });
 
             //callback graph related extra menu items
-            menu = graph.CallbackOnNodesContextMenu(menu, GraphEditorUtility.activeElements.OfType<Node>().ToArray());
+            menu = graph.CallbackOnNodesContextMenu(menu,
+                GraphEditorUtility.activeElements.OfType<Node>().ToArray());
             menu.AddSeparator("/");
             menu.AddItem(new GUIContent("Delete Selected Nodes"), false, () => {
                 foreach (Node n in GraphEditorUtility.activeElements.ToArray()) graph.RemoveNode(n);
@@ -684,9 +712,11 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     node.SetActive(!node.isActive);
                 });
             if (node.graph.isTree && node.outConnections.Count > 0)
-                menu.AddItem(new GUIContent(node.collapsed ? "Expand Children" : "Collapse Children"), false, () => {
-                    node.collapsed = !node.collapsed;
-                });
+                menu.AddItem(
+                    new GUIContent(node.collapsed ? "Expand Children" : "Collapse Children"), false,
+                    () => {
+                        node.collapsed = !node.collapsed;
+                    });
 
             if (node is ITaskAssignable) {
                 var assignable = node as ITaskAssignable;
@@ -699,18 +729,18 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 if (CopyBuffer.TryGetCache<Task>(out var copy))
                     menu.AddItem(new GUIContent("Paste Assigned Task"), false, () => {
                         if (assignable.task != null)
-                            if (!EditorUtility.DisplayDialog("Paste Task"
-                                , string.Format(
-                                    "Node already has a Task assigned '{0}'. Replace assigned task with pasted task '{1}'?"
-                                    , assignable.task.name, copy.name), "YES", "NO"))
+                            if (!EditorUtility.DisplayDialog("Paste Task",
+                                string.Format(
+                                    "Node already has a Task assigned '{0}'. Replace assigned task with pasted task '{1}'?",
+                                    assignable.task.name, copy.name), "YES", "NO"))
                                 return;
 
                         try {
                             assignable.task = copy.Duplicate(node.graph);
                         }
                         catch {
-                            ParadoxNotion.Services.Logger.LogWarning("Can't paste Task here. Incombatible Types"
-                                , LogTag.EDITOR, node);
+                            ParadoxNotion.Services.Logger.LogWarning(
+                                "Can't paste Task here. Incombatible Types", LogTag.EDITOR, node);
                         }
                     });
                 else
@@ -753,9 +783,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     var hierarchicalMove = Prefs.hierarchicalMove != e.shift;
 
                     //snap to grid
-                    if (!hierarchicalMove && Prefs.snapToGrid && GraphEditorUtility.activeElements.Count == 0)
-                        node.position = new Vector2(Mathf.Round(node.position.x / 20) * 20
-                            , Mathf.Round(node.position.y / 20) * 20);
+                    if (!hierarchicalMove && Prefs.snapToGrid &&
+                        GraphEditorUtility.activeElements.Count == 0)
+                        node.position = new Vector2(Mathf.Round(node.position.x / 20) * 20,
+                            Mathf.Round(node.position.y / 20) * 20);
 
                     //recursive drag
                     if (node.graph.isTree && e.type == EventType.MouseDrag)
@@ -777,22 +808,26 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             var size = style.CalcSize(EditorUtils.GetTempContent(node.comments));
 
             if (node.commentsAlignment == Alignment2x2.Top) {
-                size.y = style.CalcHeight(EditorUtils.GetTempContent(node.comments), node.rect.width);
-                commentsRect = new Rect(node.rect.x, node.rect.y - size.y, node.rect.width, size.y - 2);
+                size.y = style.CalcHeight(EditorUtils.GetTempContent(node.comments),
+                    node.rect.width);
+                commentsRect = new Rect(node.rect.x, node.rect.y - size.y, node.rect.width,
+                    size.y - 2);
             }
 
             if (node.commentsAlignment == Alignment2x2.Bottom) {
-                size.y = style.CalcHeight(EditorUtils.GetTempContent(node.comments), node.rect.width);
+                size.y = style.CalcHeight(EditorUtils.GetTempContent(node.comments),
+                    node.rect.width);
                 commentsRect = new Rect(node.rect.x, node.rect.yMax + 5, node.rect.width, size.y);
             }
 
             if (node.commentsAlignment == Alignment2x2.Left) {
                 var width = Mathf.Min(size.x, node.rect.width * 2);
-                commentsRect = new Rect(node.rect.xMin - width, node.rect.yMin, width, node.rect.height);
+                commentsRect = new Rect(node.rect.xMin - width, node.rect.yMin, width,
+                    node.rect.height);
             }
             if (node.commentsAlignment == Alignment2x2.Right)
-                commentsRect = new Rect(node.rect.xMax + 5, node.rect.yMin, Mathf.Min(size.x, node.rect.width * 2)
-                    , node.rect.height);
+                commentsRect = new Rect(node.rect.xMax + 5, node.rect.yMin,
+                    Mathf.Min(size.x, node.rect.width * 2), node.rect.height);
             GUI.color = new Color(1, 1, 1, 0.6f);
             GUI.backgroundColor = new Color(1f, 1f, 1f, 0.2f);
             GUI.Box(commentsRect, node.comments, StyleSheet.commentsBox);
@@ -822,8 +857,9 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var rect = new Rect(node.rect.x, node.rect.y - 18, node.rect.width, 18);
                 if (node.graph.primeNode == node) rect.y -= 20f;
                 GUI.color = Color.grey;
-                GUI.Label(rect, string.Format("<size=9>{0}</size>", node.elapsedTime.ToString("0.00"))
-                    , StyleSheet.labelOnCanvas);
+                GUI.Label(rect,
+                    string.Format("<size=9>{0}</size>", node.elapsedTime.ToString("0.00")),
+                    StyleSheet.labelOnCanvas);
                 GUI.color = Color.white;
             }
         }
@@ -836,7 +872,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 if (node.graph.primeNode == node) yOffset += 20;
                 var rect = new Rect(node.rect.x, node.rect.y - yOffset, node.rect.width, 18);
                 GUI.color = Color.grey;
-                GUI.Label(rect, string.Format("<size=9>#{0}</size>", node.ID.ToString()), StyleSheet.labelOnCanvas);
+                GUI.Label(rect, string.Format("<size=9>#{0}</size>", node.ID.ToString()),
+                    StyleSheet.labelOnCanvas);
                 GUI.color = Color.white;
             }
         }
@@ -914,8 +951,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             {
-                node.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, node.mtsFile, typeof(MtsFile)
-                    , GUILayout.Width(150));
+                node.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, node.mtsFile,
+                    typeof(MtsFile), GUILayout.Width(150));
                 node.comments = EditorGUILayout.TextArea(node.comments);
                 EditorUtils.CommentLastTextField(node.comments, "Comments...");
                 GUILayout.EndHorizontal();
@@ -924,8 +961,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             EditorUtils.Separator();
             GUILayout.BeginHorizontal();
             {
-                node.bindComponent =
-                    (Component)EditorGUILayout.ObjectField(GUIContent.none, node.bindComponent, typeof(Component));
+                node.bindComponent = (Component)EditorGUILayout.ObjectField(GUIContent.none,
+                    node.bindComponent, typeof(Component));
 
                 if (GUILayout.Button("Edit TsFile", GUILayout.Width(100))) { }
                 GUILayout.EndHorizontal();
@@ -956,7 +993,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 for (var i = 0; i < interfaces.Length; i++) {
                     var iType = interfaces[i];
 
-                    if (iType.IsGenericType && iType.GetGenericTypeDefinition() == typeof(ITaskAssignable<>)) {
+                    if (iType.IsGenericType &&
+                        iType.GetGenericTypeDefinition() == typeof(ITaskAssignable<>)) {
                         taskType = iType.RTGetGenericArguments()[0];
                         break;
                     }
@@ -978,7 +1016,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                 if (assignable.subGraphParameter != null)
                     if (ReferenceEquals(assignable.subGraphParameter.value, assignable.graph)) {
-                        ParadoxNotion.Services.Logger.LogWarning("SubGraph can't be itself.", LogTag.EDITOR);
+                        ParadoxNotion.Services.Logger.LogWarning("SubGraph can't be itself.",
+                            LogTag.EDITOR);
                         assignable.subGraphParameter.value = null;
                     }
             }
@@ -1011,14 +1050,17 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         //Editor. Sorts the parent node connections based on all child nodes position according to flow direction. Possible only when not in play mode.
         public void TrySortConnectionsByRelativePosition()
         {
-            if (!Application.isPlaying && graph != null && graph.isTree && graph.flowDirection != PlanarDirection.Auto)
+            if (!Application.isPlaying && graph != null && graph.isTree &&
+                graph.flowDirection != PlanarDirection.Auto)
                 foreach (var connection in inConnections.ToArray()) {
                     var node = connection.sourceNode;
                     var original = node.outConnections.ToList();
                     if (graph.flowDirection == PlanarDirection.Horizontal)
-                        node.outConnections = node.outConnections.OrderBy(c => c.targetNode.rect.center.y).ToList();
+                        node.outConnections = node.outConnections
+                            .OrderBy(c => c.targetNode.rect.center.y).ToList();
                     if (graph.flowDirection == PlanarDirection.Vertical)
-                        node.outConnections = node.outConnections.OrderBy(c => c.targetNode.rect.center.x).ToList();
+                        node.outConnections = node.outConnections
+                            .OrderBy(c => c.targetNode.rect.center.x).ToList();
                     var oldIndeces = node.outConnections.Select(x => original.IndexOf(x)).ToArray();
 
                     foreach (var field in node.GetType().RTGetFields())
@@ -1028,7 +1070,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                             if (list != null) {
                                 var temp = new object[list.Count];
                                 for (var i = 0; i < list.Count; i++) temp[i] = list[i];
-                                for (var i = 0; i < oldIndeces.Length; i++) list[i] = temp[oldIndeces[i]];
+                                for (var i = 0; i < oldIndeces.Length; i++)
+                                    list[i] = temp[oldIndeces[i]];
                             }
                         }
                     node.OnChildrenConnectionsSorted(oldIndeces);
@@ -1042,10 +1085,12 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var otherNode = graph.allNodes[i];
 
                 if (otherNode.rect.Contains(Event.current.mousePosition)) {
-                    if (connection.relinkState == Connection.RelinkState.Target && otherNode != connection.targetNode)
+                    if (connection.relinkState == Connection.RelinkState.Target &&
+                        otherNode != connection.targetNode)
                         if (IsNewConnectionAllowed(connection.sourceNode, otherNode, connection))
                             connection.SetTargetNode(otherNode);
-                    if (connection.relinkState == Connection.RelinkState.Source && otherNode != connection.sourceNode)
+                    if (connection.relinkState == Connection.RelinkState.Source &&
+                        otherNode != connection.sourceNode)
                         if (IsNewConnectionAllowed(otherNode, connection.targetNode, connection))
                             connection.SetSourceNode(otherNode);
                     return;
@@ -1060,11 +1105,12 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         }
 
         /// <summary>
-        ///     Editor. Draw the connections line from this node, to all of its children. This is the default hierarchical
+        ///     Editor. Draw the connections line from this node, to all of its children. This is the default
+        ///     hierarchical
         ///     tree style. Override in each system's base node class.
         /// </summary>
-        protected virtual void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
-            , float zoomFactor)
+        protected virtual void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass,
+            Vector2 canvasMousePos, float zoomFactor)
         {
             var e = Event.current;
 
@@ -1090,7 +1136,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                         };
                         var menu = EditorUtils.GetTypeSelectionMenu(graph.baseNodeType, Selected);
                         if (zoomFactor == 1)
-                            menu.ShowAsBrowser(string.Format("Add {0} Node", graph.GetType().Name), graph.baseNodeType);
+                            menu.ShowAsBrowser(string.Format("Add {0} Node", graph.GetType().Name),
+                                graph.baseNodeType);
                         else
                             GraphEditorUtility.PostGUI += () => {
                                 menu.ShowAsContext();
@@ -1103,12 +1150,15 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             var portOffset = 6;
 
             if (fullDrawPass || drawCanvas.Overlaps(rect)) {
-                var canHaveMoreOutConnection = outConnections.Count < maxOutConnections || maxOutConnections == -1;
+                var canHaveMoreOutConnection = outConnections.Count < maxOutConnections ||
+                    maxOutConnections == -1;
                 var nodeOutputBox = default(Rect);
                 if (graph.flowDirection == PlanarDirection.Vertical)
-                    nodeOutputBox = new Rect(rect.x, rect.yMax - 2, rect.width, canHaveMoreOutConnection ? 12 : 10);
+                    nodeOutputBox = new Rect(rect.x, rect.yMax - 2, rect.width,
+                        canHaveMoreOutConnection ? 12 : 10);
                 if (graph.flowDirection == PlanarDirection.Horizontal)
-                    nodeOutputBox = new Rect(rect.xMax, rect.yMin, canHaveMoreOutConnection ? 12 : 10, rect.height);
+                    nodeOutputBox = new Rect(rect.xMax, rect.yMin,
+                        canHaveMoreOutConnection ? 12 : 10, rect.height);
                 Styles.Draw(nodeOutputBox, StyleSheet.nodePortContainer);
 
                 if (!collapsed) {
@@ -1117,14 +1167,16 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                         portRect.center = new Vector2(rect.center.x, rect.yMax + portOffset);
                     if (graph.flowDirection == PlanarDirection.Horizontal)
                         portRect.center = new Vector2(rect.xMax + portOffset, rect.center.y);
-                    Styles.Draw(portRect
-                        , outConnections.Count > 0 ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
+                    Styles.Draw(portRect,
+                        outConnections.Count > 0 ? StyleSheet.nodePortConnected
+                            : StyleSheet.nodePortEmpty);
 
                     if (GraphEditorUtility.allowClick && canHaveMoreOutConnection) {
                         EditorGUIUtility.AddCursorRect(nodeOutputBox, MouseCursor.ArrowPlus);
 
                         if (e.type == EventType.MouseDown && e.button == 0)
-                            if (portRect.Contains(e.mousePosition) || nodeOutputBox.Contains(e.mousePosition)) {
+                            if (portRect.Contains(e.mousePosition) ||
+                                nodeOutputBox.Contains(e.mousePosition)) {
                                 dragDropMisses = 0;
                                 clickedPort = new GUIPort(-1, this, portRect.center);
                                 e.Use();
@@ -1137,10 +1189,12 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             if (clickedPort != null && clickedPort.parent == this) {
                 var tangA = default(Vector2);
                 var tangB = default(Vector2);
-                CurveUtils.ResolveTangents(clickedPort.pos, e.mousePosition, Prefs.connectionsMLT, graph.flowDirection
-                    , out tangA, out tangB);
-                Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos + tangA, e.mousePosition + tangB
-                    , StyleSheet.GetStatusColor(Status.Resting).WithAlpha(0.8f), StyleSheet.bezierTexture, 3);
+                CurveUtils.ResolveTangents(clickedPort.pos, e.mousePosition, Prefs.connectionsMLT,
+                    graph.flowDirection, out tangA, out tangB);
+                Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos + tangA,
+                    e.mousePosition + tangB,
+                    StyleSheet.GetStatusColor(Status.Resting).WithAlpha(0.8f),
+                    StyleSheet.bezierTexture, 3);
             }
 
             //draw all connected lines
@@ -1152,12 +1206,14 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                 if (graph.flowDirection == PlanarDirection.Vertical) {
                     sourcePos = new Vector2(rect.center.x, rect.yMax + portOffset);
-                    targetPos = new Vector2(connection.targetNode.rect.center.x, connection.targetNode.rect.y);
+                    targetPos = new Vector2(connection.targetNode.rect.center.x,
+                        connection.targetNode.rect.y);
                 }
 
                 if (graph.flowDirection == PlanarDirection.Horizontal) {
                     sourcePos = new Vector2(rect.xMax + portOffset, rect.center.y);
-                    targetPos = new Vector2(connection.targetNode.rect.xMin, connection.targetNode.rect.center.y);
+                    targetPos = new Vector2(connection.targetNode.rect.xMin,
+                        connection.targetNode.rect.center.y);
                 }
                 var sourcePortRect = new Rect(0, 0, 12, 12);
                 sourcePortRect.center = sourcePos;
@@ -1171,14 +1227,16 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                     if (GraphEditorUtility.allowClick) {
                         //On right click disconnect connection from the source.
-                        if (e.type == EventType.ContextClick && sourcePortRect.Contains(e.mousePosition)) {
+                        if (e.type == EventType.ContextClick &&
+                            sourcePortRect.Contains(e.mousePosition)) {
                             graph.RemoveConnection(connection);
                             e.Use();
                             return;
                         }
 
                         //On right click disconnect connection from the target.
-                        if (e.type == EventType.ContextClick && targetPortRect.Contains(e.mousePosition)) {
+                        if (e.type == EventType.ContextClick &&
+                            targetPortRect.Contains(e.mousePosition)) {
                             graph.RemoveConnection(connection);
                             e.Use();
                             return;
@@ -1201,7 +1259,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///<summary>Extra GUI called outside of node window</summary>
         protected virtual void OnNodeExternalGUI() { }
 
-        ///<summary>Editor. Override to show controls within the inline inspector or leave it to show an automatic editor</summary>
+        /// <summary>
+        ///     Editor. Override to show controls within the inline inspector or leave it to show an
+        ///     automatic editor
+        /// </summary>
         protected virtual void OnNodeInspectorGUI()
         {
             DrawDefaultInspector();

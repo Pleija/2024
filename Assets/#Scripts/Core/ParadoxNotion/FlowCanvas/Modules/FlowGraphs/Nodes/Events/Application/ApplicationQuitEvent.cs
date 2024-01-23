@@ -4,7 +4,8 @@ using ParadoxNotion.Services;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Application Quit"), Category("Events/Application"), Description("Called when the Application quit")]
+    [Name("On Application Quit"), Category("Events/Application"),
+     Description("Called when the Application quit")]
     public class ApplicationQuitEvent : EventNode
     {
         private FlowOutput quit;

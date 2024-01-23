@@ -12,8 +12,8 @@ using UndoUtility = ParadoxNotion.Design.UndoUtility;
 namespace NodeCanvas.Framework
 {
 #if UNITY_EDITOR //handles missing types
-    [fsObject(Processor = typeof(fsRecoveryProcessor<Connection, MissingConnection>)), ParadoxNotion.Design.SpoofAOT
-     , System.Serializable, fsDeserializeOverwrite]
+    [fsObject(Processor = typeof(fsRecoveryProcessor<Connection, MissingConnection>)),
+     ParadoxNotion.Design.SpoofAOT, System.Serializable, fsDeserializeOverwrite]
 #endif
     ///<summary>Base class for connections between nodes in a graph</summary>
     public abstract partial class Connection : IGraphElement, ISerializationCollectable
@@ -53,7 +53,8 @@ namespace NodeCanvas.Framework
         private Status _status = Status.Resting;
 
         ///<summary>The Unique ID of the node. One is created only if requested.</summary>
-        public string UID => string.IsNullOrEmpty(_UID) ? _UID = System.Guid.NewGuid().ToString() : _UID;
+        public string UID =>
+            string.IsNullOrEmpty(_UID) ? _UID = System.Guid.NewGuid().ToString() : _UID;
 
         ///<summary>The source node of the connection</summary>
         public Node sourceNode {
@@ -93,10 +94,12 @@ namespace NodeCanvas.Framework
         public Connection() { }
 
         ///<summary>Create a new Connection. Use this for constructor</summary>
-        public static Connection Create(Node source, Node target, int sourceIndex = -1, int targetIndex = -1)
+        public static Connection Create(Node source, Node target, int sourceIndex = -1,
+            int targetIndex = -1)
         {
             if (source == null || target == null) {
-                Logger.LogError("Can't Create a Connection without providing Source and Target Nodes");
+                Logger.LogError(
+                    "Can't Create a Connection without providing Source and Target Nodes");
                 return null;
             }
 
@@ -105,7 +108,8 @@ namespace NodeCanvas.Framework
                     "Creating new Connections from a 'MissingNode' is not allowed. Please resolve the MissingNode node first");
                 return null;
             }
-            var newConnection = (Connection)System.Activator.CreateInstance(source.outConnectionType);
+            var newConnection =
+                (Connection)System.Activator.CreateInstance(source.outConnectionType);
             UndoUtility.RecordObject(source.graph, "Create Connection");
             var resultSourceIndex = newConnection.SetSourceNode(source, sourceIndex);
             var resultTargetIndex = newConnection.SetTargetNode(target, targetIndex);
@@ -119,7 +123,8 @@ namespace NodeCanvas.Framework
         public Connection Duplicate(Node newSource, Node newTarget)
         {
             if (newSource == null || newTarget == null) {
-                Logger.LogError("Can't Duplicate a Connection without providing NewSource and NewTarget Nodes");
+                Logger.LogError(
+                    "Can't Duplicate a Connection without providing NewSource and NewTarget Nodes");
                 return null;
             }
 
@@ -135,7 +140,8 @@ namespace NodeCanvas.Framework
                 foreach (var task in Graph.GetTasksInElement(newConnection))
                     task.Validate(newSource.graph);
             //--
-            newConnection.OnValidate(newSource.outConnections.Count - 1, newTarget.inConnections.Count - 1);
+            newConnection.OnValidate(newSource.outConnections.Count - 1,
+                newTarget.inConnections.Count - 1);
             UndoUtility.SetDirty(newSource.graph);
             return newConnection;
         }
@@ -157,7 +163,8 @@ namespace NodeCanvas.Framework
             newSource.OnChildConnected(index);
             sourceNode = newSource;
 #if UNITY_EDITOR
-            if (sourceNode != null && targetNode != null) targetNode.TrySortConnectionsByRelativePosition();
+            if (sourceNode != null && targetNode != null)
+                targetNode.TrySortConnectionsByRelativePosition();
 #endif
             OnValidate(index, targetNode != null ? targetNode.inConnections.IndexOf(this) : -1);
             UndoUtility.SetDirty(graph);
@@ -181,7 +188,8 @@ namespace NodeCanvas.Framework
             newTarget.OnParentConnected(index);
             targetNode = newTarget;
 #if UNITY_EDITOR
-            if (sourceNode != null && targetNode != null) targetNode.TrySortConnectionsByRelativePosition();
+            if (sourceNode != null && targetNode != null)
+                targetNode.TrySortConnectionsByRelativePosition();
 #endif
             OnValidate(sourceNode != null ? sourceNode.outConnections.IndexOf(this) : -1, index);
             UndoUtility.SetDirty(graph);
@@ -213,7 +221,8 @@ namespace NodeCanvas.Framework
         public virtual void OnValidate(int sourceIndex, int targetIndex) { }
 
         /// <summary>
-        ///     Called when the connection is destroyed (always through graph.RemoveConnection or when a node is removed
+        ///     Called when the connection is destroyed (always through graph.RemoveConnection or when a node
+        ///     is removed
         ///     through graph.RemoveNode)
         /// </summary>
         public virtual void OnDestroy() { }

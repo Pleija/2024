@@ -5,8 +5,8 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Mouse Button"), Category("Events/Input (Legacy System)")
-     , Description("Called when the specified mouse button is clicked down, held or released")]
+    [Name("Mouse Button"), Category("Events/Input (Legacy System)"),
+     Description("Called when the specified mouse button is clicked down, held or released")]
     public class MouseEvents : EventNode, IUpdatable
     {
         public enum ButtonKeys { Left = 0, Right = 1, Middle = 2 }

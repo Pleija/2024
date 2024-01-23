@@ -5,10 +5,10 @@ using NodeCanvas.DialogueTrees;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Dialogue")
-     , Description(
-         "Starts the Dialogue Tree assigned on a Dialogue Tree Controller object with specified agent used for 'Instigator'.")
-     , Icon("Dialogue")]
+    [Category("Dialogue"),
+     Description(
+         "Starts the Dialogue Tree assigned on a Dialogue Tree Controller object with specified agent used for 'Instigator'."),
+     Icon("Dialogue")]
     public class StartDialogueTree : ActionTask<IDialogueActor>
     {
         [RequiredField]
@@ -17,11 +17,14 @@ namespace NodeCanvas.Tasks.Actions
         public bool waitActionFinish = true;
         public bool isPrefab;
         private DialogueTreeController instance;
-        protected override string info => string.Format("Start Dialogue {0}", dialogueTreeController);
+
+        protected override string info =>
+            string.Format("Start Dialogue {0}", dialogueTreeController);
 
         protected override void OnExecute()
         {
-            instance = isPrefab ? Object.Instantiate(dialogueTreeController.value) : dialogueTreeController.value;
+            instance = isPrefab ? Object.Instantiate(dialogueTreeController.value)
+                : dialogueTreeController.value;
 
             if (waitActionFinish) {
                 instance.StartDialogue(agent, (success) => {

@@ -47,7 +47,8 @@ namespace NodeCanvas.StateMachines
         public string currentRootStateName => behaviour != null ? behaviour.currentStateName : null;
 
         ///<summary>The previous state name of the root fsm.</summary>
-        public string previousRootStateName => behaviour != null ? behaviour.previousStateName : null;
+        public string previousRootStateName =>
+            behaviour != null ? behaviour.previousStateName : null;
 
         ///<summary>The current deep state name of the fsm including sub fsms if any.</summary>
         public string currentDeepStateName {
@@ -74,7 +75,8 @@ namespace NodeCanvas.StateMachines
             if (includeSubFSMs)
                 while (current is NestedFSMState) {
                     var subState = (NestedFSMState)current;
-                    current = subState.currentInstance != null ? subState.currentInstance.currentState : null;
+                    current = subState.currentInstance != null
+                        ? subState.currentInstance.currentState : null;
                 }
             return current;
         }
@@ -89,14 +91,17 @@ namespace NodeCanvas.StateMachines
             if (includeSubFSMs)
                 while (current is NestedFSMState) {
                     var subState = (NestedFSMState)current;
-                    current = subState.currentInstance != null ? subState.currentInstance.currentState : null;
-                    previous = subState.currentInstance != null ? subState.currentInstance.previousState : null;
+                    current = subState.currentInstance != null
+                        ? subState.currentInstance.currentState : null;
+                    previous = subState.currentInstance != null
+                        ? subState.currentInstance.previousState : null;
                 }
             return previous;
         }
 
         ///<summary>Enter a state of the root FSM by it's name.</summary>
-        public IState TriggerState(string stateName) => TriggerState(stateName, FSM.TransitionCallMode.Normal);
+        public IState TriggerState(string stateName) =>
+            TriggerState(stateName, FSM.TransitionCallMode.Normal);
 
         public IState TriggerState(string stateName, FSM.TransitionCallMode callMode)
         {

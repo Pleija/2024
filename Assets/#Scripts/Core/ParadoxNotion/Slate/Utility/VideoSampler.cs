@@ -9,7 +9,10 @@ namespace Slate
     public static class VideoSampler
     {
         ///<summary>Destination of the video playback</summary>
-        public enum VideoRenderTarget { CameraBackground = 0, CameraForeground = 1, MaterialOverride = 3 }
+        public enum VideoRenderTarget
+        {
+            CameraBackground = 0, CameraForeground = 1, MaterialOverride = 3,
+        }
 
         ///<summary>Settings used when sampling video</summary>
         [System.Serializable]
@@ -39,7 +42,9 @@ namespace Slate
 
         private const string ROOT_NAME = "_VideoSources";
         private static GameObject root;
-        private static Dictionary<object, VideoPlayer> sources = new Dictionary<object, VideoPlayer>();
+
+        private static Dictionary<object, VideoPlayer> sources =
+            new Dictionary<object, VideoPlayer>();
 
         ///<summary>Get an VideoPlayer for the specified key ID object</summary>
         public static VideoPlayer GetSourceForID(object keyID)
@@ -79,16 +84,16 @@ namespace Slate
         }
 
         ///<summary>Sample an VideoClip on the VideoPlayer of the specified key ID object</summary>
-        public static void SampleForID(object keyID, VideoClip clip, string url, float time, float previousTime
-            , SampleSettings settings)
+        public static void SampleForID(object keyID, VideoClip clip, string url, float time,
+            float previousTime, SampleSettings settings)
         {
             var source = GetSourceForID(keyID);
             Sample(source, clip, url, time, previousTime, settings);
         }
 
         ///<summary>Sample an VideoClip in the specified VideoPlayer directly</summary>
-        public static void Sample(VideoPlayer source, VideoClip clip, string url, float time, float previousTime
-            , SampleSettings settings)
+        public static void Sample(VideoPlayer source, VideoClip clip, string url, float time,
+            float previousTime, SampleSettings settings)
         {
             if (source == null) return;
 

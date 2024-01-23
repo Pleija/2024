@@ -4,10 +4,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Switch Integer"), Category("Flow Controllers/Switchers")
-     , Description(
-         "Branch the Flow based on an integer value. The Default output is called when the Index value is out of range.")
-     , ContextDefinedInputs(typeof(int)), HasRefreshButton]
+    [Name("Switch Integer"), Category("Flow Controllers/Switchers"),
+     Description(
+         "Branch the Flow based on an integer value. The Default output is called when the Index value is out of range."),
+     ContextDefinedInputs(typeof(int)), HasRefreshButton]
     public class SwitchIntCustom : FlowControlNode
     {
         [Name("Cases")]
@@ -17,7 +17,8 @@ namespace FlowCanvas.Nodes
         {
             var selector = AddValueInput<int>("Value", "Index");
             var cases = new FlowOutput[intCases.Count];
-            for (var i = 0; i < cases.Length; i++) cases[i] = AddFlowOutput(intCases[i].ToString(), i.ToString());
+            for (var i = 0; i < cases.Length; i++)
+                cases[i] = AddFlowOutput(intCases[i].ToString(), i.ToString());
             var defaultCase = AddFlowOutput("Default");
             AddFlowInput("In", (f) => {
                 var selectorValue = selector.value;

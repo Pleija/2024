@@ -18,8 +18,9 @@ namespace Slate.ActionClips
 
         private ParticleSystem.EmissionModule em;
 
-        public override string info => string.Format("Particles ({0})\n{1}", particles && loop ? "Looping" : "OneShot"
-            , particles ? particles.gameObject.name : "NONE");
+        public override string info => string.Format("Particles ({0})\n{1}",
+            particles && loop ? "Looping" : "OneShot",
+            particles ? particles.gameObject.name : "NONE");
 
         public override bool isValid => particles != null;
 

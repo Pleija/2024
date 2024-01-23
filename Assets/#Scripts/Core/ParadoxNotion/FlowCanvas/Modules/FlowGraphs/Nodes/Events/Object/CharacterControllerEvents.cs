@@ -4,8 +4,8 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Character Controller"), Category("Events/Object")
-     , Description("Called when the Character Controller hits a collider while performing a Move")]
+    [Name("Character Controller"), Category("Events/Object"),
+     Description("Called when the Character Controller hits a collider while performing a Move")]
     public class CharacterControllerEvents : RouterEventNode<CharacterController>, IUpdatable
     {
         private FlowOutput onHit;
@@ -20,7 +20,8 @@ namespace FlowCanvas.Nodes
         {
             base.OnPostGraphStarted();
             if (targetMode == TargetMode.SingleTarget) wasGrounded = target.value.isGrounded;
-            if (targetMode == TargetMode.MultipleTargets) wasGroundedMulti = new bool[targets.value.Count];
+            if (targetMode == TargetMode.MultipleTargets)
+                wasGroundedMulti = new bool[targets.value.Count];
         }
 
         void IUpdatable.Update()

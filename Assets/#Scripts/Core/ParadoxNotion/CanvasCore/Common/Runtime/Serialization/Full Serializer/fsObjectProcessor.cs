@@ -46,21 +46,25 @@ namespace ParadoxNotion.Serialization.FullSerializer
         public virtual void OnBeforeDeserialize(Type storageType, ref fsData data) { }
 
         /// <summary>
-        ///     Called before deserialization has begun but *after* the object instance has been created. This will get
+        ///     Called before deserialization has begun but *after* the object instance has been created. This
+        ///     will get
         ///     invoked even if the user passed in an existing instance.
         /// </summary>
         /// <remarks>
-        ///     **IMPORTANT**: The actual instance that gets passed here is *not* guaranteed to be an a subtype of storageType,
+        ///     **IMPORTANT**: The actual instance that gets passed here is *not* guaranteed to be an a subtype
+        ///     of storageType,
         ///     since
-        ///     the value for instance is whatever the active converter returned for CreateInstance() - ie, some converters will
+        ///     the value for instance is whatever the active converter returned for CreateInstance() - ie,
+        ///     some converters will
         ///     return
-        ///     dummy types in CreateInstance() if instance creation cannot be separated from deserialization (ie, KeyValuePair).
+        ///     dummy types in CreateInstance() if instance creation cannot be separated from deserialization
+        ///     (ie, KeyValuePair).
         /// </remarks>
         /// <param name="storageType">The field/property type that is storing the instance.</param>
         /// <param name="instance">The created object instance. No deserialization has been applied to it.</param>
         /// <param name="data">The data that will be used for deserialization.</param>
-        public virtual void
-            OnBeforeDeserializeAfterInstanceCreation(Type storageType, object instance, ref fsData data) { }
+        public virtual void OnBeforeDeserializeAfterInstanceCreation(Type storageType,
+            object instance, ref fsData data) { }
 
         /// <summary>
         ///     Called after deserialization.

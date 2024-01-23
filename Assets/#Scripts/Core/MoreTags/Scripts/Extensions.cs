@@ -9,7 +9,8 @@ namespace MoreTags
     public static class Extensions
     {
 #if UNITY_EDITOR
-        public static void TagGUI(this TagDataList data, string header = null, Action<TagGUI> onCreate = null)
+        public static void TagGUI(this TagDataList data, string header = null,
+            Action<TagGUI> onCreate = null)
         {
             MoreTags.TagGUI.SetTags(onCreate, data, header);
         }
@@ -32,7 +33,8 @@ namespace MoreTags
             go.AddTag(tag);
         }
 
-        public static bool HasTag(this GameObject go, string tag) => TagSystem.GameObjectTags(go).Contains(tag);
+        public static bool HasTag(this GameObject go, string tag) =>
+            TagSystem.GameObjectTags(go).Contains(tag);
 
         public static bool AnyTags(this GameObject go, params string[] tags) =>
             TagSystem.GameObjectTags(go).Intersect(tags).Any();
@@ -40,7 +42,8 @@ namespace MoreTags
         public static bool BothTags(this GameObject go, params string[] tags) =>
             TagSystem.GameObjectTags(go).Intersect(tags).Count() == tags.Length;
 
-        public static string[] GetTags(this GameObject go) => TagSystem.GameObjectTags(go).ToArray();
+        public static string[] GetTags(this GameObject go) =>
+            TagSystem.GameObjectTags(go).ToArray();
 
         public static string[] FindTags(this GameObject go, TagNames tags) =>
             TagSystem.GameObjectTags(go).Intersect(tags).ToArray();

@@ -36,10 +36,12 @@ namespace FlowCanvas.Macros
         ///----------------------------------------------------------------------------------------------
         //we need to let Unity serialize these as to be available OnAfterDeserialize regardless or order of execution
         [SerializeField]
-        public List<DynamicParameterDefinition> inputDefinitions = new List<DynamicParameterDefinition>();
+        public List<DynamicParameterDefinition> inputDefinitions =
+            new List<DynamicParameterDefinition>();
 
         [SerializeField]
-        public List<DynamicParameterDefinition> outputDefinitions = new List<DynamicParameterDefinition>();
+        public List<DynamicParameterDefinition> outputDefinitions =
+            new List<DynamicParameterDefinition>();
 
         ///----------------------------------------------------------------------------------------------
         [NonSerialized]
@@ -70,7 +72,8 @@ namespace FlowCanvas.Macros
                 if (_entry == null) {
                     _entry = allNodes.OfType<MacroInputNode>().FirstOrDefault();
                     if (_entry == null)
-                        _entry = AddNode<MacroInputNode>(new Vector2(-translation.x + 200, -translation.y + 200));
+                        _entry = AddNode<MacroInputNode>(new Vector2(-translation.x + 200,
+                            -translation.y + 200));
                 }
                 return _entry;
             }
@@ -82,7 +85,8 @@ namespace FlowCanvas.Macros
                 if (_exit == null) {
                     _exit = allNodes.OfType<MacroOutputNode>().FirstOrDefault();
                     if (_exit == null)
-                        _exit = AddNode<MacroOutputNode>(new Vector2(-translation.x + 600, -translation.y + 200));
+                        _exit = AddNode<MacroOutputNode>(new Vector2(-translation.x + 600,
+                            -translation.y + 200));
                 }
                 return _exit;
             }
@@ -133,16 +137,20 @@ namespace FlowCanvas.Macros
             }
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary> Set a value input of type T of the Macro to a certain value. Only use to interface with the Macro from code.</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Set a value input of type T of the Macro to a certain value. Only use to interface with
+        ///     the Macro from code.
+        /// </summary>
         public void SetValueInput<T>(string name, T value)
         {
             var def = inputDefinitions.FirstOrDefault(d => d.name == name && d.type == typeof(T));
 
             if (def == null) {
                 ParadoxNotion.Services.Logger.LogError(
-                    string.Format("Input of name {0} and type {1}, does not exist within the list of Macro Inputs", name
-                        , typeof(T)), NodeCanvas.Framework.LogTag.EXECUTION, entry);
+                    string.Format(
+                        "Input of name {0} and type {1}, does not exist within the list of Macro Inputs",
+                        name, typeof(T)), NodeCanvas.Framework.LogTag.EXECUTION, entry);
                 return;
             }
             entryFunctionMap[def.ID] = () => {
@@ -153,26 +161,32 @@ namespace FlowCanvas.Macros
         ///<summary> Call a Flow Input of the Macro. Only use to interface with the Macro from code.</summary>
         public void CallFlowInput(string name)
         {
-            var def = inputDefinitions.FirstOrDefault(d => d.name == name && d.type == typeof(Flow));
+            var def = inputDefinitions.FirstOrDefault(d =>
+                d.name == name && d.type == typeof(Flow));
 
             if (def == null) {
                 ParadoxNotion.Services.Logger.LogError(
-                    string.Format("Input of name {0} and type Flow, does not exist within the list of Macro Inputs"
-                        , name), NodeCanvas.Framework.LogTag.EXECUTION, entry);
+                    string.Format(
+                        "Input of name {0} and type Flow, does not exist within the list of Macro Inputs",
+                        name), NodeCanvas.Framework.LogTag.EXECUTION, entry);
                 return;
             }
             entryActionMap[def.ID](new Flow());
         }
 
-        ///<summary> Get the value output of type T of the Macro. Only use to interface with the Macro from code.</summary>
+        /// <summary>
+        ///     Get the value output of type T of the Macro. Only use to interface with the Macro from
+        ///     code.
+        /// </summary>
         public T GetValueOutput<T>(string name)
         {
             var def = outputDefinitions.FirstOrDefault(d => d.name == name && d.type == typeof(T));
 
             if (def == null) {
                 ParadoxNotion.Services.Logger.LogError(
-                    string.Format("Input of name {0} and type {1} do not exist within the list of Macro Outputs", name
-                        , typeof(T)), NodeCanvas.Framework.LogTag.EXECUTION, exit);
+                    string.Format(
+                        "Input of name {0} and type {1} do not exist within the list of Macro Outputs",
+                        name, typeof(T)), NodeCanvas.Framework.LogTag.EXECUTION, exit);
                 return default;
             }
             return (T)exitFunctionMap[def.ID]();

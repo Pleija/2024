@@ -7,10 +7,10 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Delegate Callback", 1), Category("Events/Custom")
-     , Description(
-         "The exposed Delegate points directly to the 'Callback' output. You can connect this delegate as listener to a Unity or C# Event using the AddListener function of that Unity Event, or the += function of that C# Event. When that event is raised, this node will be called.")
-     , ContextDefinedOutputs(typeof(Flow), typeof(Delegate))]
+    [Name("Delegate Callback", 1), Category("Events/Custom"),
+     Description(
+         "The exposed Delegate points directly to the 'Callback' output. You can connect this delegate as listener to a Unity or C# Event using the AddListener function of that Unity Event, or the += function of that C# Event. When that event is raised, this node will be called."),
+     ContextDefinedOutputs(typeof(Flow), typeof(Delegate))]
     public class DelegateCallbackEvent : EventNode, IReflectedWrapper
     {
         [SerializeField]
@@ -32,9 +32,10 @@ namespace FlowCanvas.Nodes
         protected override void RegisterPorts()
         {
             delegateType = delegateType != null ? delegateType : typeof(Delegate);
-            delegatePort = AddValueOutput(delegateType.FriendlyName(), "Delegate", delegateType, () => {
-                return reflectedEvent.AsDelegate();
-            });
+            delegatePort = AddValueOutput(delegateType.FriendlyName(), "Delegate", delegateType,
+                () => {
+                    return reflectedEvent.AsDelegate();
+                });
             callbackPort = AddFlowOutput("Callback");
             if (delegateType == typeof(Delegate)) return;
 

@@ -33,7 +33,8 @@ namespace NodeCanvas.Tasks.Actions
                     return;
                 }
             lastRequest = targetPosition.value;
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + keepDistance.value)
+            if (!agent.pathPending &&
+                agent.remainingDistance <= agent.stoppingDistance + keepDistance.value)
                 EndAction(true);
         }
 

@@ -90,19 +90,20 @@ namespace NodeCanvas.Editor
                 RemoveNotification();
             }
             EditorGUILayout.HelpBox(
-                "A flat meta graph structure including nodes, connections, tasks and parameters. Use this utility window to quickly search, find and jump focus to the related element. Please note that keeping this utility window open, will slow down the graph editor."
-                , MessageType.Info);
+                "A flat meta graph structure including nodes, connections, tasks and parameters. Use this utility window to quickly search, find and jump focus to the related element. Please note that keeping this utility window open, will slow down the graph editor.",
+                MessageType.Info);
             GUILayout.BeginHorizontal();
             GUILayout.Space(5);
             GUI.SetNextControlName("SearchToolbar");
             search = EditorUtils.SearchField(search);
-            Prefs.explorerShowTypeNames =
-                EditorGUILayout.ToggleLeft("Show Type Names", Prefs.explorerShowTypeNames, GUILayout.Width(130));
+            Prefs.explorerShowTypeNames = EditorGUILayout.ToggleLeft("Show Type Names",
+                Prefs.explorerShowTypeNames, GUILayout.Width(130));
             GUILayout.EndHorizontal();
             var graphElement = GraphEditor.currentGraph.GetFlatMetaGraph();
             if (graphElement == null) return;
             EditorUtils.BoldSeparator();
-            GUILayout.Label(string.Format("<size=12><b> ROOT</b></size>", GraphEditor.currentGraph.name));
+            GUILayout.Label(string.Format("<size=12><b> ROOT</b></size>",
+                GraphEditor.currentGraph.name));
             EditorUtils.Separator();
             ///----------------------------------------------------------------------------------------------
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, false);
@@ -139,13 +140,15 @@ namespace NodeCanvas.Editor
                 var searchText = toString + " " + typeName;
 
                 if (string.IsNullOrEmpty(search) || StringUtils.SearchMatch(search, searchText)) {
-                    if (EditorGUIUtility.isProSkin) GUI.color = Color.black.WithAlpha(indent == 1 ? 0.6f : 0.3f);
-                    if (!EditorGUIUtility.isProSkin) GUI.color = Color.white.WithAlpha(indent == 1 ? 0.6f : 0.3f);
+                    if (EditorGUIUtility.isProSkin)
+                        GUI.color = Color.black.WithAlpha(indent == 1 ? 0.6f : 0.3f);
+                    if (!EditorGUIUtility.isProSkin)
+                        GUI.color = Color.white.WithAlpha(indent == 1 ? 0.6f : 0.3f);
                     GUILayout.BeginHorizontal("box");
                     GUI.color = Color.white;
                     GUILayout.Space(indent * INDENT_WIDTH);
-                    var displayText = string.Format("<b>{0}</b>{1}", toString
-                        , Prefs.explorerShowTypeNames ? " (" + typeName + ")" : string.Empty);
+                    var displayText = string.Format("<b>{0}</b>{1}", toString,
+                        Prefs.explorerShowTypeNames ? " (" + typeName + ")" : string.Empty);
                     GUILayout.Label(string.Format("<size=9>{0}</size>", displayText));
                     GUILayout.EndHorizontal();
                     elementRect = GUILayoutUtility.GetLastRect();
@@ -178,7 +181,8 @@ namespace NodeCanvas.Editor
                 indent--;
 
                 if (elementRect != default) {
-                    var rootOrNotParentHidden = indent == INDENT_START || parentElementRect != default;
+                    var rootOrNotParentHidden =
+                        indent == INDENT_START || parentElementRect != default;
                     var lineVer = new Rect();
                     lineVer.xMin = elementRect.xMin + indent * INDENT_WIDTH - INDENT_WIDTH / 2;
                     lineVer.width = 2;

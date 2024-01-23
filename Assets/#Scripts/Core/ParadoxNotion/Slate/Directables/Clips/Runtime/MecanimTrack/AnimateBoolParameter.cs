@@ -5,7 +5,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Description("Animate a bool Animator parameter and reset it back to previous value after a period of time.")]
+    [Description(
+        "Animate a bool Animator parameter and reset it back to previous value after a period of time.")]
     public class AnimateBoolParameter : MecanimBaseClip
     {
         [SerializeField, HideInInspector]

@@ -38,8 +38,8 @@ namespace FlowCanvas.Nodes
 #if UNITY_EDITOR
         protected override void OnNodeInspectorGUI()
         {
-            target = (IExternalImplementedNode)UnityEditor.EditorGUILayout.ObjectField("Target", target as Object
-                , typeof(IExternalImplementedNode), true);
+            target = (IExternalImplementedNode)UnityEditor.EditorGUILayout.ObjectField("Target",
+                target as Object, typeof(IExternalImplementedNode), true);
             base.OnNodeInspectorGUI();
         }
 #endif

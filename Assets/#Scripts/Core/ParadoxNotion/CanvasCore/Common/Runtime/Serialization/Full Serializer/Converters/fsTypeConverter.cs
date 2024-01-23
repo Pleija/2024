@@ -8,7 +8,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
         public override bool RequestCycleSupport(Type type) => false;
         public override bool RequestInheritanceSupport(Type type) => false;
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             var type = (Type)instance;
             serialized = new fsData(type.FullName);

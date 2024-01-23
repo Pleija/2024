@@ -49,8 +49,8 @@ namespace NodeCanvas.Tasks.Actions
                 mixTransform = FindTransform(agent.transform, mixTransformName.value);
                 if (!mixTransform)
                     ParadoxNotion.Services.Logger.LogWarning(
-                        "Cant find transform with name '" + mixTransformName.value + "' for PlayAnimation Action"
-                        , LogTag.EXECUTION, this);
+                        "Cant find transform with name '" + mixTransformName.value +
+                        "' for PlayAnimation Action", LogTag.EXECUTION, this);
             }
             else {
                 mixTransform = null;
@@ -71,7 +71,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnUpdate()
         {
-            if (elapsedTime >= agent[animationToPlay].length / playbackSpeed - crossFadeTime) EndAction(true);
+            if (elapsedTime >= agent[animationToPlay].length / playbackSpeed - crossFadeTime)
+                EndAction(true);
         }
 
         private Transform FindTransform(Transform parent, string name)

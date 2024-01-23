@@ -5,7 +5,8 @@ using System;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("UI Button"), Category("Events/Object/UI"), Description("Called when the target UI Button is clicked")]
+    [Name("UI Button"), Category("Events/Object/UI"),
+     Description("Called when the target UI Button is clicked")]
     public class UIButtonEvent : EventNode<Button>
     {
         private FlowOutput o;

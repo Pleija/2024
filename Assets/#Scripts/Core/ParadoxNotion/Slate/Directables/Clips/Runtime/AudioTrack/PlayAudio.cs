@@ -2,10 +2,10 @@
 
 namespace Slate.ActionClips
 {
-    [Name("Audio Clip")
-     , Description(
-         "The audio clip will be send to the AudioMixer selected in it's track if any. You can trim or loop the audio by scaling the clip and you can optionaly show subtitles as well.")
-     , Attachable(typeof(ActorAudioTrack), typeof(DirectorAudioTrack))]
+    [Name("Audio Clip"),
+     Description(
+         "The audio clip will be send to the AudioMixer selected in it's track if any. You can trim or loop the audio by scaling the clip and you can optionaly show subtitles as well."),
+     Attachable(typeof(ActorAudioTrack), typeof(DirectorAudioTrack))]
     public class PlayAudio : ActionClip, ISubClipContainable
     {
         [SerializeField, HideInInspector]
@@ -61,8 +61,9 @@ namespace Slate.ActionClips
 
         public override bool isValid => audioClip != null;
 
-        public override string info => isValid ? string.IsNullOrEmpty(subtitlesText) ? audioClip.name
-            : string.Format("<i>'{0}'</i>", subtitlesText) : base.info;
+        public override string info => isValid
+            ? string.IsNullOrEmpty(subtitlesText) ? audioClip.name
+                : string.Format("<i>'{0}'</i>", subtitlesText) : base.info;
 
         private AudioTrack track => (AudioTrack)parent;
         private AudioSource source => track.source;
@@ -100,15 +101,16 @@ namespace Slate.ActionClips
                 settings.volume *= weight * volume;
                 settings.pitch *= pitch * root.playbackSpeed;
                 settings.pan += stereoPan;
-                AudioSampler.Sample(source, audioClip, time - clipOffset, previousTime - clipOffset, settings);
+                AudioSampler.Sample(source, audioClip, time - clipOffset, previousTime - clipOffset,
+                    settings);
 
                 if (!string.IsNullOrEmpty(subtitlesText)) {
                     var lerpColor = subtitlesColor;
                     lerpColor.a = weight;
                     DirectorGUI.UpdateSubtitles(
-                        string.Format("{0}{1}"
-                            , parent is ActorAudioTrack ? actor.name.Replace("(Clone)", "") + ": " : "", subtitlesText)
-                        , lerpColor);
+                        string.Format("{0}{1}",
+                            parent is ActorAudioTrack ? actor.name.Replace("(Clone)", "") + ": "
+                                : "", subtitlesText), lerpColor);
                 }
             }
         }

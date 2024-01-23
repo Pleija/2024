@@ -28,7 +28,10 @@ namespace ParadoxNotion.Design
         public override int priority => 0;
     }
 
-    ///<summary>Use on top of any field to show it only if the provided field is equal to the provided check value</summary>
+    /// <summary>
+    ///     Use on top of any field to show it only if the provided field is equal to the provided
+    ///     check value
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class ShowIfAttribute : DrawerAttribute
     {
@@ -111,7 +114,8 @@ namespace ParadoxNotion.Design
     }
 
     /// <summary>
-    ///     Use on top of any type of field to restict values to the provided ones through a popup by providing a params
+    ///     Use on top of any type of field to restict values to the provided ones through a popup by
+    ///     providing a params
     ///     array of options.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]

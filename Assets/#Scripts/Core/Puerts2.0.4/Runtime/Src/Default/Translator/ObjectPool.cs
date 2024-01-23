@@ -14,7 +14,9 @@ namespace Puerts
     internal class ReferenceEqualsComparer : IEqualityComparer<object>
     {
         public new bool Equals(object o1, object o2) => ReferenceEquals(o1, o2);
-        public int GetHashCode(object obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
+
+        public int GetHashCode(object obj) =>
+            System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
     }
 
     public class ObjectPool
@@ -39,7 +41,9 @@ namespace Puerts
         private Slot[] list = new Slot[512];
         private int freelist = LIST_END;
         private int count = 0;
-        private Dictionary<object, int> reverseMap = new Dictionary<object, int>(new ReferenceEqualsComparer());
+
+        private Dictionary<object, int> reverseMap =
+            new Dictionary<object, int>(new ReferenceEqualsComparer());
 
         public ObjectPool()
         {
@@ -128,7 +132,8 @@ namespace Puerts
                 list[index].next = freelist;
                 freelist = index;
                 int reverseId;
-                if (reverseMap.TryGetValue(o, out reverseId) && reverseId == index) reverseMap.Remove(o);
+                if (reverseMap.TryGetValue(o, out reverseId) && reverseId == index)
+                    reverseMap.Remove(o);
                 return o;
             }
             return null;
@@ -155,10 +160,12 @@ namespace Puerts
             var obj = ReplaceFreeList(index, null);
             if (obj == null) return;
             int objIndex;
-            if (reverseMap.TryGetValue(obj, out objIndex) && objIndex == index) reverseMap.Remove(obj);
+            if (reverseMap.TryGetValue(obj, out objIndex) && objIndex == index)
+                reverseMap.Remove(obj);
         }
 
-        public int Check(int checkPos, int maxCheck, Func<object, bool> checker, Dictionary<object, int> reverseMap)
+        public int Check(int checkPos, int maxCheck, Func<object, bool> checker,
+            Dictionary<object, int> reverseMap)
         {
             if (count == 0) return 0;
 

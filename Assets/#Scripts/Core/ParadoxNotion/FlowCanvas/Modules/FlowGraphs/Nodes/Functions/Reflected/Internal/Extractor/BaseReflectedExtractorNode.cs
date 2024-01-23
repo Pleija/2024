@@ -7,12 +7,15 @@ namespace FlowCanvas.Nodes
 {
     public abstract class BaseReflectedExtractorNode
     {
-        protected static event Func<Type, bool, MemberInfo[], BaseReflectedExtractorNode> OnGetAotExtractorNode;
+        protected static event Func<Type, bool, MemberInfo[], BaseReflectedExtractorNode>
+            OnGetAotExtractorNode;
 
-        public static BaseReflectedExtractorNode GetExtractorNode(Type targetType, bool isStatic, MemberInfo[] infos)
+        public static BaseReflectedExtractorNode GetExtractorNode(Type targetType, bool isStatic,
+            MemberInfo[] infos)
         {
             ParametresDef paramsDef;
-            if (!ReflectedNodesHelper.InitParams(targetType, isStatic, infos, out paramsDef)) return null;
+            if (!ReflectedNodesHelper.InitParams(targetType, isStatic, infos, out paramsDef))
+                return null;
 #if !NET_STANDARD_2_0 && (UNITY_EDITOR || (!ENABLE_IL2CPP && (UNITY_STANDALONE || UNITY_ANDROID || UNITY_WSA)))
             var jit = new JitExtractorNode();
             if (jit.Init(paramsDef, targetType)) return jit;

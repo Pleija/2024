@@ -4,9 +4,9 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Filters")
-     , Description("Filters the flow execution so that it can't be called very frequently")
-     , ContextDefinedInputs(typeof(float)), ContextDefinedOutputs(typeof(float))]
+    [Category("Flow Controllers/Filters"),
+     Description("Filters the flow execution so that it can't be called very frequently"),
+     ContextDefinedInputs(typeof(float)), ContextDefinedOutputs(typeof(float))]
     public class Cooldown : FlowControlNode
     {
         private Coroutine coroutine;
@@ -16,7 +16,9 @@ namespace FlowCanvas.Nodes
         private FlowOutput finish;
         private FlowOutput update;
         private ValueInput<float> time;
-        public override string name => base.name + string.Format(" [{0}]", remaining.ToString("0.0"));
+
+        public override string name =>
+            base.name + string.Format(" [{0}]", remaining.ToString("0.0"));
 
         public override void OnGraphStarted()
         {

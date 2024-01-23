@@ -10,8 +10,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Implemented Action", 9), Category("✫ Reflected")
-     , Description(
+    [Name("Implemented Action", 9), Category("✫ Reflected"),
+     Description(
          "Calls a function that has signature of 'public Status NAME()' or 'public Status NAME(T)'. You should return Status.Success, Failure or Running within that function.")]
     public class ImplementedAction_Multiplatform : ActionTask, IReflectedWrapper
     {
@@ -36,9 +36,10 @@ namespace NodeCanvas.Tasks.Actions
             get {
                 if (method == null) return "No Action Selected";
                 if (targetMethod == null) return method.AsString().FormatError();
-                var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("[ {0}.{1}({2}) ]", mInfo, targetMethod.Name
-                    , parameters.Count == 1 ? parameters[0].ToString() : "");
+                var mInfo = targetMethod.IsStatic
+                    ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                return string.Format("[ {0}.{1}({2}) ]", mInfo, targetMethod.Name,
+                    parameters.Count == 1 ? parameters[0].ToString() : "");
             }
         }
 
@@ -52,7 +53,8 @@ namespace NodeCanvas.Tasks.Actions
         protected override string OnInit()
         {
             if (method == null) return "No method selected";
-            if (targetMethod == null) return string.Format("Missing method '{0}'", method.AsString());
+            if (targetMethod == null)
+                return string.Format("Missing method '{0}'", method.AsString());
             if (args == null) args = new object[targetMethod.GetParameters().Length];
             return null;
         }
@@ -103,17 +105,17 @@ namespace NodeCanvas.Tasks.Actions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(Status), typeof(object)
-                            , SetMethod, 1, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(),
+                            typeof(Status), typeof(object), SetMethod, 1, false, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod, 1
-                        , false, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(Status),
+                        typeof(object), SetMethod, 1, false, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod
-                            , 1, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(Status),
+                            typeof(object), SetMethod, 1, false, true, menu);
                 }
                 menu.ShowAsBrowser("Select Action Method", GetType());
                 Event.current.Use();
@@ -121,8 +123,10 @@ namespace NodeCanvas.Tasks.Actions
 
             if (targetMethod != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
-                UnityEditor.EditorGUILayout.LabelField("Selected Action Method:", targetMethod.Name);
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetMethod.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Selected Action Method:",
+                    targetMethod.Name);
                 GUILayout.EndVertical();
 
                 if (targetMethod.GetParameters().Length == 1) {

@@ -48,10 +48,10 @@ namespace Puerts
 
     public static class Configure
     {
-        public static Dictionary<string, List<KeyValuePair<object, int>>> GetConfigureByTags(List<string> tags)
+        public static Dictionary<string, List<KeyValuePair<object, int>>> GetConfigureByTags(
+            List<string> tags)
         {
-            var types =
-                from assembly in AppDomain.CurrentDomain.GetAssemblies()
+            var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
                 from type in assembly.GetTypes()
                 where type.IsDefined(typeof(ConfigureAttribute), false)
@@ -77,8 +77,7 @@ namespace Puerts
 
         public static List<MethodInfo> GetFilters()
         {
-            var types =
-                from assembly in AppDomain.CurrentDomain.GetAssemblies()
+            var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
                 from type in assembly.GetTypes()
                 where type.IsDefined(typeof(ConfigureAttribute), false)
@@ -96,16 +95,15 @@ namespace Puerts
 #if !PUERTS_GENERAL
         public static string GetCodeOutputDirectory()
         {
-            var types =
-                from assembly in AppDomain.CurrentDomain.GetAssemblies()
+            var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
                 from type in assembly.GetTypes()
                 where type.IsDefined(typeof(ConfigureAttribute), false)
                 select type;
 
             foreach (var type in types) {
-                var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic |
-                    BindingFlags.DeclaredOnly);
+                var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public |
+                    BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
                 foreach (var prop in props) {
                     var attrs = prop.GetCustomAttributes(true);

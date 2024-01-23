@@ -16,7 +16,8 @@ namespace Slate
             public Quaternion rot;
             public Vector3 scale;
 
-            public TransformData(Transform transform, Transform parent, Vector3 pos, Quaternion rot, Vector3 scale)
+            public TransformData(Transform transform, Transform parent, Vector3 pos, Quaternion rot,
+                Vector3 scale)
             {
                 this.transform = transform;
                 this.parent = parent;
@@ -40,8 +41,8 @@ namespace Slate
 
             if (mode == StoreMode.RootOnly) {
                 var transform = root.transform;
-                data.Add(new TransformData(transform, transform.parent, transform.localPosition, transform.localRotation
-                    , transform.localScale));
+                data.Add(new TransformData(transform, transform.parent, transform.localPosition,
+                    transform.localRotation, transform.localScale));
                 return;
             }
             var allTransforms = root.GetComponentsInChildren<Transform>(true);
@@ -49,8 +50,8 @@ namespace Slate
             for (var i = 0; i < allTransforms.Length; i++) {
                 var transform = allTransforms[i];
                 if (transform != root.transform || mode == StoreMode.All)
-                    data.Add(new TransformData(transform, transform.parent, transform.localPosition
-                        , transform.localRotation, transform.localScale));
+                    data.Add(new TransformData(transform, transform.parent, transform.localPosition,
+                        transform.localRotation, transform.localScale));
             }
         }
 

@@ -8,7 +8,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
 {
     public class Keyframe_DirectConverter : fsDirectConverter<Keyframe>
     {
-        protected override fsResult DoSerialize(Keyframe model, Dictionary<string, fsData> serialized)
+        protected override fsResult DoSerialize(Keyframe model,
+            Dictionary<string, fsData> serialized)
         {
             var result = fsResult.Success;
             result += SerializeMember(serialized, null, "time", model.time);
@@ -19,7 +20,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Keyframe model)
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data,
+            ref Keyframe model)
         {
             var result = fsResult.Success;
             var t0 = model.time;

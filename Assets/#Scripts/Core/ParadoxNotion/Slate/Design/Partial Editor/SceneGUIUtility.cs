@@ -7,8 +7,8 @@ namespace Slate
     public static class SceneGUIUtility
     {
         ///<summary>In SceneGUI, shows a position handle for target parameter of target keyable</summary>
-        public static bool DoParameterPositionHandle(IKeyable keyable, AnimatedParameter animParam, TransformSpace space
-            , Vector3? euler)
+        public static bool DoParameterPositionHandle(IKeyable keyable, AnimatedParameter animParam,
+            TransformSpace space, Vector3? euler)
         {
             var originalPos = (Vector3)animParam.GetCurrentValueAsObject();
             var newPos = originalPos;
@@ -31,8 +31,8 @@ namespace Slate
         }
 
         ///<summary>In SceneGUI, shows a rotation handle for target parameter of target keyable</summary>
-        public static bool DoParameterRotationHandle(IKeyable keyable, AnimatedParameter animParam, TransformSpace space
-            , Vector3 position)
+        public static bool DoParameterRotationHandle(IKeyable keyable, AnimatedParameter animParam,
+            TransformSpace space, Vector3 position)
         {
             var originalRot = (Vector3)animParam.GetCurrentValueAsObject();
             var newRot = originalRot;
@@ -46,23 +46,25 @@ namespace Slate
         }
 
         /// <summary>
-        ///     In SceneGUI, shows a position handle for target vector of target directable (pos handle in World Space
+        ///     In SceneGUI, shows a position handle for target vector of target directable (pos handle in
+        ///     World Space
         ///     rotation)
         /// </summary>
-        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space, ref Vector3 position) =>
-            DoVectorPositionHandle(directable, space, null, ref position);
+        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space,
+            ref Vector3 position) => DoVectorPositionHandle(directable, space, null, ref position);
 
         /// <summary>
-        ///     In SceneGUI, shows a position handle for target vector of target directable (pos handle in provided euler
+        ///     In SceneGUI, shows a position handle for target vector of target directable (pos handle in
+        ///     provided euler
         ///     rotation)
         /// </summary>
-        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space, Vector3? euler
-            , ref Vector3 position)
+        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space,
+            Vector3? euler, ref Vector3 position)
         {
             EditorGUI.BeginChangeCheck();
             var pos = directable.TransformPosition(position, space);
-            var rot = euler == null || Tools.pivotRotation == PivotRotation.Global ? Quaternion.identity
-                : directable.TransformRotation(euler.Value, space);
+            var rot = euler == null || Tools.pivotRotation == PivotRotation.Global
+                ? Quaternion.identity : directable.TransformRotation(euler.Value, space);
             var newPos = Handles.PositionHandle(pos, rot);
             Handles.SphereHandleCap(-10, pos, Quaternion.identity, 0.1f, EventType.Repaint);
 
@@ -76,8 +78,8 @@ namespace Slate
         }
 
         ///<summary>In SceneGUI, shows a rotation handle for target vector of target directable</summary>
-        public static bool DoVectorRotationHandle(IDirectable directable, TransformSpace space, Vector3 position
-            , ref Vector3 euler)
+        public static bool DoVectorRotationHandle(IDirectable directable, TransformSpace space,
+            Vector3 position, ref Vector3 euler)
         {
             EditorGUI.BeginChangeCheck();
             var pos = directable.TransformPosition(position, space);

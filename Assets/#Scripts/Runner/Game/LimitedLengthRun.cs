@@ -7,7 +7,8 @@ namespace Runner.Game
 
         public override void OnRunTick(GameState state)
         {
-            if (state.trackManager.worldDistance >= distance) state.trackManager.characterController.currentLife = 0;
+            if (state.trackManager.worldDistance >= distance)
+                state.trackManager.characterController.currentLife = 0;
         }
 
         public override void OnRunStart(GameState state) { }

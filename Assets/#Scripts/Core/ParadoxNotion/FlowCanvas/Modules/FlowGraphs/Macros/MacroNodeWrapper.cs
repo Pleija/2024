@@ -18,8 +18,9 @@ namespace FlowCanvas.Macros
         private Macro _currentInstance;
         public override string name => macro != null ? macro.name : "No Macro";
 
-        public override string description => _macro != null && !string.IsNullOrEmpty(_macro.comments) ? _macro.comments
-            : base.description;
+        public override string description =>
+            _macro != null && !string.IsNullOrEmpty(_macro.comments) ? _macro.comments
+                : base.description;
 
         public Macro macro {
             get => _macro;
@@ -87,7 +88,8 @@ namespace FlowCanvas.Macros
                         target.entryActionMap[defIn.ID](f);
                     }, defIn.ID);
                 else
-                    target.entryFunctionMap[defIn.ID] = AddValueInput(defIn.name, defIn.type, defIn.ID).GetObjectValue;
+                    target.entryFunctionMap[defIn.ID] =
+                        AddValueInput(defIn.name, defIn.type, defIn.ID).GetObjectValue;
             }
 
             for (var i = 0; i < target.outputDefinitions.Count; i++) {

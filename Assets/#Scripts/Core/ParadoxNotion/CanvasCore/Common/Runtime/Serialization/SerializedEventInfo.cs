@@ -16,7 +16,8 @@ namespace ParadoxNotion.Serialization
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (_event != null)
-                _baseInfo = string.Format("{0}|{1}", _event.RTReflectedOrDeclaredType().FullName, _event.Name);
+                _baseInfo = string.Format("{0}|{1}", _event.RTReflectedOrDeclaredType().FullName,
+                    _event.Name);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
@@ -40,6 +41,7 @@ namespace ParadoxNotion.Serialization
         public override string ToString() => AsString();
 
         //operator
-        public static implicit operator EventInfo(SerializedEventInfo value) => value != null ? value._event : null;
+        public static implicit operator EventInfo(SerializedEventInfo value) =>
+            value != null ? value._event : null;
     }
 }

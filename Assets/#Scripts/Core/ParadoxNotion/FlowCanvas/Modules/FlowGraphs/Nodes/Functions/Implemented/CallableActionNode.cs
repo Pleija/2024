@@ -1,6 +1,9 @@
 ﻿namespace FlowCanvas.Nodes
 {
-    ///<summary>Action Nodes do not return any value and can have up to 10 parameters. They need Flow execution.</summary>
+    /// <summary>
+    ///     Action Nodes do not return any value and can have up to 10 parameters. They need Flow
+    ///     execution.
+    /// </summary>
     public abstract class CallableActionNodeBase : SimplexNode { }
 
     public abstract class CallableActionNode : CallableActionNodeBase
@@ -143,7 +146,8 @@
         }
     }
 
-    public abstract class CallableActionNode<T1, T2, T3, T4, T5, T6, T7, T8> : CallableActionNodeBase
+    public abstract class
+        CallableActionNode<T1, T2, T3, T4, T5, T6, T7, T8> : CallableActionNodeBase
     {
         public abstract void Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h);
 
@@ -159,13 +163,15 @@
             var p7 = node.AddValueInput<T7>(parameters[6].Name);
             var p8 = node.AddValueInput<T8>(parameters[7].Name);
             node.AddFlowInput(" ", (Flow f) => {
-                Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value);
+                Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value);
                 o.Call(f);
             });
         }
     }
 
-    public abstract class CallableActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9> : CallableActionNodeBase
+    public abstract class
+        CallableActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9> : CallableActionNodeBase
     {
         public abstract void Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i);
 
@@ -182,13 +188,15 @@
             var p8 = node.AddValueInput<T8>(parameters[7].Name);
             var p9 = node.AddValueInput<T9>(parameters[8].Name);
             node.AddFlowInput(" ", (Flow f) => {
-                Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value);
+                Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value, p9.value);
                 o.Call(f);
             });
         }
     }
 
-    public abstract class CallableActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : CallableActionNodeBase
+    public abstract class
+        CallableActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : CallableActionNodeBase
     {
         public abstract void Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i, T10 j);
 
@@ -206,8 +214,8 @@
             var p9 = node.AddValueInput<T9>(parameters[8].Name);
             var p10 = node.AddValueInput<T10>(parameters[9].Name);
             node.AddFlowInput(" ", (Flow f) => {
-                Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value
-                    , p10.value);
+                Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value, p9.value, p10.value);
                 o.Call(f);
             });
         }

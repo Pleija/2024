@@ -18,15 +18,19 @@ namespace Slate
                 GUILayout.Label("SortedLayer property should be an integer ( the layer id )");
                 return;
             }
-            SortingLayerField(new GUIContent("Sorting Layer"), property, EditorStyles.popup, EditorStyles.label);
+            SortingLayerField(new GUIContent("Sorting Layer"), property, EditorStyles.popup,
+                EditorStyles.label);
         }
 
-        public static void SortingLayerField(GUIContent label, SerializedProperty layerID, GUIStyle style
-            , GUIStyle labelStyle)
+        public static void SortingLayerField(GUIContent label, SerializedProperty layerID,
+            GUIStyle style, GUIStyle labelStyle)
         {
-            var methodInfo = typeof(EditorGUILayout).GetMethod("SortingLayerField"
-                , BindingFlags.Static | BindingFlags.NonPublic, null
-                , new[] { typeof(GUIContent), typeof(SerializedProperty), typeof(GUIStyle), typeof(GUIStyle) }, null);
+            var methodInfo = typeof(EditorGUILayout).GetMethod("SortingLayerField",
+                BindingFlags.Static | BindingFlags.NonPublic, null,
+                new[] {
+                    typeof(GUIContent), typeof(SerializedProperty), typeof(GUIStyle),
+                    typeof(GUIStyle),
+                }, null);
 
             if (methodInfo != null) {
                 var parameters = new object[] { label, layerID, style, labelStyle };

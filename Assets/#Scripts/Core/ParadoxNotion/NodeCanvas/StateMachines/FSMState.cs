@@ -18,7 +18,10 @@ namespace NodeCanvas.StateMachines
     // [Color("ff6d53")]
     public abstract class FSMState : FSMNode, IState
     {
-        public enum TransitionEvaluationMode { CheckContinuously, CheckAfterStateFinished, CheckManually }
+        public enum TransitionEvaluationMode
+        {
+            CheckContinuously, CheckAfterStateFinished, CheckManually,
+        }
 
         [SerializeField]
         private TransitionEvaluationMode _transitionEvaluation;
@@ -39,7 +42,8 @@ namespace NodeCanvas.StateMachines
         public FSMConnection[] GetTransitions()
         {
             var result = new FSMConnection[outConnections.Count];
-            for (var i = 0; i < outConnections.Count; i++) result[i] = (FSMConnection)outConnections[i];
+            for (var i = 0; i < outConnections.Count; i++)
+                result[i] = (FSMConnection)outConnections[i];
             return result;
         }
 
@@ -72,8 +76,8 @@ namespace NodeCanvas.StateMachines
         {
             if (IsChildOf(sourceNode)) {
                 Logger.LogWarning(
-                    "States are already connected together. Consider using multiple conditions on an existing transition instead"
-                    , LogTag.EDITOR, this);
+                    "States are already connected together. Consider using multiple conditions on an existing transition instead",
+                    LogTag.EDITOR, this);
                 return false;
             }
             return true;
@@ -84,8 +88,8 @@ namespace NodeCanvas.StateMachines
         {
             if (IsParentOf(targetNode)) {
                 Logger.LogWarning(
-                    "States are already connected together. Consider using multiple conditions on an existing transition instead"
-                    , LogTag.EDITOR, this);
+                    "States are already connected together. Consider using multiple conditions on an existing transition instead",
+                    LogTag.EDITOR, this);
                 return false;
             }
             return true;
@@ -107,7 +111,8 @@ namespace NodeCanvas.StateMachines
             }
             else {
                 var case1 = transitionEvaluation == TransitionEvaluationMode.CheckContinuously;
-                var case2 = transitionEvaluation == TransitionEvaluationMode.CheckAfterStateFinished &&
+                var case2 =
+                    transitionEvaluation == TransitionEvaluationMode.CheckAfterStateFinished &&
                     status != Status.Running;
                 if (case1 || case2) CheckTransitions();
                 if (status == Status.Running) OnUpdate();
@@ -137,7 +142,8 @@ namespace NodeCanvas.StateMachines
         //OnExit...
         protected sealed override void OnReset()
         {
-            for (var i = 0; i < outConnections.Count; i++) ((FSMConnection)outConnections[i]).DisableCondition();
+            for (var i = 0; i < outConnections.Count; i++)
+                ((FSMConnection)outConnections[i]).DisableCondition();
 #if UNITY_EDITOR
             //Done for visualizing in editor
             for (var i = 0; i < inConnections.Count; i++) inConnections[i].status = Status.Resting;
@@ -213,12 +219,12 @@ namespace NodeCanvas.StateMachines
                 GUILayout.BeginHorizontal("box");
 
                 if (connection.condition != null) {
-                    GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0)
-                        , GUILayout.ExpandWidth(true));
+                    GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0),
+                        GUILayout.ExpandWidth(true));
                 }
                 else {
-                    GUILayout.Label("OnFinish" + (onFinishExists ? " (exists)" : string.Empty), GUILayout.MinWidth(0)
-                        , GUILayout.ExpandWidth(true));
+                    GUILayout.Label("OnFinish" + (onFinishExists ? " (exists)" : string.Empty),
+                        GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
                     onFinishExists = true;
                 }
                 GUILayout.FlexibleSpace();
@@ -226,7 +232,8 @@ namespace NodeCanvas.StateMachines
                 GUILayout.EndHorizontal();
             });
             transitionEvaluation =
-                (TransitionEvaluationMode)UnityEditor.EditorGUILayout.EnumPopup(transitionEvaluation);
+                (TransitionEvaluationMode)UnityEditor.EditorGUILayout.EnumPopup(
+                    transitionEvaluation);
             EditorUtils.BoldSeparator();
         }
 

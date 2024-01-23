@@ -17,13 +17,13 @@ namespace App.Models
         {
             if (EditorApplication.isUpdating || EditorApplication.isCompiling) return;
             typeof(Game).Assembly.GetExportedTypes().Where(t =>
-                    typeof(ModelBase).IsAssignableFrom(t) && t != typeof(ModelBase) && !t.IsAbstract &&
-                    !t.IsGenericType)
-                .ForEach(type => {
-                    //Debug.Log(type.FullName);
-                    type.GetProperty("self", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-                        ?.GetValue(null, null);
-                });
+                typeof(ModelBase).IsAssignableFrom(t) && t != typeof(ModelBase) && !t.IsAbstract &&
+                !t.IsGenericType).ForEach(type => {
+                //Debug.Log(type.FullName);
+                type.GetProperty("self",
+                        BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                    ?.GetValue(null, null);
+            });
         }
     }
 }

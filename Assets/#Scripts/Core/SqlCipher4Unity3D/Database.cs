@@ -16,16 +16,23 @@ namespace SqlCipher4Unity3D
             public void finalize(Action<object> onError) { }
             public void run(string sql, Action<object> onError) { }
             public void get(string sql, Action<object, Dictionary<string, object>> onResult) { }
-            public void all(string sql, Action<object, List<Dictionary<string, object>>> onResult) { }
 
-            public void each(string sql, Action<object, Dictionary<string, object>> onResult
-                , Action<object, int> onError) { }
+            public void all(string sql,
+                Action<object, List<Dictionary<string, object>>> onResult) { }
+
+            public void each(string sql, Action<object, Dictionary<string, object>> onResult,
+                Action<object, int> onError) { }
         }
 
         private SQLiteConnection _conn;
         public Database(string filepath) { }
-        public Statement prepare(string sql, object param, Action<object> onError) => new Statement() { };
-        public Statement prepare(string sql) => BindAll(new Statement() { stmt = SQLite3.Prepare2(_conn.Handle, sql) });
+
+        public Statement prepare(string sql, object param, Action<object> onError) =>
+            new Statement() { };
+
+        public Statement prepare(string sql) => BindAll(new Statement()
+            { stmt = SQLite3.Prepare2(_conn.Handle, sql) });
+
         private Statement BindAll(Statement stmt) => stmt;
         public void backup(params object[] param) { }
         public delegate void OnEvent(params object[] param);
@@ -37,7 +44,9 @@ namespace SqlCipher4Unity3D
         public void exec(string sql, Action<object> onError) { }
         public void run(string sql, object param, Action<object> onError) { }
         public void finalize() { }
-        public void each(string sql, object param, Action<object, object> onResult, Action<object, int> onError) { }
+
+        public void each(string sql, object param, Action<object, object> onResult,
+            Action<object, int> onError) { }
 
         public void close(Action<object> onError = null)
         {

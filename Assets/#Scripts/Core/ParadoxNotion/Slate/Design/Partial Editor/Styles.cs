@@ -110,23 +110,24 @@ namespace Slate
 
         private static GUIStyle _clipBoxStyle;
 
-        public static GUIStyle clipBoxStyle =>
-            _clipBoxStyle != null ? _clipBoxStyle : _clipBoxStyle = styleSheet.GetStyle("ClipBox");
+        public static GUIStyle clipBoxStyle => _clipBoxStyle != null ? _clipBoxStyle
+            : _clipBoxStyle = styleSheet.GetStyle("ClipBox");
 
         private static GUIStyle _clipBoxFooterStyle;
 
-        public static GUIStyle clipBoxFooterStyle => _clipBoxFooterStyle != null ? _clipBoxFooterStyle
-            : _clipBoxFooterStyle = styleSheet.GetStyle("ClipBoxFooter");
+        public static GUIStyle clipBoxFooterStyle => _clipBoxFooterStyle != null
+            ? _clipBoxFooterStyle : _clipBoxFooterStyle = styleSheet.GetStyle("ClipBoxFooter");
 
         private static GUIStyle _clipBoxHorizontalStyle;
 
-        public static GUIStyle clipBoxHorizontalStyle => _clipBoxHorizontalStyle != null ? _clipBoxHorizontalStyle
+        public static GUIStyle clipBoxHorizontalStyle => _clipBoxHorizontalStyle != null
+            ? _clipBoxHorizontalStyle
             : _clipBoxHorizontalStyle = styleSheet.GetStyle("ClipBoxHorizontal");
 
         private static GUIStyle _timeBoxStyle;
 
-        public static GUIStyle timeBoxStyle =>
-            _timeBoxStyle != null ? _timeBoxStyle : _timeBoxStyle = styleSheet.GetStyle("TimeBox");
+        public static GUIStyle timeBoxStyle => _timeBoxStyle != null ? _timeBoxStyle
+            : _timeBoxStyle = styleSheet.GetStyle("TimeBox");
 
         private static GUIStyle _headerBoxStyle;
 
@@ -141,7 +142,8 @@ namespace Slate
         private static GUIStyle _hollowFrameHorizontalStyle;
 
         public static GUIStyle hollowFrameHorizontalStyle => _hollowFrameHorizontalStyle != null
-            ? _hollowFrameHorizontalStyle : _hollowFrameHorizontalStyle = styleSheet.GetStyle("HollowFrameHorizontal");
+            ? _hollowFrameHorizontalStyle : _hollowFrameHorizontalStyle =
+                styleSheet.GetStyle("HollowFrameHorizontal");
 
         private static GUIStyle _leftLabel;
 

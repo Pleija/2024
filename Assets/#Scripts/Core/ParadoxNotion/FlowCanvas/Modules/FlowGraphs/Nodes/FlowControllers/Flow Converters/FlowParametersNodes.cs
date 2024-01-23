@@ -2,10 +2,10 @@
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Read Flow Param"), Category("Variables/Flow")
-     , Description(
-         "Reads a named parameter from the incomming Flow and returns it's value.\nFlow parameters can be set with a WriteFlowParameter node.\nFlow parameters are temporary variables that exist only in the context of the same Flow.")
-     , ContextDefinedOutputs(typeof(Wild))]
+    [Name("Read Flow Param"), Category("Variables/Flow"),
+     Description(
+         "Reads a named parameter from the incomming Flow and returns it's value.\nFlow parameters can be set with a WriteFlowParameter node.\nFlow parameters are temporary variables that exist only in the context of the same Flow."),
+     ContextDefinedOutputs(typeof(Wild))]
     public class ReadFlowParameter<T> : FlowControlNode
     {
         private T flowValue;
@@ -24,10 +24,10 @@ namespace FlowCanvas.Nodes
         }
     }
 
-    [Name("Write Flow Param"), Category("Variables/Flow")
-     , Description(
-         "Writes (or creates) a named parameter to the incomming Flow, which you can later read with a ReadFlowParameter node.\nFlow parameters are temporary variables that exist only in the context of the same Flow.")
-     , ContextDefinedInputs(typeof(Wild))]
+    [Name("Write Flow Param"), Category("Variables/Flow"),
+     Description(
+         "Writes (or creates) a named parameter to the incomming Flow, which you can later read with a ReadFlowParameter node.\nFlow parameters are temporary variables that exist only in the context of the same Flow."),
+     ContextDefinedInputs(typeof(Wild))]
     public class WriteFlowParameter<T> : FlowControlNode
     {
         protected override void RegisterPorts()

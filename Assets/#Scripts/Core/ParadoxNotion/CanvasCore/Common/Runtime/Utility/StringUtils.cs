@@ -58,7 +58,8 @@ namespace ParadoxNotion
         }
 
         ///<summary>Formats input to error</summary>
-        public static string FormatError(this string input) => string.Format("<color=#ff6457>* {0} *</color>", input);
+        public static string FormatError(this string input) =>
+            string.Format("<color=#ff6457>* {0} *</color>", input);
 
         ///<summary>Returns the alphabet letter based on it's index.</summary>
         public static string GetAlphabetLetter(int index)
@@ -93,7 +94,8 @@ namespace ParadoxNotion
         }
 
         ///<summary>Replace text within start and end chars based on provided processor</summary>
-        public static string ReplaceWithin(this string text, char startChar, char endChar, Func<string, string> Process)
+        public static string ReplaceWithin(this string text, char startChar, char endChar,
+            Func<string, string> Process)
         {
             var s = text;
             var i = 0;
@@ -110,20 +112,25 @@ namespace ParadoxNotion
         }
 
         /// <summary>
-        ///     Returns a simplistic matching score (0-1) vs leaf + optional category. Lower is better so can be used without
+        ///     Returns a simplistic matching score (0-1) vs leaf + optional category. Lower is better so can
+        ///     be used without
         ///     invert in OrderBy.
         /// </summary>
-        public static float ScoreSearchMatch(string input, string leafName, string categoryName = "")
+        public static float ScoreSearchMatch(string input, string leafName,
+            string categoryName = "")
         {
             if (input == null || leafName == null) return float.PositiveInfinity;
             if (categoryName == null) categoryName = string.Empty;
             input = input.ToUpper();
-            var inputWords = input.Replace('.', ' ').Split(CHAR_SPACE_ARRAY, StringSplitOptions.RemoveEmptyEntries);
+            var inputWords = input.Replace('.', ' ')
+                .Split(CHAR_SPACE_ARRAY, StringSplitOptions.RemoveEmptyEntries);
             if (inputWords.Length == 0) return 1;
             leafName = leafName.ToUpper();
-            var firstLeafWord = leafName.Split(CHAR_SPACE_ARRAY, StringSplitOptions.RemoveEmptyEntries)[0];
+            var firstLeafWord =
+                leafName.Split(CHAR_SPACE_ARRAY, StringSplitOptions.RemoveEmptyEntries)[0];
             leafName = leafName.Replace(" ", string.Empty);
-            if (input.LastOrDefault() == '.') leafName = categoryName.ToUpper().Replace(" ", string.Empty);
+            if (input.LastOrDefault() == '.')
+                leafName = categoryName.ToUpper().Replace(" ", string.Empty);
 
             //remember lower is better
             var score = 1f;
@@ -134,7 +141,10 @@ namespace ParadoxNotion
             return score;
         }
 
-        ///<summary>Returns whether or not the input is valid for a search match vs the leaf + optional category.</summary>
+        /// <summary>
+        ///     Returns whether or not the input is valid for a search match vs the leaf + optional
+        ///     category.
+        /// </summary>
         public static bool SearchMatch(string input, string leafName, string categoryName = "")
         {
             if (input == null || leafName == null) return false;
@@ -142,7 +152,8 @@ namespace ParadoxNotion
 
             if (leafName.Length <= 1 && input.Length <= 2) {
                 string alias = null; //usually only operator like searches are less than 2
-                if (ReflectionTools.op_CSharpAliases.TryGetValue(input, out alias)) return alias == leafName;
+                if (ReflectionTools.op_CSharpAliases.TryGetValue(input, out alias))
+                    return alias == leafName;
             }
             if (input.Length <= 1) return input == leafName;
 
@@ -153,7 +164,8 @@ namespace ParadoxNotion
             var fullPath = categoryName + "/" + leafName;
 
             //treat dot as spaces and split to words
-            var words = input.Replace('.', ' ').Split(CHAR_SPACE_ARRAY, StringSplitOptions.RemoveEmptyEntries);
+            var words = input.Replace('.', ' ')
+                .Split(CHAR_SPACE_ARRAY, StringSplitOptions.RemoveEmptyEntries);
             if (words.Length == 0) return false;
 
             //last input char check

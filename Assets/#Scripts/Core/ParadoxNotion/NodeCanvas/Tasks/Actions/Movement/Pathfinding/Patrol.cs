@@ -6,8 +6,9 @@ using NavMeshAgent = UnityEngine.AI.NavMeshAgent;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Movement/Pathfinding")
-     , Description("Move Randomly or Progressively between various game object positions taken from the list provided")]
+    [Category("Movement/Pathfinding"),
+     Description(
+         "Move Randomly or Progressively between various game object positions taken from the list provided")]
     public class Patrol : ActionTask<NavMeshAgent>
     {
         public enum PatrolMode { Progressive, Random }
@@ -46,15 +47,16 @@ namespace NodeCanvas.Tasks.Actions
             var targetGo = targetList.value[index];
 
             if (targetGo == null) {
-                ParadoxNotion.Services.Logger.LogWarning("List game object is null on Patrol Action Task."
-                    , LogTag.EXECUTION, this);
+                ParadoxNotion.Services.Logger.LogWarning(
+                    "List game object is null on Patrol Action Task.", LogTag.EXECUTION, this);
                 EndAction(false);
                 return;
             }
             var targetPos = targetGo.transform.position;
             agent.speed = speed.value;
 
-            if ((agent.transform.position - targetPos).magnitude < agent.stoppingDistance + keepDistance.value) {
+            if ((agent.transform.position - targetPos).magnitude <
+                agent.stoppingDistance + keepDistance.value) {
                 EndAction(true);
                 return;
             }
@@ -70,7 +72,8 @@ namespace NodeCanvas.Tasks.Actions
                     return;
                 }
             lastRequest = targetPos;
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + keepDistance.value)
+            if (!agent.pathPending &&
+                agent.remainingDistance <= agent.stoppingDistance + keepDistance.value)
                 EndAction(true);
         }
 

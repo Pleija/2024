@@ -5,8 +5,8 @@ using System.Linq;
 namespace Slate.ActionClips
 {
     [Description(
-         "Animate any number of properties on any component of the actor, or within it's hierarchy.\nYou can use the clip's Blend In/Out to optionally smooth blend from current property values over to the keyframed ones and back.")
-     , Attachable(typeof(ActorActionTrack), typeof(DirectorActionTrack))]
+         "Animate any number of properties on any component of the actor, or within it's hierarchy.\nYou can use the clip's Blend In/Out to optionally smooth blend from current property values over to the keyframed ones and back."),
+     Attachable(typeof(ActorActionTrack), typeof(DirectorActionTrack))]
     public class AnimateProperties : ActionClip
     {
         [SerializeField, HideInInspector]
@@ -41,7 +41,8 @@ namespace Slate.ActionClips
         public override bool isValid => //valid when there is at least 1 parameter added.
             animationData != null && animationData.isValid;
 
-        public override string info => isValid ? string.IsNullOrEmpty(_name) ? animationData.ToString() : _name
+        public override string info => isValid
+            ? string.IsNullOrEmpty(_name) ? animationData.ToString() : _name
             : "No Properties Added";
 
         //By default the target is the actionclip instance. In this case, the target is the actor.

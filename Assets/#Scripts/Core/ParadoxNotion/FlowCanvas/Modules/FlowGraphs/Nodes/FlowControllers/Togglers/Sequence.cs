@@ -4,10 +4,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Flip Flop (Multi)"), Category("Flow Controllers/Togglers")
-     , Description(
-         "Each time input is signaled, the next output in order is called. After the last output, the order loops from the start.\nReset, resets the current index to zero.")
-     , ContextDefinedOutputs(typeof(int))]
+    [Name("Flip Flop (Multi)"), Category("Flow Controllers/Togglers"),
+     Description(
+         "Each time input is signaled, the next output in order is called. After the last output, the order loops from the start.\nReset, resets the current index to zero."),
+     ContextDefinedOutputs(typeof(int))]
     public class Sequence : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

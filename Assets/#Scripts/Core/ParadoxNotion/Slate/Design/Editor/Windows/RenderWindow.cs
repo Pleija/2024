@@ -24,24 +24,27 @@ namespace Slate
         {
             base.OnGUI();
             EditorGUILayout.HelpBox(
-                "To enable Rendering, please download and import the free Rendering Extension package from the website."
-                , MessageType.Info);
-            if (GUILayout.Button("DOWNLOAD")) Help.BrowseURL("https://slate.paradoxnotion.com/downloads/");
+                "To enable Rendering, please download and import the free Rendering Extension package from the website.",
+                MessageType.Info);
+            if (GUILayout.Button("DOWNLOAD"))
+                Help.BrowseURL("https://slate.paradoxnotion.com/downloads/");
             GUILayout.Space(20);
-            EditorGUILayout.HelpBox("If you have already imported the package, please click the ENABLE button below."
-                , MessageType.Info);
+            EditorGUILayout.HelpBox(
+                "If you have already imported the package, please click the ENABLE button below.",
+                MessageType.Info);
 
             if (!EditorApplication.isCompiling) {
                 if (GUILayout.Button("ENABLE"))
-                    DefinesManager.SetDefineActiveForCurrentTargetGroup(Prefs.USE_FRAMECAPTURER_DEFINE, true);
+                    DefinesManager.SetDefineActiveForCurrentTargetGroup(
+                        Prefs.USE_FRAMECAPTURER_DEFINE, true);
             }
             else {
                 GUILayout.Button("Unity is compiling. Please wait...");
             }
             GUILayout.Space(20);
             EditorGUILayout.HelpBox(
-                "Please note that this rendering utility only supports the standard Unity render pipeline."
-                , MessageType.Warning);
+                "Please note that this rendering utility only supports the standard Unity render pipeline.",
+                MessageType.Warning);
         }
 
 #else

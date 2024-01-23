@@ -5,9 +5,11 @@ using ParadoxNotion.Design;
 namespace FlowCanvas.Nodes
 {
     [Category("Collections/Dictionaries"), ExposeAsDefinition]
-    public class AddDictionaryItem<T> : CallableFunctionNode<IDictionary<string, T>, IDictionary<string, T>, string, T>
+    public class AddDictionaryItem<T> : CallableFunctionNode<IDictionary<string, T>,
+        IDictionary<string, T>, string, T>
     {
-        public override IDictionary<string, T> Invoke(IDictionary<string, T> dict, string key, T item)
+        public override IDictionary<string, T> Invoke(IDictionary<string, T> dict, string key,
+            T item)
         {
             dict.Add(key, item);
             return dict;
@@ -21,7 +23,8 @@ namespace FlowCanvas.Nodes
     }
 
     [Category("Collections/Dictionaries"), ExposeAsDefinition]
-    public class RemoveDictionaryKey<T> : CallableFunctionNode<IDictionary<string, T>, IDictionary<string, T>, string>
+    public class RemoveDictionaryKey<T> : CallableFunctionNode<IDictionary<string, T>,
+        IDictionary<string, T>, string>
     {
         public override IDictionary<string, T> Invoke(IDictionary<string, T> dict, string key)
         {
@@ -54,8 +57,10 @@ namespace FlowCanvas.Nodes
     }
 
     [Category("Collections/Dictionaries"), ExposeAsDefinition]
-    public class DictionaryContainsKey<T> : CallableFunctionNode<bool, IDictionary<string, T>, string>
+    public class
+        DictionaryContainsKey<T> : CallableFunctionNode<bool, IDictionary<string, T>, string>
     {
-        public override bool Invoke(IDictionary<string, T> dict, string key) => dict.ContainsKey(key);
+        public override bool Invoke(IDictionary<string, T> dict, string key) =>
+            dict.ContainsKey(key);
     }
 }

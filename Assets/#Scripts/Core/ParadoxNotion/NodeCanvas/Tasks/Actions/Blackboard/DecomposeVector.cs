@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"), Description("Create up to 3 floats from a Vector and save them to blackboard")]
+    [Category("✫ Blackboard"),
+     Description("Create up to 3 floats from a Vector and save them to blackboard")]
     public class DecomposeVector : ActionTask
     {
         public BBParameter<Vector3> targetVector;

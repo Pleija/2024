@@ -32,8 +32,9 @@ namespace FlowCanvas.Nodes
                 var method = def.presentedInfo as MethodInfo;
                 if (def.paramMode == ParamMode.Instance) continue;
                 if (field != null && field.IsStatic && field.IsReadOnly()) continue;
-                var dynamicMethod = new DynamicMethod(TargetType.Name + "_" + def.portId + "_Extractor", null
-                    , DynParamTypes, typeof(JitFieldNode));
+                var dynamicMethod = new DynamicMethod(
+                    TargetType.Name + "_" + def.portId + "_Extractor", null, DynParamTypes,
+                    typeof(JitFieldNode));
                 var ilGen = dynamicMethod.GetILGenerator();
                 var instLocId = -1;
                 var curLocId = 0;
@@ -75,9 +76,10 @@ namespace FlowCanvas.Nodes
                     if (instanceId >= 0)
                         //load local var for get field value
                         ilGen.Emit(
-                            delegateParams[instanceId].GetCurrentType().RTIsValueType() ? OpCodes.Ldloca : OpCodes.Ldloc
-                            , instLocId);
-                    if (instanceId < 0 || delegateParams[instanceId].GetCurrentType().RTIsValueType())
+                            delegateParams[instanceId].GetCurrentType().RTIsValueType()
+                                ? OpCodes.Ldloca : OpCodes.Ldloc, instLocId);
+                    if (instanceId < 0 ||
+                            delegateParams[instanceId].GetCurrentType().RTIsValueType())
                         //use Call opcode, because value types and statics methods cannot be virtual or overrided, result (if exist) will stored into stack
                         ilGen.Emit(OpCodes.Call, method);
                     else
@@ -98,15 +100,17 @@ namespace FlowCanvas.Nodes
                 //set local variable to loaded value
                 ilGen.Emit(OpCodes.Stfld, param.ValueField);
                 ilGen.Emit(OpCodes.Ret);
-                param.referencedDelegate = (UniversalDelegate)dynamicMethod.CreateDelegate(typeof(UniversalDelegate));
-                param.referencedParams =
-                    instanceId >= 0 ? new[] { delegateParams[instanceId], param } : new[] { param };
+                param.referencedDelegate =
+                    (UniversalDelegate)dynamicMethod.CreateDelegate(typeof(UniversalDelegate));
+                param.referencedParams = instanceId >= 0
+                    ? new[] { delegateParams[instanceId], param } : new[] { param };
             }
         }
 
         private void Call(UniversalDelegateParam targetParam)
         {
-            if (targetParam != null && targetParam.referencedDelegate != null && targetParam.referencedParams != null) {
+            if (targetParam != null && targetParam.referencedDelegate != null &&
+                targetParam.referencedParams != null) {
                 for (var i = 0; i <= delegateParams.Length - 1; i++) {
                     var param = delegateParams[i];
 
@@ -135,8 +139,8 @@ namespace FlowCanvas.Nodes
 
             if (Params.instanceDef.paramMode == ParamMode.Instance) {
                 tmpTypes[0] = TargetType;
-                delegateParams[k] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
-                    .CreateObjectUninitialized();
+                delegateParams[k] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                    .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 delegateParams[k].paramDef = Params.instanceDef;
                 k++;
             }
@@ -145,8 +149,8 @@ namespace FlowCanvas.Nodes
                 var def = list[i];
                 if (def.paramMode != ParamMode.Out || def.presentedInfo == null) continue;
                 tmpTypes[0] = def.paramType;
-                delegateParams[k] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
-                    .CreateObjectUninitialized();
+                delegateParams[k] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                    .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 delegateParams[k].paramDef = def;
                 k++;
             }

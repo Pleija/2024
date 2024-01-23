@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Graph Variable", 99), Category("Variables/New")
-     , Description(
-         "Returns a constant or linked variable value.\nYou can alter between constant or linked at any time using the radio button.")
-     , ContextDefinedOutputs(typeof(Wild))]
+    [Name("Graph Variable", 99), Category("Variables/New"),
+     Description(
+         "Returns a constant or linked variable value.\nYou can alter between constant or linked at any time using the radio button."),
+     ContextDefinedOutputs(typeof(Wild))]
     public class GetVariable<T> : ParameterVariableNode
     {
         public BBParameter<T> value;
@@ -57,10 +57,13 @@ namespace FlowCanvas.Nodes
 #endif
                 if (o is Component) o = (o as Component).gameObject;
                 var texture = UnityEditor.AssetPreview.GetAssetPreview(o);
-                GUI.backgroundColor = ColorUtils.Grey(UnityEditor.EditorGUIUtility.isProSkin ? 0.15f : 0.6f);
-                GUILayout.Box(texture != null ? texture : Texture2D.whiteTexture, GUILayout.Width(64)
-                    , GUILayout.Height(64));
-                if (texture == null) GUI.Label(GUILayoutUtility.GetLastRect(), "<size=8>NO PREVIEW\nPOSSIBLE</size>");
+                GUI.backgroundColor =
+                    ColorUtils.Grey(UnityEditor.EditorGUIUtility.isProSkin ? 0.15f : 0.6f);
+                GUILayout.Box(texture != null ? texture : Texture2D.whiteTexture,
+                    GUILayout.Width(64), GUILayout.Height(64));
+                if (texture == null)
+                    GUI.Label(GUILayoutUtility.GetLastRect(),
+                        "<size=8>NO PREVIEW\nPOSSIBLE</size>");
                 GUI.backgroundColor = Color.white;
             }
 

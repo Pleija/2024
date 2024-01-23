@@ -27,8 +27,11 @@ namespace ParadoxNotion.Serialization.FullSerializer
         public fsSerializeAsAttribute(string name) => Name = name;
     }
 
-    ///----------------------------------------------------------------------------------------------
-    ///<summary> Use on a class to deserialize migrate into target type. This works in pair with IMigratable interface.</summary>
+    /// ----------------------------------------------------------------------------------------------
+    /// <summary>
+    ///     Use on a class to deserialize migrate into target type. This works in pair with
+    ///     IMigratable interface.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class fsMigrateToAttribute : Attribute
     {
@@ -37,14 +40,17 @@ namespace ParadoxNotion.Serialization.FullSerializer
     }
 
     /// <summary>
-    ///     Use on a class to specify previous serialization versions to migrate from. This works in pair with
+    ///     Use on a class to specify previous serialization versions to migrate from. This works in pair
+    ///     with
     ///     IMigratable interface.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class fsMigrateVersionsAttribute : Attribute
     {
         public readonly Type[] previousTypes;
-        public fsMigrateVersionsAttribute(params Type[] previousTypes) => this.previousTypes = previousTypes;
+
+        public fsMigrateVersionsAttribute(params Type[] previousTypes) =>
+            this.previousTypes = previousTypes;
     }
 
     ///<summary> Use on a class and field to request cycle references support</summary>
@@ -69,7 +75,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
     }
 
     /// <summary>
-    ///     This attribute controls some serialization behavior for a type. See the comments on each of the fields for
+    ///     This attribute controls some serialization behavior for a type. See the comments on each of the
+    ///     fields for
     ///     more information.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]

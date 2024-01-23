@@ -7,7 +7,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
 {
     public class GUIStyle_DirectConverter : fsDirectConverter<GUIStyle>
     {
-        protected override fsResult DoSerialize(GUIStyle model, Dictionary<string, fsData> serialized)
+        protected override fsResult DoSerialize(GUIStyle model,
+            Dictionary<string, fsData> serialized)
         {
             var result = fsResult.Success;
             result += SerializeMember(serialized, null, "active", model.active);
@@ -39,7 +40,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GUIStyle model)
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data,
+            ref GUIStyle model)
         {
             var result = fsResult.Success;
             var t0 = model.active;

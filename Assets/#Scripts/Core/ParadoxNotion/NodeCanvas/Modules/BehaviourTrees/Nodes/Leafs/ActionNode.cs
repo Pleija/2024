@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Action")
-     , Description(
-         "Executes an action and returns Success or Failure when the action is finished.\nReturns Running until the action is finished.")
-     , Icon("Action")]
+    [Name("Action"),
+     Description(
+         "Executes an action and returns Success or Failure when the action is finished.\nReturns Running until the action is finished."),
+     Icon("Action")]
     // [Color("ff6d53")]
     public class ActionNode : BTNode, ITaskAssignable<ActionTask>
     {
@@ -29,7 +29,8 @@ namespace NodeCanvas.BehaviourTrees
         protected override Status OnExecute(Component agent, IBlackboard blackboard)
         {
             if (action == null) return Status.Optional;
-            if (status == Status.Resting || status == Status.Running) return action.Execute(agent, blackboard);
+            if (status == Status.Resting || status == Status.Running)
+                return action.Execute(agent, blackboard);
             return status;
         }
 

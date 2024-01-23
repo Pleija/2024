@@ -35,7 +35,8 @@ namespace NodeCanvas.DialogueTrees
         }
 
         ///<summary>Assign a new DialogueTree and Start it</summary>
-        public void StartDialogue(DialogueTree newTree, IDialogueActor instigator, Action<bool> callback)
+        public void StartDialogue(DialogueTree newTree, IDialogueActor instigator,
+            Action<bool> callback)
         {
             graph = newTree;
             StartDialogue(instigator, callback);
@@ -45,8 +46,8 @@ namespace NodeCanvas.DialogueTrees
         public void StartDialogue(IDialogueActor instigator, Action<bool> callback)
         {
             graph = GetInstance(graph);
-            graph.StartGraph(instigator is Component ? (Component)instigator : instigator.transform, blackboard
-                , updateMode, callback);
+            graph.StartGraph(instigator is Component ? (Component)instigator : instigator.transform,
+                blackboard, updateMode, callback);
         }
 
         ///<summary>Pause the DialogueTree</summary>
@@ -74,8 +75,8 @@ namespace NodeCanvas.DialogueTrees
         }
 
         ///<summary>Get the actor reference by parameter name</summary>
-        public IDialogueActor GetActorReferenceByName(string paramName) =>
-            behaviour != null ? behaviour.GetActorReferenceByName(paramName) : null;
+        public IDialogueActor GetActorReferenceByName(string paramName) => behaviour != null
+            ? behaviour.GetActorReferenceByName(paramName) : null;
 
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------

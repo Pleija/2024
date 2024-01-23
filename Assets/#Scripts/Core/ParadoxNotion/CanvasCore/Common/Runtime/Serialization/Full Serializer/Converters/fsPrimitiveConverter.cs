@@ -12,15 +12,16 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
         private static bool UseBool(Type type) => type == typeof(bool);
 
         private static bool UseInt64(Type type) => type == typeof(sbyte) || type == typeof(byte) ||
-            type == typeof(short) || type == typeof(ushort) || type == typeof(int) || type == typeof(uint) ||
-            type == typeof(long) || type == typeof(ulong);
+            type == typeof(short) || type == typeof(ushort) || type == typeof(int) ||
+            type == typeof(uint) || type == typeof(long) || type == typeof(ulong);
 
         private static bool UseDouble(Type type) => type == typeof(float) ||
             type == typeof(double) || type == typeof(decimal);
 
         private static bool UseString(Type type) => type == typeof(string) || type == typeof(char);
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             var instanceType = instance.GetType();
 
@@ -62,12 +63,14 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
             return fsResult.Fail("Unhandled primitive type " + instance.GetType());
         }
 
-        public override fsResult TryDeserialize(fsData storage, ref object instance, Type storageType)
+        public override fsResult TryDeserialize(fsData storage, ref object instance,
+            Type storageType)
         {
             var result = fsResult.Success;
 
             if (UseBool(storageType)) {
-                if ((result += CheckType(storage, fsDataType.Boolean)).Succeeded) instance = storage.AsBool;
+                if ((result += CheckType(storage, fsDataType.Boolean)).Succeeded)
+                    instance = storage.AsBool;
                 return result;
             }
 
@@ -89,8 +92,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     instance = Convert.ChangeType(storage.AsString, storageType);
                 }
                 else {
-                    return fsResult.Fail(GetType().Name + " expected number but got " + storage.Type + " in " +
-                        storage);
+                    return fsResult.Fail(GetType().Name + " expected number but got " +
+                        storage.Type + " in " + storage);
                 }
                 return fsResult.Success;
             }
@@ -104,7 +107,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                 }
                 return result;
             }
-            return fsResult.Fail(GetType().Name + ": Bad data; expected bool, number, string, but got " + storage);
+            return fsResult.Fail(GetType().Name +
+                ": Bad data; expected bool, number, string, but got " + storage);
         }
     }
 }

@@ -25,17 +25,18 @@ namespace Slate
 
             if (skins == null || skins.Count == 0) {
                 EditorGUILayout.HelpBox(
-                    "There are no Skinned Mesh Renderers with blend shapes within the actor's GameObject hierarchy."
-                    , MessageType.Warning);
+                    "There are no Skinned Mesh Renderers with blend shapes within the actor's GameObject hierarchy.",
+                    MessageType.Warning);
                 return;
             }
-            action.skinName = EditorTools.Popup<string>("Skin", action.skinName, skins.Select(s => s.name).ToList());
+            action.skinName = EditorTools.Popup<string>("Skin", action.skinName,
+                skins.Select(s => s.name).ToList());
 
             if (action.skinName != string.Empty) {
                 var skin = skins.ToList().Find(s => s.name == action.skinName);
                 if (skin != null)
-                    action.shapeName =
-                        EditorTools.Popup<string>("Shape", action.shapeName, skin.GetBlendShapeNames().ToList());
+                    action.shapeName = EditorTools.Popup<string>("Shape", action.shapeName,
+                        skin.GetBlendShapeNames().ToList());
             }
             ShowAnimatableParameters();
         }

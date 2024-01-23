@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Condition"), Description("Checks a condition and returns Success or Failure."), Icon("Condition")]
+    [Name("Condition"), Description("Checks a condition and returns Success or Failure."),
+     Icon("Condition")]
     // [Color("ff6d53")]
     public class ConditionNode : BTNode, ITaskAssignable<ConditionTask>
     {

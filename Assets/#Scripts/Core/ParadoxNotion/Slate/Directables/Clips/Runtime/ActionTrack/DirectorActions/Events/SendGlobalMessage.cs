@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("Events")
-     , Description(
+    [Category("Events"),
+     Description(
          "Send a Unity Message to all actors of this Cutscene, including the Director Camera, as well as the Cutscene itself.")]
     public class SendGlobalMessage : DirectorActionClip, IEvent
     {

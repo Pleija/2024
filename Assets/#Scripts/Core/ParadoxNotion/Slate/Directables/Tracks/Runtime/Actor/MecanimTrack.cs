@@ -5,8 +5,8 @@ using System.Linq;
 namespace Slate
 {
     [Description(
-         "** This Track is deprecated. Please use Animator Track instead. **\n\nThe Mecanim Track works with an 'Animator' component attached on the actor and with it's assigned Controller by modifying the Controller's parameters.\n\nConsider working with the new Animator Track instead to playback animation clips directly without the need of a Controller, which is more intuitive for animations.")
-     , Icon(typeof(Animator)), Category("Legacy"), Attachable(typeof(ActorGroup))]
+         "** This Track is deprecated. Please use Animator Track instead. **\n\nThe Mecanim Track works with an 'Animator' component attached on the actor and with it's assigned Controller by modifying the Controller's parameters.\n\nConsider working with the new Animator Track instead to playback animation clips directly without the need of a Controller, which is more intuitive for animations."),
+     Icon(typeof(Animator)), Category("Legacy"), Attachable(typeof(ActorGroup))]
     public class MecanimTrack : CutsceneTrack
     {
         private Animator animator;
@@ -16,14 +16,16 @@ namespace Slate
             animator = actor.GetComponent<Animator>();
 
             if (animator == null) {
-                Debug.LogError("Mecanim Track requires that the actor has the Animator Component attached.", actor);
+                Debug.LogError(
+                    "Mecanim Track requires that the actor has the Animator Component attached.",
+                    actor);
                 return false;
             }
 
             if (animator.runtimeAnimatorController == null) {
                 Debug.LogWarning(string.Format(
-                    "The Mecanim Track requires the target actor '{0}' to have an assigned Runtime Animator Controller"
-                    , actor.name));
+                    "The Mecanim Track requires the target actor '{0}' to have an assigned Runtime Animator Controller",
+                    actor.name));
                 return false;
             }
             return true;
@@ -50,10 +52,10 @@ namespace Slate
             animator.recorderStopTime = endTime + updateInterval;
             animator.StartRecording(0);
             var clips = new List<IDirectable>();
-            foreach (var track in (parent as CutsceneGroup).tracks.OfType<MecanimTrack>().Where(t => t.isActive)
-                .Reverse())
-                clips.AddRange(track.clips.OfType<ActionClips.MecanimBaseClip>().Where(a => a.isValid)
-                    .Cast<IDirectable>());
+            foreach (var track in (parent as CutsceneGroup).tracks.OfType<MecanimTrack>()
+                .Where(t => t.isActive).Reverse())
+                clips.AddRange(track.clips.OfType<ActionClips.MecanimBaseClip>()
+                    .Where(a => a.isValid).Cast<IDirectable>());
             clips = clips.OrderBy(a => a.startTime).ToList();
             var lastTime = -1f;
 
@@ -67,7 +69,8 @@ namespace Slate
                         clip.Update(i - clip.startTime, i - clip.startTime - updateInterval);
 
                     if (i > clip.endTime && lastTime <= clip.endTime) {
-                        clip.Update(clip.endTime - clip.startTime, Mathf.Max(0, lastTime - clip.startTime));
+                        clip.Update(clip.endTime - clip.startTime,
+                            Mathf.Max(0, lastTime - clip.startTime));
                         clip.Exit();
                     }
                 }

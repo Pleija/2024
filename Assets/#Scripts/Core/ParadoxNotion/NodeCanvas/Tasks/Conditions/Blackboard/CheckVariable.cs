@@ -4,8 +4,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Blackboard")
-     , Description(
+    [Category("✫ Blackboard"),
+     Description(
          "It's best to use the respective Condition for a type if existant since they support operations as well")]
     public class CheckVariable<T> : ConditionTask
     {

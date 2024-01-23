@@ -19,7 +19,8 @@ namespace Puerts
         private Type definitionType;
         private Type[] genericArguments;
 
-        public GenericMethodWrap(string memberName, JsEnv env, Type definitionType, Type[] genericArguments)
+        public GenericMethodWrap(string memberName, JsEnv env, Type definitionType,
+            Type[] genericArguments)
         {
             this.env = env;
             this.memberName = memberName;
@@ -33,20 +34,22 @@ namespace Puerts
         {
             try {
                 if (reflectionWrap == null) {
-                    var overload = Utils.GetMethodAndOverrideMethodByName(definitionType, memberName)
+                    var overload = Utils
+                        .GetMethodAndOverrideMethodByName(definitionType, memberName)
                         .Where(item =>
-                            item.IsGenericMethodDefinition &&
-                            item.GetGenericArguments().Count() == genericArguments.Count())
+                            item.IsGenericMethodDefinition && item.GetGenericArguments().Count() ==
+                            genericArguments.Count())
                         .Select(item => item.MakeGenericMethod(genericArguments)).ToArray();
                     if (overload.Count() == 0)
                         throw new Exception("no suitable method found to make GenericMethodWrap");
-                    reflectionWrap = new MethodReflectionWrap(memberName
-                        , overload.Select(m => new OverloadReflectionWrap(m, env, false)).ToList());
+                    reflectionWrap = new MethodReflectionWrap(memberName,
+                        overload.Select(m => new OverloadReflectionWrap(m, env, false)).ToList());
                 }
                 reflectionWrap.Invoke(isolate, info, self, argumentsLen);
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate, "c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
     }

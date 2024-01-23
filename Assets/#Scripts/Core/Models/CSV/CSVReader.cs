@@ -72,10 +72,11 @@ namespace Models.CSV
         }
 
         // splits a CSV row 
-        public static string[] SplitCsvLine(string line) => (
-            from System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(line
-                , @"(((?<x>(?=[,\r\n]+))|""(?<x>([^""]|"""")+)""|(?<x>[^,\r\n]+)),?)"
-                , System.Text.RegularExpressions.RegexOptions.ExplicitCapture)
-            select m.Groups[1].Value).ToArray();
+        public static string[] SplitCsvLine(string line) =>
+            (from System.Text.RegularExpressions.Match m in
+                    System.Text.RegularExpressions.Regex.Matches(line,
+                        @"(((?<x>(?=[,\r\n]+))|""(?<x>([^""]|"""")+)""|(?<x>[^,\r\n]+)),?)",
+                        System.Text.RegularExpressions.RegexOptions.ExplicitCapture)
+                select m.Groups[1].Value).ToArray();
     }
 }

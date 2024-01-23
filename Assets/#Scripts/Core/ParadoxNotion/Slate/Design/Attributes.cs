@@ -59,7 +59,9 @@ namespace Slate
     {
         public readonly string rotationPropertyName;
         public PositionHandleAttribute() { }
-        public PositionHandleAttribute(string rotationPropertyName) => this.rotationPropertyName = rotationPropertyName;
+
+        public PositionHandleAttribute(string rotationPropertyName) =>
+            this.rotationPropertyName = rotationPropertyName;
     }
 
     ///<summary>Attribute used along with a Vector3 to control it with a rotation handle in the scene</summary>
@@ -67,6 +69,8 @@ namespace Slate
     public class RotationHandleAttribute : Attribute
     {
         public readonly string positionPropertyName;
-        public RotationHandleAttribute(string positionPropertyName) => this.positionPropertyName = positionPropertyName;
+
+        public RotationHandleAttribute(string positionPropertyName) =>
+            this.positionPropertyName = positionPropertyName;
     }
 }

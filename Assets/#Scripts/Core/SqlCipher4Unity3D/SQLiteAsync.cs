@@ -38,13 +38,14 @@ namespace SqlCipher4Unity3D
         private readonly SQLiteConnectionString _connectionString;
 
         // NOTE(pyoung): added for SqlCipher4Unity3D
-        public SQLiteAsyncConnection(string databasePath, string password, bool storeDateTimeAsTicks = true) : this(
-            new SQLiteConnectionString(databasePath
-                , SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex, storeDateTimeAsTicks
-                , password)) { }
+        public SQLiteAsyncConnection(string databasePath, string password,
+            bool storeDateTimeAsTicks = true) : this(new SQLiteConnectionString(databasePath,
+            SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex,
+            storeDateTimeAsTicks, password)) { }
 
         /// <summary>
-        ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database specified by databasePath.
+        ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database specified by
+        ///     databasePath.
         /// </summary>
         /// <param name="databasePath">
         ///     Specifies the path to the database file.
@@ -58,12 +59,13 @@ namespace SqlCipher4Unity3D
         ///     the storeDateTimeAsTicks parameter.
         /// </param>
         public SQLiteAsyncConnection(string databasePath, bool storeDateTimeAsTicks = true) : this(
-            new SQLiteConnectionString(databasePath
-                , SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex
-                , storeDateTimeAsTicks)) { }
+            new SQLiteConnectionString(databasePath,
+                SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex,
+                storeDateTimeAsTicks)) { }
 
         /// <summary>
-        ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database specified by databasePath.
+        ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database specified by
+        ///     databasePath.
         /// </summary>
         /// <param name="databasePath">
         ///     Specifies the path to the database file.
@@ -80,8 +82,9 @@ namespace SqlCipher4Unity3D
         ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
         ///     the storeDateTimeAsTicks parameter.
         /// </param>
-        public SQLiteAsyncConnection(string databasePath, SQLiteOpenFlags openFlags, bool storeDateTimeAsTicks = true) :
-            this(new SQLiteConnectionString(databasePath, openFlags, storeDateTimeAsTicks)) { }
+        public SQLiteAsyncConnection(string databasePath, SQLiteOpenFlags openFlags,
+            bool storeDateTimeAsTicks = true) : this(
+            new SQLiteConnectionString(databasePath, openFlags, storeDateTimeAsTicks)) { }
 
         /// <summary>
         ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database
@@ -90,7 +93,8 @@ namespace SqlCipher4Unity3D
         /// <param name="connectionString">
         ///     Details on how to find and open the database.
         /// </param>
-        public SQLiteAsyncConnection(SQLiteConnectionString connectionString) => _connectionString = connectionString;
+        public SQLiteAsyncConnection(SQLiteConnectionString connectionString) =>
+            _connectionString = connectionString;
 
         /// <summary>
         ///     Gets the database path used by this connection.
@@ -103,7 +107,8 @@ namespace SqlCipher4Unity3D
         public int LibVersionNumber => GetConnection().LibVersionNumber;
 
         /// <summary>
-        ///     The format to use when storing DateTime properties as strings. Ignored if StoreDateTimeAsTicks is true.
+        ///     The format to use when storing DateTime properties as strings. Ignored if StoreDateTimeAsTicks
+        ///     is true.
         /// </summary>
         /// <value>The date time string format.</value>
         public string DateTimeStringFormat => GetConnection().DateTimeStringFormat;
@@ -196,10 +201,13 @@ namespace SqlCipher4Unity3D
         ///     functionality to SQLite-net. If you use this connection, you must use
         ///     the Lock method on it while using it.
         /// </summary>
-        public SQLiteConnectionWithLock GetConnection() => SQLiteConnectionPool.Shared.GetConnection(_connectionString);
+        public SQLiteConnectionWithLock GetConnection() =>
+            SQLiteConnectionPool.Shared.GetConnection(_connectionString);
 
-        private SQLiteConnectionWithLock GetConnectionAndTransactionLock(out object transactionLock) =>
-            SQLiteConnectionPool.Shared.GetConnectionAndTransactionLock(_connectionString, out transactionLock);
+        private SQLiteConnectionWithLock
+            GetConnectionAndTransactionLock(out object transactionLock) =>
+            SQLiteConnectionPool.Shared.GetConnectionAndTransactionLock(_connectionString,
+                out transactionLock);
 
         /// <summary>
         ///     Closes any pooled connections used by the database.
@@ -266,7 +274,8 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated.
         /// </returns>
-        public Task<CreateTableResult> CreateTableAsync<T>(CreateFlags createFlags = CreateFlags.None) where T : new()
+        public Task<CreateTableResult> CreateTableAsync<T>(
+            CreateFlags createFlags = CreateFlags.None) where T : new()
         {
             return WriteAsync(conn => conn.CreateTable<T>(createFlags));
         }
@@ -278,11 +287,15 @@ namespace SqlCipher4Unity3D
         ///     later access this schema by calling GetMapping.
         /// </summary>
         /// <param name="ty">Type to reflect to a database table.</param>
-        /// <param name="createFlags">Optional flags allowing implicit PK and indexes based on naming conventions.</param>
+        /// <param name="createFlags">
+        ///     Optional flags allowing implicit PK and indexes based on naming
+        ///     conventions.
+        /// </param>
         /// <returns>
         ///     Whether the table was created or migrated.
         /// </returns>
-        public Task<CreateTableResult> CreateTableAsync(Type ty, CreateFlags createFlags = CreateFlags.None)
+        public Task<CreateTableResult> CreateTableAsync(Type ty,
+            CreateFlags createFlags = CreateFlags.None)
         {
             return WriteAsync(conn => conn.CreateTable(ty, createFlags));
         }
@@ -296,8 +309,9 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated for each type.
         /// </returns>
-        public Task<CreateTablesResult> CreateTablesAsync<T, T2>(CreateFlags createFlags = CreateFlags.None)
-            where T : new() where T2 : new() => CreateTablesAsync(createFlags, typeof(T), typeof(T2));
+        public Task<CreateTablesResult>
+            CreateTablesAsync<T, T2>(CreateFlags createFlags = CreateFlags.None) where T : new()
+            where T2 : new() => CreateTablesAsync(createFlags, typeof(T), typeof(T2));
 
         /// <summary>
         ///     Executes a "create table if not exists" on the database for each type. It also
@@ -308,8 +322,9 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated for each type.
         /// </returns>
-        public Task<CreateTablesResult> CreateTablesAsync<T, T2, T3>(CreateFlags createFlags = CreateFlags.None)
-            where T : new() where T2 : new() where T3 : new() =>
+        public Task<CreateTablesResult>
+            CreateTablesAsync<T, T2, T3>(CreateFlags createFlags = CreateFlags.None) where T : new()
+            where T2 : new() where T3 : new() =>
             CreateTablesAsync(createFlags, typeof(T), typeof(T2), typeof(T3));
 
         /// <summary>
@@ -321,9 +336,11 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated for each type.
         /// </returns>
-        public Task<CreateTablesResult> CreateTablesAsync<T, T2, T3, T4>(CreateFlags createFlags = CreateFlags.None)
-            where T : new() where T2 : new() where T3 : new() where T4 : new() =>
-            CreateTablesAsync(createFlags, typeof(T), typeof(T2), typeof(T3), typeof(T4));
+        public Task<CreateTablesResult>
+            CreateTablesAsync<T, T2, T3, T4>(CreateFlags createFlags = CreateFlags.None)
+            where T : new()
+            where T2 : new() where T3 : new() where T4 : new() => CreateTablesAsync(createFlags,
+            typeof(T), typeof(T2), typeof(T3), typeof(T4));
 
         /// <summary>
         ///     Executes a "create table if not exists" on the database for each type. It also
@@ -334,9 +351,11 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated for each type.
         /// </returns>
-        public Task<CreateTablesResult> CreateTablesAsync<T, T2, T3, T4, T5>(CreateFlags createFlags = CreateFlags.None)
+        public Task<CreateTablesResult>
+            CreateTablesAsync<T, T2, T3, T4, T5>(CreateFlags createFlags = CreateFlags.None)
             where T : new() where T2 : new() where T3 : new() where T4 : new() where T5 : new() =>
-            CreateTablesAsync(createFlags, typeof(T), typeof(T2), typeof(T3), typeof(T4), typeof(T5));
+            CreateTablesAsync(createFlags, typeof(T), typeof(T2), typeof(T3), typeof(T4),
+                typeof(T5));
 
         /// <summary>
         ///     Executes a "create table if not exists" on the database for each type. It also
@@ -347,8 +366,8 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated for each type.
         /// </returns>
-        public Task<CreateTablesResult> CreateTablesAsync(CreateFlags createFlags = CreateFlags.None
-            , params Type[] types)
+        public Task<CreateTablesResult> CreateTablesAsync(
+            CreateFlags createFlags = CreateFlags.None, params Type[] types)
         {
             return WriteAsync(conn => conn.CreateTables(createFlags, types));
         }
@@ -392,7 +411,8 @@ namespace SqlCipher4Unity3D
         /// <param name="columnName">Name of the column to index</param>
         /// <param name="unique">Whether the index should be unique</param>
         /// <returns>Zero on success.</returns>
-        public Task<int> CreateIndexAsync(string indexName, string tableName, string columnName, bool unique = false)
+        public Task<int> CreateIndexAsync(string indexName, string tableName, string columnName,
+            bool unique = false)
         {
             return WriteAsync(conn => conn.CreateIndex(indexName, tableName, columnName, unique));
         }
@@ -404,7 +424,8 @@ namespace SqlCipher4Unity3D
         /// <param name="columnNames">An array of column names to index</param>
         /// <param name="unique">Whether the index should be unique</param>
         /// <returns>Zero on success.</returns>
-        public Task<int> CreateIndexAsync(string tableName, string[] columnNames, bool unique = false)
+        public Task<int> CreateIndexAsync(string tableName, string[] columnNames,
+            bool unique = false)
         {
             return WriteAsync(conn => conn.CreateIndex(tableName, columnNames, unique));
         }
@@ -417,7 +438,8 @@ namespace SqlCipher4Unity3D
         /// <param name="columnNames">An array of column names to index</param>
         /// <param name="unique">Whether the index should be unique</param>
         /// <returns>Zero on success.</returns>
-        public Task<int> CreateIndexAsync(string indexName, string tableName, string[] columnNames, bool unique = false)
+        public Task<int> CreateIndexAsync(string indexName, string tableName, string[] columnNames,
+            bool unique = false)
         {
             return WriteAsync(conn => conn.CreateIndex(indexName, tableName, columnNames, unique));
         }
@@ -430,7 +452,8 @@ namespace SqlCipher4Unity3D
         /// <param name="property">Property to index</param>
         /// <param name="unique">Whether the index should be unique</param>
         /// <returns>Zero on success.</returns>
-        public Task<int> CreateIndexAsync<T>(Expression<Func<T, object>> property, bool unique = false)
+        public Task<int> CreateIndexAsync<T>(Expression<Func<T, object>> property,
+            bool unique = false)
         {
             return WriteAsync(conn => conn.CreateIndex(property, unique));
         }
@@ -856,7 +879,8 @@ namespace SqlCipher4Unity3D
         ///     The mapping represents the schema of the columns of the database and contains
         ///     methods to set and get properties of objects.
         /// </returns>
-        public Task<TableMapping> GetMappingAsync(Type type, CreateFlags createFlags = CreateFlags.None)
+        public Task<TableMapping> GetMappingAsync(Type type,
+            CreateFlags createFlags = CreateFlags.None)
         {
             return ReadAsync(conn => conn.GetMapping(type, createFlags));
         }
@@ -871,7 +895,8 @@ namespace SqlCipher4Unity3D
         ///     The mapping represents the schema of the columns of the database and contains
         ///     methods to set and get properties of objects.
         /// </returns>
-        public Task<TableMapping> GetMappingAsync<T>(CreateFlags createFlags = CreateFlags.None) where T : new()
+        public Task<TableMapping> GetMappingAsync<T>(CreateFlags createFlags = CreateFlags.None)
+            where T : new()
         {
             return ReadAsync(conn => conn.GetMapping<T>(createFlags));
         }
@@ -939,7 +964,8 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     The number of rows added to the table.
         /// </returns>
-        public Task<int> InsertAllAsync(IEnumerable objects, string extra, bool runInTransaction = true)
+        public Task<int> InsertAllAsync(IEnumerable objects, string extra,
+            bool runInTransaction = true)
         {
             return WriteAsync(conn => conn.InsertAll(objects, extra, runInTransaction));
         }
@@ -959,18 +985,22 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     The number of rows added to the table.
         /// </returns>
-        public Task<int> InsertAllAsync(IEnumerable objects, Type objType, bool runInTransaction = true)
+        public Task<int> InsertAllAsync(IEnumerable objects, Type objType,
+            bool runInTransaction = true)
         {
             return WriteAsync(conn => conn.InsertAll(objects, objType, runInTransaction));
         }
 
         /// <summary>
-        ///     Executes <paramref name="action" /> within a (possibly nested) transaction by wrapping it in a SAVEPOINT. If an
-        ///     exception occurs the whole transaction is rolled back, not just the current savepoint. The exception
+        ///     Executes <paramref name="action" /> within a (possibly nested) transaction by wrapping it in a
+        ///     SAVEPOINT. If an
+        ///     exception occurs the whole transaction is rolled back, not just the current savepoint. The
+        ///     exception
         ///     is rethrown.
         /// </summary>
         /// <param name="action">
-        ///     The <see cref="Action" /> to perform within a transaction. <paramref name="action" /> can contain any number
+        ///     The <see cref="Action" /> to perform within a transaction. <paramref name="action" /> can
+        ///     contain any number
         ///     of operations on the connection but should never call <see cref="SQLiteConnection.Commit" /> or
         ///     <see cref="SQLiteConnection.Commit" />.
         /// </param>
@@ -1113,7 +1143,8 @@ namespace SqlCipher4Unity3D
         ///     The enumerator will call sqlite3_step on each call to MoveNext, so the database
         ///     connection must remain open for the lifetime of the enumerator.
         /// </returns>
-        public Task<IEnumerable<T>> DeferredQueryAsync<T>(string query, params object[] args) where T : new()
+        public Task<IEnumerable<T>> DeferredQueryAsync<T>(string query, params object[] args)
+            where T : new()
         {
             return ReadAsync(conn => (IEnumerable<T>)conn.DeferredQuery<T>(query, args).ToList());
         }
@@ -1140,9 +1171,11 @@ namespace SqlCipher4Unity3D
         ///     The enumerator will call sqlite3_step on each call to MoveNext, so the database
         ///     connection must remain open for the lifetime of the enumerator.
         /// </returns>
-        public Task<IEnumerable<object>> DeferredQueryAsync(TableMapping map, string query, params object[] args)
+        public Task<IEnumerable<object>> DeferredQueryAsync(TableMapping map, string query,
+            params object[] args)
         {
-            return ReadAsync(conn => (IEnumerable<object>)conn.DeferredQuery(map, query, args).ToList());
+            return ReadAsync(conn =>
+                (IEnumerable<object>)conn.DeferredQuery(map, query, args).ToList());
         }
     }
 
@@ -1323,7 +1356,8 @@ namespace SqlCipher4Unity3D
                 Connection = new SQLiteConnectionWithLock(ConnectionString);
 
                 // If the database is FullMutex, then we don't need to bother locking
-                if (ConnectionString.OpenFlags.HasFlag(SQLiteOpenFlags.FullMutex)) Connection.SkipLock = true;
+                if (ConnectionString.OpenFlags.HasFlag(SQLiteOpenFlags.FullMutex))
+                    Connection.SkipLock = true;
             }
 
             public void Close()
@@ -1346,8 +1380,8 @@ namespace SqlCipher4Unity3D
         public SQLiteConnectionWithLock GetConnection(SQLiteConnectionString connectionString) =>
             GetConnectionAndTransactionLock(connectionString, out var _);
 
-        public SQLiteConnectionWithLock GetConnectionAndTransactionLock(SQLiteConnectionString connectionString
-            , out object transactionLock)
+        public SQLiteConnectionWithLock GetConnectionAndTransactionLock(
+            SQLiteConnectionString connectionString, out object transactionLock)
         {
             var key = connectionString.UniqueKey;
             Entry entry;
@@ -1403,10 +1437,12 @@ namespace SqlCipher4Unity3D
         ///     Initializes a new instance of the <see cref="T:SQLite.SQLiteConnectionWithLock" /> class.
         /// </summary>
         /// <param name="connectionString">Connection string containing the DatabasePath.</param>
-        public SQLiteConnectionWithLock(SQLiteConnectionString connectionString) : base(connectionString) { }
+        public SQLiteConnectionWithLock(SQLiteConnectionString connectionString) : base(
+            connectionString) { }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this <see cref="T:SQLite.SQLiteConnectionWithLock" /> skip lock.
+        ///     Gets or sets a value indicating whether this <see cref="T:SQLite.SQLiteConnectionWithLock" />
+        ///     skip lock.
         /// </summary>
         /// <value><c>true</c> if skip lock; otherwise, <c>false</c>.</value>
         public bool SkipLock { get; set; }
@@ -1416,7 +1452,8 @@ namespace SqlCipher4Unity3D
         ///     on the returned object.
         /// </summary>
         /// <returns>The lock.</returns>
-        public IDisposable Lock() => SkipLock ? (IDisposable)new FakeLockWrapper() : new LockWrapper(_lockPoint);
+        public IDisposable Lock() => SkipLock ? (IDisposable)new FakeLockWrapper()
+            : new LockWrapper(_lockPoint);
 
         private class LockWrapper : IDisposable
         {

@@ -26,8 +26,8 @@ namespace NodeCanvas.Framework
 {
     ///<summary>The base class for all nodes that can live in a NodeCanvas Graph</summary>
 #if UNITY_EDITOR //handles missing Nodes
-    [fsObject(Processor = typeof(fsRecoveryProcessor<Node, MissingNode>)), SpoofAOT, System.Serializable
-     , fsSerializeAsReference, fsDeserializeOverwrite]
+    [fsObject(Processor = typeof(fsRecoveryProcessor<Node, MissingNode>)), SpoofAOT,
+     System.Serializable, fsSerializeAsReference, fsDeserializeOverwrite]
 #endif
     public abstract partial class Node : IGraphElement, ISerializationCollectable
     {
@@ -54,7 +54,8 @@ namespace NodeCanvas.Framework
 
         //----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Add on an IList (list/array) field to autosort it automatically when the children nodes are autosorted. Thus
+        ///     Add on an IList (list/array) field to autosort it automatically when the children nodes are
+        ///     autosorted. Thus
         ///     keeping the collection the same in respects to the children. Related only to tree graphs.
         /// </summary>
         [System.AttributeUsage(System.AttributeTargets.Field)]
@@ -123,7 +124,8 @@ namespace NodeCanvas.Framework
         }
 
         ///<summary>The Unique ID of the node. One is created only if requested.</summary>
-        public string UID => string.IsNullOrEmpty(_UID) ? _UID = System.Guid.NewGuid().ToString() : _UID;
+        public string UID =>
+            string.IsNullOrEmpty(_UID) ? _UID = System.Guid.NewGuid().ToString() : _UID;
 
         ///<summary>All incomming connections to this node.</summary>
         public List<Connection> inConnections {
@@ -193,7 +195,8 @@ namespace NodeCanvas.Framework
 
                 if (string.IsNullOrEmpty(_nameCache)) {
                     var nameAtt = GetType().RTGetAttribute<NameAttribute>(true);
-                    _nameCache = nameAtt != null ? nameAtt.name : GetType().FriendlyName().SplitCamelCase();
+                    _nameCache = nameAtt != null ? nameAtt.name
+                        : GetType().FriendlyName().SplitCamelCase();
                 }
                 return _nameCache;
             }
@@ -247,7 +250,8 @@ namespace NodeCanvas.Framework
         public Status status {
             get => _status;
             protected set {
-                if (_status == Status.Resting && value == Status.Running) timeStarted = graph.elapsedTime;
+                if (_status == Status.Resting && value == Status.Running)
+                    timeStarted = graph.elapsedTime;
                 _status = value;
             }
         }
@@ -283,11 +287,13 @@ namespace NodeCanvas.Framework
         public static Node Create(Graph targetGraph, System.Type nodeType, Vector2 pos)
         {
             if (targetGraph == null) {
-                Logger.LogError("Can't Create a Node without providing a Target Graph", LogTag.GRAPH);
+                Logger.LogError("Can't Create a Node without providing a Target Graph",
+                    LogTag.GRAPH);
                 return null;
             }
             if (nodeType.IsGenericTypeDefinition)
-                nodeType = nodeType.RTMakeGenericType(nodeType.GetFirstGenericParameterConstraintType());
+                nodeType =
+                    nodeType.RTMakeGenericType(nodeType.GetFirstGenericParameterConstraintType());
             var newNode = (Node)System.Activator.CreateInstance(nodeType);
             UndoUtility.RecordObject(targetGraph, "Create Node");
             newNode.graph = targetGraph;
@@ -303,7 +309,8 @@ namespace NodeCanvas.Framework
         public Node Duplicate(Graph targetGraph)
         {
             if (targetGraph == null) {
-                Logger.LogError("Can't duplicate a Node without providing a Target Graph", LogTag.GRAPH);
+                Logger.LogError("Can't duplicate a Node without providing a Target Graph",
+                    LogTag.GRAPH);
                 return null;
             }
 
@@ -330,11 +337,15 @@ namespace NodeCanvas.Framework
             OnValidate(assignedGraph);
             var hardError = GetHardError();
             if (hardError != null) Logger.LogError(hardError, LogTag.VALIDATION, this);
-            if (this is IGraphAssignable) (this as IGraphAssignable).ValidateSubGraphAndParameters();
+            if (this is IGraphAssignable)
+                (this as IGraphAssignable).ValidateSubGraphAndParameters();
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>The main execution function of the node. Execute the node for the agent and blackboard provided.</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     The main execution function of the node. Execute the node for the agent and blackboard
+        ///     provided.
+        /// </summary>
         public Status Execute(Component agent, IBlackboard blackboard)
         {
             if (!graph.isRunning) return status;
@@ -345,8 +356,9 @@ namespace NodeCanvas.Framework
                     var owner = agent as GraphOwner;
                     var contextName = owner != null ? owner.gameObject.name : graph.name;
                     Logger.LogWarning(
-                        string.Format("Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'", name, ID
-                            , graph.GetType().Name, contextName), "Breakpoint", this);
+                        string.Format(
+                            "Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'",
+                            name, ID, graph.GetType().Name, contextName), "Breakpoint", this);
                     if (owner != null) owner.PauseBehaviour();
                     if (breakEditor)
                         StartCoroutine(YieldBreak(() => {
@@ -431,12 +443,16 @@ namespace NodeCanvas.Framework
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Returns whether source and target nodes can generaly be connected together. This only validates max in/out
-        ///     connections that source and target nodes has, along with other validations. Providing an existing refConnection,
-        ///     will bypass source/target validation respectively if that connection is already connected to that source/target
+        ///     Returns whether source and target nodes can generaly be connected together. This only validates
+        ///     max in/out
+        ///     connections that source and target nodes has, along with other validations. Providing an
+        ///     existing refConnection,
+        ///     will bypass source/target validation respectively if that connection is already connected to
+        ///     that source/target
         ///     node.
         /// </summary>
-        public static bool IsNewConnectionAllowed(Node sourceNode, Node targetNode, Connection refConnection = null)
+        public static bool IsNewConnectionAllowed(Node sourceNode, Node targetNode,
+            Connection refConnection = null)
         {
             if (sourceNode == null || targetNode == null) {
                 Logger.LogWarning("A Node Provided is null.", LogTag.EDITOR, targetNode);
@@ -451,14 +467,16 @@ namespace NodeCanvas.Framework
             if (refConnection == null || refConnection.sourceNode != sourceNode)
                 if (sourceNode.outConnections.Count >= sourceNode.maxOutConnections &&
                     sourceNode.maxOutConnections != -1) {
-                    Logger.LogWarning("Source node can have no more out connections.", LogTag.EDITOR, sourceNode);
+                    Logger.LogWarning("Source node can have no more out connections.",
+                        LogTag.EDITOR, sourceNode);
                     return false;
                 }
 
             if (refConnection == null || refConnection.targetNode != targetNode)
                 if (targetNode.maxInConnections <= targetNode.inConnections.Count &&
                     targetNode.maxInConnections != -1) {
-                    Logger.LogWarning("Target node can have no more in connections.", LogTag.EDITOR, targetNode);
+                    Logger.LogWarning("Target node can have no more in connections.", LogTag.EDITOR,
+                        targetNode);
                     return false;
                 }
             var final = true;
@@ -484,8 +502,8 @@ namespace NodeCanvas.Framework
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Nodes can use coroutine as normal through MonoManager.</summary>
-        public Coroutine StartCoroutine(IEnumerator routine) =>
-            MonoManager.current != null ? MonoManager.current.StartCoroutine(routine) : null;
+        public Coroutine StartCoroutine(IEnumerator routine) => MonoManager.current != null
+            ? MonoManager.current.StartCoroutine(routine) : null;
 
         ///<summary>Nodes can use coroutine as normal through MonoManager.</summary>
         public void StopCoroutine(Coroutine routine)
@@ -527,7 +545,8 @@ namespace NodeCanvas.Framework
             if (hardError != null) return "* " + hardError;
             string result = null;
             var assignable = this as ITaskAssignable;
-            if (assignable != null && assignable.task != null) result = assignable.task.GetWarningOrError();
+            if (assignable != null && assignable.task != null)
+                result = assignable.task.GetWarningOrError();
             return result;
         }
 
@@ -535,7 +554,8 @@ namespace NodeCanvas.Framework
         private string GetHardError()
         {
             if (this is IMissingRecoverable)
-                return string.Format("Missing Node '{0}'", (this as IMissingRecoverable).missingType);
+                return string.Format("Missing Node '{0}'",
+                    (this as IMissingRecoverable).missingType);
 
             if (this is IReflectedWrapper) {
                 var info = (this as IReflectedWrapper).GetSerializedInfo();
@@ -545,12 +565,16 @@ namespace NodeCanvas.Framework
             return null;
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Override to define node functionality. The Agent and Blackboard used to start the Graph are propagated</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Override to define node functionality. The Agent and Blackboard used to start the Graph
+        ///     are propagated
+        /// </summary>
         protected virtual Status OnExecute(Component agent, IBlackboard blackboard) => status;
 
         /// <summary>
-        ///     Called when the node gets reseted. e.g. OnGraphStart, after a tree traversal, when interrupted, OnGraphEnd
+        ///     Called when the node gets reseted. e.g. OnGraphStart, after a tree traversal, when interrupted,
+        ///     OnGraphEnd
         ///     etc...
         /// </summary>
         protected virtual void OnReset() { }
@@ -613,7 +637,8 @@ namespace NodeCanvas.Framework
                 var subGraph = (this as IGraphAssignable).subGraph;
                 if (subGraph != null) result = subGraph.name;
             }
-            return string.Format("{0}{1}", result, !string.IsNullOrEmpty(tag) ? " (" + tag + ")" : "");
+            return string.Format("{0}{1}", result,
+                !string.IsNullOrEmpty(tag) ? " (" + tag + ")" : "");
         }
     }
 }

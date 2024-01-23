@@ -3,8 +3,8 @@
 namespace FlowCanvas.Nodes
 {
     [Description(
-         "Should always be used to return out of a Custom Function. The return value is only required if the Custom Function returns a value as well.")
-     , Category("Functions/Custom"), ContextDefinedInputs(typeof(object))]
+         "Should always be used to return out of a Custom Function. The return value is only required if the Custom Function returns a value as well."),
+     Category("Functions/Custom"), ContextDefinedInputs(typeof(object))]
     public class Return : FlowControlNode
     {
         [GatherPortsCallback]

@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [ExposeAsDefinition, ContextDefinedInputs(typeof(Wild), typeof(System.Enum)), ContextDefinedOutputs(typeof(Wild))
-     , Category("Flow Controllers/Selectors")
-     , Description("Select a Result value out of the input cases provided, based on an Enum")]
+    [ExposeAsDefinition, ContextDefinedInputs(typeof(Wild), typeof(System.Enum)),
+     ContextDefinedOutputs(typeof(Wild)), Category("Flow Controllers/Selectors"),
+     Description("Select a Result value out of the input cases provided, based on an Enum")]
     public class SelectOnEnum<T> : FlowControlNode
     {
         [SerializeField]

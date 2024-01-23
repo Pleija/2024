@@ -22,7 +22,10 @@ namespace MoreTags
 
         public static implicit operator TagName(string name) => new TagName(name);
         public static implicit operator string(TagName name) => name.name;
-        public static implicit operator TagPattern(TagName name) => TagSystem.pattern.With(name.name);
+
+        public static implicit operator TagPattern(TagName name) =>
+            TagSystem.pattern.With(name.name);
+
         public static TagPattern operator &(TagName a, TagName b) => TagSystem.pattern.Both(a, b);
         public static TagPattern operator |(TagName a, TagName b) => TagSystem.pattern.Either(a, b);
         public static TagPattern operator -(TagName a, TagName b) => (TagPattern)a - b;
@@ -52,8 +55,12 @@ namespace MoreTags
         public IEnumerator<string> GetEnumerator() => names.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => names.GetEnumerator();
         public static implicit operator TagNames(string str) => TagHelper.StringToTagNames(str);
-        public static TagNames operator +(TagNames a, TagNames b) => new TagNames(a.names.Union(b.names));
-        public static TagNames operator -(TagNames a, TagNames b) => new TagNames(a.names.Except(b.names));
+
+        public static TagNames operator +(TagNames a, TagNames b) =>
+            new TagNames(a.names.Union(b.names));
+
+        public static TagNames operator -(TagNames a, TagNames b) =>
+            new TagNames(a.names.Except(b.names));
     }
 
     public class TagGroup : TagName
@@ -184,7 +191,8 @@ namespace MoreTags
 
             while (idx != -1) {
                 idx = str.IndexOfAny("+-".ToArray(), baseidx);
-                var name = idx == -1 ? str.Substring(baseidx) : str.Substring(baseidx, idx - baseidx);
+                var name = idx == -1 ? str.Substring(baseidx)
+                    : str.Substring(baseidx, idx - baseidx);
                 if (op == '+')
                     tn.Add(ConvertToTagNames(name));
                 else

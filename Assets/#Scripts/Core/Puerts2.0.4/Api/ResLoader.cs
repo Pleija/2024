@@ -16,11 +16,12 @@ public class ResLoader : ILoader, IModuleChecker
     public ResLoader() { }
     //public ResLoader(string root) => ResLoader.root = root;
 
-    public string PathToUse(string filepath) => filepath.EndsWith(".cjs") || filepath.EndsWith(".mjs")
-        ? filepath.Substring(0, filepath.Length - 4) : filepath;
+    public string PathToUse(string filepath) =>
+        filepath.EndsWith(".cjs") || filepath.EndsWith(".mjs")
+            ? filepath.Substring(0, filepath.Length - 4) : filepath;
 
-    public string AssetPath(string filepath) =>
-        filepath.EndsWith(".proto") ? $"Assets/Res/proto/{filepath}" : $"{root}/{filepath}";
+    public string AssetPath(string filepath) => filepath.EndsWith(".proto")
+        ? $"Assets/Res/proto/{filepath}" : $"{root}/{filepath}";
 
     public bool FileExists(string filepath)
     {

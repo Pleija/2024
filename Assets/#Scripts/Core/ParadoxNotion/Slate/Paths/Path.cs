@@ -10,8 +10,8 @@ namespace Slate
         public abstract void Compute();
 
         ///<summary>Get position on curve from, to, by t</summary>
-        public static Vector3 GetPositionAlongCurve(Vector3 from, Vector3 to, Vector3 fromTangent, Vector3 toTangent
-            , float t)
+        public static Vector3 GetPositionAlongCurve(Vector3 from, Vector3 to, Vector3 fromTangent,
+            Vector3 toTangent, float t)
         {
             var u = 1.0f - t;
             var tt = t * t;

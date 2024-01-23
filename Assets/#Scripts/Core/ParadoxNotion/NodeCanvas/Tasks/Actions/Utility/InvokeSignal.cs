@@ -8,14 +8,16 @@ using UnityEngine;
 namespace NodeCanvas.Tasks.Conditions
 {
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Utility"), Description("Invoke a defined Signal with agent as the target and optionally global.")]
+    [Category("✫ Utility"),
+     Description("Invoke a defined Signal with agent as the target and optionally global.")]
     public class InvokeSignal : ActionTask<Transform>
     {
         public BBParameter<SignalDefinition> signalDefinition;
         public bool global;
 
         [SerializeField]
-        private Dictionary<string, BBObjectParameter> argumentsMap = new Dictionary<string, BBObjectParameter>();
+        private Dictionary<string, BBObjectParameter> argumentsMap =
+            new Dictionary<string, BBObjectParameter>();
 
         private object[] args;
         protected override string info => signalDefinition.ToString();
@@ -30,7 +32,8 @@ namespace NodeCanvas.Tasks.Conditions
         protected override void OnExecute()
         {
             var def = signalDefinition.value;
-            for (var i = 0; i < def.parameters.Count; i++) args[i] = argumentsMap[def.parameters[i].ID].value;
+            for (var i = 0; i < def.parameters.Count; i++)
+                args[i] = argumentsMap[def.parameters[i].ID].value;
             def.Invoke(agent, agent, global, args);
             EndAction();
         }

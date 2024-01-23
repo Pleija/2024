@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Visibility"), Category("GameObject")
-     , Description("Set the Renderer active state, thus making the object visible or invisible.")]
+    [Name("Set Visibility"), Category("GameObject"),
+     Description("Set the Renderer active state, thus making the object visible or invisible.")]
     public class SetObjectVisibility : ActionTask<Renderer>
     {
         public enum SetVisibleMode { Hide = 0, Show = 1, Toggle = 2 }

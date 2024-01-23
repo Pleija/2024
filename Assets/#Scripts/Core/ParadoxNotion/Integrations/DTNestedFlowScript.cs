@@ -5,10 +5,10 @@ using FlowCanvas;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Name("Sub FlowScript")
-     , Description(
-         "Executes a FlowScript. Use the Finish flowscript node to continue the dialogue either in Success or Failure.\nThe actor selected here will also be used in the flowcript for 'Self'.")
-     , DropReferenceType(typeof(FlowScript)), Icon("FS")]
+    [Name("Sub FlowScript"),
+     Description(
+         "Executes a FlowScript. Use the Finish flowscript node to continue the dialogue either in Success or Failure.\nThe actor selected here will also be used in the flowcript for 'Self'."),
+     DropReferenceType(typeof(FlowScript)), Icon("FS")]
     public class DTNestedFlowScript : DTNodeNested<FlowScript>, IUpdatable
     {
         [SerializeField, ExposeField]
@@ -33,7 +33,8 @@ namespace NodeCanvas.DialogueTrees
 
         void IUpdatable.Update()
         {
-            if (currentInstance != null && status == Status.Running) currentInstance.UpdateGraph(graph.deltaTime);
+            if (currentInstance != null && status == Status.Running)
+                currentInstance.UpdateGraph(graph.deltaTime);
         }
 
         private void OnFlowScriptFinish(bool success)

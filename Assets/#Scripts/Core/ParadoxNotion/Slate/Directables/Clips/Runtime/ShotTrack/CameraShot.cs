@@ -3,10 +3,10 @@
 namespace Slate
 {
     //CameraShot clip wraps a ShotCamera
-    [Attachable(typeof(CameraTrack))
-     , Description(
-         "Camera Shots can be animated directly within this clip. You don't need to create an Actor Group to animate the shot (even though you can if desired).")
-     , Name("Camera Shot Clip")]
+    [Attachable(typeof(CameraTrack)),
+     Description(
+         "Camera Shots can be animated directly within this clip. You don't need to create an Actor Group to animate the shot (even though you can if desired)."),
+     Name("Camera Shot Clip")]
     public class CameraShot : DirectorActionClip
     {
         public enum BlendInEffectType { None, FadeFromColor, CrossDissolve, EaseIn }
@@ -53,7 +53,8 @@ namespace Slate
         public override string info {
             get {
 #if UNITY_EDITOR
-                return targetShot != null ? Prefs.showShotThumbnails && length > 0 ? null : targetShot.name
+                return targetShot != null
+                    ? Prefs.showShotThumbnails && length > 0 ? null : targetShot.name
                     : "No Shot Camera Selected";
 #else
                 return targetShot != null ? targetShot.name : "No Shot Camera Selected";
@@ -148,9 +149,12 @@ namespace Slate
 
         protected override void OnAfterValidate()
         {
-            var positionOverride = targetShot != null && targetShot.dynamicControlledPosition ? true : false;
-            var rotationOverride = targetShot != null && targetShot.dynamicControlledRotation ? true : false;
-            var fieldOfViewOverride = targetShot != null && targetShot.dynamicControlledFieldOfView ? true : false;
+            var positionOverride = targetShot != null && targetShot.dynamicControlledPosition ? true
+                : false;
+            var rotationOverride = targetShot != null && targetShot.dynamicControlledRotation ? true
+                : false;
+            var fieldOfViewOverride = targetShot != null && targetShot.dynamicControlledFieldOfView
+                ? true : false;
             SetParameterEnabled(nameof(position), !positionOverride);
             SetParameterEnabled(nameof(rotation), !rotationOverride);
             SetParameterEnabled(nameof(fieldOfView), !fieldOfViewOverride);
@@ -166,17 +170,20 @@ namespace Slate
         //dynamic controller should update across the whole cutscene length regardless of whether or not this clip is in range
         protected override void OnRootEnabled()
         {
-            if (targetShot != null && !root.isReSampleFrame) targetShot.UpdateDynamicControllerHard(this);
+            if (targetShot != null && !root.isReSampleFrame)
+                targetShot.UpdateDynamicControllerHard(this);
         }
 
         protected override void OnRootDisabled()
         {
-            if (targetShot != null && !root.isReSampleFrame) targetShot.UpdateDynamicControllerHard(this);
+            if (targetShot != null && !root.isReSampleFrame)
+                targetShot.UpdateDynamicControllerHard(this);
         }
 
         protected override void OnRootUpdated(float time, float previousTime)
         {
-            if (targetShot != null && !root.isReSampleFrame) targetShot.UpdateDynamicControllerSoft(this);
+            if (targetShot != null && !root.isReSampleFrame)
+                targetShot.UpdateDynamicControllerSoft(this);
         }
         //
 
@@ -184,7 +191,8 @@ namespace Slate
         public void TryUpdateShotTargetOverride()
         {
             if (overrideShotTargetActorGroup != null && overrideShotTargetActorGroup.actor != null)
-                targetShot.SetDynamicControllerTargets(overrideShotTargetActorGroup.actor.transform);
+                targetShot.SetDynamicControllerTargets(overrideShotTargetActorGroup.actor
+                    .transform);
         }
 
         protected override bool OnInitialize()
@@ -238,7 +246,9 @@ namespace Slate
 #if UNITY_EDITOR
                     res = EditorTools.GetGameViewSize();
 #endif
-                    var dissolver = previousShot.targetShot.GetRenderTexture((int)res.x, (int)res.y, CameraType.Game);
+                    var dissolver =
+                        previousShot.targetShot.GetRenderTexture((int)res.x, (int)res.y,
+                            CameraType.Game);
                     var ease = Easing.Ease(EaseType.QuadraticInOut, 0, 1, GetClipWeight(time));
                     DirectorGUI.UpdateDissolve(dissolver, ease);
                 }
@@ -325,8 +335,8 @@ namespace Slate
             if (targetShot == null) return;
             UnityEditor.Handles.BeginGUI();
             GUI.backgroundColor = lookThrough ? Color.red : Color.white;
-            if (targetShot != null && GUI.Button(new Rect(5, 5, 200, 20)
-                , lookThrough ? "Exit Look Through Camera" : "Look Through Camera"))
+            if (targetShot != null && GUI.Button(new Rect(5, 5, 200, 20),
+                lookThrough ? "Exit Look Through Camera" : "Look Through Camera"))
                 lookThrough = !lookThrough;
             GUI.backgroundColor = Color.white;
             UnityEditor.Handles.EndGUI();
@@ -334,7 +344,8 @@ namespace Slate
 
             if (lookThrough && sc != null) {
                 if (root.currentTime == lastSampleTime) {
-                    if (sc.camera.transform.position != lastPos || sc.camera.transform.rotation != lastRot) {
+                    if (sc.camera.transform.position != lastPos ||
+                        sc.camera.transform.rotation != lastRot) {
                         UnityEditor.Undo.RecordObject(targetShot.transform, "Shot Change");
                         targetShot.position = sc.camera.transform.position;
                         targetShot.rotation = sc.camera.transform.rotation;
@@ -358,7 +369,8 @@ namespace Slate
             if (!lookThrough) {
                 var posParam = GetParameter((CameraShot x) => x.position);
                 if (posParam.enabled)
-                    CurveEditor3D.Draw3DCurve(posParam, this, targetShot.transform.parent, length / 2, length);
+                    CurveEditor3D.Draw3DCurve(posParam, this, targetShot.transform.parent,
+                        length / 2, length);
                 targetShot.OnSceneGUI();
                 /*
                                 //controls for focal point and focal range.
@@ -417,7 +429,8 @@ namespace Slate
                     if (blendOut > 0) {
                         var nextClip = GetNextClip();
                         if (nextClip != null && nextClip.startTime < endTime)
-                            thumbRect.width = Mathf.Min(thumbRect.width, rect.width - blendOut / length * rect.width);
+                            thumbRect.width = Mathf.Min(thumbRect.width,
+                                rect.width - blendOut / length * rect.width);
                     }
                     GUI.Box(thumbRect, thumbnail, style);
                     GUI.backgroundColor = Color.white;

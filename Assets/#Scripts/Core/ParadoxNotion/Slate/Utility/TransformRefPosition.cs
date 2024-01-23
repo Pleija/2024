@@ -43,6 +43,7 @@ namespace Slate
             private set => _space = value;
         }
 
-        public override string ToString() => transform != null ? transform.name : _vector.ToString();
+        public override string ToString() =>
+            transform != null ? transform.name : _vector.ToString();
     }
 }

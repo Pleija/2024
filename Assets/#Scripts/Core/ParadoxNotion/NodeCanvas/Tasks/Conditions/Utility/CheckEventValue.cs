@@ -5,8 +5,8 @@ using Logger = ParadoxNotion.Services.Logger;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility")
-     , Description(
+    [Category("✫ Utility"),
+     Description(
          "Check if an event is received and it's value is equal to specified value, then return true for one frame")]
     public class CheckEventValue<T> : ConditionTask<GraphOwner>
     {
@@ -16,7 +16,8 @@ namespace NodeCanvas.Tasks.Conditions
         [Name("Compare Value To")]
         public BBParameter<T> value;
 
-        protected override string info => string.Format("Event [{0}].value == {1}", eventName, value);
+        protected override string info =>
+            string.Format("Event [{0}].value == {1}", eventName, value);
 
         protected override void OnEnable()
         {
@@ -36,8 +37,9 @@ namespace NodeCanvas.Tasks.Conditions
                 var receivedValue = msg.valueBoxed;
 
                 if (ObjectUtils.AnyEquals(receivedValue, value.value)) {
-                    Logger.Log(string.Format("Event Received from ({0}): '{1}'", agent.gameObject.name, eventName)
-                        , LogTag.EVENT, this);
+                    Logger.Log(
+                        string.Format("Event Received from ({0}): '{1}'", agent.gameObject.name,
+                            eventName), LogTag.EVENT, this);
                     YieldReturn(true);
                 }
             }

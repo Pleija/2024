@@ -5,10 +5,10 @@ using UnityEngine.Audio;
 
 namespace Slate
 {
-    [UniqueElement, Attachable(typeof(DirectorGroup))
-     , Description(
-         "The Camera Track is the track within wich you create your camera shots and moves. Once the Camera Track becomes active, the Director Camera will be enabled. You can control when the Director Camera takes effect by setting the 'Active Time Offset', while the Blend In/Out parameters control the ammount of blending there will be from the game camera to the first and the last shot of the track.\nIf you don't want a cinematic letterbox effect, you can set CineBox Fade Time to 0.\nIf you don't want to use Slate Camera features, you can simply disable or delete this track.")
-     , Icon(typeof(Camera))]
+    [UniqueElement, Attachable(typeof(DirectorGroup)),
+     Description(
+         "The Camera Track is the track within wich you create your camera shots and moves. Once the Camera Track becomes active, the Director Camera will be enabled. You can control when the Director Camera takes effect by setting the 'Active Time Offset', while the Blend In/Out parameters control the ammount of blending there will be from the game camera to the first and the last shot of the track.\nIf you don't want a cinematic letterbox effect, you can set CineBox Fade Time to 0.\nIf you don't want to use Slate Camera features, you can simply disable or delete this track."),
+     Icon(typeof(Camera))]
     ///<summary>The CameraTrack is responsible to camera direction of the Cutscene</summary>
     public class CameraTrack : CutsceneTrack
     {
@@ -44,8 +44,8 @@ namespace Slate
         public CameraShot lastShot { get; private set; }
         public CameraShot currentShot { get; set; }
 
-        public override string info =>
-            string.Format("Game Blend In {0} / Out {1}", _blendIn.ToString(), _blendOut.ToString());
+        public override string info => string.Format("Game Blend In {0} / Out {1}",
+            _blendIn.ToString(), _blendOut.ToString());
 
         public override float startTime {
             get => _startTimeOffset;
@@ -111,9 +111,11 @@ namespace Slate
                 target = currentShot.targetShot;
 
                 if (currentShot.blendInEffect == CameraShot.BlendInEffectType.EaseIn)
-                    if (currentShot != firstShot && time <= currentShot.startTime + currentShot.blendIn) {
+                    if (currentShot != firstShot &&
+                        time <= currentShot.startTime + currentShot.blendIn) {
                         source = currentShot.previousShot.targetShot;
-                        weight *= currentShot.GetClipWeight(time + startTime - currentShot.startTime);
+                        weight *= currentShot.GetClipWeight(
+                            time + startTime - currentShot.startTime);
                     }
             }
 
@@ -152,11 +154,12 @@ namespace Slate
             get { return Prefs.showShotThumbnails ? 60f : base.defaultHeight; }
         }
 
-        public override void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime
-            , System.Func<float, float> TimeToPos)
+        public override void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime,
+            System.Func<float, float> TimeToPos)
         {
             base.OnTrackTimelineGUI(posRect, timeRect, cursorTime, TimeToPos);
-            UnityEditor.Handles.color = UnityEditor.EditorGUIUtility.isProSkin ? Color.white : Color.black;
+            UnityEditor.Handles.color =
+                UnityEditor.EditorGUIUtility.isProSkin ? Color.white : Color.black;
 
             if (blendIn > 0) {
                 var first = clips.FirstOrDefault(s => s.startTime >= startTime);
@@ -185,7 +188,8 @@ namespace Slate
             UnityEditor.Handles.color = Color.white;
 
             if (exitCameraOverride != null) {
-                var text = string.Format("<size=12><b>ExitCamera: '{0}'</b></size>", exitCameraOverride.name);
+                var text = string.Format("<size=12><b>ExitCamera: '{0}'</b></size>",
+                    exitCameraOverride.name);
                 var size = GUI.skin.GetStyle("Label").CalcSize(new GUIContent(text));
                 var r = new Rect(TimeToPos(endTime) + 5, 0, size.x, size.y);
                 r.center = new Vector2(r.center.x, posRect.y + defaultHeight / 2);

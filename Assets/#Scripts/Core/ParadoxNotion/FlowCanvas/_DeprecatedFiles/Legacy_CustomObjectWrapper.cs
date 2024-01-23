@@ -9,8 +9,8 @@ namespace FlowCanvas.Nodes
         public abstract void SetTarget(Object target);
     }
 
-    [System.Obsolete("Use 'IReferencedObjectWrapper' along with 'ReferencedObjectTypeAttribute'")
-     , Icon(runtimeIconTypeCallback: nameof(GetRuntimeIconType))]
+    [System.Obsolete("Use 'IReferencedObjectWrapper' along with 'ReferencedObjectTypeAttribute'"),
+     Icon(runtimeIconTypeCallback: nameof(GetRuntimeIconType))]
     public abstract class CustomObjectWrapper<T> : CustomObjectWrapper where T : Object
     {
         [SerializeField]

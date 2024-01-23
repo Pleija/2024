@@ -79,8 +79,8 @@ namespace Slate
             GameObject root = null;
 
             if (targetParent == null) {
-                root = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
-                    .FirstOrDefault(x => x.name == rootName);
+                root = UnityEngine.SceneManagement.SceneManager.GetActiveScene()
+                    .GetRootGameObjects().FirstOrDefault(x => x.name == rootName);
                 if (root == null) root = new GameObject(rootName);
             }
             else {
@@ -127,7 +127,8 @@ namespace Slate
         }
 
         ///<summary>Get interpolated Vector3 positions between two control points with specified resolution</summary>
-        public static Vector3[] GetSampledPathPositions(BezierPoint p1, BezierPoint p2, int resolution)
+        public static Vector3[] GetSampledPathPositions(BezierPoint p1, BezierPoint p2,
+            int resolution)
         {
             var result = new List<Vector3>();
             var limit = resolution + 1;
@@ -150,7 +151,8 @@ namespace Slate
 
         ///<summary>Get the position between two  points at normalized t.</summary>
         public static Vector3 GetPositionAt(BezierPoint p1, BezierPoint p2, float t) =>
-            GetPositionAlongCurve(p1.position, p2.position, p1.handle2LocalPosition, p2.handle1LocalPosition, t);
+            GetPositionAlongCurve(p1.position, p2.position, p1.handle2LocalPosition,
+                p2.handle1LocalPosition, t);
 
         ///----------------------------------------------------------------------------------------------
 
@@ -185,7 +187,8 @@ namespace Slate
         {
             var hit = new RaycastHit();
             var hitPos = new Vector3(position.x, 0, position.z);
-            if (Physics.Linecast(position, position - new Vector3(0, 100, 0), out hit)) hitPos = hit.point;
+            if (Physics.Linecast(position, position - new Vector3(0, 100, 0), out hit))
+                hitPos = hit.point;
             Gizmos.DrawLine(position, hitPos);
         }
 

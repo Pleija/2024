@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Composites")
-     , Description(
-         "Selects a child to execute based on its chance to be selected and returns Success if the child returns Success, otherwise picks another child.\nReturns Failure if all children return Failure, or a direct 'Failure Chance' is introduced.")
-     , Icon("ProbabilitySelector"), Color("b3ff7f")]
+    [Category("Composites"),
+     Description(
+         "Selects a child to execute based on its chance to be selected and returns Success if the child returns Success, otherwise picks another child.\nReturns Failure if all children return Failure, or a direct 'Failure Chance' is introduced."),
+     Icon("ProbabilitySelector"), Color("b3ff7f")]
     public class ProbabilitySelector : BTComposite
     {
         [AutoSortWithChildrenConnections, Tooltip("The weights of the children.")]
@@ -27,7 +27,8 @@ namespace NodeCanvas.BehaviourTrees
         {
             if (childWeights == null) childWeights = new List<BBParameter<float>>();
             if (childWeights.Count < outConnections.Count)
-                childWeights.Insert(index, new BBParameter<float> { value = 1, bb = graphBlackboard });
+                childWeights.Insert(index,
+                    new BBParameter<float> { value = 1, bb = graphBlackboard });
         }
 
         public override void OnChildDisconnected(int index)
@@ -90,7 +91,8 @@ namespace NodeCanvas.BehaviourTrees
             return total;
         }
 
-        public override string GetConnectionInfo(int i) => Mathf.Round(childWeights[i].value / GetTotal() * 100) + "%";
+        public override string GetConnectionInfo(int i) =>
+            Mathf.Round(childWeights[i].value / GetTotal() * 100) + "%";
 
         public override void OnConnectionInspectorGUI(int i)
         {
@@ -108,14 +110,17 @@ namespace NodeCanvas.BehaviourTrees
             for (var i = 0; i < childWeights.Count; i++) {
                 GUILayout.BeginHorizontal();
                 childWeights[i] =
-                    (BBParameter<float>)Editor.BBParameterEditor.ParameterField("Weight", childWeights[i]);
-                GUILayout.Label(Mathf.Round(childWeights[i].value / total * 100) + "%", GUILayout.Width(38));
+                    (BBParameter<float>)Editor.BBParameterEditor.ParameterField("Weight",
+                        childWeights[i]);
+                GUILayout.Label(Mathf.Round(childWeights[i].value / total * 100) + "%",
+                    GUILayout.Width(38));
                 GUILayout.EndHorizontal();
             }
             GUILayout.Space(5);
             GUILayout.BeginHorizontal();
             failChance =
-                (BBParameter<float>)Editor.BBParameterEditor.ParameterField("Direct Failure Chance", failChance);
+                (BBParameter<float>)Editor.BBParameterEditor.ParameterField("Direct Failure Chance",
+                    failChance);
             GUILayout.Label(Mathf.Round(failChance.value / total * 100) + "%", GUILayout.Width(38));
             GUILayout.EndHorizontal();
         }

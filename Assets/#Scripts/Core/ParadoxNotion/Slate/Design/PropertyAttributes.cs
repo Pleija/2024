@@ -71,7 +71,8 @@ namespace Slate
     }
 
     /// <summary>
-    ///     Shows the property only if another property/field returns the specified value. The target value is int type,
+    ///     Shows the property only if another property/field returns the specified value. The target value
+    ///     is int type,
     ///     which means that can both be used for boolean as well as enum targets
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
@@ -88,7 +89,8 @@ namespace Slate
     }
 
     /// <summary>
-    ///     Enabled the property only if another property/field returns the specified value. The target value is int type,
+    ///     Enabled the property only if another property/field returns the specified value. The target
+    ///     value is int type,
     ///     which means that can both be used for boolean as well as enum targets
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]

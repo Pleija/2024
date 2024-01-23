@@ -5,7 +5,10 @@ using System.Linq;
 
 namespace Slate
 {
-    ///<summary>The topmost IDirectable of a Cutscene, containing CutsceneTracks and targeting a specific GameObject Actor</summary>
+    /// <summary>
+    ///     The topmost IDirectable of a Cutscene, containing CutsceneTracks and targeting a specific
+    ///     GameObject Actor
+    /// </summary>
     public abstract class CutsceneGroup : MonoBehaviour, IDirectable
     {
         public enum ActorReferenceMode { UseOriginal = 0, UseInstanceHideOriginal = 1 }
@@ -295,8 +298,10 @@ namespace Slate
 
                 foreach (var renderer in actor.GetComponentsInChildren<Renderer>()) {
                     Mesh mesh = null;
-                    var pos = this.TransformPosition(initialLocalPosition, TransformSpace.CutsceneSpace);
-                    var rot = this.TransformRotation(initialLocalRotation, TransformSpace.CutsceneSpace);
+                    var pos = this.TransformPosition(initialLocalPosition,
+                        TransformSpace.CutsceneSpace);
+                    var rot = this.TransformRotation(initialLocalRotation,
+                        TransformSpace.CutsceneSpace);
 
                     if (renderer is SkinnedMeshRenderer) {
                         mesh = ((SkinnedMeshRenderer)renderer).sharedMesh;
@@ -320,8 +325,10 @@ namespace Slate
             if (actor != null && root.currentTime == 0) {
                 var _initPos = initialLocalPosition;
                 var _initRot = initialLocalRotation;
-                SceneGUIUtility.DoVectorPositionHandle(this, TransformSpace.CutsceneSpace, _initRot, ref _initPos);
-                SceneGUIUtility.DoVectorRotationHandle(this, TransformSpace.CutsceneSpace, _initPos, ref _initRot);
+                SceneGUIUtility.DoVectorPositionHandle(this, TransformSpace.CutsceneSpace, _initRot,
+                    ref _initPos);
+                SceneGUIUtility.DoVectorRotationHandle(this, TransformSpace.CutsceneSpace, _initPos,
+                    ref _initRot);
                 initialLocalPosition = _initPos;
                 initialLocalRotation = _initRot;
             }
@@ -376,8 +383,10 @@ namespace Slate
 
         private void SetActorLocalCoords()
         {
-            actor.transform.position = this.TransformPosition(initialLocalPosition, TransformSpace.CutsceneSpace);
-            actor.transform.rotation = this.TransformRotation(initialLocalRotation, TransformSpace.CutsceneSpace);
+            actor.transform.position =
+                this.TransformPosition(initialLocalPosition, TransformSpace.CutsceneSpace);
+            actor.transform.rotation =
+                this.TransformRotation(initialLocalRotation, TransformSpace.CutsceneSpace);
         }
 
         ///<summary>Resolve final actor used. Returns ref clone if exists, or original.</summary>
@@ -385,17 +394,21 @@ namespace Slate
             refDuplicateActor != null ? refDuplicateActor : original;
 
         ///<summary>Can track be added in this group?</summary>
-        public bool CanAddTrack(CutsceneTrack track) => track != null ? CanAddTrackOfType(track.GetType()) : false;
+        public bool CanAddTrack(CutsceneTrack track) =>
+            track != null ? CanAddTrackOfType(track.GetType()) : false;
 
         ///<summary>Can track type be added in this group?</summary>
         public bool CanAddTrackOfType(System.Type type)
         {
-            if (type == null || !type.IsSubclassOf(typeof(CutsceneTrack)) || type.IsAbstract) return false;
+            if (type == null || !type.IsSubclassOf(typeof(CutsceneTrack)) || type.IsAbstract)
+                return false;
             if (type.IsDefined(typeof(UniqueElementAttribute), true) &&
                 tracks.FirstOrDefault(t => t.GetType() == type) != null)
                 return false;
             var attachAtt = type.RTGetAttribute<AttachableAttribute>(true);
-            if (attachAtt == null || attachAtt.types == null || !attachAtt.types.Any(t => t == GetType())) return false;
+            if (attachAtt == null || attachAtt.types == null ||
+                !attachAtt.types.Any(t => t == GetType()))
+                return false;
             return true;
         }
 
@@ -441,7 +454,8 @@ namespace Slate
 #if UNITY_EDITOR
 
         ///<summary>Add a new track to this group</summary>
-        public T AddTrack<T>(string name = null) where T : CutsceneTrack => (T)AddTrack(typeof(T), name);
+        public T AddTrack<T>(string name = null) where T : CutsceneTrack =>
+            (T)AddTrack(typeof(T), name);
 
         public CutsceneTrack AddTrack(System.Type type, string name = null)
         {
@@ -467,14 +481,15 @@ namespace Slate
         public void DeleteTrack(CutsceneTrack track)
         {
             if (!track.gameObject.IsSafePrefabDelete()) {
-                UnityEditor.EditorUtility.DisplayDialog("Delete Track"
-                    , "This track is part of the prefab asset and can not be deleted from within the prefab instance. If you want to delete the track, please open the prefab asset for editing."
-                    , "OK");
+                UnityEditor.EditorUtility.DisplayDialog("Delete Track",
+                    "This track is part of the prefab asset and can not be deleted from within the prefab instance. If you want to delete the track, please open the prefab asset for editing.",
+                    "OK");
                 return;
             }
             UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Delete Track");
             tracks.Remove(track);
-            if (ReferenceEquals(CutsceneUtility.selectedObject, track)) CutsceneUtility.selectedObject = null;
+            if (ReferenceEquals(CutsceneUtility.selectedObject, track))
+                CutsceneUtility.selectedObject = null;
             UnityEditor.Undo.DestroyObjectImmediate(track.gameObject);
             root.Validate();
         }

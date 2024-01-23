@@ -15,7 +15,10 @@ namespace FlowCanvas.Nodes
         public abstract void RegisterAsInput(FlowNode node);
         public abstract void RegisterAsOutput(FlowNode node);
         public abstract void RegisterAsOutput(FlowNode node, Action beforeReturn);
-        public abstract void RegisterAsOutput(FlowNode node, Action<UniversalDelegateParam> beforeReturn);
+
+        public abstract void RegisterAsOutput(FlowNode node,
+            Action<UniversalDelegateParam> beforeReturn);
+
         public abstract void SetFromInput();
         public abstract void SetFromValue(object value);
         public abstract FieldInfo ValueField { get; }
@@ -66,7 +69,8 @@ namespace FlowCanvas.Nodes
             RegisterAsOutputInternal(node, beforeReturn);
         }
 
-        public override void RegisterAsOutput(FlowNode node, Action<UniversalDelegateParam> beforeReturn)
+        public override void RegisterAsOutput(FlowNode node,
+            Action<UniversalDelegateParam> beforeReturn)
         {
             RegisterAsOutputInternal(node, beforeReturn);
         }
@@ -81,7 +85,8 @@ namespace FlowCanvas.Nodes
             value = (T)newValue;
         }
 
-        public override FieldInfo ValueField => _fieldInfo ?? (_fieldInfo = GetType().RTGetField("value"));
+        public override FieldInfo ValueField =>
+            _fieldInfo ?? (_fieldInfo = GetType().RTGetField("value"));
     }
 
     public class UniversalDelegateParam<TArray, TValue> : UniversalDelegateParam<TArray>
@@ -95,7 +100,8 @@ namespace FlowCanvas.Nodes
             if (paramsArrayNeeded && paramsArrayCount >= 0) {
                 valueInputs = new ValueInput<TValue>[paramsArrayCount];
                 for (var i = 0; i <= paramsArrayCount - 1; i++)
-                    valueInputs[i] = node.AddValueInput<TValue>(paramDef.portName + " #" + i, paramDef.portId + i);
+                    valueInputs[i] = node.AddValueInput<TValue>(paramDef.portName + " #" + i,
+                        paramDef.portId + i);
             }
             else {
                 base.RegisterAsInput(node);
@@ -107,7 +113,8 @@ namespace FlowCanvas.Nodes
             if (paramsArrayNeeded && paramsArrayCount >= 0 && valueInputs != null &&
                 valueInputs.Length == paramsArrayCount) {
                 var valueArray = new TValue[paramsArrayCount];
-                for (var i = 0; i <= paramsArrayCount - 1; i++) valueArray[i] = valueInputs[i].value;
+                for (var i = 0; i <= paramsArrayCount - 1; i++)
+                    valueArray[i] = valueInputs[i].value;
 
                 try {
                     value = (TArray)(object)valueArray;

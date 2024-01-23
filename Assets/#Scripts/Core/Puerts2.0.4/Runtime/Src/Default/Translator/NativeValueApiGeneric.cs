@@ -53,8 +53,11 @@ namespace Puerts
         public long GetBigInt(IntPtr isolate, IntPtr holder, bool isByRef) =>
             PuertsDLL.GetBigIntFromResultCheck(holder);
 
-        public bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetBooleanFromResult(holder);
-        public double GetDate(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetDateFromResult(holder);
+        public bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetBooleanFromResult(holder);
+
+        public double GetDate(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetDateFromResult(holder);
 
         public IntPtr GetFunction(IntPtr isolate, IntPtr holder, bool isByRef) =>
             PuertsDLL.GetFunctionFromResult(holder);
@@ -65,13 +68,17 @@ namespace Puerts
         public JsValueType GetJsValueType(IntPtr isolate, IntPtr holder, bool isByRef) =>
             PuertsDLL.GetResultType(holder);
 
-        public double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetNumberFromResult(holder);
+        public double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetNumberFromResult(holder);
 
         public IntPtr GetNativeObject(IntPtr isolate, IntPtr holder, bool isByRef) =>
             PuertsDLL.GetObjectFromResult(holder);
 
-        public int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetTypeIdFromResult(holder);
-        public string GetString(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetStringFromResult(holder);
+        public int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetTypeIdFromResult(holder);
+
+        public string GetString(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetStringFromResult(holder);
 
         public ArrayBuffer GetArrayBuffer(IntPtr isolate, IntPtr holder, bool isByRef)
         {
@@ -184,7 +191,8 @@ namespace Puerts
             if (arrayBuffer == null || arrayBuffer.Bytes == null)
                 PuertsDLL.SetArrayBufferToOutValue(isolate, holder, null, 0);
             else
-                PuertsDLL.SetArrayBufferToOutValue(isolate, holder, arrayBuffer.Bytes, arrayBuffer.Count);
+                PuertsDLL.SetArrayBufferToOutValue(isolate, holder, arrayBuffer.Bytes,
+                    arrayBuffer.Count);
         }
 
         public void SetBigInt(IntPtr isolate, IntPtr holder, long number)
@@ -240,7 +248,8 @@ namespace Puerts
             if (arrayBuffer == null || arrayBuffer.Bytes == null)
                 PuertsDLL.PushArrayBufferForJSFunction(holder, null, 0);
             else
-                PuertsDLL.PushArrayBufferForJSFunction(holder, arrayBuffer.Bytes, arrayBuffer.Count);
+                PuertsDLL.PushArrayBufferForJSFunction(holder, arrayBuffer.Bytes,
+                    arrayBuffer.Count);
         }
 
         public void SetBigInt(IntPtr isolate, IntPtr holder, long number)

@@ -13,11 +13,12 @@ namespace ParadoxNotion
     ///<summary>Reflection utility and extention methods</summary>
     public static class ReflectionTools
     {
-        public const BindingFlags FLAGS_ALL = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
-            BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+        public const BindingFlags FLAGS_ALL = BindingFlags.Instance | BindingFlags.Static |
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
 
-        public const BindingFlags FLAGS_ALL_DECLARED = BindingFlags.NonPublic | BindingFlags.Public |
-            BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+        public const BindingFlags FLAGS_ALL_DECLARED = BindingFlags.NonPublic |
+            BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
+            BindingFlags.DeclaredOnly;
 
         ///----------------------------------------------------------------------------------------------
         private static Assembly[] _loadedAssemblies;
@@ -86,8 +87,8 @@ namespace ParadoxNotion
         public static Type GetType(string typeFullName, Type fallbackAssignable) =>
             GetType(typeFullName, true, fallbackAssignable);
 
-        public static Type GetType(string typeFullName, bool fallbackNoNamespace = false
-            , Type fallbackAssignable = null)
+        public static Type GetType(string typeFullName, bool fallbackNoNamespace = false,
+            Type fallbackAssignable = null)
         {
             if (string.IsNullOrEmpty(typeFullName)) return null;
             Type type = null;
@@ -116,7 +117,9 @@ namespace ParadoxNotion
                     // Logger.LogWarning(string.Format("Type with name '{0}' was resolved using a fallback resolution (NoNamespace).", typeFullName), "Type Request");
                     return _typesMap[typeFullName] = type;
             }
-            Logger.LogError(string.Format("Type with name '{0}' could not be resolved.", typeFullName), "Type Request");
+            Logger.LogError(
+                string.Format("Type with name '{0}' could not be resolved.", typeFullName),
+                "Type Request");
             return _typesMap[typeFullName] = null;
         }
 
@@ -142,20 +145,23 @@ namespace ParadoxNotion
 
         //Resolve generic types by their .FullName or .ToString
         //Remark: a generic's type .FullName returns a string where it's arguments only are instead printed as AssemblyQualifiedName.
-        private static Type TryResolveGenericType(string typeFullName, bool fallbackNoNamespace = false
-            , Type fallbackAssignable = null)
+        private static Type TryResolveGenericType(string typeFullName,
+            bool fallbackNoNamespace = false, Type fallbackAssignable = null)
         {
             //ensure that it is a generic type implementation, not a definition
-            if (typeFullName.Contains('`') == false || typeFullName.Contains('[') == false) return null;
+            if (typeFullName.Contains('`') == false || typeFullName.Contains('[') == false)
+                return null;
 
             try //big try/catch block cause maybe there is a bug. Hopefully not.
             {
                 var quoteIndex = typeFullName.IndexOf('`');
                 var genericTypeDefName = typeFullName.Substring(0, quoteIndex + 2);
-                var genericTypeDef = GetType(genericTypeDefName, fallbackNoNamespace, fallbackAssignable);
+                var genericTypeDef = GetType(genericTypeDefName, fallbackNoNamespace,
+                    fallbackAssignable);
                 if (genericTypeDef == null) return null;
                 var argCount = Convert.ToInt32(typeFullName.Substring(quoteIndex + 1, 1));
-                var content = typeFullName.Substring(quoteIndex + 2, typeFullName.Length - quoteIndex - 2);
+                var content =
+                    typeFullName.Substring(quoteIndex + 2, typeFullName.Length - quoteIndex - 2);
                 string[] split = null;
 
                 if (content.StartsWith("[[")) {
@@ -163,14 +169,16 @@ namespace ParadoxNotion
                     var startIndex = typeFullName.IndexOf("[[") + 2;
                     var endIndex = typeFullName.LastIndexOf("]]");
                     content = typeFullName.Substring(startIndex, endIndex - startIndex);
-                    split = content.Split(new string[] { "],[" }, argCount, StringSplitOptions.RemoveEmptyEntries);
+                    split = content.Split(new string[] { "],[" }, argCount,
+                        StringSplitOptions.RemoveEmptyEntries);
                 }
                 else {
                     //this means that the name was generated with type.ToString().
                     var startIndex = typeFullName.IndexOf('[') + 1;
                     var endIndex = typeFullName.LastIndexOf(']');
                     content = typeFullName.Substring(startIndex, endIndex - startIndex);
-                    split = content.Split(new char[] { ',' }, argCount, StringSplitOptions.RemoveEmptyEntries);
+                    split = content.Split(new char[] { ',' }, argCount,
+                        StringSplitOptions.RemoveEmptyEntries);
                 }
                 var argTypes = new Type[argCount];
 
@@ -199,16 +207,16 @@ namespace ParadoxNotion
 
             for (var i = 0; i < allTypes.Length; i++) {
                 var t = allTypes[i];
-                var att =
-                    t.GetCustomAttribute(typeof(Serialization.DeserializeFromAttribute), false) as
-                        Serialization.DeserializeFromAttribute;
+                var att = t.GetCustomAttribute(typeof(Serialization.DeserializeFromAttribute),
+                    false) as Serialization.DeserializeFromAttribute;
                 if (att != null && att.previousTypeFullName == typeName) return t;
             }
             return null;
         }
 
         //fallback type look up with it's FullName. This is slow.
-        private static Type TryResolveWithoutNamespace(string typeName, Type fallbackAssignable = null)
+        private static Type TryResolveWithoutNamespace(string typeName,
+            Type fallbackAssignable = null)
         {
             //dont handle generic implementations this way (still handles definitions though).
             if (typeName.Contains('`') && typeName.Contains('[')) return null;
@@ -227,7 +235,8 @@ namespace ParadoxNotion
 
             for (var i = 0; i < allTypes.Length; i++) {
                 var t = allTypes[i];
-                if (t.Name == typeName && (fallbackAssignable == null || fallbackAssignable.RTIsAssignableFrom(t)))
+                if (t.Name == typeName && (fallbackAssignable == null ||
+                    fallbackAssignable.RTIsAssignableFrom(t)))
                     return t;
             }
             return null;
@@ -251,7 +260,8 @@ namespace ParadoxNotion
                     continue;
                 }
             }
-            return _allTypes = result.OrderBy(t => t.Namespace).ThenBy(t => t.FriendlyName()).ToArray();
+            return _allTypes = result.OrderBy(t => t.Namespace).ThenBy(t => t.FriendlyName())
+                .ToArray();
         }
 
         ///<summary>Get a collection of types assignable to provided type, excluding Abstract types</summary>
@@ -269,8 +279,11 @@ namespace ParadoxNotion
             return _subTypesMap[baseType] = temp.ToArray();
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Returns an object[] with a single element, that can for example be used as method invocation args</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns an object[] with a single element, that can for example be used as method
+        ///     invocation args
+        /// </summary>
         public static object[] SingleTempArgsArray(object arg)
         {
             _tempArgs[0] = arg;
@@ -282,28 +295,34 @@ namespace ParadoxNotion
         //Method operator special name to friendly name map
         public static readonly Dictionary<string, string> op_FriendlyNamesLong =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-                { "op_Equality", "Equal" }, { "op_Inequality", "Not Equal" }, { "op_GreaterThan", "Greater" }
-                , { "op_LessThan", "Less" }, { "op_GreaterThanOrEqual", "Greater Or Equal" }
-                , { "op_LessThanOrEqual", "Less Or Equal" }, { "op_Addition", "Add" }, { "op_Subtraction", "Subtract" }
-                , { "op_Division", "Divide" }, { "op_Multiply", "Multiply" }, { "op_UnaryNegation", "Negate" }
-                , { "op_UnaryPlus", "Positive" }, { "op_Increment", "Increment" }, { "op_Decrement", "Decrement" }
-                , { "op_LogicalNot", "NOT" }, { "op_OnesComplement", "Complements" }, { "op_False", "FALSE" }
-                , { "op_True", "TRUE" }, { "op_Modulus", "MOD" }, { "op_BitwiseAnd", "AND" }, { "op_BitwiseOR", "OR" }
-                , { "op_LeftShift", "Shift Left" }, { "op_RightShift", "Shift Right" }, { "op_ExclusiveOr", "XOR" }
-                , { "op_Implicit", "Convert" }, { "op_Explicit", "Convert" },
+                { "op_Equality", "Equal" }, { "op_Inequality", "Not Equal" },
+                { "op_GreaterThan", "Greater" }, { "op_LessThan", "Less" },
+                { "op_GreaterThanOrEqual", "Greater Or Equal" },
+                { "op_LessThanOrEqual", "Less Or Equal" }, { "op_Addition", "Add" },
+                { "op_Subtraction", "Subtract" }, { "op_Division", "Divide" },
+                { "op_Multiply", "Multiply" }, { "op_UnaryNegation", "Negate" },
+                { "op_UnaryPlus", "Positive" }, { "op_Increment", "Increment" },
+                { "op_Decrement", "Decrement" }, { "op_LogicalNot", "NOT" },
+                { "op_OnesComplement", "Complements" }, { "op_False", "FALSE" },
+                { "op_True", "TRUE" }, { "op_Modulus", "MOD" }, { "op_BitwiseAnd", "AND" },
+                { "op_BitwiseOR", "OR" }, { "op_LeftShift", "Shift Left" },
+                { "op_RightShift", "Shift Right" }, { "op_ExclusiveOr", "XOR" },
+                { "op_Implicit", "Convert" }, { "op_Explicit", "Convert" },
             };
 
         //Method operator special name to friendly name map
         public static readonly Dictionary<string, string> op_FriendlyNamesShort =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-                { "op_Equality", "=" }, { "op_Inequality", "≠" }, { "op_GreaterThan", ">" }, { "op_LessThan", "<" }
-                , { "op_GreaterThanOrEqual", "≥" }, { "op_LessThanOrEqual", "≤" }, { "op_Addition", "+" }
-                , { "op_Subtraction", "-" }, { "op_Division", "÷" }, { "op_Multiply", "×" }
-                , { "op_UnaryNegation", "Negate" }, { "op_UnaryPlus", "Positive" }, { "op_Increment", "++" }
-                , { "op_Decrement", "--" }, { "op_LogicalNot", "NOT" }, { "op_OnesComplement", "~" }
-                , { "op_False", "FALSE" }, { "op_True", "TRUE" }, { "op_Modulus", "MOD" }, { "op_BitwiseAnd", "AND" }
-                , { "op_BitwiseOR", "OR" }, { "op_LeftShift", "<<" }, { "op_RightShift", ">>" }
-                , { "op_ExclusiveOr", "XOR" }, { "op_Implicit", "Convert" }, { "op_Explicit", "Convert" },
+                { "op_Equality", "=" }, { "op_Inequality", "≠" }, { "op_GreaterThan", ">" },
+                { "op_LessThan", "<" }, { "op_GreaterThanOrEqual", "≥" },
+                { "op_LessThanOrEqual", "≤" }, { "op_Addition", "+" }, { "op_Subtraction", "-" },
+                { "op_Division", "÷" }, { "op_Multiply", "×" }, { "op_UnaryNegation", "Negate" },
+                { "op_UnaryPlus", "Positive" }, { "op_Increment", "++" }, { "op_Decrement", "--" },
+                { "op_LogicalNot", "NOT" }, { "op_OnesComplement", "~" }, { "op_False", "FALSE" },
+                { "op_True", "TRUE" }, { "op_Modulus", "MOD" }, { "op_BitwiseAnd", "AND" },
+                { "op_BitwiseOR", "OR" }, { "op_LeftShift", "<<" }, { "op_RightShift", ">>" },
+                { "op_ExclusiveOr", "XOR" }, { "op_Implicit", "Convert" },
+                { "op_Explicit", "Convert" },
             };
 
         ///<summary>Operator C# to friendly aliases</summary>
@@ -327,11 +346,14 @@ namespace ParadoxNotion
             var name = method.Name;
 
             if (method.IsSpecialName) {
-                if (name.StartsWith(METHOD_SPECIAL_NAME_GET) || name.StartsWith(METHOD_SPECIAL_NAME_SET))
+                if (name.StartsWith(METHOD_SPECIAL_NAME_GET) ||
+                    name.StartsWith(METHOD_SPECIAL_NAME_SET))
                     return _methodSpecialType[method] = MethodType.PropertyAccessor;
-                if (name.StartsWith(METHOD_SPECIAL_NAME_ADD) || name.StartsWith(METHOD_SPECIAL_NAME_REMOVE))
+                if (name.StartsWith(METHOD_SPECIAL_NAME_ADD) ||
+                    name.StartsWith(METHOD_SPECIAL_NAME_REMOVE))
                     return _methodSpecialType[method] = MethodType.Event;
-                if (name.StartsWith(METHOD_SPECIAL_NAME_OP)) return _methodSpecialType[method] = MethodType.Operator;
+                if (name.StartsWith(METHOD_SPECIAL_NAME_OP))
+                    return _methodSpecialType[method] = MethodType.Operator;
             }
             return _methodSpecialType[method] = MethodType.Normal;
         }
@@ -356,13 +378,15 @@ namespace ParadoxNotion
             if (t.RTIsGenericParameter()) s = "T";
 
             if (t.RTIsGenericType()) {
-                s = compileSafe && !string.IsNullOrEmpty(t.Namespace) ? t.Namespace + "." + t.Name : t.Name;
+                s = compileSafe && !string.IsNullOrEmpty(t.Namespace) ? t.Namespace + "." + t.Name
+                    : t.Name;
                 var args = t.RTGetGenericArguments();
 
                 if (args.Length != 0) {
                     s = s.Replace("`" + args.Length.ToString(), "");
                     s += compileSafe ? "<" : " (";
-                    for (var i = 0; i < args.Length; i++) s += (i == 0 ? "" : ", ") + args[i].FriendlyName(compileSafe);
+                    for (var i = 0; i < args.Length; i++)
+                        s += (i == 0 ? "" : ", ") + args[i].FriendlyName(compileSafe);
                     s += compileSafe ? ">" : ")";
                 }
             }
@@ -393,13 +417,15 @@ namespace ParadoxNotion
 
             if (method.IsSpecialName) {
                 if (methodName.StartsWith(METHOD_SPECIAL_NAME_GET)) {
-                    methodName = "Get " + methodName.Substring(METHOD_SPECIAL_NAME_GET.Length).CapitalizeFirst();
+                    methodName = "Get " + methodName.Substring(METHOD_SPECIAL_NAME_GET.Length)
+                        .CapitalizeFirst();
                     specialNameType = MethodType.PropertyAccessor;
                     return methodName;
                 }
 
                 if (methodName.StartsWith(METHOD_SPECIAL_NAME_SET)) {
-                    methodName = "Set " + methodName.Substring(METHOD_SPECIAL_NAME_SET.Length).CapitalizeFirst();
+                    methodName = "Set " + methodName.Substring(METHOD_SPECIAL_NAME_SET.Length)
+                        .CapitalizeFirst();
                     specialNameType = MethodType.PropertyAccessor;
                     return methodName;
                 }
@@ -436,14 +462,15 @@ namespace ParadoxNotion
             if (method is ConstructorInfo)
                 sig = string.Format("new {0} (", method.DeclaringType.FriendlyName());
             else
-                sig = string.Format("{0}{1} (", method.IsStatic && specialType != MethodType.Operator ? "static " : ""
-                    , methodName);
+                sig = string.Format("{0}{1} (",
+                    method.IsStatic && specialType != MethodType.Operator ? "static " : "",
+                    methodName);
 
             for (var i = 0; i < parameters.Length; i++) {
                 var p = parameters[i];
                 if (p.IsParams(parameters)) sig += "params ";
-                sig += (p.ParameterType.IsByRef ? p.IsOut ? "out " : "ref " : "") + p.ParameterType.FriendlyName() +
-                    (i < parameters.Length - 1 ? ", " : "");
+                sig += (p.ParameterType.IsByRef ? p.IsOut ? "out " : "ref " : "") +
+                    p.ParameterType.FriendlyName() + (i < parameters.Length - 1 ? ", " : "");
             }
             if (method is MethodInfo)
                 sig += ") : " + (method as MethodInfo).ReturnType.FriendlyName();
@@ -472,8 +499,12 @@ namespace ParadoxNotion
         public static Type RTReflectedOrDeclaredType(this MemberInfo member) =>
             member.ReflectedType != null ? member.ReflectedType : member.DeclaringType;
 
-        public static bool RTIsAssignableFrom(this Type type, Type other) => type.IsAssignableFrom(other);
-        public static bool RTIsAssignableTo(this Type type, Type other) => other.RTIsAssignableFrom(type);
+        public static bool RTIsAssignableFrom(this Type type, Type other) =>
+            type.IsAssignableFrom(other);
+
+        public static bool RTIsAssignableTo(this Type type, Type other) =>
+            other.RTIsAssignableFrom(type);
+
         public static bool RTIsAbstract(this Type type) => type.IsAbstract;
         public static bool RTIsValueType(this Type type) => type.IsValueType;
         public static bool RTIsArray(this Type type) => type.IsArray;
@@ -484,7 +515,10 @@ namespace ParadoxNotion
         public static MethodInfo RTGetGetMethod(this PropertyInfo prop) => prop.GetGetMethod();
         public static MethodInfo RTGetSetMethod(this PropertyInfo prop) => prop.GetSetMethod();
         public static MethodInfo RTGetDelegateMethodInfo(this Delegate del) => del.Method;
-        public static Type RTMakeGenericType(this Type type, params Type[] typeArgs) => type.MakeGenericType(typeArgs);
+
+        public static Type RTMakeGenericType(this Type type, params Type[] typeArgs) =>
+            type.MakeGenericType(typeArgs);
+
         public static Type[] RTGetEmptyTypes() => Type.EmptyTypes;
 
         public static Type RTGetElementType(this Type type)
@@ -562,7 +596,8 @@ namespace ParadoxNotion
         ///----------------------------------------------------------------------------------------------
 
         //Utility used bellow
-        private static bool MemberResolvedFromDeserializeAttribute(MemberInfo member, string targetName)
+        private static bool MemberResolvedFromDeserializeAttribute(MemberInfo member,
+            string targetName)
         {
             var att = member.RTGetAttribute<Serialization.DeserializeFromAttribute>(true);
             return att != null && att.previousTypeFullName == targetName;
@@ -577,13 +612,13 @@ namespace ParadoxNotion
                 if (m.Name == name || MemberResolvedFromDeserializeAttribute(m, name)) return m;
             }
             Logger.LogError(
-                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
-                , "Method Request");
+                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name,
+                    type.FriendlyName()), "Method Request");
             return null;
         }
 
-        public static MethodInfo RTGetMethod(this Type type, string name, Type[] paramTypes, Type returnType = null
-            , Type[] genericArgumentTypes = null)
+        public static MethodInfo RTGetMethod(this Type type, string name, Type[] paramTypes,
+            Type returnType = null, Type[] genericArgumentTypes = null)
         {
             var methods = type.RTGetMethods();
 
@@ -611,12 +646,13 @@ namespace ParadoxNotion
                 }
             }
             Logger.LogError(
-                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
-                , "Method Request");
+                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name,
+                    type.FriendlyName()), "Method Request");
             return null;
         }
 
-        public static FieldInfo RTGetField(this Type type, string name, bool includePrivateBase = false)
+        public static FieldInfo RTGetField(this Type type, string name,
+            bool includePrivateBase = false)
         {
             var current = type;
 
@@ -631,8 +667,8 @@ namespace ParadoxNotion
                 current = current.BaseType;
             }
             Logger.LogError(
-                string.Format("Field with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
-                , "Field Request");
+                string.Format("Field with name '{0}' on type '{1}', could not be resolved.", name,
+                    type.FriendlyName()), "Field Request");
             return null;
         }
 
@@ -645,8 +681,8 @@ namespace ParadoxNotion
                 if (p.Name == name || MemberResolvedFromDeserializeAttribute(p, name)) return p;
             }
             Logger.LogError(
-                string.Format("Property with name '{0}' on type '{1}', could not be resolved.", name
-                    , type.FriendlyName()), "Property Request");
+                string.Format("Property with name '{0}' on type '{1}', could not be resolved.",
+                    name, type.FriendlyName()), "Property Request");
             return null;
         }
 
@@ -666,8 +702,9 @@ namespace ParadoxNotion
                 if (p.Name == name || MemberResolvedFromDeserializeAttribute(p, name)) return p;
             }
             Logger.LogError(
-                string.Format("Field Or Property with name '{0}' on type '{1}', could not be resolved.", name
-                    , type.FriendlyName()), "Field/Property Request");
+                string.Format(
+                    "Field Or Property with name '{0}' on type '{1}', could not be resolved.", name,
+                    type.FriendlyName()), "Field/Property Request");
             return null;
         }
 
@@ -680,26 +717,30 @@ namespace ParadoxNotion
                 if (e.Name == name || MemberResolvedFromDeserializeAttribute(e, name)) return e;
             }
             Logger.LogError(
-                string.Format("Event with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
-                , "Event Request");
+                string.Format("Event with name '{0}' on type '{1}', could not be resolved.", name,
+                    type.FriendlyName()), "Event Request");
             return null;
         }
 
         ///<summary>return field or property value</summary>
-        public static object RTGetFieldOrPropValue(this MemberInfo member, object instance, int index = -1)
+        public static object RTGetFieldOrPropValue(this MemberInfo member, object instance,
+            int index = -1)
         {
             if (member is FieldInfo) return (member as FieldInfo).GetValue(instance);
             if (member is PropertyInfo)
-                return (member as PropertyInfo).GetValue(instance, index == -1 ? null : SingleTempArgsArray(index));
+                return (member as PropertyInfo).GetValue(instance,
+                    index == -1 ? null : SingleTempArgsArray(index));
             return null;
         }
 
         //set field or property value
-        public static void RTSetFieldOrPropValue(this MemberInfo member, object instance, object value, int index = -1)
+        public static void RTSetFieldOrPropValue(this MemberInfo member, object instance,
+            object value, int index = -1)
         {
             if (member is FieldInfo) (member as FieldInfo).SetValue(instance, value);
             if (member is PropertyInfo)
-                (member as PropertyInfo).SetValue(instance, value, index == -1 ? null : SingleTempArgsArray(index));
+                (member as PropertyInfo).SetValue(instance, value,
+                    index == -1 ? null : SingleTempArgsArray(index));
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -784,7 +825,8 @@ namespace ParadoxNotion
         public static T RTGetAttribute<T>(this Type type, bool inherited) where T : Attribute =>
             (T)type.RTGetAttribute(typeof(T), inherited);
 
-        public static Attribute RTGetAttribute(this Type type, Type attributeType, bool inherited) =>
+        public static Attribute
+            RTGetAttribute(this Type type, Type attributeType, bool inherited) =>
             type.GetCustomAttribute(attributeType, inherited);
 
         // object[] attributes = RTGetAllAttributes(type);
@@ -814,19 +856,20 @@ namespace ParadoxNotion
         }
 
         ///<summary>Is attribute defined?</summary>
-        public static bool RTIsDefined<T>(this MemberInfo member, bool inherited) where T : Attribute =>
-            member.RTIsDefined(typeof(T), inherited);
+        public static bool RTIsDefined<T>(this MemberInfo member, bool inherited)
+            where T : Attribute => member.RTIsDefined(typeof(T), inherited);
 
-        public static bool RTIsDefined(this MemberInfo member, Type attributeType, bool inherited) =>
+        public static bool
+            RTIsDefined(this MemberInfo member, Type attributeType, bool inherited) =>
             member.IsDefined(attributeType, inherited);
 
         // return inherited ? member.RTGetAttribute(attributeType, inherited) != null : member.IsDefined(attributeType, false);
         ///<summary>Get attribute from member of type T</summary>
-        public static T RTGetAttribute<T>(this MemberInfo member, bool inherited) where T : Attribute =>
-            (T)member.RTGetAttribute(typeof(T), inherited);
+        public static T RTGetAttribute<T>(this MemberInfo member, bool inherited)
+            where T : Attribute => (T)member.RTGetAttribute(typeof(T), inherited);
 
-        public static Attribute RTGetAttribute(this MemberInfo member, Type attributeType, bool inherited) =>
-            member.GetCustomAttribute(attributeType, inherited);
+        public static Attribute RTGetAttribute(this MemberInfo member, Type attributeType,
+            bool inherited) => member.GetCustomAttribute(attributeType, inherited);
 
         // object[] attributes = RTGetAllAttributes(member);
         // for ( var i = 0; i < attributes.Length; i++ ) {
@@ -854,14 +897,15 @@ namespace ParadoxNotion
         ///----------------------------------------------------------------------------------------------
         public static ParameterInfo[] RTGetDelegateTypeParameters(this Type delegateType)
         {
-            if (delegateType == null || !delegateType.RTIsSubclassOf(typeof(Delegate))) return new ParameterInfo[0];
+            if (delegateType == null || !delegateType.RTIsSubclassOf(typeof(Delegate)))
+                return new ParameterInfo[0];
             var invokeMethod = delegateType.RTGetMethod("Invoke");
             return invokeMethod.GetParameters();
         }
 
         ///<summary>Create delegate</summary>
-        public static T RTCreateDelegate<T>(this MethodInfo method, object instance) where T : Delegate =>
-            (T)(object)method.RTCreateDelegate(typeof(T), instance);
+        public static T RTCreateDelegate<T>(this MethodInfo method, object instance)
+            where T : Delegate => (T)(object)method.RTCreateDelegate(typeof(T), instance);
 
         ///<summary>Create delegate</summary>
         public static Delegate RTCreateDelegate(this MethodInfo method, Type type, object instance)
@@ -869,15 +913,17 @@ namespace ParadoxNotion
             if (instance != null) {
                 var instanceType = instance.GetType();
                 if (method.DeclaringType != instanceType)
-                    method = instanceType.RTGetMethod(method.Name
-                        , method.GetParameters().Select(p => p.ParameterType).ToArray());
+                    method = instanceType.RTGetMethod(method.Name,
+                        method.GetParameters().Select(p => p.ParameterType).ToArray());
             }
             return Delegate.CreateDelegate(type, instance, method);
         }
 
         ///<summary>Convert delegate</summary>
-        public static Delegate ConvertDelegate(Delegate originalDelegate, Type targetDelegateType) =>
-            Delegate.CreateDelegate(targetDelegateType, originalDelegate.Target, originalDelegate.Method);
+        public static Delegate
+            ConvertDelegate(Delegate originalDelegate, Type targetDelegateType) =>
+            Delegate.CreateDelegate(targetDelegateType, originalDelegate.Target,
+                originalDelegate.Method);
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Is the field read only?</summary>
@@ -902,7 +948,8 @@ namespace ParadoxNotion
 
         ///<summary>Is the parameter provided a params array?</summary>
         public static bool IsParams(this ParameterInfo parameter, ParameterInfo[] parameters) =>
-            parameter.Position == parameters.Length - 1 && parameter.IsDefined(typeof(ParamArrayAttribute), false);
+            parameter.Position == parameters.Length - 1 &&
+            parameter.IsDefined(typeof(ParamArrayAttribute), false);
 
         ///<summary>Utility to determine obsolete members quicker. Also handles property accessor methods.</summary>
         public static bool IsObsolete(this MemberInfo member, bool inherited = true)
@@ -927,9 +974,10 @@ namespace ParadoxNotion
             if (method == null) return null;
             var baseMethod = method.GetBaseDefinition();
             if (baseMethod == method) return propertyInfo;
-            var arguments = propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray();
-            return baseMethod.DeclaringType.GetProperty(propertyInfo.Name, FLAGS_ALL, null, propertyInfo.PropertyType
-                , arguments, null);
+            var arguments = propertyInfo.GetIndexParameters().Select(p => p.ParameterType)
+                .ToArray();
+            return baseMethod.DeclaringType.GetProperty(propertyInfo.Name, FLAGS_ALL, null,
+                propertyInfo.PropertyType, arguments, null);
         }
 
         ///<summary>BaseDefinition for FieldInfo. Not exactly correct but here for consistency.</summary>
@@ -953,7 +1001,8 @@ namespace ParadoxNotion
 
                 for (var j = 0; j < typeMethods.Length; j++) {
                     var m = typeMethods[j];
-                    if (m.IsExtensionMethod() && m.GetParameters()[0].ParameterType.RTIsAssignableFrom(targetType))
+                    if (m.IsExtensionMethod() && m.GetParameters()[0].ParameterType
+                        .RTIsAssignableFrom(targetType))
                         result.Add(m);
                 }
             }
@@ -969,7 +1018,8 @@ namespace ParadoxNotion
             method.GetMethodSpecialType() == MethodType.PropertyAccessor;
 
         ///<summary>Returns whether the property is an indexer.</summary>
-        public static bool IsIndexerProperty(this PropertyInfo property) => property.GetIndexParameters().Length != 0;
+        public static bool IsIndexerProperty(this PropertyInfo property) =>
+            property.GetIndexParameters().Length != 0;
 
         ///<summary>Returns if the property is auto.</summary>
         public static bool IsAutoProperty(this PropertyInfo property)
@@ -991,7 +1041,8 @@ namespace ParadoxNotion
         public static bool IsEnumerableCollection(this Type type)
         {
             if (type == null) return false;
-            return typeof(IEnumerable).RTIsAssignableFrom(type) && (type.RTIsGenericType() || type.RTIsArray());
+            return typeof(IEnumerable).RTIsAssignableFrom(type) &&
+                (type.RTIsGenericType() || type.RTIsArray());
         }
 
         ///<summary>Returns the element type of an enumerable type.</summary>
@@ -1007,7 +1058,8 @@ namespace ParadoxNotion
                 if (args.Length == 1) return args[0];
 
                 //This is special. We only support Dictionary<string, T> and always consider 1st arg to be string.
-                if (typeof(IDictionary).RTIsAssignableFrom(type) && args.Length == 2) return args[1];
+                if (typeof(IDictionary).RTIsAssignableFrom(type) && args.Length == 2)
+                    return args[1];
             }
             /*
             var interfaces = type.GetInterfaces();
@@ -1029,7 +1081,8 @@ namespace ParadoxNotion
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Returns the first generic argument type if type is generic and has only a single (1) generic argument.
+        ///     Returns the first generic argument type if type is generic and has only a single (1) generic
+        ///     argument.
         ///     Otherwise returns null.
         /// </summary>
         public static Type GetSingleGenericArgument(this Type type)
@@ -1041,7 +1094,10 @@ namespace ParadoxNotion
             return null;
         }
 
-        ///<summary>Returns the first argument parameter constraint. If no constraint, typeof(object) is returned.</summary>
+        /// <summary>
+        ///     Returns the first argument parameter constraint. If no constraint, typeof(object) is
+        ///     returned.
+        /// </summary>
         public static Type GetFirstGenericParameterConstraintType(this Type type)
         {
             if (type == null || !type.RTIsGenericType()) return null;
@@ -1051,7 +1107,10 @@ namespace ParadoxNotion
             return c1 != null ? c1 : typeof(object);
         }
 
-        ///<summary>Returns the first argument parameter constraint. If no constraint, typeof(object) is returned.</summary>
+        /// <summary>
+        ///     Returns the first argument parameter constraint. If no constraint, typeof(object) is
+        ///     returned.
+        /// </summary>
         public static Type GetFirstGenericParameterConstraintType(this MethodInfo method)
         {
             if (method == null || !method.IsGenericMethod) return null;
@@ -1061,8 +1120,11 @@ namespace ParadoxNotion
             return c1 != null ? c1 : typeof(object);
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Return true if def can be made generic with argType and outs the resulting generic type made</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Return true if def can be made generic with argType and outs the resulting generic type
+        ///     made
+        /// </summary>
         public static bool TryMakeGeneric(this Type def, Type argType, out Type result)
         {
             result = null;
@@ -1077,7 +1139,10 @@ namespace ParadoxNotion
             }
         }
 
-        ///<summary>Return true if def can be made generic with argType and outs the resulting generic method made</summary>
+        /// <summary>
+        ///     Return true if def can be made generic with argType and outs the resulting generic method
+        ///     made
+        /// </summary>
         public static bool TryMakeGeneric(this MethodInfo def, Type argType, out MethodInfo result)
         {
             result = null;
@@ -1121,10 +1186,12 @@ namespace ParadoxNotion
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Dig instance fields provided predicate and callbacks on found object value. IList and IDictionary are handled
+        ///     Dig instance fields provided predicate and callbacks on found object value. IList and
+        ///     IDictionary are handled
         ///     (IDictionary.Values only). Recursion is *NOT* checked for performance reasons, so be careful.
         /// </summary>
-        public static void DigFields(object root, Predicate<FieldInfo> move, Action<object> push, Action<object> pop)
+        public static void DigFields(object root, Predicate<FieldInfo> move, Action<object> push,
+            Action<object> pop)
         {
             if (root == null) return;
             var type = root.GetType();
@@ -1135,8 +1202,8 @@ namespace ParadoxNotion
             for (var i = 0; i < fields.Length; i++) {
                 var field = fields[i];
 
-                if (!field.IsStatic && !field.FieldType.IsPrimitive && field.FieldType != typeof(string) &&
-                    move(field)) {
+                if (!field.IsStatic && !field.FieldType.IsPrimitive &&
+                    field.FieldType != typeof(string) && move(field)) {
                     var value = field.GetValue(root);
                     if (value == null) continue;
 
@@ -1146,7 +1213,8 @@ namespace ParadoxNotion
                     }
 
                     if (value is IDictionary) {
-                        foreach (var item in ((IDictionary)value).Values) DigFields(item, move, push, pop);
+                        foreach (var item in ((IDictionary)value).Values)
+                            DigFields(item, move, push, pop);
                         continue;
                     }
                     DigFields(value, move, push, pop);
@@ -1161,7 +1229,8 @@ namespace ParadoxNotion
         {
 #if !NET_STANDARD_2_0 && (UNITY_EDITOR || (!ENABLE_IL2CPP && (UNITY_STANDALONE || UNITY_ANDROID || UNITY_WSA)))
             var name = string.Format("__get_field_{0}_", info.Name);
-            var fieldGetter = new DynamicMethod(name, typeof(TResult), new Type[] { typeof(T) }, typeof(T));
+            var fieldGetter =
+                new DynamicMethod(name, typeof(TResult), new Type[] { typeof(T) }, typeof(T));
             var il = fieldGetter.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(OpCodes.Ldfld, info);
@@ -1179,7 +1248,8 @@ namespace ParadoxNotion
         {
 #if !NET_STANDARD_2_0 && (UNITY_EDITOR || (!ENABLE_IL2CPP && (UNITY_STANDALONE || UNITY_ANDROID || UNITY_WSA)))
             var name = string.Format("__set_field_{0}_", info.Name);
-            var m = new DynamicMethod(name, typeof(void), new Type[] { typeof(T), typeof(TValue) }, typeof(T));
+            var m = new DynamicMethod(name, typeof(void), new Type[] { typeof(T), typeof(TValue) },
+                typeof(T));
             var il = m.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(OpCodes.Ldarg_1);

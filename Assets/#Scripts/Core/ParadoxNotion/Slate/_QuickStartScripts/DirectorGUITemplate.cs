@@ -103,7 +103,8 @@ namespace Slate
             dissolverImage.SetNativeSize();
         }
 
-        private void OnImageOverlayGUI(Texture texture, Color color, Vector2 scale, Vector2 position)
+        private void OnImageOverlayGUI(Texture texture, Color color, Vector2 scale,
+            Vector2 position)
         {
             if (texture == null) {
                 overlayTextGroup.alpha = 0;
@@ -123,7 +124,8 @@ namespace Slate
             var scaleTop = letterboxTop.rectTransform.localScale;
             var scaleBottom = letterboxBottom.rectTransform.localScale;
             scaleTop.y = Mathf.Max(Easing.Ease(EaseType.QuadraticInOut, 0, 1, completion), 0.01f);
-            scaleBottom.y = Mathf.Max(Easing.Ease(EaseType.QuadraticInOut, 0, 1, completion), 0.01f);
+            scaleBottom.y =
+                Mathf.Max(Easing.Ease(EaseType.QuadraticInOut, 0, 1, completion), 0.01f);
             letterboxTop.rectTransform.localScale = scaleTop;
             letterboxBottom.rectTransform.localScale = scaleBottom;
         }
@@ -134,7 +136,8 @@ namespace Slate
             screenFadeImage.color = color;
         }
 
-        private void OnTextOverlayGUI(string text, Color color, float size, TextAnchor anchor, Vector2 position)
+        private void OnTextOverlayGUI(string text, Color color, float size, TextAnchor anchor,
+            Vector2 position)
         {
             overlayTextGroup.alpha = color.a;
             overlayText.color = color;

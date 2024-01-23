@@ -4,8 +4,8 @@ using ParadoxNotion.Design;
 namespace FlowCanvas.Nodes
 {
     [Description(
-         "Utility node to merge the flow. It's exactly the same as connecting multiple Flow outputs to the same Flow input.")
-     , Name("Merge", 89)]
+         "Utility node to merge the flow. It's exactly the same as connecting multiple Flow outputs to the same Flow input."),
+     Name("Merge", 89)]
     public class Merge : FlowControlNode
     {
         [SerializeField, ExposeField, MinValue(2), DelayedField, GatherPortsCallback]

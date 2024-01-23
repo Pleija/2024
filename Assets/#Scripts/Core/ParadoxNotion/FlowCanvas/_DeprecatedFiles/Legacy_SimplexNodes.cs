@@ -7,7 +7,8 @@ namespace FlowCanvas.Nodes
     [Obsolete]
     public class SwitchValue<T> : PureFunctionNode<T, bool, T, T>
     {
-        public override T Invoke(bool condition, T isTrue, T isFalse) => condition ? isTrue : isFalse;
+        public override T Invoke(bool condition, T isTrue, T isFalse) =>
+            condition ? isTrue : isFalse;
     }
 
     [Obsolete]

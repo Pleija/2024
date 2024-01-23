@@ -46,8 +46,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
         private bool isWaitingChoice;
         private AudioSource _localSource;
 
-        private AudioSource localSource =>
-            _localSource != null ? _localSource : _localSource = gameObject.AddComponent<AudioSource>();
+        private AudioSource localSource => _localSource != null ? _localSource
+            : _localSource = gameObject.AddComponent<AudioSource>();
 
         private bool anyKeyDown;
         public void OnPointerClick(PointerEventData eventData) => anyKeyDown = true;
@@ -145,7 +145,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
             actorPortrait.sprite = actor.portraitSprite;
 
             if (audio != null) {
-                var actorSource = actor.transform != null ? actor.transform.GetComponent<AudioSource>() : null;
+                var actorSource = actor.transform != null
+                    ? actor.transform.GetComponent<AudioSource>() : null;
                 playSource = actorSource != null ? actorSource : localSource;
                 playSource.clip = audio;
                 playSource.Play();
@@ -193,7 +194,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                     }
                     actorSpeech.text = tempText;
                 }
-                if (!waitForInput) yield return StartCoroutine(DelayPrint(subtitleDelays.finalDelay));
+                if (!waitForInput)
+                    yield return StartCoroutine(DelayPrint(subtitleDelays.finalDelay));
             }
 
             if (waitForInput) {
@@ -235,8 +237,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
         {
             optionsGroup.gameObject.SetActive(true);
             var buttonHeight = optionButton.GetComponent<RectTransform>().rect.height;
-            optionsGroup.sizeDelta =
-                new Vector2(optionsGroup.sizeDelta.x, info.options.Values.Count * buttonHeight + 20);
+            optionsGroup.sizeDelta = new Vector2(optionsGroup.sizeDelta.x,
+                info.options.Values.Count * buttonHeight + 20);
             cachedButtons = new Dictionary<Button, int>();
             var i = 0;
 
@@ -244,8 +246,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                 var btn = (Button)Instantiate(optionButton);
                 btn.gameObject.SetActive(true);
                 btn.transform.SetParent(optionsGroup.transform, false);
-                btn.transform.localPosition =
-                    (Vector3)optionButton.transform.localPosition - new Vector3(0, buttonHeight * i, 0);
+                btn.transform.localPosition = (Vector3)optionButton.transform.localPosition -
+                    new Vector3(0, buttonHeight * i, 0);
                 btn.GetComponentInChildren<Text>().text = pair.Key.text;
                 cachedButtons.Add(btn, pair.Value);
                 btn.onClick.AddListener(() => {
@@ -257,7 +259,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
             if (info.showLastStatement) {
                 subtitlesGroup.gameObject.SetActive(true);
                 var newY = optionsGroup.position.y + optionsGroup.sizeDelta.y + 1;
-                subtitlesGroup.position = new Vector3(subtitlesGroup.position.x, newY, subtitlesGroup.position.z);
+                subtitlesGroup.position = new Vector3(subtitlesGroup.position.x, newY,
+                    subtitlesGroup.position.z);
             }
             if (info.availableTime > 0) StartCoroutine(CountDown(info));
         }
@@ -288,7 +291,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
 
         private void SetMassAlpha(RectTransform root, float alpha)
         {
-            foreach (var graphic in root.GetComponentsInChildren<CanvasRenderer>()) graphic.SetAlpha(alpha);
+            foreach (var graphic in root.GetComponentsInChildren<CanvasRenderer>())
+                graphic.SetAlpha(alpha);
         }
     }
 }

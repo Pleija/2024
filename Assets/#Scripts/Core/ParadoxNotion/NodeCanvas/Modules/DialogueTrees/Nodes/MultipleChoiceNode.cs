@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Icon("List"), Name("Multiple Choice"), Category("Branch")
-     , Description(
-         "Prompt a Dialogue Multiple Choice. A choice will be available if the choice condition(s) are true or there is no choice conditions. The Actor selected is used for the condition checks and will also Say the selection if the option is checked.")
-     , Color("b3ff7f")]
+    [Icon("List"), Name("Multiple Choice"), Category("Branch"),
+     Description(
+         "Prompt a Dialogue Multiple Choice. A choice will be available if the choice condition(s) are true or there is no choice conditions. The Actor selected is used for the condition checks and will also Say the selection if the option is checked."),
+     Color("b3ff7f")]
     public class MultipleChoiceNode : DTNode
     {
         [System.Serializable]
@@ -36,7 +36,8 @@ namespace NodeCanvas.DialogueTrees
 
         protected override Status OnExecute(Component agent, IBlackboard bb)
         {
-            if (outConnections.Count == 0) return Error("There are no connections to the Multiple Choice Node!");
+            if (outConnections.Count == 0)
+                return Error("There are no connections to the Multiple Choice Node!");
             var finalOptions = new Dictionary<IStatement, int>();
 
             for (var i = 0; i < availableChoices.Count; i++) {
@@ -49,12 +50,14 @@ namespace NodeCanvas.DialogueTrees
             }
 
             if (finalOptions.Count == 0) {
-                ParadoxNotion.Services.Logger.Log("Multiple Choice Node has no available options. Dialogue Ends."
-                    , LogTag.EXECUTION, this);
+                ParadoxNotion.Services.Logger.Log(
+                    "Multiple Choice Node has no available options. Dialogue Ends.",
+                    LogTag.EXECUTION, this);
                 DLGTree.Stop(false);
                 return Status.Failure;
             }
-            var optionsInfo = new MultipleChoiceRequestInfo(finalActor, finalOptions, availableTime, OnOptionSelected);
+            var optionsInfo = new MultipleChoiceRequestInfo(finalActor, finalOptions, availableTime,
+                OnOptionSelected);
             optionsInfo.showLastStatement = true;
             DialogueTree.RequestMultipleChoices(optionsInfo);
             return Status.Running;
@@ -68,7 +71,8 @@ namespace NodeCanvas.DialogueTrees
             };
 
             if (saySelection) {
-                var tempStatement = availableChoices[index].statement.BlackboardReplace(graphBlackboard);
+                var tempStatement = availableChoices[index].statement
+                    .BlackboardReplace(graphBlackboard);
                 var speechInfo = new SubtitlesRequestInfo(finalActor, tempStatement, Finalize);
                 DialogueTree.RequestSubtitles(speechInfo);
             }
@@ -105,8 +109,8 @@ namespace NodeCanvas.DialogueTrees
                 var connection = i < outConnections.Count ? outConnections[i] : null;
                 GUILayout.BeginHorizontal(Styles.roundedBox);
                 GUILayout.Label(
-                    string.Format("{0} {1}", connection != null ? "■" : "□", choice.statement.text.CapLength(30))
-                    , Styles.leftLabel);
+                    string.Format("{0} {1}", connection != null ? "■" : "□",
+                        choice.statement.text.CapLength(30)), Styles.leftLabel);
                 GUILayout.EndHorizontal();
             }
             GUILayout.BeginHorizontal();
@@ -118,13 +122,16 @@ namespace NodeCanvas.DialogueTrees
         protected override void OnNodeInspectorGUI()
         {
             base.OnNodeInspectorGUI();
-            if (GUILayout.Button("Add Choice")) availableChoices.Add(new Choice(new Statement("I am a choice...")));
+            if (GUILayout.Button("Add Choice"))
+                availableChoices.Add(new Choice(new Statement("I am a choice...")));
             if (availableChoices.Count == 0) return;
             EditorUtils.ReorderableList(availableChoices, (i, picked) => {
                 var choice = availableChoices[i];
                 GUILayout.BeginHorizontal("box");
-                var text = string.Format("{0} {1}", choice.isUnfolded ? "▼ " : "► ", choice.statement.text);
-                if (GUILayout.Button(text, (GUIStyle)"label", GUILayout.Width(0), GUILayout.ExpandWidth(true)))
+                var text = string.Format("{0} {1}", choice.isUnfolded ? "▼ " : "► ",
+                    choice.statement.text);
+                if (GUILayout.Button(text, (GUIStyle)"label", GUILayout.Width(0),
+                    GUILayout.ExpandWidth(true)))
                     choice.isUnfolded = !choice.isUnfolded;
 
                 if (GUILayout.Button("X", GUILayout.Width(20))) {
@@ -142,10 +149,10 @@ namespace NodeCanvas.DialogueTrees
             GUILayout.Space(10);
             GUILayout.BeginVertical("box");
             choice.statement.text = UnityEditor.EditorGUILayout.TextField(choice.statement.text);
-            choice.statement.audio =
-                UnityEditor.EditorGUILayout.ObjectField("Audio File", choice.statement.audio, typeof(AudioClip), false)
-                    as AudioClip;
-            choice.statement.meta = UnityEditor.EditorGUILayout.TextField("Meta Data", choice.statement.meta);
+            choice.statement.audio = UnityEditor.EditorGUILayout.ObjectField("Audio File",
+                choice.statement.audio, typeof(AudioClip), false) as AudioClip;
+            choice.statement.meta =
+                UnityEditor.EditorGUILayout.TextField("Meta Data", choice.statement.meta);
             Editor.TaskEditor.TaskFieldMulti<ConditionTask>(choice.condition, graph, (c) => {
                 choice.condition = c;
             });

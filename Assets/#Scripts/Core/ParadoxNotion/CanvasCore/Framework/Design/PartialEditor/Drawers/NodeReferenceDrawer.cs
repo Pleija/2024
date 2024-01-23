@@ -7,7 +7,10 @@ using ParadoxNotion;
 
 namespace NodeCanvas.Editor
 {
-    ///<summary>A drawer for INodeReference which is useful to weak reference nodes from within one another</summary>
+    /// <summary>
+    ///     A drawer for INodeReference which is useful to weak reference nodes from within one
+    ///     another
+    /// </summary>
     public class NodeReferenceDrawer : ObjectDrawer<INodeReference>
     {
         public override INodeReference OnGUI(GUIContent content, INodeReference instance)

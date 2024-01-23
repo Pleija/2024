@@ -15,7 +15,8 @@ namespace NodeCanvas.Framework
     //*RECOVERY PROCESSOR IS INSTEAD APPLIED RESPECTIVELY IN ACTIONTASK - CONDITIONTASK*//
 
     /// <summary>
-    ///     The base class for all Actions and Conditions. You dont actually use or derive this class. Instead derive from
+    ///     The base class for all Actions and Conditions. You dont actually use or derive this class.
+    ///     Instead derive from
     ///     ActionTask and ConditionTask
     /// </summary>
     [Serializable, fsDeserializeOverwrite, SpoofAOT]
@@ -34,7 +35,8 @@ namespace NodeCanvas.Framework
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     If the field type this attribute is used derives Component, then it will be retrieved from the agent. The
+        ///     If the field type this attribute is used derives Component, then it will be retrieved from the
+        ///     agent. The
         ///     field is also considered Required for correct initialization.
         /// </summary>
         [AttributeUsage(AttributeTargets.Field)]
@@ -64,7 +66,8 @@ namespace NodeCanvas.Framework
         public Task() { }
 
         ///<summary>Create a new Task of type assigned to the target ITaskSystem</summary>
-        public static T Create<T>(ITaskSystem newOwnerSystem) where T : Task => (T)Create(typeof(T), newOwnerSystem);
+        public static T Create<T>(ITaskSystem newOwnerSystem) where T : Task =>
+            (T)Create(typeof(T), newOwnerSystem);
 
         public static Task Create(Type type, ITaskSystem newOwnerSystem)
         {
@@ -115,7 +118,8 @@ namespace NodeCanvas.Framework
         public Component ownerSystemAgent => ownerSystem != null ? ownerSystem.agent : null;
 
         ///<summary>The owner system's assigned blackboard</summary>
-        public IBlackboard ownerSystemBlackboard => ownerSystem != null ? ownerSystem.blackboard : null;
+        public IBlackboard ownerSystemBlackboard =>
+            ownerSystem != null ? ownerSystem.blackboard : null;
 
         ///<summary>The time in seconds that the owner system is running</summary>
         public float ownerSystemElapsedTime => ownerSystem != null ? ownerSystem.elapsedTime : 0;
@@ -143,7 +147,8 @@ namespace NodeCanvas.Framework
             get {
                 if (_taskName == null) {
                     var nameAtt = GetType().RTGetAttribute<NameAttribute>(false);
-                    _taskName = nameAtt != null ? nameAtt.name : GetType().FriendlyName().SplitCamelCase();
+                    _taskName = nameAtt != null ? nameAtt.name
+                        : GetType().FriendlyName().SplitCamelCase();
                 }
                 return _taskName;
             }
@@ -164,13 +169,14 @@ namespace NodeCanvas.Framework
         public string summaryInfo {
             get {
 #if UNITY_EDITOR
-                if (!Editor.Prefs.showTaskSummary && !(this is ActionList) && !(this is ConditionList))
+                if (!Editor.Prefs.showTaskSummary && !(this is ActionList) &&
+                    !(this is ConditionList))
                     return string.Format("<b>{0}</b>", name);
 #endif
                 if (this is ActionTask) return (agentIsOverride ? "* " : "") + info;
                 if (this is ConditionTask)
-                    return (agentIsOverride ? "* " : "") + ((this as ConditionTask).invert ? "If <b>!</b> " : "If ") +
-                        info;
+                    return (agentIsOverride ? "* " : "") +
+                        ((this as ConditionTask).invert ? "If <b>!</b> " : "If ") + info;
                 return info;
             }
         }
@@ -179,17 +185,21 @@ namespace NodeCanvas.Framework
         protected virtual string info => name;
 
         /// <summary>
-        ///     The type that the agent will be set to by getting component from itself on task initialize. Also defined by
-        ///     using the generic versions of Action and Condition Tasks. You can omit this to keep the agent propagated as is or
+        ///     The type that the agent will be set to by getting component from itself on task initialize.
+        ///     Also defined by
+        ///     using the generic versions of Action and Condition Tasks. You can omit this to keep the agent
+        ///     propagated as is or
         ///     if there is no need for a specific type anyway.
         /// </summary>
         public virtual Type agentType => null;
 
         ///<summary>Helper summary info to display final agent string within task info if needed</summary>
-        public string agentInfo => _agentParameter != null ? _agentParameter.ToString() : "<b>Self</b>";
+        public string agentInfo =>
+            _agentParameter != null ? _agentParameter.ToString() : "<b>Self</b>";
 
         /// <summary>
-        ///     The name of the blackboard variable selected if the agent is overriden and set to a blackboard variable or
+        ///     The name of the blackboard variable selected if the agent is overriden and set to a blackboard
+        ///     variable or
         ///     direct assignment.
         /// </summary>
         public string agentParameterName => _agentParameter != null ? _agentParameter.name : null;
@@ -220,19 +230,25 @@ namespace NodeCanvas.Framework
         public IBlackboard blackboard => ownerSystemBlackboard;
 
         /// <summary>
-        ///     The cached EventRouter of the current agent used to subscribe/unsubscribe events. Use this for custom named
+        ///     The cached EventRouter of the current agent used to subscribe/unsubscribe events. Use this for
+        ///     custom named
         ///     events as well -> '.router.onCustomEvent'
         /// </summary>
-        public EventRouter router => _eventRouter != null ? _eventRouter
-            : _eventRouter = agent == null ? null : agent.gameObject.GetAddComponent<EventRouter>();
+        public EventRouter router => _eventRouter != null ? _eventRouter : _eventRouter =
+            agent == null ? null : agent.gameObject.GetAddComponent<EventRouter>();
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Actions and Conditions call this before execution. Returns if the task was sucessfully initialized as well</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Actions and Conditions call this before execution. Returns if the task was sucessfully
+        ///     initialized as well
+        /// </summary>
         protected bool Set(Component newAgent, IBlackboard newBB)
         {
-            Debug.Assert(ReferenceEquals(newBB, ownerSystemBlackboard), "Set Blackboard != Owner Blackboard");
+            Debug.Assert(ReferenceEquals(newBB, ownerSystemBlackboard),
+                "Set Blackboard != Owner Blackboard");
             if (agentIsOverride) newAgent = (Component)_agentParameter.value;
-            if (_currentAgent != null && newAgent != null && _currentAgent.gameObject == newAgent.gameObject)
+            if (_currentAgent != null && newAgent != null &&
+                _currentAgent.gameObject == newAgent.gameObject)
                 return _isInitSuccess;
             return _isInitSuccess = Initialize(newAgent);
         }
@@ -274,24 +290,28 @@ namespace NodeCanvas.Framework
                 if (field.RTIsDefined<RequiredFieldAttribute>(true)) {
                     var value = field.GetValue(this);
                     if (value == null || value.Equals(null))
-                        return Error(string.Format("A required field named '{0}' is not set.", field.Name));
+                        return Error(string.Format("A required field named '{0}' is not set.",
+                            field.Name));
                     if (field.FieldType == typeof(string) && string.IsNullOrEmpty((string)value))
-                        return Error(string.Format("A required string field named '{0}' is not set.", field.Name));
-                    if (typeof(BBParameter).RTIsAssignableFrom(field.FieldType) && (value as BBParameter).isNull)
-                        return Error(string.Format("A required BBParameter field value named '{0}' is not set."
-                            , field.Name));
+                        return Error(string.Format(
+                            "A required string field named '{0}' is not set.", field.Name));
+                    if (typeof(BBParameter).RTIsAssignableFrom(field.FieldType) &&
+                        (value as BBParameter).isNull)
+                        return Error(string.Format(
+                            "A required BBParameter field value named '{0}' is not set.",
+                            field.Name));
                 }
 #endif
 
-                if (newAgent != null &&
-                    (typeof(Component).RTIsAssignableFrom(field.FieldType) || field.FieldType.IsInterface))
+                if (newAgent != null && (typeof(Component).RTIsAssignableFrom(field.FieldType) ||
+                    field.FieldType.IsInterface))
                     if (field.RTIsDefined<GetFromAgentAttribute>(true)) {
                         var o = newAgent.GetComponent(field.FieldType);
                         field.SetValue(this, o);
                         if (ReferenceEquals(o, null))
                             return Error(string.Format(
-                                "GetFromAgent Attribute failed to get the required Component of type '{0}' from '{1}'. Does it exist?"
-                                , field.FieldType.Name, agent.gameObject.name));
+                                "GetFromAgent Attribute failed to get the required Component of type '{0}' from '{1}'. Does it exist?",
+                                field.FieldType.Name, agent.gameObject.name));
                     }
             }
 #endif
@@ -307,8 +327,8 @@ namespace NodeCanvas.Framework
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Tasks can start coroutine through MonoManager</summary>
-        protected Coroutine StartCoroutine(IEnumerator routine) =>
-            MonoManager.current != null ? MonoManager.current.StartCoroutine(routine) : null;
+        protected Coroutine StartCoroutine(IEnumerator routine) => MonoManager.current != null
+            ? MonoManager.current.StartCoroutine(routine) : null;
 
         ///<summary>Tasks can start coroutine through MonoManager</summary>
         protected void StopCoroutine(Coroutine routine)
@@ -340,7 +360,8 @@ namespace NodeCanvas.Framework
             if (userError != null) return userError;
             if (obsolete != string.Empty) return string.Format("Task is obsolete: '{0}'", obsolete);
             if (agentType != null && agent == null)
-                if (_agentParameter == null || (_agentParameter.isNoneOrNull && !_agentParameter.isDefined))
+                if (_agentParameter == null ||
+                    (_agentParameter.isNoneOrNull && !_agentParameter.isDefined))
                     return string.Format("* '{0}' target agent is null", agentType.Name);
             var fields = GetType().RTGetFields();
 
@@ -350,17 +371,20 @@ namespace NodeCanvas.Framework
                 if (field.RTIsDefined<RequiredFieldAttribute>(true)) {
                     var value = field.GetValue(this);
                     if (value == null || value.Equals(null))
-                        return string.Format("* Required field '{0}' is null", field.Name.SplitCamelCase());
+                        return string.Format("* Required field '{0}' is null",
+                            field.Name.SplitCamelCase());
                     if (field.FieldType == typeof(string) && string.IsNullOrEmpty((string)value))
-                        return string.Format("* Required string field '{0}' is null or empty"
-                            , field.Name.SplitCamelCase());
+                        return string.Format("* Required string field '{0}' is null or empty",
+                            field.Name.SplitCamelCase());
 
                     if (typeof(BBParameter).RTIsAssignableFrom(field.FieldType)) {
                         var bbParam = value as BBParameter;
                         if (bbParam == null)
-                            return string.Format("* BBParameter '{0}' is null", field.Name.SplitCamelCase());
+                            return string.Format("* BBParameter '{0}' is null",
+                                field.Name.SplitCamelCase());
                         else if (!bbParam.isDefined && bbParam.isNoneOrNull)
-                            return string.Format("* Required parameter '{0}' is null", field.Name.SplitCamelCase());
+                            return string.Format("* Required parameter '{0}' is null",
+                                field.Name.SplitCamelCase());
                     }
                 }
             }
@@ -374,7 +398,8 @@ namespace NodeCanvas.Framework
         private string GetHardError()
         {
             if (this is IMissingRecoverable)
-                return string.Format("Missing Task '{0}'", (this as IMissingRecoverable).missingType);
+                return string.Format("Missing Task '{0}'",
+                    (this as IMissingRecoverable).missingType);
 
             if (this is IReflectedWrapper) {
                 var info = (this as IReflectedWrapper).GetSerializedInfo();
@@ -386,7 +411,8 @@ namespace NodeCanvas.Framework
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Override in Tasks. This is called AFTER a NEW agent is set, after initialization and before execution. Return
+        ///     Override in Tasks. This is called AFTER a NEW agent is set, after initialization and before
+        ///     execution. Return
         ///     null if everything is ok, or a string with the error if not.
         /// </summary>
         protected virtual string OnInit() => null;
@@ -436,7 +462,8 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     Optional override to show custom controls whenever the ShowTaskInspectorGUI is called. By default controls
+        ///     Optional override to show custom controls whenever the ShowTaskInspectorGUI is called. By
+        ///     default controls
         ///     will automaticaly show for most types.
         /// </summary>
         protected virtual void OnTaskInspectorGUI()

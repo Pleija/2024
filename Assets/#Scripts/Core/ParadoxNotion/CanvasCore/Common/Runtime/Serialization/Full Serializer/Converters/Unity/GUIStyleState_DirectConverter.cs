@@ -7,7 +7,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
 {
     public class GUIStyleState_DirectConverter : fsDirectConverter<GUIStyleState>
     {
-        protected override fsResult DoSerialize(GUIStyleState model, Dictionary<string, fsData> serialized)
+        protected override fsResult DoSerialize(GUIStyleState model,
+            Dictionary<string, fsData> serialized)
         {
             var result = fsResult.Success;
             result += SerializeMember(serialized, null, "background", model.background);
@@ -15,7 +16,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GUIStyleState model)
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data,
+            ref GUIStyleState model)
         {
             var result = fsResult.Success;
             var t0 = model.background;

@@ -9,10 +9,10 @@ using UnityEngine;
 namespace FlowCanvas.Nodes
 {
     //Wrap public readable properties and fields for selected type
-    [DoNotList
-     , Description(
-         "Chose and expose any number of fields or properties of the type. If you only require a single field / property, it's better to get that field / property directly without an Extractor.")
-     , Icon(runtimeIconTypeCallback: nameof(GetRuntimeIconType))]
+    [DoNotList,
+     Description(
+         "Chose and expose any number of fields or properties of the type. If you only require a single field / property, it's better to get that field / property directly without an Extractor."),
+     Icon(runtimeIconTypeCallback: nameof(GetRuntimeIconType))]
     public class ReflectedExtractorNodeWrapper<T> : FlowNode
     {
         public Type GetRuntimeIconType() => typeof(T);
@@ -63,8 +63,8 @@ namespace FlowCanvas.Nodes
                 MemberInfo info;
                 if (!_memberInfos.TryGetValue(name, out info))
                     ParadoxNotion.Services.Logger.LogError(
-                        string.Format("Field/Property named '{0}', was not found on type '{1}'", name, typeof(T))
-                        , "Extractor", this);
+                        string.Format("Field/Property named '{0}', was not found on type '{1}'",
+                            name, typeof(T)), "Extractor", this);
                 final[i] = info;
             }
             extractorNode = BaseReflectedExtractorNode.GetExtractorNode(typeof(T), false, final);
@@ -84,15 +84,15 @@ namespace FlowCanvas.Nodes
 
             if (_instanceMemberNames.Count <= 0) {
                 UnityEditor.EditorGUILayout.HelpBox(
-                    "This type has neither public fields nor public properties to extract."
-                    , UnityEditor.MessageType.Info);
+                    "This type has neither public fields nor public properties to extract.",
+                    UnityEditor.MessageType.Info);
                 return;
             }
             if (_selectedInstanceMembers == null) _selectedInstanceMembers = new List<string>();
 
             if (DoListCheckout(_instanceMemberNames, ref _selectedInstanceMembers)) {
-                _selectedInstanceMembers =
-                    _selectedInstanceMembers.OrderBy(x => _instanceMemberNames.IndexOf(x)).ToList();
+                _selectedInstanceMembers = _selectedInstanceMembers
+                    .OrderBy(x => _instanceMemberNames.IndexOf(x)).ToList();
                 GatherPorts();
             }
         }

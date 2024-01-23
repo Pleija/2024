@@ -11,8 +11,11 @@ namespace ParadoxNotion.Design
     public static class PropertyDrawerFactory
     {
         //Type to drawer instance map
-        private static Dictionary<Type, IObjectDrawer> objectDrawers = new Dictionary<Type, IObjectDrawer>();
-        private static Dictionary<Type, IAttributeDrawer> attributeDrawers = new Dictionary<Type, IAttributeDrawer>();
+        private static Dictionary<Type, IObjectDrawer> objectDrawers =
+            new Dictionary<Type, IObjectDrawer>();
+
+        private static Dictionary<Type, IAttributeDrawer> attributeDrawers =
+            new Dictionary<Type, IAttributeDrawer>();
 
         public static void FlushMem()
         {
@@ -35,12 +38,14 @@ namespace ParadoxNotion.Design
 
                     if (args.Length == 1) {
                         if (args[0].IsEquivalentTo(objectType))
-                            return objectDrawers[objectType] = Activator.CreateInstance(drawerType) as IObjectDrawer;
+                            return objectDrawers[objectType] =
+                                Activator.CreateInstance(drawerType) as IObjectDrawer;
                         if (args[0].IsAssignableFrom(objectType)) fallbackDrawerType = drawerType;
                     }
                 }
             if (fallbackDrawerType != null)
-                return objectDrawers[objectType] = Activator.CreateInstance(fallbackDrawerType) as IObjectDrawer;
+                return objectDrawers[objectType] =
+                    Activator.CreateInstance(fallbackDrawerType) as IObjectDrawer;
 
             // foreach ( var drawerType in ReflectionTools.GetImplementationsOf(typeof(IObjectDrawer)) ) {
             //     if ( drawerType != typeof(DefaultObjectDrawer) ) {
@@ -56,7 +61,8 @@ namespace ParadoxNotion.Design
         }
 
         ///<summary>Return an attribute drawer instance of target attribute instance</summary>
-        public static IAttributeDrawer GetAttributeDrawer(DrawerAttribute att) => GetAttributeDrawer(att.GetType());
+        public static IAttributeDrawer GetAttributeDrawer(DrawerAttribute att) =>
+            GetAttributeDrawer(att.GetType());
 
         ///<summary>Return an attribute drawer instance of target attribute type</summary>
         public static IAttributeDrawer GetAttributeDrawer(Type attributeType)
@@ -64,7 +70,8 @@ namespace ParadoxNotion.Design
             IAttributeDrawer result = null;
             if (attributeDrawers.TryGetValue(attributeType, out result)) return result;
 
-            foreach (var drawerType in ReflectionTools.GetImplementationsOf(typeof(IAttributeDrawer)))
+            foreach (var drawerType in ReflectionTools.GetImplementationsOf(
+                typeof(IAttributeDrawer)))
                 if (drawerType != typeof(DefaultAttributeDrawer)) {
                     var args = drawerType.BaseType.RTGetGenericArguments();
                     if (args.Length == 1 && args[0].IsAssignableFrom(attributeType))
@@ -84,8 +91,8 @@ namespace ParadoxNotion.Design
 
     public interface IAttributeDrawer
     {
-        object DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance, DrawerAttribute attribute
-            , InspectedFieldInfo info);
+        object DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance,
+            DrawerAttribute attribute, InspectedFieldInfo info);
     }
 
     ///----------------------------------------------------------------------------------------------
@@ -122,8 +129,8 @@ namespace ParadoxNotion.Design
             this.content = content;
             this.instance = (T)instance;
             this.info = info;
-            attributes = info.attributes != null
-                ? info.attributes.OfType<DrawerAttribute>().OrderBy(a => a.priority).ToArray() : null;
+            attributes = info.attributes != null ? info.attributes.OfType<DrawerAttribute>()
+                .OrderBy(a => a.priority).ToArray() : null;
             attributeIndex = -1;
             var result = (this as IObjectDrawer).MoveNextDrawer();
 
@@ -135,7 +142,10 @@ namespace ParadoxNotion.Design
             return result;
         }
 
-        ///<summary>Show the next attribute drawer in order, or the object drawer itself of no attribute drawer is left to show.</summary>
+        /// <summary>
+        ///     Show the next attribute drawer in order, or the object drawer itself of no attribute
+        ///     drawer is left to show.
+        /// </summary>
         object IObjectDrawer.MoveNextDrawer()
         {
             attributeIndex++;
@@ -191,8 +201,8 @@ namespace ParadoxNotion.Design
         protected UnityEngine.Object contextUnityObject => info.unityObjectContext;
 
         ///<summary>Begin GUI</summary>
-        object IAttributeDrawer.DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance
-            , DrawerAttribute attribute, InspectedFieldInfo info)
+        object IAttributeDrawer.DrawGUI(IObjectDrawer objectDrawer, GUIContent content,
+            object instance, DrawerAttribute attribute, InspectedFieldInfo info)
         {
             this.objectDrawer = objectDrawer;
             this.content = content;
@@ -213,7 +223,10 @@ namespace ParadoxNotion.Design
         ///<summary>Override to implement GUI. Return the modified instance at the end.</summary>
         public abstract object OnGUI(GUIContent content, object instance);
 
-        ///<summary>Show the next attribute drawer in order, or the object drawer itself of no attribute drawer is left to show.</summary>
+        /// <summary>
+        ///     Show the next attribute drawer in order, or the object drawer itself of no attribute
+        ///     drawer is left to show.
+        /// </summary>
         protected object MoveNextDrawer() => objectDrawer.MoveNextDrawer();
     }
 
@@ -225,7 +238,8 @@ namespace ParadoxNotion.Design
 
         public override object OnGUI(GUIContent content, object instance)
         {
-            GUILayout.Label(string.Format("Implementation of '{0}' drawer attribute not found.", attributeType));
+            GUILayout.Label(string.Format("Implementation of '{0}' drawer attribute not found.",
+                attributeType));
             return MoveNextDrawer();
         }
     }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Override Agent"), Category("Decorators")
-     , Description(
-         "Set another Agent for the rest of the Tree dynamicaly from this point and on. All nodes under this will be executed with the new agent. You can also use this decorator to revert back to the original graph agent.")
-     , Icon("Agent")]
+    [Name("Override Agent"), Category("Decorators"),
+     Description(
+         "Set another Agent for the rest of the Tree dynamicaly from this point and on. All nodes under this will be executed with the new agent. You can also use this decorator to revert back to the original graph agent."),
+     Icon("Agent")]
     public class Setter : BTDecorator
     {
         [Tooltip("If enabled, will revert back to the original graph agent.")]
@@ -28,7 +28,8 @@ namespace NodeCanvas.BehaviourTrees
 #if UNITY_EDITOR
         protected override void OnNodeGUI()
         {
-            GUILayout.Label(string.Format("Agent = {0}", revertToOriginal ? "Original" : newAgent.ToString()));
+            GUILayout.Label(string.Format("Agent = {0}",
+                revertToOriginal ? "Original" : newAgent.ToString()));
         }
 
 #endif

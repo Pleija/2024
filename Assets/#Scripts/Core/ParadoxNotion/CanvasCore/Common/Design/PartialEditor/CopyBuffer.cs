@@ -30,7 +30,8 @@ namespace ParadoxNotion.Design
         ///<summary>Returns a copy</summary>
         public static T Get<T>()
         {
-            if (cachedCopies.TryGetValue(typeof(T), out var json)) return JSONSerializer.Deserialize<T>(json);
+            if (cachedCopies.TryGetValue(typeof(T), out var json))
+                return JSONSerializer.Deserialize<T>(json);
             return default;
         }
 

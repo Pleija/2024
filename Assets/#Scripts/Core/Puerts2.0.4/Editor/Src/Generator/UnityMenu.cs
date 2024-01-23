@@ -73,7 +73,8 @@ namespace Puerts.Editor
 
                 if (Directory.Exists(saveTo)) {
                     Directory.Delete(saveTo, true);
-                    AssetDatabase.DeleteAsset(saveTo.Substring(saveTo.IndexOf("Assets") + "Assets".Length));
+                    AssetDatabase.DeleteAsset(
+                        saveTo.Substring(saveTo.IndexOf("Assets") + "Assets".Length));
                     AssetDatabase.Refresh();
                 }
             }
@@ -85,7 +86,8 @@ namespace Puerts.Editor
                 var saveTo = Configure.GetCodeOutputDirectory();
                 Directory.CreateDirectory(saveTo);
                 FileExporter.GenRegisterInfo(saveTo);
-                Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds + " ms Outputed to " + saveTo);
+                Debug.Log("finished! use " + (DateTime.Now - start).TotalMilliseconds +
+                    " ms Outputed to " + saveTo);
                 AssetDatabase.Refresh();
             }
 #endif

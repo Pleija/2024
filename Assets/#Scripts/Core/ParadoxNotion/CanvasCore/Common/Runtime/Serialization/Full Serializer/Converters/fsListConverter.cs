@@ -7,13 +7,14 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
 {
     public class fsListConverter : fsConverter
     {
-        public override bool CanProcess(Type type) =>
-            type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+        public override bool CanProcess(Type type) => type.IsGenericType &&
+            type.GetGenericTypeDefinition() == typeof(List<>);
 
         public override object CreateInstance(fsData data, Type storageType) =>
             fsMetaType.Get(storageType).CreateInstance();
 
-        public override fsResult TrySerialize(object instance_, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance_, out fsData serialized,
+            Type storageType)
         {
             var instance = (IList)instance_;
             var result = fsResult.Success;
@@ -47,10 +48,12 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
             var elementType = storageType.RTGetGenericArguments()[0];
 
             //if we have the exact same count, deserialize overwrite
-            if (instance.Count == data.AsList.Count && fsMetaType.Get(elementType).DeserializeOverwriteRequest) {
+            if (instance.Count == data.AsList.Count &&
+                fsMetaType.Get(elementType).DeserializeOverwriteRequest) {
                 for (var i = 0; i < data.AsList.Count; i++) {
                     var item = instance[i];
-                    var itemResult = Serializer.TryDeserialize(data.AsList[i], elementType, ref item);
+                    var itemResult =
+                        Serializer.TryDeserialize(data.AsList[i], elementType, ref item);
                     if (itemResult.Failed) continue;
                     instance[i] = item;
                 }

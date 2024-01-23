@@ -16,7 +16,9 @@ using System.Threading.Tasks;
 
 namespace Puerts
 {
-    public delegate void JSFunctionCallback(IntPtr isolate, IntPtr info, IntPtr self, int argumentsLen);
+    public delegate void JSFunctionCallback(IntPtr isolate, IntPtr info, IntPtr self,
+        int argumentsLen);
+
     public delegate object JSConstructorCallback(IntPtr isolate, IntPtr info, int argumentsLen);
 
     public partial class JsEnv : IDisposable
@@ -57,17 +59,20 @@ namespace Puerts
 #endif
         internal Action OnDispose;
         public JsEnv() : this(new DefaultLoader(), -1, IntPtr.Zero, IntPtr.Zero) { }
-        public JsEnv(ILoader loader, int debugPort = -1) : this(loader, debugPort, IntPtr.Zero, IntPtr.Zero) { }
 
-        public JsEnv(ILoader loader, IntPtr externalRuntime, IntPtr externalContext) : this(loader, -1, externalRuntime
-            , externalContext) { }
+        public JsEnv(ILoader loader, int debugPort = -1) : this(loader, debugPort, IntPtr.Zero,
+            IntPtr.Zero) { }
+
+        public JsEnv(ILoader loader, IntPtr externalRuntime, IntPtr externalContext) : this(loader,
+            -1, externalRuntime, externalContext) { }
 
         public JsEnv(ILoader loader, int debugPort, IntPtr externalRuntime, IntPtr externalContext)
         {
             const int libVersionExpect = 32;
             var libVersion = PuertsDLL.GetApiLevel();
             if (libVersion != libVersionExpect)
-                throw new InvalidProgramException("expect lib version " + libVersionExpect + ", but got " + libVersion);
+                throw new InvalidProgramException("expect lib version " + libVersionExpect +
+                    ", but got " + libVersion);
             // PuertsDLL.SetLogCallback(LogCallback, LogWarningCallback, LogErrorCallback);
             this.loader = loader;
             loaderCanCheckESM = loader is IModuleChecker;
@@ -108,16 +113,16 @@ namespace Puerts
             PuertsDLL.SetGeneralDestructor(isolate, StaticCallbacks.GeneralDestructor);
 
             // 把JSEnv的id和Callback的id拼成一个long存起来，并将StaticCallbacks.JsEnvCallbackWrap注册给V8。而后通过StaticCallbacks.JsEnvCallbackWrap从long中取出函数和envid并调用。
-            PuertsDLL.SetGlobalFunction(isolate, "__tgjsRegisterTickHandler", StaticCallbacks.JsEnvCallbackWrap
-                , AddCallback(RegisterTickHandler));
-            PuertsDLL.SetGlobalFunction(isolate, "__tgjsGetGenericMethod", StaticCallbacks.JsEnvCallbackWrap
-                , AddCallback(GetGenericMethod));
-            PuertsDLL.SetGlobalFunction(isolate, "__tgjsLoadType", StaticCallbacks.JsEnvCallbackWrap
-                , AddCallback(LoadType));
-            PuertsDLL.SetGlobalFunction(isolate, "__tgjsGetNestedTypes", StaticCallbacks.JsEnvCallbackWrap
-                , AddCallback(GetNestedTypes));
-            PuertsDLL.SetGlobalFunction(isolate, "__tgjsGetLoader", StaticCallbacks.JsEnvCallbackWrap
-                , AddCallback(GetLoader));
+            PuertsDLL.SetGlobalFunction(isolate, "__tgjsRegisterTickHandler",
+                StaticCallbacks.JsEnvCallbackWrap, AddCallback(RegisterTickHandler));
+            PuertsDLL.SetGlobalFunction(isolate, "__tgjsGetGenericMethod",
+                StaticCallbacks.JsEnvCallbackWrap, AddCallback(GetGenericMethod));
+            PuertsDLL.SetGlobalFunction(isolate, "__tgjsLoadType",
+                StaticCallbacks.JsEnvCallbackWrap, AddCallback(LoadType));
+            PuertsDLL.SetGlobalFunction(isolate, "__tgjsGetNestedTypes",
+                StaticCallbacks.JsEnvCallbackWrap, AddCallback(GetNestedTypes));
+            PuertsDLL.SetGlobalFunction(isolate, "__tgjsGetLoader",
+                StaticCallbacks.JsEnvCallbackWrap, AddCallback(GetLoader));
 
             //可以DISABLE掉自动注册，通过手动调用PuertsStaticWrap.AutoStaticCodeRegister.Register(jsEnv)来注册
 #if !DISABLE_AUTO_REGISTER
@@ -180,7 +185,8 @@ namespace Puerts
                 Dispose();
                 throw;
             }
-            if (loader is IBuiltinLoadedListener) (loader as IBuiltinLoadedListener).OnBuiltinLoaded(this);
+            if (loader is IBuiltinLoadedListener)
+                (loader as IBuiltinLoadedListener).OnBuiltinLoaded(this);
         }
 
         internal string ResolveModuleContent(string identifer, out string pathForDebug)
@@ -268,8 +274,8 @@ namespace Puerts
                 var exceptionInfo = PuertsDLL.GetLastExceptionInfo(isolate);
                 throw new Exception(exceptionInfo);
             }
-            var result =
-                StaticTranslate<TResult>.Get(Idx, isolate, NativeValueApi.GetValueFromResult, resultInfo, false);
+            var result = StaticTranslate<TResult>.Get(Idx, isolate,
+                NativeValueApi.GetValueFromResult, resultInfo, false);
             PuertsDLL.ResetResult(resultInfo);
             return result;
 #if THREAD_SAFE
@@ -317,7 +323,8 @@ namespace Puerts
 
         private readonly List<JSFunctionCallback> callbacks = new List<JSFunctionCallback>();
 
-        internal void InvokeCallback(IntPtr isolate, int callbackIdx, IntPtr info, IntPtr self, int paramLen)
+        internal void InvokeCallback(IntPtr isolate, int callbackIdx, IntPtr info, IntPtr self,
+            int paramLen)
         {
             callbacks[callbackIdx](isolate, info, self, paramLen);
         }
@@ -329,9 +336,11 @@ namespace Puerts
             return Utils.TwoIntToLong(Idx, callbackIdx);
         }
 
-        private readonly List<JSConstructorCallback> constructorCallbacks = new List<JSConstructorCallback>();
+        private readonly List<JSConstructorCallback> constructorCallbacks =
+            new List<JSConstructorCallback>();
 
-        internal IntPtr InvokeConstructor(IntPtr isolate, int callbackIdx, IntPtr info, int paramLen)
+        internal IntPtr InvokeConstructor(IntPtr isolate, int callbackIdx, IntPtr info,
+            int paramLen)
         {
             var obj = constructorCallbacks[callbackIdx](isolate, info, paramLen);
             if (obj == null) return IntPtr.Zero;
@@ -354,7 +363,8 @@ namespace Puerts
 
         private void GetLoader(IntPtr isolate, IntPtr info, IntPtr self, int paramLen)
         {
-            GeneralSetterManager.AnyTranslator(Idx, isolate, NativeValueApi.SetValueToResult, info, loader);
+            GeneralSetterManager.AnyTranslator(Idx, isolate, NativeValueApi.SetValueToResult, info,
+                loader);
         }
 
         public void RegisterGeneralGetSet(Type type, GeneralGetter getter, GeneralSetter setter)
@@ -365,7 +375,10 @@ namespace Puerts
 
         //use by BlittableCopy
         public int GetTypeId(Type type) => TypeManager.GetTypeId(isolate, type);
-        internal GenericDelegate ToGenericDelegate(IntPtr ptr) => genericDelegateFactory.ToGenericDelegate(ptr);
+
+        internal GenericDelegate ToGenericDelegate(IntPtr ptr) =>
+            genericDelegateFactory.ToGenericDelegate(ptr);
+
         public int Index => Idx;
         private List<IntPtr> tickHandler = new List<IntPtr>();
 
@@ -383,8 +396,9 @@ namespace Puerts
                 }
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "registerTickHandler throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "registerTickHandler throw c# exception:" + e.Message + ",stack:" +
+                    e.StackTrace);
             }
         }
 
@@ -407,7 +421,8 @@ namespace Puerts
 
                     for (var i = 1; i < paramLen; i++) {
                         value = PuertsDLL.GetArgumentValue(info, i);
-                        if (PuertsDLL.GetJsValueType(isolate, value, false) != JsValueType.Function) return null;
+                        if (PuertsDLL.GetJsValueType(isolate, value, false) != JsValueType.Function)
+                            return null;
                         var argTypeId = PuertsDLL.GetTypeIdFromValue(isolate, value, false);
                         if (argTypeId == -1) return null;
                         genericArguments[i - 1] = TypeManager.GetType(argTypeId);
@@ -416,7 +431,8 @@ namespace Puerts
                 }
             }
             else if (PuertsDLL.GetJsValueType(isolate, value, false) == JsValueType.NativeObject) {
-                type = StaticTranslate<Type>.Get(Index, isolate, NativeValueApi.GetValueFromArgument, value, false);
+                type = StaticTranslate<Type>.Get(Index, isolate,
+                    NativeValueApi.GetValueFromArgument, value, false);
             }
             return type;
         }
@@ -426,11 +442,13 @@ namespace Puerts
             try {
                 if (paramLen < 3) throw new Exception("invalid arguments length");
                 var csTypeJSValue = PuertsDLL.GetArgumentValue(info, 0);
-                if (PuertsDLL.GetJsValueType(isolate, csTypeJSValue, false) != JsValueType.NativeObject)
+                if (PuertsDLL.GetJsValueType(isolate, csTypeJSValue, false) !=
+                    JsValueType.NativeObject)
                     throw new Exception("the class must be a constructor");
-                var type = StaticTranslate<Type>.Get(Index, isolate, NativeValueApi.GetValueFromArgument, csTypeJSValue
-                    , false);
-                var methodName = PuertsDLL.GetStringFromValue(isolate, PuertsDLL.GetArgumentValue(info, 1), false);
+                var type = StaticTranslate<Type>.Get(Index, isolate,
+                    NativeValueApi.GetValueFromArgument, csTypeJSValue, false);
+                var methodName = PuertsDLL.GetStringFromValue(isolate,
+                    PuertsDLL.GetArgumentValue(info, 1), false);
                 var genericArguments = new Type[paramLen - 2];
 
                 for (var i = 2; i < paramLen; i++) {
@@ -438,15 +456,19 @@ namespace Puerts
                     if (PuertsDLL.GetJsValueType(isolate, value, false) != JsValueType.Function)
                         throw new Exception("invalid Type for generic arguments " + (i - 2));
                     var argTypeId = PuertsDLL.GetTypeIdFromValue(isolate, value, false);
-                    if (argTypeId == -1) throw new Exception("invalid Type for generic arguments " + (i - 2));
+                    if (argTypeId == -1)
+                        throw new Exception("invalid Type for generic arguments " + (i - 2));
                     genericArguments[i - 2] = TypeManager.GetType(argTypeId);
                 }
-                var callbackID = AddCallback(new GenericMethodWrap(methodName, this, type, genericArguments).Invoke);
-                PuertsDLL.ReturnCSharpFunctionCallback(isolate, info, StaticCallbacks.JsEnvCallbackWrap, callbackID);
+                var callbackID =
+                    AddCallback(new GenericMethodWrap(methodName, this, type, genericArguments)
+                        .Invoke);
+                PuertsDLL.ReturnCSharpFunctionCallback(isolate, info,
+                    StaticCallbacks.JsEnvCallbackWrap, callbackID);
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "GetGenericMethod throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "GetGenericMethod throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
 
@@ -461,8 +483,8 @@ namespace Puerts
                 }
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "loadClass throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "loadClass throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
 
@@ -471,12 +493,12 @@ namespace Puerts
             try {
                 var type = GetTypeFromJs(isolate, info, self, paramLen);
                 if (type != null)
-                    StaticTranslate<Type[]>.Set(Index, isolate, NativeValueApi.SetValueToResult, info
-                        , type.GetNestedTypes());
+                    StaticTranslate<Type[]>.Set(Index, isolate, NativeValueApi.SetValueToResult,
+                        info, type.GetNestedTypes());
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "GetNestedType throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "GetNestedType throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
 

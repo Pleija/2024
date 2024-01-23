@@ -17,11 +17,13 @@ namespace NodeCanvas.Framework
         private string _identifier;
 
         [Tooltip(
-             "If a duplicate with the same identifier is encountered, destroy the previous Global Blackboard component only, or the previous Global Blackboard gameobject entirely?")
-         , SerializeField]
+             "If a duplicate with the same identifier is encountered, destroy the previous Global Blackboard component only, or the previous Global Blackboard gameobject entirely?"),
+         SerializeField]
         private SingletonMode _singletonMode = SingletonMode.DestroyComponentOnly;
 
-        [Tooltip("If true, the Global Blackboard will not be destroyed when another scene is loaded."), SerializeField]
+        [Tooltip(
+             "If true, the Global Blackboard will not be destroyed when another scene is loaded."),
+         SerializeField]
         private bool _dontDestroyOnLoad = true;
 
         private static List<GlobalBlackboard> _allGlobals = new List<GlobalBlackboard>();
@@ -57,10 +59,11 @@ namespace NodeCanvas.Framework
                 if (Find(identifier) != null) {
                     Logger.Log(
                         string.Format(
-                            "There exist more than one Global Blackboards with same identifier name '{0}'. The old one will now be destroyed."
-                            , identifier), LogTag.BLACKBOARD, this);
+                            "There exist more than one Global Blackboards with same identifier name '{0}'. The old one will now be destroyed.",
+                            identifier), LogTag.BLACKBOARD, this);
                     if (_singletonMode == SingletonMode.DestroyComponentOnly) Destroy(this);
-                    if (_singletonMode == SingletonMode.DestroyEntireGameObject) Destroy(gameObject);
+                    if (_singletonMode == SingletonMode.DestroyEntireGameObject)
+                        Destroy(gameObject);
                     return;
                 }
                 if (_dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
@@ -81,7 +84,9 @@ namespace NodeCanvas.Framework
         {
             base.OnValidate();
 #if UNITY_EDITOR
-            if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null) return;
+            if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility
+                .GetCurrentPrefabStage() != null)
+                return;
 #endif
             if (Application.isPlaying || IsPrefabAsset()) return;
             if (!_allGlobals.Contains(this)) _allGlobals.Add(this);
@@ -89,8 +94,9 @@ namespace NodeCanvas.Framework
             var existing = Find(identifier);
             if (existing != this && existing != null)
                 Logger.LogError(
-                    string.Format("Another blackboard with the same identifier name '{0}' exists. Please rename either."
-                        , identifier), LogTag.BLACKBOARD, this);
+                    string.Format(
+                        "Another blackboard with the same identifier name '{0}' exists. Please rename either.",
+                        identifier), LogTag.BLACKBOARD, this);
         }
 
         public override string ToString() => identifier;

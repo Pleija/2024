@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Variables/New"), Description("Create a Dictionary of <string, T> objects")
-     , ContextDefinedInputs(typeof(string), typeof(Wild))]
+    [Category("Variables/New"), Description("Create a Dictionary of <string, T> objects"),
+     ContextDefinedInputs(typeof(string), typeof(Wild))]
     public class CreateDictionary<T> : FlowNode
     {
         [SerializeField, ExposeField, MinValue(2), DelayedField, GatherPortsCallback]

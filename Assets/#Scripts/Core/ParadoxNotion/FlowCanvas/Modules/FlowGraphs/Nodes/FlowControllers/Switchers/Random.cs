@@ -4,8 +4,9 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Switch Random"), Category("Flow Controllers/Switchers")
-     , Description("Calls one random output each time In is called."), ContextDefinedOutputs(typeof(Flow), typeof(int))]
+    [Name("Switch Random"), Category("Flow Controllers/Switchers"),
+     Description("Calls one random output each time In is called."),
+     ContextDefinedOutputs(typeof(Flow), typeof(int))]
     public class Random : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Paths")
-     , Description(
+    [Category("Paths"),
+     Description(
          "Animate the actor's position and look at target position on a Path. For example, a 'PositionOnPath' value of 0 means start of path, while a value of 1 means end of path.")]
     public class AnimateOnPath : ActorActionClip
     {
@@ -26,7 +26,9 @@ namespace Slate.ActionClips
         public EaseType blendInterpolation = EaseType.QuadraticInOut;
         private Vector3 wasPosition;
         private Quaternion wasRotation;
-        public override string info => string.Format("Animate On Path '{0}'", path != null ? path.name : "NONE");
+
+        public override string info =>
+            string.Format("Animate On Path '{0}'", path != null ? path.name : "NONE");
 
         public override float length {
             get => _length;
@@ -54,13 +56,15 @@ namespace Slate.ActionClips
                 return;
             }
             var newPos = path.GetPositionAt(positionOnPath);
-            actor.transform.position = Easing.Ease(blendInterpolation, wasPosition, newPos, GetClipWeight(time));
+            actor.transform.position = Easing.Ease(blendInterpolation, wasPosition, newPos,
+                GetClipWeight(time));
             var lookPos = TransformPosition(lookAtTargetPosition, defaultTransformSpace);
             var dir = lookPos - actor.transform.position;
 
             if (dir.magnitude > 0.001f) {
                 var lookRot = Quaternion.LookRotation(dir);
-                actor.transform.rotation = Easing.Ease(blendInterpolation, wasRotation, lookRot, GetClipWeight(time));
+                actor.transform.rotation = Easing.Ease(blendInterpolation, wasRotation, lookRot,
+                    GetClipWeight(time));
             }
         }
 

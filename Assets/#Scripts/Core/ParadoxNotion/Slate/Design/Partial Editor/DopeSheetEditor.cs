@@ -10,7 +10,8 @@ namespace Slate
     public static class DopeSheetEditor
     {
         /// <summary>
-        ///     Event raised when the DopeSheet changes the current curves, with argument being the IAnimatable the curves
+        ///     Event raised when the DopeSheet changes the current curves, with argument being the IAnimatable
+        ///     the curves
         ///     belong to.
         /// </summary>
         public static event System.Action<IAnimatableData> onCurvesUpdated;
@@ -18,8 +19,8 @@ namespace Slate
         private static Dictionary<IAnimatableData, DopeSheetRenderer> cache =
             new Dictionary<IAnimatableData, DopeSheetRenderer>();
 
-        public static void DrawDopeSheet(IAnimatableData animatable, IKeyable keyable, Rect rect, float startTime
-            , float length, bool highlightRange = true)
+        public static void DrawDopeSheet(IAnimatableData animatable, IKeyable keyable, Rect rect,
+            float startTime, float length, bool highlightRange = true)
         {
             DopeSheetRenderer dopeSheet = null;
             if (!cache.TryGetValue(animatable, out dopeSheet))
@@ -81,25 +82,33 @@ namespace Slate
             private int pickIndex = -1;
             private List<float> currentTimes;
             private List<float> prePickTimes;
-            private List<TangentMode> tangentModes; //tangent modes of dopekeys in order of appearence in currentTimes
-            private List<string> keyLabels;         //key labels of dopekeys in order of appearence in currentTimes
+
+            private List<TangentMode>
+                tangentModes; //tangent modes of dopekeys in order of appearence in currentTimes
+
+            private List<string>
+                keyLabels; //key labels of dopekeys in order of appearence in currentTimes
+
             private WrapMode preWrapMode;
             private WrapMode postWrapMode;
             private static Keyframe[] copyKeyframes;
             private static List<Keyframe[]> multiCopyKeyframes;
-            private float? selectionStartPos;      //used only for creating the rect
-            private float? startDragTime;          //the time which we started dragging the selection rect
-            private Rect? timeSelectionRect;       //the actual selection rect
-            private Rect preScaleSelectionRect;    //the rect before start retiming selection rect
-            private bool isRetiming;               //is retiming/scaling keys?
-            private List<int> rectSelectedIndeces; //the indeces of dopekeys that were originaly in the selection rect
+            private float? selectionStartPos; //used only for creating the rect
+            private float? startDragTime; //the time which we started dragging the selection rect
+            private Rect? timeSelectionRect; //the actual selection rect
+            private Rect preScaleSelectionRect; //the rect before start retiming selection rect
+            private bool isRetiming; //is retiming/scaling keys?
+
+            private List<int>
+                rectSelectedIndeces; //the indeces of dopekeys that were originaly in the selection rect
 
             private Rect pixelSelectionRect {
                 //the converted selection rect from time to pos/pixels
                 get {
                     if (timeSelectionRect == null) return new Rect();
                     var temp = timeSelectionRect.Value;
-                    return Rect.MinMaxRect(TimeToPos(temp.xMin), rect.yMin, TimeToPos(temp.xMax), rect.yMax);
+                    return Rect.MinMaxRect(TimeToPos(temp.xMin), rect.yMin, TimeToPos(temp.xMax),
+                        rect.yMax);
                 }
             }
 
@@ -120,14 +129,15 @@ namespace Slate
                     refreshDopeKeys = true;
                 };
 #if UNITY_2018_3_OR_NEWER
-                UnityEditor.Experimental.SceneManagement.PrefabStage.prefabStageClosing += (stage) => {
-                    refreshDopeKeys = true;
-                };
+                UnityEditor.Experimental.SceneManagement.PrefabStage.prefabStageClosing +=
+                    (stage) => {
+                        refreshDopeKeys = true;
+                    };
 #endif
             }
 
-            public void DrawDopeSheet(IAnimatableData animatable, IKeyable keyable, Rect rect, float startTime
-                , float length, bool highlightRange)
+            public void DrawDopeSheet(IAnimatableData animatable, IKeyable keyable, Rect rect,
+                float startTime, float length, bool highlightRange)
             {
                 this.length = length;
                 this.rect = rect;
@@ -156,7 +166,8 @@ namespace Slate
                     var lastKeyPos = TimeToPos(currentTimes.LastOrDefault());
 
                     if (Mathf.Abs(firstKeyPos - lastKeyPos) > 0) {
-                        var rangeRect = Rect.MinMaxRect(firstKeyPos - 8, rect.yMin, lastKeyPos + 8, rect.yMax);
+                        var rangeRect = Rect.MinMaxRect(firstKeyPos - 8, rect.yMin, lastKeyPos + 8,
+                            rect.yMax);
                         rangeRect.xMin = Mathf.Max(rangeRect.xMin, rect.xMin - 2);
                         rangeRect.xMax = Mathf.Min(rangeRect.xMax, rect.xMax + 2);
 
@@ -234,23 +245,27 @@ namespace Slate
                     }
                     var dopeKeyRect = new Rect(0, 0, icon.width, icon.height);
                     dopeKeyRect.center = new Vector2(TimeToPos(time), rect.center.y);
-                    var isSelected = t == pickIndex || (rectSelectedIndeces != null && rectSelectedIndeces.Contains(t));
+                    var isSelected = t == pickIndex ||
+                        (rectSelectedIndeces != null && rectSelectedIndeces.Contains(t));
                     GUI.color = isSelected ? new Color(0.6f, 0.6f, 1) : Color.white;
                     GUI.DrawTexture(dopeKeyRect, icon);
                     GUI.color = Color.white;
 
                     //key value label
                     if (Prefs.showDopesheetKeyValues) {
-                        var nextPos = t < currentTimes.Count - 1 ? TimeToPos(currentTimes[t + 1]) : TimeToPos(length);
-                        var valueLabelRect = Rect.MinMaxRect(dopeKeyRect.xMax, rect.yMin - 3
-                            , nextPos - dopeKeyRect.width / 2, rect.yMax);
-                        if (valueLabelRect.width > 20) GUI.Label(valueLabelRect, keyLabels[t], Styles.leftLabel);
+                        var nextPos = t < currentTimes.Count - 1 ? TimeToPos(currentTimes[t + 1])
+                            : TimeToPos(length);
+                        var valueLabelRect = Rect.MinMaxRect(dopeKeyRect.xMax, rect.yMin - 3,
+                            nextPos - dopeKeyRect.width / 2, rect.yMax);
+                        if (valueLabelRect.width > 20)
+                            GUI.Label(valueLabelRect, keyLabels[t], Styles.leftLabel);
                     }
 
                     //do the following only if we dont have a rect selection
                     if (timeSelectionRect == null) {
                         //pick the key
-                        if (e.type == EventType.MouseDown && dopeKeyRect.Contains(e.mousePosition)) {
+                        if (e.type == EventType.MouseDown &&
+                            dopeKeyRect.Contains(e.mousePosition)) {
                             prePickTimes = new List<float>(currentTimes);
                             pickIndex = t;
 
@@ -262,7 +277,8 @@ namespace Slate
                         }
 
                         //single key context menu
-                        if (e.type == EventType.MouseUp && e.button == 1 && dopeKeyRect.Contains(e.mousePosition)) {
+                        if (e.type == EventType.MouseUp && e.button == 1 &&
+                            dopeKeyRect.Contains(e.mousePosition)) {
                             DoSingleKeyContextMenu(e, time, tangentMode);
                             e.Use();
                         }
@@ -282,7 +298,8 @@ namespace Slate
                         newTime = Mathf.Clamp(newTime, startTime, startTime + length);
 
                         if (e.shift || Prefs.rippleMode) {
-                            var max = pickIndex > 0 ? currentTimes[pickIndex - 1] + Prefs.snapInterval : startTime;
+                            var max = pickIndex > 0
+                                ? currentTimes[pickIndex - 1] + Prefs.snapInterval : startTime;
                             newTime = Mathf.Max(newTime, max);
                             for (var i = 0; i < currentTimes.Count; i++)
                                 if (currentTimes[i] > lastTime)
@@ -302,13 +319,15 @@ namespace Slate
 
                 //Multikey selection, dragging and retiming
                 if (pickIndex == -1) {
-                    var retimeInRect = Rect.MinMaxRect(pixelSelectionRect.xMin, pixelSelectionRect.yMin
-                        , pixelSelectionRect.xMin + 4, pixelSelectionRect.yMax);
-                    var retimeOutRect = Rect.MinMaxRect(pixelSelectionRect.xMax - 4, pixelSelectionRect.yMin
-                        , pixelSelectionRect.xMax, pixelSelectionRect.yMax);
+                    var retimeInRect = Rect.MinMaxRect(pixelSelectionRect.xMin,
+                        pixelSelectionRect.yMin, pixelSelectionRect.xMin + 4,
+                        pixelSelectionRect.yMax);
+                    var retimeOutRect = Rect.MinMaxRect(pixelSelectionRect.xMax - 4,
+                        pixelSelectionRect.yMin, pixelSelectionRect.xMax, pixelSelectionRect.yMax);
                     var controlID = GUIUtility.GetControlID(FocusType.Passive);
                     var eventType = e.GetTypeForControl(controlID);
-                    if (e.rawType == EventType.MouseDown && !rect.Contains(e.mousePosition)) ResetInteraction();
+                    if (e.rawType == EventType.MouseDown && !rect.Contains(e.mousePosition))
+                        ResetInteraction();
 
                     if (e.type == EventType.MouseDown && rect.Contains(e.mousePosition)) {
                         //if no rect selection, start one.
@@ -327,9 +346,11 @@ namespace Slate
                                 rectSelectedIndeces = new List<int>();
                                 var temp = timeSelectionRect.Value;
                                 for (var i = 0; i < currentTimes.Count; i++)
-                                    if (currentTimes[i] >= temp.xMin && currentTimes[i] <= temp.xMax)
+                                    if (currentTimes[i] >= temp.xMin &&
+                                        currentTimes[i] <= temp.xMax)
                                         rectSelectedIndeces.Add(i);
-                                isRetiming = (e.button == 0 && retimeInRect.Contains(e.mousePosition)) ||
+                                isRetiming =
+                                    (e.button == 0 && retimeInRect.Contains(e.mousePosition)) ||
                                     retimeOutRect.Contains(e.mousePosition);
                                 e.Use();
 
@@ -367,15 +388,16 @@ namespace Slate
                     }
 
                     //move/retime the selection rect
-                    if (eventType == EventType.MouseDrag && timeSelectionRect != null && e.button == 0 &&
-                        (startDragTime != null || isRetiming)) {
+                    if (eventType == EventType.MouseDrag && timeSelectionRect != null &&
+                        e.button == 0 && (startDragTime != null || isRetiming)) {
                         GUIUtility.hotControl = controlID;
                         var temp = timeSelectionRect.Value;
                         var pointerTime = PosToTime(e.mousePosition.x);
 
                         //retime
                         if (isRetiming) {
-                            var retimeIn = Mathf.Abs(pointerTime - temp.x) < Mathf.Abs(pointerTime - temp.xMax);
+                            var retimeIn = Mathf.Abs(pointerTime - temp.x) <
+                                Mathf.Abs(pointerTime - temp.xMax);
                             if (retimeIn)
                                 temp.xMin = Mathf.Max(pointerTime, 0);
                             else
@@ -383,8 +405,8 @@ namespace Slate
 
                             foreach (var index in rectSelectedIndeces) {
                                 var preTime = prePickTimes[index];
-                                var norm = Mathf.InverseLerp(preScaleSelectionRect.xMin, preScaleSelectionRect.xMax
-                                    , preTime);
+                                var norm = Mathf.InverseLerp(preScaleSelectionRect.xMin,
+                                    preScaleSelectionRect.xMax, preTime);
                                 currentTimes[index] = Mathf.Lerp(temp.xMin, temp.xMax, norm);
                             }
 
@@ -395,7 +417,8 @@ namespace Slate
                                 var delta = pointerTime - (float)startDragTime;
 
                                 if (temp.x + delta >= 0) {
-                                    foreach (var index in rectSelectedIndeces) currentTimes[index] += delta;
+                                    foreach (var index in rectSelectedIndeces)
+                                        currentTimes[index] += delta;
                                     temp.x += delta;
                                     startDragTime = (float)pointerTime;
                                 }
@@ -453,18 +476,22 @@ namespace Slate
                 menu.AddItem(new GUIContent("Jump Here (Double Click)"), false, () => {
                     keyable.root.currentTime = time + keyable.startTime;
                 });
-                menu.AddItem(new GUIContent("Tangent Mode/Smooth"), tangentMode == TangentMode.Smooth, () => {
-                    SetKeyTangentMode(time, TangentMode.Smooth);
-                });
-                menu.AddItem(new GUIContent("Tangent Mode/Linear"), tangentMode == TangentMode.Linear, () => {
-                    SetKeyTangentMode(time, TangentMode.Linear);
-                });
-                menu.AddItem(new GUIContent("Tangent Mode/Constant"), tangentMode == TangentMode.Constant, () => {
-                    SetKeyTangentMode(time, TangentMode.Constant);
-                });
-                menu.AddItem(new GUIContent("Tangent Mode/Editable"), tangentMode == TangentMode.Editable, () => {
-                    SetKeyTangentMode(time, TangentMode.Editable);
-                });
+                menu.AddItem(new GUIContent("Tangent Mode/Smooth"),
+                    tangentMode == TangentMode.Smooth, () => {
+                        SetKeyTangentMode(time, TangentMode.Smooth);
+                    });
+                menu.AddItem(new GUIContent("Tangent Mode/Linear"),
+                    tangentMode == TangentMode.Linear, () => {
+                        SetKeyTangentMode(time, TangentMode.Linear);
+                    });
+                menu.AddItem(new GUIContent("Tangent Mode/Constant"),
+                    tangentMode == TangentMode.Constant, () => {
+                        SetKeyTangentMode(time, TangentMode.Constant);
+                    });
+                menu.AddItem(new GUIContent("Tangent Mode/Editable"),
+                    tangentMode == TangentMode.Editable, () => {
+                        SetKeyTangentMode(time, TangentMode.Editable);
+                    });
                 menu.AddItem(new GUIContent("Copy Key"), false, () => {
                     CopyKeyAtTime(time);
                 });
@@ -507,27 +534,31 @@ namespace Slate
                         CopyKeysSelected();
                         DeleteKeysSelected();
                     });
-                    menu.AddItem(new GUIContent(string.Format("Cut Keys (Ripple {0})", rangeText)), false, () => {
-                        var temp = timeSelectionRect.Value;
-                        CopyKeysSelected();
-                        DeleteKeysSelected();
-                        RemoveTime(temp.xMin, temp.xMax);
-                    });
+                    menu.AddItem(new GUIContent(string.Format("Cut Keys (Ripple {0})", rangeText)),
+                        false, () => {
+                            var temp = timeSelectionRect.Value;
+                            CopyKeysSelected();
+                            DeleteKeysSelected();
+                            RemoveTime(temp.xMin, temp.xMax);
+                        });
                     menu.AddSeparator("/");
-                    menu.AddItem(new GUIContent(string.Format("Delete Keys (Ripple {0})", rangeText)), false, () => {
-                        var temp = timeSelectionRect.Value;
-                        DeleteKeysSelected();
-                        RemoveTime(temp.xMin, temp.xMax);
-                    });
+                    menu.AddItem(
+                        new GUIContent(string.Format("Delete Keys (Ripple {0})", rangeText)), false,
+                        () => {
+                            var temp = timeSelectionRect.Value;
+                            DeleteKeysSelected();
+                            RemoveTime(temp.xMin, temp.xMax);
+                        });
                     menu.AddItem(new GUIContent("Delete Keys"), false, () => {
                         DeleteKeysSelected();
                     });
                 }
                 else {
-                    menu.AddItem(new GUIContent(string.Format("Remove Time ({0})", rangeText)), false, () => {
-                        RemoveTime(timeSelectionRect.Value.xMin, timeSelectionRect.Value.xMax);
-                        timeSelectionRect = null;
-                    });
+                    menu.AddItem(new GUIContent(string.Format("Remove Time ({0})", rangeText)),
+                        false, () => {
+                            RemoveTime(timeSelectionRect.Value.xMin, timeSelectionRect.Value.xMax);
+                            timeSelectionRect = null;
+                        });
                 }
                 menu.ShowAsContext();
                 e.Use();
@@ -555,14 +586,17 @@ namespace Slate
                 else {
                     if (multiCopyKeyframes != null && multiCopyKeyframes.Count != 0 &&
                         multiCopyKeyframes[0].Length == allCurves.Length) {
-                        var from = Mathf.Max(multiCopyKeyframes.FirstOrDefault().Select(k => k.time).ToArray());
-                        var to = Mathf.Max(multiCopyKeyframes.LastOrDefault().Select(k => k.time).ToArray());
+                        var from = Mathf.Max(multiCopyKeyframes.FirstOrDefault().Select(k => k.time)
+                            .ToArray());
+                        var to = Mathf.Max(multiCopyKeyframes.LastOrDefault().Select(k => k.time)
+                            .ToArray());
                         var range = to - from;
                         menu.AddItem(new GUIContent("Paste Keys At Cursor"), false, () => {
                             PasteKeysSelected(cursorTime, range, false);
                         });
                         menu.AddItem(new GUIContent("Paste Keys At Scrubber"), false, () => {
-                            PasteKeysSelected(keyable.root.currentTime - keyable.startTime, range, false);
+                            PasteKeysSelected(keyable.root.currentTime - keyable.startTime, range,
+                                false);
                         });
                         //TODO: BUGGY NEEDS FIX
                         // if (range > 0){
@@ -603,7 +637,8 @@ namespace Slate
 
                     for (var j = 0; j < curve.keys.Length; j++) {
                         var key = curve.keys[j];
-                        if (Mathf.Abs(key.time - time) <= KEY_PROXIMITY_TOLERANCE) copyKeyframes[i] = key;
+                        if (Mathf.Abs(key.time - time) <= KEY_PROXIMITY_TOLERANCE)
+                            copyKeyframes[i] = key;
                     }
                 }
                 return copyKeyframes;
@@ -629,7 +664,8 @@ namespace Slate
                 foreach (var curve in allCurves) {
                     for (var i = 0; i < curve.keys.Length; i++) {
                         var key = curve.keys[i];
-                        if (Mathf.Abs(key.time - time) <= KEY_PROXIMITY_TOLERANCE) curve.RemoveKey(i);
+                        if (Mathf.Abs(key.time - time) <= KEY_PROXIMITY_TOLERANCE)
+                            curve.RemoveKey(i);
                     }
                     curve.UpdateTangentsFromMode();
                 }
@@ -691,7 +727,8 @@ namespace Slate
                 copyKeyframes = null;
                 refreshDopeKeys = true;
                 NotifyChange();
-                if (range > 0) timeSelectionRect = Rect.MinMaxRect(pasteTime, 0, pasteTime + range, 0);
+                if (range > 0)
+                    timeSelectionRect = Rect.MinMaxRect(pasteTime, 0, pasteTime + range, 0);
             }
 
             ///<summary>Set key tangent mode at time</summary>
@@ -702,7 +739,8 @@ namespace Slate
                 foreach (var curve in allCurves)
                     for (var i = 0; i < curve.keys.Length; i++) {
                         var key = curve.keys[i];
-                        if (Mathf.Abs(key.time - time) <= KEY_PROXIMITY_TOLERANCE) curve.SetKeyTangentMode(i, mode);
+                        if (Mathf.Abs(key.time - time) <= KEY_PROXIMITY_TOLERANCE)
+                            curve.SetKeyTangentMode(i, mode);
                     }
                 refreshDopeKeys = true;
                 NotifyChange();
@@ -826,7 +864,8 @@ namespace Slate
                 for (var i = 0; i < allKeys.Count; i++) {
                     var key = allKeys[i];
 
-                    if (!currentTimes.Any(t => Mathf.Abs(t - key.time) <= KEY_PROXIMITY_TOLERANCE)) {
+                    if (!currentTimes.Any(t =>
+                        Mathf.Abs(t - key.time) <= KEY_PROXIMITY_TOLERANCE)) {
                         currentTimes.Add(key.time);
 
                         //cache tangent mode
@@ -843,7 +882,8 @@ namespace Slate
                         tangentModes.Add(keyTangent);
 
                         //cache key labels
-                        keyLabels.Add(string.Format("<size=8>{0}</size>", animatable.GetKeyLabel(key.time)));
+                        keyLabels.Add(string.Format("<size=8>{0}</size>",
+                            animatable.GetKeyLabel(key.time)));
                     }
                 }
             }

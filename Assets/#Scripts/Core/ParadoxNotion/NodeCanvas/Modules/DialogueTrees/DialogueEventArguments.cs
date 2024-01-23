@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace NodeCanvas.DialogueTrees
 {
     /// <summary>
-    ///     Send along with a OnSubtitlesRequest event. Holds info about the actor speaking, the statement that being said
+    ///     Send along with a OnSubtitlesRequest event. Holds info about the actor speaking, the statement
+    ///     that being said
     ///     as well as a callback to be called when dialogue is done showing
     /// </summary>
     public class SubtitlesRequestInfo
@@ -27,7 +28,8 @@ namespace NodeCanvas.DialogueTrees
     }
 
     /// <summary>
-    ///     Send along with a OnMultipleChoiceRequest event. Holds information of the options, time available as well as a
+    ///     Send along with a OnMultipleChoiceRequest event. Holds information of the options, time
+    ///     available as well as a
     ///     callback to be called providing the selected option
     /// </summary>
     public class MultipleChoiceRequestInfo
@@ -47,8 +49,8 @@ namespace NodeCanvas.DialogueTrees
         ///<summary>Call this with to select the option to continue with in the DialogueTree</summary>
         public Action<int> SelectOption;
 
-        public MultipleChoiceRequestInfo(IDialogueActor actor, Dictionary<IStatement, int> options, float availableTime
-            , bool showLastStatement, Action<int> callback)
+        public MultipleChoiceRequestInfo(IDialogueActor actor, Dictionary<IStatement, int> options,
+            float availableTime, bool showLastStatement, Action<int> callback)
         {
             this.actor = actor;
             this.options = options;
@@ -57,8 +59,8 @@ namespace NodeCanvas.DialogueTrees
             SelectOption = callback;
         }
 
-        public MultipleChoiceRequestInfo(IDialogueActor actor, Dictionary<IStatement, int> options, float availableTime
-            , Action<int> callback)
+        public MultipleChoiceRequestInfo(IDialogueActor actor, Dictionary<IStatement, int> options,
+            float availableTime, Action<int> callback)
         {
             this.actor = actor;
             this.options = options;

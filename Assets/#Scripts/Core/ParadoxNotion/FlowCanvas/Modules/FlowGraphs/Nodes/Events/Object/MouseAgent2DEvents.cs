@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Mouse2D"), Category("Events/Object")
-     , Description("Called when mouse based operations happen on target 2D collider")]
+    [Name("Mouse2D"), Category("Events/Object"),
+     Description("Called when mouse based operations happen on target 2D collider")]
     public class MouseAgent2DEvents : RouterEventNode<Collider2D>
     {
         private FlowOutput onEnter;

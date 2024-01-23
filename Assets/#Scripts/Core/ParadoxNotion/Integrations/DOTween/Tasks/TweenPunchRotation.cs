@@ -16,7 +16,9 @@ namespace NodeCanvas.Tasks.Actions
         public float elasticity = 1f;
         public bool waitActionFinish = true;
         private string id;
-        protected override string info => string.Format("Punch {0} Rotation By {1}", agentInfo, ammount);
+
+        protected override string info =>
+            string.Format("Punch {0} Rotation By {1}", agentInfo, ammount);
 
         protected override void OnExecute()
         {

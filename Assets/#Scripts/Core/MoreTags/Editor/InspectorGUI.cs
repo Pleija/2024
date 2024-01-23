@@ -40,7 +40,8 @@ namespace MoreTags
             }
             component = go.RequireComponent<Tags>();
             component.tagData.TagGUI(null, gui => {
-                Action<string> onChange = s => EditorSceneManager.MarkSceneDirty(component.gameObject.scene);
+                Action<string> onChange = s =>
+                    EditorSceneManager.MarkSceneDirty(component.gameObject.scene);
                 gui.OnAddItem += onChange;
                 gui.OnClickItem += onChange;
                 gui.OnRemoveItem += onChange;

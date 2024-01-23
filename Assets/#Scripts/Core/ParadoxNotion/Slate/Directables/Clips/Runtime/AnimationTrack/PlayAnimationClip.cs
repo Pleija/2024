@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Name("Animation Clip")
-     , Description(
-         "All animation clips in the same track, will play at an animation layer equal to their track layer order. Thus, animations in tracks on top will play over animations in tracks bellow. You can trim or loop the animation by scaling the clip.")
-     , Attachable(typeof(AnimationTrack))]
+    [Name("Animation Clip"),
+     Description(
+         "All animation clips in the same track, will play at an animation layer equal to their track layer order. Thus, animations in tracks on top will play over animations in tracks bellow. You can trim or loop the animation by scaling the clip."),
+     Attachable(typeof(AnimationTrack))]
     public class PlayAnimationClip : ActorActionClip<Animation>, ISubClipContainable
     {
         [SerializeField, HideInInspector]
@@ -41,7 +41,9 @@ namespace Slate.ActionClips
         float ISubClipContainable.subClipLength => animationClip != null ? animationClip.length : 0;
         float ISubClipContainable.subClipSpeed => playbackSpeed;
         public override string info => animationClip ? animationClip.name : base.info;
-        public override bool isValid => base.isValid && animationClip != null && animationClip.legacy;
+
+        public override bool isValid =>
+            base.isValid && animationClip != null && animationClip.legacy;
 
         public override float length {
             get => _length;
@@ -63,11 +65,13 @@ namespace Slate.ActionClips
 
         protected override void OnEnter()
         {
-            snapShot = new TransformSnapshot(actor.gameObject, TransformSnapshot.StoreMode.ChildrenOnly);
+            snapShot = new TransformSnapshot(actor.gameObject,
+                TransformSnapshot.StoreMode.ChildrenOnly);
             isListClip = actor[animationClip.name] != null;
             if (!isListClip) actor.AddClip(animationClip, animationClip.name);
             mixTransform = track.GetMixTransform();
-            if (mixTransform != null) actor[animationClip.name].AddMixingTransform(mixTransform, true);
+            if (mixTransform != null)
+                actor[animationClip.name].AddMixingTransform(mixTransform, true);
         }
 
         protected override void OnUpdate(float time)
@@ -91,7 +95,9 @@ namespace Slate.ActionClips
                     state.time = Mathf.Repeat(state.time - clipOffset, animationClip.length);
                 }
             }
-            state.layer = track.layerOrder + 11; //Play animations on layer 11+ for all the play animation action clips
+            state.layer =
+                track.layerOrder +
+                11; //Play animations on layer 11+ for all the play animation action clips
             state.weight = GetClipWeight(time) * track.GetTrackWeight();
             state.blendMode = track.animationBlendMode;
             state.enabled = true;
@@ -121,7 +127,8 @@ namespace Slate.ActionClips
         protected override void OnClipGUI(Rect rect)
         {
             if (animationClip != null)
-                EditorTools.DrawLoopedLines(rect, animationClip.length / playbackSpeed, length, clipOffset);
+                EditorTools.DrawLoopedLines(rect, animationClip.length / playbackSpeed, length,
+                    clipOffset);
         }
 
 #endif

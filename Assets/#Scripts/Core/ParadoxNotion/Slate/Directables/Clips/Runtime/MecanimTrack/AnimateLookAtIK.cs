@@ -3,8 +3,8 @@ using UnityEngine;
 namespace Slate.ActionClips
 {
     [Description(
-         "Make the actor look at target position. Please note that the Animator needs to have a Controller assigned and 'IK Pass' must be enabled in that Controller.")
-     , Category("Animator IK Control"), Attachable(typeof(ActorActionTrack))]
+         "Make the actor look at target position. Please note that the Animator needs to have a Controller assigned and 'IK Pass' must be enabled in that Controller."),
+     Category("Animator IK Control"), Attachable(typeof(ActorActionTrack))]
     public class AnimateLookAtIK : ActorActionClip<Animator>
     {
         [SerializeField, HideInInspector]
@@ -61,7 +61,8 @@ namespace Slate.ActionClips
 
         protected override void OnAfterValidate()
         {
-            SetParameterEnabled((AnimateLookAtIK x) => x.targetPositionVector, targetPosition.useAnimation);
+            SetParameterEnabled((AnimateLookAtIK x) => x.targetPositionVector,
+                targetPosition.useAnimation);
         }
 
         protected override void OnEnter()

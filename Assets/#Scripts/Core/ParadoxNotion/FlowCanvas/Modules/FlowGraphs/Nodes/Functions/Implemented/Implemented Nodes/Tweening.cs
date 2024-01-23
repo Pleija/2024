@@ -20,10 +20,11 @@ namespace FlowCanvas.Nodes
     }
 
     [Category("Tweening/Values")]
-    public class LerpQuaternion : PureFunctionNode<Quaternion, Quaternion, Quaternion, float, EaseType>
+    public class
+        LerpQuaternion : PureFunctionNode<Quaternion, Quaternion, Quaternion, float, EaseType>
     {
-        public override Quaternion Invoke(Quaternion a, Quaternion b, float t, EaseType interpolation) =>
-            Easing.Ease(interpolation, a, b, t);
+        public override Quaternion Invoke(Quaternion a, Quaternion b, float t,
+            EaseType interpolation) => Easing.Ease(interpolation, a, b, t);
     }
 
     [Category("Tweening/Values")]
@@ -39,8 +40,8 @@ namespace FlowCanvas.Nodes
     {
         public float value { get; private set; }
 
-        public override IEnumerator Invoke(float from, float to, float duration = 1
-            , EaseType interpolation = EaseType.QuadraticInOut)
+        public override IEnumerator Invoke(float from, float to, float duration = 1,
+            EaseType interpolation = EaseType.QuadraticInOut)
         {
             var t = 0f;
 
@@ -57,8 +58,8 @@ namespace FlowCanvas.Nodes
     {
         public Vector3 value { get; private set; }
 
-        public override IEnumerator Invoke(Vector3 from, Vector3 to, float duration = 1
-            , EaseType interpolation = EaseType.QuadraticInOut)
+        public override IEnumerator Invoke(Vector3 from, Vector3 to, float duration = 1,
+            EaseType interpolation = EaseType.QuadraticInOut)
         {
             var t = 0f;
 
@@ -75,8 +76,8 @@ namespace FlowCanvas.Nodes
     {
         public Quaternion value { get; private set; }
 
-        public override IEnumerator Invoke(Quaternion from, Quaternion to, float duration = 1
-            , EaseType interpolation = EaseType.QuadraticInOut)
+        public override IEnumerator Invoke(Quaternion from, Quaternion to, float duration = 1,
+            EaseType interpolation = EaseType.QuadraticInOut)
         {
             var t = 0f;
 
@@ -93,8 +94,8 @@ namespace FlowCanvas.Nodes
     {
         public Color value { get; private set; }
 
-        public override IEnumerator Invoke(Color from, Color to, float duration = 1
-            , EaseType interpolation = EaseType.QuadraticInOut)
+        public override IEnumerator Invoke(Color from, Color to, float duration = 1,
+            EaseType interpolation = EaseType.QuadraticInOut)
         {
             var t = 0f;
 
@@ -110,8 +111,9 @@ namespace FlowCanvas.Nodes
     [Category("Tweening")]
     public class TweenPosition : LatentActionNode<Transform, Vector3, float, EaseType, bool>
     {
-        public override IEnumerator Invoke(Transform transform, Vector3 position, float duration = 0.25f
-            , EaseType interpolation = EaseType.QuadraticInOut, bool relative = false)
+        public override IEnumerator Invoke(Transform transform, Vector3 position,
+            float duration = 0.25f, EaseType interpolation = EaseType.QuadraticInOut,
+            bool relative = false)
         {
             position = relative ? transform.localPosition + position : position;
 
@@ -121,7 +123,8 @@ namespace FlowCanvas.Nodes
 
                 while (t <= duration) {
                     t += parentNode.graph.deltaTime;
-                    transform.localPosition = Easing.Ease(interpolation, from, position, t / duration);
+                    transform.localPosition =
+                        Easing.Ease(interpolation, from, position, t / duration);
                     yield return null;
                 }
             }
@@ -131,8 +134,9 @@ namespace FlowCanvas.Nodes
     [Category("Tweening")]
     public class TweenRotation : LatentActionNode<Transform, Vector3, float, EaseType, bool>
     {
-        public override IEnumerator Invoke(Transform transform, Vector3 rotation, float duration = 0.25f
-            , EaseType interpolation = EaseType.QuadraticInOut, bool relative = false)
+        public override IEnumerator Invoke(Transform transform, Vector3 rotation,
+            float duration = 0.25f, EaseType interpolation = EaseType.QuadraticInOut,
+            bool relative = false)
         {
             rotation = relative ? transform.localEulerAngles + rotation : rotation;
 
@@ -142,7 +146,8 @@ namespace FlowCanvas.Nodes
 
                 while (t <= duration) {
                     t += parentNode.graph.deltaTime;
-                    transform.localEulerAngles = Easing.Ease(interpolation, from, rotation, t / duration);
+                    transform.localEulerAngles =
+                        Easing.Ease(interpolation, from, rotation, t / duration);
                     yield return null;
                 }
             }
@@ -152,8 +157,9 @@ namespace FlowCanvas.Nodes
     [Category("Tweening")]
     public class TweenScale : LatentActionNode<Transform, Vector3, float, EaseType, bool>
     {
-        public override IEnumerator Invoke(Transform transform, Vector3 scale, float duration = 0.25f
-            , EaseType interpolation = EaseType.QuadraticInOut, bool relative = false)
+        public override IEnumerator Invoke(Transform transform, Vector3 scale,
+            float duration = 0.25f, EaseType interpolation = EaseType.QuadraticInOut,
+            bool relative = false)
         {
             scale = relative ? transform.localScale + scale : scale;
 

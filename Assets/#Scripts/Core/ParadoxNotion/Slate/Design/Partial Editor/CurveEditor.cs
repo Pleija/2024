@@ -10,13 +10,17 @@ namespace Slate
     ///<summary>A curve editor and renderer using Unity's native one by reflection</summary>
     public static class CurveEditor
     {
-        ///<summary>Raised when CurveEditor modifies curves, with argument being the IAnimatable the curves belong to.</summary>
+        /// <summary>
+        ///     Raised when CurveEditor modifies curves, with argument being the IAnimatable the curves
+        ///     belong to.
+        /// </summary>
         public static event Action<IAnimatableData> onCurvesUpdated;
 
         private static Dictionary<IAnimatableData, CurveRenderer> cache =
             new Dictionary<IAnimatableData, CurveRenderer>();
 
-        public static void DrawCurves(IAnimatableData animatable, IKeyable keyable, Rect posRect, Rect timeRect)
+        public static void DrawCurves(IAnimatableData animatable, IKeyable keyable, Rect posRect,
+            Rect timeRect)
         {
             CurveRenderer instance = null;
             if (!cache.TryGetValue(animatable, out instance))
@@ -146,9 +150,10 @@ namespace Slate
                     cWrapperType.GetField("id").SetValue(cWrapper, i);
                     var cRenderer = Activator.CreateInstance(cRendererType, new object[] { curve });
                     cWrapperType.GetProperty("renderer").SetValue(cWrapper, cRenderer, null);
-                    var setWrapMethod =
-                        cRendererType.GetMethod("SetWrap", new Type[] { typeof(WrapMode), typeof(WrapMode) });
-                    setWrapMethod.Invoke(cRenderer, new object[] { curve.preWrapMode, curve.postWrapMode });
+                    var setWrapMethod = cRendererType.GetMethod("SetWrap",
+                        new Type[] { typeof(WrapMode), typeof(WrapMode) });
+                    setWrapMethod.Invoke(cRenderer,
+                        new object[] { curve.preWrapMode, curve.postWrapMode });
                     wrapperArray.SetValue(cWrapper, i);
                 }
                 return wrapperArray;
@@ -161,11 +166,14 @@ namespace Slate
                 settingsType.GetField("allowDraggingCurvesAndRegions").SetValue(settings, false);
                 settingsType.GetField("allowDeleteLastKeyInCurve").SetValue(settings, true);
                 settingsType.GetField("undoRedoSelection").SetValue(settings, true);
-                settingsType.GetField("rectangleToolFlags", BindingFlags.Instance | BindingFlags.NonPublic)
+                settingsType
+                    .GetField("rectangleToolFlags", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(settings, 1);
-                settingsType.GetProperty("hRangeLocked", BindingFlags.Instance | BindingFlags.NonPublic)
+                settingsType
+                    .GetProperty("hRangeLocked", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(settings, true, null);
-                settingsType.GetProperty("vRangeLocked", BindingFlags.Instance | BindingFlags.NonPublic)
+                settingsType
+                    .GetProperty("vRangeLocked", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(settings, false, null);
                 settingsType.GetProperty("hSlider").SetValue(settings, false, null);
                 settingsType.GetProperty("vSlider").SetValue(settings, true, null);
@@ -177,8 +185,10 @@ namespace Slate
             private void CreateDelegates()
             {
                 onGUI = cEditorType.GetMethod("OnGUI").RTCreateDelegate<Action>(cEditor);
-                rectSetter = cEditorType.GetProperty("rect").GetSetMethod().RTCreateDelegate<Action<Rect>>(cEditor);
-                rectGetter = cEditorType.GetProperty("rect").GetGetMethod().RTCreateDelegate<Func<Rect>>(cEditor);
+                rectSetter = cEditorType.GetProperty("rect").GetSetMethod()
+                    .RTCreateDelegate<Action<Rect>>(cEditor);
+                rectGetter = cEditorType.GetProperty("rect").GetGetMethod()
+                    .RTCreateDelegate<Func<Rect>>(cEditor);
                 shownAreaSetter = cEditorType.GetProperty("shownArea").GetSetMethod()
                     .RTCreateDelegate<Action<Rect>>(cEditor);
                 shownAreaGetter = cEditorType.GetProperty("shownArea").GetGetMethod()
@@ -190,7 +200,8 @@ namespace Slate
 
                 //Append OnCurvesUpdated to curve editor event
                 var field = cEditorType.GetField("curvesUpdated");
-                var methodInfo = GetType().GetMethod("OnCurvesUpdated", BindingFlags.Instance | BindingFlags.NonPublic);
+                var methodInfo = GetType().GetMethod("OnCurvesUpdated",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
                 var handler = Delegate.CreateDelegate(field.FieldType, this, methodInfo);
                 field.SetValue(cEditor, handler);
             }
@@ -206,8 +217,10 @@ namespace Slate
             }
 
             public bool ignoreScrollWheelUntilClicked {
-                get => (bool)cEditorType.GetProperty("ignoreScrollWheelUntilClicked").GetValue(cEditor, null);
-                set => cEditorType.GetProperty("ignoreScrollWheelUntilClicked").SetValue(cEditor, value, null);
+                get => (bool)cEditorType.GetProperty("ignoreScrollWheelUntilClicked")
+                    .GetValue(cEditor, null);
+                set => cEditorType.GetProperty("ignoreScrollWheelUntilClicked")
+                    .SetValue(cEditor, value, null);
             }
 
             public bool hRangeLocked {
@@ -282,7 +295,8 @@ namespace Slate
             }
 
             public int axisLock {
-                set => cEditorType.GetField("m_AxisLock", BindingFlags.Instance | BindingFlags.NonPublic)
+                set => cEditorType
+                    .GetField("m_AxisLock", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(cEditor, value);
             }
 
@@ -303,12 +317,14 @@ namespace Slate
 
             public void RecalculateBounds()
             {
-                cEditorType.GetProperty("animationCurves").SetValue(cEditor, GetCurveWrapperArray(curves), null);
+                cEditorType.GetProperty("animationCurves")
+                    .SetValue(cEditor, GetCurveWrapperArray(curves), null);
             }
 
             public void RefreshCurves()
             {
-                cEditorType.GetProperty("animationCurves").SetValue(cEditor, GetCurveWrapperArray(curves), null);
+                cEditorType.GetProperty("animationCurves")
+                    .SetValue(cEditor, GetCurveWrapperArray(curves), null);
             }
 
             public void Draw(Rect posRect, Rect timeRect)
@@ -320,8 +336,10 @@ namespace Slate
                 var e = Event.current;
                 // hRangeMax = timeRect.xMax;
                 rect = posRect;
-                shownArea = Rect.MinMaxRect(timeRect.xMin, shownArea.yMin, timeRect.xMax, shownArea.yMax);
-                if (Prefs.lockHorizontalCurveEditing && e.rawType == EventType.MouseDrag) axisLock = 2;
+                shownArea = Rect.MinMaxRect(timeRect.xMin, shownArea.yMin, timeRect.xMax,
+                    shownArea.yMax);
+                if (Prefs.lockHorizontalCurveEditing && e.rawType == EventType.MouseDrag)
+                    axisLock = 2;
 
                 if (Prefs.snapInterval != lastSnapPref) {
                     lastSnapPref = Prefs.snapInterval;
@@ -342,7 +360,8 @@ namespace Slate
                 //INFO
                 GUI.color = new Color(1, 1, 1, 0.2f);
                 var infoWidth = Mathf.Min(posRect.width, 125);
-                var labelRect = new Rect(posRect.xMax - infoWidth - 10, posRect.y + 2, infoWidth, 18);
+                var labelRect = new Rect(posRect.xMax - infoWidth - 10, posRect.y + 2, infoWidth,
+                    18);
                 GUI.Label(labelRect, "(F: Frame Selection)");
                 labelRect.y += 18;
                 GUI.Label(labelRect, "(Click x2: Frame All)");

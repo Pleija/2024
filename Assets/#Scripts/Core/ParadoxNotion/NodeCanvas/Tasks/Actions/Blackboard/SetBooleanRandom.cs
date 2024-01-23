@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"), Description("Set a blackboard boolean variable at random between min and max value")]
+    [Category("✫ Blackboard"),
+     Description("Set a blackboard boolean variable at random between min and max value")]
     public class SetBooleanRandom : ActionTask
     {
         [BlackboardOnly]

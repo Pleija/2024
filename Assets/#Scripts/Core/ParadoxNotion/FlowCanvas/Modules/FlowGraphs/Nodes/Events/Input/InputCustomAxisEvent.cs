@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Input Axis"), Category("Events/Input (Legacy System)")
-     , Description(
-         "You are free to define any Input Axis in this node.\nAxis can be set in 'Project Settings/Input'.\nCalls Out when either of the Axis defined is not zero")
-     , HasRefreshButton]
+    [Name("Input Axis"), Category("Events/Input (Legacy System)"),
+     Description(
+         "You are free to define any Input Axis in this node.\nAxis can be set in 'Project Settings/Input'.\nCalls Out when either of the Axis defined is not zero"),
+     HasRefreshButton]
     public class InputCustomAxisEvent : EventNode, IUpdatable
     {
         public BBParameter<List<string>> axis = new List<string>() { "Horizontal", "Vertical" };

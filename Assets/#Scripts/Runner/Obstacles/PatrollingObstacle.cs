@@ -66,7 +66,8 @@ namespace Runner.Obstacles
                 m_Audio.clip = patrollingSound[Random.Range(0, patrollingSound.Length)];
                 m_Audio.Play();
             }
-            m_OriginalPosition = transform.localPosition + transform.right * m_Segement.manager.laneOffset;
+            m_OriginalPosition = transform.localPosition +
+                transform.right * m_Segement.manager.laneOffset;
             transform.localPosition = m_OriginalPosition;
             var actualTime = Random.Range(minTime, maxTime);
 
@@ -92,7 +93,8 @@ namespace Runner.Obstacles
             if (!m_isMoving) return;
             m_CurrentPos += Time.deltaTime * m_MaxSpeed;
             transform.localPosition = m_OriginalPosition - transform.right *
-                Mathf.PingPong(m_CurrentPos, m_Segement.manager.laneOffset * k_LaneOffsetToFullWidth);
+                Mathf.PingPong(m_CurrentPos,
+                    m_Segement.manager.laneOffset * k_LaneOffsetToFullWidth);
         }
     }
 }

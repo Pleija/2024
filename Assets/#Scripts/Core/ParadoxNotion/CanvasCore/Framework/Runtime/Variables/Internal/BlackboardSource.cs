@@ -5,15 +5,18 @@ using UnityEngine;
 namespace NodeCanvas.Framework.Internal
 {
     /// <summary>
-    ///     Blackboard holds Variable and is able to save and load itself. It's usefull for interop communication within
-    ///     the program, saving and loading systems etc. This is the main implementation class of IBlackboard and the one being
+    ///     Blackboard holds Variable and is able to save and load itself. It's usefull for interop
+    ///     communication within
+    ///     the program, saving and loading systems etc. This is the main implementation class of
+    ///     IBlackboard and the one being
     ///     serialized.
     /// </summary>
     [Serializable]
     public class BlackboardSource : IBlackboard
     {
         [SerializeField]
-        private Dictionary<string, Variable> _variables = new Dictionary<string, Variable>(StringComparer.Ordinal);
+        private Dictionary<string, Variable> _variables =
+            new Dictionary<string, Variable>(StringComparer.Ordinal);
 
         public event Action<Variable> onVariableAdded;
         public event Action<Variable> onVariableRemoved;

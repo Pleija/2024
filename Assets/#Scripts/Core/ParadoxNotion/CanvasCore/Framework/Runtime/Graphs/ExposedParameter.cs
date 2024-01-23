@@ -3,9 +3,12 @@
 namespace NodeCanvas.Framework
 {
     /// <summary>
-    ///     Used to parametrize root graph local blackboard parameters from GraphOwner, without affecting the graph
-    ///     variables serialization. So each GraphOwner can parametrize the assigned graph individually, while the graph
-    ///     remains the same serialization-wise. Relevant when either using Prefab GraphOwners with Bound Graphs, or re-using
+    ///     Used to parametrize root graph local blackboard parameters from GraphOwner, without affecting
+    ///     the graph
+    ///     variables serialization. So each GraphOwner can parametrize the assigned graph individually,
+    ///     while the graph
+    ///     remains the same serialization-wise. Relevant when either using Prefab GraphOwners with Bound
+    ///     Graphs, or re-using
     ///     Asset Graphs on GraphOwners.
     /// </summary>
     [ParadoxNotion.Design.SpoofAOT]
@@ -19,8 +22,9 @@ namespace NodeCanvas.Framework
         public abstract Variable varRefBoxed { get; }
 
         public static ExposedParameter CreateInstance(Variable target) =>
-            (ExposedParameter)System.Activator.CreateInstance(typeof(ExposedParameter<>).MakeGenericType(target.varType)
-                , ParadoxNotion.ReflectionTools.SingleTempArgsArray(target));
+            (ExposedParameter)System.Activator.CreateInstance(
+                typeof(ExposedParameter<>).MakeGenericType(target.varType),
+                ParadoxNotion.ReflectionTools.SingleTempArgsArray(target));
     }
 
     ///<summary>See ExposedParameter</summary>

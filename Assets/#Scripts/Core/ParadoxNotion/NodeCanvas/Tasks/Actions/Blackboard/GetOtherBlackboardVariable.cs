@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"), Description("Use this to get a variable on any blackboard by overriding the agent")]
+    [Category("✫ Blackboard"),
+     Description("Use this to get a variable on any blackboard by overriding the agent")]
     public class GetOtherBlackboardVariable : ActionTask<Blackboard>
     {
         [RequiredField]

@@ -10,13 +10,14 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
     // processing in general is a bit more advanced because a few of the collection implementations are buggy.
     public class fsDictionaryConverter : fsConverter
     {
-        public override bool CanProcess(Type type) =>
-            type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>);
+        public override bool CanProcess(Type type) => type.IsGenericType &&
+            type.GetGenericTypeDefinition() == typeof(Dictionary<,>);
 
         public override object CreateInstance(fsData data, Type storageType) =>
             fsMetaType.Get(storageType).CreateInstance();
 
-        public override fsResult TrySerialize(object instance_, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance_, out fsData serialized,
+            Type storageType)
         {
             serialized = fsData.Null;
             var result = fsResult.Success;
@@ -33,9 +34,12 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
 
             while (enumerator.MoveNext()) {
                 fsData keyData, valueData;
-                if ((result += Serializer.TrySerialize(keyStorageType, enumerator.Key, out keyData)).Failed)
+                if ((result += Serializer.TrySerialize(keyStorageType, enumerator.Key, out keyData))
+                    .Failed)
                     return result;
-                if ((result += Serializer.TrySerialize(valueStorageType, enumerator.Value, out valueData)).Failed)
+                if ((result +=
+                        Serializer.TrySerialize(valueStorageType, enumerator.Value, out valueData))
+                    .Failed)
                     return result;
                 serializedKeys.Add(keyData);
                 serializedValues.Add(valueData);
@@ -85,9 +89,13 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     var valueData = entry.Value;
                     object keyInstance = null;
                     object valueInstance = null;
-                    if ((result += Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed)
+                    if ((result +=
+                        Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed)
                         return result;
-                    if ((result += Serializer.TryDeserialize(valueData, valueStorageType, ref valueInstance)).Failed)
+                    if ((result +=
+                            Serializer.TryDeserialize(valueData, valueStorageType,
+                                ref valueInstance))
+                        .Failed)
                         return result;
                     instance.Add(keyInstance, valueInstance);
                 }
@@ -107,9 +115,13 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     if ((result += CheckKey(item, "Value", out valueData)).Failed) return result;
                     object keyInstance = null;
                     object valueInstance = null;
-                    if ((result += Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed)
+                    if ((result +=
+                        Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed)
                         return result;
-                    if ((result += Serializer.TryDeserialize(valueData, valueStorageType, ref valueInstance)).Failed)
+                    if ((result +=
+                            Serializer.TryDeserialize(valueData, valueStorageType,
+                                ref valueInstance))
+                        .Failed)
                         return result;
                     instance.Add(keyInstance, valueInstance);
                 }

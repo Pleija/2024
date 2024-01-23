@@ -7,8 +7,10 @@ using ParadoxNotion.Design;
 namespace FlowCanvas.Nodes
 {
     /// <summary>
-    ///     SimplexNodes are used within a SimplexNodeWrapper node. Derive CallableActionNode, CallableFunctionNode,
-    ///     LatentActionNode, PureFunctionNode or ExtractorNode, for creating simple nodes easily and type cast safe.
+    ///     SimplexNodes are used within a SimplexNodeWrapper node. Derive CallableActionNode,
+    ///     CallableFunctionNode,
+    ///     LatentActionNode, PureFunctionNode or ExtractorNode, for creating simple nodes easily and type
+    ///     cast safe.
     /// </summary>
     [SpoofAOT]
     public abstract class SimplexNode
@@ -26,7 +28,8 @@ namespace FlowCanvas.Nodes
             get {
                 if (string.IsNullOrEmpty(_name)) {
                     var nameAtt = GetType().RTGetAttribute<NameAttribute>(false);
-                    _name = nameAtt != null ? nameAtt.name : GetType().FriendlyName().SplitCamelCase();
+                    _name = nameAtt != null ? nameAtt.name
+                        : GetType().FriendlyName().SplitCamelCase();
                 }
                 return _name;
             }
@@ -47,9 +50,10 @@ namespace FlowCanvas.Nodes
         public ParameterInfo[] parameters {
             get {
                 if (_parameters != null) return _parameters;
-                var invokeMethod = GetType().GetMethod("Invoke"
-                    , BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-                return _parameters = invokeMethod != null ? invokeMethod.GetParameters() : new ParameterInfo[0];
+                var invokeMethod = GetType().GetMethod("Invoke",
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+                return _parameters = invokeMethod != null ? invokeMethod.GetParameters()
+                    : new ParameterInfo[0];
             }
         }
 
@@ -60,11 +64,13 @@ namespace FlowCanvas.Nodes
 
             //output ports are done through public properties for all simplex nodes
             var type = GetType();
-            var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+            var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                BindingFlags.DeclaredOnly);
 
             for (var i = 0; i < props.Length; i++) {
                 var prop = props[i];
-                if (prop.CanRead && !prop.GetGetMethod().IsVirtual) node.TryAddPropertyValueOutput(prop, this);
+                if (prop.CanRead && !prop.GetGetMethod().IsVirtual)
+                    node.TryAddPropertyValueOutput(prop, this);
             }
             OnRegisterExtraPorts(node);
         }

@@ -17,12 +17,13 @@ namespace FlowCanvas
     public static class FlowGraphExtensions
     {
         //...
-        public static T AddFlowNode<T>(this FlowGraph graph, Vector2 pos, Port context, object dropInstance)
-            where T : FlowNode => (T)AddFlowNode(graph, typeof(T), pos, context, dropInstance);
+        public static T AddFlowNode<T>(this FlowGraph graph, Vector2 pos, Port context,
+            object dropInstance) where T : FlowNode =>
+            (T)AddFlowNode(graph, typeof(T), pos, context, dropInstance);
 
         //...
-        public static FlowNode AddFlowNode(this FlowGraph graph, System.Type type, Vector2 pos, Port context
-            , object dropInstance)
+        public static FlowNode AddFlowNode(this FlowGraph graph, System.Type type, Vector2 pos,
+            Port context, object dropInstance)
         {
             if (type.IsGenericTypeDefinition)
                 type = type.MakeGenericType(type.GetFirstGenericParameterConstraintType());
@@ -34,8 +35,8 @@ namespace FlowCanvas
         ///----------------------------------------------------------------------------------------------
 
         //...
-        public static IDropedReferenceNode AddDropedReferenceNode(this FlowGraph graph, System.Type type, Vector2 pos
-            , Port context, Object dropInstance)
+        public static IDropedReferenceNode AddDropedReferenceNode(this FlowGraph graph,
+            System.Type type, Vector2 pos, Port context, Object dropInstance)
         {
             var node = (IDropedReferenceNode)graph.AddNode(type, pos);
             node.SetTarget(dropInstance);
@@ -44,8 +45,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static ExternalImplementedNodeWrapper AddExternalImplementedNodeWrapper(this FlowGraph graph, Vector2 pos
-            , Port context, IExternalImplementedNode dropInstance)
+        public static ExternalImplementedNodeWrapper AddExternalImplementedNodeWrapper(
+            this FlowGraph graph, Vector2 pos, Port context, IExternalImplementedNode dropInstance)
         {
             var node = graph.AddNode<ExternalImplementedNodeWrapper>(pos);
             node.SetTarget(dropInstance);
@@ -54,8 +55,9 @@ namespace FlowCanvas
         }
 
         //...
-        public static ParameterVariableNode AddVariableGet(this FlowGraph graph, System.Type varType, IBlackboard bb
-            , Variable variable, Vector2 pos, Port context, object dropInstance)
+        public static ParameterVariableNode AddVariableGet(this FlowGraph graph,
+            System.Type varType, IBlackboard bb, Variable variable, Vector2 pos, Port context,
+            object dropInstance)
         {
             var genericType = typeof(GetVariable<>).MakeGenericType(varType);
             var node = (ParameterVariableNode)graph.AddNode(genericType, pos);
@@ -66,8 +68,9 @@ namespace FlowCanvas
         }
 
         //...
-        public static ParameterVariableNode AddVariableSet(this FlowGraph graph, System.Type varType, IBlackboard bb
-            , Variable variable, Vector2 pos, Port context, object dropInstance)
+        public static ParameterVariableNode AddVariableSet(this FlowGraph graph,
+            System.Type varType, IBlackboard bb, Variable variable, Vector2 pos, Port context,
+            object dropInstance)
         {
             var genericType = typeof(SetVariable<>).MakeGenericType(varType);
             var node = (ParameterVariableNode)graph.AddNode(genericType, pos);
@@ -77,8 +80,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static FlowNode AddSimplexNode(this FlowGraph graph, System.Type type, Vector2 pos, Port context
-            , object dropInstance)
+        public static FlowNode AddSimplexNode(this FlowGraph graph, System.Type type, Vector2 pos,
+            Port context, object dropInstance)
         {
             if (type.IsGenericTypeDefinition)
                 type = type.MakeGenericType(type.GetFirstGenericParameterConstraintType());
@@ -89,8 +92,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static MacroNodeWrapper AddMacroNode(this FlowGraph graph, Macro m, Vector2 pos, Port context
-            , object dropInstance)
+        public static MacroNodeWrapper AddMacroNode(this FlowGraph graph, Macro m, Vector2 pos,
+            Port context, object dropInstance)
         {
             var node = graph.AddNode<MacroNodeWrapper>(pos);
             node.macro = m;
@@ -98,8 +101,8 @@ namespace FlowCanvas
             return node;
         }
 
-        public static InvokeSignal AddSignalInvokeNode(this FlowGraph graph, SignalDefinition s, Vector2 pos
-            , Port context, object dropInstance)
+        public static InvokeSignal AddSignalInvokeNode(this FlowGraph graph, SignalDefinition s,
+            Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<InvokeSignal>(pos);
             node.SetTarget(s);
@@ -107,8 +110,8 @@ namespace FlowCanvas
             return node;
         }
 
-        public static SignalCallback AddSignalCallbackNode(this FlowGraph graph, SignalDefinition s, Vector2 pos
-            , Port context, object dropInstance)
+        public static SignalCallback AddSignalCallbackNode(this FlowGraph graph, SignalDefinition s,
+            Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<SignalCallback>(pos);
             node.SetTarget(s);
@@ -119,8 +122,8 @@ namespace FlowCanvas
         ///----------------------------------------------------------------------------------------------
 
         //...
-        public static ReflectedConstructorNodeWrapper AddContructorNode(this FlowGraph graph, ConstructorInfo c
-            , Vector2 pos, Port context, object dropInstance)
+        public static ReflectedConstructorNodeWrapper AddContructorNode(this FlowGraph graph,
+            ConstructorInfo c, Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<ReflectedConstructorNodeWrapper>(pos);
             node.SetMethodBase(c);
@@ -129,8 +132,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static ReflectedMethodNodeWrapper AddMethodNode(this FlowGraph graph, MethodInfo m, Vector2 pos
-            , Port context, object dropInstance)
+        public static ReflectedMethodNodeWrapper AddMethodNode(this FlowGraph graph, MethodInfo m,
+            Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<ReflectedMethodNodeWrapper>(pos);
             node.SetMethodBase(m);
@@ -139,8 +142,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static ReflectedFieldNodeWrapper AddFieldGetNode(this FlowGraph graph, FieldInfo f, Vector2 pos
-            , Port context, object dropInstance)
+        public static ReflectedFieldNodeWrapper AddFieldGetNode(this FlowGraph graph, FieldInfo f,
+            Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<ReflectedFieldNodeWrapper>(pos);
             node.SetField(f, ReflectedFieldNodeWrapper.AccessMode.GetField);
@@ -149,8 +152,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static ReflectedFieldNodeWrapper AddFieldSetNode(this FlowGraph graph, FieldInfo f, Vector2 pos
-            , Port context, object dropInstance)
+        public static ReflectedFieldNodeWrapper AddFieldSetNode(this FlowGraph graph, FieldInfo f,
+            Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<ReflectedFieldNodeWrapper>(pos);
             node.SetField(f, ReflectedFieldNodeWrapper.AccessMode.SetField);
@@ -159,8 +162,9 @@ namespace FlowCanvas
         }
 
         //...
-        public static UnityEventAutoCallbackEvent AddUnityEventAutoCallbackNode(this FlowGraph graph
-            , MemberInfo fieldOrProp, Vector2 pos, Port context, object dropInstance)
+        public static UnityEventAutoCallbackEvent AddUnityEventAutoCallbackNode(
+            this FlowGraph graph, MemberInfo fieldOrProp, Vector2 pos, Port context,
+            object dropInstance)
         {
             var node = graph.AddNode<UnityEventAutoCallbackEvent>(pos);
             node.SetEvent(fieldOrProp, dropInstance);
@@ -169,8 +173,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static CSharpAutoCallbackEvent AddCSharpEventAutoCallbackNode(this FlowGraph graph, EventInfo info
-            , Vector2 pos, Port context, object dropInstance)
+        public static CSharpAutoCallbackEvent AddCSharpEventAutoCallbackNode(this FlowGraph graph,
+            EventInfo info, Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<CSharpAutoCallbackEvent>(pos);
             node.SetEvent(info, dropInstance);
@@ -178,8 +182,8 @@ namespace FlowCanvas
             return node;
         }
 
-        public static GetSharpEvent AddCSharpGetNode(this FlowGraph graph, EventInfo info, Vector2 pos, Port context
-            , object dropInstance)
+        public static GetSharpEvent AddCSharpGetNode(this FlowGraph graph, EventInfo info,
+            Vector2 pos, Port context, object dropInstance)
         {
             var node = graph.AddNode<GetSharpEvent>(pos);
             node.SetEvent(info);
@@ -188,8 +192,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static FlowNode AddSimplexExtractorNode(this FlowGraph graph, System.Type type, Vector2 pos, Port context
-            , object dropInstance)
+        public static FlowNode AddSimplexExtractorNode(this FlowGraph graph, System.Type type,
+            Vector2 pos, Port context, object dropInstance)
         {
             var simplexWrapper = typeof(SimplexNodeWrapper<>).MakeGenericType(type);
             var node = (FlowNode)graph.AddNode(simplexWrapper, pos);
@@ -198,8 +202,8 @@ namespace FlowCanvas
         }
 
         //...
-        public static FlowNode AddReflectedExtractorNode(this FlowGraph graph, System.Type type, Vector2 pos
-            , Port context, object dropInstance)
+        public static FlowNode AddReflectedExtractorNode(this FlowGraph graph, System.Type type,
+            Vector2 pos, Port context, object dropInstance)
         {
             var genericType = typeof(ReflectedExtractorNodeWrapper<>).MakeGenericType(type);
             var node = (FlowNode)graph.AddNode(genericType, pos);
@@ -240,7 +244,8 @@ namespace FlowCanvas
 
             //dont set instance if it's 'Self'
             if (dropInstance is Object) {
-                var ownerGO = targetNode.graph.agent != null ? targetNode.graph.agent.gameObject : null;
+                var ownerGO = targetNode.graph.agent != null ? targetNode.graph.agent.gameObject
+                    : null;
 
                 if (ownerGO != null) {
                     var dropGO = dropInstance as GameObject;
@@ -255,30 +260,37 @@ namespace FlowCanvas
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns all nodes' menu</summary>
-        public static UnityEditor.GenericMenu GetFullNodesMenu(this FlowGraph flowGraph, Vector2 mousePos, Port context
-            , Object dropInstance)
+        public static UnityEditor.GenericMenu GetFullNodesMenu(this FlowGraph flowGraph,
+            Vector2 mousePos, Port context, Object dropInstance)
         {
             var menu = new UnityEditor.GenericMenu();
             if (context is ValueOutput)
-                menu = flowGraph.AppendTypeReflectionNodesMenu(menu, context.type, string.Empty, mousePos, context
-                    , dropInstance);
+                menu = flowGraph.AppendTypeReflectionNodesMenu(menu, context.type, string.Empty,
+                    mousePos, context, dropInstance);
             if (context is ValueInput)
-                menu = flowGraph.AppendMakeVariableMenu(menu, string.Empty, mousePos, context, dropInstance);
-            menu = flowGraph.AppendFlowNodesMenu(menu, string.Empty, mousePos, context, dropInstance);
-            menu = flowGraph.AppendSimplexNodesMenu(menu, "Functions/Implemented", mousePos, context, dropInstance);
-            menu = flowGraph.AppendAllReflectionNodesMenu(menu, "Functions/Reflected", mousePos, context, dropInstance);
-            menu = flowGraph.AppendVariableNodesMenu(menu, "Variables", mousePos, context, dropInstance);
+                menu = flowGraph.AppendMakeVariableMenu(menu, string.Empty, mousePos, context,
+                    dropInstance);
+            menu = flowGraph.AppendFlowNodesMenu(menu, string.Empty, mousePos, context,
+                dropInstance);
+            menu = flowGraph.AppendSimplexNodesMenu(menu, "Functions/Implemented", mousePos,
+                context, dropInstance);
+            menu = flowGraph.AppendAllReflectionNodesMenu(menu, "Functions/Reflected", mousePos,
+                context, dropInstance);
+            menu = flowGraph.AppendVariableNodesMenu(menu, "Variables", mousePos, context,
+                dropInstance);
             menu = flowGraph.AppendSignals(menu, "Events/Signals", mousePos, context, dropInstance);
             menu = flowGraph.AppendMacroNodesMenu(menu, "MACROS", mousePos, context, dropInstance);
-            menu = flowGraph.AppendMenuCallbackReceivers(menu, string.Empty, mousePos, context, dropInstance);
+            menu = flowGraph.AppendMenuCallbackReceivers(menu, string.Empty, mousePos, context,
+                dropInstance);
             return menu;
         }
 
         ///----------------------------------------------------------------------------------------------
 
         //FlowNode
-        public static UnityEditor.GenericMenu AppendFlowNodesMenu(this FlowGraph graph, UnityEditor.GenericMenu menu
-            , string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendFlowNodesMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             var infos = EditorUtils.GetScriptInfosOfType(typeof(FlowNode));
             var generalized = new List<System.Type>();
@@ -300,26 +312,29 @@ namespace FlowCanvas
                     IEnumerable<System.Type> attributeDefinedTypes = new System.Type[0];
 
                     if (contextPort.IsOutputPort()) {
-                        var att = info.type.RTGetAttribute<FlowNode.ContextDefinedInputsAttribute>(true);
+                        var att =
+                            info.type.RTGetAttribute<FlowNode.ContextDefinedInputsAttribute>(true);
                         if (att != null)
                             attributeDefinedTypes = att.types.Select(t =>
-                                t == typeof(Wild) && info.type.IsGenericType ? info.type.RTGetGenericArguments().First()
-                                    : t);
+                                t == typeof(Wild) && info.type.IsGenericType
+                                    ? info.type.RTGetGenericArguments().First() : t);
                     }
 
                     if (contextPort.IsInputPort()) {
-                        var att = info.type.RTGetAttribute<FlowNode.ContextDefinedOutputsAttribute>(true);
+                        var att =
+                            info.type.RTGetAttribute<FlowNode.ContextDefinedOutputsAttribute>(true);
                         if (att != null)
                             attributeDefinedTypes = att.types.Select(t =>
-                                t == typeof(Wild) && info.type.IsGenericType ? info.type.RTGetGenericArguments().First()
-                                    : t);
+                                t == typeof(Wild) && info.type.IsGenericType
+                                    ? info.type.RTGetGenericArguments().First() : t);
                     }
 
                     if (contextPort is ValueOutput) {
                         var portTypes = info.type.RTGetFields()
                             .Where(f => f.FieldType.IsGenericType &&
                                 f.FieldType.GetGenericTypeDefinition() == typeof(ValueInput<>))
-                            .Select(f => f.FieldType.RTGetGenericArguments().First()).Union(attributeDefinedTypes);
+                            .Select(f => f.FieldType.RTGetGenericArguments().First())
+                            .Union(attributeDefinedTypes);
                         if (!portTypes.Any(t => t.IsAssignableFrom(contextPort.type))) continue;
                     }
 
@@ -327,21 +342,28 @@ namespace FlowCanvas
                         var portTypes = info.type.RTGetFields()
                             .Where(f => f.FieldType.IsGenericType &&
                                 f.FieldType.GetGenericTypeDefinition() == typeof(ValueOutput<>))
-                            .Select(f => f.FieldType.RTGetGenericArguments().First()).Union(attributeDefinedTypes);
+                            .Select(f => f.FieldType.RTGetGenericArguments().First())
+                            .Union(attributeDefinedTypes);
                         if (!portTypes.Any(t => contextPort.type.IsAssignableFrom(t))) continue;
                     }
 
                     if (contextPort is FlowOutput) {
-                        var portTypes = info.type.RTGetFields().Select(f => f.FieldType).Union(attributeDefinedTypes);
-                        if (!portTypes.Any(t => t == typeof(FlowInput) || t == typeof(Flow))) continue;
+                        var portTypes = info.type.RTGetFields().Select(f => f.FieldType)
+                            .Union(attributeDefinedTypes);
+                        if (!portTypes.Any(t => t == typeof(FlowInput) || t == typeof(Flow)))
+                            continue;
                     }
 
                     if (contextPort is FlowInput) {
-                        var portTypes = info.type.RTGetFields().Select(f => f.FieldType).Union(attributeDefinedTypes);
-                        if (!portTypes.Any(t => t == typeof(FlowOutput) || t == typeof(Flow))) continue;
+                        var portTypes = info.type.RTGetFields().Select(f => f.FieldType)
+                            .Union(attributeDefinedTypes);
+                        if (!portTypes.Any(t => t == typeof(FlowOutput) || t == typeof(Flow)))
+                            continue;
                     }
                 }
-                var category = string.Join("/", new string[] { baseCategory, info.category, info.name }).TrimStart('/');
+                var category = string
+                    .Join("/", new string[] { baseCategory, info.category, info.name })
+                    .TrimStart('/');
                 menu.AddItem(new GUIContent(category), false, (o) => {
                     graph.AddFlowNode((System.Type)o, pos, contextPort, dropInstance);
                 }, info.type);
@@ -351,8 +373,9 @@ namespace FlowCanvas
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Simplex Nodes</summary>
-        public static UnityEditor.GenericMenu AppendSimplexNodesMenu(this FlowGraph graph, UnityEditor.GenericMenu menu
-            , string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendSimplexNodesMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             var infos = EditorUtils.GetScriptInfosOfType(typeof(SimplexNode));
             var generalized = new List<System.Type>();
@@ -375,17 +398,20 @@ namespace FlowCanvas
 
                     if (invokeMethod != null) {
                         if (contextPort is ValueOutput) {
-                            var parameterTypes = invokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+                            var parameterTypes = invokeMethod.GetParameters()
+                                .Select(p => p.ParameterType).ToArray();
                             if (parameterTypes.Length == 0 ||
                                 !parameterTypes.Any(t => t.IsAssignableFrom(contextPort.type)))
                                 continue;
                         }
 
                         if (contextPort is ValueInput) {
-                            var outProperties = info.type.GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                BindingFlags.DeclaredOnly);
-                            if (!contextPort.type.IsAssignableFrom(invokeMethod.ReturnType) && !outProperties.Any(p =>
-                                p.CanRead && p.CanWrite && contextPort.type.IsAssignableFrom(p.PropertyType)))
+                            var outProperties = info.type.GetProperties(BindingFlags.Instance |
+                                BindingFlags.Public | BindingFlags.DeclaredOnly);
+                            if (!contextPort.type.IsAssignableFrom(invokeMethod.ReturnType) &&
+                                !outProperties.Any(p =>
+                                    p.CanRead && p.CanWrite &&
+                                    contextPort.type.IsAssignableFrom(p.PropertyType)))
                                 continue;
                         }
 
@@ -397,7 +423,9 @@ namespace FlowCanvas
                         }
                     }
                 }
-                var category = string.Join("/", new string[] { baseCategory, info.category, info.name }).TrimStart('/');
+                var category = string
+                    .Join("/", new string[] { baseCategory, info.category, info.name })
+                    .TrimStart('/');
                 menu.AddItem(new GUIContent(category), false, (o) => {
                     graph.AddSimplexNode((System.Type)o, pos, contextPort, dropInstance);
                 }, info.type);
@@ -407,8 +435,9 @@ namespace FlowCanvas
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>ValueInput menus for "Make Variable"</summary>
-        public static UnityEditor.GenericMenu AppendMakeVariableMenu(this FlowGraph graph, UnityEditor.GenericMenu menu
-            , string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendMakeVariableMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             if (contextPort is ValueInput) {
                 var portValue = (contextPort as ValueInput).serializedValue;
@@ -418,7 +447,8 @@ namespace FlowCanvas
                 menu.AddItem(new GUIContent("Make Linked Variable"), false, (o) => {
                     var bbVar = graph.blackboard.AddVariable(contextPort.name, contextPort.type);
                     if (bbVar != null)
-                        graph.AddVariableGet((System.Type)o, graph.blackboard, bbVar, pos, contextPort, portValue);
+                        graph.AddVariableGet((System.Type)o, graph.blackboard, bbVar, pos,
+                            contextPort, portValue);
                 }, contextPort.type);
                 menu.AddSeparator("/");
             }
@@ -426,27 +456,30 @@ namespace FlowCanvas
         }
 
         ///<summary>All reflection type nodes</summary>
-        public static UnityEditor.GenericMenu AppendAllReflectionNodesMenu(this FlowGraph graph
-            , UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendAllReflectionNodesMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             foreach (var type in TypePrefs.GetPreferedTypesList()) {
                 if (contextPort is ValueOutput && contextPort.type == type) continue;
-                menu = graph.AppendTypeReflectionNodesMenu(menu, type, baseCategory, pos, contextPort, dropInstance);
+                menu = graph.AppendTypeReflectionNodesMenu(menu, type, baseCategory, pos,
+                    contextPort, dropInstance);
             }
             return menu;
         }
 
         ///<summary>Refletion nodes on a type</summary>
-        public static UnityEditor.GenericMenu AppendTypeReflectionNodesMenu(this FlowGraph graph
-            , UnityEditor.GenericMenu menu, System.Type type, string baseCategory, Vector2 pos, Port contextPort
-            , object dropInstance)
+        public static UnityEditor.GenericMenu AppendTypeReflectionNodesMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, System.Type type, string baseCategory, Vector2 pos,
+            Port contextPort, object dropInstance)
         {
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(baseCategory)) baseCategory += "/";
             var typeCategory = baseCategory + type.FriendlyName();
 
             if (!type.IsPrimitive)
-                if (contextPort == null || (contextPort is ValueOutput && type.IsAssignableFrom(contextPort.type))) {
+                if (contextPort == null || (contextPort is ValueOutput &&
+                    type.IsAssignableFrom(contextPort.type))) {
                     var extractName = string.Format("/Extract {0}", type.FriendlyName());
                     menu.AddItem(new GUIContent(typeCategory + extractName), false, (o) => {
                         graph.AddReflectedExtractorNode(type, pos, contextPort, dropInstance);
@@ -454,14 +487,16 @@ namespace FlowCanvas
                 }
 
             //Constructors
-            if (!type.IsAbstract && !type.IsInterface && !type.IsPrimitive && type != typeof(string))
+            if (!type.IsAbstract && !type.IsInterface && !type.IsPrimitive &&
+                type != typeof(string))
                 foreach (var _c in type.RTGetConstructors()) {
                     var c = _c;
                     if (!c.IsPublic || c.IsObsolete()) continue;
                     if (contextPort is FlowInput || contextPort is FlowOutput) continue;
                     var parameters = c.GetParameters();
                     if (contextPort is ValueOutput)
-                        if (!parameters.Any(p => p.ParameterType.IsAssignableFrom(contextPort.type)))
+                        if (!parameters.Any(p =>
+                            p.ParameterType.IsAssignableFrom(contextPort.type)))
                             continue;
                     if (contextPort is ValueInput)
                         if (!contextPort.type.IsAssignableFrom(type))
@@ -472,29 +507,32 @@ namespace FlowCanvas
                     if (typeof(Component).IsAssignableFrom(type)) {
                         if (type == typeof(Transform)) continue;
                         menu.AddItem(new GUIContent(builder.ToString()), false, (o) => {
-                            graph.AddSimplexNode(typeof(AddComponent<>).MakeGenericType(type), pos, contextPort
-                                , dropInstance);
+                            graph.AddSimplexNode(typeof(AddComponent<>).MakeGenericType(type), pos,
+                                contextPort, dropInstance);
                         }, c);
                         continue;
                     }
 
                     if (typeof(ScriptableObject).IsAssignableFrom(type)) {
                         menu.AddItem(new GUIContent(builder.ToString()), false, (o) => {
-                            graph.AddSimplexNode(typeof(NewScriptableObject<>).MakeGenericType(type), pos, contextPort
-                                , dropInstance);
+                            graph.AddSimplexNode(
+                                typeof(NewScriptableObject<>).MakeGenericType(type), pos,
+                                contextPort, dropInstance);
                         }, c);
                         continue;
                     }
                     //exclude types like Mathf, Random, Time etc (they are not static)
                     if (!TypePrefs.functionalTypesBlacklist.Contains(type))
                         menu.AddItem(new GUIContent(builder.ToString()), false, (o) => {
-                            graph.AddContructorNode((ConstructorInfo)o, pos, contextPort, dropInstance);
+                            graph.AddContructorNode((ConstructorInfo)o, pos, contextPort,
+                                dropInstance);
                         }, c);
                 }
 
             //Methods
             foreach (var _m in type.RTGetMethods().Concat(type.GetExtensionMethods()).OrderBy(x =>
-                x.GetMethodSpecialType() + (x.IsStatic ? 0 : 1) + (x.DeclaringType == type ? 0 : 10))) {
+                x.GetMethodSpecialType() + (x.IsStatic ? 0 : 1) +
+                (x.DeclaringType == type ? 0 : 10))) {
                 var m = _m;
                 if (!m.IsPublic || m.IsObsolete()) continue;
 
@@ -507,20 +545,22 @@ namespace FlowCanvas
                             continue;
                 var parameters = m.GetParameters();
                 var isUnityEvent = typeof(UnityEventBase).IsAssignableFrom(m.ReturnType);
-                var isContextUnityEvent =
-                    contextPort != null && typeof(UnityEventBase).IsAssignableFrom(contextPort.type);
+                var isContextUnityEvent = contextPort != null &&
+                    typeof(UnityEventBase).IsAssignableFrom(contextPort.type);
                 if (contextPort is ValueOutput)
                     // if ( isUnityEvent && !isContextUnityEvent ) { continue; }
                     if (type != contextPort.type || m.IsStatic)
-                        if (!parameters.Any(p => p.ParameterType.IsAssignableFrom(contextPort.type)))
+                        if (!parameters.Any(p =>
+                            p.ParameterType.IsAssignableFrom(contextPort.type)))
                             continue;
 
                 if (contextPort is ValueInput) {
                     if (isUnityEvent && !isContextUnityEvent) {
                         if (!QualifyUnityEvent(m.ReturnType, contextPort)) continue;
                     }
-                    else if (!contextPort.type.IsAssignableFrom(m.ReturnType) && !parameters.Any(p =>
-                        p.IsOut && contextPort.type.IsAssignableFrom(p.ParameterType))) {
+                    else if (!contextPort.type.IsAssignableFrom(m.ReturnType) &&
+                        !parameters.Any(p =>
+                            p.IsOut && contextPort.type.IsAssignableFrom(p.ParameterType))) {
                         continue;
                     }
                 }
@@ -539,26 +579,32 @@ namespace FlowCanvas
                         var prop = m.GetAccessorProperty();
                         if (dropInstance == null)
                             //post to general events category as well for convenience
-                            menu.AddItem(new GUIContent("Events/Reflected/" + prop.DeclaringType.Name + "." + prop.Name)
-                                , false, (o) => {
-                                    graph.AddUnityEventAutoCallbackNode((PropertyInfo)o, pos, contextPort
-                                        , dropInstance);
+                            menu.AddItem(
+                                new GUIContent("Events/Reflected/" + prop.DeclaringType.Name + "." +
+                                    prop.Name), false, (o) => {
+                                    graph.AddUnityEventAutoCallbackNode((PropertyInfo)o, pos,
+                                        contextPort, dropInstance);
                                 }, prop);
-                        menu.AddItem(new GUIContent(builder.ToString() + " (Auto Subscribe)"), false, (o) => {
-                            graph.AddUnityEventAutoCallbackNode((PropertyInfo)o, pos, contextPort, dropInstance);
-                        }, prop);
-                        menu.AddItem(new GUIContent(builder.ToString() + " (Get Reference)"), false, (o) => {
-                            graph.AddMethodNode((MethodInfo)o, pos, contextPort, dropInstance);
-                        }, m);
+                        menu.AddItem(new GUIContent(builder.ToString() + " (Auto Subscribe)"),
+                            false, (o) => {
+                                graph.AddUnityEventAutoCallbackNode((PropertyInfo)o, pos,
+                                    contextPort, dropInstance);
+                            }, prop);
+                        menu.AddItem(new GUIContent(builder.ToString() + " (Get Reference)"), false,
+                            (o) => {
+                                graph.AddMethodNode((MethodInfo)o, pos, contextPort, dropInstance);
+                            }, m);
                         continue;
                     }
                     else {
                         builder.Append("/Properties/");
                     }
                 }
-                if (specialType == ReflectionTools.MethodType.Operator) builder.Append("/Operators/");
+                if (specialType == ReflectionTools.MethodType.Operator)
+                    builder.Append("/Operators/");
                 if (specialType == ReflectionTools.MethodType.Event) builder.Append("/Events/");
-                if (m.DeclaringType != type) builder.Append(m.IsExtensionMethod() ? "Extensions/" : "Inherited/");
+                if (m.DeclaringType != type)
+                    builder.Append(m.IsExtensionMethod() ? "Extensions/" : "Inherited/");
                 builder.Append(m.SignatureName());
                 menu.AddItem(new GUIContent(builder.ToString()), false, (o) => {
                     graph.AddMethodNode((MethodInfo)o, pos, contextPort, dropInstance);
@@ -572,8 +618,8 @@ namespace FlowCanvas
                 var isReadOnly = f.IsReadOnly();
                 var isConstant = f.IsConstant();
                 var isUnityEvent = typeof(UnityEventBase).IsAssignableFrom(f.FieldType);
-                var isContextUnityEvent =
-                    contextPort != null && typeof(UnityEventBase).IsAssignableFrom(contextPort.type);
+                var isContextUnityEvent = contextPort != null &&
+                    typeof(UnityEventBase).IsAssignableFrom(contextPort.type);
 
                 if (contextPort is ValueOutput) {
                     if (isUnityEvent && !isContextUnityEvent) continue;
@@ -603,19 +649,26 @@ namespace FlowCanvas
                     builder.Append(f.Name);
                     if (dropInstance == null)
                         //post to general events category as well for convenience
-                        menu.AddItem(new GUIContent("Events/Reflected/" + f.DeclaringType.Name + "." + f.Name), false
-                            , (o) => {
-                                graph.AddUnityEventAutoCallbackNode((FieldInfo)o, pos, contextPort, dropInstance);
+                        menu.AddItem(
+                            new GUIContent(
+                                "Events/Reflected/" + f.DeclaringType.Name + "." + f.Name), false,
+                            (o) => {
+                                graph.AddUnityEventAutoCallbackNode((FieldInfo)o, pos, contextPort,
+                                    dropInstance);
                             }, f);
-                    menu.AddItem(new GUIContent(builder.ToString() + " (Auto Subscribe)"), false, (o) => {
-                        graph.AddUnityEventAutoCallbackNode((FieldInfo)o, pos, contextPort, dropInstance);
-                    }, f);
-                    menu.AddItem(new GUIContent(builder.ToString() + " (Get Reference)"), false, (o) => {
-                        graph.AddFieldGetNode((FieldInfo)o, pos, contextPort, dropInstance);
-                    }, f);
+                    menu.AddItem(new GUIContent(builder.ToString() + " (Auto Subscribe)"), false,
+                        (o) => {
+                            graph.AddUnityEventAutoCallbackNode((FieldInfo)o, pos, contextPort,
+                                dropInstance);
+                        }, f);
+                    menu.AddItem(new GUIContent(builder.ToString() + " (Get Reference)"), false,
+                        (o) => {
+                            graph.AddFieldGetNode((FieldInfo)o, pos, contextPort, dropInstance);
+                        }, f);
                     continue;
                 }
-                var nameForGet = builder.ToString() + (isConstant ? "constant " + f.Name : "Get " + f.Name);
+                var nameForGet = builder.ToString() +
+                    (isConstant ? "constant " + f.Name : "Get " + f.Name);
                 menu.AddItem(new GUIContent(nameForGet), false, (o) => {
                     graph.AddFieldGetNode((FieldInfo)o, pos, contextPort, dropInstance);
                 }, f);
@@ -639,23 +692,30 @@ namespace FlowCanvas
                         var m = info.EventHandlerType.RTGetMethod("Invoke");
                         if (m == null) continue;
                         var parameters = m.GetParameters();
-                        if (!parameters.Any(p => contextPort.type.IsAssignableFrom(p.ParameterType))) continue;
+                        if (!parameters.Any(p =>
+                            contextPort.type.IsAssignableFrom(p.ParameterType)))
+                            continue;
                     }
                 }
                 builder.Clear();
                 builder.Append(typeCategory).Append("/Events/").Append(info.Name);
                 if (dropInstance == null)
                     //post to general events category as well for convenience
-                    menu.AddItem(new GUIContent("Events/Reflected/" + info.DeclaringType.Name + "." + info.Name), false
-                        , (o) => {
-                            graph.AddCSharpEventAutoCallbackNode((EventInfo)o, pos, contextPort, dropInstance);
+                    menu.AddItem(
+                        new GUIContent("Events/Reflected/" + info.DeclaringType.Name + "." +
+                            info.Name), false, (o) => {
+                            graph.AddCSharpEventAutoCallbackNode((EventInfo)o, pos, contextPort,
+                                dropInstance);
                         }, info);
-                menu.AddItem(new GUIContent(builder.ToString() + " (Auto Subscribe)"), false, (o) => {
-                    graph.AddCSharpEventAutoCallbackNode((EventInfo)o, pos, contextPort, dropInstance);
-                }, info);
-                menu.AddItem(new GUIContent(builder.ToString() + " (Get Reference)"), false, (o) => {
-                    graph.AddCSharpGetNode((EventInfo)o, pos, contextPort, dropInstance);
-                }, info);
+                menu.AddItem(new GUIContent(builder.ToString() + " (Auto Subscribe)"), false,
+                    (o) => {
+                        graph.AddCSharpEventAutoCallbackNode((EventInfo)o, pos, contextPort,
+                            dropInstance);
+                    }, info);
+                menu.AddItem(new GUIContent(builder.ToString() + " (Get Reference)"), false,
+                    (o) => {
+                        graph.AddCSharpGetNode((EventInfo)o, pos, contextPort, dropInstance);
+                    }, info);
             }
             return menu;
         }
@@ -669,22 +729,25 @@ namespace FlowCanvas
                 var invokeMethod = eventType.RTGetMethod("Invoke");
                 if (invokeMethod == null) return false;
                 var parameters = invokeMethod.GetParameters();
-                if (parameters.Any(p => contextPort.type.IsAssignableFrom(p.ParameterType))) return true;
+                if (parameters.Any(p => contextPort.type.IsAssignableFrom(p.ParameterType)))
+                    return true;
             }
             return false;
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Variable based nodes</summary>
-        public static UnityEditor.GenericMenu AppendVariableNodesMenu(this FlowGraph graph, UnityEditor.GenericMenu menu
-            , string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendVariableNodesMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             if (!string.IsNullOrEmpty(baseCategory)) baseCategory += "/";
             var variablesMap = new Dictionary<IBlackboard, IEnumerable<Variable>>();
             if (graph.blackboard != null)
                 foreach (var actualBB in graph.blackboard.GetAllParents(true))
                     variablesMap[actualBB] = actualBB.variables.Values;
-            foreach (var globalBB in GlobalBlackboard.GetAll()) variablesMap[globalBB] = globalBB.GetVariables();
+            foreach (var globalBB in GlobalBlackboard.GetAll())
+                variablesMap[globalBB] = globalBB.GetVariables();
             menu.AddSeparator(baseCategory + "Blackboard/");
 
             foreach (var pair in variablesMap.Reverse()) {
@@ -701,19 +764,22 @@ namespace FlowCanvas
                     }
                     var category = baseCategory + "Blackboard/" + bb.identifier + "/";
 
-                    if (contextPort == null ||
-                        (contextPort is ValueInput && contextPort.type.IsAssignableFrom(bbVar.varType))) {
+                    if (contextPort == null || (contextPort is ValueInput &&
+                        contextPort.type.IsAssignableFrom(bbVar.varType))) {
                         var getName = string.Format("{0}Get '{1}'", category, bbVar.name);
                         menu.AddItem(new GUIContent(getName, null, "Get Variable"), false, () => {
-                            graph.AddVariableGet(bbVar.varType, bb, bbVar, pos, contextPort, dropInstance);
+                            graph.AddVariableGet(bbVar.varType, bb, bbVar, pos, contextPort,
+                                dropInstance);
                         });
                     }
 
-                    if (contextPort == null || contextPort is FlowOutput || (contextPort is ValueOutput &&
-                        bbVar.varType.IsAssignableFrom(contextPort.type))) {
+                    if (contextPort == null || contextPort is FlowOutput ||
+                        (contextPort is ValueOutput &&
+                            bbVar.varType.IsAssignableFrom(contextPort.type))) {
                         var setName = string.Format("{0}Set '{1}'", category, bbVar.name);
                         menu.AddItem(new GUIContent(setName, null, "Set Variable"), false, () => {
-                            graph.AddVariableSet(bbVar.varType, bb, bbVar, pos, contextPort, dropInstance);
+                            graph.AddVariableSet(bbVar.varType, bb, bbVar, pos, contextPort,
+                                dropInstance);
                         });
                     }
                 }
@@ -723,8 +789,9 @@ namespace FlowCanvas
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Macro Nodes</summary>
-        public static UnityEditor.GenericMenu AppendMacroNodesMenu(this FlowGraph graph, UnityEditor.GenericMenu menu
-            , string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendMacroNodesMenu(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             var trackedAssets = AssetTracker.trackedAssets;
             if (trackedAssets == null) return menu;
@@ -733,13 +800,15 @@ namespace FlowCanvas
                 var macro = pair.Value as Macro;
                 if (macro == null) continue;
                 if (contextPort is ValueOutput || contextPort is FlowOutput)
-                    if (!macro.inputDefinitions.Select(d => d.type).Any(d => d.IsAssignableFrom(contextPort.type)))
+                    if (!macro.inputDefinitions.Select(d => d.type)
+                        .Any(d => d.IsAssignableFrom(contextPort.type)))
                         continue;
                 if (contextPort is ValueInput || contextPort is FlowInput)
-                    if (!macro.outputDefinitions.Select(d => d.type).Any(d => contextPort.type.IsAssignableFrom(d)))
+                    if (!macro.outputDefinitions.Select(d => d.type)
+                        .Any(d => contextPort.type.IsAssignableFrom(d)))
                         continue;
-                var category = baseCategory +
-                    (!string.IsNullOrEmpty(macro.category) ? "/" + macro.category : string.Empty);
+                var category = baseCategory + (!string.IsNullOrEmpty(macro.category)
+                    ? "/" + macro.category : string.Empty);
                 var idx1 = pair.Key.LastIndexOf('/') + 1;
                 var idx2 = pair.Key.LastIndexOf('.');
                 var macroName = pair.Key.Substring(idx1, idx2 - idx1);
@@ -753,23 +822,25 @@ namespace FlowCanvas
                     menu.AddDisabledItem(content);
             }
             if (contextPort == null)
-                menu.AddItem(new GUIContent("MACROS/Create New...", null, "Create a new macro"), false, () => {
-                    var newMacro = EditorUtils.CreateAsset<Macro>();
+                menu.AddItem(new GUIContent("MACROS/Create New...", null, "Create a new macro"),
+                    false, () => {
+                        var newMacro = EditorUtils.CreateAsset<Macro>();
 
-                    if (newMacro != null) {
-                        newMacro.AddExamplePorts();
-                        var wrapper = graph.AddNode<MacroNodeWrapper>(pos);
-                        wrapper.macro = newMacro;
-                        UndoUtility.SetDirty(newMacro);
-                        UnityEditor.AssetDatabase.SaveAssets();
-                    }
-                });
+                        if (newMacro != null) {
+                            newMacro.AddExamplePorts();
+                            var wrapper = graph.AddNode<MacroNodeWrapper>(pos);
+                            wrapper.macro = newMacro;
+                            UndoUtility.SetDirty(newMacro);
+                            UnityEditor.AssetDatabase.SaveAssets();
+                        }
+                    });
             return menu;
         }
 
         ///<summary>Signal Definitions</summary>
-        public static UnityEditor.GenericMenu AppendSignals(this FlowGraph graph, UnityEditor.GenericMenu menu
-            , string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendSignals(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             var trackedAssets = AssetTracker.trackedAssets;
             if (trackedAssets == null) return menu;
@@ -783,8 +854,9 @@ namespace FlowCanvas
                 var idx2 = pair.Key.LastIndexOf('.');
                 var signalName = pair.Key.Substring(idx1, idx2 - idx1);
 
-                if (contextPort == null || contextPort is FlowOutput || (contextPort is ValueOutput &&
-                    signal.parameters.Any(p => p.type.IsAssignableFrom(contextPort.type)))) {
+                if (contextPort == null || contextPort is FlowOutput ||
+                    (contextPort is ValueOutput &&
+                        signal.parameters.Any(p => p.type.IsAssignableFrom(contextPort.type)))) {
                     var nameForInvoke = category + $"/Invoke Signal ({signalName})";
                     var contentInvoke = new GUIContent(nameForInvoke, null, null);
                     menu.AddItem(contentInvoke, false, () => {
@@ -806,8 +878,9 @@ namespace FlowCanvas
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Nodes can post menu by themselves as well.</summary>
-        public static UnityEditor.GenericMenu AppendMenuCallbackReceivers(this FlowGraph graph
-            , UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort, object dropInstance)
+        public static UnityEditor.GenericMenu AppendMenuCallbackReceivers(this FlowGraph graph,
+            UnityEditor.GenericMenu menu, string baseCategory, Vector2 pos, Port contextPort,
+            object dropInstance)
         {
             foreach (var node in graph.allNodes.OfType<IEditorMenuCallbackReceiver>())
                 node.OnMenu(menu, pos, contextPort, dropInstance);
@@ -820,9 +893,9 @@ namespace FlowCanvas
         public static void ConvertNodesToMacro(List<Node> originalNodes)
         {
             if (originalNodes == null || originalNodes.Count == 0) return;
-            if (!UnityEditor.EditorUtility.DisplayDialog("Convert to Macro"
-                , "This will create a new Macro out of the nodes.\nPlease note that since Macros are assets, Scene Object references will not be saved.\nThe Macro can NOT be unpacked later on.\nContinue?"
-                , "Yes", "No!"))
+            if (!UnityEditor.EditorUtility.DisplayDialog("Convert to Macro",
+                "This will create a new Macro out of the nodes.\nPlease note that since Macros are assets, Scene Object references will not be saved.\nThe Macro can NOT be unpacked later on.\nContinue?",
+                "Yes", "No!"))
                 return;
 
             //create asset
@@ -847,17 +920,21 @@ namespace FlowCanvas
                 var originalNode = originalNodes[i];
 
                 //create macro entry node port definitions and link those to input ports of cloned nodes inside
-                foreach (var originalInputConnection in originalNode.inConnections.OfType<BinderConnection>()) {
+                foreach (var originalInputConnection in originalNode.inConnections
+                    .OfType<BinderConnection>()) {
                     //only do stuff if link source node is not part of the clones
                     if (originalNodes.Contains(originalInputConnection.sourceNode)) continue;
                     Port defSourcePort = null;
 
                     //merge same input ports and same target ports
-                    if (!inputMergeMapSource.TryGetValue(originalInputConnection.sourcePort, out defSourcePort)) {
-                        if (!inputMergeMapTarget.TryGetValue(originalInputConnection.targetPort, out defSourcePort)) {
+                    if (!inputMergeMapSource.TryGetValue(originalInputConnection.sourcePort,
+                        out defSourcePort)) {
+                        if (!inputMergeMapTarget.TryGetValue(originalInputConnection.targetPort,
+                            out defSourcePort)) {
                             //remark: we use sourcePort.type instead of target port type, so that connections remain assignable
-                            var def = new DynamicParameterDefinition(originalInputConnection.targetPort.name
-                                , originalInputConnection.sourcePort.type);
+                            var def = new DynamicParameterDefinition(
+                                originalInputConnection.targetPort.name,
+                                originalInputConnection.sourcePort.type);
                             defSourcePort = newMacro.AddInputDefinition(def);
                             inputMergeMapTarget[originalInputConnection.targetPort] = defSourcePort;
                         }
@@ -866,38 +943,48 @@ namespace FlowCanvas
 
                     if (defSourcePort.CanAcceptConnections()) {
                         //check this for case of merged FlowPorts
-                        var targetPort = (cloned[i] as FlowNode).GetInputPort(originalInputConnection.targetPortID);
+                        var targetPort =
+                            (cloned[i] as FlowNode).GetInputPort(originalInputConnection
+                                .targetPortID);
                         BinderConnection.Create(defSourcePort, targetPort);
                     }
                 }
 
                 //create macro exit node port definitions and link those to output ports of cloned nodes inside
-                foreach (var originalOutputConnection in originalNode.outConnections.OfType<BinderConnection>()) {
+                foreach (var originalOutputConnection in originalNode.outConnections
+                    .OfType<BinderConnection>()) {
                     //only do stuff if link target node is not part of the clones
                     if (originalNodes.Contains(originalOutputConnection.targetNode)) continue;
                     Port defTargetPort = null;
 
                     //merge same input ports and same target ports
-                    if (!outputMergeMapTarget.TryGetValue(originalOutputConnection.targetPort, out defTargetPort)) {
-                        if (!outputMergeMapSource.TryGetValue(originalOutputConnection.sourcePort, out defTargetPort)) {
-                            var def = new DynamicParameterDefinition(originalOutputConnection.sourcePort.name
-                                , originalOutputConnection.sourcePort.type);
+                    if (!outputMergeMapTarget.TryGetValue(originalOutputConnection.targetPort,
+                        out defTargetPort)) {
+                        if (!outputMergeMapSource.TryGetValue(originalOutputConnection.sourcePort,
+                            out defTargetPort)) {
+                            var def = new DynamicParameterDefinition(
+                                originalOutputConnection.sourcePort.name,
+                                originalOutputConnection.sourcePort.type);
                             defTargetPort = newMacro.AddOutputDefinition(def);
-                            outputMergeMapSource[originalOutputConnection.sourcePort] = defTargetPort;
+                            outputMergeMapSource[originalOutputConnection.sourcePort] =
+                                defTargetPort;
                         }
                         outputMergeMapTarget[originalOutputConnection.targetPort] = defTargetPort;
                     }
 
                     if (defTargetPort.CanAcceptConnections()) {
                         //check this for case of merged ValuePorts
-                        var sourcePort = (cloned[i] as FlowNode).GetOutputPort(originalOutputConnection.sourcePortID);
+                        var sourcePort =
+                            (cloned[i] as FlowNode).GetOutputPort(originalOutputConnection
+                                .sourcePortID);
                         BinderConnection.Create(sourcePort, defTargetPort);
                     }
                 }
             }
 
             //Delete originals
-            var originalBounds = RectUtils.GetBoundRect(originalNodes.Select(n => n.rect).ToArray());
+            var originalBounds =
+                RectUtils.GetBoundRect(originalNodes.Select(n => n.rect).ToArray());
             foreach (var node in originalNodes.ToArray()) graph.RemoveNode(node, false);
 
             //Create MacroWrapper. Relink macro wrapper to outside nodes
@@ -921,8 +1008,10 @@ namespace FlowCanvas
 
             //organize a bit
             var clonedBounds = RectUtils.GetBoundRect(cloned.Select(n => n.rect).ToArray());
-            newMacro.entry.position = new Vector2((int)(clonedBounds.xMin - 300), (int)clonedBounds.yMin);
-            newMacro.exit.position = new Vector2((int)(clonedBounds.xMax + 300), (int)clonedBounds.yMin);
+            newMacro.entry.position =
+                new Vector2((int)(clonedBounds.xMin - 300), (int)clonedBounds.yMin);
+            newMacro.exit.position =
+                new Vector2((int)(clonedBounds.xMax + 300), (int)clonedBounds.yMin);
             newMacro.translation = -newMacro.entry.position + new Vector2(300, 300);
 
             //dirty

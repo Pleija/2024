@@ -44,11 +44,13 @@ namespace FlowCanvas.Nodes
             if (info != null) {
                 var directType = info.ParameterType;
                 var isParams = false;
-                if (last && directType.RTIsArray()) isParams = info.IsDefined(typeof(ParamArrayAttribute), false);
+                if (last && directType.RTIsArray())
+                    isParams = info.IsDefined(typeof(ParamArrayAttribute), false);
                 var elementType = directType.RTGetElementType();
                 if (isParams) result.arrayType = directType.GetEnumerableElementType();
                 result.isParamsArray = isParams;
-                var realType = directType.RTIsByRef() && elementType != null ? elementType : directType;
+                var realType = directType.RTIsByRef() && elementType != null ? elementType
+                    : directType;
                 result.paramType = realType;
                 if (info.IsOut && directType.RTIsByRef())
                     result.paramMode = ParamMode.Out;
@@ -61,7 +63,8 @@ namespace FlowCanvas.Nodes
             return result;
         }
 
-        public static bool InitParams(Type targetType, bool isStatic, MemberInfo[] infos, out ParametresDef parametres)
+        public static bool InitParams(Type targetType, bool isStatic, MemberInfo[] infos,
+            out ParametresDef parametres)
         {
             parametres = default;
             if (targetType == null) return false;
@@ -70,8 +73,8 @@ namespace FlowCanvas.Nodes
             if (!isStatic) {
                 parametres.resultDef = new ParamDef { paramMode = ParamMode.Undefined };
                 parametres.instanceDef = new ParamDef {
-                    paramType = targetType, portName = targetType.FriendlyName(), portId = "Instance"
-                    , paramMode = ParamMode.Instance,
+                    paramType = targetType, portName = targetType.FriendlyName(),
+                    portId = "Instance", paramMode = ParamMode.Instance,
                 };
             }
 
@@ -82,7 +85,8 @@ namespace FlowCanvas.Nodes
             return true;
         }
 
-        private static bool InitParams(ParameterInfo[] prms, Type returnType, ref ParametresDef parametres)
+        private static bool InitParams(ParameterInfo[] prms, Type returnType,
+            ref ParametresDef parametres)
         {
             var valueNameIsUsed = false;
 
@@ -91,7 +95,8 @@ namespace FlowCanvas.Nodes
                 if (def.portName == RETURN_VALUE_NAME && !valueNameIsUsed) valueNameIsUsed = true;
                 if (parametres.instanceDef.paramMode != ParamMode.Undefined &&
                     def.portName == parametres.instanceDef.portName &&
-                    (def.paramMode == ParamMode.In || def.paramMode == ParamMode.Ref || def.paramMode == ParamMode.Out))
+                    (def.paramMode == ParamMode.In || def.paramMode == ParamMode.Ref ||
+                        def.paramMode == ParamMode.Out))
                     def.portId = def.portName + " ";
                 parametres.paramDefinitions.Add(def);
             }
@@ -108,10 +113,12 @@ namespace FlowCanvas.Nodes
         public static bool InitParams(ConstructorInfo constructor, out ParametresDef parametres)
         {
             parametres = new ParametresDef {
-                paramDefinitions = new List<ParamDef>(), instanceDef = new ParamDef { paramMode = ParamMode.Undefined }
-                , resultDef = new ParamDef { paramMode = ParamMode.Undefined },
+                paramDefinitions = new List<ParamDef>(),
+                instanceDef = new ParamDef { paramMode = ParamMode.Undefined },
+                resultDef = new ParamDef { paramMode = ParamMode.Undefined },
             };
-            if (constructor == null || constructor.ContainsGenericParameters || constructor.IsGenericMethodDefinition)
+            if (constructor == null || constructor.ContainsGenericParameters ||
+                constructor.IsGenericMethodDefinition)
                 return false;
             var prms = constructor.GetParameters();
             var returnType = constructor.RTReflectedOrDeclaredType();
@@ -121,10 +128,13 @@ namespace FlowCanvas.Nodes
         public static bool InitParams(MethodInfo method, out ParametresDef parametres)
         {
             parametres = new ParametresDef {
-                paramDefinitions = new List<ParamDef>(), instanceDef = new ParamDef { paramMode = ParamMode.Undefined }
-                , resultDef = new ParamDef { paramMode = ParamMode.Undefined },
+                paramDefinitions = new List<ParamDef>(),
+                instanceDef = new ParamDef { paramMode = ParamMode.Undefined },
+                resultDef = new ParamDef { paramMode = ParamMode.Undefined },
             };
-            if (method == null || method.ContainsGenericParameters || method.IsGenericMethodDefinition) return false;
+            if (method == null || method.ContainsGenericParameters ||
+                method.IsGenericMethodDefinition)
+                return false;
             var prms = method.GetParameters();
             var returnType = method.ReturnType;
 
@@ -139,10 +149,12 @@ namespace FlowCanvas.Nodes
         public static bool InitParams(FieldInfo field, out ParametresDef parametres)
         {
             parametres = new ParametresDef {
-                paramDefinitions = null, instanceDef = new ParamDef { paramMode = ParamMode.Undefined }
-                , resultDef = new ParamDef { paramMode = ParamMode.Undefined },
+                paramDefinitions = null,
+                instanceDef = new ParamDef { paramMode = ParamMode.Undefined },
+                resultDef = new ParamDef { paramMode = ParamMode.Undefined },
             };
-            if (field == null || field.FieldType.ContainsGenericParameters || field.FieldType.IsGenericTypeDefinition)
+            if (field == null || field.FieldType.ContainsGenericParameters ||
+                field.FieldType.IsGenericTypeDefinition)
                 return false;
 
             if (!field.IsStatic) {
@@ -159,8 +171,8 @@ namespace FlowCanvas.Nodes
         public static string GetGeneratedKey(MemberInfo memberInfo)
         {
             if (memberInfo != null)
-                return string.Format("{0} {1} {2}", memberInfo.DeclaringType.FullName, memberInfo.MemberType
-                    , memberInfo);
+                return string.Format("{0} {1} {2}", memberInfo.DeclaringType.FullName,
+                    memberInfo.MemberType, memberInfo);
             return string.Empty;
         }
     }

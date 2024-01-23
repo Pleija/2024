@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Conditional"), Category("Decorators")
-     , Description(
-         "Executes and returns the child status only if the condition is true. Returns Failure if the condition is false.")
-     , Icon("Accessor")]
+    [Name("Conditional"), Category("Decorators"),
+     Description(
+         "Executes and returns the child status only if the condition is true. Returns Failure if the condition is false."),
+     Icon("Accessor")]
     public class ConditionalEvaluator : BTDecorator, ITaskAssignable<ConditionTask>
     {
-        [Name("Dynamic")
-         , Tooltip(
+        [Name("Dynamic"),
+         Tooltip(
              "If enabled, the condition is re-evaluated per frame and the child is aborted if the condition becomes false.")]
         public bool isDynamic;
 
@@ -41,13 +41,15 @@ namespace NodeCanvas.BehaviourTrees
             if (status == Status.Resting) condition.Enable(agent, blackboard);
 
             if (isDynamic) {
-                if (condition.Check(agent, blackboard)) return decoratedConnection.Execute(agent, blackboard);
+                if (condition.Check(agent, blackboard))
+                    return decoratedConnection.Execute(agent, blackboard);
                 decoratedConnection.Reset();
                 return (Status)conditionFailReturn;
             }
             else {
                 if (status != Status.Running) accessed = condition.Check(agent, blackboard);
-                return accessed ? decoratedConnection.Execute(agent, blackboard) : (Status)conditionFailReturn;
+                return accessed ? decoratedConnection.Execute(agent, blackboard)
+                    : (Status)conditionFailReturn;
             }
         }
 

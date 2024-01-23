@@ -10,10 +10,12 @@ namespace Slate
         //EVENT DELEGATES
         public delegate void SubtitlesGUIDelegate(string text, Color color);
 
-        public delegate void TextOverlayGUIDelegate(string text, Color color, float size, TextAnchor alignment
-            , Vector2 position);
+        public delegate void TextOverlayGUIDelegate(string text, Color color, float size,
+            TextAnchor alignment, Vector2 position);
 
-        public delegate void ImageOverlayGUIDelegate(Texture texture, Color color, Vector2 scale, Vector2 position);
+        public delegate void ImageOverlayGUIDelegate(Texture texture, Color color, Vector2 scale,
+            Vector2 position);
+
         public delegate void ScreenFadeGUIDelegate(Color color);
         public delegate void LetterboxGUIDelegate(float completion);
         public delegate void CameraDissolveDelegate(Texture texture, float completion);
@@ -105,13 +107,15 @@ namespace Slate
         }
 
         //...
-        public static void UpdateOverlayText(string text, Color color, float size, TextAnchor anchor, Vector2 pos)
+        public static void UpdateOverlayText(string text, Color color, float size,
+            TextAnchor anchor, Vector2 pos)
         {
             if (OnTextOverlayGUI != null) OnTextOverlayGUI(text, color, size, anchor, pos);
         }
 
         //...
-        public static void UpdateOverlayImage(Texture texture, Color color, Vector2 scale, Vector2 positionOffset)
+        public static void UpdateOverlayImage(Texture texture, Color color, Vector2 scale,
+            Vector2 positionOffset)
         {
             if (OnImageOverlayGUI != null) OnImageOverlayGUI(texture, color, scale, positionOffset);
         }
@@ -134,8 +138,8 @@ namespace Slate
             if (!string.IsNullOrEmpty(missing)) {
                 var rect = new Rect(10, 10, Screen.width - 10, Screen.height - 10);
                 var text = string.Format(
-                    "Missing GUI Implementations:{0}\n\nPlease add prefab named '@DirectorGUI' in the scene.\nAlternatively you can create your own GUI implementation."
-                    , missing);
+                    "Missing GUI Implementations:{0}\n\nPlease add prefab named '@DirectorGUI' in the scene.\nAlternatively you can create your own GUI implementation.",
+                    missing);
                 var size = GUI.skin.label.CalcSize(new GUIContent(text));
                 var bgRect = new Rect(5, 5, size.x + 10, size.y + 10);
                 GUI.color = new Color(0.2f, 0.2f, 0.2f);

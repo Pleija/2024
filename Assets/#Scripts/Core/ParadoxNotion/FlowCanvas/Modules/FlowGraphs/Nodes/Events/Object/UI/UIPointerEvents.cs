@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("UI Pointer"), Category("Events/Object/UI")
-     , Description(
+    [Name("UI Pointer"), Category("Events/Object/UI"),
+     Description(
          "Calls UI Pointer based events on target. The Unity Event system has to be set through 'GameObject/UI/Event System'")]
     public class UIPointerEvents : RouterEventNode<Transform>
     {

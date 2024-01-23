@@ -7,15 +7,16 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility")
-     , Description(
+    [Category("✫ Utility"),
+     Description(
          "Check for an invoked Signal with agent as the target. If Signal was invoked as global, then the target does not matter.")]
     public class CheckSignal : ConditionTask<Transform>
     {
         public BBParameter<SignalDefinition> signalDefinition;
 
         [SerializeField]
-        private Dictionary<string, BBObjectParameter> argumentsMap = new Dictionary<string, BBObjectParameter>();
+        private Dictionary<string, BBObjectParameter> argumentsMap =
+            new Dictionary<string, BBObjectParameter>();
 
         protected override string info => signalDefinition.ToString();
 
@@ -36,11 +37,13 @@ namespace NodeCanvas.Tasks.Conditions
             signalDefinition.value.onInvoke -= OnSignalInvoke;
         }
 
-        private void OnSignalInvoke(Transform sender, Transform receiver, bool isGlobal, params object[] args)
+        private void OnSignalInvoke(Transform sender, Transform receiver, bool isGlobal,
+            params object[] args)
         {
             if (receiver == agent || isGlobal) {
                 var def = signalDefinition.value;
-                for (var i = 0; i < args.Length; i++) argumentsMap[def.parameters[i].ID].value = args[i];
+                for (var i = 0; i < args.Length; i++)
+                    argumentsMap[def.parameters[i].ID].value = args[i];
                 YieldReturn(true);
             }
         }

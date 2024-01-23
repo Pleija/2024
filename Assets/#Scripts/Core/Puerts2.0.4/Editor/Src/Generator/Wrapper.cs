@@ -42,8 +42,8 @@ namespace Puerts.Editor
                 {
                     if (LazyMembers.ContainsKey(f.Name)) return;
                     LazyMembers.Add(f.Name, new LazyMemberRegisterInfo {
-                        Name = f.Name, IsStatic = f.IsStatic, Type = LazyMemberType.Field, HasGetter = true
-                        , HasSetter = !f.IsInitOnly && !f.IsLiteral,
+                        Name = f.Name, IsStatic = f.IsStatic, Type = LazyMemberType.Field,
+                        HasGetter = true, HasSetter = !f.IsInitOnly && !f.IsLiteral,
                     });
                 }
 
@@ -54,9 +54,9 @@ namespace Puerts.Editor
                     var setMethod = p.GetSetMethod();
                     var isStatic = getMethod == null ? setMethod.IsStatic : getMethod.IsStatic;
                     LazyMembers.Add(p.Name, new LazyMemberRegisterInfo {
-                        Name = p.Name, IsStatic = isStatic, Type = LazyMemberType.Property
-                        , HasGetter = getMethod != null && getMethod.IsPublic
-                        , HasSetter = setMethod != null && setMethod.IsPublic,
+                        Name = p.Name, IsStatic = isStatic, Type = LazyMemberType.Property,
+                        HasGetter = getMethod != null && getMethod.IsPublic,
+                        HasSetter = setMethod != null && setMethod.IsPublic,
                     });
                 }
 
@@ -150,35 +150,43 @@ namespace Puerts.Editor
                     // 做这个事情的原因是目前还没法做到重载级别的lazy。
                     var lazyCollector = new LazyMemberCollector();
                     var methodLists = Puerts.Utils.GetMethodAndOverrideMethod(type, Utils.Flags)
-                        .Where(m => !Utils.IsNotSupportedMember(m))
-                        .Where(m => !m.IsSpecialName && Puerts.Utils.IsNotGenericOrValidGeneric(m)).Where(m => {
-                            var mode = Utils.getBindingMode(m);
-                            if (mode == BindingMode.DontBinding || mode == BindingMode.SlowBinding) return false;
-                            if (mode == BindingMode.LazyBinding) lazyCollector.Add(m);
-                            return true;
-                        }).ToArray();
-                    var extensionMethodsList = Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes));
+                        .Where(m => !Utils.IsNotSupportedMember(m)).Where(m =>
+                            !m.IsSpecialName && Puerts.Utils.IsNotGenericOrValidGeneric(m)).Where(
+                            m => {
+                                var mode = Utils.getBindingMode(m);
+                                if (mode == BindingMode.DontBinding ||
+                                    mode == BindingMode.SlowBinding)
+                                    return false;
+                                if (mode == BindingMode.LazyBinding) lazyCollector.Add(m);
+                                return true;
+                            }).ToArray();
+                    var extensionMethodsList =
+                        Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes));
 
                     if (extensionMethodsList != null) {
                         extensionMethodsList = new List<MethodInfo>(extensionMethodsList)
                             .Where(m => !Utils.IsNotSupportedMember(m)).Where(m =>
-                                !m.IsGenericMethodDefinition || Puerts.Utils.IsNotGenericOrValidGeneric(m)).ToArray();
+                                !m.IsGenericMethodDefinition ||
+                                Puerts.Utils.IsNotGenericOrValidGeneric(m)).ToArray();
                         if (genTypes != null)
-                            extensionMethodsList = extensionMethodsList.Where(m => genTypes.Contains(m.DeclaringType))
-                                .ToArray();
+                            extensionMethodsList = extensionMethodsList
+                                .Where(m => genTypes.Contains(m.DeclaringType)).ToArray();
                         extensionMethodsList = extensionMethodsList.Where(m => {
                             var mode = Utils.getBindingMode(m);
-                            if (mode == BindingMode.DontBinding || mode == BindingMode.SlowBinding) return false;
+                            if (mode == BindingMode.DontBinding || mode == BindingMode.SlowBinding)
+                                return false;
                             if (mode == BindingMode.LazyBinding) lazyCollector.Add(m);
                             return true;
                         }).ToArray();
                     }
                     foreach (var m in methodLists)
-                        if (lazyCollector.Contains(m.Name) && Utils.getBindingMode(m) != BindingMode.LazyBinding)
+                        if (lazyCollector.Contains(m.Name) &&
+                            Utils.getBindingMode(m) != BindingMode.LazyBinding)
                             lazyCollector.Remove(m.Name);
                     if (extensionMethodsList != null)
                         foreach (var m in extensionMethodsList)
-                            if (lazyCollector.Contains(m.Name) && Utils.getBindingMode(m) != BindingMode.LazyBinding)
+                            if (lazyCollector.Contains(m.Name) &&
+                                Utils.getBindingMode(m) != BindingMode.LazyBinding)
                                 lazyCollector.Remove(m.Name);
                     var methodGroups = methodLists.Where(m => !lazyCollector.Contains(m.Name))
                         .GroupBy(m => new MethodKey { Name = m.Name, IsStatic = m.IsStatic })
@@ -188,12 +196,13 @@ namespace Puerts.Editor
                             .GroupBy(m => new MethodKey { Name = m.Name, IsStatic = false })
                             .ToDictionary(i => i.Key, i => i.Cast<MethodBase>().ToList())
                         : new Dictionary<MethodKey, List<MethodBase>>();
-                    var indexs = type.GetProperties(Utils.Flags).Where(m => !Utils.IsNotSupportedMember(m))
+                    var indexs = type.GetProperties(Utils.Flags)
+                        .Where(m => !Utils.IsNotSupportedMember(m))
                         .Where(p => p.GetIndexParameters().GetLength(0) == 1)
                         .Select(p => IndexGenInfo.FromPropertyInfo(p)).ToArray();
                     var operatorGroups = type.GetMethods(Utils.Flags).Where(m =>
-                            !Utils.IsNotSupportedMember(m) && m.IsSpecialName && m.Name.StartsWith("op_") && m.IsStatic)
-                        .Where(m => {
+                            !Utils.IsNotSupportedMember(m) && m.IsSpecialName &&
+                            m.Name.StartsWith("op_") && m.IsStatic).Where(m => {
                             if (m.Name == "op_Explicit" || m.Name == "op_Implicit") {
                                 lazyCollector.Add(m);
                                 return false;
@@ -208,8 +217,8 @@ namespace Puerts.Editor
                             return true;
                         }).GroupBy(m => new MethodKey { Name = m.Name, IsStatic = m.IsStatic })
                         .Select(i => i.Cast<MethodBase>().ToList());
-                    var constructors = type.GetConstructors(Utils.Flags).Where(m => !Utils.IsNotSupportedMember(m))
-                        .Where(m => {
+                    var constructors = type.GetConstructors(Utils.Flags)
+                        .Where(m => !Utils.IsNotSupportedMember(m)).Where(m => {
                             var mode = Utils.getBindingMode(m);
                             if (mode != BindingMode.FastBinding) return false;
                             // constrcutor is not allowed to be lazy
@@ -217,67 +226,78 @@ namespace Puerts.Editor
                             return true;
                         }).Cast<MethodBase>().ToList();
                     return new StaticWrapperInfo {
-                        WrapClassName = Utils.GetWrapTypeName(type)
-                        , Namespaces =
+                        WrapClassName = Utils.GetWrapTypeName(type),
+                        Namespaces =
                             (extensionMethodsList != null
                                 ? extensionMethodsList.Select(m => m.DeclaringType.Namespace)
                                     .Where(name => !string.IsNullOrEmpty(name)) : new string[0])
-                            .Concat(new[] { "System" }).Distinct().ToArray()
-                        , Name = type.GetFriendlyName(), IsValueType = type.IsValueType
-                        , IsGenericWrapper = IsGenericWrapper, GenericArgumentsInfo = GenericArgumentsInfos, Methods =
-                            methodGroups.Select(kv => {
+                            .Concat(new[] { "System" }).Distinct().ToArray(),
+                        Name = type.GetFriendlyName(), IsValueType = type.IsValueType,
+                        IsGenericWrapper = IsGenericWrapper,
+                        GenericArgumentsInfo = GenericArgumentsInfos, Methods = methodGroups.Select(
+                            kv => {
                                 List<MethodBase> exOverloads = null;
                                 extensionMethodGroup.TryGetValue(kv.Key, out exOverloads);
                                 extensionMethodGroup.Remove(kv.Key);
                                 return MethodGenInfo.FromType(type, false, kv.Value, exOverloads);
                             }).Concat(extensionMethodGroup.Select(kv =>
-                                MethodGenInfo.FromType(type, false, null, kv.Value))).ToArray()
-                        , Constructor = !type.IsAbstract ? MethodGenInfo.FromType(type, true, constructors) : null
-                        , Properties = type.GetProperties(Utils.Flags).Where(p => !Utils.IsNotSupportedMember(p))
-                            .Where(p => !p.IsSpecialName && p.GetIndexParameters().GetLength(0) == 0).Where(p => {
-                                var mode = Utils.getBindingMode(p);
-
-                                if (mode == BindingMode.LazyBinding) {
-                                    lazyCollector.Add(p);
-                                    return false;
-                                }
-                                if (mode != BindingMode.FastBinding) return false;
-                                return true;
-                            }).Select(p => PropertyGenInfo.FromPropertyInfo(p)).Concat(type.GetFields(Utils.Flags)
-                                .Where(f => !Utils.IsNotSupportedMember(f)).Where(f => {
-                                    var mode = Utils.getBindingMode(f);
+                            MethodGenInfo.FromType(type, false, null, kv.Value))).ToArray(),
+                        Constructor = !type.IsAbstract
+                            ? MethodGenInfo.FromType(type, true, constructors) : null,
+                        Properties =
+                            type.GetProperties(Utils.Flags)
+                                .Where(p => !Utils.IsNotSupportedMember(p)).Where(p =>
+                                    !p.IsSpecialName && p.GetIndexParameters().GetLength(0) == 0)
+                                .Where(p => {
+                                    var mode = Utils.getBindingMode(p);
 
                                     if (mode == BindingMode.LazyBinding) {
-                                        lazyCollector.Add(f);
+                                        lazyCollector.Add(p);
                                         return false;
                                     }
                                     if (mode != BindingMode.FastBinding) return false;
                                     return true;
-                                }).Select(f => PropertyGenInfo.FromFieldInfo(f))).ToArray()
-                        , GetIndexs = indexs.Where(i => i.HasGetter).ToArray()
-                        , SetIndexs = indexs.Where(i => i.HasSetter).ToArray()
-                        , Operators = operatorGroups.Select(o => MethodGenInfo.FromType(type, false, o)).ToArray()
-                        , Events = type.GetEvents(Utils.Flags).Where(m => !Utils.IsNotSupportedMember(m)).Where(e => {
-                            var mode = Utils.getBindingMode(e);
+                                }).Select(p => PropertyGenInfo.FromPropertyInfo(p)).Concat(type
+                                    .GetFields(Utils.Flags)
+                                    .Where(f => !Utils.IsNotSupportedMember(f)).Where(f => {
+                                        var mode = Utils.getBindingMode(f);
 
-                            if (mode == BindingMode.LazyBinding) {
-                                var adder = e.GetAddMethod();
-                                var remover = e.GetRemoveMethod();
-                                if (adder != null && adder.IsPublic) lazyCollector.Add(adder);
-                                if (remover != null && remover.IsPublic) lazyCollector.Add(remover);
-                                return false;
-                            }
-                            if (mode != BindingMode.FastBinding) return false;
-                            return true;
-                        }).Select(e => EventGenInfo.FromEventInfo(e)).ToArray()
-                        , LazyMembers = lazyCollector.ToArray(),
+                                        if (mode == BindingMode.LazyBinding) {
+                                            lazyCollector.Add(f);
+                                            return false;
+                                        }
+                                        if (mode != BindingMode.FastBinding) return false;
+                                        return true;
+                                    }).Select(f => PropertyGenInfo.FromFieldInfo(f))).ToArray(),
+                        GetIndexs = indexs.Where(i => i.HasGetter).ToArray(),
+                        SetIndexs = indexs.Where(i => i.HasSetter).ToArray(),
+                        Operators = operatorGroups
+                            .Select(o => MethodGenInfo.FromType(type, false, o)).ToArray(),
+                        Events = type.GetEvents(Utils.Flags)
+                            .Where(m => !Utils.IsNotSupportedMember(m)).Where(e => {
+                                var mode = Utils.getBindingMode(e);
+
+                                if (mode == BindingMode.LazyBinding) {
+                                    var adder = e.GetAddMethod();
+                                    var remover = e.GetRemoveMethod();
+                                    if (adder != null && adder.IsPublic) lazyCollector.Add(adder);
+                                    if (remover != null && remover.IsPublic)
+                                        lazyCollector.Add(remover);
+                                    return false;
+                                }
+                                if (mode != BindingMode.FastBinding) return false;
+                                return true;
+                            }).Select(e => EventGenInfo.FromEventInfo(e)).ToArray(),
+                        LazyMembers = lazyCollector.ToArray(),
                     };
                 }
             }
 
             public class DataTypeInfo
             {
-                public string TypeName; // If it is a methodGenInfo, TypeName represents the return type
+                public string
+                    TypeName; // If it is a methodGenInfo, TypeName represents the return type
+
                 public bool IsEnum;
                 public string UnderlyingTypeName;
             }
@@ -297,23 +317,27 @@ namespace Puerts.Editor
                 {
                     var isParams = parameterInfo.IsDefined(typeof(ParamArrayAttribute), false);
                     var ExpectJsType = isParams
-                        ? GeneralGetterManager.GetJsTypeMask(parameterInfo.ParameterType.GetElementType())
+                        ? GeneralGetterManager.GetJsTypeMask(parameterInfo.ParameterType
+                            .GetElementType())
                         : GeneralGetterManager.GetJsTypeMask(parameterInfo.ParameterType);
                     var result = new ParameterGenInfo() {
-                        IsOut = !parameterInfo.IsIn && parameterInfo.IsOut && parameterInfo.ParameterType.IsByRef
-                        , IsIn = parameterInfo.IsIn, IsByRef = parameterInfo.ParameterType.IsByRef
-                        , TypeName = Utils.RemoveRefAndToConstraintType(parameterInfo.ParameterType).GetFriendlyName()
-                        , ExpectJsType = Utils.ToCode(ExpectJsType), IsParams = isParams,
+                        IsOut = !parameterInfo.IsIn && parameterInfo.IsOut &&
+                            parameterInfo.ParameterType.IsByRef,
+                        IsIn = parameterInfo.IsIn, IsByRef = parameterInfo.ParameterType.IsByRef,
+                        TypeName = Utils.RemoveRefAndToConstraintType(parameterInfo.ParameterType)
+                            .GetFriendlyName(),
+                        ExpectJsType = Utils.ToCode(ExpectJsType), IsParams = isParams,
                     };
                     if (result.IsParams)
                         result.TypeName = Utils
-                            .RemoveRefAndToConstraintType(parameterInfo.ParameterType.GetElementType())
-                            .GetFriendlyName();
+                            .RemoveRefAndToConstraintType(
+                                parameterInfo.ParameterType.GetElementType()).GetFriendlyName();
                     result.ExpectCsType =
-                        string.Format("typeof({0})"
-                            , result
+                        string.Format("typeof({0})",
+                            result
                                 .TypeName); //((ExpectJsType & JsValueType.NativeObject) == JsValueType.NativeObject) ? string.Format("typeof({0})", result.TypeName) : "null";
-                    result.DefaultValue = result.IsParams ? "System.Array.Empty<" + result.TypeName + ">()"
+                    result.DefaultValue = result.IsParams
+                        ? "System.Array.Empty<" + result.TypeName + ">()"
                         : ConvertDefaultValueToString(parameterInfo.DefaultValue, result.TypeName);
                     Utils.FillEnumInfo(result, parameterInfo.ParameterType);
                     return result;
@@ -342,14 +366,18 @@ namespace Puerts.Editor
                                 return value.ToString().ToLower();
                             }
                             else if (valueType == typeof(float)) {
-                                if ((float)value == float.PositiveInfinity) return "Single.PositiveInfinity";
-                                if ((float)value == float.NegativeInfinity) return "Single.NegativeInfinity";
+                                if ((float)value == float.PositiveInfinity)
+                                    return "Single.PositiveInfinity";
+                                if ((float)value == float.NegativeInfinity)
+                                    return "Single.NegativeInfinity";
                                 if ((float)value == float.NaN) return "Single.NaN";
                                 return value.ToString() + "f";
                             }
                             else if (valueType == typeof(double)) {
-                                if ((double)value == double.PositiveInfinity) return "Double.PositiveInfinity";
-                                if ((double)value == double.NegativeInfinity) return "Double.NegativeInfinity";
+                                if ((double)value == double.PositiveInfinity)
+                                    return "Double.PositiveInfinity";
+                                if ((double)value == double.NegativeInfinity)
+                                    return "Double.NegativeInfinity";
                                 if ((double)value == double.NaN) return "Double.NaN";
                                 return value.ToString();
                             }
@@ -377,9 +405,10 @@ namespace Puerts.Editor
                     var setMethod = propertyInfo.GetSetMethod();
                     var isStatic = getMethod == null ? setMethod.IsStatic : getMethod.IsStatic;
                     var result = new PropertyGenInfo() {
-                        Name = propertyInfo.Name, TypeName = propertyInfo.PropertyType.GetFriendlyName()
-                        , IsStatic = isStatic, HasGetter = getMethod != null && getMethod.IsPublic
-                        , HasSetter = setMethod != null && setMethod.IsPublic,
+                        Name = propertyInfo.Name,
+                        TypeName = propertyInfo.PropertyType.GetFriendlyName(), IsStatic = isStatic,
+                        HasGetter = getMethod != null && getMethod.IsPublic,
+                        HasSetter = setMethod != null && setMethod.IsPublic,
                     };
                     Utils.FillEnumInfo(result, propertyInfo.PropertyType);
                     return result;
@@ -388,9 +417,9 @@ namespace Puerts.Editor
                 public static PropertyGenInfo FromFieldInfo(FieldInfo fieldInfo)
                 {
                     var result = new PropertyGenInfo() {
-                        Name = fieldInfo.Name, TypeName = fieldInfo.FieldType.GetFriendlyName()
-                        , IsStatic = fieldInfo.IsStatic, HasGetter = true
-                        , HasSetter = !fieldInfo.IsInitOnly && !fieldInfo.IsLiteral,
+                        Name = fieldInfo.Name, TypeName = fieldInfo.FieldType.GetFriendlyName(),
+                        IsStatic = fieldInfo.IsStatic, HasGetter = true,
+                        HasSetter = !fieldInfo.IsInitOnly && !fieldInfo.IsLiteral,
                     };
                     Utils.FillEnumInfo(result, fieldInfo.FieldType);
                     return result;
@@ -409,10 +438,12 @@ namespace Puerts.Editor
                     var getMethod = propertyInfo.GetGetMethod();
                     var setMethod = propertyInfo.GetSetMethod();
                     var result = new IndexGenInfo() {
-                        TypeName = propertyInfo.PropertyType.GetFriendlyName()
-                        , IndexParameter = ParameterGenInfo.FromParameterInfo(propertyInfo.GetIndexParameters()[0])
-                        , HasGetter = getMethod != null && getMethod.IsPublic
-                        , HasSetter = setMethod != null && setMethod.IsPublic,
+                        TypeName = propertyInfo.PropertyType.GetFriendlyName(),
+                        IndexParameter =
+                            ParameterGenInfo.FromParameterInfo(
+                                propertyInfo.GetIndexParameters()[0]),
+                        HasGetter = getMethod != null && getMethod.IsPublic,
+                        HasSetter = setMethod != null && setMethod.IsPublic,
                     };
                     Utils.FillEnumInfo(result, propertyInfo.PropertyType);
                     return result;
@@ -433,9 +464,10 @@ namespace Puerts.Editor
                     var removeMethod = eventInfo.GetRemoveMethod();
                     var isStatic = addMethod == null ? removeMethod.IsStatic : addMethod.IsStatic;
                     return new EventGenInfo() {
-                        Name = eventInfo.Name, TypeName = eventInfo.EventHandlerType.GetFriendlyName()
-                        , IsStatic = isStatic, HasAdd = addMethod != null && addMethod.IsPublic
-                        , HasRemove = removeMethod != null && removeMethod.IsPublic,
+                        Name = eventInfo.Name,
+                        TypeName = eventInfo.EventHandlerType.GetFriendlyName(),
+                        IsStatic = isStatic, HasAdd = addMethod != null && addMethod.IsPublic,
+                        HasRemove = removeMethod != null && removeMethod.IsPublic,
                     };
                 }
             }
@@ -452,23 +484,27 @@ namespace Puerts.Editor
                 internal string GetParameterInfosMark()
                 {
                     if (ParameterInfosMark == null)
-                        ParameterInfosMark = string.Join("|", ParameterInfos.Select(pinfo => pinfo.TypeName).ToArray());
+                        ParameterInfosMark = string.Join("|",
+                            ParameterInfos.Select(pinfo => pinfo.TypeName).ToArray());
                     return ParameterInfosMark;
                 }
 
-                public static List<OverloadGenInfo> FromMethodBase(MethodBase methodBase, bool extensionMethod = false)
+                public static List<OverloadGenInfo> FromMethodBase(MethodBase methodBase,
+                    bool extensionMethod = false)
                 {
                     var ret = new List<OverloadGenInfo>();
 
                     if (methodBase is MethodInfo) {
                         var methodInfo = methodBase as MethodInfo;
-                        var parameters = methodInfo.GetParameters().Skip(extensionMethod ? 1 : 0).ToArray();
+                        var parameters = methodInfo.GetParameters().Skip(extensionMethod ? 1 : 0)
+                            .ToArray();
                         var mainInfo = new OverloadGenInfo() {
-                            ParameterInfos = parameters.Select(info => ParameterGenInfo.FromParameterInfo(info))
-                                .ToArray()
-                            , EllipsisedParameterInfos = new ParameterGenInfo[] { }
-                            , TypeName = Utils.RemoveRefAndToConstraintType(methodInfo.ReturnType).GetFriendlyName()
-                            , IsVoid = methodInfo.ReturnType == typeof(void),
+                            ParameterInfos = parameters
+                                .Select(info => ParameterGenInfo.FromParameterInfo(info)).ToArray(),
+                            EllipsisedParameterInfos = new ParameterGenInfo[] { },
+                            TypeName = Utils.RemoveRefAndToConstraintType(methodInfo.ReturnType)
+                                .GetFriendlyName(),
+                            IsVoid = methodInfo.ReturnType == typeof(void),
                         };
                         Utils.FillEnumInfo(mainInfo, methodInfo.ReturnType);
                         mainInfo.HasParams = mainInfo.ParameterInfos.Any(info => info.IsParams);
@@ -480,19 +516,25 @@ namespace Puerts.Editor
 
                             if (ps[i].IsOptional || mainInfo.ParameterInfos[i].IsParams) {
                                 var pinfos = parameters.Take(i).ToArray();
-                                var ellipsisedPInfos = parameters.Where((item, index) => index >= i).ToArray();
-                                if (!Puerts.Utils.IsNotGenericOrValidGeneric((MethodInfo)methodBase, pinfos)) continue;
+                                var ellipsisedPInfos = parameters.Where((item, index) => index >= i)
+                                    .ToArray();
+                                if (!Puerts.Utils.IsNotGenericOrValidGeneric((MethodInfo)methodBase,
+                                    pinfos))
+                                    continue;
                                 optionalInfo = new OverloadGenInfo() {
-                                    ParameterInfos = pinfos.Select(info => ParameterGenInfo.FromParameterInfo(info))
-                                        .ToArray()
-                                    , EllipsisedParameterInfos = ellipsisedPInfos
-                                        .Select(info => ParameterGenInfo.FromParameterInfo(info)).ToArray()
-                                    , TypeName = Utils.RemoveRefAndToConstraintType(methodInfo.ReturnType)
-                                        .GetFriendlyName()
-                                    , IsVoid = methodInfo.ReturnType == typeof(void),
+                                    ParameterInfos = pinfos.Select(info =>
+                                        ParameterGenInfo.FromParameterInfo(info)).ToArray(),
+                                    EllipsisedParameterInfos = ellipsisedPInfos
+                                        .Select(info => ParameterGenInfo.FromParameterInfo(info))
+                                        .ToArray(),
+                                    TypeName = Utils
+                                        .RemoveRefAndToConstraintType(methodInfo.ReturnType)
+                                        .GetFriendlyName(),
+                                    IsVoid = methodInfo.ReturnType == typeof(void),
                                 };
                                 Utils.FillEnumInfo(optionalInfo, methodInfo.ReturnType);
-                                optionalInfo.HasParams = optionalInfo.ParameterInfos.Any(info => info.IsParams);
+                                optionalInfo.HasParams =
+                                    optionalInfo.ParameterInfos.Any(info => info.IsParams);
                                 ret.Add(optionalInfo);
                             }
                             else {
@@ -504,9 +546,10 @@ namespace Puerts.Editor
                         var constructorInfo = methodBase as ConstructorInfo;
                         var mainInfo = new OverloadGenInfo() {
                             ParameterInfos = constructorInfo.GetParameters()
-                                .Select(info => ParameterGenInfo.FromParameterInfo(info)).ToArray()
-                            , EllipsisedParameterInfos = new ParameterGenInfo[] { }
-                            , TypeName = constructorInfo.DeclaringType.GetFriendlyName(), IsVoid = false,
+                                .Select(info => ParameterGenInfo.FromParameterInfo(info)).ToArray(),
+                            EllipsisedParameterInfos = new ParameterGenInfo[] { },
+                            TypeName = constructorInfo.DeclaringType.GetFriendlyName(),
+                            IsVoid = false,
                         };
                         mainInfo.HasParams = mainInfo.ParameterInfos.Any(info => info.IsParams);
                         ret.Add(mainInfo);
@@ -518,11 +561,14 @@ namespace Puerts.Editor
                             if (ps[i].IsOptional || mainInfo.ParameterInfos[i].IsParams) {
                                 optionalInfo = new OverloadGenInfo() {
                                     ParameterInfos = constructorInfo.GetParameters()
-                                        .Select(info => ParameterGenInfo.FromParameterInfo(info)).Take(i).ToArray()
-                                    , EllipsisedParameterInfos = new ParameterGenInfo[] { }
-                                    , TypeName = constructorInfo.DeclaringType.GetFriendlyName(), IsVoid = false,
+                                        .Select(info => ParameterGenInfo.FromParameterInfo(info))
+                                        .Take(i).ToArray(),
+                                    EllipsisedParameterInfos = new ParameterGenInfo[] { },
+                                    TypeName = constructorInfo.DeclaringType.GetFriendlyName(),
+                                    IsVoid = false,
                                 };
-                                optionalInfo.HasParams = optionalInfo.ParameterInfos.Any(info => info.IsParams);
+                                optionalInfo.HasParams =
+                                    optionalInfo.ParameterInfos.Any(info => info.IsParams);
                                 ret.Add(optionalInfo);
                             }
                             else {
@@ -547,8 +593,8 @@ namespace Puerts.Editor
                 public int OverloadCount;
                 public bool IsLazyMember;
 
-                public static MethodGenInfo FromType(Type type, bool isCtor, List<MethodBase> overloads
-                    , List<MethodBase> extensionOverloads = null)
+                public static MethodGenInfo FromType(Type type, bool isCtor,
+                    List<MethodBase> overloads, List<MethodBase> extensionOverloads = null)
                 {
                     var ret = new List<OverloadGenInfo>();
                     if (overloads != null)
@@ -564,8 +610,8 @@ namespace Puerts.Editor
                         if (type.IsValueType) //值类型添加无参构造
                             if (!ret.Exists(m => m.ParameterInfos.Length == 0))
                                 ret.Add(new OverloadGenInfo() {
-                                    ParameterInfos = new ParameterGenInfo[] { }, TypeName = type.GetFriendlyName()
-                                    , IsVoid = false,
+                                    ParameterInfos = new ParameterGenInfo[] { },
+                                    TypeName = type.GetFriendlyName(), IsVoid = false,
                                 });
                         // 如果是构造函数此处固定赋值，因为像结构体的情况overloads不一定有含有元素
                         name = ".ctor";
@@ -580,9 +626,10 @@ namespace Puerts.Editor
                         isStatic = false;
                     }
                     var result = new MethodGenInfo() {
-                        Name = name, IsStatic = isStatic, HasOverloads = ret.Count > 1, OverloadCount = ret.Count
-                        , OverloadGroups = ret.GroupBy(m => m.ParameterInfos.Length + (m.HasParams ? 0 : 9999)).Select(
-                            lst => {
+                        Name = name, IsStatic = isStatic, HasOverloads = ret.Count > 1,
+                        OverloadCount = ret.Count, OverloadGroups = ret
+                            .GroupBy(m => m.ParameterInfos.Length + (m.HasParams ? 0 : 9999))
+                            .Select(lst => {
                                 // some overloads are from the base class, some overloads may have the same parameters, so we need to distinct the overloads with same parameterinfo
                                 var distincter = new Dictionary<string, OverloadGenInfo>();
 
@@ -594,9 +641,9 @@ namespace Puerts.Editor
                                     if (!distincter.TryGetValue(mark, out existedOverload))
                                         distincter.Add(mark, overload);
                                 }
-                                return distincter.Values.ToList().Where(item => item != null).ToArray();
-                            }).Where(lst => lst.Count() > 0).ToArray()
-                        ,
+                                return distincter.Values.ToList().Where(item => item != null)
+                                    .ToArray();
+                            }).Where(lst => lst.Count() > 0).ToArray(),
                     };
                     return result;
                 }

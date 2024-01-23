@@ -5,8 +5,11 @@ using UnityEngine.Events;
 
 namespace ParadoxNotion.Serialization
 {
-    ///<summary>Unity events can either be fields or properties, so we serialize either.</summary>
-    ///<summary>This does NOT resolve the actual object, but rather only the memberinfo pointing to that object</summary>
+    /// <summary>Unity events can either be fields or properties, so we serialize either.</summary>
+    /// <summary>
+    ///     This does NOT resolve the actual object, but rather only the memberinfo pointing to that
+    ///     object
+    /// </summary>
     [Serializable]
     public class SerializedUnityEventInfo : ISerializedReflectedInfo
     {
@@ -37,8 +40,8 @@ namespace ParadoxNotion.Serialization
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (_memberInfo != null)
-                _baseInfo = string.Format("{0}|{1}", _memberInfo.RTReflectedOrDeclaredType().FullName
-                    , _memberInfo.Name);
+                _baseInfo = string.Format("{0}|{1}",
+                    _memberInfo.RTReflectedOrDeclaredType().FullName, _memberInfo.Name);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
@@ -55,7 +58,8 @@ namespace ParadoxNotion.Serialization
             var result = type.RTGetFieldOrProp(name);
             _memberInfo = null;
 
-            if (result is FieldInfo && typeof(UnityEventBase).RTIsAssignableFrom((result as FieldInfo).FieldType)) {
+            if (result is FieldInfo &&
+                typeof(UnityEventBase).RTIsAssignableFrom((result as FieldInfo).FieldType)) {
                 _memberInfo = result;
                 return;
             }

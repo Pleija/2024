@@ -34,8 +34,10 @@ namespace SqlCipher4Unity3D.Example.test.Editor
         {
             var hashCode = 480581749;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ID);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CompanyID);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Company>.Default.GetHashCode(Company);
+            hashCode = hashCode * -1521134295 +
+                EqualityComparer<string>.Default.GetHashCode(CompanyID);
+            hashCode = hashCode * -1521134295 +
+                EqualityComparer<Company>.Default.GetHashCode(Company);
             return hashCode;
         }
     }

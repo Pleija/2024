@@ -23,8 +23,8 @@ namespace NodeCanvas.Tasks.Conditions
         [BlackboardOnly]
         public BBParameter<GameObject> closerResult;
 
-        protected override string info => "Distance Any" + OperationTools.GetCompareString(checkType) + distance +
-            " in " + targetObjects;
+        protected override string info => "Distance Any" +
+            OperationTools.GetCompareString(checkType) + distance + " in " + targetObjects;
 
         protected override bool OnCheck()
         {
@@ -34,15 +34,16 @@ namespace NodeCanvas.Tasks.Conditions
             foreach (var o in targetObjects.value) {
                 if (o == agent.gameObject) continue;
 
-                if (OperationTools.Compare(Vector2.Distance(agent.position, o.transform.position), distance.value
-                    , checkType, floatingPoint)) {
+                if (OperationTools.Compare(Vector2.Distance(agent.position, o.transform.position),
+                    distance.value, checkType, floatingPoint)) {
                     temp.Add(o);
                     r = true;
                 }
             }
 
             if (!allResults.isNone || !closerResult.isNone) {
-                var ordered = temp.OrderBy(x => Vector2.Distance(agent.position, x.transform.position));
+                var ordered = temp.OrderBy(x =>
+                    Vector2.Distance(agent.position, x.transform.position));
                 if (!allResults.isNone) allResults.value = ordered.ToList();
                 if (!closerResult.isNone) closerResult.value = ordered.FirstOrDefault();
             }

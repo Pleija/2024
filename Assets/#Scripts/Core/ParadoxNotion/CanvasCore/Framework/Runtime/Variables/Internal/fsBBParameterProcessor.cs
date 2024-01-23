@@ -8,13 +8,15 @@ namespace NodeCanvas.Framework.Internal
 {
     /// <summary>
     ///     Extended functionality for BBParameters, so that changing a serialized type T, to BBParameter
-    ///     <T>, retains the original serialization. As such "upgrading" a normal T to BBParameter<T> impose no problems.
+    ///     <T>
+    ///         , retains the original serialization. As such "upgrading" a normal T to BBParameter
+    ///         <T> impose no problems.
     /// </summary>
     public class fsBBParameterProcessor : fsRecoveryProcessor<BBParameter, MissingBBParameterType>
     {
         //...
-        public override void OnBeforeDeserializeAfterInstanceCreation(Type storageType, object instance
-            , ref fsData data)
+        public override void OnBeforeDeserializeAfterInstanceCreation(Type storageType,
+            object instance, ref fsData data)
         {
             if (ParadoxNotion.Services.Threader.applicationIsPlaying) return;
 
@@ -23,7 +25,8 @@ namespace NodeCanvas.Framework.Internal
             //There is no other way to find out if the previous state is BBParameter or not. It's no bullet proof, but not harmfull anyway.
             if (data.IsDictionary) {
                 var dict = data.AsDictionary;
-                if (dict.Count == 0 || dict.ContainsKey("_value") || dict.ContainsKey("_name")) return;
+                if (dict.Count == 0 || dict.ContainsKey("_value") || dict.ContainsKey("_name"))
+                    return;
             }
             var bbParam = instance as BBParameter;
 
@@ -35,7 +38,8 @@ namespace NodeCanvas.Framework.Internal
                 //try deserialize previous json state to current BBParameter T type.
                 if (serializer.TryDeserialize(data, varType, ref prevInstance).Succeeded)
                     //if success and assignalbes, set the BBParameter instance value and serialize back again.
-                    if (prevInstance != null && varType.RTIsAssignableFrom(prevInstance.GetType())) {
+                    if (prevInstance != null &&
+                        varType.RTIsAssignableFrom(prevInstance.GetType())) {
                         bbParam.value = prevInstance;
                         serializer.TrySerialize(storageType, instance, out data);
                     }

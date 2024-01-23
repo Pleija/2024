@@ -12,7 +12,8 @@ namespace Slate
             base.OnInspectorGUI();
             GUILayout.Space(10);
             if (GUILayout.Button("Add Property"))
-                EditorTools.ShowAnimatedPropertySelectionMenu(action.actor.gameObject, action.TryAddParameter);
+                EditorTools.ShowAnimatedPropertySelectionMenu(action.actor.gameObject,
+                    action.TryAddParameter);
         }
     }
 }

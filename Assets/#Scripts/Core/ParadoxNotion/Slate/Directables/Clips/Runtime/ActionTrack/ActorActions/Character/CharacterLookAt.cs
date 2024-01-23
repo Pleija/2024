@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Name("Character Head Look At"), Category("Character")
-     , Description("This ActionClip is recommended to be used above an animation track.")]
+    [Name("Character Head Look At"), Category("Character"),
+     Description("This ActionClip is recommended to be used above an animation track.")]
     public class CharacterLookAt : ActorActionClip<Character>
     {
         [SerializeField, HideInInspector]
@@ -32,8 +32,8 @@ namespace Slate.ActionClips
             set => targetPosition.value = value;
         }
 
-        public override string info =>
-            string.Format("Head Look At {0}", targetPosition.useAnimation ? "" : targetPosition.ToString());
+        public override string info => string.Format("Head Look At {0}",
+            targetPosition.useAnimation ? "" : targetPosition.ToString());
 
         public override bool isValid => actor != null && actor.head != null && actor.neck != null;
 
@@ -54,7 +54,9 @@ namespace Slate.ActionClips
 
         protected override void OnCreate()
         {
-            if (isValid) targetPosition.value = InverseTransformPosition(actor.head.position, targetPosition.space);
+            if (isValid)
+                targetPosition.value =
+                    InverseTransformPosition(actor.head.position, targetPosition.space);
         }
 
         protected override void OnAfterValidate()
@@ -74,10 +76,12 @@ namespace Slate.ActionClips
             var finalWeight = GetClipWeight(time) * weight;
             var lookRot2 = Quaternion.LookRotation(pos - actor.neck.position, actor.upVector) *
                 Quaternion.Euler(actor.rotationOffset);
-            actor.neck.rotation = Easing.Ease(interpolation, actor.neck.rotation, lookRot2, finalWeight * 0.5f);
+            actor.neck.rotation = Easing.Ease(interpolation, actor.neck.rotation, lookRot2,
+                finalWeight * 0.5f);
             var lookRot1 = Quaternion.LookRotation(pos - actor.head.position, actor.upVector) *
                 Quaternion.Euler(actor.rotationOffset);
-            actor.head.rotation = Easing.Ease(interpolation, actor.head.rotation, lookRot1, finalWeight);
+            actor.head.rotation =
+                Easing.Ease(interpolation, actor.head.rotation, lookRot1, finalWeight);
         }
 
         protected override void OnReverse()

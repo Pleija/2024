@@ -5,8 +5,9 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Composites"), Description("Quick way to execute the left or the right child, based on a Condition Task.")
-     , Icon("Condition"), Color("b3ff7f")]
+    [Category("Composites"),
+     Description("Quick way to execute the left or the right child, based on a Condition Task."),
+     Icon("Condition"), Color("b3ff7f")]
     public class BinarySelector : BTNode, ITaskAssignable<ConditionTask>
     {
         [Tooltip("If true, the condition will be re-evaluated per frame.")]

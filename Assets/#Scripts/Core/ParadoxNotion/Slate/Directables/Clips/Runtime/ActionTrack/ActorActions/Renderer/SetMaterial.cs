@@ -13,7 +13,9 @@ namespace Slate.ActionClips
         public Material material;
         private Material sharedMat;
         private bool temporary;
-        public override string info => string.Format("Set Material\n{0}", material ? material.name : "null");
+
+        public override string info =>
+            string.Format("Set Material\n{0}", material ? material.name : "null");
 
         public override float length {
             get => _length;

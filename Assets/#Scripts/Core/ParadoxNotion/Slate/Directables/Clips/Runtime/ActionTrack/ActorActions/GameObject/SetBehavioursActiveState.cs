@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("GameObject")
-     , Description(
+    [Category("GameObject"),
+     Description(
          "The selected Behaviours will be Enabled or Disable (based on state option) on the actor if they are not already")]
     public class SetBehavioursActiveState : ActorActionClip
     {
@@ -20,8 +20,8 @@ namespace Slate.ActionClips
         private Dictionary<Behaviour, bool> currentStates;
         private bool temporary;
 
-        public override string info =>
-            string.Format("{0}\n({1}) Behaviours", activeState.ToString(), behaviourNames.Count);
+        public override string info => string.Format("{0}\n({1}) Behaviours",
+            activeState.ToString(), behaviourNames.Count);
 
         public override float length {
             get => _length;

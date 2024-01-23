@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Enter | Exit")
-     , Description(
-         "Execute a number of Actions when the FSM enters/starts and when it exits/stops. This is not a state.")
-     , Color("ff64cb"), Icon("MacroIn"), System.Obsolete("Use On FSM Enter and On FSM Exit nodes")]
+    [Name("Enter | Exit"),
+     Description(
+         "Execute a number of Actions when the FSM enters/starts and when it exits/stops. This is not a state."),
+     Color("ff64cb"), Icon("MacroIn"), System.Obsolete("Use On FSM Enter and On FSM Exit nodes")]
     public class EnterExitState : FSMNode, IUpdatable
     {
         [SerializeField]
@@ -36,7 +36,8 @@ namespace NodeCanvas.StateMachines
         {
             if (actionListEnter == null) {
                 actionListEnter = (ActionList)Task.Create(typeof(ActionList), assignedGraph);
-                actionListEnter.executionMode = ActionList.ActionsExecutionMode.ActionsRunInParallel;
+                actionListEnter.executionMode =
+                    ActionList.ActionsExecutionMode.ActionsRunInParallel;
             }
 
             if (actionListExit == null) {
@@ -59,7 +60,8 @@ namespace NodeCanvas.StateMachines
 
         void IUpdatable.Update()
         {
-            if (status == Status.Running) status = actionListEnter.Execute(graphAgent, graphBlackboard);
+            if (status == Status.Running)
+                status = actionListEnter.Execute(graphAgent, graphBlackboard);
         }
 
         ///----------------------------------------------------------------------------------------------

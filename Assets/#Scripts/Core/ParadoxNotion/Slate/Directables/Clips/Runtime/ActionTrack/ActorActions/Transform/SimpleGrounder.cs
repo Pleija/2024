@@ -3,8 +3,9 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform")
-     , Description("Grounds the actor gameobject to the nearest collider object within max check distance.")]
+    [Category("Transform"),
+     Description(
+         "Grounds the actor gameobject to the nearest collider object within max check distance.")]
     public class SimpleGrounder : ActorActionClip
     {
         [SerializeField, HideInInspector]

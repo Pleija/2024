@@ -14,10 +14,11 @@ namespace NodeCanvas.Tasks.Conditions
         public CompareMethod comparison = CompareMethod.EqualTo;
         public BBParameter<int> value;
 
-        protected override string info =>
-            "Mec.Int " + parameter.ToString() + OperationTools.GetCompareString(comparison) + value;
+        protected override string info => "Mec.Int " + parameter.ToString() +
+            OperationTools.GetCompareString(comparison) + value;
 
         protected override bool OnCheck() =>
-            OperationTools.Compare((int)agent.GetInteger(parameter.value), (int)value.value, comparison);
+            OperationTools.Compare((int)agent.GetInteger(parameter.value), (int)value.value,
+                comparison);
     }
 }

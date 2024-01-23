@@ -50,7 +50,8 @@ namespace ParadoxNotion.Design
             //Does node has any favorite children?
             public bool HasAnyFavoriteChild()
             {
-                if (!string.IsNullOrEmpty(fullPath)) return current.favorites.Any(p => p.StartsWith(fullPath + "/"));
+                if (!string.IsNullOrEmpty(fullPath))
+                    return current.favorites.Any(p => p.StartsWith(fullPath + "/"));
                 return false;
             }
 
@@ -133,10 +134,12 @@ namespace ParadoxNotion.Design
         ///----------------------------------------------------------------------------------------------
 
         //...
-        public override Vector2 GetWindowSize() => new Vector2(480, Mathf.Max(500 + helpRectRequiredHeight, 500));
+        public override Vector2 GetWindowSize() =>
+            new Vector2(480, Mathf.Max(500 + helpRectRequiredHeight, 500));
 
         ///<summary>Shows the popup menu at position and with title. getMenu is called async</summary>
-        public static void ShowAsync(Vector2 pos, string title, System.Type keyType, System.Func<GenericMenu> getMenu)
+        public static void ShowAsync(Vector2 pos, string title, System.Type keyType,
+            System.Func<GenericMenu> getMenu)
         {
             current = new GenericMenuBrowser(null, title, keyType);
             menuGenerationThread = Threader.StartFunction(menuGenerationThread, getMenu, (m) => {
@@ -147,7 +150,8 @@ namespace ParadoxNotion.Design
         }
 
         ///<summary>Shows the popup menu at position and with title</summary>
-        public static GenericMenuBrowser Show(GenericMenu newMenu, Vector2 pos, string title, System.Type keyType)
+        public static GenericMenuBrowser Show(GenericMenu newMenu, Vector2 pos, string title,
+            System.Type keyType)
         {
             current = new GenericMenuBrowser(newMenu, title, keyType);
             PopupWindow.Show(new Rect(pos.x, pos.y, 0, 0), current);
@@ -173,10 +177,11 @@ namespace ParadoxNotion.Design
             if (newMenu == null) return;
             willRepaint = true;
             boundMenu = newMenu;
-            treeGenerationThread = Threader.StartAction(treeGenerationThread, current.GenerateTree, () => {
-                treeGenerationThread = null;
-                willRepaint = true;
-            });
+            treeGenerationThread = Threader.StartAction(treeGenerationThread, current.GenerateTree,
+                () => {
+                    treeGenerationThread = null;
+                    willRepaint = true;
+                });
         }
 
         //editor opened
@@ -205,7 +210,8 @@ namespace ParadoxNotion.Design
                 searchGenerationThread = null;
             }
             current = null;
-            if (wasFocusedWindowType != null) EditorWindow.FocusWindowIfItsOpen(wasFocusedWindowType);
+            if (wasFocusedWindowType != null)
+                EditorWindow.FocusWindowIfItsOpen(wasFocusedWindowType);
         }
 
         //check flag and repaint?
@@ -222,10 +228,12 @@ namespace ParadoxNotion.Design
         {
             if (data == null) {
                 var json = EditorPrefs.GetString(PREFERENCES_KEY);
-                if (!string.IsNullOrEmpty(json)) data = JSONSerializer.Deserialize<SerializationData>(json);
+                if (!string.IsNullOrEmpty(json))
+                    data = JSONSerializer.Deserialize<SerializationData>(json);
                 if (data == null) data = new SerializationData();
                 filterFavorites = data.filterFavorites;
-                if (currentKeyType != null) data.allFavorites.TryGetValue(currentKeyType.Name, out favorites);
+                if (currentKeyType != null)
+                    data.allFavorites.TryGetValue(currentKeyType.Name, out favorites);
                 if (favorites == null) favorites = new List<string>();
             }
         }
@@ -235,7 +243,8 @@ namespace ParadoxNotion.Design
         {
             data.filterFavorites = filterFavorites;
             if (currentKeyType != null) data.allFavorites[currentKeyType.Name] = favorites;
-            EditorPrefs.SetString(PREFERENCES_KEY, JSONSerializer.Serialize(typeof(SerializationData), data));
+            EditorPrefs.SetString(PREFERENCES_KEY,
+                JSONSerializer.Serialize(typeof(SerializationData), data));
         }
 
         //...
@@ -297,8 +306,8 @@ namespace ParadoxNotion.Design
             searchRootNode.children = leafNodes
                 .Where(x => (filterFavorites ? x.isFavorite : true) &&
                     StringUtils.SearchMatch(search, x.name, x.category)).OrderBy(x =>
-                    StringUtils.ScoreSearchMatch(search, x.name, x.category) * (x.isFavorite ? 0.5f : 1))
-                .ToDictionary(x => x.fullPath, y => y);
+                    StringUtils.ScoreSearchMatch(search, x.name, x.category) *
+                    (x.isFavorite ? 0.5f : 1)).ToDictionary(x => x.fullPath, y => y);
             return searchRootNode;
         }
 
@@ -313,19 +322,20 @@ namespace ParadoxNotion.Design
             var headerRect = new Rect(0, 0, rect.width, headerHeight);
             DoHeader(headerRect, e);
 
-            if ((treeGenerationThread != null &&
-                    treeGenerationThread.ThreadState != System.Threading.ThreadState.Stopped) || items == null ||
-                items.Length == 0) {
+            if ((treeGenerationThread != null && treeGenerationThread.ThreadState !=
+                System.Threading.ThreadState.Stopped) || items == null || items.Length == 0) {
                 var progressRect = new Rect(0, 0, 200, 20);
                 progressRect.center = rect.center;
                 EditorGUI.ProgressBar(progressRect, loadProgress, "Loading...");
                 willRepaint = true;
             }
             else {
-                var treeRect = Rect.MinMaxRect(0, headerHeight, rect.width, rect.height - HELP_RECT_HEIGHT);
+                var treeRect = Rect.MinMaxRect(0, headerHeight, rect.width,
+                    rect.height - HELP_RECT_HEIGHT);
                 DoTree(treeRect, e);
             }
-            var helpRect = Rect.MinMaxRect(2, rect.height - HELP_RECT_HEIGHT + 2, rect.width - 2, rect.height - 2);
+            var helpRect = Rect.MinMaxRect(2, rect.height - HELP_RECT_HEIGHT + 2, rect.width - 2,
+                rect.height - 2);
             DoFooter(helpRect, e);
 
             //handle the events
@@ -339,8 +349,9 @@ namespace ParadoxNotion.Design
             //HEADER
             GUILayout.Space(5);
             GUILayout.Label(
-                string.Format("<color=#{0}><size=14><b>{1}</b></size></color>"
-                    , EditorGUIUtility.isProSkin ? "dddddd" : "222222", headerTitle), Styles.topCenterLabel);
+                string.Format("<color=#{0}><size=14><b>{1}</b></size></color>",
+                    EditorGUIUtility.isProSkin ? "dddddd" : "222222", headerTitle),
+                Styles.topCenterLabel);
 
             //SEARCH
             if (e.keyCode == KeyCode.DownArrow) GUIUtility.keyboardControl = 0;
@@ -351,7 +362,8 @@ namespace ParadoxNotion.Design
             GUI.SetNextControlName("SearchToolbar");
             search = EditorUtils.SearchField(search);
             if (currentKeyType != null)
-                filterFavorites = EditorGUILayout.ToggleLeft("FavOnly", filterFavorites, GUILayout.Width(70));
+                filterFavorites =
+                    EditorGUILayout.ToggleLeft("FavOnly", filterFavorites, GUILayout.Width(70));
             GUILayout.EndHorizontal();
             EditorUtils.BoldSeparator();
 
@@ -359,8 +371,8 @@ namespace ParadoxNotion.Design
             if (currentNode.parent != null && string.IsNullOrEmpty(search)) {
                 GUILayout.BeginHorizontal("box");
                 if (GUILayout.Button(
-                    string.Format("<b><size=14>◄ {0}/{1}</size></b>", currentNode.parent.name, currentNode.name)
-                    , Styles.leftLabel))
+                    string.Format("<b><size=14>◄ {0}/{1}</size></b>", currentNode.parent.name,
+                        currentNode.name), Styles.leftLabel))
                     currentNode = currentNode.parent;
                 GUILayout.EndHorizontal();
                 var lastRect = GUILayoutUtility.GetLastRect();
@@ -385,11 +397,12 @@ namespace ParadoxNotion.Design
                 hoveringIndex = -1;
                 if (!string.IsNullOrEmpty(search))
                     // //provide null reference thread (thus no aborting) so that results update all the time
-                    searchGenerationThread = Threader.StartFunction(null, GenerateSearchResults, (resultNode) => {
-                        currentNode = resultNode;
-                        searchGenerationThread = null;
-                        if (current != null) willRepaint = true;
-                    });
+                    searchGenerationThread = Threader.StartFunction(null, GenerateSearchResults,
+                        (resultNode) => {
+                            currentNode = resultNode;
+                            searchGenerationThread = null;
+                            if (current != null) willRepaint = true;
+                        });
                 else
                     currentNode = rootNode;
             }
@@ -404,8 +417,9 @@ namespace ParadoxNotion.Design
 
             foreach (var childPair in currentNode.children) {
                 if (isSearch && i >= 200) {
-                    EditorGUILayout.HelpBox("There are more than 200 results. Please try refine your search input."
-                        , MessageType.Info);
+                    EditorGUILayout.HelpBox(
+                        "There are more than 200 results. Please try refine your search input.",
+                        MessageType.Info);
                     break;
                 }
                 var node = childPair.Value;
@@ -419,9 +433,8 @@ namespace ParadoxNotion.Design
                     var searchCategory = lastSearchCategory;
                     if (memberInfo == null || memberInfo is System.Type)
                         searchCategory = node.parent.fullPath != null ? node.parent.fullPath
-                                .Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries)
-                                .FirstOrDefault()
-                            : null;
+                            .Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries)
+                            .FirstOrDefault() : null;
                     else
                         searchCategory = memberInfo.ReflectedType.FriendlyName();
 
@@ -453,8 +466,10 @@ namespace ParadoxNotion.Design
                 //Favorite
                 if (currentKeyType != null) {
                     GUI.color = node.isFavorite ? Color.white :
-                        node.HasAnyFavoriteChild() ? new Color(1, 1, 1, 0.2f) : new Color(0f, 0f, 0f, 0.4f);
-                    if (GUILayout.Button(Icons.favoriteIcon, GUIStyle.none, GUILayout.Width(16), GUILayout.Height(16)))
+                        node.HasAnyFavoriteChild() ? new Color(1, 1, 1, 0.2f) :
+                        new Color(0f, 0f, 0f, 0.4f);
+                    if (GUILayout.Button(Icons.favoriteIcon, GUIStyle.none, GUILayout.Width(16),
+                        GUILayout.Height(16)))
                         node.ToggleFavorite();
                     GUI.color = Color.white;
                 }
@@ -463,14 +478,16 @@ namespace ParadoxNotion.Design
                 var label = node.name;
                 var hexColor = EditorGUIUtility.isProSkin ? "#B8B8B8" : "#262626";
                 hexColor = isDisabled ? "#666666" : hexColor;
-                var text = string.Format("<color={0}><size=11>{1}</size></color>", hexColor
-                    , !node.isLeaf ? string.Format("<b>{0}</b>", label) : label);
-                GUILayout.Label(text, Styles.leftLabel, GUILayout.Width(0), GUILayout.ExpandWidth(true));
+                var text = string.Format("<color={0}><size=11>{1}</size></color>", hexColor,
+                    !node.isLeaf ? string.Format("<b>{0}</b>", label) : label);
+                GUILayout.Label(text, Styles.leftLabel, GUILayout.Width(0),
+                    GUILayout.ExpandWidth(true));
                 GUILayout.Label(node.isLeaf ? "●" : "►", Styles.leftLabel, GUILayout.Width(20));
                 GUILayout.EndHorizontal();
                 var elementRect = GUILayoutUtility.GetLastRect();
 
-                if (e.type == EventType.MouseDown && e.button == 0 && elementRect.Contains(e.mousePosition)) {
+                if (e.type == EventType.MouseDown && e.button == 0 &&
+                    elementRect.Contains(e.mousePosition)) {
                     e.Use();
 
                     if (node.isLeaf) {
@@ -483,7 +500,8 @@ namespace ParadoxNotion.Design
                         break;
                     }
                 }
-                if (e.type == EventType.MouseMove && elementRect.Contains(e.mousePosition)) hoveringIndex = i;
+                if (e.type == EventType.MouseMove && elementRect.Contains(e.mousePosition))
+                    hoveringIndex = i;
 
                 if (hoveringIndex == i) {
                     GUI.color = hoverColor;
@@ -498,7 +516,8 @@ namespace ParadoxNotion.Design
                 willRepaint = true;
                 lastHoveringIndex = hoveringIndex;
             }
-            if (!itemAdded) GUILayout.Label("No results to display with current search and filter combination");
+            if (!itemAdded)
+                GUILayout.Label("No results to display with current search and filter combination");
             GUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
             GUILayout.EndArea();
@@ -574,7 +593,8 @@ namespace ParadoxNotion.Design
                     var previous = currentNode.parent;
 
                     if (previous != null) {
-                        hoveringIndex = currentNode.parent.children.Values.ToList().IndexOf(currentNode);
+                        hoveringIndex = currentNode.parent.children.Values.ToList()
+                            .IndexOf(currentNode);
                         currentNode = previous;
                     }
                     e.Use();

@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Input Axis (Preset)"), Category("Events/Input (Legacy System)")
-     , Description("Calls out when Horizontal or Vertical Input Axis is not zero"), System.Obsolete("Use Input Axis")]
+    [Name("Input Axis (Preset)"), Category("Events/Input (Legacy System)"),
+     Description("Calls out when Horizontal or Vertical Input Axis is not zero"),
+     System.Obsolete("Use Input Axis")]
     public class InputAxisEvent : EventNode, IUpdatable
     {
         private FlowOutput o;

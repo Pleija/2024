@@ -27,7 +27,8 @@ namespace App
         {
             var data = value ?? User.self.exp.Value;
             if (value == null) User.self.exp.Value = data;
-            var level = User.self.Levels.LastOrDefault(x => x.exp <= User.self.exp.Value) ?? User.self.Levels.Last();
+            var level = User.self.Levels.LastOrDefault(x => x.exp <= User.self.exp.Value) ??
+                User.self.Levels.Last();
             var index = User.self.Levels.IndexOf(level);
 
             if (index != User.self.level.Value - 1) {

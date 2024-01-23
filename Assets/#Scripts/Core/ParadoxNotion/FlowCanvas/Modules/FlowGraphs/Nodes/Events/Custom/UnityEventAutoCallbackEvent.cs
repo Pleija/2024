@@ -8,8 +8,8 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [DoNotList, Name("Unity Event")
-     , Description(
+    [DoNotList, Name("Unity Event"),
+     Description(
          "Automatically Subscribes to the target UnityEvent when the graph is enabled, and is called when the event is raised")]
     public class UnityEventAutoCallbackEvent : EventNode, IReflectedWrapper
     {
@@ -32,7 +32,8 @@ namespace FlowCanvas.Nodes
                 if (_eventMember == null) return "NOT SET";
                 if (member == null) return _eventMember.AsString().FormatError();
                 if (isStatic)
-                    return string.Format("{0} ({1})", base.name, member.RTReflectedOrDeclaredType().FriendlyName());
+                    return string.Format("{0} ({1})", base.name,
+                        member.RTReflectedOrDeclaredType().FriendlyName());
                 return base.name;
             }
         }
@@ -50,8 +51,8 @@ namespace FlowCanvas.Nodes
             if (member == null) return;
             if (reflectedEvent == null) reflectedEvent = new ReflectedUnityEvent(eventType);
             if (!isStatic)
-                instancePort = AddValueInput(member.RTReflectedOrDeclaredType().FriendlyName()
-                    , member.RTReflectedOrDeclaredType(), "Instance");
+                instancePort = AddValueInput(member.RTReflectedOrDeclaredType().FriendlyName(),
+                    member.RTReflectedOrDeclaredType(), "Instance");
             args = new object[reflectedEvent.parameters.Length];
 
             for (var _i = 0; _i < reflectedEvent.parameters.Length; _i++) {

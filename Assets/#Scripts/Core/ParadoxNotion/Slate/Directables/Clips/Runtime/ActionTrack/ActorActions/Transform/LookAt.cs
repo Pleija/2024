@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform")
-     , Description(
+    [Category("Transform"),
+     Description(
          "Rotate actor transform to look at specified target position for a period of time or permanentely if blend out is zero")]
     public class LookAt : ActorActionClip
     {
@@ -28,8 +28,8 @@ namespace Slate.ActionClips
             set => targetPosition.value = value;
         }
 
-        public override string info =>
-            string.Format("Look At {0}", targetPosition.useAnimation ? "" : targetPosition.ToString());
+        public override string info => string.Format("Look At {0}",
+            targetPosition.useAnimation ? "" : targetPosition.ToString());
 
         public override float length {
             get => _length;
@@ -69,7 +69,8 @@ namespace Slate.ActionClips
 
             if (dir.magnitude > 0.001f) {
                 var lookRot = Quaternion.LookRotation(dir);
-                actor.transform.rotation = Easing.Ease(interpolation, wasRotation, lookRot, GetClipWeight(deltaTime));
+                actor.transform.rotation = Easing.Ease(interpolation, wasRotation, lookRot,
+                    GetClipWeight(deltaTime));
             }
         }
 

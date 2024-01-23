@@ -11,8 +11,9 @@ using NavMeshPathStatus = UnityEngine.AI.NavMeshPathStatus;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("Movement")
-     , Description("Check if a path exists for the agent and optionaly save the resulting path positions")]
+    [Category("Movement"),
+     Description(
+         "Check if a path exists for the agent and optionaly save the resulting path positions")]
     public class PathExists : ConditionTask<NavMeshAgent>
     {
         public BBParameter<Vector3> targetPosition;

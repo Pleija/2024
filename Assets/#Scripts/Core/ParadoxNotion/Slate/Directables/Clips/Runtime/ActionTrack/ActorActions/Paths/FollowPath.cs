@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Paths")
-     , Description(
+    [Category("Paths"),
+     Description(
          "Put the actor on a path to follow for the duration of the clip from path start to path end, or by using speed if 'Use Speed' is true. If you want the actor to look ahead of the path, set 'Look Ahead' to any value other than 0.")]
     public class FollowPath : ActorActionClip
     {
@@ -32,7 +32,9 @@ namespace Slate.ActionClips
         public EaseType blendInterpolation = EaseType.QuadraticInOut;
         private Vector3 lastPos;
         private Quaternion lastRot;
-        public override string info => string.Format("Follow Path\n{0}", path != null ? path.name : "NONE");
+
+        public override string info =>
+            string.Format("Follow Path\n{0}", path != null ? path.name : "NONE");
 
         public override float length {
             get => useSpeed && path != null ? path.length / Mathf.Max(speed, 0.01f) : _length;
@@ -65,7 +67,8 @@ namespace Slate.ActionClips
                 return;
             }
             var newPos = path.GetPositionAt(time / length);
-            actor.transform.position = Easing.Ease(blendInterpolation, lastPos, newPos, GetClipWeight(time));
+            actor.transform.position =
+                Easing.Ease(blendInterpolation, lastPos, newPos, GetClipWeight(time));
 
             if (lookAhead > 0) {
                 var lookPos = path.GetPositionAt(time / length + lookAhead);
@@ -73,7 +76,8 @@ namespace Slate.ActionClips
 
                 if (dir.magnitude > 0.001f) {
                     var lookRot = Quaternion.LookRotation(dir, upVector);
-                    actor.transform.rotation = Easing.Ease(blendInterpolation, lastRot, lookRot, GetClipWeight(time));
+                    actor.transform.rotation = Easing.Ease(blendInterpolation, lastRot, lookRot,
+                        GetClipWeight(time));
                 }
             }
         }

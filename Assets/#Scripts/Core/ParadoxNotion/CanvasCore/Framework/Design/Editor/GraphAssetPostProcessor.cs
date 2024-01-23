@@ -32,7 +32,8 @@ namespace NodeCanvas.Editor
                     var textAsset = (UnityEngine.TextAsset)asset;
 
                     foreach (var pair in AssetTracker.trackedAssets)
-                        if (pair.Value is Graph && (pair.Value as Graph).externalSerializationFile == asset) {
+                        if (pair.Value is Graph &&
+                            (pair.Value as Graph).externalSerializationFile == asset) {
                             (pair.Value as Graph).Deserialize(textAsset.text, null, true);
                             break;
                         }

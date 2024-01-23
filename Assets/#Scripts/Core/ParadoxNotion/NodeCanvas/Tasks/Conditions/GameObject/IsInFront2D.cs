@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Target In View Angle 2D"), Category("GameObject")
-     , Description("Checks whether the target is in the view angle of the agent")]
+    [Name("Target In View Angle 2D"), Category("GameObject"),
+     Description("Checks whether the target is in the view angle of the agent")]
     public class IsInFront2D : ConditionTask<Transform>
     {
         [RequiredField]
@@ -17,8 +17,8 @@ namespace NodeCanvas.Tasks.Conditions
         protected override string info => checkTarget + " in view angle";
 
         protected override bool OnCheck() =>
-            Vector2.Angle((Vector2)checkTarget.value.transform.position - (Vector2)agent.position, agent.right) <
-            viewAngle.value;
+            Vector2.Angle((Vector2)checkTarget.value.transform.position - (Vector2)agent.position,
+                agent.right) < viewAngle.value;
 
         public override void OnDrawGizmosSelected()
         {

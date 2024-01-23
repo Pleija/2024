@@ -9,7 +9,9 @@ namespace Slate
     {
         private float height;
         private float width;
-        public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => height;
+
+        public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) =>
+            height;
 
         public override void OnGUI(Rect rect, SerializedProperty prop, GUIContent label)
         {
@@ -19,12 +21,13 @@ namespace Slate
                 GUILayout.Label("Parameter is not serialized within an IKeyable object");
                 return;
             }
-            var animParam = keyable.animationData != null ? keyable.animationData.GetParameterOfName(prop.propertyPath)
-                : null;
+            var animParam = keyable.animationData != null
+                ? keyable.animationData.GetParameterOfName(prop.propertyPath) : null;
 
             if (animParam == null) {
-                GUILayout.Label(string.Format("No AnimatedParameter '{0}' was created or found in IKeyable object"
-                    , prop.propertyPath));
+                GUILayout.Label(string.Format(
+                    "No AnimatedParameter '{0}' was created or found in IKeyable object",
+                    prop.propertyPath));
                 return;
             }
 
@@ -38,7 +41,8 @@ namespace Slate
             GUILayout.BeginArea(new Rect(0, 0, width, height));
             AnimatableParameterEditor.ShowParameter(animParam, keyable, prop);
             //real height is only available in repaint
-            if (Event.current.type == EventType.Repaint) height = GUILayoutUtility.GetLastRect().yMax;
+            if (Event.current.type == EventType.Repaint)
+                height = GUILayoutUtility.GetLastRect().yMax;
             GUILayout.EndArea();
             GUI.EndGroup();
 

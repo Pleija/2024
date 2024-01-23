@@ -15,7 +15,8 @@ namespace NodeCanvas.Tasks.Actions
         public BBParameter<GameObject> saveCloneAs;
 
         protected override string info => "Instantiate " + agentInfo + " under " +
-            (parent.value ? parent.ToString() : "World") + " at " + clonePosition + " as " + saveCloneAs;
+            (parent.value ? parent.ToString() : "World") + " at " + clonePosition + " as " +
+            saveCloneAs;
 
         protected override void OnExecute()
         {

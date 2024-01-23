@@ -18,11 +18,14 @@ namespace Puerts.Editor
     {
         internal class Utils
         {
-            public const BindingFlags Flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
-                BindingFlags.DeclaredOnly;
+            public const BindingFlags Flags = BindingFlags.Public | BindingFlags.Instance |
+                BindingFlags.Static | BindingFlags.DeclaredOnly;
 
-            private static List<Func<MemberInfo, bool>> InstructionsFilters = new List<Func<MemberInfo, bool>>();
-            private static List<Func<Type, bool>> DisallowedTypeFilters = new List<Func<Type, bool>>();
+            private static List<Func<MemberInfo, bool>> InstructionsFilters =
+                new List<Func<MemberInfo, bool>>();
+
+            private static List<Func<Type, bool>> DisallowedTypeFilters =
+                new List<Func<Type, bool>>();
 
             private static List<Func<MemberInfo, BindingMode>> BindingModeFilters =
                 new List<Func<MemberInfo, BindingMode>>();
@@ -43,8 +46,10 @@ namespace Puerts.Editor
                 foreach (var filter in filters)
                     if (filter.GetParameters().Length == 2) {
                         if (filter.ReturnType == typeof(BindingMode)) {
-                            var dlg = (Func<FilterAction, MemberInfo, BindingMode>)Delegate.CreateDelegate(
-                                typeof(Func<FilterAction, MemberInfo, BindingMode>), filter);
+                            var dlg =
+                                (Func<FilterAction, MemberInfo, BindingMode>)
+                                Delegate.CreateDelegate(
+                                    typeof(Func<FilterAction, MemberInfo, BindingMode>), filter);
                             BindingModeFilters.Add((MemberInfo mbi) => {
                                 return dlg(FilterAction.BindingMode, mbi);
                             });
@@ -53,8 +58,9 @@ namespace Puerts.Editor
                             var pType = filter.GetParameters()[1].ParameterType;
 
                             if (pType == typeof(MemberInfo)) {
-                                var dlg = (Func<FilterAction, MemberInfo, bool>)Delegate.CreateDelegate(
-                                    typeof(Func<FilterAction, MemberInfo, bool>), filter);
+                                var dlg =
+                                    (Func<FilterAction, MemberInfo, bool>)Delegate.CreateDelegate(
+                                        typeof(Func<FilterAction, MemberInfo, bool>), filter);
                                 BindingModeFilters.Add((MemberInfo mbi) => {
                                     var res = dlg(FilterAction.BindingMode, mbi);
                                     return res ? BindingMode.SlowBinding : BindingMode.FastBinding;
@@ -79,8 +85,8 @@ namespace Puerts.Editor
                                     typeof(Func<MemberInfo, BindingMode>), filter));
                         }
                         else if (filter.ReturnType == typeof(bool)) {
-                            var dlg = (Func<MemberInfo, bool>)Delegate.CreateDelegate(typeof(Func<MemberInfo, bool>)
-                                , filter);
+                            var dlg = (Func<MemberInfo, bool>)Delegate.CreateDelegate(
+                                typeof(Func<MemberInfo, bool>), filter);
                             BindingModeFilters.Add((MemberInfo mbi) => {
                                 var res = dlg(mbi);
                                 return res ? BindingMode.SlowBinding : BindingMode.FastBinding;
@@ -107,10 +113,11 @@ namespace Puerts.Editor
             }
 
             public static Dictionary<Type, bool> blittableTypes = new Dictionary<Type, bool>() {
-                { typeof(byte), true }, { typeof(sbyte), true }, { typeof(short), true }, { typeof(ushort), true }
-                , { typeof(int), true }, { typeof(uint), true }, { typeof(long), true }, { typeof(ulong), true }
-                , { typeof(float), true }, { typeof(double), true }, { typeof(IntPtr), true }, { typeof(UIntPtr), true }
-                , { typeof(char), false }, { typeof(bool), false },
+                { typeof(byte), true }, { typeof(sbyte), true }, { typeof(short), true },
+                { typeof(ushort), true }, { typeof(int), true }, { typeof(uint), true },
+                { typeof(long), true }, { typeof(ulong), true }, { typeof(float), true },
+                { typeof(double), true }, { typeof(IntPtr), true }, { typeof(UIntPtr), true },
+                { typeof(char), false }, { typeof(bool), false },
             };
 
             public static bool isBlittableType(Type type)
@@ -122,8 +129,9 @@ namespace Puerts.Editor
                         ret = true;
                         if (type.IsPrimitive) return false;
 
-                        foreach (var fieldInfo in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic |
-                            BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                        foreach (var fieldInfo in type.GetFields(BindingFlags.Public |
+                            BindingFlags.NonPublic | BindingFlags.Instance |
+                            BindingFlags.DeclaredOnly))
                             if (!isBlittableType(fieldInfo.FieldType)) {
                                 ret = false;
                                 break;
@@ -180,7 +188,8 @@ namespace Puerts.Editor
             }
 
             protected static bool IsObsolete(MemberInfo mbi) =>
-                mbi.GetCustomAttributes(typeof(ObsoleteAttribute), false).FirstOrDefault() as ObsoleteAttribute != null;
+                mbi.GetCustomAttributes(typeof(ObsoleteAttribute), false).FirstOrDefault() as
+                    ObsoleteAttribute != null;
 
             public static bool IsNotSupportedMember(MemberInfo mbi, bool notFiltEII = false)
             {
@@ -198,7 +207,8 @@ namespace Puerts.Editor
                         return true;
 
                     if (!fi.IsPublic) {
-                        if (notFiltEII) return !fi.Name.Contains("."); /*explicit interface implementation*/
+                        if (notFiltEII)
+                            return !fi.Name.Contains("."); /*explicit interface implementation*/
                         return true;
                     }
                 }
@@ -265,18 +275,21 @@ namespace Puerts.Editor
             public static Type ToConstraintType(Type type, bool isGenericTypeDefinition)
             {
                 if (type.IsGenericType)
-                    return type.GetGenericTypeDefinition().MakeGenericType(type.GetGenericArguments()
+                    return type.GetGenericTypeDefinition().MakeGenericType(type
+                        .GetGenericArguments()
                         .Select(t => ToConstraintType(t, isGenericTypeDefinition)).ToArray());
-                else if (!isGenericTypeDefinition && type.IsGenericParameter && type.BaseType != null &&
-                    type.BaseType != typeof(object) && type.BaseType != typeof(ValueType))
+                else if (!isGenericTypeDefinition && type.IsGenericParameter &&
+                    type.BaseType != null && type.BaseType != typeof(object) &&
+                    type.BaseType != typeof(ValueType))
                     return ToConstraintType(type.BaseType, false);
                 else
                     return type;
             }
 
             public static bool IsGetterOrSetter(MethodInfo method) =>
-                (method.IsSpecialName && method.Name.StartsWith("get_") && method.GetParameters().Length != 1) ||
-                (method.IsSpecialName && method.Name.StartsWith("set_") && method.GetParameters().Length != 2);
+                (method.IsSpecialName && method.Name.StartsWith("get_") &&
+                    method.GetParameters().Length != 1) || (method.IsSpecialName &&
+                    method.Name.StartsWith("set_") && method.GetParameters().Length != 2);
 
             public static void FillEnumInfo(Wrapper.DataTypeInfo info, Type type)
             {
@@ -286,22 +299,25 @@ namespace Puerts.Editor
                 }
             }
 
-            public static string GetWrapTypeName(Type type) => type.ToString().Replace("+", "_").Replace(".", "_")
-                .Replace("`", "_").Replace("&", "_").Replace("[", "_").Replace("]", "_").Replace(",", "_") + "_Wrap";
+            public static string GetWrapTypeName(Type type) => type.ToString().Replace("+", "_")
+                .Replace(".", "_").Replace("`", "_").Replace("&", "_").Replace("[", "_")
+                .Replace("]", "_").Replace(",", "_") + "_Wrap";
 
             public static string ToCode(JsValueType ExpectJsType)
             {
-                return string.Join(" | "
-                    , ExpectJsType.ToString().Split(',').Select(s => "Puerts.JsValueType." + s.Trim()).ToArray());
+                return string.Join(" | ",
+                    ExpectJsType.ToString().Split(',').Select(s => "Puerts.JsValueType." + s.Trim())
+                        .ToArray());
             }
 
             public static Type RemoveRefAndToConstraintType(Type type)
             {
                 if (type.IsGenericType)
-                    return type.GetGenericTypeDefinition().MakeGenericType(type.GetGenericArguments()
-                        .Select(t => RemoveRefAndToConstraintType(t)).ToArray());
-                else if (type.IsGenericParameter && type.BaseType != null && type.BaseType != typeof(object) &&
-                    type.BaseType != typeof(ValueType))
+                    return type.GetGenericTypeDefinition().MakeGenericType(type
+                        .GetGenericArguments().Select(t => RemoveRefAndToConstraintType(t))
+                        .ToArray());
+                else if (type.IsGenericParameter && type.BaseType != null &&
+                    type.BaseType != typeof(object) && type.BaseType != typeof(ValueType))
                     return RemoveRefAndToConstraintType(type.BaseType);
                 else if (type.IsByRef)
                     return RemoveRefAndToConstraintType(type.GetElementType());
@@ -320,13 +336,13 @@ namespace Puerts.Editor
             public static MethodInfo[] GetExtensionMethods(Type checkType, HashSet<Type> genTypeSet)
             {
                 if (extensionMethods == null)
-                    extensionMethods =
-                    (
-                        from type in genTypeSet
-                        from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                        where isDefined(method, typeof(ExtensionAttribute)) &&
-                            Puerts.Utils.IsNotGenericOrValidGeneric(method)
-                        group method by getExtendedType(method)).ToDictionary(g => g.Key, g => g.ToArray());
+                    extensionMethods = (from type in genTypeSet
+                            from method in type.GetMethods(
+                                BindingFlags.Static | BindingFlags.Public)
+                            where isDefined(method, typeof(ExtensionAttribute)) &&
+                                Puerts.Utils.IsNotGenericOrValidGeneric(method)
+                            group method by getExtendedType(method))
+                        .ToDictionary(g => g.Key, g => g.ToArray());
                 MethodInfo[] ret;
                 if (!extensionMethods.TryGetValue(checkType, out ret)) return new MethodInfo[] { };
                 return ret;
@@ -402,8 +418,10 @@ namespace Puerts.Editor
                     if (underlyingType != null) return GetTsTypeName(underlyingType) + " | null";
                     var fullName = type.FullName == null ? type.ToString() : type.FullName;
                     var parts = fullName.Replace('+', '.').Split('`');
-                    var argTypenames = type.GetGenericArguments().Select(x => GetTsTypeName(x)).ToArray();
-                    return parts[0] + '$' + parts[1].Split('[')[0] + "<" + string.Join(", ", argTypenames) + ">";
+                    var argTypenames = type.GetGenericArguments().Select(x => GetTsTypeName(x))
+                        .ToArray();
+                    return parts[0] + '$' + parts[1].Split('[')[0] + "<" +
+                        string.Join(", ", argTypenames) + ">";
                 }
                 else if (type.FullName == null) {
                     return type.ToString();

@@ -10,7 +10,8 @@ namespace ParadoxNotion
         public static bool AnyEquals(object a, object b)
         {
             //regardless calling ReferenceEquals, unity is still doing magic and this is the only true solution (I've found)
-            if ((a is Object || a == null) && (b is Object || b == null)) return a as Object == b as Object;
+            if ((a is Object || a == null) && (b is Object || b == null))
+                return a as Object == b as Object;
 
             //while '==' is reference equals, we still use '==' for when one is unity object and the other is not
             return a == b || Equals(a, b) || ReferenceEquals(a, b);
@@ -57,10 +58,15 @@ namespace ParadoxNotion
             return current;
         }
 
-        ///<summary>Return all GameObjects within specified LayerMask, optionaly excluding specified GameObject</summary>
-        public static IEnumerable<GameObject> FindGameObjectsWithinLayerMask(LayerMask mask, GameObject exclude = null)
+        /// <summary>
+        ///     Return all GameObjects within specified LayerMask, optionaly excluding specified
+        ///     GameObject
+        /// </summary>
+        public static IEnumerable<GameObject> FindGameObjectsWithinLayerMask(LayerMask mask,
+            GameObject exclude = null)
         {
-            return Object.FindObjectsOfType<GameObject>().Where(x => x != exclude && x.IsInLayerMask(mask));
+            return Object.FindObjectsOfType<GameObject>()
+                .Where(x => x != exclude && x.IsInLayerMask(mask));
         }
 
         ///<summary>Return if GameObject is within specified LayerMask</summary>

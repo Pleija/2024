@@ -17,7 +17,8 @@ namespace MoreTags
             m_Color = TagSystem.GetTagColor(tag);
         }
 
-        public override Vector2 GetWindowSize() => new Vector2(80, EditorGUIUtility.singleLineHeight + 4);
+        public override Vector2 GetWindowSize() =>
+            new Vector2(80, EditorGUIUtility.singleLineHeight + 4);
 
         public override void OnGUI(Rect rect)
         {

@@ -11,7 +11,8 @@ namespace NodeCanvas.Editor
 
         protected override void OnPostExtraGraphOptions()
         {
-            if (controller.graph != null) DialogueTreeInspector.ShowActorParameters((DialogueTree)controller.graph);
+            if (controller.graph != null)
+                DialogueTreeInspector.ShowActorParameters((DialogueTree)controller.graph);
         }
     }
 }

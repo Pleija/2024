@@ -10,7 +10,9 @@ namespace Runner.Sounds
         {
             public AudioSource source;
             public AudioClip clip;
-            public float startingSpeedRatio; // The stem will start when this is lower than currentSpeed/maxSpeed.
+
+            public float
+                startingSpeedRatio; // The stem will start when this is lower than currentSpeed/maxSpeed.
         }
 
         public static MusicPlayer s_Instance;
@@ -83,7 +85,8 @@ namespace Runner.Sounds
 
             for (var i = 0; i < stems.Length; ++i) {
                 var target = currentSpeedRatio >= stems[i].startingSpeedRatio ? maxVolume : 0.0f;
-                stems[i].source.volume = Mathf.MoveTowards(stems[i].source.volume, target, fadeSpeed * Time.deltaTime);
+                stems[i].source.volume = Mathf.MoveTowards(stems[i].source.volume, target,
+                    fadeSpeed * Time.deltaTime);
             }
         }
     }

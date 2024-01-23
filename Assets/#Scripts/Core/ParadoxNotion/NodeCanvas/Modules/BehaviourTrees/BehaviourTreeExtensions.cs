@@ -34,14 +34,15 @@ namespace NodeCanvas.BehaviourTrees
         ///<summary>Create a new SubTree out of the branch of the provided root node</summary>
         public static BehaviourTree ConvertToSubTree(this BTNode root)
         {
-            if (!UnityEditor.EditorUtility.DisplayDialog("Convert to SubTree"
-                , "This will create a new SubTree out of this branch.\nAre you sure?", "Yes", "No!"))
+            if (!UnityEditor.EditorUtility.DisplayDialog("Convert to SubTree",
+                "This will create a new SubTree out of this branch.\nAre you sure?", "Yes", "No!"))
                 return null;
             var newBT = EditorUtils.CreateAsset<BehaviourTree>();
             if (newBT == null) return null;
             var subTreeNode = root.graph.AddNode<SubTree>(root.position);
             subTreeNode.subGraph = newBT;
-            for (var i = 0; i < root.inConnections.Count; i++) root.inConnections[i].SetTargetNode(subTreeNode);
+            for (var i = 0; i < root.inConnections.Count; i++)
+                root.inConnections[i].SetTargetNode(subTreeNode);
             root.inConnections.Clear();
             newBT.primeNode = DuplicateBranch(root, newBT);
             DeleteBranch(root);
@@ -53,7 +54,8 @@ namespace NodeCanvas.BehaviourTrees
         public static void DeleteBranch(this BTNode root)
         {
             var graph = root.graph;
-            foreach (var node in root.GetAllChildNodesRecursively(true).ToArray()) graph.RemoveNode(node);
+            foreach (var node in root.GetAllChildNodesRecursively(true).ToArray())
+                graph.RemoveNode(node);
         }
 
         ///<summary>Duplicate a node along with all children hierarchy</summary>
@@ -63,8 +65,8 @@ namespace NodeCanvas.BehaviourTrees
             var newNode = root.Duplicate(targetGraph);
             var dupConnections = new List<Connection>();
             for (var i = 0; i < root.outConnections.Count; i++)
-                dupConnections.Add(root.outConnections[i].Duplicate(newNode
-                    , DuplicateBranch((BTNode)root.outConnections[i].targetNode, targetGraph)));
+                dupConnections.Add(root.outConnections[i].Duplicate(newNode,
+                    DuplicateBranch((BTNode)root.outConnections[i].targetNode, targetGraph)));
             newNode.outConnections.Clear();
             foreach (var c in dupConnections) newNode.outConnections.Add(c);
             return newNode;
@@ -91,7 +93,8 @@ namespace NodeCanvas.BehaviourTrees
         }
 
         /// <summary>
-        ///     Fetch all child nodes of the node recursively, optionaly including this. In other words, this fetches the
+        ///     Fetch all child nodes of the node recursively, optionaly including this. In other words, this
+        ///     fetches the
         ///     whole branch.
         /// </summary>
         public static List<BTNode> GetAllChildNodesRecursively(this BTNode root, bool includeThis)
@@ -104,16 +107,18 @@ namespace NodeCanvas.BehaviourTrees
         }
 
         /// <summary>
-        ///     Fetch all child nodes of this node with their depth in regards to this node. So, first level children will
+        ///     Fetch all child nodes of this node with their depth in regards to this node. So, first level
+        ///     children will
         ///     have a depth of 1 while second level a depth of 2
         /// </summary>
-        public static Dictionary<BTNode, int> GetAllChildNodesWithDepthRecursively(this BTNode root, bool includeThis
-            , int startIndex)
+        public static Dictionary<BTNode, int> GetAllChildNodesWithDepthRecursively(this BTNode root,
+            bool includeThis, int startIndex)
         {
             var childList = new Dictionary<BTNode, int>();
             if (includeThis) childList[root] = startIndex;
             foreach (BTNode child in root.outConnections.Select(c => c.targetNode))
-                foreach (var pair in child.GetAllChildNodesWithDepthRecursively(true, startIndex + 1))
+                foreach (var pair in child.GetAllChildNodesWithDepthRecursively(true,
+                    startIndex + 1))
                     childList[pair.Key] = pair.Value;
             return childList;
         }

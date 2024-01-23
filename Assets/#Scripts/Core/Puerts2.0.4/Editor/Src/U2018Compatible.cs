@@ -25,13 +25,14 @@ public class U2018Compatible
                 var constructorInfo = memberInfo as ConstructorInfo;
                 var parameterInfos = constructorInfo.GetParameters();
                 if (parameterInfos.Length > 0)
-                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(parameterInfos[0].ParameterType))
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(parameterInfos[0]
+                        .ParameterType))
                         return BindingMode.DontBinding;
             }
             else if (memberInfo.MemberType == MemberTypes.Method) {
                 var methodInfo = memberInfo as MethodInfo;
-                if (methodInfo.Name == "TryAdd" ||
-                    (methodInfo.Name == "Remove" && methodInfo.GetParameters().Length == 2))
+                if (methodInfo.Name == "TryAdd" || (methodInfo.Name == "Remove" &&
+                    methodInfo.GetParameters().Length == 2))
                     return BindingMode.DontBinding;
             }
         }

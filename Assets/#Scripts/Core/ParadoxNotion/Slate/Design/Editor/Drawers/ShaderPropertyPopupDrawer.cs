@@ -44,13 +44,16 @@ namespace Slate
                                         type != ShaderUtil.ShaderPropertyType.Float &&
                                         type != ShaderUtil.ShaderPropertyType.Range)
                                         continue;
-                                    if ((att.propertyType == typeof(Vector2) || att.propertyType == typeof(Vector4)) &&
+                                    if ((att.propertyType == typeof(Vector2) ||
+                                            att.propertyType == typeof(Vector4)) &&
                                         type != ShaderUtil.ShaderPropertyType.Vector)
                                         continue;
                                 }
                                 options.Add(ShaderUtil.GetPropertyName(shader, i));
                             }
-                            prop.stringValue = EditorTools.CleanPopup<string>(content.text, prop.stringValue, options);
+                            prop.stringValue =
+                                EditorTools.CleanPopup<string>(content.text, prop.stringValue,
+                                    options);
                             return;
                         }
                     }

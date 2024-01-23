@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Sub FSM")
-     , Description(
-         "Execute a sub FSM OnEnter, and Stop that FSM OnExit. This state is Finished only when and if the sub FSM is finished as well.")
-     , DropReferenceType(typeof(FSM)), Icon("FSM")]
+    [Name("Sub FSM"),
+     Description(
+         "Execute a sub FSM OnEnter, and Stop that FSM OnExit. This state is Finished only when and if the sub FSM is finished as well."),
+     DropReferenceType(typeof(FSM)), Icon("FSM")]
     public class NestedFSMState : FSMStateNested<FSM>
     {
         public enum FSMExitMode { StopAndRestart, PauseAndResume }

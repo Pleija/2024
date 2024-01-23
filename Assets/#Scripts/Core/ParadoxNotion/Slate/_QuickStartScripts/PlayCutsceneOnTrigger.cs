@@ -39,7 +39,7 @@ namespace Slate
             collider.isTrigger = true;
         }
 
-        public static GameObject Create() =>
-            new GameObject("Cutscene Trigger").AddComponent<PlayCutsceneOnTrigger>().gameObject;
+        public static GameObject Create() => new GameObject("Cutscene Trigger")
+            .AddComponent<PlayCutsceneOnTrigger>().gameObject;
     }
 }

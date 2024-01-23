@@ -43,7 +43,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public override void OnDrawGizmosSelected()
         {
-            if (agent && target.value) Gizmos.DrawLine(agent.position, target.value.transform.position);
+            if (agent && target.value)
+                Gizmos.DrawLine(agent.position, target.value.transform.position);
         }
     }
 }

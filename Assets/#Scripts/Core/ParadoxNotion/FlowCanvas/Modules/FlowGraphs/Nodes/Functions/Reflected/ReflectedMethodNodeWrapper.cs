@@ -23,14 +23,17 @@ namespace FlowCanvas.Nodes
                     var methodName = method.FriendlyName(out specialType);
 
                     if (specialType == ReflectionTools.MethodType.Operator) {
-                        ReflectionTools.op_FriendlyNamesShort.TryGetValue(method.Name, out methodName);
+                        ReflectionTools.op_FriendlyNamesShort.TryGetValue(method.Name,
+                            out methodName);
                         return methodName;
                     }
                     methodName = methodName.SplitCamelCase();
                     if (method.IsGenericMethod)
-                        methodName += string.Format(" ({0})", method.RTGetGenericArguments().First().FriendlyName());
+                        methodName += string.Format(" ({0})",
+                            method.RTGetGenericArguments().First().FriendlyName());
                     if (!method.IsStatic || method.IsExtensionMethod()) return methodName;
-                    return string.Format("{0}.{1}", method.DeclaringType.FriendlyName(), methodName);
+                    return string.Format("{0}.{1}", method.DeclaringType.FriendlyName(),
+                        methodName);
                 }
                 if (_method != null) return _method.AsString().FormatError();
                 return "NOT SET";
@@ -66,7 +69,8 @@ namespace FlowCanvas.Nodes
         {
             if (method.IsGenericMethod) {
                 var wildType = method.GetFirstGenericParameterConstraintType();
-                var newMethod = TryGetNewGenericMethodForWild(wildType, port.type, otherPort.type, method);
+                var newMethod =
+                    TryGetNewGenericMethodForWild(wildType, port.type, otherPort.type, method);
 
                 if (newMethod != null) {
                     _method = new SerializedMethodInfo(newMethod);
@@ -76,7 +80,8 @@ namespace FlowCanvas.Nodes
         }
 
         //...
-        public override System.Type GetNodeWildDefinitionType() => method.GetFirstGenericParameterConstraintType();
+        public override System.Type GetNodeWildDefinitionType() =>
+            method.GetFirstGenericParameterConstraintType();
 
         ///<summary>Gather the ports through the wrapper</summary>
         protected override void RegisterPorts()

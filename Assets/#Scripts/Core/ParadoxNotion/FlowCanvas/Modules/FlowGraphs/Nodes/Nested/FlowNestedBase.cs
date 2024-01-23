@@ -6,7 +6,8 @@ namespace FlowCanvas.Nodes
 {
     [Description("Encapsulates a SubGraph able to control independently.")]
     ///<summary>Base class for nested subgraphs that work a specific way, thus why it is separate than FlowNodeNested super base</summary>
-    public abstract class FlowNestedBase<T> : FlowNodeNested<T>, IDropedReferenceNode, IUpdatable where T : Graph
+    public abstract class FlowNestedBase<T> : FlowNodeNested<T>, IDropedReferenceNode, IUpdatable
+        where T : Graph
     {
         public BBParameter<T> _subGraph;
 
@@ -16,7 +17,10 @@ namespace FlowCanvas.Nodes
         }
 
         public override BBParameter subGraphParameter => _subGraph;
-        public override ParadoxNotion.Alignment2x2 iconAlignment => ParadoxNotion.Alignment2x2.Bottom;
+
+        public override ParadoxNotion.Alignment2x2 iconAlignment =>
+            ParadoxNotion.Alignment2x2.Bottom;
+
         private ValueInput<Component> targetAgent;
         private FlowOutput onStart;
         private FlowOutput onUpdate;

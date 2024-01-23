@@ -10,8 +10,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Check Function", 10), Category("✫ Reflected")
-     , Description(
+    [Name("Check Function", 10), Category("✫ Reflected"),
+     Description(
          "Call a function on a component and return whether or not the return value is equal to the check value")]
     public class CheckFunction_Multiplatform : ConditionTask, IReflectedWrapper
     {
@@ -43,10 +43,12 @@ namespace NodeCanvas.Tasks.Conditions
                 if (method == null) return "No Method Selected";
                 if (targetMethod == null) return method.AsString().FormatError();
                 var paramInfo = "";
-                for (var i = 0; i < parameters.Count; i++) paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
-                var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1}({2}){3}", mInfo, targetMethod.Name, paramInfo
-                    , OperationTools.GetCompareString(comparison) + checkValue);
+                for (var i = 0; i < parameters.Count; i++)
+                    paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
+                var mInfo = targetMethod.IsStatic
+                    ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                return string.Format("{0}.{1}({2}){3}", mInfo, targetMethod.Name, paramInfo,
+                    OperationTools.GetCompareString(comparison) + checkValue);
             }
         }
 
@@ -80,13 +82,14 @@ namespace NodeCanvas.Tasks.Conditions
             var instance = targetMethod.IsStatic ? null : agent;
             bool result;
             if (checkValue.varType == typeof(float))
-                result = OperationTools.Compare((float)targetMethod.Invoke(instance, args), (float)checkValue.value
-                    , comparison, 0.05f);
+                result = OperationTools.Compare((float)targetMethod.Invoke(instance, args),
+                    (float)checkValue.value, comparison, 0.05f);
             else if (checkValue.varType == typeof(int))
-                result = OperationTools.Compare((int)targetMethod.Invoke(instance, args), (int)checkValue.value
-                    , comparison);
+                result = OperationTools.Compare((int)targetMethod.Invoke(instance, args),
+                    (int)checkValue.value, comparison);
             else
-                result = ObjectUtils.AnyEquals(targetMethod.Invoke(instance, args), checkValue.value);
+                result = ObjectUtils.AnyEquals(targetMethod.Invoke(instance, args),
+                    checkValue.value);
             for (var i = 0; i < parameters.Count; i++)
                 if (parameterIsByRef[i])
                     parameters[i].value = args[i];
@@ -124,17 +127,17 @@ namespace NodeCanvas.Tasks.Conditions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
-                            , SetMethod, 10, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(),
+                            typeof(object), typeof(object), SetMethod, 10, false, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 10
-                        , false, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object),
+                        typeof(object), SetMethod, 10, false, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
-                            , 10, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object),
+                            typeof(object), SetMethod, 10, false, true, menu);
                 }
                 menu.ShowAsBrowser("Select Method", GetType());
                 Event.current.Use();
@@ -142,16 +145,20 @@ namespace NodeCanvas.Tasks.Conditions
 
             if (targetMethod != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Method", targetMethod.Name);
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
-                    , UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
+                    UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
-                var paramNames = targetMethod.GetParameters().Select(p => p.Name.SplitCamelCase()).ToArray();
+                var paramNames = targetMethod.GetParameters().Select(p => p.Name.SplitCamelCase())
+                    .ToArray();
                 for (var i = 0; i < paramNames.Length; i++)
                     Editor.BBParameterEditor.ParameterField(paramNames[i], parameters[i]);
-                GUI.enabled = checkValue.varType == typeof(float) || checkValue.varType == typeof(int);
-                comparison = (CompareMethod)UnityEditor.EditorGUILayout.EnumPopup("Comparison", comparison);
+                GUI.enabled = checkValue.varType == typeof(float) ||
+                    checkValue.varType == typeof(int);
+                comparison =
+                    (CompareMethod)UnityEditor.EditorGUILayout.EnumPopup("Comparison", comparison);
                 GUI.enabled = true;
                 Editor.BBParameterEditor.ParameterField("Check Value", checkValue);
             }

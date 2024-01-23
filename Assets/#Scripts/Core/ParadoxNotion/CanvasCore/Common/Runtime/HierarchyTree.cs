@@ -69,7 +69,8 @@ namespace ParadoxNotion
                 for (var i = 0; i < _children.Count; i++) {
                     var element = _children[i];
                     if (element._reference is T) yield return (T)element._reference;
-                    foreach (var deep in element.GetAllChildrenReferencesOfType<T>()) yield return deep;
+                    foreach (var deep in element.GetAllChildrenReferencesOfType<T>())
+                        yield return deep;
                 }
             }
         }

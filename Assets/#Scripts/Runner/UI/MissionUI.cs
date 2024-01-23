@@ -25,11 +25,12 @@ namespace Runner.UI
                     yield return op;
 
                     if (op.Result == null) {
-                        Debug.LogWarning(string.Format("Unable to load mission entry {0}."
-                            , missionEntryPrefab.Asset.name));
+                        Debug.LogWarning(string.Format("Unable to load mission entry {0}.",
+                            missionEntryPrefab.Asset.name));
                         yield break;
                     }
-                    var entry = op.Result.Instantiate().OnDestroyRelease(op).GetComponent<MissionEntry>();
+                    var entry = op.Result.Instantiate().OnDestroyRelease(op)
+                        .GetComponent<MissionEntry>();
                     entry.transform.SetParent(missionPlace, false);
                     entry.FillWithMission(PlayerData.instance.missions[i], this);
                 }
@@ -38,11 +39,12 @@ namespace Runner.UI
                     yield return op;
 
                     if (op.Result == null) {
-                        Debug.LogWarning(string.Format("Unable to load button {0}."
-                            , addMissionButtonPrefab.Asset.name));
+                        Debug.LogWarning(string.Format("Unable to load button {0}.",
+                            addMissionButtonPrefab.Asset.name));
                         yield break;
                     }
-                    var obj = op.Result.Instantiate().OnDestroyRelease(op).GetComponent<AdsForMission>();
+                    var obj = op.Result.Instantiate().OnDestroyRelease(op)
+                        .GetComponent<AdsForMission>();
                     obj.missionUI = this;
                     obj.transform.SetParent(missionPlace, false);
                 }

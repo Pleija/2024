@@ -16,8 +16,8 @@ namespace Runner.Consumable.Types
         public override void Tick(CharacterInputController c)
         {
             base.Tick(c);
-            var nb = Physics.OverlapBoxNonAlloc(c.characterCollider.transform.position, k_HalfExtentsBox, returnColls
-                , c.characterCollider.transform.rotation, k_LayerMask);
+            var nb = Physics.OverlapBoxNonAlloc(c.characterCollider.transform.position,
+                k_HalfExtentsBox, returnColls, c.characterCollider.transform.rotation, k_LayerMask);
 
             for (var i = 0; i < nb; ++i) {
                 var returnCoin = returnColls[i].GetComponent<Coin>();

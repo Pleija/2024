@@ -4,8 +4,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [DoNotList, Name("Function Call"), Description("Calls an existing Custom Function"), Category("Functions/Custom")
-     , ParadoxNotion.Serialization.DeserializeFrom("FlowCanvas.Nodes.RelayFlowInput"), HasRefreshButton]
+    [DoNotList, Name("Function Call"), Description("Calls an existing Custom Function"),
+     Category("Functions/Custom"),
+     ParadoxNotion.Serialization.DeserializeFrom("FlowCanvas.Nodes.RelayFlowInput"),
+     HasRefreshButton]
     public class CustomFunctionCall : FlowControlNode
     {
         [SerializeField]
@@ -36,11 +38,12 @@ namespace FlowCanvas.Nodes
             }
         }
 
-        public override string name =>
-            string.Format("Call {0} ()", sourceFunction != null ? sourceFunction.identifier : "NONE");
+        public override string name => string.Format("Call {0} ()",
+            sourceFunction != null ? sourceFunction.identifier : "NONE");
 
-        public override string description => sourceFunction != null && !string.IsNullOrEmpty(sourceFunction.comments)
-            ? sourceFunction.comments : base.description;
+        public override string description =>
+            sourceFunction != null && !string.IsNullOrEmpty(sourceFunction.comments)
+                ? sourceFunction.comments : base.description;
 
         //...
         public void SetFunction(CustomFunctionEvent func)
@@ -65,8 +68,8 @@ namespace FlowCanvas.Nodes
                     portArgs[i] = AddValueInput(parameter.name, parameter.type, parameter.ID);
                 }
                 if (sourceFunction.returns.type != null)
-                    AddValueOutput(sourceFunction.returns.name, sourceFunction.returns.ID, sourceFunction.returns.type
-                        , () => {
+                    AddValueOutput(sourceFunction.returns.name, sourceFunction.returns.ID,
+                        sourceFunction.returns.type, () => {
                             return returnValue;
                         });
                 fOut = AddFlowOutput(SPACE);
@@ -103,7 +106,9 @@ namespace FlowCanvas.Nodes
             if (sourceFunction == null) {
                 var functions = graph.GetAllNodesOfType<CustomFunctionEvent>();
                 var currentFunc = functions.FirstOrDefault(i => i.UID == sourceFunctionUID);
-                var newFunc = EditorUtils.Popup<CustomFunctionEvent>("Target Function", currentFunc, functions);
+                var newFunc =
+                    EditorUtils.Popup<CustomFunctionEvent>("Target Function", currentFunc,
+                        functions);
                 if (newFunc != currentFunc) SetFunction(newFunc);
             }
             base.OnNodeInspectorGUI();

@@ -7,38 +7,37 @@ namespace Slate
 
     public enum EaseType
     {
-        Linear
-        , QuadraticIn
-        , QuadraticOut
-        , QuadraticInOut
-        , QuarticIn
-        , QuarticOut
-        , QuarticInOut
-        , QuinticIn
-        , QuinticOut
-        , QuinticInOut
-        , CubicIn
-        , CubicOut
-        , CubicInOut
-        , ExponentialIn
-        , ExponentialOut
-        , ExponentialInOut
-        , CircularIn
-        , CircularOut
-        , CircularInOut
-        , SinusoidalIn
-        , SinusoidalOut
-        , SinusoidalInOut
-        , ElasticIn
-        , ElasticOut
-        , ElasticInOut
-        , BounceIn
-        , BounceOut
-        , BounceInOut
-        , BackIn
-        , BackOut
-        , BackInOut
-        ,
+        Linear,
+        QuadraticIn,
+        QuadraticOut,
+        QuadraticInOut,
+        QuarticIn,
+        QuarticOut,
+        QuarticInOut,
+        QuinticIn,
+        QuinticOut,
+        QuinticInOut,
+        CubicIn,
+        CubicOut,
+        CubicInOut,
+        ExponentialIn,
+        ExponentialOut,
+        ExponentialInOut,
+        CircularIn,
+        CircularOut,
+        CircularInOut,
+        SinusoidalIn,
+        SinusoidalOut,
+        SinusoidalInOut,
+        ElasticIn,
+        ElasticOut,
+        ElasticInOut,
+        BounceIn,
+        BounceOut,
+        BounceInOut,
+        BackIn,
+        BackOut,
+        BackInOut,
     }
 
     ///<summary>Easing functions to be used for interpolation</summary>
@@ -117,7 +116,10 @@ namespace Slate
 
         public static float QuadraticIn(float t) => t * t;
         public static float QuadraticOut(float t) => 1f - (1f - t) * (1f - t);
-        public static float QuadraticInOut(float t) => t < 0.5f ? 2f * t * t : 1f - Mathf.Pow(-2f * t + 2f, 2f) / 2f;
+
+        public static float QuadraticInOut(float t) =>
+            t < 0.5f ? 2f * t * t : 1f - Mathf.Pow(-2f * t + 2f, 2f) / 2f;
+
         public static float QuarticIn(float t) => t * t * t * t;
         public static float QuarticOut(float t) => 1f - --t * t * t * t;
 
@@ -138,21 +140,24 @@ namespace Slate
 
         public static float CubicIn(float t) => t * t * t;
         public static float CubicOut(float t) => --t * t * t + 1f;
-        public static float CubicInOut(float t) => t < 0.5 ? 4f * t * t * t : 1f - Mathf.Pow(-2f * t + 2f, 3f) / 2f;
+
+        public static float CubicInOut(float t) =>
+            t < 0.5 ? 4f * t * t * t : 1f - Mathf.Pow(-2f * t + 2f, 3f) / 2f;
+
         public static float SinusoidalIn(float t) => 1f - Mathf.Cos(t * Mathf.PI / 2f);
         public static float SinusoidalOut(float t) => Mathf.Sin(t * Mathf.PI / 2f);
         public static float SinusoidalInOut(float t) => 0.5f * (1f - Mathf.Cos(Mathf.PI * t));
         public static float ExponentialIn(float t) => t == 0f ? 0f : Mathf.Pow(2f, 10f * t - 10f);
         public static float ExponentialOut(float t) => t == 1f ? 1f : 1f - Mathf.Pow(2f, -10f * t);
 
-        public static float ExponentialInOut(float t) => t < 0.5f ? Mathf.Pow(2f, 20f * t - 10f) / 2f
-            : (2f - Mathf.Pow(2f, -20f * t + 10f)) / 2f;
+        public static float ExponentialInOut(float t) => t < 0.5f
+            ? Mathf.Pow(2f, 20f * t - 10f) / 2f : (2f - Mathf.Pow(2f, -20f * t + 10f)) / 2f;
 
         public static float CircularIn(float t) => 1f - Mathf.Sqrt(1f - t * t);
         public static float CircularOut(float t) => Mathf.Sqrt(1f - --t * t);
 
-        public static float CircularInOut(float t) =>
-            t < 0.5f ? (Mathf.Sqrt(1f - t * t) - 1f) / 2 : (Mathf.Sqrt(1f - (t -= 2f) * t) + 1f) / 2;
+        public static float CircularInOut(float t) => t < 0.5f ? (Mathf.Sqrt(1f - t * t) - 1f) / 2
+            : (Mathf.Sqrt(1f - (t -= 2f) * t) + 1f) / 2;
 
         public static float ElasticIn(float t)
         {
@@ -169,7 +174,8 @@ namespace Slate
         public static float ElasticInOut(float t)
         {
             var x = 2f * Mathf.PI / 4.5f;
-            if (t < 0.5f) return -(Mathf.Pow(2f, 20f * t - 10f) * Mathf.Sin((20f * t - 11.125f) * x)) / 2f;
+            if (t < 0.5f)
+                return -(Mathf.Pow(2f, 20f * t - 10f) * Mathf.Sin((20f * t - 11.125f) * x)) / 2f;
             return Mathf.Pow(2f, -20f * t + 10f) * Mathf.Sin((20f * t - 11.125f) * x) / 2f + 1f;
         }
 
@@ -187,8 +193,8 @@ namespace Slate
                 return 7.5625f * (t -= 2.625f / 2.75f) * t + 0.984375f;
         }
 
-        public static float BounceInOut(float t) =>
-            t < 0.5f ? BounceIn(t * 2f) * 0.5f : BounceOut(t * 2f - 1f) * 0.5f + 0.5f;
+        public static float BounceInOut(float t) => t < 0.5f ? BounceIn(t * 2f) * 0.5f
+            : BounceOut(t * 2f - 1f) * 0.5f + 0.5f;
 
         public static float BackIn(float t)
         {

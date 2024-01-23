@@ -30,19 +30,22 @@ namespace FlowCanvas.Nodes
     [Obsolete]
     public class NewVector4 : PureFunctionNode<Vector4, float, float, float, float>
     {
-        public override Vector4 Invoke(float x, float y, float z, float w) => new Vector4(x, y, z, w);
+        public override Vector4 Invoke(float x, float y, float z, float w) =>
+            new Vector4(x, y, z, w);
     }
 
     [Obsolete]
     public class NewQuaternion : PureFunctionNode<Quaternion, float, float, float, float>
     {
-        public override Quaternion Invoke(float x, float y, float z, float w) => new Quaternion(x, y, z, w);
+        public override Quaternion Invoke(float x, float y, float z, float w) =>
+            new Quaternion(x, y, z, w);
     }
 
     [Obsolete]
     public class NewColor : PureFunctionNode<Color, float, float, float, float>
     {
-        public override Color Invoke(float r, float g, float b, float a = 1) => new Color(r, g, b, a);
+        public override Color Invoke(float r, float g, float b, float a = 1) =>
+            new Color(r, g, b, a);
     }
 
     [Obsolete]

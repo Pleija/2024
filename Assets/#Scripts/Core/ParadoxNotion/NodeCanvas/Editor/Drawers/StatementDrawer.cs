@@ -11,11 +11,11 @@ namespace NodeCanvas.Editor
         public override Statement OnGUI(GUIContent content, Statement instance)
         {
             if (instance == null) instance = new Statement("...");
-            instance.text =
-                UnityEditor.EditorGUILayout.TextArea(instance.text, Styles.wrapTextArea, GUILayout.Height(100));
+            instance.text = UnityEditor.EditorGUILayout.TextArea(instance.text, Styles.wrapTextArea,
+                GUILayout.Height(100));
             instance.audio =
-                UnityEditor.EditorGUILayout.ObjectField("Audio File", instance.audio, typeof(AudioClip), false) as
-                    AudioClip;
+                UnityEditor.EditorGUILayout.ObjectField("Audio File", instance.audio,
+                    typeof(AudioClip), false) as AudioClip;
             instance.meta = UnityEditor.EditorGUILayout.TextField("Metadata", instance.meta);
             return instance;
         }

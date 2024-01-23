@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Movement/Direct")
-     , Description(
+    [Category("Movement/Direct"),
+     Description(
          "Move & turn the agent based on input values provided ranging from -1 to 1, per second (using delta time)")]
     public class InputMove : ActionTask<Transform>
     {
@@ -28,7 +28,8 @@ namespace NodeCanvas.Tasks.Actions
         protected override void OnUpdate()
         {
             var targetRotation = agent.rotation * Quaternion.Euler(Vector3.up * turn.value * 10);
-            agent.rotation = Quaternion.Slerp(agent.rotation, targetRotation, rotationSpeed.value * Time.deltaTime);
+            agent.rotation = Quaternion.Slerp(agent.rotation, targetRotation,
+                rotationSpeed.value * Time.deltaTime);
             var forwardMovement = agent.forward * forward.value * moveSpeed.value * Time.deltaTime;
             var strafeMovement = agent.right * strafe.value * moveSpeed.value * Time.deltaTime;
             var upMovement = agent.up * up.value * moveSpeed.value * Time.deltaTime;

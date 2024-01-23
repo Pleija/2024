@@ -2,7 +2,10 @@ var t, e;
 t = self, e = () => (() => {
     var t = {
         d: (e, s) => {
-            for (var i in s) t.o(s, i) && !t.o(e, i) && Object.defineProperty(e, i, {enumerable: !0, get: s[i]})
+            for (var i in s) t.o(s, i) && !t.o(e, i) && Object.defineProperty(e, i, {
+                enumerable: !0,
+                get: s[i]
+            })
         }
     };
     t.g = function () {
@@ -699,7 +702,8 @@ class N {
 
     async bt(t) {
         const s = Date.now();
-        let i = 0, n = void 0 !== t ? t : new Error("Attempting to reconnect due to a unknown error."),
+        let i = 0,
+            n = void 0 !== t ? t : new Error("Attempting to reconnect due to a unknown error."),
             r = this.vt(i++, 0, n);
         if (null === r) return this.u.log(e.Debug, "Connection not reconnecting because the IRetryPolicy returned null on the first reconnect attempt."), void this.it(t);
         if (this.M = A.Reconnecting, t ? this.u.log(e.Information, `Connection reconnecting because of error '${t}'.`) : this.u.log(e.Information, "Connection reconnecting."), 0 !== this.A.length) {
@@ -731,7 +735,11 @@ class N {
 
     vt(t, s, i) {
         try {
-            return this.P.nextRetryDelayInMilliseconds({elapsedMilliseconds: s, previousRetryCount: t, retryReason: i})
+            return this.P.nextRetryDelayInMilliseconds({
+                elapsedMilliseconds: s,
+                previousRetryCount: t,
+                retryReason: i
+            })
         } catch (i) {
             return this.u.log(e.Error, `IRetryPolicy.nextRetryDelayInMilliseconds(${t}, ${s}) threw error '${i}'.`), null
         }
@@ -758,7 +766,12 @@ class N {
     }
 
     lt(t, e, s, i) {
-        if (s) return 0 !== i.length ? {arguments: e, streamIds: i, target: t, type: R.Invocation} : {
+        if (s) return 0 !== i.length ? {
+            arguments: e,
+            streamIds: i,
+            target: t,
+            type: R.Invocation
+        } : {
             arguments: e,
             target: t,
             type: R.Invocation
@@ -827,7 +840,11 @@ class N {
     }
 
     gt(t, e, s) {
-        return e ? {error: e, invocationId: t, type: R.Completion} : {invocationId: t, result: s, type: R.Completion}
+        return e ? {error: e, invocationId: t, type: R.Completion} : {
+            invocationId: t,
+            result: s,
+            type: R.Completion
+        }
     }
 }
 
@@ -906,7 +923,12 @@ class B {
     async connect(t, s) {
         if (w.isRequired(t, "url"), w.isRequired(s, "transferFormat"), w.isIn(s, O, "transferFormat"), this.xt = t, this.u.log(e.Trace, "(LongPolling transport) Connecting."), s === O.Binary && "undefined" != typeof XMLHttpRequest && "string" != typeof (new XMLHttpRequest).responseType) throw new Error("Binary protocols over XmlHttpRequest not implementing advanced features are not supported.");
         const [n, r] = E(), o = {[n]: r, ...this.Ht.headers},
-            h = {abortSignal: this._t.signal, headers: o, timeout: 1e5, withCredentials: this.Ht.withCredentials};
+            h = {
+                abortSignal: this._t.signal,
+                headers: o,
+                timeout: 1e5,
+                withCredentials: this.Ht.withCredentials
+            };
         s === O.Binary && (h.responseType = "arraybuffer");
         const c = `${t}&_=${Date.now()}`;
         this.u.log(e.Trace, `(LongPolling transport) polling: ${c}.`);

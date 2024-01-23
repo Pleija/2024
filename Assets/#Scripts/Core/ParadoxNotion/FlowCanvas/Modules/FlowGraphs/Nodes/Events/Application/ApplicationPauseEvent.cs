@@ -4,8 +4,8 @@ using ParadoxNotion.Services;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Application Pause"), Category("Events/Application")
-     , Description("Called when the Application is paused or resumed")]
+    [Name("On Application Pause"), Category("Events/Application"),
+     Description("Called when the Application is paused or resumed")]
     public class ApplicationPauseEvent : EventNode
     {
         private FlowOutput pause;

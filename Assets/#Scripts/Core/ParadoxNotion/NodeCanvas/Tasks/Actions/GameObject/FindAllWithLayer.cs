@@ -19,7 +19,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnExecute()
         {
-            saveAs.value = ParadoxNotion.ObjectUtils.FindGameObjectsWithinLayerMask(targetLayers.value).ToList();
+            saveAs.value = ParadoxNotion.ObjectUtils
+                .FindGameObjectsWithinLayerMask(targetLayers.value).ToList();
             EndAction(saveAs.value.Count != 0);
         }
     }

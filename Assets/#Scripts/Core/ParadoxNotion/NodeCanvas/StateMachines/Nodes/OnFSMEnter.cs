@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Description("Execute a number of Actions when the FSM starts/enters, if Conditions are met. This is not a state.")
-     , Color("ff64cb"), Icon("MacroIn"), Name("On FSM Enter")]
+    [Description(
+         "Execute a number of Actions when the FSM starts/enters, if Conditions are met. This is not a state."),
+     Color("ff64cb"), Icon("MacroIn"), Name("On FSM Enter")]
     public class OnFSMEnter : FSMNode, IUpdatable
     {
         [SerializeField]

@@ -28,7 +28,9 @@ namespace Puerts
         public Dictionary<MethodKey, List<MethodInfo>> slowBindingMethodGroup =
             new Dictionary<MethodKey, List<MethodInfo>>();
 
-        public Dictionary<string, PropertyMethods> slowBindingProperties = new Dictionary<string, PropertyMethods>();
+        public Dictionary<string, PropertyMethods> slowBindingProperties =
+            new Dictionary<string, PropertyMethods>();
+
         public List<FieldInfo> slowBindingFields = new List<FieldInfo>();
         public SlowBindingRegister() { }
         public bool needFillSlowBindingConstructor = false;
@@ -54,7 +56,8 @@ namespace Puerts
             {
                 var propName = method.Name.Substring(4);
 
-                if (isNoRegisterInfoAndAllowSlowBinding || needFillSlowBindingProperty.Contains(propName)) {
+                if (isNoRegisterInfoAndAllowSlowBinding ||
+                    needFillSlowBindingProperty.Contains(propName)) {
                     PropertyMethods properyMethods;
 
                     if (!slowBindingProperties.TryGetValue(propName, out properyMethods)) {
@@ -69,7 +72,8 @@ namespace Puerts
             {
                 var propName = method.Name.Substring(4);
 
-                if (isNoRegisterInfoAndAllowSlowBinding || needFillSlowBindingProperty.Contains(propName)) {
+                if (isNoRegisterInfoAndAllowSlowBinding ||
+                    needFillSlowBindingProperty.Contains(propName)) {
                     PropertyMethods properyMethods;
 
                     if (!slowBindingProperties.TryGetValue(propName, out properyMethods)) {
@@ -80,7 +84,8 @@ namespace Puerts
                 }
             }
             else {
-                if (isNoRegisterInfoAndAllowSlowBinding || needFillSlowBindingMethod.Contains(methodKey.Name)) {
+                if (isNoRegisterInfoAndAllowSlowBinding ||
+                    needFillSlowBindingMethod.Contains(methodKey.Name)) {
                     List<MethodInfo> overloads;
 
                     if (!slowBindingMethodGroup.TryGetValue(methodKey, out overloads)) {
@@ -97,7 +102,8 @@ namespace Puerts
         {
             var isNoRegisterInfoAndAllowSlowBinding = registerInfo == null &&
                 RegisterInfoManager.DefaultBindingMode != BindingMode.DontBinding;
-            if (isNoRegisterInfoAndAllowSlowBinding || needFillSlowBindingProperty.Contains(fieldInfo.Name))
+            if (isNoRegisterInfoAndAllowSlowBinding ||
+                needFillSlowBindingProperty.Contains(fieldInfo.Name))
                 slowBindingFields.Add(fieldInfo);
         }
     }
@@ -107,7 +113,8 @@ namespace Puerts
         internal class FunctionCallbackFactory
         {
             [MonoPInvokeCallback(typeof(V8ConstructorCallback))]
-            public static IntPtr EmptyConstructor(IntPtr isolate, IntPtr info, int paramLen, long data)
+            public static IntPtr EmptyConstructor(IntPtr isolate, IntPtr info, int paramLen,
+                long data)
             {
                 PuertsDLL.ThrowException(isolate, "not allowed to be called due to AccessControl");
                 return IntPtr.Zero;
@@ -118,12 +125,14 @@ namespace Puerts
                 var translateFunc = jsEnv.GeneralSetterManager.GetTranslateFunc(field.FieldType);
                 if (field.IsStatic)
                     return (IntPtr isolate, IntPtr info, IntPtr self, int argumentsLen) => {
-                        translateFunc(jsEnv.Idx, isolate, NativeValueApi.SetValueToResult, info, field.GetValue(null));
+                        translateFunc(jsEnv.Idx, isolate, NativeValueApi.SetValueToResult, info,
+                            field.GetValue(null));
                     };
                 else
                     return (IntPtr isolate, IntPtr info, IntPtr self, int argumentsLen) => {
                         var me = jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, self);
-                        translateFunc(jsEnv.Idx, isolate, NativeValueApi.SetValueToResult, info, field.GetValue(me));
+                        translateFunc(jsEnv.Idx, isolate, NativeValueApi.SetValueToResult, info,
+                            field.GetValue(me));
                     };
             }
 
@@ -137,17 +146,19 @@ namespace Puerts
                         var valueType = PuertsDLL.GetJsValueType(isolate, valuePtr, false);
                         object value = null;
 
-                        if (!Utils.IsJsValueTypeMatchType(valueType, field.FieldType, typeMask, () => {
-                            value = translateFunc(jsEnv.Idx, isolate, NativeValueApi.GetValueFromArgument, valuePtr
-                                , false);
-                            return value;
-                        }, value)) {
-                            PuertsDLL.ThrowException(isolate, "expect " + typeMask + " but got " + valueType);
+                        if (!Utils.IsJsValueTypeMatchType(valueType, field.FieldType, typeMask,
+                            () => {
+                                value = translateFunc(jsEnv.Idx, isolate,
+                                    NativeValueApi.GetValueFromArgument, valuePtr, false);
+                                return value;
+                            }, value)) {
+                            PuertsDLL.ThrowException(isolate,
+                                "expect " + typeMask + " but got " + valueType);
                         }
                         else {
                             if (value == null)
-                                value = translateFunc(jsEnv.Idx, isolate, NativeValueApi.GetValueFromArgument, valuePtr
-                                    , false);
+                                value = translateFunc(jsEnv.Idx, isolate,
+                                    NativeValueApi.GetValueFromArgument, valuePtr, false);
                             field.SetValue(null, value);
                         }
                     };
@@ -157,18 +168,20 @@ namespace Puerts
                         var valueType = PuertsDLL.GetJsValueType(isolate, valuePtr, false);
                         object value = null;
 
-                        if (!Utils.IsJsValueTypeMatchType(valueType, field.FieldType, typeMask, () => {
-                            value = translateFunc(jsEnv.Idx, isolate, NativeValueApi.GetValueFromArgument, valuePtr
-                                , false);
-                            return value;
-                        }, value)) {
-                            PuertsDLL.ThrowException(isolate, "expect " + typeMask + " but got " + valueType);
+                        if (!Utils.IsJsValueTypeMatchType(valueType, field.FieldType, typeMask,
+                            () => {
+                                value = translateFunc(jsEnv.Idx, isolate,
+                                    NativeValueApi.GetValueFromArgument, valuePtr, false);
+                                return value;
+                            }, value)) {
+                            PuertsDLL.ThrowException(isolate,
+                                "expect " + typeMask + " but got " + valueType);
                         }
                         else {
                             var me = jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, self);
-                            field.SetValue(me
-                                , translateFunc(jsEnv.Idx, isolate, NativeValueApi.GetValueFromArgument, valuePtr
-                                    , false));
+                            field.SetValue(me,
+                                translateFunc(jsEnv.Idx, isolate,
+                                    NativeValueApi.GetValueFromArgument, valuePtr, false));
                         }
                     };
             }
@@ -183,8 +196,11 @@ namespace Puerts
             this.RegisterInfoManager = RegisterInfoManager;
         }
 
-        private readonly V8FunctionCallback callbackWrap = new V8FunctionCallback(StaticCallbacks.JsEnvCallbackWrap);
-        private readonly V8FunctionCallback returnTrue = new V8FunctionCallback(StaticCallbacks.ReturnTrue);
+        private readonly V8FunctionCallback callbackWrap =
+            new V8FunctionCallback(StaticCallbacks.JsEnvCallbackWrap);
+
+        private readonly V8FunctionCallback returnTrue =
+            new V8FunctionCallback(StaticCallbacks.ReturnTrue);
 
         private readonly V8ConstructorCallback constructorWrap =
             new V8ConstructorCallback(StaticCallbacks.ConstructorWrap);
@@ -192,44 +208,47 @@ namespace Puerts
         internal int InitArrayTypeId(int csArrayTypeId)
         {
             var isolate = jsEnv.isolate;
-            var arrayTypeId =
-                PuertsDLL.RegisterClass(jsEnv.isolate, csArrayTypeId, "__puerts.Array", null, null, jsEnv.Idx);
+            var arrayTypeId = PuertsDLL.RegisterClass(jsEnv.isolate, csArrayTypeId,
+                "__puerts.Array", null, null, jsEnv.Idx);
             var lengthFuncId = jsEnv.AddCallback(ArrayLength);
-            PuertsDLL.RegisterProperty(jsEnv.isolate, arrayTypeId, "Length", false, callbackWrap, lengthFuncId, null, 0
-                , true);
-            PuertsDLL.RegisterFunction(jsEnv.isolate, arrayTypeId, "get_Item", false, callbackWrap, jsEnv.AddCallback(
-                (IntPtr isolate1, IntPtr info, IntPtr self, int argumentsLen) => {
+            PuertsDLL.RegisterProperty(jsEnv.isolate, arrayTypeId, "Length", false, callbackWrap,
+                lengthFuncId, null, 0, true);
+            PuertsDLL.RegisterFunction(jsEnv.isolate, arrayTypeId, "get_Item", false, callbackWrap,
+                jsEnv.AddCallback((IntPtr isolate1, IntPtr info, IntPtr self, int argumentsLen) => {
                     try {
                         var array = jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, self) as Array;
-                        var index = (uint)PuertsDLL.GetNumberFromValue(isolate1, PuertsDLL.GetArgumentValue(info, 0)
-                            , false);
+                        var index = (uint)PuertsDLL.GetNumberFromValue(isolate1,
+                            PuertsDLL.GetArgumentValue(info, 0), false);
                         if (FastArrayGet(isolate1, info, self, array, index)) return;
                         var transalteFunc =
-                            jsEnv.GeneralSetterManager.GetTranslateFunc(array.GetType().GetElementType());
-                        transalteFunc(jsEnv.Idx, isolate1, NativeValueApi.SetValueToResult, info
-                            , array.GetValue((int)index));
+                            jsEnv.GeneralSetterManager.GetTranslateFunc(array.GetType()
+                                .GetElementType());
+                        transalteFunc(jsEnv.Idx, isolate1, NativeValueApi.SetValueToResult, info,
+                            array.GetValue((int)index));
                     }
                     catch (Exception e) {
-                        PuertsDLL.ThrowException(isolate1
-                            , "array.get throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                        PuertsDLL.ThrowException(isolate1,
+                            "array.get throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
                     }
                 }));
-            PuertsDLL.RegisterFunction(jsEnv.isolate, arrayTypeId, "set_Item", false, callbackWrap, jsEnv.AddCallback(
-                (IntPtr isolate1, IntPtr info, IntPtr self, int argumentsLen) => {
+            PuertsDLL.RegisterFunction(jsEnv.isolate, arrayTypeId, "set_Item", false, callbackWrap,
+                jsEnv.AddCallback((IntPtr isolate1, IntPtr info, IntPtr self, int argumentsLen) => {
                     try {
                         var array = jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, self) as Array;
-                        var index = (uint)PuertsDLL.GetNumberFromValue(isolate1, PuertsDLL.GetArgumentValue(info, 0)
-                            , false);
+                        var index = (uint)PuertsDLL.GetNumberFromValue(isolate1,
+                            PuertsDLL.GetArgumentValue(info, 0), false);
                         var val = PuertsDLL.GetArgumentValue(info, 1);
                         if (FastArraySet(isolate1, info, self, array, index, val)) return;
                         var transalteFunc =
-                            jsEnv.GeneralGetterManager.GetTranslateFunc(array.GetType().GetElementType());
+                            jsEnv.GeneralGetterManager.GetTranslateFunc(array.GetType()
+                                .GetElementType());
                         array.SetValue(
-                            transalteFunc(jsEnv.Idx, isolate1, NativeValueApi.GetValueFromArgument, val, false), index);
+                            transalteFunc(jsEnv.Idx, isolate1, NativeValueApi.GetValueFromArgument,
+                                val, false), index);
                     }
                     catch (Exception e) {
-                        PuertsDLL.ThrowException(isolate1
-                            , "array.get throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                        PuertsDLL.ThrowException(isolate1,
+                            "array.get throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
                     }
                 }));
             return arrayTypeId;
@@ -242,8 +261,8 @@ namespace Puerts
                 PuertsDLL.ReturnNumber(isolate, info, array.Length);
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "array.length throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "array.length throw c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
 
@@ -310,7 +329,8 @@ namespace Puerts
             return hited;
         }
 
-        private bool FastArraySet(IntPtr isolate, IntPtr info, IntPtr self, object obj, uint index, IntPtr value)
+        private bool FastArraySet(IntPtr isolate, IntPtr info, IntPtr self, object obj, uint index,
+            IntPtr value)
         {
             var hited = true;
             var jsType = PuertsDLL.GetJsValueType(isolate, value, false);
@@ -399,7 +419,8 @@ namespace Puerts
                 //         registerInfo = WrapperType.GetMethod("GetRegisterInfo").Invoke(null, null) as TypeRegisterInfo;
                 //     }
             }
-            var flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
+            var flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static |
+                BindingFlags.Public;
             if (includeNoPublic) flag = flag | BindingFlags.NonPublic;
             var sbr = new SlowBindingRegister();
             sbr.RegisterInfoManager = RegisterInfoManager;
@@ -423,25 +444,27 @@ namespace Puerts
                                 sbr.needFillSlowBindingMethod.Add(memberRegisterInfo.Name);
                             continue;
                         }
-                        var result = PuertsDLL.RegisterFunction(jsEnv.isolate, typeId, memberRegisterInfo.Name
-                            , memberRegisterInfo.IsStatic, memberRegisterInfo.Method, jsEnv.Idx);
+                        var result = PuertsDLL.RegisterFunction(jsEnv.isolate, typeId,
+                            memberRegisterInfo.Name, memberRegisterInfo.IsStatic,
+                            memberRegisterInfo.Method, jsEnv.Idx);
                         // System.Console.WriteLine("*" + typeId + "_" + type + "." + memberRegisterInfo.Name + "->" + result);
                         if (memberRegisterInfo.Name == "ToString" && registerInfo.BlittableCopy)
-                            PuertsDLL.RegisterFunction(jsEnv.isolate, typeId, "toString", false
-                                , memberRegisterInfo.Method, jsEnv.Idx);
+                            PuertsDLL.RegisterFunction(jsEnv.isolate, typeId, "toString", false,
+                                memberRegisterInfo.Method, jsEnv.Idx);
                     }
                     else if (memberRegisterInfo.MemberType == MemberType.Property) {
-                        if ((memberRegisterInfo.PropertyGetter == null && memberRegisterInfo.PropertySetter == null) ||
+                        if ((memberRegisterInfo.PropertyGetter == null &&
+                                memberRegisterInfo.PropertySetter == null) ||
                             memberRegisterInfo.UseBindingMode != BindingMode.FastBinding) {
                             if (RegisterInfoManager.DefaultBindingMode != BindingMode.DontBinding &&
                                 memberRegisterInfo.UseBindingMode != BindingMode.DontBinding)
                                 sbr.needFillSlowBindingProperty.Add(memberRegisterInfo.Name);
                             continue;
                         }
-                        PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, memberRegisterInfo.Name
-                            , memberRegisterInfo.IsStatic, memberRegisterInfo.PropertyGetter, jsEnv.Idx
-                            , memberRegisterInfo.PropertySetter, jsEnv.Idx
-                            , !readonlyStaticFields.Contains(memberRegisterInfo.Name));
+                        PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, memberRegisterInfo.Name,
+                            memberRegisterInfo.IsStatic, memberRegisterInfo.PropertyGetter,
+                            jsEnv.Idx, memberRegisterInfo.PropertySetter, jsEnv.Idx,
+                            !readonlyStaticFields.Contains(memberRegisterInfo.Name));
                     }
                 }
                 // } else {
@@ -455,7 +478,8 @@ namespace Puerts
 
                 for (var i = 0; i < methods.Length; ++i) {
                     var method = methods[i];
-                    var methodKey = new MethodKey { Name = method.Name, IsStatic = method.IsStatic };
+                    var methodKey = new MethodKey
+                        { Name = method.Name, IsStatic = method.IsStatic };
                     if (!method.IsConstructor) sbr.AddMethod(methodKey, method);
                 }
 
@@ -473,7 +497,8 @@ namespace Puerts
 
                         while (enumerator.MoveNext()) {
                             var method = enumerator.Current;
-                            var methodKey = new MethodKey { Name = method.Name, IsStatic = false, IsExtension = true };
+                            var methodKey = new MethodKey
+                                { Name = method.Name, IsStatic = false, IsExtension = true };
                             sbr.AddMethod(methodKey, method);
                         }
                     }
@@ -485,16 +510,17 @@ namespace Puerts
 
                 foreach (var field in fields) {
                     sbr.AddField(field);
-                    if (field.IsStatic && (field.IsInitOnly || field.IsLiteral)) readonlyStaticFields.Add(field.Name);
+                    if (field.IsStatic && (field.IsInitOnly || field.IsLiteral))
+                        readonlyStaticFields.Add(field.Name);
                 }
             }
 
             foreach (var kv in sbr.slowBindingMethodGroup) {
-                var overloadWraps = kv.Value.Select(m => new OverloadReflectionWrap(m, jsEnv, kv.Key.IsExtension))
-                    .ToList();
+                var overloadWraps = kv.Value
+                    .Select(m => new OverloadReflectionWrap(m, jsEnv, kv.Key.IsExtension)).ToList();
                 var methodReflectionWrap = new MethodReflectionWrap(kv.Key.Name, overloadWraps);
-                PuertsDLL.RegisterFunction(jsEnv.isolate, typeId, kv.Key.Name, kv.Key.IsStatic, callbackWrap
-                    , jsEnv.AddCallback(methodReflectionWrap.Invoke));
+                PuertsDLL.RegisterFunction(jsEnv.isolate, typeId, kv.Key.Name, kv.Key.IsStatic,
+                    callbackWrap, jsEnv.AddCallback(methodReflectionWrap.Invoke));
             }
 
             foreach (var kv in sbr.slowBindingProperties) {
@@ -504,8 +530,8 @@ namespace Puerts
 
                 if (kv.Value.Getter != null) {
                     getter = callbackWrap;
-                    var methodReflectionWrap = new MethodReflectionWrap(kv.Value.Getter.Name
-                        , new List<OverloadReflectionWrap>() {
+                    var methodReflectionWrap = new MethodReflectionWrap(kv.Value.Getter.Name,
+                        new List<OverloadReflectionWrap>() {
                             new OverloadReflectionWrap(kv.Value.Getter, jsEnv),
                         });
                     getterData = jsEnv.AddCallback(methodReflectionWrap.Invoke);
@@ -516,40 +542,46 @@ namespace Puerts
 
                 if (kv.Value.Setter != null) {
                     setter = callbackWrap;
-                    var methodReflectionWrap = new MethodReflectionWrap(kv.Value.Setter.Name
-                        , new List<OverloadReflectionWrap>() {
+                    var methodReflectionWrap = new MethodReflectionWrap(kv.Value.Setter.Name,
+                        new List<OverloadReflectionWrap>() {
                             new OverloadReflectionWrap(kv.Value.Setter, jsEnv),
                         });
                     setterData = jsEnv.AddCallback(methodReflectionWrap.Invoke);
                     isStatic = kv.Value.Setter.IsStatic;
                 }
-                PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, kv.Key, isStatic, getter, getterData, setter
-                    , setterData, true);
+                PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, kv.Key, isStatic, getter,
+                    getterData, setter, setterData, true);
             }
 
             foreach (var field in sbr.slowBindingFields) {
-                var getterData = jsEnv.AddCallback(FunctionCallbackFactory.GenFieldGetter(jsEnv, type, field));
+                var getterData =
+                    jsEnv.AddCallback(FunctionCallbackFactory.GenFieldGetter(jsEnv, type, field));
                 V8FunctionCallback setter = null;
                 long setterData = 0;
 
                 if (!field.IsInitOnly && !field.IsLiteral) {
                     setter = callbackWrap;
-                    setterData = jsEnv.AddCallback(FunctionCallbackFactory.GenFieldSetter(jsEnv, type, field));
+                    setterData =
+                        jsEnv.AddCallback(
+                            FunctionCallbackFactory.GenFieldSetter(jsEnv, type, field));
                 }
-                PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, field.Name, field.IsStatic, callbackWrap, getterData
-                    , setter, setterData, !readonlyStaticFields.Contains(field.Name));
+                PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, field.Name, field.IsStatic,
+                    callbackWrap, getterData, setter, setterData,
+                    !readonlyStaticFields.Contains(field.Name));
             }
             var translateFunc = jsEnv.GeneralSetterManager.GetTranslateFunc(typeof(Type));
-            PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, "__p_innerType", true, callbackWrap, jsEnv.AddCallback(
-                (IntPtr isolate1, IntPtr info, IntPtr self, int argumentsLen) => {
+            PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, "__p_innerType", true, callbackWrap,
+                jsEnv.AddCallback((IntPtr isolate1, IntPtr info, IntPtr self, int argumentsLen) => {
                     translateFunc(jsEnv.Idx, isolate1, NativeValueApi.SetValueToResult, info, type);
                 }), null, 0, true);
             if (type.IsEnum)
-                PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, "__p_isEnum", true, returnTrue, 0, null, 0, false);
+                PuertsDLL.RegisterProperty(jsEnv.isolate, typeId, "__p_isEnum", true, returnTrue, 0,
+                    null, 0, false);
             return typeId;
         }
 
-        private int RegisterConstructor(Type type, RegisterInfo registerInfo, int baseTypeId, BindingFlags flag)
+        private int RegisterConstructor(Type type, RegisterInfo registerInfo, int baseTypeId,
+            BindingFlags flag)
         {
             var reflectConstructor = true;
             var typeId = 0;
@@ -564,24 +596,27 @@ namespace Puerts
                     if (memberRegisterInfo.MemberType == MemberType.Constructor) {
                         if (memberRegisterInfo.Constructor == null ||
                             memberRegisterInfo.UseBindingMode != BindingMode.FastBinding) {
-                            reflectConstructor = RegisterInfoManager.DefaultBindingMode != BindingMode.DontBinding;
+                            reflectConstructor = RegisterInfoManager.DefaultBindingMode !=
+                                BindingMode.DontBinding;
                             break;
                         }
                         if (registerInfo.BlittableCopy)
-                            typeId = PuertsDLL.RegisterStruct(jsEnv.isolate, -1, type.AssemblyQualifiedName
-                                , memberRegisterInfo.Constructor, null, jsEnv.Idx
-                                , System.Runtime.InteropServices.Marshal.SizeOf(type));
+                            typeId = PuertsDLL.RegisterStruct(jsEnv.isolate, -1,
+                                type.AssemblyQualifiedName, memberRegisterInfo.Constructor, null,
+                                jsEnv.Idx, System.Runtime.InteropServices.Marshal.SizeOf(type));
                         else
-                            typeId = PuertsDLL.RegisterClass(jsEnv.isolate, baseTypeId, type.AssemblyQualifiedName
-                                , memberRegisterInfo.Constructor, null, jsEnv.Idx);
+                            typeId = PuertsDLL.RegisterClass(jsEnv.isolate, baseTypeId,
+                                type.AssemblyQualifiedName, memberRegisterInfo.Constructor, null,
+                                jsEnv.Idx);
                         return typeId;
                     }
                 }
             }
             else {
                 if (RegisterInfoManager.DefaultBindingMode == BindingMode.DontBinding)
-                    return PuertsDLL.RegisterClass(jsEnv.isolate, baseTypeId, type.AssemblyQualifiedName
-                        , FunctionCallbackFactory.EmptyConstructor, null, jsEnv.Idx);
+                    return PuertsDLL.RegisterClass(jsEnv.isolate, baseTypeId,
+                        type.AssemblyQualifiedName, FunctionCallbackFactory.EmptyConstructor, null,
+                        jsEnv.Idx);
             }
 
             if (reflectConstructor) {
@@ -599,11 +634,13 @@ namespace Puerts
                     }).ToList();
                     if (type.IsValueType && !hasNoParametersCtor)
                         constructorWraps.Add(new OverloadReflectionWrap(type, jsEnv));
-                    var constructorReflectionWrap = new MethodReflectionWrap(".ctor", constructorWraps);
+                    var constructorReflectionWrap =
+                        new MethodReflectionWrap(".ctor", constructorWraps);
                     constructorCallback = constructorReflectionWrap.Construct;
                 }
-                typeId = PuertsDLL.RegisterClass(jsEnv.isolate, baseTypeId, type.AssemblyQualifiedName, constructorWrap
-                    , null, jsEnv.AddConstructor(constructorCallback));
+                typeId = PuertsDLL.RegisterClass(jsEnv.isolate, baseTypeId,
+                    type.AssemblyQualifiedName, constructorWrap, null,
+                    jsEnv.AddConstructor(constructorCallback));
             }
             return typeId;
         }

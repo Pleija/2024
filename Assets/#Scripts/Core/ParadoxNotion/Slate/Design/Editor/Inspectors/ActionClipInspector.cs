@@ -44,8 +44,10 @@ namespace Slate
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Match Previous Loop", EditorStyles.miniButtonLeft))
                     action.TryMatchPreviousSubClipLoop();
-                if (GUILayout.Button("Match Clip Length", EditorStyles.miniButtonMid)) action.TryMatchSubClipLength();
-                if (GUILayout.Button("Match Next Loop", EditorStyles.miniButtonRight)) action.TryMatchNexSubClipLoop();
+                if (GUILayout.Button("Match Clip Length", EditorStyles.miniButtonMid))
+                    action.TryMatchSubClipLength();
+                if (GUILayout.Button("Match Next Loop", EditorStyles.miniButtonRight))
+                    action.TryMatchNexSubClipLoop();
                 GUILayout.EndHorizontal();
             }
         }
@@ -82,8 +84,9 @@ namespace Slate
 
                         if (action.actor.GetComponent(requiredType) == null) {
                             EditorGUILayout.HelpBox(
-                                string.Format("This clip requires the actor to have the '{0}' Component"
-                                    , requiredType.Name), MessageType.Error);
+                                string.Format(
+                                    "This clip requires the actor to have the '{0}' Component",
+                                    requiredType.Name), MessageType.Error);
                             GUILayout.Space(5);
                         }
                         return;
@@ -91,8 +94,8 @@ namespace Slate
                     type = type.BaseType;
                 }
                 EditorGUILayout.HelpBox(
-                    "The clip is currently invalid. Please make sure the required parameters are set."
-                    , MessageType.Error);
+                    "The clip is currently invalid. Please make sure the required parameters are set.",
+                    MessageType.Error);
                 GUILayout.Space(5);
                 return;
             }
@@ -102,13 +105,16 @@ namespace Slate
         private void ShowInOutControls()
         {
             var previousClip = action.GetPreviousSibling();
-            var previousTime = previousClip != null ? previousClip.endTime : action.parent.startTime;
+            var previousTime =
+                previousClip != null ? previousClip.endTime : action.parent.startTime;
             if (action.CanCrossBlend(previousClip))
-                previousTime -= Mathf.Min(action.length / 2, (previousClip.endTime - previousClip.startTime) / 2);
+                previousTime -= Mathf.Min(action.length / 2,
+                    (previousClip.endTime - previousClip.startTime) / 2);
             var nextClip = action.GetNextSibling();
             var nextTime = nextClip != null ? nextClip.startTime : action.parent.endTime;
             if (action.CanCrossBlend(nextClip))
-                nextTime += Mathf.Min(action.length / 2, (nextClip.endTime - nextClip.startTime) / 2);
+                nextTime += Mathf.Min(action.length / 2,
+                    (nextClip.endTime - nextClip.startTime) / 2);
             var canScale = action.CanScale();
             var doFrames = Prefs.timeStepMode == Prefs.TimeStepMode.Frames;
             GUILayout.BeginVertical((GUIStyle)"box");
@@ -133,7 +139,8 @@ namespace Slate
 
                 if (doFrames) {
                     _length *= Prefs.frameRate;
-                    _length = (int)EditorGUILayout.DelayedIntField((int)_length, GUILayout.Width(80));
+                    _length = (int)EditorGUILayout.DelayedIntField((int)_length,
+                        GUILayout.Width(80));
                     _length = _length * (1f / Prefs.frameRate);
                 }
                 else {
@@ -193,7 +200,8 @@ namespace Slate
             }
             else {
                 if (_out > action.parent.endTime)
-                    EditorGUILayout.HelpBox("Clip end time is outside of playable range", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Clip end time is outside of playable range",
+                        MessageType.Warning);
             }
 
             if (_out < action.parent.startTime) {
@@ -201,7 +209,8 @@ namespace Slate
             }
             else {
                 if (_in < action.parent.startTime)
-                    EditorGUILayout.HelpBox("Clip start time is outside of playable range", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Clip start time is outside of playable range",
+                        MessageType.Warning);
             }
             GUILayout.EndVertical();
         }

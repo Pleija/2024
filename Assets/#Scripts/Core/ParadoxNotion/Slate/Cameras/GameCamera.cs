@@ -3,7 +3,8 @@
 namespace Slate
 {
     /// <summary>
-    ///     A stub component to interface with the game MainCamera the same as the rest. We never 'set' these, we only
+    ///     A stub component to interface with the game MainCamera the same as the rest. We never 'set'
+    ///     these, we only
     ///     need the getters.
     /// </summary>
     public class GameCamera : MonoBehaviour, IDirectableCamera

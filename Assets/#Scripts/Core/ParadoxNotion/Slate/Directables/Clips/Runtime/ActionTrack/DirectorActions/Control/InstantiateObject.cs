@@ -4,8 +4,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Control")
-     , Description(
+    [Category("Control"),
+     Description(
          "Instantiates an object with optional popup animation if BlendIn is higher than zero. You can optionaly 'popdown' and destroy the object after a period of time, if you also set a BlendOut value higher than zero.")]
     public class InstantiateObject : DirectorActionClip
     {
@@ -45,8 +45,8 @@ namespace Slate.ActionClips
             set => _blendOut = value;
         }
 
-        public override string info =>
-            string.Format("Instantiate\n{0}", targetObject != null ? targetObject.name : "NULL");
+        public override string info => string.Format("Instantiate\n{0}",
+            targetObject != null ? targetObject.name : "NULL");
 
         private new GameObject actor => instance;
 
@@ -54,8 +54,8 @@ namespace Slate.ActionClips
         {
             wasScale = targetObject.transform.localScale;
             instance = (GameObject)Instantiate(targetObject);
-            SceneManager.MoveGameObjectToScene(instance
-                , optionalParent != null ? optionalParent.gameObject.scene : root.context.scene);
+            SceneManager.MoveGameObjectToScene(instance,
+                optionalParent != null ? optionalParent.gameObject.scene : root.context.scene);
             instance.transform.parent = optionalParent;
 
             // instance.transform.position = TransformPosition(targetPosition, (TransformSpace)space);
@@ -64,17 +64,18 @@ namespace Slate.ActionClips
             //REMARK: This is a special case since the created instance is not the actor of this clip (since it's a Director Clip),
             //but we need to do transformations based on the instance. This is relevant only for Parent Space.
             var spaceTransform = GetSpaceTransform((TransformSpace)space, instance);
-            instance.transform.position =
-                spaceTransform != null ? spaceTransform.TransformPoint(targetPosition) : targetPosition;
+            instance.transform.position = spaceTransform != null
+                ? spaceTransform.TransformPoint(targetPosition) : targetPosition;
             instance.transform.rotation = spaceTransform != null
-                ? spaceTransform.rotation * Quaternion.Euler(targetRotation) : Quaternion.Euler(targetRotation);
+                ? spaceTransform.rotation * Quaternion.Euler(targetRotation)
+                : Quaternion.Euler(targetRotation);
         }
 
         protected override void OnUpdate(float time)
         {
             if (instance != null)
-                instance.transform.localScale =
-                    Easing.Ease(popupInterpolation, Vector3.zero, wasScale, GetClipWeight(time));
+                instance.transform.localScale = Easing.Ease(popupInterpolation, Vector3.zero,
+                    wasScale, GetClipWeight(time));
         }
 
         protected override void OnExit()

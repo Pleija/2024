@@ -15,8 +15,8 @@ namespace Slate
 
             if (EditorGUI.EndChangeCheck()) {
                 var parent =
-                    ReflectionTools.GetRelativeMemberParent(property.serializedObject.targetObject
-                        , property.propertyPath);
+                    ReflectionTools.GetRelativeMemberParent(property.serializedObject.targetObject,
+                        property.propertyPath);
                 var method = parent.GetType().RTGetMethod(att.methodName);
                 method.Invoke(parent, null);
             }

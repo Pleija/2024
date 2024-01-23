@@ -19,8 +19,8 @@ namespace Runner.UI.Shop
                 if (theme != null)
                     Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (op) => {
                         if (op.Result == null) {
-                            Debug.LogWarning(
-                                string.Format("Unable to load theme shop list {0}.", prefabItem.Asset.name));
+                            Debug.LogWarning(string.Format("Unable to load theme shop list {0}.",
+                                prefabItem.Asset.name));
                             return;
                         }
                         var newEntry = op.Result.Instantiate().OnDestroyRelease(op);
@@ -70,7 +70,8 @@ namespace Runner.UI.Shop
             if (PlayerData.instance.themes.Contains(theme.themeName)) {
                 itm.buyButton.interactable = false;
                 itm.buyButton.image.sprite = itm.disabledButtonSprite;
-                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = "Owned";
+                itm.buyButton.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text =
+                    "Owned";
             }
         }
 
@@ -87,15 +88,16 @@ namespace Runner.UI.Shop
             var itemId = t.themeName;
             var itemType = "non_consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level
-                , transactionId);
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId,
+                itemType, level, transactionId);
             if (t.cost > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                     // Currency type
                     transactionContext, t.cost, itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
             if (t.premiumCost > 0)
-                AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                           // Currency type
-                    transactionContext, t.premiumCost, itemId, PlayerData.instance.premium, // Balance
+                AnalyticsEvent.ItemSpent(AcquisitionType.Premium, // Currency type
+                    transactionContext, t.premiumCost, itemId,
+                    PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);
 #endif
 

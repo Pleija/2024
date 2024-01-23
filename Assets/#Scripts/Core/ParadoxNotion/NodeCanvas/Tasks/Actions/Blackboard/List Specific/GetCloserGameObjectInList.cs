@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard/Lists")
-     , Description(
+    [Category("✫ Blackboard/Lists"),
+     Description(
          "Get the closer game object to the agent from within a list of game objects and save it in the blackboard.")]
     public class GetCloserGameObjectInList : ActionTask<Transform>
     {

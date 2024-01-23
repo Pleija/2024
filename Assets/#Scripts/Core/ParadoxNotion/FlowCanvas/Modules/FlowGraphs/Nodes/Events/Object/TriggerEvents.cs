@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Trigger"), Category("Events/Object")
-     , Description("Called when Trigger based event happen on target when it has either a Collider or a Rigidbody")]
+    [Name("Trigger"), Category("Events/Object"),
+     Description(
+         "Called when Trigger based event happen on target when it has either a Collider or a Rigidbody")]
     public class TriggerEvents_Transform : RouterEventNode<Transform>
     {
         private FlowOutput onEnter;
@@ -63,8 +64,8 @@ namespace FlowCanvas.Nodes
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Name("Trigger"), Category("Events/Object"), Description("Called when Trigger based event happen on target")
-     , DoNotList]
+    [Name("Trigger"), Category("Events/Object"),
+     Description("Called when Trigger based event happen on target"), DoNotList]
     public class TriggerEvents : RouterEventNode<Collider>
     {
         private FlowOutput onEnter;

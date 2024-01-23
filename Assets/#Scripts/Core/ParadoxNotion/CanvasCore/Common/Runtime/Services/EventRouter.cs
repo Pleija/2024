@@ -4,12 +4,15 @@ using UnityEngine.EventSystems;
 namespace ParadoxNotion.Services
 {
     /// <summary>
-    ///     Automaticaly added to a gameobject when needed. Handles forwarding Unity event messages to listeners that need
-    ///     them as well as Custom event forwarding. Notice: this is a partial class. Add your own methods/events if you like.
+    ///     Automaticaly added to a gameobject when needed. Handles forwarding Unity event messages to
+    ///     listeners that need
+    ///     them as well as Custom event forwarding. Notice: this is a partial class. Add your own
+    ///     methods/events if you like.
     /// </summary>
-    public partial class EventRouter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
-        , IPointerUpHandler, IPointerClickHandler, IDragHandler, IScrollHandler, IUpdateSelectedHandler, ISelectHandler
-        , IDeselectHandler, IMoveHandler, ISubmitHandler, IDropHandler
+    public partial class EventRouter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
+        IPointerDownHandler, IPointerUpHandler, IPointerClickHandler, IDragHandler, IScrollHandler,
+        IUpdateSelectedHandler, ISelectHandler, IDeselectHandler, IMoveHandler, ISubmitHandler,
+        IDropHandler
     {
         //special router for OnAnimatorMove only
         private EventRouterAnimatorMove _routerAnimatorMove;
@@ -37,57 +40,68 @@ namespace ParadoxNotion.Services
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            if (onPointerEnter != null) onPointerEnter(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onPointerEnter != null)
+                onPointerEnter(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
-            if (onPointerExit != null) onPointerExit(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onPointerExit != null)
+                onPointerExit(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
-            if (onPointerDown != null) onPointerDown(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onPointerDown != null)
+                onPointerDown(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
-            if (onPointerUp != null) onPointerUp(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onPointerUp != null)
+                onPointerUp(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-            if (onPointerClick != null) onPointerClick(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onPointerClick != null)
+                onPointerClick(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
-            if (onDrag != null) onDrag(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onDrag != null)
+                onDrag(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IDropHandler.OnDrop(PointerEventData eventData)
         {
-            if (onDrop != null) onDrop(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onDrop != null)
+                onDrop(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IScrollHandler.OnScroll(PointerEventData eventData)
         {
-            if (onScroll != null) onScroll(new EventData<PointerEventData>(eventData, gameObject, this));
+            if (onScroll != null)
+                onScroll(new EventData<PointerEventData>(eventData, gameObject, this));
         }
 
         void IUpdateSelectedHandler.OnUpdateSelected(BaseEventData eventData)
         {
-            if (onUpdateSelected != null) onUpdateSelected(new EventData<BaseEventData>(eventData, gameObject, this));
+            if (onUpdateSelected != null)
+                onUpdateSelected(new EventData<BaseEventData>(eventData, gameObject, this));
         }
 
         void ISelectHandler.OnSelect(BaseEventData eventData)
         {
-            if (onSelect != null) onSelect(new EventData<BaseEventData>(eventData, gameObject, this));
+            if (onSelect != null)
+                onSelect(new EventData<BaseEventData>(eventData, gameObject, this));
         }
 
         void IDeselectHandler.OnDeselect(BaseEventData eventData)
         {
-            if (onDeselect != null) onDeselect(new EventData<BaseEventData>(eventData, gameObject, this));
+            if (onDeselect != null)
+                onDeselect(new EventData<BaseEventData>(eventData, gameObject, this));
         }
 
         void IMoveHandler.OnMove(AxisEventData eventData)
@@ -97,7 +111,8 @@ namespace ParadoxNotion.Services
 
         void ISubmitHandler.OnSubmit(BaseEventData eventData)
         {
-            if (onSubmit != null) onSubmit(new EventData<BaseEventData>(eventData, gameObject, this));
+            if (onSubmit != null)
+                onSubmit(new EventData<BaseEventData>(eventData, gameObject, this));
         }
 
         //-------------------------------------------------
@@ -164,12 +179,14 @@ namespace ParadoxNotion.Services
 
         private void OnTransformChildrenChanged()
         {
-            if (onTransformChildrenChanged != null) onTransformChildrenChanged(new EventData(gameObject, this));
+            if (onTransformChildrenChanged != null)
+                onTransformChildrenChanged(new EventData(gameObject, this));
         }
 
         private void OnTransformParentChanged()
         {
-            if (onTransformParentChanged != null) onTransformParentChanged(new EventData(gameObject, this));
+            if (onTransformParentChanged != null)
+                onTransformParentChanged(new EventData(gameObject, this));
         }
 
         //-------------------------------------------------
@@ -188,7 +205,8 @@ namespace ParadoxNotion.Services
 
         private void OnAnimatorIK(int layerIndex)
         {
-            if (onAnimatorIK != null) onAnimatorIK(new EventData<int>(layerIndex, gameObject, this));
+            if (onAnimatorIK != null)
+                onAnimatorIK(new EventData<int>(layerIndex, gameObject, this));
         }
 
         //-------------------------------------------------
@@ -212,12 +230,14 @@ namespace ParadoxNotion.Services
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
             if (onControllerColliderHit != null)
-                onControllerColliderHit(new EventData<ControllerColliderHit>(hit, gameObject, this));
+                onControllerColliderHit(
+                    new EventData<ControllerColliderHit>(hit, gameObject, this));
         }
 
         private void OnParticleCollision(GameObject other)
         {
-            if (onParticleCollision != null) onParticleCollision(new EventData<GameObject>(other, gameObject, this));
+            if (onParticleCollision != null)
+                onParticleCollision(new EventData<GameObject>(other, gameObject, this));
         }
 
         //-------------------------------------------------
@@ -227,17 +247,20 @@ namespace ParadoxNotion.Services
 
         private void OnCollisionEnter(Collision collisionInfo)
         {
-            if (onCollisionEnter != null) onCollisionEnter(new EventData<Collision>(collisionInfo, gameObject, this));
+            if (onCollisionEnter != null)
+                onCollisionEnter(new EventData<Collision>(collisionInfo, gameObject, this));
         }
 
         private void OnCollisionExit(Collision collisionInfo)
         {
-            if (onCollisionExit != null) onCollisionExit(new EventData<Collision>(collisionInfo, gameObject, this));
+            if (onCollisionExit != null)
+                onCollisionExit(new EventData<Collision>(collisionInfo, gameObject, this));
         }
 
         private void OnCollisionStay(Collision collisionInfo)
         {
-            if (onCollisionStay != null) onCollisionStay(new EventData<Collision>(collisionInfo, gameObject, this));
+            if (onCollisionStay != null)
+                onCollisionStay(new EventData<Collision>(collisionInfo, gameObject, this));
         }
 
         public event EventDelegate<Collision2D> onCollisionEnter2D;
@@ -269,17 +292,20 @@ namespace ParadoxNotion.Services
 
         private void OnTriggerEnter(Collider other)
         {
-            if (onTriggerEnter != null) onTriggerEnter(new EventData<Collider>(other, gameObject, this));
+            if (onTriggerEnter != null)
+                onTriggerEnter(new EventData<Collider>(other, gameObject, this));
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (onTriggerExit != null) onTriggerExit(new EventData<Collider>(other, gameObject, this));
+            if (onTriggerExit != null)
+                onTriggerExit(new EventData<Collider>(other, gameObject, this));
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (onTriggerStay != null) onTriggerStay(new EventData<Collider>(other, gameObject, this));
+            if (onTriggerStay != null)
+                onTriggerStay(new EventData<Collider>(other, gameObject, this));
         }
 
         public event EventDelegate<Collider2D> onTriggerEnter2D;
@@ -288,17 +314,20 @@ namespace ParadoxNotion.Services
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (onTriggerEnter2D != null) onTriggerEnter2D(new EventData<Collider2D>(other, gameObject, this));
+            if (onTriggerEnter2D != null)
+                onTriggerEnter2D(new EventData<Collider2D>(other, gameObject, this));
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (onTriggerExit2D != null) onTriggerExit2D(new EventData<Collider2D>(other, gameObject, this));
+            if (onTriggerExit2D != null)
+                onTriggerExit2D(new EventData<Collider2D>(other, gameObject, this));
         }
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (onTriggerStay2D != null) onTriggerStay2D(new EventData<Collider2D>(other, gameObject, this));
+            if (onTriggerStay2D != null)
+                onTriggerStay2D(new EventData<Collider2D>(other, gameObject, this));
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -327,13 +356,15 @@ namespace ParadoxNotion.Services
         ///<summary>Invokes a custom named event</summary>
         public void InvokeCustomEvent(string name, object value, object sender)
         {
-            if (onCustomEvent != null) onCustomEvent(name, new EventData(value, gameObject, sender));
+            if (onCustomEvent != null)
+                onCustomEvent(name, new EventData(value, gameObject, sender));
         }
 
         ///<summary>Invokes a custom named event</summary>
         public void InvokeCustomEvent<T>(string name, T value, object sender)
         {
-            if (onCustomEvent != null) onCustomEvent(name, new EventData<T>(value, gameObject, sender));
+            if (onCustomEvent != null)
+                onCustomEvent(name, new EventData<T>(value, gameObject, sender));
         }
     }
 }

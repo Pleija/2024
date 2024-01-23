@@ -13,7 +13,12 @@ namespace Runner.Consumable
     public abstract class Consumable : MonoBehaviour
     {
         public float duration;
-        public enum ConsumableType { NONE, COIN_MAG, SCORE_MULTIPLAYER, INVINCIBILITY, EXTRALIFE, MAX_COUNT }
+
+        public enum ConsumableType
+        {
+            NONE, COIN_MAG, SCORE_MULTIPLAYER, INVINCIBILITY, EXTRALIFE, MAX_COUNT,
+        }
+
         public Sprite icon;
         public AudioClip activatedSound;
 
@@ -61,7 +66,8 @@ namespace Runner.Consumable
                 });
                 m_ParticleSpawned = go.GetComponent<ParticleSystem>();
                 if (!m_ParticleSpawned.main.loop)
-                    StartCoroutine(TimedRelease(m_ParticleSpawned.gameObject, m_ParticleSpawned.main.duration));
+                    StartCoroutine(TimedRelease(m_ParticleSpawned.gameObject,
+                        m_ParticleSpawned.main.duration));
                 m_ParticleSpawned.transform.SetParent(c.characterCollider.transform);
                 m_ParticleSpawned.transform.localPosition = go.transform.position;
             }

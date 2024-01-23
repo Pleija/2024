@@ -7,8 +7,8 @@ using UnityEngine.AI;
 
 namespace Slate.ActionClips
 {
-    [Category("Paths")
-     , Description(
+    [Category("Paths"),
+     Description(
          "For this clip to work you only need to have a baked NavMesh. The actor does NOT need, or use a NavMeshAgent Component. The length of the clip is determined by the path's length and the speed parameter set, while the Blend In parameter is used only for the initial look ahead blending")]
     public class PathfindFromTo : ActorActionClip
     {
@@ -49,8 +49,9 @@ namespace Slate.ActionClips
             wasPosition = actor.transform.position;
             wasRotation = actor.transform.rotation;
             if (pathPoints == null || pathPoints.Length == 0)
-                Debug.LogWarning(string.Format("Actor '{0}' can't pathfind to '{1}'", actor.name, targetPosition.value)
-                    , actor);
+                Debug.LogWarning(
+                    string.Format("Actor '{0}' can't pathfind to '{1}'", actor.name,
+                        targetPosition.value), actor);
         }
 
         protected override void OnUpdate(float time)
@@ -73,8 +74,8 @@ namespace Slate.ActionClips
 
                 if (blendIn > 0 && time <= blendIn) {
                     var lookRot = Quaternion.LookRotation(lookPos - actor.transform.position);
-                    actor.transform.rotation =
-                        Easing.Ease(EaseType.QuadraticInOut, wasRotation, lookRot, time / blendIn);
+                    actor.transform.rotation = Easing.Ease(EaseType.QuadraticInOut, wasRotation,
+                        lookRot, time / blendIn);
                 }
                 else {
                     actor.transform.LookAt(lookPos);

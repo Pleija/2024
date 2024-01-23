@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace Slate.ActionClips
 {
-    [Category("Control"), Name("Enable Game Objects")
-     , Description("All gameobjects in the list will be enabled if not already")]
+    [Category("Control"), Name("Enable Game Objects"),
+     Description("All gameobjects in the list will be enabled if not already")]
     public class DirectorEnableGameObjects : DirectorActionClip
     {
         public List<GameObject> targetObjects = new List<GameObject>();
         private Dictionary<GameObject, bool> states;
-        public override string info => string.Format("Enable\n({0}) GameObjects", targetObjects.Count);
+
+        public override string info =>
+            string.Format("Enable\n({0}) GameObjects", targetObjects.Count);
 
         protected override void OnEnter()
         {

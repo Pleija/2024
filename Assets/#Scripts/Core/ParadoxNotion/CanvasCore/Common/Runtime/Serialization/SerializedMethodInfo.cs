@@ -30,11 +30,13 @@ namespace ParadoxNotion.Serialization
             _hasChanged = false;
 
             if (_method != null) {
-                _baseInfo = string.Format("{0}|{1}|{2}", _method.RTReflectedOrDeclaredType().FullName, _method.Name
-                    , _method.ReturnType.FullName);
-                _paramsInfo = string.Join("|", _method.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
-                _genericArgumentsInfo = _method.IsGenericMethod
-                    ? string.Join("|", _method.RTGetGenericArguments().Select(a => a.FullName).ToArray()) : null;
+                _baseInfo = string.Format("{0}|{1}|{2}",
+                    _method.RTReflectedOrDeclaredType().FullName, _method.Name,
+                    _method.ReturnType.FullName);
+                _paramsInfo = string.Join("|",
+                    _method.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
+                _genericArgumentsInfo = _method.IsGenericMethod ? string.Join("|",
+                    _method.RTGetGenericArguments().Select(a => a.FullName).ToArray()) : null;
             }
         }
 
@@ -54,7 +56,8 @@ namespace ParadoxNotion.Serialization
             var returnType = split.Length >= 3 ? ReflectionTools.GetType(split[2], true) : null;
             var isSerializedGeneric = !string.IsNullOrEmpty(_genericArgumentsInfo);
             var paramTypeNames = string.IsNullOrEmpty(_paramsInfo) ? null : _paramsInfo.Split('|');
-            var parameterTypes = paramTypeNames != null ? new Type[paramTypeNames.Length] : Type.EmptyTypes;
+            var parameterTypes = paramTypeNames != null ? new Type[paramTypeNames.Length]
+                : Type.EmptyTypes;
             var paramsFail = false;
 
             for (var i = 0; i < parameterTypes.Length; i++) {
@@ -82,7 +85,9 @@ namespace ParadoxNotion.Serialization
                         }
                         genericArgTypes[i] = argType;
                     }
-                    if (!genericArgsFail) _method = type.RTGetMethod(name, parameterTypes, returnType, genericArgTypes);
+                    if (!genericArgsFail)
+                        _method = type.RTGetMethod(name, parameterTypes, returnType,
+                            genericArgTypes);
                 }
                 else {
                     _method = type.RTGetMethod(name, parameterTypes, returnType);
@@ -121,12 +126,13 @@ namespace ParadoxNotion.Serialization
         public MethodBase GetMethodBase() => _method;
         public bool HasChanged() => _hasChanged;
 
-        public string AsString() =>
-            string.Format("{0} ({1})", _baseInfo.Replace("|", "."), _paramsInfo.Replace("|", ", "));
+        public string AsString() => string.Format("{0} ({1})", _baseInfo.Replace("|", "."),
+            _paramsInfo.Replace("|", ", "));
 
         public override string ToString() => AsString();
 
         //operator
-        public static implicit operator MethodInfo(SerializedMethodInfo value) => value != null ? value._method : null;
+        public static implicit operator MethodInfo(SerializedMethodInfo value) =>
+            value != null ? value._method : null;
     }
 }

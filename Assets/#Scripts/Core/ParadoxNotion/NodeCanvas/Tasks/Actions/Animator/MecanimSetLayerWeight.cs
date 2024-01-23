@@ -25,7 +25,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnUpdate()
         {
-            var norm = transitTime > 0f ? Mathf.Lerp(currentValue, layerWeight.value, elapsedTime / transitTime)
+            var norm = transitTime > 0f
+                ? Mathf.Lerp(currentValue, layerWeight.value, elapsedTime / transitTime)
                 : layerWeight.value;
             agent.SetLayerWeight(layerIndex.value, norm);
             if (elapsedTime >= transitTime) EndAction(true);

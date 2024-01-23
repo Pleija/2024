@@ -13,7 +13,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnUpdate()
         {
-            if (elapsedTime >= waitTime.value) EndAction(finishStatus == CompactStatus.Success ? true : false);
+            if (elapsedTime >= waitTime.value)
+                EndAction(finishStatus == CompactStatus.Success ? true : false);
         }
     }
 }

@@ -190,8 +190,8 @@ namespace Slate
         {
             this.parent = parent;
             clips = GetComponents<ActionClip>().OrderBy(a => a.startTime).ToList();
-            layerOrder = parent.children.Where(t => t.GetType() == GetType() && t.isActive).Reverse().ToList()
-                .IndexOf(this); // O.o
+            layerOrder = parent.children.Where(t => t.GetType() == GetType() && t.isActive)
+                .Reverse().ToList().IndexOf(this); // O.o
             OnAfterValidate();
         }
 
@@ -214,10 +214,13 @@ namespace Slate
 
         ///----------------------------------------------------------------------------------------------
         ///----------------------------------------------------------------------------------------------
-        public float GetTrackWeight() => this.GetWeight(root.currentTime - startTime, blendIn, blendOut);
+        public float GetTrackWeight() =>
+            this.GetWeight(root.currentTime - startTime, blendIn, blendOut);
 
         public float GetTrackWeight(float time) => this.GetWeight(time, blendIn, blendOut);
-        public float GetTrackWeight(float time, float blendInOut) => this.GetWeight(time, blendInOut, blendInOut);
+
+        public float GetTrackWeight(float time, float blendInOut) =>
+            this.GetWeight(time, blendInOut, blendInOut);
 
         public float GetTrackWeight(float time, float blendIn, float blendOut) =>
             this.GetWeight(time, blendIn, blendOut);
@@ -297,7 +300,8 @@ namespace Slate
         public float finalHeight {
             get {
                 if (showCurves)
-                    return inspectedParameterIndex == -1 ? Mathf.Max(proposedHeight, defaultHeight + 50)
+                    return inspectedParameterIndex == -1
+                        ? Mathf.Max(proposedHeight, defaultHeight + 50)
                         : Mathf.Max(proposedHeight, customHeight);
                 return defaultHeight;
             }
@@ -329,7 +333,8 @@ namespace Slate
                     if (att != null) {
                         _icon = Resources.Load(att.iconName) as Texture;
                         if (_icon == null && !string.IsNullOrEmpty(att.iconName))
-                            _icon = UnityEditor.EditorGUIUtility.FindTexture(att.iconName) as Texture;
+                            _icon =
+                                UnityEditor.EditorGUIUtility.FindTexture(att.iconName) as Texture;
                         if (_icon == null && att.fromType != null)
                             _icon = UnityEditor.AssetPreview.GetMiniTypeThumbnail(att.fromType);
                     }
@@ -346,7 +351,8 @@ namespace Slate
         public ActionClip AddAction(System.Type type, float time)
         {
             var catAtt =
-                type.GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as CategoryAttribute;
+                type.GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as
+                    CategoryAttribute;
             if (catAtt != null && clips.Count == 0) name = catAtt.category + " Track";
             var newAction = UnityEditor.Undo.AddComponent(gameObject, type) as ActionClip;
             UnityEditor.Undo.RegisterCompleteObjectUndo(this, "New Action");
@@ -354,7 +360,8 @@ namespace Slate
             clips.Add(newAction);
             newAction.PostCreate(this);
             var nextAction = clips.FirstOrDefault(a => a.startTime > newAction.startTime);
-            if (nextAction != null) newAction.endTime = Mathf.Min(newAction.endTime, nextAction.startTime);
+            if (nextAction != null)
+                newAction.endTime = Mathf.Min(newAction.endTime, nextAction.startTime);
             root.Validate();
             CutsceneUtility.selectedObject = newAction;
             return newAction;
@@ -365,7 +372,8 @@ namespace Slate
         {
             UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Remove Action");
             clips.Remove(action);
-            if (ReferenceEquals(CutsceneUtility.selectedObject, action)) CutsceneUtility.selectedObject = null;
+            if (ReferenceEquals(CutsceneUtility.selectedObject, action))
+                CutsceneUtility.selectedObject = null;
             UnityEditor.Undo.DestroyObjectImmediate(action);
             root.Validate();
         }
@@ -380,7 +388,8 @@ namespace Slate
             if (showCurves) {
                 var wasEnable = GUI.enabled;
                 GUI.enabled = true;
-                DoParamsInfoGUI(e, trackRect, showCurvesClip, showCurvesClip is ActionClips.AnimateProperties);
+                DoParamsInfoGUI(e, trackRect, showCurvesClip,
+                    showCurvesClip is ActionClips.AnimateProperties);
                 GUI.enabled = wasEnable;
             }
             GUI.color = Color.white;
@@ -392,8 +401,10 @@ namespace Slate
         {
             var iconBGRect = new Rect(0, 0, BOX_WIDTH, defaultHeight);
             iconBGRect = iconBGRect.ExpandBy(-1);
-            var textInfoRect = Rect.MinMaxRect(iconBGRect.xMax + 2, 0, trackRect.width - BOX_WIDTH - 2, defaultHeight);
-            var curveButtonRect = new Rect(trackRect.width - BOX_WIDTH, 0, BOX_WIDTH, defaultHeight);
+            var textInfoRect = Rect.MinMaxRect(iconBGRect.xMax + 2, 0,
+                trackRect.width - BOX_WIDTH - 2, defaultHeight);
+            var curveButtonRect =
+                new Rect(trackRect.width - BOX_WIDTH, 0, BOX_WIDTH, defaultHeight);
             GUI.color = Color.black.WithAlpha(UnityEditor.EditorGUIUtility.isProSkin ? 0.1f : 0.1f);
             GUI.DrawTexture(iconBGRect, Texture2D.whiteTexture);
             GUI.color = Color.white;
@@ -419,7 +430,8 @@ namespace Slate
             curveIconColor.a = showCurves ? 1 : 0.3f;
             if (GUI.Button(curveButtonRect, string.Empty, GUIStyle.none)) showCurves = !showCurves;
             curveButtonRect = curveButtonRect.ExpandBy(-4);
-            GUI.color = ColorUtility.Grey(UnityEditor.EditorGUIUtility.isProSkin ? 0.2f : 1f).WithAlpha(0.2f);
+            GUI.color = ColorUtility.Grey(UnityEditor.EditorGUIUtility.isProSkin ? 0.2f : 1f)
+                .WithAlpha(0.2f);
             GUI.Box(curveButtonRect, string.Empty, Styles.clipBoxStyle);
             GUI.color = curveIconColor;
             GUI.DrawTexture(curveIconRect, Styles.curveIcon);
@@ -442,10 +454,12 @@ namespace Slate
         }
 
         //show selected clip animated parameters list info
-        protected void DoParamsInfoGUI(Event e, Rect trackRect, IKeyable keyable, bool showAddPropertyButton)
+        protected void DoParamsInfoGUI(Event e, Rect trackRect, IKeyable keyable,
+            bool showAddPropertyButton)
         {
             //bg graphic
-            var expansionRect = Rect.MinMaxRect(5, defaultHeight, trackRect.width - 3, finalHeight - 3);
+            var expansionRect =
+                Rect.MinMaxRect(5, defaultHeight, trackRect.width - 3, finalHeight - 3);
             GUI.color = UnityEditor.EditorGUIUtility.isProSkin ? new Color(0.22f, 0.22f, 0.22f)
                 : new Color(0.7f, 0.7f, 0.7f);
             GUI.DrawTexture(expansionRect, Styles.whiteTexture);
@@ -456,12 +470,14 @@ namespace Slate
             //allow resize height
             if (inspectedParameterIndex >= 0) {
                 var resizeRect = Rect.MinMaxRect(0, finalHeight - 4, trackRect.width, finalHeight);
-                UnityEditor.EditorGUIUtility.AddCursorRect(resizeRect, UnityEditor.MouseCursor.ResizeVertical);
+                UnityEditor.EditorGUIUtility.AddCursorRect(resizeRect,
+                    UnityEditor.MouseCursor.ResizeVertical);
                 GUI.color = Color.grey;
                 GUI.DrawTexture(resizeRect, Styles.whiteTexture);
                 GUI.color = Color.white;
 
-                if (e.type == EventType.MouseDown && e.button == 0 && resizeRect.Contains(e.mousePosition)) {
+                if (e.type == EventType.MouseDown && e.button == 0 &&
+                    resizeRect.Contains(e.mousePosition)) {
                     isResizingHeight = true;
                     e.Use();
                 }
@@ -470,7 +486,8 @@ namespace Slate
             }
             proposedHeight = 0f;
 
-            if ((keyable == null || !ReferenceEquals(keyable.parent, this)) && !ReferenceEquals(keyable, this)) {
+            if ((keyable == null || !ReferenceEquals(keyable.parent, this)) &&
+                !ReferenceEquals(keyable, this)) {
                 GUI.Label(expansionRect, "No Clip Selected", Styles.centerLabel);
                 inspectedParameterIndex = -1;
                 return;
@@ -484,7 +501,8 @@ namespace Slate
 
                 if (keyable.animationData == null || !keyable.animationData.isValid)
                     if (keyable is ActionClip) {
-                        GUI.Label(expansionRect, "Clip Has No Animatable Parameters", Styles.centerLabel);
+                        GUI.Label(expansionRect, "Clip Has No Animatable Parameters",
+                            Styles.centerLabel);
                         return;
                     }
             }
@@ -497,18 +515,21 @@ namespace Slate
 
                 for (var i = 0; i < paramsCount; i++) {
                     var animParam = keyable.animationData.animatedParameters[i];
-                    var paramRect = new Rect(expansionRect.xMin + 4, proposedHeight, expansionRect.width - 8
-                        , PARAMS_LINE_HEIGHT);
+                    var paramRect = new Rect(expansionRect.xMin + 4, proposedHeight,
+                        expansionRect.width - 8, PARAMS_LINE_HEIGHT);
                     proposedHeight += PARAMS_LINE_HEIGHT + PARAMS_LINE_MARGIN;
                     GUI.color = inspectedParameterIndex == i ? new Color(0.5f, 0.5f, 1f, 0.4f)
                         : new Color(0, 0.5f, 0.5f, 0.5f);
                     GUI.Box(paramRect, string.Empty, Styles.headerBoxStyle);
                     GUI.color = Color.white;
-                    var paramName = string.Format(" <size=10><color=#252525>{0}</color></size>", animParam.ToString());
-                    paramName = inspectedParameterIndex == i ? string.Format("<b>{0}</b>", paramName) : paramName;
+                    var paramName = string.Format(" <size=10><color=#252525>{0}</color></size>",
+                        animParam.ToString());
+                    paramName = inspectedParameterIndex == i
+                        ? string.Format("<b>{0}</b>", paramName) : paramName;
                     GUI.Label(paramRect, paramName, Styles.leftLabel);
                     var gearRect = new Rect(paramRect.xMax - 16 - 4, paramRect.y, 16, 16);
-                    gearRect.center = new Vector2(gearRect.center.x, paramRect.y + paramRect.height / 2 - 1);
+                    gearRect.center = new Vector2(gearRect.center.x,
+                        paramRect.y + paramRect.height / 2 - 1);
                     GUI.enabled = true;
                     GUI.color = Color.white.WithAlpha(animParam.enabled ? 1 : 0.5f);
                     if (GUI.Button(gearRect, Styles.gearIcon, GUIStyle.none))
@@ -525,9 +546,10 @@ namespace Slate
                 proposedHeight += PARAMS_TOP_MARGIN;
 
                 if (inspectedParameterIndex >= 0) {
-                    var controlRect = Rect.MinMaxRect(expansionRect.x + 6, proposedHeight + 5, expansionRect.xMax - 6
-                        , proposedHeight + 50);
-                    var animParam = keyable.animationData.animatedParameters[inspectedParameterIndex];
+                    var controlRect = Rect.MinMaxRect(expansionRect.x + 6, proposedHeight + 5,
+                        expansionRect.xMax - 6, proposedHeight + 50);
+                    var animParam =
+                        keyable.animationData.animatedParameters[inspectedParameterIndex];
                     GUILayout.BeginArea(controlRect);
                     AnimatableParameterEditor.ShowMiniParameterKeyControls(animParam, keyable);
                     GUILayout.EndArea();
@@ -536,8 +558,8 @@ namespace Slate
             }
 
             if (showAddPropertyButton && inspectedParameterIndex == -1) {
-                var buttonRect = Rect.MinMaxRect(expansionRect.x + 6, proposedHeight + 5, expansionRect.xMax - 6
-                    , proposedHeight + 25);
+                var buttonRect = Rect.MinMaxRect(expansionRect.x + 6, proposedHeight + 5,
+                    expansionRect.xMax - 6, proposedHeight + 25);
                 var go = keyable.animatedParametersTarget as GameObject;
                 GUI.enabled = go != null && root.currentTime <= 0;
                 if (GUI.Button(buttonRect, "Add Property"))
@@ -551,15 +573,17 @@ namespace Slate
         }
 
         ///<summary>The Editor GUI within the timeline rectangle</summary>
-        public virtual void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime
-            , System.Func<float, float> TimeToPos)
+        public virtual void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime,
+            System.Func<float, float> TimeToPos)
         {
             var e = Event.current;
-            var clipsPosRect = Rect.MinMaxRect(posRect.xMin, posRect.yMin, posRect.xMax, posRect.yMin + defaultHeight);
+            var clipsPosRect = Rect.MinMaxRect(posRect.xMin, posRect.yMin, posRect.xMax,
+                posRect.yMin + defaultHeight);
             DoTrackContextMenu(e, clipsPosRect, cursorTime);
 
             if (showCurves) {
-                var curvesPosRect = Rect.MinMaxRect(posRect.xMin, clipsPosRect.yMax, posRect.xMax, posRect.yMax);
+                var curvesPosRect = Rect.MinMaxRect(posRect.xMin, clipsPosRect.yMax, posRect.xMax,
+                    posRect.yMax);
                 DoClipCurves(e, curvesPosRect, timeRect, TimeToPos, showCurvesClip);
             }
         }
@@ -570,8 +594,8 @@ namespace Slate
                 var attachableTypeInfos = new List<EditorTools.TypeMetaInfo>();
                 var existing = clips.FirstOrDefault();
                 var existingCatAtt = existing != null
-                    ? existing.GetType().GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as
-                        CategoryAttribute : null;
+                    ? existing.GetType().GetCustomAttributes(typeof(CategoryAttribute), true)
+                        .FirstOrDefault() as CategoryAttribute : null;
 
                 foreach (var info in EditorTools.GetTypeMetaDerivedFrom(typeof(ActionClip))) {
                     if (!info.attachableTypes.Contains(GetType())) continue;
@@ -589,7 +613,8 @@ namespace Slate
 
                     foreach (var _info in attachableTypeInfos) {
                         var info = _info;
-                        var category = string.IsNullOrEmpty(info.category) ? string.Empty : info.category + "/";
+                        var category = string.IsNullOrEmpty(info.category) ? string.Empty
+                            : info.category + "/";
                         var tName = info.name;
                         menu.AddItem(new GUIContent(category + tName), false, () => {
                             AddAction(info.type, cursorTime);
@@ -597,11 +622,14 @@ namespace Slate
                     }
                     var copyType = CutsceneUtility.GetCopyType();
 
-                    if (copyType != null && attachableTypeInfos.Select(i => i.type).Contains(copyType)) {
+                    if (copyType != null &&
+                        attachableTypeInfos.Select(i => i.type).Contains(copyType)) {
                         menu.AddSeparator("/");
-                        menu.AddItem(new GUIContent(string.Format("Paste Clip ({0})", copyType.Name)), false, () => {
-                            CutsceneUtility.PasteClip(this, cursorTime);
-                        });
+                        menu.AddItem(
+                            new GUIContent(string.Format("Paste Clip ({0})", copyType.Name)), false,
+                            () => {
+                                CutsceneUtility.PasteClip(this, cursorTime);
+                            });
                     }
                     menu.ShowAsContext();
                     e.Use();
@@ -609,18 +637,20 @@ namespace Slate
             }
         }
 
-        protected void DoClipCurves(Event e, Rect posRect, Rect timeRect, System.Func<float, float> TimeToPos
-            , IKeyable keyable)
+        protected void DoClipCurves(Event e, Rect posRect, Rect timeRect,
+            System.Func<float, float> TimeToPos, IKeyable keyable)
         {
             //track expanded bg
             GUI.color = Color.black.WithAlpha(0.1f);
             GUI.Box(posRect, string.Empty, Styles.timeBoxStyle);
             GUI.color = Color.white;
 
-            if ((keyable == null || !ReferenceEquals(keyable.parent, this)) && !ReferenceEquals(keyable, this)) {
+            if ((keyable == null || !ReferenceEquals(keyable.parent, this)) &&
+                !ReferenceEquals(keyable, this)) {
                 GUI.color = Color.white.WithAlpha(0.3f);
-                GUI.Label(posRect, "Select a Clip of this Track to view it's Animated Parameters here"
-                    , Styles.centerLabel);
+                GUI.Label(posRect,
+                    "Select a Clip of this Track to view it's Animated Parameters here",
+                    Styles.centerLabel);
                 GUI.color = Color.white;
                 return;
             }
@@ -631,7 +661,8 @@ namespace Slate
             if (keyable is ActionClip) {
                 finalPosRect.xMin = Mathf.Max(posRect.xMin, TimeToPos(keyable.startTime));
                 finalPosRect.xMax = Mathf.Min(posRect.xMax, TimeToPos(keyable.endTime));
-                finalTimeRect.xMin = Mathf.Max(timeRect.xMin, keyable.startTime) - keyable.startTime;
+                finalTimeRect.xMin =
+                    Mathf.Max(timeRect.xMin, keyable.startTime) - keyable.startTime;
                 finalTimeRect.xMax = Mathf.Min(timeRect.xMax, keyable.endTime) - keyable.startTime;
             }
 
@@ -651,8 +682,8 @@ namespace Slate
                     return;
 
             //keyable bg
-            GUI.color = UnityEditor.EditorGUIUtility.isProSkin ? new Color(0.25f, 0.25f, 0.25f, 0.9f)
-                : new Color(0.7f, 0.7f, 0.7f, 0.9f);
+            GUI.color = UnityEditor.EditorGUIUtility.isProSkin
+                ? new Color(0.25f, 0.25f, 0.25f, 0.9f) : new Color(0.7f, 0.7f, 0.7f, 0.9f);
             GUI.Box(finalPosRect, string.Empty, Styles.clipBoxFooterStyle);
             GUI.color = Color.white;
 
@@ -666,13 +697,16 @@ namespace Slate
 
             if (keyable.animationData == null || !keyable.animationData.isValid) {
                 if (keyable is ActionClip)
-                    GUI.Label(finalPosRect, "Clip has no Animatable Parameters", Styles.centerLabel);
+                    GUI.Label(finalPosRect, "Clip has no Animatable Parameters",
+                        Styles.centerLabel);
                 else
-                    GUI.Label(finalPosRect, "Track has no Animated Properties. You can add some on the left side"
-                        , Styles.centerLabel);
+                    GUI.Label(finalPosRect,
+                        "Track has no Animated Properties. You can add some on the left side",
+                        Styles.centerLabel);
                 return;
             }
-            if (inspectedParameterIndex >= keyable.animationData.animatedParameters.Count) inspectedParameterIndex = -1;
+            if (inspectedParameterIndex >= keyable.animationData.animatedParameters.Count)
+                inspectedParameterIndex = -1;
 
             //vertical guides from params to dopesheet
             if (inspectedParameterIndex == -1) {
@@ -680,7 +714,8 @@ namespace Slate
 
                 for (var i = 0; i < keyable.animationData.animatedParameters.Count; i++) {
                     // var animParam = keyable.animationData.animatedParameters[i];
-                    var paramRect = new Rect(0, posRect.yMin + yPos, finalPosRect.xMin - 2, PARAMS_LINE_HEIGHT);
+                    var paramRect = new Rect(0, posRect.yMin + yPos, finalPosRect.xMin - 2,
+                        PARAMS_LINE_HEIGHT);
                     yPos += PARAMS_LINE_HEIGHT + PARAMS_LINE_MARGIN;
                     paramRect.yMin += 1f;
                     paramRect.yMax -= 1f;
@@ -699,29 +734,29 @@ namespace Slate
 
                 for (var i = 0; i < keyable.animationData.animatedParameters.Count; i++) {
                     var animParam = keyable.animationData.animatedParameters[i];
-                    var paramRect = new Rect(finalPosRect.xMin, finalPosRect.yMin + yPos, finalPosRect.width
-                        , PARAMS_LINE_HEIGHT);
+                    var paramRect = new Rect(finalPosRect.xMin, finalPosRect.yMin + yPos,
+                        finalPosRect.width, PARAMS_LINE_HEIGHT);
                     yPos += PARAMS_LINE_HEIGHT + PARAMS_LINE_MARGIN;
                     paramRect.yMin += 1f;
                     paramRect.yMax -= 1f;
                     GUI.color = Color.black.WithAlpha(0.05f);
                     GUI.DrawTexture(paramRect, Texture2D.whiteTexture);
                     UnityEditor.Handles.color = Color.black.WithAlpha(0.2f);
-                    UnityEditor.Handles.DrawLine(new Vector2(paramRect.xMin, paramRect.yMin)
-                        , new Vector2(paramRect.xMax, paramRect.yMin));
-                    UnityEditor.Handles.DrawLine(new Vector2(paramRect.xMin, paramRect.yMax)
-                        , new Vector2(paramRect.xMax, paramRect.yMax));
+                    UnityEditor.Handles.DrawLine(new Vector2(paramRect.xMin, paramRect.yMin),
+                        new Vector2(paramRect.xMax, paramRect.yMin));
+                    UnityEditor.Handles.DrawLine(new Vector2(paramRect.xMin, paramRect.yMax),
+                        new Vector2(paramRect.xMax, paramRect.yMax));
                     UnityEditor.Handles.color = Color.white;
                     GUI.color = Color.white;
 
                     if (animParam.enabled) {
-                        DopeSheetEditor.DrawDopeSheet(animParam, keyable, paramRect, finalTimeRect.x
-                            , finalTimeRect.width, true);
+                        DopeSheetEditor.DrawDopeSheet(animParam, keyable, paramRect,
+                            finalTimeRect.x, finalTimeRect.width, true);
                     }
                     else {
                         GUI.color = new Color(0, 0, 0, 0.2f);
-                        GUI.DrawTextureWithTexCoords(paramRect, Styles.stripes
-                            , new Rect(0, 0, paramRect.width / 7, paramRect.height / 7));
+                        GUI.DrawTextureWithTexCoords(paramRect, Styles.stripes,
+                            new Rect(0, 0, paramRect.width / 7, paramRect.height / 7));
                         GUI.color = Color.white;
                     }
                 }
@@ -732,12 +767,13 @@ namespace Slate
                 var dopeRect = finalPosRect;
                 dopeRect.y += 4f;
                 dopeRect.height = 16f;
-                DopeSheetEditor.DrawDopeSheet(animParam, keyable, dopeRect, finalTimeRect.x, finalTimeRect.width, true);
+                DopeSheetEditor.DrawDopeSheet(animParam, keyable, dopeRect, finalTimeRect.x,
+                    finalTimeRect.width, true);
                 var curveRect = finalPosRect;
                 curveRect.yMin = dopeRect.yMax + 4;
                 UnityEditor.Handles.color = Color.black.WithAlpha(0.5f);
-                UnityEditor.Handles.DrawLine(new Vector2(curveRect.xMin, curveRect.yMin)
-                    , new Vector2(curveRect.xMax, curveRect.yMin));
+                UnityEditor.Handles.DrawLine(new Vector2(curveRect.xMin, curveRect.yMin),
+                    new Vector2(curveRect.xMax, curveRect.yMin));
                 UnityEditor.Handles.color = Color.white;
                 CurveEditor.DrawCurves(animParam, keyable, curveRect, finalTimeRect);
             }

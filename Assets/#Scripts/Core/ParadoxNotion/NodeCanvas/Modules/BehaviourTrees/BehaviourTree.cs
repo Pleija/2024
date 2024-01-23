@@ -5,10 +5,11 @@ using UnityEngine;
 namespace NodeCanvas.BehaviourTrees
 {
     ///<summary> BehaviourTrees are used to create advanced AI and logic based on simple rules.</summary>
-    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/"
-         , resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/"
-         , forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/")
-     , CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Behaviour Tree Asset")]
+    [GraphInfo(packageName = "NodeCanvas",
+         docsURL = "https://nodecanvas.paradoxnotion.com/documentation/",
+         resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/",
+         forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/"),
+     CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Behaviour Tree Asset")]
     public class BehaviourTree : Graph
     {
         ///----------------------------------------------------------------------------------------------
@@ -69,7 +70,9 @@ namespace NodeCanvas.BehaviourTrees
         public override bool isTree => true;
         public override bool allowBlackboardOverrides => true;
         public sealed override bool canAcceptVariableDrops => false;
-        public override ParadoxNotion.PlanarDirection flowDirection => ParadoxNotion.PlanarDirection.Vertical;
+
+        public override ParadoxNotion.PlanarDirection flowDirection =>
+            ParadoxNotion.PlanarDirection.Vertical;
 
         ///----------------------------------------------------------------------------------------------
         protected override void OnGraphStarted()
@@ -82,7 +85,8 @@ namespace NodeCanvas.BehaviourTrees
         {
             if (intervalCounter >= updateInterval) {
                 intervalCounter = 0;
-                if (Tick(agent, blackboard) != Status.Running && !repeat) Stop(rootStatus == Status.Success);
+                if (Tick(agent, blackboard) != Status.Running && !repeat)
+                    Stop(rootStatus == Status.Success);
             }
             if (updateInterval > 0) intervalCounter += Time.deltaTime;
         }
@@ -97,7 +101,8 @@ namespace NodeCanvas.BehaviourTrees
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/Behaviour Tree Asset", false, 0)]
+        [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/Behaviour Tree Asset", false,
+            0)]
         private static void Editor_CreateGraph()
         {
             var newGraph = EditorUtils.CreateAsset<BehaviourTree>();

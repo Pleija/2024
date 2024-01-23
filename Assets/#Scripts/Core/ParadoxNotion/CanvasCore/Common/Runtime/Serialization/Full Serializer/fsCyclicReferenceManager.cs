@@ -12,9 +12,13 @@ namespace ParadoxNotion.Serialization.FullSerializer
         // graph *identically* to how it currently exists.
         private class ObjectReferenceEqualityComparator : IEqualityComparer<object>
         {
-            public static readonly IEqualityComparer<object> Instance = new ObjectReferenceEqualityComparator();
+            public static readonly IEqualityComparer<object> Instance =
+                new ObjectReferenceEqualityComparator();
+
             bool IEqualityComparer<object>.Equals(object x, object y) => ReferenceEquals(x, y);
-            int IEqualityComparer<object>.GetHashCode(object obj) => RuntimeHelpers.GetHashCode(obj);
+
+            int IEqualityComparer<object>.GetHashCode(object obj) =>
+                RuntimeHelpers.GetHashCode(obj);
         }
 
         private Dictionary<object, int> _objectIds;

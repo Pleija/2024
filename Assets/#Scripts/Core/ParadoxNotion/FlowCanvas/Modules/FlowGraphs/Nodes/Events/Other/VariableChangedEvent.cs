@@ -4,8 +4,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Variable Change"), Category("Events/Other")
-     , Description("Called when the target variable change. (Not whenever it is set).")]
+    [Name("On Variable Change"), Category("Events/Other"),
+     Description("Called when the target variable change. (Not whenever it is set).")]
     public class VariableChangedEvent : EventNode
     {
         [BlackboardOnly]
@@ -25,7 +25,8 @@ namespace FlowCanvas.Nodes
 
         public override void OnGraphStoped()
         {
-            if (targetVariable.varRef != null) targetVariable.varRef.onValueChanged -= OnValueChanged;
+            if (targetVariable.varRef != null)
+                targetVariable.varRef.onValueChanged -= OnValueChanged;
             newValue = null;
         }
 

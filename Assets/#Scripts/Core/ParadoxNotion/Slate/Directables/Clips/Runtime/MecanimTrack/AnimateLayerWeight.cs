@@ -48,7 +48,8 @@ namespace Slate.ActionClips
 
         protected override void OnUpdate(float deltaTime)
         {
-            actor.SetLayerWeight(layerIndex, Mathf.Lerp(lastValue, weight, GetClipWeight(deltaTime)));
+            actor.SetLayerWeight(layerIndex,
+                Mathf.Lerp(lastValue, weight, GetClipWeight(deltaTime)));
         }
 
         protected override void OnReverse()

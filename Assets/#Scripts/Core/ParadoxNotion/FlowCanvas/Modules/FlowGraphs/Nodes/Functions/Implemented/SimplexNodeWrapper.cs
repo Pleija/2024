@@ -26,8 +26,12 @@ namespace FlowCanvas.Nodes
         }
 
         public override string name => simplexNode != null ? simplexNode.name : "NULL";
-        public override string description => simplexNode != null ? simplexNode.description : "NULL";
-        public override System.Type GetNodeWildDefinitionType() => typeof(T).GetFirstGenericParameterConstraintType();
+
+        public override string description =>
+            simplexNode != null ? simplexNode.description : "NULL";
+
+        public override System.Type GetNodeWildDefinitionType() =>
+            typeof(T).GetFirstGenericParameterConstraintType();
 
         public override void OnCreate(Graph assignedGraph)
         {
@@ -70,9 +74,10 @@ namespace FlowCanvas.Nodes
             if (simplexNode == null) return menu;
             var type = simplexNode.GetType();
             if (type.IsGenericType)
-                menu = EditorUtils.GetPreferedTypesSelectionMenu(type.GetGenericTypeDefinition(), (t) => {
-                    ReplaceWith(typeof(SimplexNodeWrapper<>).MakeGenericType(t));
-                }, menu, "Change Generic Type");
+                menu = EditorUtils.GetPreferedTypesSelectionMenu(type.GetGenericTypeDefinition(),
+                    (t) => {
+                        ReplaceWith(typeof(SimplexNodeWrapper<>).MakeGenericType(t));
+                    }, menu, "Change Generic Type");
             return menu;
         }
 

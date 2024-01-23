@@ -6,10 +6,10 @@ using ParadoxNotion.Serialization;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Switchers")
-     , Description(
-         "Branch the Flow based on an enum value.\nPlease connect an Enum first for the options to show, or directly select the enum type with the relevant button bellow.")
-     , ContextDefinedInputs(typeof(System.Enum))]
+    [Category("Flow Controllers/Switchers"),
+     Description(
+         "Branch the Flow based on an enum value.\nPlease connect an Enum first for the options to show, or directly select the enum type with the relevant button bellow."),
+     ContextDefinedInputs(typeof(System.Enum))]
     public class SwitchEnum : FlowControlNode
     {
         [SerializeField]
@@ -30,7 +30,8 @@ namespace FlowCanvas.Nodes
             if (type != typeof(System.Enum)) {
                 var enumNames = System.Enum.GetNames(type);
                 var cases = new Dictionary<string, FlowOutput>(enumNames.Length);
-                for (var i = 0; i < enumNames.Length; i++) cases[enumNames[i]] = AddFlowOutput(enumNames[i]);
+                for (var i = 0; i < enumNames.Length; i++)
+                    cases[enumNames[i]] = AddFlowOutput(enumNames[i]);
                 AddFlowInput("In", (f) => {
                     cases[selector.value.ToString()].Call(f);
                 });

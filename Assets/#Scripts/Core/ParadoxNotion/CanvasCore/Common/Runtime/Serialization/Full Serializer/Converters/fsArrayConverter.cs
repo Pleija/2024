@@ -9,7 +9,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
         public override bool RequestCycleSupport(Type storageType) => false;
         public override bool RequestInheritanceSupport(Type storageType) => false;
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             // note: IList[index] is **significantly** faster than Array.Get, so make sure we use
             //       that instead.
@@ -45,7 +46,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                 var serializedItem = serializedList[i];
                 object deserialized = null;
                 if (i < existingCount) deserialized = list[i];
-                var itemResult = Serializer.TryDeserialize(serializedItem, elementType, ref deserialized);
+                var itemResult =
+                    Serializer.TryDeserialize(serializedItem, elementType, ref deserialized);
                 result.AddMessages(itemResult);
                 if (itemResult.Failed) continue;
                 if (i < existingCount)

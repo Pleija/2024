@@ -9,7 +9,8 @@ namespace Slate
     ///<summary>A wrapped collection of Animated Parameters. Basically what AnimationClip is to Unity, but for Slate.</summary>
     public class AnimationDataCollection : IAnimatableData
     {
-        public delegate bool AddParameterDelegate(System.Type type, string memberPath, string transformPath);
+        public delegate bool AddParameterDelegate(System.Type type, string memberPath,
+            string transformPath);
 
         [SerializeField]
         private List<AnimatedParameter> _animatedParameters;
@@ -21,23 +22,28 @@ namespace Slate
 
         ///<summary>indexer by index in list</summary>
         public AnimatedParameter this[int i] =>
-            animatedParameters != null && i < animatedParameters.Count ? animatedParameters[i] : null;
+            animatedParameters != null && i < animatedParameters.Count ? animatedParameters[i]
+                : null;
 
         ///<summary>indexer by name of parameter</summary>
         public AnimatedParameter this[string name] => GetParameterOfName(name);
 
         public AnimationDataCollection() { }
 
-        public AnimationDataCollection(IKeyable keyable, System.Type type, string[] memberPaths, string transformPath)
+        public AnimationDataCollection(IKeyable keyable, System.Type type, string[] memberPaths,
+            string transformPath)
         {
-            foreach (var memberPath in memberPaths) TryAddParameter(keyable, type, memberPath, transformPath);
+            foreach (var memberPath in memberPaths)
+                TryAddParameter(keyable, type, memberPath, transformPath);
         }
 
         /// <summary>
-        ///     Creates a new animated parameter out of a member info that optionaly exists on a component in child transform
+        ///     Creates a new animated parameter out of a member info that optionaly exists on a component in
+        ///     child transform
         ///     of root transform.
         /// </summary>
-        public bool TryAddParameter(IKeyable keyable, System.Type type, string memberPath, string transformPath)
+        public bool TryAddParameter(IKeyable keyable, System.Type type, string memberPath,
+            string transformPath)
         {
             if (animatedParameters == null) _animatedParameters = new List<AnimatedParameter>();
             var newParam = new AnimatedParameter(keyable, type, memberPath, transformPath);
@@ -46,7 +52,8 @@ namespace Slate
 
             if (found != null) {
                 //handle possible changes from property to field and vice-verse
-                if (found.parameterType != newParam.parameterType) found.ChangeMemberType(newParam.parameterType);
+                if (found.parameterType != newParam.parameterType)
+                    found.ChangeMemberType(newParam.parameterType);
                 return false;
             }
             _animatedParameters.Add(newParam);
@@ -63,8 +70,8 @@ namespace Slate
         ///<summary>Re-orders the parameters based on paths</summary>
         public void ReOrderParameters()
         {
-            _animatedParameters = animatedParameters.OrderBy(p => p.ToString()).OrderBy(p => p.transformHierarchyPath)
-                .ToList();
+            _animatedParameters = animatedParameters.OrderBy(p => p.ToString())
+                .OrderBy(p => p.transformHierarchyPath).ToList();
         }
 
         ///<summary>Fetch a parameter with specified name</summary>
@@ -100,7 +107,10 @@ namespace Slate
                     animatedParameters[i].Validate(keyable);
         }
 
-        ///<summary>1. If a virtualTransformParent is set, transforms will be virtually parented to that tranform</summary>
+        /// <summary>
+        ///     1. If a virtualTransformParent is set, transforms will be virtually parented to that
+        ///     tranform
+        /// </summary>
         public void SetVirtualTransformParent(Transform virtualTransformParent)
         {
             if (animatedParameters != null)
@@ -146,7 +156,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Try add key at time, with identity value either from existing curves at that time, or in case of no curves
+        ///     Try add key at time, with identity value either from existing curves at that time, or in case
+        ///     of no curves
         ///     from current property value.
         /// </summary>
         public bool TryKeyIdentity(float time)
@@ -211,7 +222,8 @@ namespace Slate
         public float GetKeyNext(float time)
         {
             if (animatedParameters != null)
-                return animatedParameters.Select(p => p.GetKeyNext(time)).OrderBy(t => t).FirstOrDefault(t => t > time);
+                return animatedParameters.Select(p => p.GetKeyNext(time)).OrderBy(t => t)
+                    .FirstOrDefault(t => t > time);
             return 0;
         }
 
@@ -229,7 +241,8 @@ namespace Slate
         {
             if (animatedParameters != null) {
                 if (animatedParameters.Count == 1) return animatedParameters[0].GetKeyLabel(time);
-                return string.Format("[#{0}]", animatedParameters.Where(p => p.HasKey(time)).ToArray().Length);
+                return string.Format("[#{0}]",
+                    animatedParameters.Where(p => p.HasKey(time)).ToArray().Length);
             }
             return string.Empty;
         }
@@ -262,7 +275,8 @@ namespace Slate
         public override string ToString()
         {
             if (animatedParameters == null || animatedParameters.Count == 0) return "No Parameters";
-            return animatedParameters.Count == 1 ? animatedParameters[0].ToString() : "Multiple Parameters";
+            return animatedParameters.Count == 1 ? animatedParameters[0].ToString()
+                : "Multiple Parameters";
         }
     }
 }

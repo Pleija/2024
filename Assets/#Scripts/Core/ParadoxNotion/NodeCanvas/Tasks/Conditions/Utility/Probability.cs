@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility")
-     , Description(
+    [Category("✫ Utility"),
+     Description(
          "Return true or false based on the probability settings. The chance is rolled for once whenever the condition is enabled.")]
     public class Probability : ConditionTask
     {

@@ -4,8 +4,9 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("Character")
-     , Description("Animates a single blend shape chosen from within the whole actor gameobject hierarchy.")]
+    [Category("Character"),
+     Description(
+         "Animates a single blend shape chosen from within the whole actor gameobject hierarchy.")]
     public class AnimateBlendShape : ActorActionClip
     {
         [SerializeField, HideInInspector]
@@ -29,7 +30,9 @@ namespace Slate.ActionClips
         private float originalWeight;
         private int index;
         public override string info => string.Format("Animate '{0}'", shapeName);
-        public override bool isValid => skinnedMesh != null && skinnedMesh.GetBlendShapeIndex(shapeName) != -1;
+
+        public override bool isValid =>
+            skinnedMesh != null && skinnedMesh.GetBlendShapeIndex(shapeName) != -1;
 
         public override float length {
             get => _length;
@@ -82,7 +85,8 @@ namespace Slate.ActionClips
         protected override void OnUpdate(float deltaTime)
         {
             if (index != -1) {
-                var value = Easing.Ease(EaseType.QuadraticInOut, originalWeight, weight, GetClipWeight(deltaTime));
+                var value = Easing.Ease(EaseType.QuadraticInOut, originalWeight, weight,
+                    GetClipWeight(deltaTime));
                 skinnedMesh.SetBlendShapeWeight(index, value * 100);
             }
         }

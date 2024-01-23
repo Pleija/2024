@@ -11,7 +11,8 @@ namespace App
     using UnityEngine.EventSystems;
 
     // 挂载在子item上
-    public class ScrollRectFix : View<ScrollRectFix>, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class ScrollRectFix : View<ScrollRectFix>, IBeginDragHandler, IEndDragHandler,
+        IDragHandler
     {
         public GameObject Parent; //当子item是动态对象，需要动态去设置这个parent
 
@@ -43,11 +44,12 @@ namespace App
                 var snap = GetComponentsInParent<HorizontalScrollSnap>().Last();
                 var old = Parent;
                 //Debug.Log($"{eventData.delta.x} =>  {snap.gameObject.GetPath()}");
-                if (snap.CurrentPage == snap.ChildObjects.Length - 1 && m_BeginDragDirection == Direction.Horizontal &&
-                    eventData.delta.x > 0)
+                if (snap.CurrentPage == snap.ChildObjects.Length - 1 &&
+                    m_BeginDragDirection == Direction.Horizontal && eventData.delta.x > 0)
                     Parent = snap.gameObject;
                 //Debug.Log($"{eventData.delta.x} => {Parent.GetPath()}");
-                else if (snap.CurrentPage == 0 && m_BeginDragDirection == Direction.Horizontal && eventData.delta.x < 0)
+                else if (snap.CurrentPage == 0 && m_BeginDragDirection == Direction.Horizontal &&
+                    eventData.delta.x < 0)
                     Parent = snap.gameObject;
                 else
                     Parent = GetComponentsInParent<HorizontalScrollSnap>().First().gameObject;
@@ -69,8 +71,9 @@ namespace App
         public bool isDebug = false;
 
         // 渗透方法
-        private void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> func, bool isBegin = false
-            , [CallerMemberName] string callname = "") where T : IEventSystemHandler
+        private void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> func,
+            bool isBegin = false, [CallerMemberName] string callname = "")
+            where T : IEventSystemHandler
         {
             if (isDebug) Debug.Log($"{callname} => begin: {isBegin}");
 

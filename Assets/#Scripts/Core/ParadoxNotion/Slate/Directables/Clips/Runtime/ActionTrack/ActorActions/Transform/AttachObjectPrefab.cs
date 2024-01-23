@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform")
-     , Description(
+    [Category("Transform"),
+     Description(
          "Instantiate and attach a prefab object to a child transform of the actor (or the actor itself) either permantentely or temporary if length is greater than zero.")]
     public class AttachObjectPrefab : ActorActionClip
     {
@@ -56,8 +56,9 @@ namespace Slate.ActionClips
 
             if (finalTransform == null) {
                 Debug.LogError(
-                    string.Format("Child Transform with name '{0}', can't be found on actor '{1}' hierarchy"
-                        , childTransformName, actor.name), actor.gameObject);
+                    string.Format(
+                        "Child Transform with name '{0}', can't be found on actor '{1}' hierarchy",
+                        childTransformName, actor.name), actor.gameObject);
                 return;
             }
             instance.SetParent(finalTransform);

@@ -3,8 +3,9 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("GameObject")
-     , Description("Set the actor active state (visibility) for a period of time or permantentely if length is zero.")]
+    [Category("GameObject"),
+     Description(
+         "Set the actor active state (visibility) for a period of time or permantentely if length is zero.")]
     public class SetActorActiveState : ActorActionClip
     {
         [SerializeField, HideInInspector]

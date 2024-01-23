@@ -64,7 +64,8 @@ namespace Slate
 #if UNITY_EDITOR
                         if (!Prefs.autoCreateDirectorCamera) return null;
 #endif
-                        _current = new GameObject("★ Director Camera Root").AddComponent<DirectorCamera>();
+                        _current = new GameObject("★ Director Camera Root")
+                            .AddComponent<DirectorCamera>();
                         _current.cam.nearClipPlane = 0.01f;
                         _current.cam.farClipPlane = 1000;
                     }
@@ -185,7 +186,10 @@ namespace Slate
             set => current._setMainWhenActive = value;
         }
 
-        ///<summary>If true, the RenderCamera active state is automatically handled. This is highly recommended.</summary>
+        /// <summary>
+        ///     If true, the RenderCamera active state is automatically handled. This is highly
+        ///     recommended.
+        /// </summary>
         public static bool autoHandleActiveState {
             get => current._autoHandleActiveState;
             set => current._autoHandleActiveState = value;
@@ -256,7 +260,8 @@ namespace Slate
             //init gamecamera if any
             if (gameCamera == null) {
                 var main = Camera.main;
-                if (main != null && main != renderCamera) gameCamera = main.GetAddComponent<GameCamera>();
+                if (main != null && main != renderCamera)
+                    gameCamera = main.GetAddComponent<GameCamera>();
             }
 
             //use gamecamera and disable it
@@ -375,41 +380,51 @@ namespace Slate
         }
 
         ///<summary>Ease from game camera to target. If target is null, eases to DirectorCamera current.</summary>
-        public static void Update(IDirectableCamera source, IDirectableCamera target, EaseType interpolation
-            , float weight, float damping = 0f)
+        public static void Update(IDirectableCamera source, IDirectableCamera target,
+            EaseType interpolation, float weight, float damping = 0f)
         {
             if (source == null)
-                source = gameCamera != null ? (IDirectableCamera)gameCamera : (IDirectableCamera)current;
+                source = gameCamera != null ? (IDirectableCamera)gameCamera
+                    : (IDirectableCamera)current;
             if (target == null) target = current;
             var isCut = target != lastTargetShot;
-            var endPosition = weight < 1 ? Easing.Ease(interpolation, source.position, target.position, weight)
+            var endPosition = weight < 1
+                ? Easing.Ease(interpolation, source.position, target.position, weight)
                 : target.position;
-            var endRotation = weight < 1 ? Easing.Ease(interpolation, source.rotation, target.rotation, weight)
+            var endRotation = weight < 1
+                ? Easing.Ease(interpolation, source.rotation, target.rotation, weight)
                 : target.rotation;
-            var endFOV = weight < 1 ? Easing.Ease(interpolation, source.fieldOfView, target.fieldOfView, weight)
+            var endFOV = weight < 1
+                ? Easing.Ease(interpolation, source.fieldOfView, target.fieldOfView, weight)
                 : target.fieldOfView;
             var endFocalDistance = weight < 1
-                ? Easing.Ease(interpolation, source.focalDistance, target.focalDistance, weight) : target.focalDistance;
-            var endFocalLength = weight < 1 ? Easing.Ease(interpolation, source.focalLength, target.focalLength, weight)
+                ? Easing.Ease(interpolation, source.focalDistance, target.focalDistance, weight)
+                : target.focalDistance;
+            var endFocalLength = weight < 1
+                ? Easing.Ease(interpolation, source.focalLength, target.focalLength, weight)
                 : target.focalLength;
             var endFocalAperture = weight < 1
-                ? Easing.Ease(interpolation, source.focalAperture, target.focalAperture, weight) : target.focalAperture;
+                ? Easing.Ease(interpolation, source.focalAperture, target.focalAperture, weight)
+                : target.focalAperture;
 #if UNITY_EDITOR
             var dofChange = current.focalDistance != target.focalDistance ||
-                current.focalLength != target.focalLength || current.focalAperture != target.focalAperture;
+                current.focalLength != target.focalLength ||
+                current.focalAperture != target.focalAperture;
 #endif
 
             if (!isCut && damping > 0) {
-                current.position = Vector3.Lerp(current.position, endPosition, Time.deltaTime * (MAX_DAMP / damping));
-                current.rotation =
-                    Quaternion.Lerp(current.rotation, endRotation, Time.deltaTime * (MAX_DAMP / damping));
-                current.fieldOfView = Mathf.Lerp(current.fieldOfView, endFOV, Time.deltaTime * (MAX_DAMP / damping));
-                current.focalDistance = Mathf.Lerp(current.focalDistance, endFocalDistance
-                    , Time.deltaTime * (MAX_DAMP / damping));
-                current.focalLength = Mathf.Lerp(current.focalLength, endFocalLength
-                    , Time.deltaTime * (MAX_DAMP / damping));
-                current.focalAperture = Mathf.Lerp(current.focalAperture, endFocalAperture
-                    , Time.deltaTime * (MAX_DAMP / damping));
+                current.position = Vector3.Lerp(current.position, endPosition,
+                    Time.deltaTime * (MAX_DAMP / damping));
+                current.rotation = Quaternion.Lerp(current.rotation, endRotation,
+                    Time.deltaTime * (MAX_DAMP / damping));
+                current.fieldOfView = Mathf.Lerp(current.fieldOfView, endFOV,
+                    Time.deltaTime * (MAX_DAMP / damping));
+                current.focalDistance = Mathf.Lerp(current.focalDistance, endFocalDistance,
+                    Time.deltaTime * (MAX_DAMP / damping));
+                current.focalLength = Mathf.Lerp(current.focalLength, endFocalLength,
+                    Time.deltaTime * (MAX_DAMP / damping));
+                current.focalAperture = Mathf.Lerp(current.focalAperture, endFocalAperture,
+                    Time.deltaTime * (MAX_DAMP / damping));
             }
             else {
                 current.position = endPosition;
@@ -454,12 +469,16 @@ namespace Slate
                 noiseTargetRotOffset = Random.insideUnitSphere * rotMlt;
             }
             noiseTimer -= Time.deltaTime;
-            noisePosOffset = Vector3.SmoothDamp(noisePosOffset, noiseTargetPosOffset, ref noiseCamPosVel, damp);
-            noiseRotOffset = Vector3.SmoothDamp(noiseRotOffset, noiseTargetRotOffset, ref noiseCamRotVel, damp);
+            noisePosOffset = Vector3.SmoothDamp(noisePosOffset, noiseTargetPosOffset,
+                ref noiseCamPosVel, damp);
+            noiseRotOffset = Vector3.SmoothDamp(noiseRotOffset, noiseTargetRotOffset,
+                ref noiseCamRotVel, damp);
 
             //Noise is applied as a local offset to the RenderCamera directly
-            renderCamera.transform.localPosition = Vector3.Lerp(Vector3.zero, noisePosOffset, weight);
-            renderCamera.transform.SetLocalEulerAngles(Vector3.Lerp(Vector3.zero, noiseRotOffset, weight));
+            renderCamera.transform.localPosition =
+                Vector3.Lerp(Vector3.zero, noisePosOffset, weight);
+            renderCamera.transform.SetLocalEulerAngles(Vector3.Lerp(Vector3.zero, noiseRotOffset,
+                weight));
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -481,7 +500,8 @@ namespace Slate
             Gizmos.color = color;
             var hit = new RaycastHit();
 
-            if (Physics.Linecast(cam.transform.position, cam.transform.position - new Vector3(0, 100, 0), out hit)) {
+            if (Physics.Linecast(cam.transform.position,
+                cam.transform.position - new Vector3(0, 100, 0), out hit)) {
                 var d = Vector3.Distance(hit.point, cam.transform.position);
                 Gizmos.DrawLine(cam.transform.position, hit.point);
                 Gizmos.DrawCube(hit.point, new Vector3(0.2f, 0.05f, 0.2f));
@@ -490,7 +510,8 @@ namespace Slate
             Gizmos.DrawLine(transform.position, cam.transform.position);
             if (isEnabled) color = Color.green;
             Gizmos.color = color;
-            Gizmos.matrix = Matrix4x4.TRS(cam.transform.position, cam.transform.rotation, Vector3.one);
+            Gizmos.matrix =
+                Matrix4x4.TRS(cam.transform.position, cam.transform.rotation, Vector3.one);
             var dist = isEnabled ? 0.8f : 0.5f;
             Gizmos.DrawFrustum(new Vector3(0, 0, dist), fieldOfView, 0, dist, 1);
             color.a = 0.2f;

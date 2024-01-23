@@ -7,7 +7,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
 {
     public class Vector3Int_DirectConverter : fsDirectConverter<Vector3Int>
     {
-        protected override fsResult DoSerialize(Vector3Int model, Dictionary<string, fsData> serialized)
+        protected override fsResult DoSerialize(Vector3Int model,
+            Dictionary<string, fsData> serialized)
         {
             SerializeMember(serialized, null, "x", model.x);
             SerializeMember(serialized, null, "y", model.y);
@@ -15,7 +16,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
             return fsResult.Success;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Vector3Int model)
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data,
+            ref Vector3Int model)
         {
             var t0 = model.x;
             DeserializeMember(data, null, "x", out t0);

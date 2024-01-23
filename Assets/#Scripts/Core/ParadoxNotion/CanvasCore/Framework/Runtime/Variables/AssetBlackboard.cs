@@ -14,8 +14,10 @@ namespace NodeCanvas.Framework
     [CustomEditor(typeof(AssetBlackboard))]
     public class AssetBlackboardEditor : OdinEditor { }
 #endif
-    [CreateAssetMenu(menuName = "ParadoxNotion/CanvasCore/Blackboard Asset"), ShowOdinSerializedPropertiesInInspector]
-    public class AssetBlackboard : ScriptableObject, ISerializationCallbackReceiver, IGlobalBlackboard
+    [CreateAssetMenu(menuName = "ParadoxNotion/CanvasCore/Blackboard Asset"),
+     ShowOdinSerializedPropertiesInInspector]
+    public class AssetBlackboard : ScriptableObject, ISerializationCallbackReceiver,
+        IGlobalBlackboard
     {
         public event System.Action<Variable> onVariableAdded;
         public event System.Action<Variable> onVariableRemoved;
@@ -46,7 +48,8 @@ namespace NodeCanvas.Framework
         ///----------------------------------------------------------------------------------------------
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            if (this != null) UnitySerializationUtility.SerializeUnityObject(this, ref serializationData);
+            if (this != null)
+                UnitySerializationUtility.SerializeUnityObject(this, ref serializationData);
             SelfSerialize();
         }
 
@@ -56,19 +59,23 @@ namespace NodeCanvas.Framework
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             SelfDeserialize();
-            if (this != null) UnitySerializationUtility.DeserializeUnityObject(this, ref serializationData);
+            if (this != null)
+                UnitySerializationUtility.DeserializeUnityObject(this, ref serializationData);
         }
 
         ///----------------------------------------------------------------------------------------------
         private void SelfSerialize()
         {
             _objectReferences = new List<Object>();
-            _serializedBlackboard = JSONSerializer.Serialize(typeof(BlackboardSource), _blackboard, _objectReferences);
+            _serializedBlackboard = JSONSerializer.Serialize(typeof(BlackboardSource), _blackboard,
+                _objectReferences);
         }
 
         private void SelfDeserialize()
         {
-            _blackboard = JSONSerializer.Deserialize<BlackboardSource>(_serializedBlackboard, _objectReferences);
+            _blackboard =
+                JSONSerializer.Deserialize<BlackboardSource>(_serializedBlackboard,
+                    _objectReferences);
             if (_blackboard == null) _blackboard = new BlackboardSource();
         }
 

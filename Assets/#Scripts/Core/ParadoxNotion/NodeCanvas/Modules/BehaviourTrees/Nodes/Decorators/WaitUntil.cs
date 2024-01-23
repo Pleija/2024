@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Decorators")
-     , Description(
-         "Returns Running until the assigned condition becomes true, after which the decorated child is executed.")
-     , Icon("Halt")]
+    [Category("Decorators"),
+     Description(
+         "Returns Running until the assigned condition becomes true, after which the decorated child is executed."),
+     Icon("Halt")]
     public class WaitUntil : BTDecorator, ITaskAssignable<ConditionTask>
     {
         [SerializeField]

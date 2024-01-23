@@ -3,7 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform"), Description("Rotate the actor by specified degrees and optionaly per second")]
+    [Category("Transform"),
+     Description("Rotate the actor by specified degrees and optionaly per second")]
     public class RotateBy : ActorActionClip
     {
         [SerializeField, HideInInspector]
@@ -13,7 +14,9 @@ namespace Slate.ActionClips
         public bool perSecond;
         public EaseType interpolation = EaseType.QuadraticInOut;
         private Vector3 originalRot;
-        public override string info => string.Format("Rotate{0} By\n{1}", perSecond ? " Per Second" : "", rotation);
+
+        public override string info =>
+            string.Format("Rotate{0} By\n{1}", perSecond ? " Per Second" : "", rotation);
 
         public override float length {
             get => _length;
@@ -30,7 +33,8 @@ namespace Slate.ActionClips
         protected override void OnUpdate(float time)
         {
             var target = originalRot + rotation * (perSecond ? length : 1);
-            actor.transform.SetLocalEulerAngles(Easing.Ease(interpolation, originalRot, target, GetClipWeight(time)));
+            actor.transform.SetLocalEulerAngles(Easing.Ease(interpolation, originalRot, target,
+                GetClipWeight(time)));
         }
 
         protected override void OnReverse()

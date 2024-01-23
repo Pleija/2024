@@ -4,7 +4,8 @@ using System.Collections;
 namespace Slate
 {
     /// <summary>
-    ///     Used to interface with AnimatedParameter and AnimationDataCollection the same, since AnimatedParameters are
+    ///     Used to interface with AnimatedParameter and AnimationDataCollection the same, since
+    ///     AnimatedParameters are
     ///     contained within an AnimationDataCollection.
     /// </summary>
     public interface IAnimatableData

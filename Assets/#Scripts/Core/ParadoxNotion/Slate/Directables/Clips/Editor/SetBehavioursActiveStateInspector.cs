@@ -7,7 +7,9 @@ using System.Linq;
 namespace Slate
 {
     [CustomEditor(typeof(ActionClips.SetBehavioursActiveState))]
-    public class SetBehavioursActiveStateInspector : ActionClipInspector<ActionClips.SetBehavioursActiveState>
+    public class
+        SetBehavioursActiveStateInspector : ActionClipInspector<
+        ActionClips.SetBehavioursActiveState>
     {
         public override void OnInspectorGUI()
         {
@@ -17,7 +19,8 @@ namespace Slate
                 var behaviours = action.actor.GetComponents<Behaviour>();
 
                 if (behaviours.Length == 0) {
-                    EditorGUILayout.HelpBox("There are no Behaviours attached on the actor", MessageType.Warning);
+                    EditorGUILayout.HelpBox("There are no Behaviours attached on the actor",
+                        MessageType.Warning);
                     return;
                 }
                 GUILayout.BeginVertical("box");
@@ -29,10 +32,12 @@ namespace Slate
                     toggle = EditorGUILayout.Toggle(typeName, toggle);
 
                     if (toggle) {
-                        if (!action.behaviourNames.Contains(typeName)) action.behaviourNames.Add(typeName);
+                        if (!action.behaviourNames.Contains(typeName))
+                            action.behaviourNames.Add(typeName);
                     }
                     else {
-                        if (action.behaviourNames.Contains(typeName)) action.behaviourNames.Remove(typeName);
+                        if (action.behaviourNames.Contains(typeName))
+                            action.behaviourNames.Remove(typeName);
                     }
                 }
                 GUILayout.EndVertical();

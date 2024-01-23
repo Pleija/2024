@@ -9,7 +9,8 @@ namespace Slate
     public static class CurveEditor3D
     {
         /// <summary>
-        ///     Event raised when the CurveEditor3D changes the current curves, with argument being the IAnimatable the curves
+        ///     Event raised when the CurveEditor3D changes the current curves, with argument being the
+        ///     IAnimatable the curves
         ///     belong to.
         /// </summary>
         public static event System.Action<IAnimatableData> onCurvesUpdated;
@@ -17,8 +18,8 @@ namespace Slate
         private static Dictionary<IAnimatableData, CurveEditor3DRenderer> cache =
             new Dictionary<IAnimatableData, CurveEditor3DRenderer>();
 
-        public static void Draw3DCurve(IAnimatableData animatable, IKeyable keyable, Transform transformContext
-            , float time, float timeSpan = 50f)
+        public static void Draw3DCurve(IAnimatableData animatable, IKeyable keyable,
+            Transform transformContext, float time, float timeSpan = 50f)
         {
             CurveEditor3DRenderer instance = null;
             if (!cache.TryGetValue(animatable, out instance))
@@ -43,9 +44,12 @@ namespace Slate
             private bool contextBrokenMode;
             private TangentMode contextTangentMode;
 
-            ///<summary>Display curves that belong to serializeContext and transformContext parent, at time and with timeSpan.</summary>
-            public void Draw3DCurve(IAnimatableData animatable, IKeyable keyable, Transform transformContext, float time
-                , float timeSpan = 50f)
+            /// <summary>
+            ///     Display curves that belong to serializeContext and transformContext parent, at time and
+            ///     with timeSpan.
+            /// </summary>
+            public void Draw3DCurve(IAnimatableData animatable, IKeyable keyable,
+                Transform transformContext, float time, float timeSpan = 50f)
             {
                 this.animatable = animatable;
                 // this.keyable = keyable;
@@ -61,9 +65,9 @@ namespace Slate
                 var start = (float)Mathf.FloorToInt(time - timeSpan / 2);
                 var end = (float)Mathf.CeilToInt(time + timeSpan / 2);
                 start = Mathf.Max(start, Mathf.Min(curveX[0].time, curveY[0].time, curveZ[0].time));
-                end = Mathf.Min(end
-                    , Mathf.Max(curveX[curveX.length - 1].time, curveY[curveY.length - 1].time
-                        , curveZ[curveZ.length - 1].time));
+                end = Mathf.Min(end,
+                    Mathf.Max(curveX[curveX.length - 1].time, curveY[curveY.length - 1].time,
+                        curveZ[curveZ.length - 1].time));
 
                 if (curveX.length != lastCurveLength) {
                     lastCurveLength = curveX.length;
@@ -82,10 +86,11 @@ namespace Slate
                     var tangentModeX = CurveUtility.GetKeyTangentMode(keyX);
                     var tangentModeY = CurveUtility.GetKeyTangentMode(keyY);
                     var tangentModeZ = CurveUtility.GetKeyTangentMode(keyZ);
-                    var haveSameTangents = tangentModeX == tangentModeY && tangentModeY == tangentModeZ;
+                    var haveSameTangents =
+                        tangentModeX == tangentModeY && tangentModeY == tangentModeZ;
                     var tangentMode = haveSameTangents ? tangentModeX : TangentMode.Editable;
-                    var isBroken = CurveUtility.GetKeyBroken(keyX) && CurveUtility.GetKeyBroken(keyY) &&
-                        CurveUtility.GetKeyBroken(keyZ);
+                    var isBroken = CurveUtility.GetKeyBroken(keyX) &&
+                        CurveUtility.GetKeyBroken(keyY) && CurveUtility.GetKeyBroken(keyZ);
                     var pos = new Vector3(keyX.value, keyY.value, keyZ.value);
                     if (transformContext != null) pos = transformContext.TransformPoint(pos);
                     Handles.Label(pos, keyX.time.ToString("0.00"));
@@ -105,34 +110,41 @@ namespace Slate
                             if (e.button == 1 && kIndex == k) {
                                 var menu = new GenericMenu();
                                 menu.AddItem(new GUIContent("Jump Time Here"), false, () => {
-                                    keyable.root.currentTime = curveX[kIndex].time + keyable.startTime;
+                                    keyable.root.currentTime =
+                                        curveX[kIndex].time + keyable.startTime;
                                 });
-                                menu.AddItem(new GUIContent("Smooth"), tangentMode == TangentMode.Smooth, () => {
-                                    contextAction = ContextAction.SetTangentMode;
-                                    contextTangentMode = TangentMode.Smooth;
-                                });
-                                menu.AddItem(new GUIContent("Linear"), tangentMode == TangentMode.Linear, () => {
-                                    contextAction = ContextAction.SetTangentMode;
-                                    contextTangentMode = TangentMode.Linear;
-                                });
-                                menu.AddItem(new GUIContent("Constant"), tangentMode == TangentMode.Constant, () => {
-                                    contextAction = ContextAction.SetTangentMode;
-                                    contextTangentMode = TangentMode.Constant;
-                                });
-                                menu.AddItem(new GUIContent("Editable"), tangentMode == TangentMode.Editable, () => {
-                                    contextAction = ContextAction.SetTangentMode;
-                                    contextTangentMode = TangentMode.Editable;
-                                });
+                                menu.AddItem(new GUIContent("Smooth"),
+                                    tangentMode == TangentMode.Smooth, () => {
+                                        contextAction = ContextAction.SetTangentMode;
+                                        contextTangentMode = TangentMode.Smooth;
+                                    });
+                                menu.AddItem(new GUIContent("Linear"),
+                                    tangentMode == TangentMode.Linear, () => {
+                                        contextAction = ContextAction.SetTangentMode;
+                                        contextTangentMode = TangentMode.Linear;
+                                    });
+                                menu.AddItem(new GUIContent("Constant"),
+                                    tangentMode == TangentMode.Constant, () => {
+                                        contextAction = ContextAction.SetTangentMode;
+                                        contextTangentMode = TangentMode.Constant;
+                                    });
+                                menu.AddItem(new GUIContent("Editable"),
+                                    tangentMode == TangentMode.Editable, () => {
+                                        contextAction = ContextAction.SetTangentMode;
+                                        contextTangentMode = TangentMode.Editable;
+                                    });
 
                                 if (tangentMode == TangentMode.Editable) {
-                                    menu.AddItem(new GUIContent("Tangents/Connected"), !isBroken, () => {
-                                        contextAction = ContextAction.SetBrokenMode;
-                                        contextBrokenMode = false;
-                                    });
-                                    menu.AddItem(new GUIContent("Tangents/Broken"), isBroken, () => {
-                                        contextAction = ContextAction.SetBrokenMode;
-                                        contextBrokenMode = true;
-                                    });
+                                    menu.AddItem(new GUIContent("Tangents/Connected"), !isBroken,
+                                        () => {
+                                            contextAction = ContextAction.SetBrokenMode;
+                                            contextBrokenMode = false;
+                                        });
+                                    menu.AddItem(new GUIContent("Tangents/Broken"), isBroken,
+                                        () => {
+                                            contextAction = ContextAction.SetBrokenMode;
+                                            contextBrokenMode = true;
+                                        });
                                 }
                                 menu.AddSeparator("/");
                                 menu.AddItem(new GUIContent("Delete"), false, () => {
@@ -186,12 +198,14 @@ namespace Slate
                         if (Tools.current == Tool.Move)
                             newValue = Handles.PositionHandle(pos, Quaternion.identity);
                         else
-                            newValue = Handles.FreeMoveHandle(pos, Quaternion.identity, pointSize, Vector3.zero
-                                , Handles.RectangleHandleCap);
+                            newValue = Handles.FreeMoveHandle(pos, Quaternion.identity, pointSize,
+                                Vector3.zero, Handles.RectangleHandleCap);
                     }
                     var cam = SceneView.lastActiveSceneView.camera;
-                    Handles.RectangleHandleCap(0, pos, cam.transform.rotation, pointSize, EventType.Repaint);
-                    if (transformContext != null) newValue = transformContext.InverseTransformPoint(newValue);
+                    Handles.RectangleHandleCap(0, pos, cam.transform.rotation, pointSize,
+                        EventType.Repaint);
+                    if (transformContext != null)
+                        newValue = transformContext.InverseTransformPoint(newValue);
                     keyX.value = newValue.x;
                     keyY.value = newValue.y;
                     keyZ.value = newValue.z;
@@ -200,16 +214,20 @@ namespace Slate
                     if (haveSameTangents && tangentMode == TangentMode.Editable)
                         if (kIndex == k) {
                             if (k != 0) {
-                                var inHandle = new Vector3(-keyX.inTangent, -keyY.inTangent, -keyZ.inTangent);
+                                var inHandle = new Vector3(-keyX.inTangent, -keyY.inTangent,
+                                    -keyZ.inTangent);
                                 inHandle /= HANDLE_DISTANCE_COMPENSATION;
                                 inHandle = newValue + inHandle;
-                                if (transformContext != null) inHandle = transformContext.TransformPoint(inHandle);
+                                if (transformContext != null)
+                                    inHandle = transformContext.TransformPoint(inHandle);
                                 var handleSize = HandleUtility.GetHandleSize(inHandle) * 0.05f;
-                                var newInHandle = Handles.FreeMoveHandle(inHandle, Quaternion.identity, handleSize
-                                    , Vector3.zero, Handles.CircleHandleCap);
+                                var newInHandle = Handles.FreeMoveHandle(inHandle,
+                                    Quaternion.identity, handleSize, Vector3.zero,
+                                    Handles.CircleHandleCap);
                                 Handles.DrawLine(pos, newInHandle);
                                 if (transformContext != null)
-                                    newInHandle = transformContext.InverseTransformPoint(newInHandle);
+                                    newInHandle =
+                                        transformContext.InverseTransformPoint(newInHandle);
                                 newInHandle -= newValue;
                                 newInHandle *= HANDLE_DISTANCE_COMPENSATION;
                                 keyX.inTangent = -newInHandle.x;
@@ -224,16 +242,20 @@ namespace Slate
                             }
 
                             if (k < curveX.length - 1) {
-                                var outHandle = new Vector3(keyX.outTangent, keyY.outTangent, keyZ.outTangent);
+                                var outHandle = new Vector3(keyX.outTangent, keyY.outTangent,
+                                    keyZ.outTangent);
                                 outHandle /= HANDLE_DISTANCE_COMPENSATION;
                                 outHandle = newValue + outHandle;
-                                if (transformContext != null) outHandle = transformContext.TransformPoint(outHandle);
+                                if (transformContext != null)
+                                    outHandle = transformContext.TransformPoint(outHandle);
                                 var handleSize = HandleUtility.GetHandleSize(outHandle) * 0.05f;
-                                var newOutHandle = Handles.FreeMoveHandle(outHandle, Quaternion.identity, handleSize
-                                    , Vector3.zero, Handles.CircleHandleCap);
+                                var newOutHandle = Handles.FreeMoveHandle(outHandle,
+                                    Quaternion.identity, handleSize, Vector3.zero,
+                                    Handles.CircleHandleCap);
                                 Handles.DrawLine(pos, newOutHandle);
                                 if (transformContext != null)
-                                    newOutHandle = transformContext.InverseTransformPoint(newOutHandle);
+                                    newOutHandle =
+                                        transformContext.InverseTransformPoint(newOutHandle);
                                 newOutHandle -= newValue;
                                 newOutHandle *= HANDLE_DISTANCE_COMPENSATION;
                                 keyX.outTangent = newOutHandle.x;
@@ -264,9 +286,10 @@ namespace Slate
                 var lastDrawnPos = Vector3.zero;
 
                 for (var t = start; t <= end; t += DRAW_RESOLUTION) {
-                    var pos = new Vector3(curveX.Evaluate(t), curveY.Evaluate(t), curveZ.Evaluate(t));
-                    var nextPos = new Vector3(curveX.Evaluate(t + DRAW_RESOLUTION), curveY.Evaluate(t + DRAW_RESOLUTION)
-                        , curveZ.Evaluate(t + DRAW_RESOLUTION));
+                    var pos = new Vector3(curveX.Evaluate(t), curveY.Evaluate(t),
+                        curveZ.Evaluate(t));
+                    var nextPos = new Vector3(curveX.Evaluate(t + DRAW_RESOLUTION),
+                        curveY.Evaluate(t + DRAW_RESOLUTION), curveZ.Evaluate(t + DRAW_RESOLUTION));
 
                     if (transformContext != null) {
                         pos = transformContext.TransformPoint(pos);
@@ -275,7 +298,8 @@ namespace Slate
 
                     if ((pos - lastDrawnPos).magnitude > DRAW_THRESHOLD) {
                         lastDrawnPos = pos;
-                        Handles.SphereHandleCap(0, pos, Quaternion.identity, 0.02f, EventType.Repaint);
+                        Handles.SphereHandleCap(0, pos, Quaternion.identity, 0.02f,
+                            EventType.Repaint);
                         Handles.DrawLine(pos, nextPos);
                     }
                 }

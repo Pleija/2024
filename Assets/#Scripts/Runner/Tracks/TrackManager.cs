@@ -36,8 +36,8 @@ namespace Runner.Tracks
     /// </summary>
     public class TrackManager : MonoBehaviour
     {
-        public static TrackManager instance =>
-            s_Instance ? s_Instance : s_Instance = FindObjectOfType<TrackManager>(true);
+        public static TrackManager instance => s_Instance ? s_Instance
+            : s_Instance = FindObjectOfType<TrackManager>(true);
 
         public static TrackManager s_Instance;
         private static int s_StartHash = Animator.StringToHash("Start");
@@ -74,7 +74,9 @@ namespace Runner.Tracks
             set => m_TrackSeed = value;
         }
 
-        public float timeToStart => m_TimeToStart; // Will return -1 if already started (allow to update UI)
+        public float timeToStart =>
+            m_TimeToStart; // Will return -1 if already started (allow to update UI)
+
         public int score => m_Score;
         public int multiplier => m_Multiplier;
         public float currentSegmentDistance => m_CurrentSegmentDistance;
@@ -110,7 +112,10 @@ namespace Runner.Tracks
         public float m_TotalWorldDistance;
         public bool m_IsMoving;
         public float m_Speed;
-        public float m_TimeSincePowerup; // The higher it goes, the higher the chance of spawning one
+
+        public float
+            m_TimeSincePowerup; // The higher it goes, the higher the chance of spawning one
+
         public float m_TimeSinceLastPremium;
         public int m_Multiplier;
         public List<TrackSegment> m_Segments = new List<TrackSegment>();
@@ -198,8 +203,8 @@ namespace Runner.Tracks
                 yield return op;
 
                 if (op.Result == null) {
-                    Debug.LogWarning(string.Format("Unable to load character {0}."
-                        , PlayerData.instance.characters[PlayerData.instance.usedCharacter]));
+                    Debug.LogWarning(string.Format("Unable to load character {0}.",
+                        PlayerData.instance.characters[PlayerData.instance.usedCharacter]));
                     yield break;
                 }
                 var obj = Instantiate(op.Result, Vector3.zero, Quaternion.identity);
@@ -220,7 +225,8 @@ namespace Runner.Tracks
                     m_CurrentThemeData = tutorialThemeData;
                 else
                     m_CurrentThemeData =
-                        ThemeDatabase.GetThemeData(PlayerData.instance.themes[PlayerData.instance.usedTheme]);
+                        ThemeDatabase.GetThemeData(
+                            PlayerData.instance.themes[PlayerData.instance.usedTheme]);
                 m_CurrentZone = 0;
                 m_CurrentZoneDistance = 0;
                 skyMeshFilter.sharedMesh = m_CurrentThemeData.skyMesh;
@@ -237,12 +243,13 @@ namespace Runner.Tracks
                 PlayerData.instance.StartRunMissions(this);
 #if UNITY_ANALYTICS
                 AnalyticsEvent.GameStart(new Dictionary<string, object> {
-                    { "theme", m_CurrentThemeData.themeName }, { "character", player.characterName }, {
-                        "accessory"
-                        , PlayerData.instance.usedAccessory >= 0
-                            ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none"
-                    }
-                    ,
+                    { "theme", m_CurrentThemeData.themeName },
+                    { "character", player.characterName }, {
+                        "accessory",
+                        PlayerData.instance.usedAccessory >= 0
+                            ? player.accessories[PlayerData.instance.usedAccessory].accessoryName
+                            : "none"
+                    },
                 });
 #endif
             }
@@ -299,7 +306,9 @@ namespace Runner.Tracks
                     var lastZ = parallaxRoot.childCount == 0 ? 0
                         : parallaxRoot.GetChild(parallaxRoot.childCount - 1).position.z +
                         currentTheme.cloudMinimumDistance.z;
-                    var cloud = currentTheme.cloudPrefabs[Random.Range(0, currentTheme.cloudPrefabs.Length)];
+                    var cloud =
+                        currentTheme.cloudPrefabs
+                            [Random.Range(0, currentTheme.cloudPrefabs.Length)];
 
                     if (cloud != null) {
                         var obj = Instantiate(cloud);
@@ -307,11 +316,14 @@ namespace Runner.Tracks
                         obj.transform.localPosition =
                             Vector3.up * (currentTheme.cloudMinimumDistance.y +
                                 (Random.value - 0.5f) * currentTheme.cloudSpread.y) +
-                            Vector3.forward * (lastZ + (Random.value - 0.5f) * currentTheme.cloudSpread.z) +
+                            Vector3.forward *
+                            (lastZ + (Random.value - 0.5f) * currentTheme.cloudSpread.z) +
                             Vector3.right * (currentTheme.cloudMinimumDistance.x +
                                 (Random.value - 0.5f) * currentTheme.cloudSpread.x);
-                        obj.transform.localScale = obj.transform.localScale * (1.0f + (Random.value - 0.5f) * 0.5f);
-                        obj.transform.localRotation = Quaternion.AngleAxis(Random.value * 360.0f, Vector3.up);
+                        obj.transform.localScale = obj.transform.localScale *
+                            (1.0f + (Random.value - 0.5f) * 0.5f);
+                        obj.transform.localRotation =
+                            Quaternion.AngleAxis(Random.value * 360.0f, Vector3.up);
                         _parallaxRootChildren++;
                     }
                 }
@@ -338,7 +350,8 @@ namespace Runner.Tracks
             Vector3 currentPos;
             Quaternion currentRot;
             var characterTransform = characterController.transform;
-            m_Segments[0].GetPointAtInWorldUnit(m_CurrentSegmentDistance, out currentPos, out currentRot);
+            m_Segments[0]
+                .GetPointAtInWorldUnit(m_CurrentSegmentDistance, out currentPos, out currentRot);
 
             // Floating origin implementation
             // Move the whole world back to 0,0,0 when we get too far away.
@@ -363,7 +376,8 @@ namespace Runner.Tracks
                 for (var i = 0; i < count; i++) m_PastSegments[i].transform.position -= currentPos;
 
                 // Recalculate current world position based on the moved world
-                m_Segments[0].GetPointAtInWorldUnit(m_CurrentSegmentDistance, out currentPos, out currentRot);
+                m_Segments[0].GetPointAtInWorldUnit(m_CurrentSegmentDistance, out currentPos,
+                    out currentRot);
             }
             characterTransform.rotation = currentRot;
             characterTransform.position = currentPos;
@@ -381,7 +395,8 @@ namespace Runner.Tracks
 
             // Still move past segment until they aren't visible anymore.
             for (var i = 0; i < m_PastSegments.Count; ++i)
-                if ((m_PastSegments[i].transform.position - currentPos).z < k_SegmentRemovalDistance) {
+                if ((m_PastSegments[i].transform.position - currentPos).z <
+                    k_SegmentRemovalDistance) {
                     m_PastSegments[i].Cleanup();
                     m_PastSegments.RemoveAt(i);
                     i--;
@@ -394,7 +409,8 @@ namespace Runner.Tracks
                 else
                     m_Speed = maxSpeed;
             }
-            m_Multiplier = 1 + Mathf.FloorToInt((m_Speed - minSpeed) / (maxSpeed - minSpeed) * speedStep);
+            m_Multiplier =
+                1 + Mathf.FloorToInt((m_Speed - minSpeed) / (maxSpeed - minSpeed) * speedStep);
             if (modifyMultiply != null)
                 foreach (MultiplierModifier part in modifyMultiply.GetInvocationList())
                     m_Multiplier = part(m_Multiplier);
@@ -436,16 +452,18 @@ namespace Runner.Tracks
             if (!m_IsTutorial)
                 if (m_CurrentThemeData.zones[m_CurrentZone].length < m_CurrentZoneDistance)
                     ChangeZone();
-            var segmentUse = Random.Range(0, m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length);
+            var segmentUse =
+                Random.Range(0, m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length);
             if (segmentUse == m_PreviousSegment)
-                segmentUse = (segmentUse + 1) % m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length;
+                segmentUse = (segmentUse + 1) %
+                    m_CurrentThemeData.zones[m_CurrentZone].prefabList.Length;
             var segmentToUseOp = Addressables.LoadAssetAsync<GameObject>(
                 m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse]);
             yield return segmentToUseOp;
 
             if (segmentToUseOp.Result == null) {
-                Debug.LogWarning(string.Format("Unable to load segment {0}."
-                    , m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse].Asset.name));
+                Debug.LogWarning(string.Format("Unable to load segment {0}.",
+                    m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse].Asset.name));
                 yield break;
             }
             var obj = Instantiate(segmentToUseOp.Result, _offScreenSpawnPos, Quaternion.identity);
@@ -457,13 +475,15 @@ namespace Runner.Tracks
             Quaternion currentExitRotation;
 
             if (m_Segments.Count > 0) {
-                m_Segments[m_Segments.Count - 1].GetPointAt(1.0f, out currentExitPoint, out currentExitRotation);
+                m_Segments[m_Segments.Count - 1]
+                    .GetPointAt(1.0f, out currentExitPoint, out currentExitRotation);
             }
             else {
                 currentExitPoint = transform.position;
                 currentExitRotation = transform.rotation;
             }
-            newSegment.transform.SetParent((GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
+            newSegment.transform.SetParent((GameObject.Find("/InGame") ?? new GameObject("InGame"))
+                .transform);
             newSegment.transform.rotation = currentExitRotation;
             Vector3 entryPoint;
             Quaternion entryRotation;
@@ -472,7 +492,8 @@ namespace Runner.Tracks
             newSegment.transform.position = pos;
             newSegment.manager = this;
             newSegment.transform.localScale = new Vector3(Random.value > 0.5f ? -1 : 1, 1, 1);
-            newSegment.objectRoot.localScale = new Vector3(1.0f / newSegment.transform.localScale.x, 1, 1);
+            newSegment.objectRoot.localScale =
+                new Vector3(1.0f / newSegment.transform.localScale.x, 1, 1);
             if (m_SafeSegementLeft <= 0)
                 SpawnObstacle(newSegment);
             else
@@ -485,13 +506,16 @@ namespace Runner.Tracks
         {
             if (segment.possibleObstacles.Length != 0)
                 for (var i = 0; i < segment.obstaclePositions.Length; ++i) {
-                    var assetRef = segment.possibleObstacles[Random.Range(0, segment.possibleObstacles.Length)];
+                    var assetRef =
+                        segment.possibleObstacles
+                            [Random.Range(0, segment.possibleObstacles.Length)];
                     StartCoroutine(SpawnFromAssetReference(assetRef, segment, i));
                 }
             StartCoroutine(SpawnCoinAndPowerup(segment));
         }
 
-        private IEnumerator SpawnFromAssetReference(AssetReference reference, TrackSegment segment, int posIndex)
+        private IEnumerator SpawnFromAssetReference(AssetReference reference, TrackSegment segment,
+            int posIndex)
         {
             var op = Addressables.LoadAssetAsync<GameObject>(reference);
             yield return op;
@@ -499,7 +523,8 @@ namespace Runner.Tracks
 
             if (obj != null) {
                 var obstacle = obj.GetComponent<Obstacle>();
-                if (obstacle != null) yield return obstacle.Spawn(segment, segment.obstaclePositions[posIndex]);
+                if (obstacle != null)
+                    yield return obstacle.Spawn(segment, segment.obstaclePositions[posIndex]);
             }
         }
 
@@ -510,7 +535,8 @@ namespace Runner.Tracks
                 var currentWorldPos = 0.0f;
                 var currentLane = Random.Range(0, 3);
                 var powerupChance = Mathf.Clamp01(Mathf.Floor(m_TimeSincePowerup) * 0.5f * 0.001f);
-                var premiumChance = Mathf.Clamp01(Mathf.Floor(m_TimeSinceLastPremium) * 0.5f * 0.0001f);
+                var premiumChance =
+                    Mathf.Clamp01(Mathf.Floor(m_TimeSinceLastPremium) * 0.5f * 0.0001f);
 
                 while (currentWorldPos < segment.worldLength) {
                     Vector3 pos;
@@ -519,8 +545,9 @@ namespace Runner.Tracks
                     var laneValid = true;
                     var testedLane = currentLane;
 
-                    while (Physics.CheckSphere(pos + (testedLane - 1) * laneOffset * (rot * Vector3.right), 0.4f
-                        , 1 << 9)) {
+                    while (Physics.CheckSphere(
+                        pos + (testedLane - 1) * laneOffset * (rot * Vector3.right), 0.4f,
+                        1 << 9)) {
                         testedLane = (testedLane + 1) % 3;
 
                         if (currentLane == testedLane) {
@@ -543,17 +570,17 @@ namespace Runner.Tracks
                                 // Spawn a powerup instead.
                                 m_TimeSincePowerup = 0.0f;
                                 powerupChance = 0.0f;
-                                var op = Addressables.LoadAssetAsync<GameObject>(consumableDatabase.consumbales[picked]
-                                    .gameObject.name);
+                                var op = Addressables.LoadAssetAsync<GameObject>(consumableDatabase
+                                    .consumbales[picked].gameObject.name);
                                 yield return op;
 
                                 if (op.Result == null) {
-                                    Debug.LogWarning(string.Format("Unable to load consumable {0}."
-                                        , consumableDatabase.consumbales[picked].gameObject.name));
+                                    Debug.LogWarning(string.Format("Unable to load consumable {0}.",
+                                        consumableDatabase.consumbales[picked].gameObject.name));
                                     yield break;
                                 }
-                                toUse = Instantiate(op.Result, pos, rot).Of(x => x.OnDestroyAsObservable().Subscribe(
-                                    () => {
+                                toUse = Instantiate(op.Result, pos, rot).Of(x => x
+                                    .OnDestroyAsObservable().Subscribe(() => {
                                         if (op.IsValid()) Addressables.Release(op);
                                     }));
 
@@ -564,12 +591,13 @@ namespace Runner.Tracks
                         else if (Random.value < premiumChance) {
                             m_TimeSinceLastPremium = 0.0f;
                             premiumChance = 0.0f;
-                            var op = Addressables.LoadAssetAsync<GameObject>(currentTheme.premiumCollectible.name);
+                            var op = Addressables.LoadAssetAsync<GameObject>(currentTheme
+                                .premiumCollectible.name);
                             yield return op;
 
                             if (op.Result == null) {
-                                Debug.LogWarning(string.Format("Unable to load collectable {0}."
-                                    , currentTheme.premiumCollectible.name));
+                                Debug.LogWarning(string.Format("Unable to load collectable {0}.",
+                                    currentTheme.premiumCollectible.name));
                                 yield break;
                             }
                             toUse = Instantiate(op.Result, pos, rot).OnDestroyRelease(op);

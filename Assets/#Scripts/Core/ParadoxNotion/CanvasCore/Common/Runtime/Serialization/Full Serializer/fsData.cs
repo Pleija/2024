@@ -8,13 +8,15 @@ namespace ParadoxNotion.Serialization.FullSerializer
     public enum fsDataType { Array, Object, Double, Int64, Boolean, String, Null }
 
     /// <summary>
-    ///     A union type that stores a serialized value. The stored type can be one of six different types: null,
+    ///     A union type that stores a serialized value. The stored type can be one of six different types:
+    ///     null,
     ///     boolean, double, Int64, string, Dictionary, or List.
     /// </summary>
     public sealed class fsData
     {
         /// <summary>
-        ///     The raw value that this serialized data stores. It can be one of six different types; a boolean, a double,
+        ///     The raw value that this serialized data stores. It can be one of six different types; a
+        ///     boolean, a double,
         ///     Int64, a string, a Dictionary, or a List.
         /// </summary>
         private object _value;
@@ -61,7 +63,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         /// ----------------------------------------------------------------------------------------------
         /// <summary> Helper method to create a fsData instance that holds a dictionary.</summary>
         public static fsData CreateDictionary() => new fsData(new Dictionary<string, fsData>(
-            fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase));
+            fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal
+                : StringComparer.OrdinalIgnoreCase));
 
         ///<summary> Helper method to create a fsData instance that holds a list.</summary>
         public static fsData CreateList() => new fsData(new List<fsData>());
@@ -126,14 +129,15 @@ namespace ParadoxNotion.Serialization.FullSerializer
         public List<fsData> AsList => Cast<List<fsData>>();
 
         /// <summary>
-        ///     Internal helper method to cast the underlying storage to the given type or throw a pretty printed exception
+        ///     Internal helper method to cast the underlying storage to the given type or throw a pretty
+        ///     printed exception
         ///     on failure.
         /// </summary>
         private T Cast<T>()
         {
             if (_value is T) return (T)_value;
-            throw new InvalidCastException("Unable to cast <" + this + "> (with type = " + _value.GetType() +
-                ") to type " + typeof(T));
+            throw new InvalidCastException("Unable to cast <" + this + "> (with type = " +
+                _value.GetType() + ") to type " + typeof(T));
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -150,7 +154,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
             switch (Type) {
                 case fsDataType.Null: return true;
                 case fsDataType.Double:
-                    return AsDouble == other.AsDouble || Math.Abs(AsDouble - other.AsDouble) < double.Epsilon;
+                    return AsDouble == other.AsDouble ||
+                        Math.Abs(AsDouble - other.AsDouble) < double.Epsilon;
                 case fsDataType.Int64:   return AsInt64 == other.AsInt64;
                 case fsDataType.Boolean: return AsBool == other.AsBool;
                 case fsDataType.String:  return AsString == other.AsString;

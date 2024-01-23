@@ -8,13 +8,14 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Unity Event Callback", 3), Category("Events/Custom")
-     , Description("Register a callback on a UnityEvent.\nWhen that event is raised, this node will get called.")
-     , ContextDefinedInputs(typeof(UnityEventBase))]
+    [Name("Unity Event Callback", 3), Category("Events/Custom"),
+     Description(
+         "Register a callback on a UnityEvent.\nWhen that event is raised, this node will get called."),
+     ContextDefinedInputs(typeof(UnityEventBase))]
     public class UnityEventCallbackEvent : EventNode, IReflectedWrapper
     {
-        [SerializeField, ExposeField, GatherPortsCallback
-         , Tooltip("If enabled, registration will be handled on graph Enable/Disable automatically")]
+        [SerializeField, ExposeField, GatherPortsCallback,
+         Tooltip("If enabled, registration will be handled on graph Enable/Disable automatically")]
         protected bool _autoHandleRegistration;
 
         [SerializeField]

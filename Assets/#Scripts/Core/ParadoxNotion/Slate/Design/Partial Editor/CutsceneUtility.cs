@@ -19,8 +19,9 @@ namespace Slate
         private static IDirectable _selectedObject;
 
         [System.NonSerialized]
-        public static Dictionary<AnimatedParameter, ChangedParameterCallbacks> changedParameterCallbacks =
-            new Dictionary<AnimatedParameter, ChangedParameterCallbacks>();
+        public static Dictionary<AnimatedParameter, ChangedParameterCallbacks>
+            changedParameterCallbacks =
+                new Dictionary<AnimatedParameter, ChangedParameterCallbacks>();
 
         ///<summary>Raised when directable selection change</summary>
         public static event System.Action<IDirectable> onSelectionChange;
@@ -46,7 +47,8 @@ namespace Slate
                 var editor = ReflectionTools.GetType("CutsceneEditor").RTGetFieldOrProp("current")
                     .RTGetFieldOrPropValue(null);
                 if (editor != null)
-                    return editor.GetType().RTGetFieldOrProp("cutscene").RTGetFieldOrPropValue(editor) as Cutscene;
+                    return editor.GetType().RTGetFieldOrProp("cutscene")
+                        .RTGetFieldOrPropValue(editor) as Cutscene;
                 return null;
             }
         }
@@ -65,7 +67,8 @@ namespace Slate
         ///<summary>Refresh animation editors (dopesheet, curves) of targer animatable</summary>
         public static void RefreshAllAnimationEditorsOf(IAnimatableData animatable)
         {
-            if (onRefreshAllAnimationEditors != null && animatable != null) onRefreshAllAnimationEditors(animatable);
+            if (onRefreshAllAnimationEditors != null && animatable != null)
+                onRefreshAllAnimationEditors(animatable);
         }
 
         ///<summary>Returns the currently copied clip type</summary>
@@ -93,7 +96,10 @@ namespace Slate
             (clip.parent as CutsceneTrack).DeleteAction(clip);
         }
 
-        ///<summary>Paste a previously copied clip. Creates a new clip with copied values within the target track.</summary>
+        /// <summary>
+        ///     Paste a previously copied clip. Creates a new clip with copied values within the target
+        ///     track.
+        /// </summary>
         public static ActionClip PasteClip(CutsceneTrack track, float time)
         {
             if (copyType != null && !string.IsNullOrEmpty(copyJson)) {

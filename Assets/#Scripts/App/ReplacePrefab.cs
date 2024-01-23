@@ -32,7 +32,8 @@ public class ReplacePrefab : View<ReplacePrefab>
                 if (handle.Status == AsyncOperationStatus.Succeeded) {
                     Destroy(x.target);
                     handle.Result.name = oldName;
-                    if (handle.Result.transform.Find("OnLoad") is { } onload) onload.gameObject.SetActive(true);
+                    if (handle.Result.transform.Find("OnLoad") is { } onload)
+                        onload.gameObject.SetActive(true);
                 }
             };
 

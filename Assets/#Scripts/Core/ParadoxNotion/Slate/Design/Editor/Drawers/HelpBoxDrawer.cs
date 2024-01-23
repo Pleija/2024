@@ -11,7 +11,8 @@ namespace Slate
 
         public override void OnGUI(Rect position)
         {
-            if (Prefs.showDescriptions) EditorGUILayout.HelpBox((attribute as HelpBoxAttribute).text, MessageType.None);
+            if (Prefs.showDescriptions)
+                EditorGUILayout.HelpBox((attribute as HelpBoxAttribute).text, MessageType.None);
         }
     }
 }

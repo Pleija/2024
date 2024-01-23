@@ -9,7 +9,9 @@ namespace Slate
     public class TransformRefPositionRotationDrawer : PropertyDrawer
     {
         private float height;
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent content) => height;
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent content) =>
+            height;
 
         public override void OnGUI(Rect position, SerializedProperty prop, GUIContent content)
         {
@@ -19,7 +21,8 @@ namespace Slate
             GUI.color = new Color(1, 1, 1, 0.3f);
             GUI.Box(position, "", (GUIStyle)"flow node 0");
             GUI.color = Color.white;
-            EditorGUI.LabelField(new Rect(position.x, position.y, position.width, lineHeight), content.text);
+            EditorGUI.LabelField(new Rect(position.x, position.y, position.width, lineHeight),
+                content.text);
             lines++;
             var groupProp = prop.FindPropertyRelative("_group");
             var transformProp = prop.FindPropertyRelative("_transform");
@@ -29,18 +32,21 @@ namespace Slate
             EditorGUI.indentLevel++;
 
             if (transformProp.objectReferenceValue == null) {
-                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16, lineHeight);
+                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16,
+                    lineHeight);
                 EditorGUI.PropertyField(rect, groupProp, new GUIContent("Actor Override"));
                 lines++;
             }
 
             if (groupProp.objectReferenceValue == null) {
-                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16, lineHeight);
+                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16,
+                    lineHeight);
                 EditorGUI.PropertyField(rect, transformProp, new GUIContent("Transform Override"));
                 lines++;
             }
 
-            if (groupProp.objectReferenceValue == null && transformProp.objectReferenceValue == null) {
+            if (groupProp.objectReferenceValue == null &&
+                transformProp.objectReferenceValue == null) {
                 // rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16, lineHeight);
                 // EditorGUI.PropertyField(rect, posProp, new GUIContent("Position"));
                 // lines++;
@@ -48,13 +54,15 @@ namespace Slate
                 // rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16, lineHeight);
                 // EditorGUI.PropertyField(rect, rotProp, new GUIContent("Rotation"));
                 // lines++;
-                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16, lineHeight);
+                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16,
+                    lineHeight);
                 EditorGUI.PropertyField(rect, spaceProp, new GUIContent("Space"));
                 lines++;
             }
             else {
                 GUI.enabled = false;
-                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16, lineHeight);
+                rect = new Rect(position.x, position.y + lineHeight * lines, position.width - 16,
+                    lineHeight);
                 EditorGUI.EnumPopup(rect, "Space", TransformSpace.WorldSpace);
                 lines++;
                 GUI.enabled = true;

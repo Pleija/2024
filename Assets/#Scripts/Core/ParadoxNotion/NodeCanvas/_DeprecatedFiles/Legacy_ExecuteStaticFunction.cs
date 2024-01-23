@@ -15,7 +15,8 @@ namespace NodeCanvas.Tasks.Actions
         BBParameter[] ISubParametersContainer.GetSubParameters() =>
             functionWrapper != null ? functionWrapper.GetVariables() : null;
 
-        private MethodInfo targetMethod => functionWrapper != null ? functionWrapper.GetMethod() : null;
+        private MethodInfo targetMethod =>
+            functionWrapper != null ? functionWrapper.GetMethod() : null;
 
         protected override string info {
             get {
@@ -34,14 +35,15 @@ namespace NodeCanvas.Tasks.Actions
                     for (var i = 1; i < variables.Length; i++)
                         paramInfo += (i != 1 ? ", " : "") + variables[i].ToString();
                 }
-                return string.Format("{0}{1}.{2} ({3})", returnInfo, targetMethod.DeclaringType.FriendlyName()
-                    , targetMethod.Name, paramInfo);
+                return string.Format("{0}{1}.{2} ({3})", returnInfo,
+                    targetMethod.DeclaringType.FriendlyName(), targetMethod.Name, paramInfo);
             }
         }
 
         public override void OnValidate(ITaskSystem ownerSystem)
         {
-            if (functionWrapper != null && functionWrapper.HasChanged()) SetMethod(functionWrapper.GetMethod());
+            if (functionWrapper != null && functionWrapper.HasChanged())
+                SetMethod(functionWrapper.GetMethod());
         }
 
         //store the method info on init

@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("GameObject"), Description("Find a transform child by name within the agent's transform")]
+    [Category("GameObject"),
+     Description("Find a transform child by name within the agent's transform")]
     public class FindChildByName : ActionTask<Transform>
     {
         [RequiredField]
@@ -13,7 +14,8 @@ namespace NodeCanvas.Tasks.Actions
         [BlackboardOnly]
         public BBParameter<Transform> saveAs;
 
-        protected override string info => string.Format("{0} = {1}.FindChild({2})", saveAs, agentInfo, childName);
+        protected override string info =>
+            string.Format("{0} = {1}.FindChild({2})", saveAs, agentInfo, childName);
 
         protected override void OnExecute()
         {

@@ -17,8 +17,8 @@ namespace NodeCanvas.Tasks.Conditions
         public CompareMethod comparison = CompareMethod.EqualTo;
         public BBParameter<float> distance;
 
-        protected override string info => string.Format("Distance ({0}, {1}) {2} {3}", vectorA, vectorB
-            , OperationTools.GetCompareString(comparison), distance);
+        protected override string info => string.Format("Distance ({0}, {1}) {2} {3}", vectorA,
+            vectorB, OperationTools.GetCompareString(comparison), distance);
 
         protected override bool OnCheck()
         {

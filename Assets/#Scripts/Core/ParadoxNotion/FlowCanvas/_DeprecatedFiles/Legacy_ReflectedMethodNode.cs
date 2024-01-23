@@ -8,7 +8,8 @@ using UnityEngine;
 namespace FlowCanvas.Nodes.Legacy
 {
     /// <summary>
-    ///     Wrapped in a ReflectedMethodNodeWrapper it furthers wraps a MethodInfo call to delegates and strong type value
+    ///     Wrapped in a ReflectedMethodNodeWrapper it furthers wraps a MethodInfo call to delegates and
+    ///     strong type value
     ///     usage for much greater performance than simply reflection Invoke.
     /// </summary>
     [Obsolete]
@@ -20,8 +21,8 @@ namespace FlowCanvas.Nodes.Legacy
         public static ReflectedMethodNode Create(MethodInfo method)
         {
             var parameters = method.GetParameters();
-            if (method.DeclaringType.RTIsValueType() ||
-                parameters.Any(p => p.ParameterType.IsByRef || p.IsParams(parameters)))
+            if (method.DeclaringType.RTIsValueType() || parameters.Any(p =>
+                p.ParameterType.IsByRef || p.IsParams(parameters)))
                 return new PureReflectedMethodNode();
 
             try {
@@ -89,7 +90,8 @@ namespace FlowCanvas.Nodes.Legacy
                 }
                 argTypes.AddRange(parameters.Select(p => p.ParameterType));
                 argTypes.Add(method.ReturnType);
-                return (ReflectedMethodNode)Activator.CreateInstance(type.RTMakeGenericType(argTypes.ToArray()));
+                return (ReflectedMethodNode)Activator.CreateInstance(
+                    type.RTMakeGenericType(argTypes.ToArray()));
             }
         }
 
@@ -103,12 +105,13 @@ namespace FlowCanvas.Nodes.Legacy
             if (i == 0) return instanceName;
             var paramName = parameters[i - 1].Name;
             return paramName != instanceName ? paramName
-                : paramName + " "; //for rare cases where it's the same like for example Animation class.
+                : paramName +
+                " "; //for rare cases where it's the same like for example Animation class.
         }
 
         ///<summary>Derived type must implement way of registration.</summary>
-        public abstract void RegisterPorts(FlowNode node, MethodInfo method
-            , ReflectedMethodRegistrationOptions options);
+        public abstract void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options);
     }
 
     ///----------------------------------------------------------------------------------------------
@@ -126,7 +129,8 @@ namespace FlowCanvas.Nodes.Legacy
         private object instance;
         private object returnValue;
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             this.method = method;
             var parameters = method.GetParameters();
@@ -142,11 +146,13 @@ namespace FlowCanvas.Nodes.Legacy
 
             //Instance ports
             if (!method.IsStatic) {
-                instanceInput = node.AddValueInput(method.DeclaringType.FriendlyName(), method.DeclaringType);
+                instanceInput = node.AddValueInput(method.DeclaringType.FriendlyName(),
+                    method.DeclaringType);
                 if (options.callable)
-                    node.AddValueOutput(method.DeclaringType.FriendlyName(), method.DeclaringType, () => {
-                        return instance;
-                    });
+                    node.AddValueOutput(method.DeclaringType.FriendlyName(), method.DeclaringType,
+                        () => {
+                            return instance;
+                        });
             }
 
             //Return value port
@@ -173,8 +179,8 @@ namespace FlowCanvas.Nodes.Legacy
                         if (!options.callable) CallMethod();
                         return args[i];
                     });
-                    inputs.Add(new ValueInput<object>(null, null
-                        , null)); //add dummy inputs for the shake of getting out args correctly by index
+                    inputs.Add(new ValueInput<object>(null, null,
+                        null)); //add dummy inputs for the shake of getting out args correctly by index
                 }
                 else {
                     if (options.exposeParams && parameter.IsParams(parameters)) {
@@ -182,8 +188,8 @@ namespace FlowCanvas.Nodes.Legacy
                         paramsArrayType = parameter.ParameterType;
 
                         for (var j = 0; j < options.exposedParamsCount; j++) {
-                            var paramPort = node.AddValueInput(paramName + " #" + j
-                                , parameter.ParameterType.GetEnumerableElementType(), paramName + j);
+                            var paramPort = node.AddValueInput(paramName + " #" + j,
+                                parameter.ParameterType.GetEnumerableElementType(), paramName + j);
                             paramsInputs.Add(paramPort);
                         }
                     }
@@ -205,8 +211,10 @@ namespace FlowCanvas.Nodes.Legacy
             for (var i = 0; i < inputs.Count; i++) args[i] = inputs[i].value;
 
             if (paramsInputs != null) {
-                var paramsArray = Array.CreateInstance(paramsArrayType.GetElementType(), paramsInputs.Count);
-                for (var i = 0; i < paramsInputs.Count; i++) paramsArray.SetValue(paramsInputs[i].value, i);
+                var paramsArray =
+                    Array.CreateInstance(paramsArrayType.GetElementType(), paramsInputs.Count);
+                for (var i = 0; i < paramsInputs.Count; i++)
+                    paramsArray.SetValue(paramsInputs[i].value, i);
                 args[args.Length - 1] = paramsArray;
             }
 
@@ -232,7 +240,8 @@ namespace FlowCanvas.Nodes.Legacy
             call();
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall>(null);
             var o = node.AddFlowOutput(" ");
@@ -255,7 +264,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -283,7 +293,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -312,7 +323,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b, c);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2, T3>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -342,7 +354,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b, c, d);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2, T3, T4>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -373,7 +386,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b, c, d, e);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2, T3, T4, T5>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -405,7 +419,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b, c, d, e, f);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2, T3, T4, T5, T6>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -438,7 +453,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b, c, d, e, f, g);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2, T3, T4, T5, T6, T7>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -472,7 +488,8 @@ namespace FlowCanvas.Nodes.Legacy
             call(a, b, c, d, e, f, g, h);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<ActionCall<T1, T2, T3, T4, T5, T6, T7, T8>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -485,7 +502,8 @@ namespace FlowCanvas.Nodes.Legacy
             var p8 = node.AddValueInput<T8>(GetName(method, 7));
             var o = node.AddFlowOutput(" ");
             node.AddFlowInput(" ", (f) => {
-                Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value);
+                Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value);
                 o.Call(f);
             });
             if (!method.IsStatic)
@@ -508,7 +526,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call();
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<TResult>>(null);
 
@@ -538,7 +557,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -573,7 +593,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, T2, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -609,7 +630,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b, c);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, T2, T3, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -646,7 +668,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b, c, d);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, T2, T3, T4, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -666,7 +689,8 @@ namespace FlowCanvas.Nodes.Legacy
                     });
             }
             node.AddValueOutput<TResult>("Value", () => {
-                return options.callable ? returnValue : Call(p1.value, p2.value, p3.value, p4.value);
+                return options.callable ? returnValue
+                    : Call(p1.value, p2.value, p3.value, p4.value);
             });
         }
     }
@@ -684,7 +708,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b, c, d, e);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -705,7 +730,8 @@ namespace FlowCanvas.Nodes.Legacy
                     });
             }
             node.AddValueOutput<TResult>("Value", () => {
-                return options.callable ? returnValue : Call(p1.value, p2.value, p3.value, p4.value, p5.value);
+                return options.callable ? returnValue
+                    : Call(p1.value, p2.value, p3.value, p4.value, p5.value);
             });
         }
     }
@@ -723,7 +749,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b, c, d, e, f);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, T6, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -745,14 +772,15 @@ namespace FlowCanvas.Nodes.Legacy
                     });
             }
             node.AddValueOutput<TResult>("Value", () => {
-                return options.callable ? returnValue
-                    : Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value);
+                return options.callable ? returnValue : Call(p1.value, p2.value, p3.value, p4.value,
+                    p5.value, p6.value);
             });
         }
     }
 
     [Obsolete]
-    public sealed class ReflectedFunctionNode<T1, T2, T3, T4, T5, T6, T7, TResult> : ReflectedMethodNode
+    public sealed class
+        ReflectedFunctionNode<T1, T2, T3, T4, T5, T6, T7, TResult> : ReflectedMethodNode
     {
         private FunctionCall<T1, T2, T3, T4, T5, T6, T7, TResult> call;
         private TResult returnValue;
@@ -764,7 +792,8 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b, c, d, e, f, g);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
             call = method.RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, T6, T7, TResult>>(null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
@@ -787,14 +816,15 @@ namespace FlowCanvas.Nodes.Legacy
                     });
             }
             node.AddValueOutput<TResult>("Value", () => {
-                return options.callable ? returnValue
-                    : Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value);
+                return options.callable ? returnValue : Call(p1.value, p2.value, p3.value, p4.value,
+                    p5.value, p6.value, p7.value);
             });
         }
     }
 
     [Obsolete]
-    public sealed class ReflectedFunctionNode<T1, T2, T3, T4, T5, T6, T7, T8, TResult> : ReflectedMethodNode
+    public sealed class
+        ReflectedFunctionNode<T1, T2, T3, T4, T5, T6, T7, T8, TResult> : ReflectedMethodNode
     {
         private FunctionCall<T1, T2, T3, T4, T5, T6, T7, T8, TResult> call;
         private TResult returnValue;
@@ -806,9 +836,12 @@ namespace FlowCanvas.Nodes.Legacy
             return returnValue = call(a, b, c, d, e, f, g, h);
         }
 
-        public override void RegisterPorts(FlowNode node, MethodInfo method, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node, MethodInfo method,
+            ReflectedMethodRegistrationOptions options)
         {
-            call = method.RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, T6, T7, T8, TResult>>(null);
+            call =
+                method.RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, T6, T7, T8, TResult>>(
+                    null);
             var p1 = node.AddValueInput<T1>(GetName(method, 0));
             var p2 = node.AddValueInput<T2>(GetName(method, 1));
             var p3 = node.AddValueInput<T3>(GetName(method, 2));
@@ -821,7 +854,8 @@ namespace FlowCanvas.Nodes.Legacy
             if (options.callable) {
                 var o = node.AddFlowOutput(" ");
                 node.AddFlowInput(" ", (f) => {
-                    Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value);
+                    Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                        p8.value);
                     o.Call(f);
                 });
                 if (!method.IsStatic)
@@ -830,8 +864,8 @@ namespace FlowCanvas.Nodes.Legacy
                     });
             }
             node.AddValueOutput<TResult>("Value", () => {
-                return options.callable ? returnValue : Call(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value
-                    , p7.value, p8.value);
+                return options.callable ? returnValue : Call(p1.value, p2.value, p3.value, p4.value,
+                    p5.value, p6.value, p7.value, p8.value);
             });
         }
     }

@@ -2,7 +2,10 @@
 
 namespace ParadoxNotion.Design
 {
-    ///<summary>Marker attribute to include generic type or a type's generic methods in the AOT spoof generation</summary>
+    /// <summary>
+    ///     Marker attribute to include generic type or a type's generic methods in the AOT spoof
+    ///     generation
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface |
         AttributeTargets.Delegate)]
     public class SpoofAOTAttribute : Attribute { }
@@ -11,7 +14,10 @@ namespace ParadoxNotion.Design
     [AttributeUsage(AttributeTargets.Class)]
     public class DoNotListAttribute : Attribute { }
 
-    ///<summary>When a type should for some reason be marked as protected so to always have one instance active.</summary>
+    /// <summary>
+    ///     When a type should for some reason be marked as protected so to always have one instance
+    ///     active.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ProtectedSingletonAttribute : Attribute { }
 
@@ -23,12 +29,21 @@ namespace ParadoxNotion.Design
         public ExecutionPriorityAttribute(int priority) => this.priority = priority;
     }
 
-    ///<summary>Marks a generic type to be exposed at it's base definition rather than wrapping all preferred types around it.</summary>
+    /// <summary>
+    ///     Marks a generic type to be exposed at it's base definition rather than wrapping all
+    ///     preferred types around it.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ExposeAsDefinitionAttribute : Attribute { }
 
-    ///<summary>Marks a field to be exposed for inspection even if private (within the context of custom inspector).</summary>
-    ///<summary>In custom inspector, private fields even if with [SerializedField] are not exposed by default.</summary>
+    /// <summary>
+    ///     Marks a field to be exposed for inspection even if private (within the context of custom
+    ///     inspector).
+    /// </summary>
+    /// <summary>
+    ///     In custom inspector, private fields even if with [SerializedField] are not exposed by
+    ///     default.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class ExposeFieldAttribute : Attribute { }
 
@@ -88,7 +103,8 @@ namespace ParadoxNotion.Design
         public readonly string runtimeIconTypeCallback;
         public readonly Type fromType;
 
-        public IconAttribute(string iconName = "", bool fixedColor = false, string runtimeIconTypeCallback = "")
+        public IconAttribute(string iconName = "", bool fixedColor = false,
+            string runtimeIconTypeCallback = "")
         {
             this.iconName = iconName;
             this.fixedColor = fixedColor;

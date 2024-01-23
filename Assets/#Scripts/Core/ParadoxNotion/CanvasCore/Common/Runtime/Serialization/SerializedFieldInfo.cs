@@ -16,7 +16,8 @@ namespace ParadoxNotion.Serialization
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (_field != null)
-                _baseInfo = string.Format("{0}|{1}", _field.RTReflectedOrDeclaredType().FullName, _field.Name);
+                _baseInfo = string.Format("{0}|{1}", _field.RTReflectedOrDeclaredType().FullName,
+                    _field.Name);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
@@ -40,6 +41,7 @@ namespace ParadoxNotion.Serialization
         public override string ToString() => AsString();
 
         //operator
-        public static implicit operator FieldInfo(SerializedFieldInfo value) => value != null ? value._field : null;
+        public static implicit operator FieldInfo(SerializedFieldInfo value) =>
+            value != null ? value._field : null;
     }
 }

@@ -2,8 +2,9 @@
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Togglers"), Description("Flip Flops between the 2 outputs each time In is called")
-     , ContextDefinedOutputs(typeof(bool))]
+    [Category("Flow Controllers/Togglers"),
+     Description("Flip Flops between the 2 outputs each time In is called"),
+     ContextDefinedOutputs(typeof(bool))]
     public class FlipFlop : FlowControlNode
     {
         public bool isFlip = true;

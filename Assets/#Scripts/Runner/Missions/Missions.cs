@@ -139,7 +139,8 @@ namespace Runner.Missions
             if (manager.characterController.isJumping) {
                 var boxSize = manager.characterController.characterCollider.collider.size +
                     k_CharacterColliderSizeOffset;
-                var boxCenter = manager.characterController.transform.position - Vector3.up * boxSize.y * 0.5f;
+                var boxCenter = manager.characterController.transform.position -
+                    Vector3.up * boxSize.y * 0.5f;
                 var count = Physics.OverlapBoxNonAlloc(boxCenter, boxSize * 0.5f, m_Hits);
 
                 for (var i = 0; i < count; ++i) {

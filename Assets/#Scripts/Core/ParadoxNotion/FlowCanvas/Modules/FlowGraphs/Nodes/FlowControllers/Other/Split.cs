@@ -4,8 +4,9 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Description("Split the Flow in multiple directions. Calls all outputs in the same frame but in order")
-     , Name("Split", 90)]
+    [Description(
+         "Split the Flow in multiple directions. Calls all outputs in the same frame but in order"),
+     Name("Split", 90)]
     public class Split : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

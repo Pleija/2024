@@ -10,8 +10,8 @@ namespace Slate
     public static class ReflectionTools
     {
 #if !NETFX_CORE
-        private const BindingFlags flagsEverything =
-            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+        private const BindingFlags flagsEverything = BindingFlags.Instance | BindingFlags.Static |
+            BindingFlags.Public | BindingFlags.NonPublic;
 #endif
 
         ///<summary>Assemblies</summary>
@@ -71,7 +71,8 @@ namespace Slate
             foreach (var t in GetAllTypes())
                 if (t.Name == typeName)
                     return typeMap[typeName] = t;
-            UnityEngine.Debug.LogError(string.Format("Requested Type with name '{0}', could not be loaded", typeName));
+            UnityEngine.Debug.LogError(
+                string.Format("Requested Type with name '{0}', could not be loaded", typeName));
             return null;
         }
 
@@ -101,7 +102,8 @@ namespace Slate
 
             foreach (var asm in loadedAssemblies)
                 try {
-                    temp.AddRange(asm.RTGetExportedTypes().Where(t => type.RTIsAssignableFrom(t) && !t.RTIsAbstract()));
+                    temp.AddRange(asm.RTGetExportedTypes().Where(t =>
+                        type.RTIsAssignableFrom(t) && !t.RTIsAbstract()));
                 }
                 catch {
                     continue;
@@ -249,7 +251,8 @@ namespace Slate
 #endif
         }
 
-        public static T RTGetAttribute<T>(this MemberInfo member, bool inherited) where T : Attribute
+        public static T RTGetAttribute<T>(this MemberInfo member, bool inherited)
+            where T : Attribute
         {
 #if NETFX_CORE
             return (T)member.GetCustomAttributes(typeof(T), inherited).FirstOrDefault();
@@ -258,7 +261,8 @@ namespace Slate
 #endif
         }
 
-        public static bool RTIsDefined<T>(this MemberInfo member, bool inherited) where T : Attribute
+        public static bool RTIsDefined<T>(this MemberInfo member, bool inherited)
+            where T : Attribute
         {
 #if NETFX_CORE
             return member.IsDefined(typeof(T), inherited);
@@ -279,14 +283,16 @@ namespace Slate
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Creates and returns an open instance setter for field or property. In JIT is done with IL Emit. In AOT via
+        ///     Creates and returns an open instance setter for field or property. In JIT is done with IL Emit.
+        ///     In AOT via
         ///     direct reflection.
         /// </summary>
         public static Action<T, TValue> GetFieldOrPropSetter<T, TValue>(MemberInfo info)
         {
 #if !NET_STANDARD_2_0 && ( UNITY_EDITOR || ( !ENABLE_IL2CPP && ( UNITY_STANDALONE || UNITY_ANDROID || UNITY_WSA ) ) )
             var name = string.Format("_set_{0}_field_", info.Name);
-            var m = new DynamicMethod(name, typeof(void), new Type[] { typeof(T), typeof(TValue) }, typeof(T));
+            var m = new DynamicMethod(name, typeof(void), new Type[] { typeof(T), typeof(TValue) },
+                typeof(T));
             var cg = m.GetILGenerator();
             cg.Emit(OpCodes.Ldarg_0);
             cg.Emit(OpCodes.Ldarg_1);
@@ -315,19 +321,23 @@ namespace Slate
             return result;
         }
 
-        public static object RTGetFieldOrPropValue(this MemberInfo member, object instance, int index = -1)
+        public static object RTGetFieldOrPropValue(this MemberInfo member, object instance,
+            int index = -1)
         {
             if (member is FieldInfo) return (member as FieldInfo).GetValue(instance);
             if (member is PropertyInfo)
-                return (member as PropertyInfo).GetValue(instance, index == -1 ? null : new object[] { index });
+                return (member as PropertyInfo).GetValue(instance,
+                    index == -1 ? null : new object[] { index });
             return null;
         }
 
-        public static void RTSetFieldOrPropValue(this MemberInfo member, object instance, object value, int index = -1)
+        public static void RTSetFieldOrPropValue(this MemberInfo member, object instance,
+            object value, int index = -1)
         {
             if (member is FieldInfo) (member as FieldInfo).SetValue(instance, value);
             if (member is PropertyInfo)
-                (member as PropertyInfo).SetValue(instance, value, index == -1 ? null : new object[] { index });
+                (member as PropertyInfo).SetValue(instance, value,
+                    index == -1 ? null : new object[] { index });
         }
 
         public static Type RTGetFieldOrPropType(this MemberInfo member)
@@ -362,7 +372,10 @@ namespace Slate
             return result;
         }
 
-        ///<summary>Given a root object and a relative member path, returns the object that contains the leaf member</summary>
+        /// <summary>
+        ///     Given a root object and a relative member path, returns the object that contains the leaf
+        ///     member
+        /// </summary>
         public static object GetRelativeMemberParent(object root, string path)
         {
             if (root == null || string.IsNullOrEmpty(path)) return null;
@@ -375,18 +388,21 @@ namespace Slate
         }
 
         ///<summary>Utility. Given an expression returns a relative path, eg: '(Transform x) => x.position'</summary>
-        public static string GetMemberPath<T, TResult>(System.Linq.Expressions.Expression<Func<T, TResult>> func)
+        public static string GetMemberPath<T, TResult>(
+            System.Linq.Expressions.Expression<Func<T, TResult>> func)
         {
             var result = func.Body.ToString();
             return result.Substring(result.IndexOf('.') + 1);
         }
 
         /// <summary>
-        ///     Digs into starting type provided and returns instance|Public property/fields paths recursively found, based on
+        ///     Digs into starting type provided and returns instance|Public property/fields paths recursively
+        ///     found, based on
         ///     predicates provided
         /// </summary>
-        public static string[] GetMemberPaths(Type type, Predicate<Type> shouldInclude, Predicate<Type> shouldContinue
-            , string currentPath = "", List<Type> recursionCheck = null)
+        public static string[] GetMemberPaths(Type type, Predicate<Type> shouldInclude,
+            Predicate<Type> shouldContinue, string currentPath = "",
+            List<Type> recursionCheck = null)
         {
             var result = new List<string>();
             if (recursionCheck == null) recursionCheck = new List<Type>();
@@ -401,8 +417,8 @@ namespace Slate
                     continue;
                 }
                 if (prop.CanRead && shouldContinue(prop.PropertyType))
-                    result.AddRange(GetMemberPaths(prop.PropertyType, shouldInclude, shouldContinue
-                        , currentPath + prop.Name + ".", recursionCheck));
+                    result.AddRange(GetMemberPaths(prop.PropertyType, shouldInclude, shouldContinue,
+                        currentPath + prop.Name + ".", recursionCheck));
             }
 
             foreach (var _field in type.GetFields(BindingFlags.Instance | BindingFlags.Public)) {
@@ -413,8 +429,8 @@ namespace Slate
                     continue;
                 }
                 if (shouldContinue(field.FieldType))
-                    result.AddRange(GetMemberPaths(field.FieldType, shouldInclude, shouldContinue
-                        , currentPath + field.Name + ".", recursionCheck));
+                    result.AddRange(GetMemberPaths(field.FieldType, shouldInclude, shouldContinue,
+                        currentPath + field.Name + ".", recursionCheck));
             }
             return result.ToArray();
         }

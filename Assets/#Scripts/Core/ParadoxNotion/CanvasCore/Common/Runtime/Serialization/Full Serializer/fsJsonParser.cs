@@ -17,7 +17,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         {
             var start = Math.Max(0, _start - 20);
             var length = Math.Min(50, _input.Length - start);
-            var error = "Error while parsing: " + message + "; context = <" + _input.Substring(start, length) + ">";
+            var error = "Error while parsing: " + message + "; context = <" +
+                _input.Substring(start, length) + ">";
             return fsResult.Fail(error);
         }
 
@@ -31,7 +32,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         private bool HasValue() => HasValue(0);
-        private bool HasValue(int offset) => _start + offset >= 0 && _start + offset < _input.Length;
+
+        private bool HasValue(int offset) =>
+            _start + offset >= 0 && _start + offset < _input.Length;
+
         private char Character() => Character(0);
         private char Character(int offset) => _input[_start + offset];
 
@@ -51,7 +55,9 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 if (HasValue(1) && Character(0) == '/') {
                     if (Character(1) == '/') {
                         // skip the rest of the line
-                        while (HasValue() && Environment.NewLine.Contains("" + Character()) == false) TryMoveNext();
+                        while (HasValue() &&
+                            Environment.NewLine.Contains("" + Character()) == false)
+                            TryMoveNext();
                         continue;
                     }
                     else if (Character(1) == '*') {
@@ -78,7 +84,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
 #region Escaping
-        private bool IsHex(char c) => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+        private bool IsHex(char c) =>
+            (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 
         private uint ParseSingleChar(char c1, uint multipliyer)
         {
@@ -154,8 +161,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 case 'u':
                     TryMoveNext();
 
-                    if (IsHex(Character(0)) && IsHex(Character(1)) && IsHex(Character(2)) && IsHex(Character(3))) {
-                        var codePoint = ParseUnicode(Character(0), Character(1), Character(2), Character(3));
+                    if (IsHex(Character(0)) && IsHex(Character(1)) && IsHex(Character(2)) &&
+                        IsHex(Character(3))) {
+                        var codePoint = ParseUnicode(Character(0), Character(1), Character(2),
+                            Character(3));
                         TryMoveNext();
                         TryMoveNext();
                         TryMoveNext();
@@ -166,8 +175,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
 
                     // invalid escape sequence
                     escaped = (char)0;
-                    return MakeFailure(string.Format("invalid escape sequence '\\u{0}{1}{2}{3}'\n", Character(0)
-                        , Character(1), Character(2), Character(3)));
+                    return MakeFailure(string.Format("invalid escape sequence '\\u{0}{1}{2}{3}'\n",
+                        Character(0), Character(1), Character(2), Character(3)));
                 default:
                     escaped = (char)0;
                     return MakeFailure(string.Format("Invalid escape sequence \\{0}", Character()));
@@ -179,7 +188,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         {
             for (var i = 0; i < content.Length; ++i) {
                 if (Character() != content[i]) return MakeFailure("Expected " + content[i]);
-                if (TryMoveNext() == false) return MakeFailure("Unexpected end of content when parsing " + content);
+                if (TryMoveNext() == false)
+                    return MakeFailure("Unexpected end of content when parsing " + content);
             }
             return fsResult.Success;
         }
@@ -220,7 +230,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
             return fail;
         }
 
-        private bool IsSeparator(char c) => char.IsWhiteSpace(c) || c == ',' || c == '}' || c == ']';
+        private bool IsSeparator(char c) =>
+            char.IsWhiteSpace(c) || c == ',' || c == '}' || c == ']';
 
         ///<summary> Parses numbers that follow the regular expression [-+](\d+|\d*\.\d*)</summary>
         private fsResult TryParseNumber(out fsData data)
@@ -234,12 +245,13 @@ namespace ParadoxNotion.Serialization.FullSerializer
             var numberString = _input.Substring(start, _start - start);
 
             // double -- includes a .
-            if (numberString.Contains(".") || numberString.Contains("e") || numberString.Contains("E") ||
-                numberString == "Infinity" || numberString == "-Infinity" || numberString == "NaN") {
+            if (numberString.Contains(".") || numberString.Contains("e") ||
+                numberString.Contains("E") || numberString == "Infinity" ||
+                numberString == "-Infinity" || numberString == "NaN") {
                 double doubleValue;
 
-                if (double.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture, out doubleValue) ==
-                    false) {
+                if (double.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture,
+                    out doubleValue) == false) {
                     data = null;
                     return MakeFailure("Bad double format with " + numberString);
                 }
@@ -249,8 +261,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
             else {
                 long intValue;
 
-                if (long.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture, out intValue) ==
-                    false) {
+                if (long.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture,
+                    out intValue) == false) {
                     data = null;
                     return MakeFailure("Bad Int64 format with " + numberString);
                 }
@@ -367,8 +379,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 return MakeFailure("Unexpected end of input when parsing an object");
             }
             SkipSpace();
-            var result = new Dictionary<string, fsData>(fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal
-                : StringComparer.OrdinalIgnoreCase);
+            var result = new Dictionary<string, fsData>(fsGlobalConfig.IsCaseSensitive
+                ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
 
             while (HasValue() && Character() != '}') {
                 fsResult failure;

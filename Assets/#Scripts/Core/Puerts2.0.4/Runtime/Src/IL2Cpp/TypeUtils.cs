@@ -29,8 +29,8 @@ namespace PuertsIl2cpp
         }
 
         // Call By Gen Code
-        public static IEnumerable<MethodInfo> GetExtensionMethods(Type type, params Type[] extensions) =>
-            from e in extensions
+        public static IEnumerable<MethodInfo>
+            GetExtensionMethods(Type type, params Type[] extensions) => from e in extensions
             from m in e.GetMethods(BindingFlags.Static | BindingFlags.Public)
             where !m.IsSpecialName && GetExtendedType(m) == type
             select m;
@@ -46,16 +46,16 @@ namespace PuertsIl2cpp
         public static bool LoadExtensionMethodInfo()
         {
             var ExtensionMethodInfos_Gen =
-            (
-                from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen")).FirstOrDefault(x => x != null);
+                (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                    select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen"))
+                .FirstOrDefault(x => x != null);
             if (ExtensionMethodInfos_Gen == null)
                 ExtensionMethodInfos_Gen =
-                    (
-                        from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                    (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                         select assembly.GetType("PuertsIl2cpp.ExtensionMethodInfos_Gen_Internal"))
                     .FirstOrDefault(x => x != null);
-            var TryLoadExtensionMethod = ExtensionMethodInfos_Gen.GetMethod("TryLoadExtensionMethod");
+            var TryLoadExtensionMethod =
+                ExtensionMethodInfos_Gen.GetMethod("TryLoadExtensionMethod");
             if (TryLoadExtensionMethod == null) return false;
             LoadExtensionMethod = (Func<Type, IEnumerable<MethodInfo>>)Delegate.CreateDelegate(
                 typeof(Func<Type, IEnumerable<MethodInfo>>), null, TryLoadExtensionMethod);
@@ -103,14 +103,15 @@ namespace PuertsIl2cpp
 
             if (p1 > 0 && !isQualifiedName) {
                 var qualified_name = className.Substring(0, p1 + 1);
-                var generic_params = className.Substring(p1 + 1, className.Length - qualified_name.Length - 1)
-                    .Split(',');
+                var generic_params = className
+                    .Substring(p1 + 1, className.Length - qualified_name.Length - 1).Split(',');
 
                 for (var i = 0; i < generic_params.Length; i++) {
                     var generic_param = GetType(generic_params[i].Trim(), false);
                     if (generic_param == null) return null;
                     if (i != 0) qualified_name += ", ";
-                    qualified_name = qualified_name + "[" + generic_param.AssemblyQualifiedName + "]";
+                    qualified_name = qualified_name + "[" + generic_param.AssemblyQualifiedName +
+                        "]";
                 }
                 qualified_name += "]";
                 return GetType(qualified_name, true);
@@ -128,7 +129,8 @@ namespace PuertsIl2cpp
             foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance |
                     BindingFlags.Public | BindingFlags.NonPublic))
                 // special handling circular definition by pointer
-                if ((field.FieldType.IsByRef || field.FieldType.IsPointer) && field.FieldType.GetElementType() == type)
+                if ((field.FieldType.IsByRef || field.FieldType.IsPointer) &&
+                    field.FieldType.GetElementType() == type)
                     sb.Append("Pv");
                 else
                     sb.Append(GetTypeSignature(field.FieldType));
@@ -208,7 +210,8 @@ namespace PuertsIl2cpp
             else if (type.IsValueType && !type.IsPrimitive) {
                 //return "s" + Marshal.SizeOf(type);
                 if (Nullable.GetUnderlyingType(type) != null)
-                    return TypeSignatures.NullableStructPrefix + GetValueTypeFieldsSignature(type) + "_";
+                    return TypeSignatures.NullableStructPrefix + GetValueTypeFieldsSignature(type) +
+                        "_";
                 else
                     return TypeSignatures.StructPrefix + GetValueTypeFieldsSignature(type) + "_";
             }
@@ -219,8 +222,10 @@ namespace PuertsIl2cpp
         {
             var isParams = parameterInfo.IsDefined(typeof(ParamArrayAttribute), false) &&
                 parameterInfo.ParameterType.IsArray;
-            if (isParams) return "V" + GetTypeSignature(parameterInfo.ParameterType.GetElementType());
-            if (parameterInfo.IsOptional) return "D" + GetTypeSignature(parameterInfo.ParameterType);
+            if (isParams)
+                return "V" + GetTypeSignature(parameterInfo.ParameterType.GetElementType());
+            if (parameterInfo.IsOptional)
+                return "D" + GetTypeSignature(parameterInfo.ParameterType);
             return GetTypeSignature(parameterInfo.ParameterType);
         }
 
@@ -230,7 +235,8 @@ namespace PuertsIl2cpp
                 return "t";
             }
             else if (methodBase is MethodInfo) {
-                var isDelegate = typeof(MulticastDelegate).IsAssignableFrom(methodBase.DeclaringType);
+                var isDelegate =
+                    typeof(MulticastDelegate).IsAssignableFrom(methodBase.DeclaringType);
                 var methodInfo = methodBase as MethodInfo;
                 if ((!isDelegate && !methodInfo.IsStatic) || isExtensionMethod)
                     return methodBase.DeclaringType == typeof(object) ? "T" : "t";
@@ -238,15 +244,16 @@ namespace PuertsIl2cpp
             return "";
         }
 
-        public static string GetMethodSignature(MethodBase methodBase, bool isDelegateInvoke = false
-            , bool isExtensionMethod = false)
+        public static string GetMethodSignature(MethodBase methodBase,
+            bool isDelegateInvoke = false, bool isExtensionMethod = false)
         {
             var signature = "";
 
             if (methodBase is ConstructorInfo) {
                 signature += "vt";
                 var constructorInfo = methodBase as ConstructorInfo;
-                foreach (var p in constructorInfo.GetParameters()) signature += GetParameterSignature(p);
+                foreach (var p in constructorInfo.GetParameters())
+                    signature += GetParameterSignature(p);
             }
             else if (methodBase is MethodInfo) {
                 var methodInfo = methodBase as MethodInfo;
@@ -277,12 +284,14 @@ namespace PuertsIl2cpp
                 if (TypeInfoPassToJsFilter(returnType)) types.Add(returnType);
             }
             types.AddRange(methodBase.GetParameters().Skip(isExtensionMethod ? 1 : 0)
-                .Select(m => m.ParameterType.IsByRef ? m.ParameterType.GetElementType() : m.ParameterType)
+                .Select(m =>
+                    m.ParameterType.IsByRef ? m.ParameterType.GetElementType() : m.ParameterType)
                 .Where(TypeInfoPassToJsFilter));
             return types;
         }
 
-        public static MethodInfo HandleMaybeGenericMethod(MethodInfo method, ParameterInfo[] pinfos = null)
+        public static MethodInfo HandleMaybeGenericMethod(MethodInfo method,
+            ParameterInfo[] pinfos = null)
         {
             if (method.IsGenericMethodDefinition) {
                 if (!IsNonGenericOrValidGeneric(method, pinfos)) return null;
@@ -295,7 +304,8 @@ namespace PuertsIl2cpp
             return method;
         }
 
-        internal static bool IsNonGenericOrValidGeneric(MethodInfo method, ParameterInfo[] pinfos = null)
+        internal static bool IsNonGenericOrValidGeneric(MethodInfo method,
+            ParameterInfo[] pinfos = null)
         {
             // 不包含泛型参数，肯定支持
             if (!method.ContainsGenericParameters) return true;
@@ -308,7 +318,8 @@ namespace PuertsIl2cpp
             }
             return validGenericParameter.Count > 0 && (
                 // 返回值也需要判断，必须是非泛型，或者是可用泛型参数里正好也包括返回类型
-                !method.ReturnType.IsGenericParameter || validGenericParameter.Contains(method.ReturnType));
+                !method.ReturnType.IsGenericParameter ||
+                validGenericParameter.Contains(method.ReturnType));
         }
 
         internal static bool HasValidContraint(Type type, List<Type> validTypes)
@@ -329,7 +340,8 @@ namespace PuertsIl2cpp
                 foreach (var parameterConstraint in parameterConstraints)
                     // the constraint could not be another genericType #533
                     if (!IsClass(parameterConstraint) || parameterConstraint == typeof(ValueType) ||
-                        (parameterConstraint.IsGenericType && !parameterConstraint.IsGenericTypeDefinition))
+                        (parameterConstraint.IsGenericType &&
+                            !parameterConstraint.IsGenericTypeDefinition))
                         return false;
                 validTypes.Add(type);
                 return true;

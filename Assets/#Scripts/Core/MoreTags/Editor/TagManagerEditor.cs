@@ -44,7 +44,8 @@ namespace MoreTags
                 EditorGUI.indentLevel--;
 
                 if (s_AllTagFoldout) {
-                    var alltag = TagSystem.GetAllTags().OrderBy(tag => TagPreset.GetTagOrder(tag)).ToArray();
+                    var alltag = TagSystem.GetAllTags().OrderBy(tag => TagPreset.GetTagOrder(tag))
+                        .ToArray();
                     m_AllTag.OnGUI(alltag);
                     EditorGUILayout.Space();
                     EditorGUILayout.BeginHorizontal();
@@ -53,17 +54,20 @@ namespace MoreTags
                     rect.width = EditorGUIUtility.labelWidth - 4;
                     s_TagRenameIndex = Mathf.Clamp(s_TagRenameIndex, 0, alltag.Length - 1);
                     s_TagRenameIndex = EditorGUI.Popup(rect, s_TagRenameIndex, alltag);
-                    if (GUILayout.Button("Rename", EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                    if (GUILayout.Button("Rename", EditorStyles.miniButton,
+                        GUILayout.ExpandWidth(false)))
                         TagSystem.RenameTag(alltag[s_TagRenameIndex], s_TagRename);
                     EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.HelpBox("Right click the tag to change color.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Right click the tag to change color.",
+                        MessageType.Info);
                 }
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Space();
                 var pattern = TagSystem.pattern;
                 EditorGUILayout.BeginHorizontal();
 
-                if (GUILayout.Button("All", EditorStyles.miniButton, GUILayout.ExpandWidth(false))) {
+                if (GUILayout.Button("All", EditorStyles.miniButton,
+                    GUILayout.ExpandWidth(false))) {
                     TagSystem.SearchFrom();
                     if (string.IsNullOrEmpty(s_PatternString))
                         pattern = TagSystem.pattern.All();
@@ -72,18 +76,21 @@ namespace MoreTags
                     m_GameObjects = pattern.GameObjects().Where(go => go != null);
                 }
 
-                if (GUILayout.Button("Selected", EditorStyles.miniButton, GUILayout.ExpandWidth(false))) {
+                if (GUILayout.Button("Selected", EditorStyles.miniButton,
+                    GUILayout.ExpandWidth(false))) {
                     if (!s_WithChildren)
                         TagSystem.SearchFrom(Selection.gameObjects);
                     else
-                        TagSystem.SearchFrom(Selection.gameObjects.SelectMany(go => go.GetChildrenList()));
+                        TagSystem.SearchFrom(
+                            Selection.gameObjects.SelectMany(go => go.GetChildrenList()));
                     if (string.IsNullOrEmpty(s_PatternString))
                         pattern = TagSystem.pattern.All();
                     else
                         pattern = TagHelper.StringToPattern(s_PatternString);
                     m_GameObjects = pattern.GameObjects().Where(go => go != null);
                 }
-                s_WithChildren = GUILayout.Toggle(s_WithChildren, "With Children", GUILayout.ExpandWidth(false));
+                s_WithChildren = GUILayout.Toggle(s_WithChildren, "With Children",
+                    GUILayout.ExpandWidth(false));
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Tag Pattern");
@@ -116,19 +123,22 @@ namespace MoreTags
                 else {
                     var menu = new GenericMenu();
                     foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags()))
-                        menu.AddItem(new GUIContent(tag), false, () => AddTagToGameObjects(tag, list));
+                        menu.AddItem(new GUIContent(tag), false,
+                            () => AddTagToGameObjects(tag, list));
                     menu.ShowAsContext();
                 }
             };
             taggui.OnClickItem = null;
             taggui.OnGUI(Enumerable.Empty<string>(), "Add Tag");
             s_RemoveAll = EditorGUILayout.Toggle("Remove All", s_RemoveAll);
-            if (GUILayout.Button("Select Listed Game Object", EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("Select Listed Game Object", EditorStyles.miniButton,
+                GUILayout.ExpandWidth(false)))
                 if (list.Any())
                     Selection.objects = list.ToArray();
             EditorGUILayout.BeginHorizontal();
             {
-                var alltag = TagSystem.GetAllTags().OrderBy(tag => TagPreset.GetTagOrder(tag)).ToArray();
+                var alltag = TagSystem.GetAllTags().OrderBy(tag => TagPreset.GetTagOrder(tag))
+                    .ToArray();
                 s_ChangeTag = EditorGUILayout.TextField(" ", s_ChangeTag);
                 var rect = GUILayoutUtility.GetLastRect();
                 rect.width = EditorGUIUtility.labelWidth - 4;
@@ -141,7 +151,8 @@ namespace MoreTags
                         menu.AddItem(new GUIContent(tag), false, () => s_ChangeTag = tag);
                     menu.ShowAsContext();
                 }
-                if (GUILayout.Button("Change", EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                if (GUILayout.Button("Change", EditorStyles.miniButton,
+                    GUILayout.ExpandWidth(false)))
                     ChangeGameObjectsTag(alltag[s_ChangeTagIndex], s_ChangeTag, list);
             }
             EditorGUILayout.EndHorizontal();
@@ -190,8 +201,9 @@ namespace MoreTags
         {
             if (!s_Abbreviation) return new GUIContent(item);
             var list = item.Split('.');
-            var str = string.Join("."
-                , list.Take(list.Length - 1).Select(s => s.First().ToString()).Concat(new[] { list.Last() }).ToArray());
+            var str = string.Join(".",
+                list.Take(list.Length - 1).Select(s => s.First().ToString())
+                    .Concat(new[] { list.Last() }).ToArray());
             return new GUIContent(str, item);
         }
 
@@ -230,7 +242,8 @@ namespace MoreTags
             EditorSceneManager.MarkSceneDirty(list.First().scene);
         }
 
-        public static void ChangeGameObjectsTag(string old, string tag, IEnumerable<GameObject> list)
+        public static void ChangeGameObjectsTag(string old, string tag,
+            IEnumerable<GameObject> list)
         {
             if (!list.Any()) return;
             foreach (var go in list) go.ChangeTag(old, tag);
@@ -239,7 +252,8 @@ namespace MoreTags
 
         private IEnumerable<string> GetInheritanceHierarchy(Type type)
         {
-            for (var current = type; current != null; current = current.BaseType) yield return current.ToString();
+            for (var current = type; current != null; current = current.BaseType)
+                yield return current.ToString();
         }
 
         private bool GameObjectWithComponent(GameObject go, string component)

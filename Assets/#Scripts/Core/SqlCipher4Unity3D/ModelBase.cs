@@ -11,10 +11,12 @@ namespace SqlCipher4Unity3D
 {
     public class ModelBase : ScriptableBase
     {
-        public static readonly Dictionary<Type, ModelBase> Defaults = new Dictionary<Type, ModelBase>();
+        public static readonly Dictionary<Type, ModelBase> Defaults =
+            new Dictionary<Type, ModelBase>();
 
-        public static string Md5(string observedText) => string.Join(""
-            , from ba in MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(observedText)) select ba.ToString("x2"));
+        public static string Md5(string observedText) => string.Join("",
+            from ba in MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(observedText))
+            select ba.ToString("x2"));
 
         private static SQLiteConnection m_Connection;
         private static string dbPath => $"{Application.persistentDataPath}/{Md5("System")}.db";

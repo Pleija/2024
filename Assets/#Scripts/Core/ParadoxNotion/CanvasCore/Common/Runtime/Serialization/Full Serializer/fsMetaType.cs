@@ -63,7 +63,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 if (field.DeclaringType != reflectedType) continue;
                 if (CanSerializeField(field)) properties.Add(new fsMetaProperty(field));
             }
-            if (reflectedType.BaseType != null) CollectProperties(properties, reflectedType.BaseType);
+            if (reflectedType.BaseType != null)
+                CollectProperties(properties, reflectedType.BaseType);
         }
 
         //...
@@ -99,7 +100,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         {
             if (reflectedType.IsInterface || reflectedType.IsAbstract)
                 return () => {
-                    throw new Exception("Cannot create an instance of an interface or abstract type for " +
+                    throw new Exception(
+                        "Cannot create an instance of an interface or abstract type for " +
                         reflectedType);
                 };
             if (typeof(UnityEngine.ScriptableObject).IsAssignableFrom(reflectedType))
@@ -118,7 +120,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
             if (reflectedType.IsValueType || reflectedType.RTIsDefined<fsUninitialized>(true) ||
                 !HasDefaultConstructor(reflectedType))
                 return () => {
-                    return System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject(reflectedType);
+                    return System.Runtime.Serialization.FormatterServices
+                        .GetSafeUninitializedObject(reflectedType);
                 };
 
             // var exp = Expression.Lambda<Func<object>>(Expression.New(reflectedType)).Compile();
@@ -148,7 +151,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Returns a *cached* default instance of target type This is mostly used for comparing default serialization
+        ///     Returns a *cached* default instance of target type This is mostly used for comparing default
+        ///     serialization
         ///     properties
         /// </summary>
         public object GetDefaultInstance()

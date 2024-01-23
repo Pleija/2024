@@ -6,8 +6,8 @@ using NavMeshHit = UnityEngine.AI.NavMeshHit;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Find Closest NavMesh Edge"), Category("Movement/Pathfinding")
-     , Description("Find the closes Navigation Mesh position to the target position")]
+    [Name("Find Closest NavMesh Edge"), Category("Movement/Pathfinding"),
+     Description("Find the closes Navigation Mesh position to the target position")]
     public class FindClosestEdge : ActionTask
     {
         public BBParameter<Vector3> targetPosition;

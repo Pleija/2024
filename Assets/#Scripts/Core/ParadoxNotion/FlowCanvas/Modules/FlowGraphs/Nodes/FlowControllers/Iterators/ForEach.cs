@@ -6,9 +6,9 @@ using ParadoxNotion.Design;
 namespace FlowCanvas.Nodes
 {
     [Description(
-         "Enumerate a value (usualy a list or array) for each of it's elements. Remember that you can also enumerate a Transform for it's children.")
-     , Category("Flow Controllers/Iterators"), ContextDefinedInputs(typeof(IEnumerable))
-     , ContextDefinedOutputs(typeof(object))]
+         "Enumerate a value (usualy a list or array) for each of it's elements. Remember that you can also enumerate a Transform for it's children."),
+     Category("Flow Controllers/Iterators"), ContextDefinedInputs(typeof(IEnumerable)),
+     ContextDefinedOutputs(typeof(object))]
     public class ForEach : FlowControlNode
     {
         private object currentObject;
@@ -60,14 +60,16 @@ namespace FlowCanvas.Nodes
         {
             if (port == enumerableInput) {
                 var elementType = otherPort.type.GetEnumerableElementType();
-                if (elementType != null) ReplaceWith(typeof(ForEach<>).RTMakeGenericType(elementType));
+                if (elementType != null)
+                    ReplaceWith(typeof(ForEach<>).RTMakeGenericType(elementType));
             }
         }
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Description("Enumerate a value (usualy a list or array) for each of it's elements")
-     , Category("Flow Controllers/Iterators"), ContextDefinedOutputs(typeof(Wild)), ExposeAsDefinition]
+    [Description("Enumerate a value (usualy a list or array) for each of it's elements"),
+     Category("Flow Controllers/Iterators"), ContextDefinedOutputs(typeof(Wild)),
+     ExposeAsDefinition]
     public class ForEach<T> : FlowControlNode
     {
         private T currentObject;

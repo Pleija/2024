@@ -10,8 +10,8 @@ using Threader = ParadoxNotion.Services.Threader;
 namespace NodeCanvas.Framework
 {
 #if UNITY_EDITOR //handles missing parameter types and upgrades of T to BBParameter<T>
-    [fsObject(Processor = typeof(fsBBParameterProcessor)), ParadoxNotion.Design.SpoofAOT, Serializable, fsAutoInstance
-     , fsUninitialized]
+    [fsObject(Processor = typeof(fsBBParameterProcessor)), ParadoxNotion.Design.SpoofAOT,
+     Serializable, fsAutoInstance, fsUninitialized]
 #endif
 
     //TODO: Change GlobalBlackboard resolution to use BB.UID
@@ -52,7 +52,8 @@ namespace NodeCanvas.Framework
         public static BBParameter CreateInstance(Type t, IBlackboard bb)
         {
             if (t == null) return null;
-            var newBBParam = (BBParameter)Activator.CreateInstance(typeof(BBParameter<>).RTMakeGenericType(t));
+            var newBBParam =
+                (BBParameter)Activator.CreateInstance(typeof(BBParameter<>).RTMakeGenericType(t));
             newBBParam.bb = bb;
             return newBBParam;
         }
@@ -61,9 +62,10 @@ namespace NodeCanvas.Framework
         public static void SetBBFields(object target, IBlackboard bb)
         {
             if (target == null) return;
-            ParadoxNotion.Serialization.JSONSerializer.SerializeAndExecuteNoCycles(target.GetType(), target, (o, d) => {
-                if (o is BBParameter) (o as BBParameter).bb = bb;
-            });
+            ParadoxNotion.Serialization.JSONSerializer.SerializeAndExecuteNoCycles(target.GetType(),
+                target, (o, d) => {
+                    if (o is BBParameter) (o as BBParameter).bb = bb;
+                });
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -74,7 +76,8 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     The Variable object reference if any.One is set when name change as well as when SetBBFields is called.
+        ///     The Variable object reference if any.One is set when name change as well as when SetBBFields is
+        ///     called.
         ///     Setting the varRef also binds this parameter with that Variable.
         /// </summary>
         public Variable varRef {
@@ -167,7 +170,8 @@ namespace NodeCanvas.Framework
         private void OnBBVariableAdded(Variable variable)
         {
             // if ( variable.ID == targetVariableID ) { varRef = variable; }
-            if (varRef == null && variable.name == name && variable.CanConvertTo(varType)) varRef = variable;
+            if (varRef == null && variable.name == name && variable.CanConvertTo(varType))
+                varRef = variable;
         }
 #endif
 
@@ -200,8 +204,10 @@ namespace NodeCanvas.Framework
         public bool isDefined => !string.IsNullOrEmpty(name);
 
         /// <summary>
-        ///     The type of the Variable reference or null if there is no Variable referenced. The returned type is for most
-        ///     cases the same as 'VarType'. RefType and VarType can be different when an AutoConvert is taking place.
+        ///     The type of the Variable reference or null if there is no Variable referenced. The returned
+        ///     type is for most
+        ///     cases the same as 'VarType'. RefType and VarType can be different when an AutoConvert is taking
+        ///     place.
         /// </summary>
         public Type refType => varRef != null ? varRef.varType : null;
 
@@ -235,7 +241,8 @@ namespace NodeCanvas.Framework
             if (targetVariable != null) {
                 _targetVariableID = targetVariable.ID;
                 _name = targetBB is GlobalBlackboard
-                    ? string.Format("{0}/{1}", targetBB.identifier, targetVariable.name) : targetVariable.name;
+                    ? string.Format("{0}/{1}", targetBB.identifier, targetVariable.name)
+                    : targetVariable.name;
                 varRef = ResolveReference(bb, true);
             }
             else {
@@ -257,14 +264,16 @@ namespace NodeCanvas.Framework
             }
             Variable result = null;
             if (targetBlackboard == null) return null;
-            if (useID && targetVariableID != null) result = targetBlackboard.GetVariableByID(targetVariableID);
+            if (useID && targetVariableID != null)
+                result = targetBlackboard.GetVariableByID(targetVariableID);
             if (result == null && !string.IsNullOrEmpty(targetName))
                 result = targetBlackboard.GetVariable(targetName, varType);
             return result;
         }
 
         /// <summary>
-        ///     Promotes the parameter to a variable on the target blackboard (overriden if parameter name is a path to a
+        ///     Promotes the parameter to a variable on the target blackboard (overriden if parameter name is a
+        ///     path to a
         ///     global bb).
         /// </summary>
         public Variable PromoteToVariable(IBlackboard targetBB)
@@ -287,19 +296,21 @@ namespace NodeCanvas.Framework
                 varRef = null;
                 Logger.LogError(
                     string.Format(
-                        "Parameter '{0}' failed to promote to a variable, because Blackboard named '{1}' could not be found."
-                        , varName, bbName), LogTag.VARIABLE, this);
+                        "Parameter '{0}' failed to promote to a variable, because Blackboard named '{1}' could not be found.",
+                        varName, bbName), LogTag.VARIABLE, this);
                 return null;
             }
             varRef = targetBB.AddVariable(varName, varType);
             if (varRef != null)
                 Logger.Log(
-                    string.Format("Parameter '{0}' (of type '{1}') promoted to a Variable in Blackboard '{2}'.", varName
-                        , varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
+                    string.Format(
+                        "Parameter '{0}' (of type '{1}') promoted to a Variable in Blackboard '{2}'.",
+                        varName, varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
             else
                 Logger.LogError(
-                    string.Format("Parameter {0} (of type '{1}') failed to promote to a Variable in Blackboard '{2}'."
-                        , varName, varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
+                    string.Format(
+                        "Parameter {0} (of type '{1}') failed to promote to a Variable in Blackboard '{2}'.",
+                        varName, varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
             return varRef;
         }
 
@@ -312,15 +323,18 @@ namespace NodeCanvas.Framework
                 var text = string.Format("<b>${0}</b>", name);
 #if UNITY_EDITOR
                 if (UnityEditor.EditorGUIUtility.isProSkin)
-                    return varRef != null ? text : string.Format("<color=#FF6C6C>{0}</color>", text);
+                    return varRef != null ? text
+                        : string.Format("<color=#FF6C6C>{0}</color>", text);
                 else
-                    return varRef != null ? text : string.Format("<color=#DB2B2B>{0}</color>", text);
+                    return varRef != null ? text
+                        : string.Format("<color=#DB2B2B>{0}</color>", text);
 #else
                 return text;
 #endif
             }
             if (isNull) return "<b>NULL</b>";
-            if (value is IList || value is IDictionary) return string.Format("<b>{0}</b>", varType.FriendlyName());
+            if (value is IList || value is IDictionary)
+                return string.Format("<b>{0}</b>", varType.FriendlyName());
             return string.Format("<b>{0}</b>", value.ToStringAdvanced());
         }
     }
@@ -362,8 +376,9 @@ namespace NodeCanvas.Framework
                 //Dynamic?
                 if (varRef == null && bb != null && !string.IsNullOrEmpty(name)) {
                     if (isPresumedDynamic) {
-                        Logger.Log(string.Format("Dynamic Parameter Variable '{0}' Encountered...", name)
-                            , LogTag.VARIABLE, this);
+                        Logger.Log(
+                            string.Format("Dynamic Parameter Variable '{0}' Encountered...", name),
+                            LogTag.VARIABLE, this);
                         //setting the varRef property also binds it
                         varRef = PromoteToVariable(bb);
                         if (setter != null) setter(value);
@@ -371,8 +386,8 @@ namespace NodeCanvas.Framework
                     else {
                         Logger.LogError(
                             string.Format(
-                                "A Parameter Variable named '{0}' is missing. If it was meant to be a dynamic variable, please ensure that it starts with an underscore ('_') prefix by convention."
-                                , name), LogTag.EXECUTION, this);
+                                "A Parameter Variable named '{0}' is missing. If it was meant to be a dynamic variable, please ensure that it starts with an underscore ('_') prefix by convention.",
+                                name), LogTag.EXECUTION, this);
                     }
                     return;
                 }
@@ -461,13 +476,16 @@ namespace NodeCanvas.Framework
             //we still set the setter and let us know that is impossible to do the conversion
             setter = (T value) => {
                 Logger.LogWarning(
-                    string.Format("Setting Parameter Type '{0}' back to Variable Type '{1}' is not possible."
-                        , typeof(T).FriendlyName(), variable.varType.FriendlyName()), "AutoConvert", this);
+                    string.Format(
+                        "Setting Parameter Type '{0}' back to Variable Type '{1}' is not possible.",
+                        typeof(T).FriendlyName(), variable.varType.FriendlyName()), "AutoConvert",
+                    this);
             };
             return false;
         }
 
         //operator
-        public static implicit operator BBParameter<T>(T value) => new BBParameter<T> { value = value };
+        public static implicit operator BBParameter<T>(T value) =>
+            new BBParameter<T> { value = value };
     }
 }

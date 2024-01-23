@@ -10,11 +10,13 @@ namespace Slate
     public static class AnimatableParameterEditor
     {
         private static bool isDraggingTime;
-        private static Dictionary<AnimatedParameter, Rect> fixedCurveRects = new Dictionary<AnimatedParameter, Rect>();
+
+        private static Dictionary<AnimatedParameter, Rect> fixedCurveRects =
+            new Dictionary<AnimatedParameter, Rect>();
 
         ///<summary>Display an AnimatedParameter GUI</summary>
-        public static void ShowParameter(AnimatedParameter animParam, IKeyable keyable
-            , SerializedProperty serializedProperty = null)
+        public static void ShowParameter(AnimatedParameter animParam, IKeyable keyable,
+            SerializedProperty serializedProperty = null)
         {
             //Calling this through a PropertyDrawer (thus serialized property != null), seems to have some mambo jumbo spacing.
             //This fixes that spacing so that both field and property parameter editors looks the same.
@@ -43,27 +45,32 @@ namespace Slate
             GUILayout.Label(sFold, GUILayout.Width(15));
             lastRect = GUILayoutUtility.GetLastRect();
             GUI.enabled = !animParam.isExternal || isRecording;
-            GUI.backgroundColor = hasAnyKey && parameterEnabled ? new Color(1, 0.6f, 0.6f) : Color.white;
-            GUI.backgroundColor = hasAnyKey && parameterEnabled && isRecording ? Styles.recordingColor
-                : GUI.backgroundColor;
+            GUI.backgroundColor =
+                hasAnyKey && parameterEnabled ? new Color(1, 0.6f, 0.6f) : Color.white;
+            GUI.backgroundColor = hasAnyKey && parameterEnabled && isRecording
+                ? Styles.recordingColor : GUI.backgroundColor;
             DoParameterField(string.Format("<b>{0}</b>", sName), animParam, keyableTime);
             GUI.enabled = true;
             GUI.backgroundColor = Color.white;
             EditorGUIUtility.AddCursorRect(lastRect, MouseCursor.Link);
 
-            if (e.type == EventType.MouseDown && e.button == 0 && lastRect.Contains(e.mousePosition)) {
+            if (e.type == EventType.MouseDown && e.button == 0 &&
+                lastRect.Contains(e.mousePosition)) {
                 EditorTools.SetObjectFoldOut(animParam, !foldOut);
                 e.Use();
             }
             GUI.enabled = hasAnyKey && parameterEnabled;
-            if (GUILayout.Button(Styles.previousKeyIcon, GUIStyle.none, GUILayout.Height(20), GUILayout.Width(16)))
-                keyable.root.currentTime = animParam.GetKeyPrevious(keyableTime) + keyable.startTime;
+            if (GUILayout.Button(Styles.previousKeyIcon, GUIStyle.none, GUILayout.Height(20),
+                GUILayout.Width(16)))
+                keyable.root.currentTime =
+                    animParam.GetKeyPrevious(keyableTime) + keyable.startTime;
             EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(), MouseCursor.Link);
             GUI.enabled = parameterEnabled;
             GUI.color = hasKeyNow && parameterEnabled ? new Color(1, 0.3f, 0.3f) : Color.white;
             GUI.color = hasAnyKey && hasChanged ? Color.green : GUI.color;
 
-            if (GUILayout.Button(Styles.keyIcon, GUIStyle.none, GUILayout.Height(20), GUILayout.Width(16))) {
+            if (GUILayout.Button(Styles.keyIcon, GUIStyle.none, GUILayout.Height(20),
+                GUILayout.Width(16))) {
                 if (e.alt) {
                     animParam.scriptExpression = "value";
                     EditorTools.SetObjectFoldOut(animParam, true);
@@ -78,13 +85,15 @@ namespace Slate
             GUI.color = Color.white;
             EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(), MouseCursor.Link);
             GUI.enabled = hasAnyKey && parameterEnabled;
-            if (GUILayout.Button(Styles.nextKeyIcon, GUIStyle.none, GUILayout.Height(20), GUILayout.Width(16)))
+            if (GUILayout.Button(Styles.nextKeyIcon, GUIStyle.none, GUILayout.Height(20),
+                GUILayout.Width(16)))
                 keyable.root.currentTime = animParam.GetKeyNext(keyableTime) + keyable.startTime;
             EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(), MouseCursor.Link);
             GUILayout.Space(2);
             GUI.enabled = true;
             GUI.color = Color.white.WithAlpha(animParam.enabled ? 1 : 0.5f);
-            if (GUILayout.Button(Styles.gearIcon, GUIStyle.none, GUILayout.Height(20), GUILayout.Width(16)))
+            if (GUILayout.Button(Styles.gearIcon, GUIStyle.none, GUILayout.Height(20),
+                GUILayout.Width(16)))
                 DoParamGearContextMenu(animParam, keyable);
             GUI.color = Color.white;
             EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(), MouseCursor.Link);
@@ -123,7 +132,8 @@ namespace Slate
                 string info = null;
                 if (!parameterEnabled) info = "Parameter is disabled or overriden.";
                 if (info == null && !hasAnyKey && !hasExpression)
-                    info = "Parameter is not yet animated. You can make it so by creating the first key.";
+                    info =
+                        "Parameter is not yet animated. You can make it so by creating the first key.";
                 if (info == null && keyableLength == 0 && hasAnyKey)
                     info = "Length of Clip is zero. Can not display Curve Editor.";
                 if (info == null && animParam.isExternal && !isRecording)
@@ -152,7 +162,8 @@ namespace Slate
         }
 
         //This is basicaly used in Tracks. Shows only the parameter controls in a vertical style for space conservation.
-        public static void ShowMiniParameterKeyControls(AnimatedParameter animParam, IKeyable keyable)
+        public static void ShowMiniParameterKeyControls(AnimatedParameter animParam,
+            IKeyable keyable)
         {
             if (animParam == null) return;
             var keyableTime = keyable.RootTimeToLocalTime();
@@ -160,28 +171,34 @@ namespace Slate
             var hasAnyKey = animParam.HasAnyKey();
             var hasKeyNow = animParam.HasKey(keyableTime);
             var hasChanged = animParam.HasChanged();
-            GUI.color = EditorGUIUtility.isProSkin ? new Color(0, 0, 0, 0.2f) : new Color(0, 0, 0, 0.5f);
+            GUI.color = EditorGUIUtility.isProSkin ? new Color(0, 0, 0, 0.2f)
+                : new Color(0, 0, 0, 0.5f);
             GUILayout.BeginHorizontal(Styles.headerBoxStyle);
             GUI.color = Color.white;
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button(Styles.previousKeyIcon, GUIStyle.none, GUILayout.Height(18), GUILayout.Width(18)))
-                keyable.root.currentTime = animParam.GetKeyPrevious(keyableTime) + keyable.startTime;
+            if (GUILayout.Button(Styles.previousKeyIcon, GUIStyle.none, GUILayout.Height(18),
+                GUILayout.Width(18)))
+                keyable.root.currentTime =
+                    animParam.GetKeyPrevious(keyableTime) + keyable.startTime;
             GUI.color = hasKeyNow ? Color.red : Color.white;
             GUI.color = hasAnyKey && hasChanged ? Color.green : GUI.color;
 
-            if (GUILayout.Button(Styles.keyIcon, GUIStyle.none, GUILayout.Height(18), GUILayout.Width(18))) {
+            if (GUILayout.Button(Styles.keyIcon, GUIStyle.none, GUILayout.Height(18),
+                GUILayout.Width(18))) {
                 if (!hasKeyNow || hasChanged)
                     animParam.SetKeyCurrent(keyableTime);
                 else
                     animParam.RemoveKey(keyableTime);
             }
             GUI.color = Color.white;
-            if (GUILayout.Button(Styles.nextKeyIcon, GUIStyle.none, GUILayout.Height(18), GUILayout.Width(18)))
+            if (GUILayout.Button(Styles.nextKeyIcon, GUIStyle.none, GUILayout.Height(18),
+                GUILayout.Width(18)))
                 keyable.root.currentTime = animParam.GetKeyNext(keyableTime) + keyable.startTime;
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUI.enabled = !animParam.isExternal || isRecording;
-            GUI.color = EditorGUIUtility.isProSkin ? new Color(0.5f, 0.5f, 0.5f, 0.5f) : new Color(0, 0, 0, 0.3f);
+            GUI.color = EditorGUIUtility.isProSkin ? new Color(0.5f, 0.5f, 0.5f, 0.5f)
+                : new Color(0, 0, 0, 0.3f);
             GUILayout.BeginVertical(Styles.clipBoxFooterStyle);
             GUI.color = Color.white;
             DoParameterField(null, animParam, keyableTime);
@@ -256,8 +273,9 @@ namespace Slate
             menu.AddSeparator("/");
             if (hasAnyKey)
                 menu.AddItem(new GUIContent("Remove Animation"), false, () => {
-                    if (EditorUtility.DisplayDialog("Reset Animation"
-                        , "All animation keys will be removed for this parameter.\nAre you sure?", "Yes", "No")) {
+                    if (EditorUtility.DisplayDialog("Reset Animation",
+                        "All animation keys will be removed for this parameter.\nAre you sure?",
+                        "Yes", "No")) {
                         if (animParam.isExternal) animParam.RestoreSnapshot();
                         animParam.Reset();
                         if (animParam.isExternal) animParam.SetSnapshot();
@@ -267,8 +285,8 @@ namespace Slate
                 menu.AddDisabledItem(new GUIContent("Remove Animation"));
             if (animParam.isExternal)
                 menu.AddItem(new GUIContent("Remove Parameter"), false, () => {
-                    if (EditorUtility.DisplayDialog("Remove Parameter", "Completely Remove Parameter.\nAre you sure?"
-                        , "Yes", "No")) {
+                    if (EditorUtility.DisplayDialog("Remove Parameter",
+                        "Completely Remove Parameter.\nAre you sure?", "Yes", "No")) {
                         animParam.RestoreSnapshot();
                         keyable.animationData.RemoveParameter(animParam);
                         CutsceneUtility.RefreshAllAnimationEditorsOf(keyable.animationData);
@@ -309,7 +327,8 @@ namespace Slate
                 }
 
                 if (type == typeof(int)) {
-                    if (animParamAtt != null && animParamAtt.min != null && animParamAtt.max != null) {
+                    if (animParamAtt != null && animParamAtt.min != null &&
+                        animParamAtt.max != null) {
                         name = name == null ? string.Empty : name;
                         var min = animParamAtt.min.Value;
                         var max = animParamAtt.max.Value;
@@ -322,7 +341,8 @@ namespace Slate
                 }
 
                 if (type == typeof(float)) {
-                    if (animParamAtt != null && animParamAtt.min != null && animParamAtt.max != null) {
+                    if (animParamAtt != null && animParamAtt.min != null &&
+                        animParamAtt.max != null) {
                         name = name == null ? string.Empty : name;
                         var min = animParamAtt.min.Value;
                         var max = animParamAtt.max.Value;
@@ -371,7 +391,8 @@ namespace Slate
                     name = name == null ? string.Empty : name;
                     GUI.backgroundColor = Color.white; //to avoid tinting
 #if UNITY_2018_3_OR_NEWER
-                    newValue = EditorGUILayout.ColorField(new GUIContent(name), (Color)value, false, true, true);
+                    newValue = EditorGUILayout.ColorField(new GUIContent(name), (Color)value, false,
+                        true, true);
 #else
                     newValue = EditorGUILayout.ColorField(new GUIContent(name), (Color)value, false, true, true, new ColorPickerHDRConfig(0f, float.MaxValue, 0f, float.MaxValue));
 #endif
@@ -379,16 +400,19 @@ namespace Slate
 
                 if (EditorGUI.EndChangeCheck() && newValue != value) {
                     animParam.SetCurrentValue(newValue);
-                    if (Prefs.autoKey || (animParam.isExternal && !animParam.HasAnyKey())) animParam.TryAutoKey(time);
+                    if (Prefs.autoKey || (animParam.isExternal && !animParam.HasAnyKey()))
+                        animParam.TryAutoKey(time);
                 }
             }
             catch (System.Exception exc) {
-                GUILayout.Label(string.Format("<color=#f25c5c>{0}</color> (<size=8>{1}</size>)", name, exc.Message));
+                GUILayout.Label(string.Format("<color=#f25c5c>{0}</color> (<size=8>{1}</size>)",
+                    name, exc.Message));
             }
         }
 
         ///<summary>Inline curve editor box</summary>
-        private static void DoCurveBox(AnimatedParameter animParam, IKeyable keyable, bool isRecording)
+        private static void DoCurveBox(AnimatedParameter animParam, IKeyable keyable,
+            bool isRecording)
         {
             var e = Event.current;
             var keyableLength = keyable.GetLength();
@@ -399,11 +423,13 @@ namespace Slate
             var timeRect = new Rect(0, 0, keyableLength, 0);
             var posRect = new Rect();
 
-            if (e.type == EventType.Repaint || !fixedCurveRects.TryGetValue(animParam, out posRect)) {
+            if (e.type == EventType.Repaint ||
+                !fixedCurveRects.TryGetValue(animParam, out posRect)) {
                 posRect = new Rect(lastRect.x, lastRect.yMax + 5, lastRect.width, 240);
                 fixedCurveRects[animParam] = posRect;
             }
-            GUI.color = EditorGUIUtility.isProSkin ? new Color(0, 0, 0, 0.5f) : new Color(0, 0, 0, 0.3f);
+            GUI.color = EditorGUIUtility.isProSkin ? new Color(0, 0, 0, 0.5f)
+                : new Color(0, 0, 0, 0.3f);
             GUI.Box(posRect, "", (GUIStyle)"textfield");
             GUI.color = Color.white;
             var dragTimeRect = new Rect(posRect.x, posRect.y + 1, posRect.width, 10);
@@ -427,28 +453,33 @@ namespace Slate
             if (e.type == EventType.KeyDown && posRect.Contains(e.mousePosition)) {
                 if (e.keyCode == KeyCode.Comma) {
                     GUIUtility.keyboardControl = 0;
-                    keyable.root.currentTime = animParam.GetKeyPrevious(keyableTime) + keyable.startTime;
+                    keyable.root.currentTime =
+                        animParam.GetKeyPrevious(keyableTime) + keyable.startTime;
                     e.Use();
                 }
 
                 if (e.keyCode == KeyCode.Period) {
                     GUIUtility.keyboardControl = 0;
-                    keyable.root.currentTime = animParam.GetKeyNext(keyableTime) + keyable.startTime;
+                    keyable.root.currentTime =
+                        animParam.GetKeyNext(keyableTime) + keyable.startTime;
                     Event.current.Use();
                 }
             }
             var dopeRect = new Rect(posRect.x, dragTimeRect.yMax + 1, posRect.width, 16);
             Handles.color = Color.black.WithAlpha(0.2f);
-            Handles.DrawLine(new Vector2(dopeRect.xMin, dopeRect.yMin), new Vector2(dopeRect.xMax, dopeRect.yMin));
-            Handles.DrawLine(new Vector2(dopeRect.xMin, dopeRect.yMax), new Vector2(dopeRect.xMax, dopeRect.yMax));
+            Handles.DrawLine(new Vector2(dopeRect.xMin, dopeRect.yMin),
+                new Vector2(dopeRect.xMax, dopeRect.yMin));
+            Handles.DrawLine(new Vector2(dopeRect.xMin, dopeRect.yMax),
+                new Vector2(dopeRect.xMax, dopeRect.yMax));
             Handles.color = Color.white;
             DopeSheetEditor.DrawDopeSheet(animParam, keyable, dopeRect, 0, keyableLength);
-            var curvesRect = new Rect(posRect.x, dopeRect.yMax, posRect.width
-                , posRect.height - dopeRect.height - dragTimeRect.height);
+            var curvesRect = new Rect(posRect.x, dopeRect.yMax, posRect.width,
+                posRect.height - dopeRect.height - dragTimeRect.height);
             CurveEditor.DrawCurves(animParam, keyable, curvesRect, timeRect);
 
             if (isRecording) {
-                var iLerp = Mathf.InverseLerp(keyable.startTime, keyable.endTime, keyable.root.currentTime);
+                var iLerp = Mathf.InverseLerp(keyable.startTime, keyable.endTime,
+                    keyable.root.currentTime);
                 var lerp = Mathf.Lerp(posRect.x, posRect.xMax, iLerp);
                 var a = new Vector3(lerp, posRect.y, 0);
                 var b = new Vector3(lerp, posRect.yMax, 0);

@@ -72,7 +72,8 @@ namespace Slate
         private static SerializedData data {
             get {
                 if (_data == null) {
-                    _data = JsonUtility.FromJson<SerializedData>(EditorPrefs.GetString("Slate.EditorPreferences"));
+                    _data = JsonUtility.FromJson<SerializedData>(
+                        EditorPrefs.GetString("Slate.EditorPreferences"));
                     if (_data == null) _data = new SerializedData();
                 }
                 return _data;
@@ -112,7 +113,8 @@ namespace Slate
             }
         }
 
-        public static Color gizmosColor => new Color(data.gizmosLightness, data.gizmosLightness, data.gizmosLightness);
+        public static Color gizmosColor => new Color(data.gizmosLightness, data.gizmosLightness,
+            data.gizmosLightness);
 
         public static bool showShotThumbnails {
             get => data.showShotThumbnails;

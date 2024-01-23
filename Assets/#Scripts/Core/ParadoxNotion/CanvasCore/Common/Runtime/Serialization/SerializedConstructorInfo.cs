@@ -25,9 +25,10 @@ namespace ParadoxNotion.Serialization
             _hasChanged = false;
 
             if (_constructor != null) {
-                _baseInfo = _constructor.RTReflectedOrDeclaredType().FullName + "|" + "$Constructor";
-                _paramsInfo = string.Join("|"
-                    , _constructor.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
+                _baseInfo = _constructor.RTReflectedOrDeclaredType().FullName + "|" +
+                    "$Constructor";
+                _paramsInfo = string.Join("|",
+                    _constructor.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
             }
         }
 
@@ -43,7 +44,8 @@ namespace ParadoxNotion.Serialization
                 return;
             }
             var paramTypeNames = string.IsNullOrEmpty(_paramsInfo) ? null : _paramsInfo.Split('|');
-            var parameterTypes = paramTypeNames != null ? new Type[paramTypeNames.Length] : Type.EmptyTypes;
+            var parameterTypes = paramTypeNames != null ? new Type[paramTypeNames.Length]
+                : Type.EmptyTypes;
             var paramsFail = false;
 
             if (paramTypeNames != null)
@@ -62,7 +64,8 @@ namespace ParadoxNotion.Serialization
             if (_constructor == null) {
                 _hasChanged = true;
                 var constructors = type.RTGetConstructors();
-                _constructor = constructors.FirstOrDefault(c => c.GetParameters().Length == parameterTypes.Length);
+                _constructor = constructors.FirstOrDefault(c =>
+                    c.GetParameters().Length == parameterTypes.Length);
                 if (_constructor == null) _constructor = constructors.FirstOrDefault();
             }
         }
@@ -79,8 +82,8 @@ namespace ParadoxNotion.Serialization
         public MethodBase GetMethodBase() => _constructor;
         public bool HasChanged() => _hasChanged;
 
-        public string AsString() =>
-            string.Format("{0} ({1})", _baseInfo.Replace("|", "."), _paramsInfo.Replace("|", ", "));
+        public string AsString() => string.Format("{0} ({1})", _baseInfo.Replace("|", "."),
+            _paramsInfo.Replace("|", ", "));
 
         public override string ToString() => AsString();
 

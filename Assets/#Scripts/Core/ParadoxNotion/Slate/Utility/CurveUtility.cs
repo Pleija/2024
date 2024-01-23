@@ -28,15 +28,16 @@ namespace Slate
             MethodInfo method = null;
             method = typeof(AnimationUtility).GetMethod("UpdateTangentsFromMode", flags);
             UpdateTangentsFromModeDelegate = method.RTCreateDelegate<Action<AnimationCurve>>(null);
-            method = typeof(AnimationUtility).GetMethod("GetKeyLeftTangentMode", flags, null
-                , new Type[] { typeof(Keyframe) }, null);
-            GetKeyLeftTangentModeDelegate = method.RTCreateDelegate<Func<Keyframe, AnimationUtility.TangentMode>>(null);
-            method = typeof(AnimationUtility).GetMethod("GetKeyRightTangentMode", flags, null
-                , new Type[] { typeof(Keyframe) }, null);
+            method = typeof(AnimationUtility).GetMethod("GetKeyLeftTangentMode", flags, null,
+                new Type[] { typeof(Keyframe) }, null);
+            GetKeyLeftTangentModeDelegate =
+                method.RTCreateDelegate<Func<Keyframe, AnimationUtility.TangentMode>>(null);
+            method = typeof(AnimationUtility).GetMethod("GetKeyRightTangentMode", flags, null,
+                new Type[] { typeof(Keyframe) }, null);
             GetKeyRightTangentModeDelegate =
                 method.RTCreateDelegate<Func<Keyframe, AnimationUtility.TangentMode>>(null);
-            method = typeof(AnimationUtility).GetMethod("GetKeyBroken", flags, null, new Type[] { typeof(Keyframe) }
-                , null);
+            method = typeof(AnimationUtility).GetMethod("GetKeyBroken", flags, null,
+                new Type[] { typeof(Keyframe) }, null);
             GetKeyBrokenDelegate = method.RTCreateDelegate<Func<Keyframe, bool>>(null);
         }
 
@@ -64,7 +65,8 @@ namespace Slate
         }
 
         //...
-        public static void SetKeyTangentMode(this AnimationCurve curve, int index, TangentMode tangentMode)
+        public static void SetKeyTangentMode(this AnimationCurve curve, int index,
+            TangentMode tangentMode)
         {
             SetKeyLeftTangentMode(curve, index, tangentMode);
             SetKeyRightTangentMode(curve, index, tangentMode);
@@ -72,15 +74,19 @@ namespace Slate
         }
 
         //...
-        public static void SetKeyLeftTangentMode(AnimationCurve curve, int index, TangentMode tangentMode)
+        public static void SetKeyLeftTangentMode(AnimationCurve curve, int index,
+            TangentMode tangentMode)
         {
-            AnimationUtility.SetKeyLeftTangentMode(curve, index, (AnimationUtility.TangentMode)tangentMode);
+            AnimationUtility.SetKeyLeftTangentMode(curve, index,
+                (AnimationUtility.TangentMode)tangentMode);
         }
 
         //...
-        public static void SetKeyRightTangentMode(AnimationCurve curve, int index, TangentMode tangentMode)
+        public static void SetKeyRightTangentMode(AnimationCurve curve, int index,
+            TangentMode tangentMode)
         {
-            AnimationUtility.SetKeyRightTangentMode(curve, index, (AnimationUtility.TangentMode)tangentMode);
+            AnimationUtility.SetKeyRightTangentMode(curve, index,
+                (AnimationUtility.TangentMode)tangentMode);
         }
 
         //...
@@ -185,7 +191,8 @@ namespace Slate
         {
             var keys = new List<Keyframe>();
             foreach (var curve in curves) keys.AddRange(curve.keys);
-            return keys.OrderBy(k => k.time).FirstOrDefault(k => k.time > time + KEY_PROXIMITY_TOLERANCE).time;
+            return keys.OrderBy(k => k.time)
+                .FirstOrDefault(k => k.time > time + KEY_PROXIMITY_TOLERANCE).time;
         }
 
         ///<summary>Returns the key time before time, or last key if time is first key time.</summary>

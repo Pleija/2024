@@ -42,7 +42,8 @@ namespace Runner
         public IntReactiveProperty premium = 0;
 
         public Dictionary<Consumable.Consumable.ConsumableType, int> consumables =
-            new Dictionary<Consumable.Consumable.ConsumableType, int>(); // Inventory of owned consumables and quantity.
+            new Dictionary<Consumable.Consumable.ConsumableType,
+                int>(); // Inventory of owned consumables and quantity.
 
         public List<string> characters = new List<string>(); // Inventory of characters owned.
         public int usedCharacter;                            // Currently equipped character.
@@ -59,7 +60,9 @@ namespace Runner
         public string previousName = "Trash Cat";
         public bool licenceAccepted;
         public bool tutorialDone;
-        public float masterVolume = float.MinValue, musicVolume = float.MinValue, masterSFXVolume = float.MinValue;
+
+        public float masterVolume = float.MinValue, musicVolume = float.MinValue,
+            masterSFXVolume = float.MinValue;
 
         //ftue = First Time User Expeerience. This var is used to track thing a player do for the first time. It increment everytime the user do one of the step
         //e.g. it will increment to 1 when they click Start, to 2 when doing the first run, 3 when running at least 300m etc.
@@ -140,14 +143,14 @@ namespace Runner
         public void ClaimMission(MissionBase mission)
         {
             premium.Value += mission.reward;
-#if UNITY_ANALYTICS                                              // Using Analytics Standard Events v0.3.0
+#if UNITY_ANALYTICS // Using Analytics Standard Events v0.3.0
             AnalyticsEvent.ItemAcquired(AcquisitionType.Premium, // Currency type
-                "mission",                                       // Context
-                mission.reward,                                  // Amount
-                "anchovies",                                     // Item ID
-                premium,                                         // Item balance
-                "consumable",                                    // Item type
-                rank.ToString()                                  // Level
+                "mission", // Context
+                mission.reward, // Amount
+                "anchovies", // Item ID
+                premium, // Item balance
+                "consumable", // Item type
+                rank.ToString() // Level
             );
 #endif
             missions.Remove(mission);

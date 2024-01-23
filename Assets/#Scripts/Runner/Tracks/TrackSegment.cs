@@ -123,18 +123,21 @@ namespace Runner.Tracks
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (GUILayout.Button("Add obstacles")) ArrayUtility.Add(ref m_Segment.obstaclePositions, 0.0f);
+            if (GUILayout.Button("Add obstacles"))
+                ArrayUtility.Add(ref m_Segment.obstaclePositions, 0.0f);
 
             if (m_Segment.obstaclePositions != null) {
                 var toremove = -1;
 
                 for (var i = 0; i < m_Segment.obstaclePositions.Length; ++i) {
                     GUILayout.BeginHorizontal();
-                    m_Segment.obstaclePositions[i] = EditorGUILayout.Slider(m_Segment.obstaclePositions[i], 0.0f, 1.0f);
+                    m_Segment.obstaclePositions[i] =
+                        EditorGUILayout.Slider(m_Segment.obstaclePositions[i], 0.0f, 1.0f);
                     if (GUILayout.Button("-", GUILayout.MaxWidth(32))) toremove = i;
                     GUILayout.EndHorizontal();
                 }
-                if (toremove != -1) ArrayUtility.RemoveAt(ref m_Segment.obstaclePositions, toremove);
+                if (toremove != -1)
+                    ArrayUtility.RemoveAt(ref m_Segment.obstaclePositions, toremove);
             }
         }
     }

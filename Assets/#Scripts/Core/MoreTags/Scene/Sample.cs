@@ -20,9 +20,11 @@ public class Sample : MonoBehaviour
         m_TagOff = Tag.all.ToDictionary(k => k, v => false);
         m_TagOn["All"] = false;
         var tags = new[] {
-            Tag.Color.Red, Tag.Color.Green, Tag.Color.Blue, Tag.Color.Yellow, Tag.Color.Magenta, Tag.Color.Cyan,
+            Tag.Color.Red, Tag.Color.Green, Tag.Color.Blue, Tag.Color.Yellow, Tag.Color.Magenta,
+            Tag.Color.Cyan,
         };
-        var colors = new[] { Color.red, Color.green, Color.blue, Color.yellow, Color.magenta, Color.cyan };
+        var colors = new[]
+            { Color.red, Color.green, Color.blue, Color.yellow, Color.magenta, Color.cyan };
         var lookup = Enumerable.Range(0, tags.Length).ToDictionary(k => tags[k], v => colors[v]);
 
         foreach (var tag in tags)
@@ -41,15 +43,18 @@ public class Sample : MonoBehaviour
         GUILayout.BeginArea(m_AreaRect, new GUIStyle("box"));
         GUILayout.BeginHorizontal();
         GUI.changed = false;
-        m_TagOn["All"] = GUILayout.Toggle(m_TagOn["All"], "All", "button", GUILayout.ExpandWidth(false));
+        m_TagOn["All"] =
+            GUILayout.Toggle(m_TagOn["All"], "All", "button", GUILayout.ExpandWidth(false));
         on |= GUI.changed;
 
         foreach (TagName tag in Tag.Object.all) {
             GUI.changed = false;
-            m_TagOn[tag] = GUILayout.Toggle(m_TagOn[tag], tag.last, "button", GUILayout.ExpandWidth(false));
+            m_TagOn[tag] = GUILayout.Toggle(m_TagOn[tag], tag.last, "button",
+                GUILayout.ExpandWidth(false));
             on |= GUI.changed;
             GUI.changed = false;
-            m_TagOff[tag] = GUILayout.Toggle(m_TagOff[tag], "X", "button", GUILayout.ExpandWidth(false));
+            m_TagOff[tag] =
+                GUILayout.Toggle(m_TagOff[tag], "X", "button", GUILayout.ExpandWidth(false));
             off |= GUI.changed;
         }
         GUILayout.EndHorizontal();
@@ -57,15 +62,18 @@ public class Sample : MonoBehaviour
 
         foreach (TagName tag in Tag.Color.all) {
             GUI.changed = false;
-            m_TagOn[tag] = GUILayout.Toggle(m_TagOn[tag], tag.last, "button", GUILayout.ExpandWidth(false));
+            m_TagOn[tag] = GUILayout.Toggle(m_TagOn[tag], tag.last, "button",
+                GUILayout.ExpandWidth(false));
             on |= GUI.changed;
             GUI.changed = false;
-            m_TagOff[tag] = GUILayout.Toggle(m_TagOff[tag], "X", "button", GUILayout.ExpandWidth(false));
+            m_TagOff[tag] =
+                GUILayout.Toggle(m_TagOff[tag], "X", "button", GUILayout.ExpandWidth(false));
             off |= GUI.changed;
         }
         GUILayout.EndHorizontal();
         m_Pattern = GUILayout.TextField(m_Pattern);
-        var usepattern = GUILayout.Toggle(m_UsePattern, "Use Pattern", "button", GUILayout.ExpandWidth(false));
+        var usepattern = GUILayout.Toggle(m_UsePattern, "Use Pattern", "button",
+            GUILayout.ExpandWidth(false));
         if (on)
             foreach (var kv in m_TagOn)
                 if (kv.Value)

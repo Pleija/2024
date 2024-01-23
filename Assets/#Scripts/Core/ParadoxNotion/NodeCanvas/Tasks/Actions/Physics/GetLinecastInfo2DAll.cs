@@ -35,9 +35,10 @@ namespace NodeCanvas.Tasks.Actions
             if (hits.Length > 0) {
                 saveHitGameObjectsAs.value = hits.Select(h => h.collider.gameObject).ToList();
                 saveDistancesAs.value = hits.Select(h => h.fraction).ToList();
-                savePointsAs.value =
-                    hits.Select(h => new Vector3(h.point.x, h.point.y, target.value.transform.position.z)).ToList();
-                saveNormalsAs.value = hits.Select(h => new Vector3(h.normal.x, h.normal.y, 0f)).ToList();
+                savePointsAs.value = hits.Select(h =>
+                    new Vector3(h.point.x, h.point.y, target.value.transform.position.z)).ToList();
+                saveNormalsAs.value =
+                    hits.Select(h => new Vector3(h.normal.x, h.normal.y, 0f)).ToList();
                 EndAction(true);
                 return;
             }
@@ -46,7 +47,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public override void OnDrawGizmosSelected()
         {
-            if (agent && target.value) Gizmos.DrawLine(agent.position, target.value.transform.position);
+            if (agent && target.value)
+                Gizmos.DrawLine(agent.position, target.value.transform.position);
         }
     }
 }

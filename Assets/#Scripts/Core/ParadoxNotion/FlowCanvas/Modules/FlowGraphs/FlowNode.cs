@@ -21,24 +21,28 @@ namespace FlowCanvas
     public abstract partial class FlowNode : Node, ISerializationCallbackReceiver
     {
         ///----------------------------------------------------------------------------------------------
-        [AttributeUsage(AttributeTargets.Class)] ///<summary>Helper attribute for context menu</summary>
+        [AttributeUsage(AttributeTargets
+            .Class)] ///<summary>Helper attribute for context menu</summary>
         public class ContextDefinedInputsAttribute : Attribute
         {
             public readonly Type[] types;
             public ContextDefinedInputsAttribute(params Type[] types) => this.types = types;
         }
 
-        [AttributeUsage(AttributeTargets.Class)] ///<summary>Helper attribute for context menu</summary>
+        [AttributeUsage(AttributeTargets
+            .Class)] ///<summary>Helper attribute for context menu</summary>
         public class ContextDefinedOutputsAttribute : Attribute
         {
             public readonly Type[] types;
             public ContextDefinedOutputsAttribute(params Type[] types) => this.types = types;
         }
 
-        [AttributeUsage(AttributeTargets.Class)] ///<summary>Helper attribute to show refresh button</summary>
+        [AttributeUsage(AttributeTargets
+            .Class)] ///<summary>Helper attribute to show refresh button</summary>
         public class HasRefreshButtonAttribute : Attribute { }
 
-        [AttributeUsage(AttributeTargets.Field)] ///<summary>When field change, ports will be gathered</summary>
+        [AttributeUsage(AttributeTargets
+            .Field)] ///<summary>When field change, ports will be gathered</summary>
         public class GatherPortsCallbackAttribute : CallbackAttribute
         {
             public GatherPortsCallbackAttribute() : base(nameof(GatherPorts)) { }
@@ -125,13 +129,15 @@ namespace FlowCanvas
         ///<summary>Bind the port delegates. Called in runtime</summary>
         public void BindPorts()
         {
-            for (var i = 0; i < outConnections.Count; i++) (outConnections[i] as BinderConnection).Bind();
+            for (var i = 0; i < outConnections.Count; i++)
+                (outConnections[i] as BinderConnection).Bind();
         }
 
         ///<summary>Unbind the ports.</summary>
         public void UnBindPorts()
         {
-            for (var i = 0; i < outConnections.Count; i++) (outConnections[i] as BinderConnection).UnBind();
+            for (var i = 0; i < outConnections.Count; i++)
+                (outConnections[i] as BinderConnection).UnBind();
         }
 
         ///<summary>Gets an input Port by it's ID name which commonly is the same as it's name</summary>
@@ -161,16 +167,19 @@ namespace FlowCanvas
         public IEnumerable<Port> GetAllPorts() => inputPorts.Values.Concat(outputPorts.Values);
 
         ///<summary>Returns all Flow Output Ports</summary>
-        public IEnumerable<FlowOutput> GetOutputFlowPorts() => outputPorts.Values.OfType<FlowOutput>();
+        public IEnumerable<FlowOutput> GetOutputFlowPorts() =>
+            outputPorts.Values.OfType<FlowOutput>();
 
         ///<summary>Returns all Value Output Ports</summary>
-        public IEnumerable<ValueOutput> GetOutputValuePorts() => outputPorts.Values.OfType<ValueOutput>();
+        public IEnumerable<ValueOutput> GetOutputValuePorts() =>
+            outputPorts.Values.OfType<ValueOutput>();
 
         ///<summary>Returns all Flow Input Ports</summary>
         public IEnumerable<FlowInput> GetInputFlowPorts() => inputPorts.Values.OfType<FlowInput>();
 
         ///<summary>Returns all Value Input Ports</summary>
-        public IEnumerable<ValueInput> GetInputValuePorts() => inputPorts.Values.OfType<ValueInput>();
+        public IEnumerable<ValueInput> GetInputValuePorts() =>
+            inputPorts.Values.OfType<ValueInput>();
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Returns the first input port assignable to the type provided</summary>
@@ -189,16 +198,19 @@ namespace FlowCanvas
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Set the Component or GameObject instance input port to Owner if not connected and not already set to another
-        ///     reference. By convention, the instance port is always considered to be the first. Called from Graph when started.
+        ///     Set the Component or GameObject instance input port to Owner if not connected and not already
+        ///     set to another
+        ///     reference. By convention, the instance port is always considered to be the first. Called from
+        ///     Graph when started.
         /// </summary>
         public void AssignSelfInstancePort()
         {
             if (ignoreSelfInstancePortAssignment) return;
-            var instanceInput = inputPorts.Values.OfType<ValueInput>()
-                .FirstOrDefault(p => p.IsUnitySceneObject() && !p.skipSelfInstanceAssignment);
+            var instanceInput = inputPorts.Values.OfType<ValueInput>().FirstOrDefault(p =>
+                p.IsUnitySceneObject() && !p.skipSelfInstanceAssignment);
 
-            if (instanceInput != null && !instanceInput.isConnected && instanceInput.isDefaultValue) {
+            if (instanceInput != null && !instanceInput.isConnected &&
+                instanceInput.isDefaultValue) {
                 var instance = flowGraph.GetAgentComponent(instanceInput.type);
                 if (instance != null) instanceInput.serializedValue = instance;
             }
@@ -258,7 +270,8 @@ namespace FlowCanvas
                 Port inputPort = null;
                 if (!inputPorts.TryGetValue(pair.Key, out inputPort))
                     // update from previous version
-                    inputPort = inputPorts.Values.FirstOrDefault(p => CheckReverseIDEquality(p, pair.Key));
+                    inputPort =
+                        inputPorts.Values.FirstOrDefault(p => CheckReverseIDEquality(p, pair.Key));
                 if (inputPort is ValueInput && pair.Value != null &&
                     inputPort.type.RTIsAssignableFrom(pair.Value.GetType()))
                     (inputPort as ValueInput).serializedValue = pair.Value;
@@ -277,10 +290,12 @@ namespace FlowCanvas
         //Port registration/definition methods, to be used within RegisterPorts override
 
         /// <summary>
-        ///     Add a new FlowInput with name and pointer. Pointer is the method to run when the flow port is called. Returns
+        ///     Add a new FlowInput with name and pointer. Pointer is the method to run when the flow port is
+        ///     called. Returns
         ///     the new FlowInput object.
         /// </summary>
-        public FlowInput AddFlowInput(string name, string ID, FlowHandler pointer) => AddFlowInput(name, pointer, ID);
+        public FlowInput AddFlowInput(string name, string ID, FlowHandler pointer) =>
+            AddFlowInput(name, pointer, ID);
 
         public FlowInput AddFlowInput(string name, FlowHandler pointer, string ID = "")
         {
@@ -303,7 +318,8 @@ namespace FlowCanvas
         }
 
         /// <summary>
-        ///     Recommended. Add a ValueOutput of type T. getter is the function to get the value from. Returns the new
+        ///     Recommended. Add a ValueOutput of type T. getter is the function to get the value from. Returns
+        ///     the new
         ///     ValueOutput<T> object.
         /// </summary>
         public ValueOutput<T> AddValueOutput<T>(string name, string ID, ValueHandler<T> getter) =>
@@ -316,10 +332,13 @@ namespace FlowCanvas
         }
 
         /// <summary>
-        ///     Add an object port of unkown runtime type. getter is a function to get the port value from. Returns the new
-        ///     ValueOutput object. It is always recommended to use the generic versions to avoid value boxing/unboxing!
+        ///     Add an object port of unkown runtime type. getter is a function to get the port value from.
+        ///     Returns the new
+        ///     ValueOutput object. It is always recommended to use the generic versions to avoid value
+        ///     boxing/unboxing!
         /// </summary>
-        public ValueInput AddValueInput(string name, string ID, Type type) => AddValueInput(name, type, ID);
+        public ValueInput AddValueInput(string name, string ID, Type type) =>
+            AddValueInput(name, type, ID);
 
         public ValueInput AddValueInput(string name, Type type, string ID = "")
         {
@@ -328,16 +347,20 @@ namespace FlowCanvas
         }
 
         /// <summary>
-        ///     Add an object port of unkown runtime type. getter is a function to get the port value from. Returns the new
-        ///     ValueOutput object. It is always recommended to use the generic versions to avoid value boxing/unboxing!
+        ///     Add an object port of unkown runtime type. getter is a function to get the port value from.
+        ///     Returns the new
+        ///     ValueOutput object. It is always recommended to use the generic versions to avoid value
+        ///     boxing/unboxing!
         /// </summary>
-        public ValueOutput AddValueOutput(string name, string ID, Type type, ValueHandlerObject getter) =>
-            AddValueOutput(name, type, getter, ID);
+        public ValueOutput AddValueOutput(string name, string ID, Type type,
+            ValueHandlerObject getter) => AddValueOutput(name, type, getter, ID);
 
-        public ValueOutput AddValueOutput(string name, Type type, ValueHandlerObject getter, string ID = "")
+        public ValueOutput AddValueOutput(string name, Type type, ValueHandlerObject getter,
+            string ID = "")
         {
             QualifyPortNameAndID(ref name, ref ID, outputPorts);
-            return (ValueOutput)(outputPorts[ID] = ValueOutput.CreateInstance(type, this, name, ID, getter));
+            return (ValueOutput)(outputPorts[ID] =
+                ValueOutput.CreateInstance(type, this, name, ID, getter));
         }
 
         ///<summary>Helper used above</summary>
@@ -398,7 +421,10 @@ namespace FlowCanvas
             return null;
         }
 
-        ///<summary>Register a FieldInfo Delegate (FlowHandler) as FlowOutput. Used only in reflection based registration.</summary>
+        /// <summary>
+        ///     Register a FieldInfo Delegate (FlowHandler) as FlowOutput. Used only in reflection based
+        ///     registration.
+        /// </summary>
         public FlowOutput TryAddFieldDelegateFlowOutput(FieldInfo field, object instance)
         {
             if (field.FieldType == typeof(FlowHandler)) {
@@ -412,7 +438,8 @@ namespace FlowCanvas
         }
 
         /// <summary>
-        ///     Register a FieldInfo Delegate (ValueHandler<T>) as ValueInput. Used only in reflection based registration.
+        ///     Register a FieldInfo Delegate (ValueHandler
+        ///     <T>) as ValueInput. Used only in reflection based registration.
         /// </summary>
         public ValueInput TryAddFieldDelegateValueInput(FieldInfo field, object instance)
         {
@@ -425,9 +452,11 @@ namespace FlowCanvas
                     var name = nameAtt != null ? nameAtt.name : field.Name;
                     var delType = invokeMethod.ReturnType;
                     var portType = typeof(ValueInput<>).RTMakeGenericType(delType);
-                    var port = (ValueInput)Activator.CreateInstance(portType, new object[] { instance, name, name });
+                    var port = (ValueInput)Activator.CreateInstance(portType,
+                        new object[] { instance, name, name });
                     var getterType = typeof(ValueHandler<>).RTMakeGenericType(delType);
-                    var getter = port.GetType().RTGetMethod("get_value").RTCreateDelegate(getterType, port);
+                    var getter = port.GetType().RTGetMethod("get_value")
+                        .RTCreateDelegate(getterType, port);
                     field.SetValue(instance, getter);
                     inputPorts[name] = port;
                     return port;
@@ -445,7 +474,8 @@ namespace FlowCanvas
                 var getterType = typeof(ValueHandler<>).RTMakeGenericType(prop.PropertyType);
                 var getter = prop.RTGetGetMethod().RTCreateDelegate(getterType, instance);
                 var portType = typeof(ValueOutput<>).RTMakeGenericType(prop.PropertyType);
-                var port = (ValueOutput)Activator.CreateInstance(portType, new object[] { this, name, name, getter });
+                var port = (ValueOutput)Activator.CreateInstance(portType,
+                    new object[] { this, name, name, getter });
                 return (ValueOutput)(outputPorts[name] = port);
             }
             return null;
@@ -489,29 +519,33 @@ namespace FlowCanvas
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Should return the base wild definition type with which new generic version can be made.</summary>
-        public virtual Type GetNodeWildDefinitionType() => GetType().GetFirstGenericParameterConstraintType();
+        public virtual Type GetNodeWildDefinitionType() =>
+            GetType().GetFirstGenericParameterConstraintType();
 
         ///<summary>Handles connecting to a wild port and changing generic version to that new connection</summary>
         private void TryHandleWildPortConnection(Type currentType, Type targetType)
         {
             var wildType = GetNodeWildDefinitionType();
             var content = GetType();
-            var newType = TryGetNewGenericTypeForWild(wildType, currentType, targetType, content, null);
+            var newType =
+                TryGetNewGenericTypeForWild(wildType, currentType, targetType, content, null);
             if (newType != null) ReplaceWith(newType);
         }
 
         /// <summary>
-        ///     Given a wildType and two types for current and target, will try and return a closed type for wild definition
+        ///     Given a wildType and two types for current and target, will try and return a closed type for
+        ///     wild definition
         ///     of content
         /// </summary>
-        public static Type TryGetNewGenericTypeForWild(Type wildType, Type currentType, Type targetType, Type content
-            , Type context)
+        public static Type TryGetNewGenericTypeForWild(Type wildType, Type currentType,
+            Type targetType, Type content, Type context)
         {
             if (wildType == null || !content.IsGenericType) return null;
             var args = content.RTGetGenericArguments();
             var arg1 = args.FirstOrDefault();
             if (arg1 != wildType && arg1.IsGenericType)
-                return TryGetNewGenericTypeForWild(wildType, currentType, targetType, arg1, content);
+                return TryGetNewGenericTypeForWild(wildType, currentType, targetType, arg1,
+                    content);
 
             //Current arg type is wild type
             if (args.Length == 1 && arg1 == wildType) {
@@ -526,7 +560,8 @@ namespace FlowCanvas
                     Type newType = null;
 
                     if (content.TryMakeGeneric(targetType, out newType)) {
-                        if (context.TryMakeGeneric(newType, out var contextType)) newType = contextType;
+                        if (context.TryMakeGeneric(newType, out var contextType))
+                            newType = contextType;
                         return newType;
                     }
                 }
@@ -535,11 +570,12 @@ namespace FlowCanvas
         }
 
         /// <summary>
-        ///     Given a wildType and two types for current and target, will try and return a closed method for wild definition
+        ///     Given a wildType and two types for current and target, will try and return a closed method for
+        ///     wild definition
         ///     of content
         /// </summary>
-        public static MethodInfo TryGetNewGenericMethodForWild(Type wildType, Type currentType, Type targetType
-            , MethodInfo content)
+        public static MethodInfo TryGetNewGenericMethodForWild(Type wildType, Type currentType,
+            Type targetType, MethodInfo content)
         {
             if (wildType == null || !content.IsGenericMethod) return null;
             var args = content.RTGetGenericArguments();
@@ -591,8 +627,10 @@ namespace FlowCanvas
                 _relinkBinder = value;
 
                 if (value != null) {
-                    if (value.relinkState == Connection.RelinkState.Target) contextPort = value.sourcePort;
-                    if (value.relinkState == Connection.RelinkState.Source) contextPort = value.targetPort;
+                    if (value.relinkState == Connection.RelinkState.Target)
+                        contextPort = value.sourcePort;
+                    if (value.relinkState == Connection.RelinkState.Source)
+                        contextPort = value.targetPort;
                 }
                 else {
                     contextPort = null;
@@ -621,14 +659,16 @@ namespace FlowCanvas
                             for (var j = 0; j < node.orderedInputs.Length; j++) {
                                 var port = node.orderedInputs[j];
                                 port.highlightFlag = value != null && value.IsOutputPort()
-                                    ? BinderConnection.CanBeBound(value, port, relinkBinder) : false;
+                                    ? BinderConnection.CanBeBound(value, port, relinkBinder)
+                                    : false;
                                 node.highlightFlag |= port.highlightFlag;
                             }
 
                             for (var j = 0; j < node.orderedOutputs.Length; j++) {
                                 var port = node.orderedOutputs[j];
                                 port.highlightFlag = value != null && value.IsInputPort()
-                                    ? BinderConnection.CanBeBound(port, value, relinkBinder) : false;
+                                    ? BinderConnection.CanBeBound(port, value, relinkBinder)
+                                    : false;
                                 node.highlightFlag |= port.highlightFlag;
                             }
                         }
@@ -642,14 +682,16 @@ namespace FlowCanvas
         {
             portsHaveDrawnFlag = false;
             orderedInputs = inputPorts.Values.OrderBy(p => p is FlowInput ? 0 : 1).ToArray();
-            orderedOutputs = outputPorts.Values.OrderBy(p => p is FlowOutput ? 0 : p.IsDelegate() ? -1 : 1).ToArray();
-            selfInstancePort = ignoreSelfInstancePortAssignment ? null : orderedInputs.OfType<ValueInput>()
-                .FirstOrDefault(p => p.IsUnitySceneObject() && !p.skipSelfInstanceAssignment);
+            orderedOutputs = outputPorts.Values
+                .OrderBy(p => p is FlowOutput ? 0 : p.IsDelegate() ? -1 : 1).ToArray();
+            selfInstancePort = ignoreSelfInstancePortAssignment ? null : orderedInputs
+                .OfType<ValueInput>().FirstOrDefault(p =>
+                    p.IsUnitySceneObject() && !p.skipSelfInstanceAssignment);
         }
 
         //Seal it...
-        protected sealed override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
-            , float zoomFactor)
+        protected sealed override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass,
+            Vector2 canvasMousePos, float zoomFactor)
         {
             var e = Event.current;
 
@@ -658,9 +700,10 @@ namespace FlowCanvas
                 if (highlightFlag) Styles.Draw(rect, Styles.highlightBox);
 
                 //Port container graphics
-                GUI.Box(new Rect(rect.x - 8, rect.y + 2, 10, rect.height), string.Empty, StyleSheet.nodePortContainer);
-                GUI.Box(new Rect(rect.xMax - 2, rect.y + 2, 10, rect.height), string.Empty
-                    , StyleSheet.nodePortContainer);
+                GUI.Box(new Rect(rect.x - 8, rect.y + 2, 10, rect.height), string.Empty,
+                    StyleSheet.nodePortContainer);
+                GUI.Box(new Rect(rect.xMax - 2, rect.y + 2, 10, rect.height), string.Empty,
+                    StyleSheet.nodePortContainer);
 
                 //INPUT Ports
                 if (orderedInputs != null)
@@ -706,16 +749,16 @@ namespace FlowCanvas
                         clickedPort = null;
                         var mPos = e.mousePosition;
                         if (zoomFactor >= 1)
-                            GenericMenuBrowser.ShowAsync(mPos
-                                , string.Format("Add & Connect (Type of {0})", cachePort.type.FriendlyName())
-                                , graph.baseNodeType, () => {
+                            GenericMenuBrowser.ShowAsync(mPos,
+                                string.Format("Add & Connect (Type of {0})",
+                                    cachePort.type.FriendlyName()), graph.baseNodeType, () => {
                                     return flowGraph.GetFullNodesMenu(mPos, cachePort, null);
                                 });
                         else
                             EditorApplication.delayCall += () => {
-                                GenericMenuBrowser.ShowAsync(GraphEditorUtility.realMousePosition
-                                    , string.Format("Add & Connect (Type of {0})", cachePort.type.FriendlyName())
-                                    , graph.baseNodeType, () => {
+                                GenericMenuBrowser.ShowAsync(GraphEditorUtility.realMousePosition,
+                                    string.Format("Add & Connect (Type of {0})",
+                                        cachePort.type.FriendlyName()), graph.baseNodeType, () => {
                                         return flowGraph.GetFullNodesMenu(mPos, cachePort, null);
                                     });
                             };
@@ -730,10 +773,11 @@ namespace FlowCanvas
                 var to = clickedPort.IsOutputPort() ? e.mousePosition : clickedPort.pos;
                 var tangA = default(Vector2);
                 var tangB = default(Vector2);
-                CurveUtils.ResolveTangents(from, to, Prefs.connectionsMLT, PlanarDirection.Horizontal, out tangA
-                    , out tangB);
-                Handles.DrawBezier(from, to, from + tangA, to + tangB
-                    , StyleSheet.GetStatusColor(Status.Resting).WithAlpha(0.5f), StyleSheet.bezierTexture, 3);
+                CurveUtils.ResolveTangents(from, to, Prefs.connectionsMLT,
+                    PlanarDirection.Horizontal, out tangA, out tangB);
+                Handles.DrawBezier(from, to, from + tangA, to + tangB,
+                    StyleSheet.GetStatusColor(Status.Resting).WithAlpha(0.5f),
+                    StyleSheet.bezierTexture, 3);
             }
 
             //Actualy draw the existing connections
@@ -744,12 +788,15 @@ namespace FlowCanvas
                     //for in case it's MissingConnection
                     var sourcePort = binder.sourcePort;
                     var targetPort = binder.targetPort;
-                    var sourcePos = sourcePort != null ? sourcePort.pos : new Vector2(binder.sourceNode.rect.xMax + 10
-                        , binder.sourceNode.rect.y + 10);
-                    var targetPos = targetPort != null ? targetPort.pos : new Vector2(binder.targetNode.rect.xMin - 10
-                        , binder.targetNode.rect.y + 10);
+                    var sourcePos = sourcePort != null ? sourcePort.pos
+                        : new Vector2(binder.sourceNode.rect.xMax + 10,
+                            binder.sourceNode.rect.y + 10);
+                    var targetPos = targetPort != null ? targetPort.pos
+                        : new Vector2(binder.targetNode.rect.xMin - 10,
+                            binder.targetNode.rect.y + 10);
 
-                    if (fullDrawPass || drawCanvas.Overlaps(RectUtils.GetBoundRect(sourcePos, targetPos))) {
+                    if (fullDrawPass ||
+                        drawCanvas.Overlaps(RectUtils.GetBoundRect(sourcePos, targetPos))) {
                         //this is just to avoid connections glitching on repaint which drives me crazy
                         if (!fullDrawPass && (!portsHaveDrawnFlag ||
                             (targetPort != null && !targetPort.parent.portsHaveDrawnFlag)))
@@ -758,9 +805,10 @@ namespace FlowCanvas
                     }
                     continue;
                 }
-                if (binder == null && !(binder.targetNode is NodeCanvas.Framework.Internal.MissingNode))
-                    outConnections[i].DrawConnectionGUI(outConnections[i].sourceNode.rect.center
-                        , outConnections[i].targetNode.rect.center);
+                if (binder == null &&
+                    !(binder.targetNode is NodeCanvas.Framework.Internal.MissingNode))
+                    outConnections[i].DrawConnectionGUI(outConnections[i].sourceNode.rect.center,
+                        outConnections[i].targetNode.rect.center);
             }
         }
 
@@ -775,7 +823,8 @@ namespace FlowCanvas
                 if (e.rawType == EventType.KeyUp && e.keyCode == KeyCode.S) popKeyDown = false;
             }
 
-            if (GraphEditorUtility.allowClick && rect.ExpandBy(0, 25, 0, 0).Contains(e.mousePosition)) {
+            if (GraphEditorUtility.allowClick &&
+                rect.ExpandBy(0, 25, 0, 0).Contains(e.mousePosition)) {
                 GUI.BringWindowToFront(ID);
                 var verboseIconRect = new Rect(rect.xMax - 18, rect.yMin - 18, 16, 16);
                 Texture2D image = null;
@@ -802,8 +851,8 @@ namespace FlowCanvas
             if (port == contextPort) return true;
 
             if (pop || contextPort != null)
-                if (GraphEditorUtility.allowClick &&
-                    port.parent.rect.ExpandBy(30, 40, 30, 5).Contains(Event.current.mousePosition)) {
+                if (GraphEditorUtility.allowClick && port.parent.rect.ExpandBy(30, 40, 30, 5)
+                    .Contains(Event.current.mousePosition)) {
                     if (contextPort != null && contextPort.parent != port.parent) {
                         if (port.IsInputPort())
                             if (BinderConnection.CanBeBound(contextPort, port, relinkBinder))
@@ -848,8 +897,8 @@ namespace FlowCanvas
                         var inputPort = otherNode.orderedInputs[j];
 
                         if (inputPort.rect.Contains(canvasMousePos)) {
-                            if (!BinderConnection.CanBeBoundVerbosed(binder.sourcePort, inputPort, binder
-                                , out var verbose)) {
+                            if (!BinderConnection.CanBeBoundVerbosed(binder.sourcePort, inputPort,
+                                binder, out var verbose)) {
                                 Logger.Log(verbose, LogTag.EDITOR, otherNode);
                                 break;
                             }
@@ -869,8 +918,8 @@ namespace FlowCanvas
                         var outputPort = otherNode.orderedOutputs[j];
 
                         if (outputPort.rect.Contains(canvasMousePos)) {
-                            if (!BinderConnection.CanBeBoundVerbosed(outputPort, binder.targetPort, binder
-                                , out var verbose)) {
+                            if (!BinderConnection.CanBeBoundVerbosed(outputPort, binder.targetPort,
+                                binder, out var verbose)) {
                                 Logger.Log(verbose, LogTag.EDITOR, otherNode);
                                 break;
                             }
@@ -890,14 +939,17 @@ namespace FlowCanvas
 
             if (GraphEditorUtility.allowClick) {
                 //Right click removes connections
-                if (port.isConnected && e.type == EventType.ContextClick && port.rect.Contains(e.mousePosition)) {
-                    foreach (var c in port.GetPortConnections().ToArray()) graph.RemoveConnection(c);
+                if (port.isConnected && e.type == EventType.ContextClick &&
+                    port.rect.Contains(e.mousePosition)) {
+                    foreach (var c in port.GetPortConnections().ToArray())
+                        graph.RemoveConnection(c);
                     e.Use();
                     return;
                 }
 
                 //Click initialize new drag & drop connection
-                if (e.type == EventType.MouseDown && e.button == 0 && port.rect.Contains(e.mousePosition))
+                if (e.type == EventType.MouseDown && e.button == 0 &&
+                    port.rect.Contains(e.mousePosition))
                     if (port.CanAcceptConnections()) {
                         dragDropMisses = 0;
                         clickedPort = port;
@@ -935,7 +987,8 @@ namespace FlowCanvas
         }
 
         ///<summary>A menu for drop in connection request from provided port</summary>
-        private GenericMenu GetDropInConnectionMenu(Port contextPort, BinderConnection refBinder = null)
+        private GenericMenu GetDropInConnectionMenu(Port contextPort,
+            BinderConnection refBinder = null)
         {
             var menu = new GenericMenu();
 
@@ -944,12 +997,13 @@ namespace FlowCanvas
                     foreach (var _port in orderedOutputs.Where(p =>
                         BinderConnection.CanBeBound(p, contextPort, refBinder))) {
                         var port = _port;
-                        menu.AddItem(new GUIContent(string.Format("From: '{0}'", port.displayName)), false, () => {
-                            if (refBinder != null)
-                                refBinder.SetSourcePort(port);
-                            else
-                                BinderConnection.Create(port, contextPort);
-                        });
+                        menu.AddItem(new GUIContent(string.Format("From: '{0}'", port.displayName)),
+                            false, () => {
+                                if (refBinder != null)
+                                    refBinder.SetSourcePort(port);
+                                else
+                                    BinderConnection.Create(port, contextPort);
+                            });
                     }
 
             if (contextPort.IsOutputPort())
@@ -957,12 +1011,13 @@ namespace FlowCanvas
                     foreach (var _port in orderedInputs.Where(p =>
                         BinderConnection.CanBeBound(contextPort, p, refBinder))) {
                         var port = _port;
-                        menu.AddItem(new GUIContent(string.Format("To: '{0}'", port.displayName)), false, () => {
-                            if (refBinder != null)
-                                refBinder.SetTargetPort(port);
-                            else
-                                BinderConnection.Create(contextPort, port);
-                        });
+                        menu.AddItem(new GUIContent(string.Format("To: '{0}'", port.displayName)),
+                            false, () => {
+                                if (refBinder != null)
+                                    refBinder.SetTargetPort(port);
+                                else
+                                    BinderConnection.Create(contextPort, port);
+                            });
                     }
 
             //append menu items
@@ -971,20 +1026,23 @@ namespace FlowCanvas
         }
 
         ///<summary>Let nodes handle ports draged on top of them</summary>
-        protected virtual GenericMenu OnDragAndDropPortContextMenu(GenericMenu menu, Port port) => menu;
+        protected virtual GenericMenu OnDragAndDropPortContextMenu(GenericMenu menu, Port port) =>
+            menu;
 
         //Input port graphics outside node
-        private static void DrawInputPortGraphic(Port port, Port contextPort, bool isSelfInstancePort)
+        private static void DrawInputPortGraphic(Port port, Port contextPort,
+            bool isSelfInstancePort)
         {
             var canConnect = contextPort == null || port.highlightFlag;
             GUI.color = Color.white.WithAlpha(canConnect || contextPort == port ? 1 : 0.3f);
-            GUI.Box(port.rect, string.Empty
-                , port.isConnected ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
+            GUI.Box(port.rect, string.Empty,
+                port.isConnected ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
             GUI.color = Color.white;
 
             //Tooltip
             if (!port.isConnected && port.rect.Contains(Event.current.mousePosition)) {
-                var labelString = canConnect || port == contextPort ? port.type.FriendlyName() : "Can't Connect Here";
+                var labelString = canConnect || port == contextPort ? port.type.FriendlyName()
+                    : "Can't Connect Here";
                 var size = StyleSheet.box.CalcSize(EditorUtils.GetTempContent(labelString));
                 var rect = new Rect(0, 0, size.x + 10, size.y + 5);
                 rect.x = port.rect.x - size.x - 10;
@@ -1001,8 +1059,8 @@ namespace FlowCanvas
                 if (!(port as ValueInput).isDefaultValue) {
                     //Not a defaultValue
                     if (value is UnityEngine.Object && value as UnityEngine.Object != null) {
-                        labelString = string.Format("<b><color=#66ff33>{0}</color></b>"
-                            , (value as UnityEngine.Object).name);
+                        labelString = string.Format("<b><color=#66ff33>{0}</color></b>",
+                            (value as UnityEngine.Object).name);
                     }
                     else {
                         labelString = value.ToStringAdvanced();
@@ -1012,7 +1070,8 @@ namespace FlowCanvas
                 else if (isSelfInstancePort) {
                     //"Self"
                     var exists = true;
-                    if (port.parent.graphAgent != null && typeof(Component).IsAssignableFrom(port.type))
+                    if (port.parent.graphAgent != null &&
+                        typeof(Component).IsAssignableFrom(port.type))
                         exists = port.parent.graphAgent.GetComponent(port.type) != null;
                     var color = exists ? "66ff33" : "ff3300";
                     labelString = string.Format("<color=#{0}><b>Self</b></color>", color);
@@ -1031,7 +1090,8 @@ namespace FlowCanvas
 
                 //show tip label
                 if (!string.IsNullOrEmpty(labelString)) {
-                    var size = StyleSheet.labelOnCanvas.CalcSize(EditorUtils.GetTempContent(labelString));
+                    var size =
+                        StyleSheet.labelOnCanvas.CalcSize(EditorUtils.GetTempContent(labelString));
                     var rect = new Rect(0, 0, size.x, size.y);
                     rect.x = port.rect.x - size.x - 5;
                     rect.center = new Vector2(rect.center.x, port.rect.center.y - 1);
@@ -1046,12 +1106,13 @@ namespace FlowCanvas
         {
             var canConnect = contextPort == null || port.highlightFlag;
             GUI.color = Color.white.WithAlpha(canConnect || contextPort == port ? 1 : 0.3f);
-            GUI.Box(port.rect, string.Empty
-                , port.isConnected ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
+            GUI.Box(port.rect, string.Empty,
+                port.isConnected ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
             GUI.color = Color.white;
 
             if (!port.isConnected && port.rect.Contains(Event.current.mousePosition)) {
-                var labelString = canConnect || port == contextPort ? port.type.FriendlyName() : "Can't Connect Here";
+                var labelString = canConnect || port == contextPort ? port.type.FriendlyName()
+                    : "Can't Connect Here";
                 var size = StyleSheet.box.CalcSize(EditorUtils.GetTempContent(labelString));
                 var rect = new Rect(0, 0, size.x + 10, size.y + 5);
                 rect.x = port.rect.x + 15;
@@ -1178,29 +1239,32 @@ namespace FlowCanvas
         private void DrawNodePort(Port port, Port mirrorOutput = null)
         {
             if (port.willDraw || (mirrorOutput != null && mirrorOutput.willDraw)) {
-                EditorGUIUtility.SetIconSize(port.bindStatus != Port.BindStatus.Valid ? new Vector2(16, 16)
-                    : new Vector2(14, 14));
+                EditorGUIUtility.SetIconSize(port.bindStatus != Port.BindStatus.Valid
+                    ? new Vector2(16, 16) : new Vector2(14, 14));
                 port.EnsureCachedGUIContent();
 
                 if (port.IsInputPort()) {
-                    GUI.color = EditorGUIUtility.isProSkin ? GUI.color : Color.black.WithAlpha(0.6f);
+                    GUI.color = EditorGUIUtility.isProSkin ? GUI.color
+                        : Color.black.WithAlpha(0.6f);
                     GUILayout.Label(port.displayContent.image, Styles.proxyContentImage);
                     GUI.color = Color.white;
-                    GUILayout.Label(port.displayContent.text
-                        , port.IsFlowPort() ? Styles.leftLabel : Styles.proxyLeftContentLabel);
+                    GUILayout.Label(port.displayContent.text,
+                        port.IsFlowPort() ? Styles.leftLabel : Styles.proxyLeftContentLabel);
                     if (mirrorOutput != null) GUILayout.FlexibleSpace();
                 }
                 else {
                     if (mirrorOutput != null) GUILayout.FlexibleSpace();
-                    GUILayout.Label(port.displayContent.text
-                        , port.IsFlowPort() ? Styles.rightLabel : Styles.proxyRightContentLabel);
-                    GUI.color = EditorGUIUtility.isProSkin ? GUI.color : Color.black.WithAlpha(0.6f);
+                    GUILayout.Label(port.displayContent.text,
+                        port.IsFlowPort() ? Styles.rightLabel : Styles.proxyRightContentLabel);
+                    GUI.color = EditorGUIUtility.isProSkin ? GUI.color
+                        : Color.black.WithAlpha(0.6f);
                     GUILayout.Label(port.displayContent.image, Styles.proxyContentImage);
                     GUI.color = Color.white;
                 }
 
                 if (mirrorOutput != null) {
-                    GUI.color = EditorGUIUtility.isProSkin ? GUI.color : Color.black.WithAlpha(0.6f);
+                    GUI.color = EditorGUIUtility.isProSkin ? GUI.color
+                        : Color.black.WithAlpha(0.6f);
                     GUILayout.Label(port.displayContent.image, Styles.proxyContentImage);
                     GUI.color = Color.white;
                 }
@@ -1237,10 +1301,11 @@ namespace FlowCanvas
                     continue;
                 }
                 var serializationInfo = new InspectedFieldInfo(graph, null, null, null);
-                input.serializedValue = EditorUtils.ReflectedFieldInspector(input.displayName, input.serializedValue
-                    , input.type, serializationInfo);
+                input.serializedValue = EditorUtils.ReflectedFieldInspector(input.displayName,
+                    input.serializedValue, input.type, serializationInfo);
                 if (input.isRequired && input.serializedValue == null)
-                    EditorUtils.MarkLastFieldError("This input port is required to be assigned or be connected.");
+                    EditorUtils.MarkLastFieldError(
+                        "This input port is required to be assigned or be connected.");
             }
         }
 
@@ -1248,25 +1313,29 @@ namespace FlowCanvas
         protected override GenericMenu OnContextMenu(GenericMenu menu)
         {
             menu = base.OnContextMenu(menu);
-            if (outputPorts.Values.Any(p => p is FlowOutput)) //breakpoints only work with FlowOutputs
+            if (outputPorts.Values.Any(p =>
+                p is FlowOutput)) //breakpoints only work with FlowOutputs
                 menu.AddItem(new GUIContent("Breakpoint"), isBreakpoint, () => {
                     isBreakpoint = !isBreakpoint;
                 });
-            menu.AddItem(new GUIContent("Verbose Level/Compact (Key 1)"), verboseLevel == VerboseLevel.Compact, () => {
-                verboseLevel = VerboseLevel.Compact;
-            });
-            menu.AddItem(new GUIContent("Verbose Level/Partial (Key 2)"), verboseLevel == VerboseLevel.Partial, () => {
-                verboseLevel = VerboseLevel.Partial;
-            });
-            menu.AddItem(new GUIContent("Verbose Level/Full (Key 3 or Hold S Key over node)")
-                , verboseLevel == VerboseLevel.Full, () => {
+            menu.AddItem(new GUIContent("Verbose Level/Compact (Key 1)"),
+                verboseLevel == VerboseLevel.Compact, () => {
+                    verboseLevel = VerboseLevel.Compact;
+                });
+            menu.AddItem(new GUIContent("Verbose Level/Partial (Key 2)"),
+                verboseLevel == VerboseLevel.Partial, () => {
+                    verboseLevel = VerboseLevel.Partial;
+                });
+            menu.AddItem(new GUIContent("Verbose Level/Full (Key 3 or Hold S Key over node)"),
+                verboseLevel == VerboseLevel.Full, () => {
                     verboseLevel = VerboseLevel.Full;
                 });
             var type = GetType();
             if (type.IsGenericType)
-                menu = EditorUtils.GetPreferedTypesSelectionMenu(type.GetGenericTypeDefinition(), (t) => {
-                    ReplaceWith(t);
-                }, menu, "Change Generic Type");
+                menu = EditorUtils.GetPreferedTypesSelectionMenu(type.GetGenericTypeDefinition(),
+                    (t) => {
+                        ReplaceWith(t);
+                    }, menu, "Change Generic Type");
             return menu;
         }
 

@@ -5,8 +5,9 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("GOTO Label Definition", 1), Description("A Flow Control Label definition. Can be called with the GOTO node.")
-     , Category("Flow Controllers/GOTO"), Color("ff5c5c"), ContextDefinedOutputs(typeof(Flow))]
+    [Name("GOTO Label Definition", 1),
+     Description("A Flow Control Label definition. Can be called with the GOTO node."),
+     Category("Flow Controllers/GOTO"), Color("ff5c5c"), ContextDefinedOutputs(typeof(Flow))]
     public class GoToLabel : FlowControlNode, IEditorMenuCallbackReceiver
     {
         [DelayedField, Tooltip("The identifier name of the label")]
@@ -25,13 +26,15 @@ namespace FlowCanvas.Nodes
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-        void IEditorMenuCallbackReceiver.OnMenu(UnityEditor.GenericMenu menu, Vector2 pos, Port contextPort
-            , object dropInstance)
+        void IEditorMenuCallbackReceiver.OnMenu(UnityEditor.GenericMenu menu, Vector2 pos,
+            Port contextPort, object dropInstance)
         {
             if (contextPort == null || contextPort is FlowOutput)
-                menu.AddItem(new GUIContent(string.Format("Flow Controllers/GOTO/GOTO '{0}'", identifier)), false
-                    , () => {
-                        flowGraph.AddFlowNode<GoToStatement>(pos, contextPort, dropInstance).SetTarget(this);
+                menu.AddItem(
+                    new GUIContent(string.Format("Flow Controllers/GOTO/GOTO '{0}'", identifier)),
+                    false, () => {
+                        flowGraph.AddFlowNode<GoToStatement>(pos, contextPort, dropInstance)
+                            .SetTarget(this);
                     });
         }
 #endif
@@ -39,7 +42,8 @@ namespace FlowCanvas.Nodes
     }
 
     ///----------------------------------------------------------------------------------------------
-    [DoNotList, Description("Routes the Flow to the target GOTO label."), ContextDefinedInputs(typeof(Flow))]
+    [DoNotList, Description("Routes the Flow to the target GOTO label."),
+     ContextDefinedInputs(typeof(Flow))]
     public class GoToStatement : FlowControlNode, IHaveNodeReference
     {
         [ParadoxNotion.Serialization.FullSerializer.fsSerializeAs("_targetLabelUID")]
@@ -47,7 +51,9 @@ namespace FlowCanvas.Nodes
 
         INodeReference IHaveNodeReference.targetReference => _targetLabel;
         private GoToLabel target => _targetLabel?.Get(graph);
-        public override string name => string.Format("GOTO {0}", target != null ? target.ToString() : "NONE");
+
+        public override string name =>
+            string.Format("GOTO {0}", target != null ? target.ToString() : "NONE");
 
         public void SetTarget(GoToLabel newTarget)
         {

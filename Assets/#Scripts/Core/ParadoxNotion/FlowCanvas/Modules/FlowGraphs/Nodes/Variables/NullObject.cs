@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Null"), Category("Variables"), Description("Simply returns a NULL"), ContextDefinedOutputs(typeof(Wild))]
+    [Name("Null"), Category("Variables"), Description("Simply returns a NULL"),
+     ContextDefinedOutputs(typeof(Wild))]
     public class NullObject : FlowNode
     {
         protected override void RegisterPorts()

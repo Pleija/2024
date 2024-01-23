@@ -7,14 +7,15 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("C# Event Callback", 2), Category("Events/Custom")
-     , Description("Providing a C# Event, Register a callback to be called when that event is raised.")
-     , ContextDefinedInputs(typeof(SharpEvent))]
+    [Name("C# Event Callback", 2), Category("Events/Custom"),
+     Description(
+         "Providing a C# Event, Register a callback to be called when that event is raised."),
+     ContextDefinedInputs(typeof(SharpEvent))]
     public class CSharpEventCallback : EventNode, IReflectedWrapper
     {
-        [SerializeField, ExposeField
-         , Tooltip("If enabled, registration will be handled on graph Enable/Disable automatically")
-         , GatherPortsCallback]
+        [SerializeField, ExposeField,
+         Tooltip("If enabled, registration will be handled on graph Enable/Disable automatically"),
+         GatherPortsCallback]
         protected bool _autoHandleRegistration;
 
         [SerializeField]

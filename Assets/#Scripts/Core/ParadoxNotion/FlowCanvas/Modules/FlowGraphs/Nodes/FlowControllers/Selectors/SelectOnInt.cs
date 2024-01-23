@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [ExposeAsDefinition, ContextDefinedInputs(typeof(Wild), typeof(int)), ContextDefinedOutputs(typeof(Wild))
-     , Category("Flow Controllers/Selectors")
-     , Description("Select a Result value out of the input cases provided, based on an Integer")]
+    [ExposeAsDefinition, ContextDefinedInputs(typeof(Wild), typeof(int)),
+     ContextDefinedOutputs(typeof(Wild)), Category("Flow Controllers/Selectors"),
+     Description("Select a Result value out of the input cases provided, based on an Integer")]
     public class SelectOnInt<T> : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]
@@ -15,7 +15,8 @@ namespace FlowCanvas.Nodes
         {
             var selector = AddValueInput<int>("Value");
             var cases = new ValueInput<T>[_portCount];
-            for (var i = 0; i < _portCount; i++) cases[i] = AddValueInput<T>("Is " + i.ToString(), i.ToString());
+            for (var i = 0; i < _portCount; i++)
+                cases[i] = AddValueInput<T>("Is " + i.ToString(), i.ToString());
             var defaultCase = AddValueInput<T>("Default");
             AddValueOutput<T>("Result", "Value", () => {
                 var i = selector.value;

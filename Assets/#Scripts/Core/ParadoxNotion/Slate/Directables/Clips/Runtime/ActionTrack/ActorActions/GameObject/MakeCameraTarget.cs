@@ -2,8 +2,8 @@
 
 namespace Slate.ActionClips
 {
-    [Category("GameObject")
-     , Description(
+    [Category("GameObject"),
+     Description(
          "Make the actor target for the currently active Dynamic Shot Controller (if used by the current active Camera Shot in the cutscene).")]
     public class MakeCameraTarget : ActorActionClip
     {
@@ -28,7 +28,8 @@ namespace Slate.ActionClips
         protected override void OnReverse()
         {
             if (wasTransposerTarget != null || wasComposerTarget != null) {
-                var dynamicController = (root as Cutscene).cameraTrack.currentShot.targetShot.dynamicController;
+                var dynamicController = (root as Cutscene).cameraTrack.currentShot.targetShot
+                    .dynamicController;
                 dynamicController.transposer.target = wasTransposerTarget;
                 dynamicController.composer.target = wasComposerTarget;
             }

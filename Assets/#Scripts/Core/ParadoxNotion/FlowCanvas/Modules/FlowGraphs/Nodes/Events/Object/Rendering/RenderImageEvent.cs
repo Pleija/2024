@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace FlowCanvas
 {
-    [Name("On Render Image"), Category("Events/Object/Rendering")
-     , Description("Called after all rendering is complete to render image on target camera.")]
+    [Name("On Render Image"), Category("Events/Object/Rendering"),
+     Description("Called after all rendering is complete to render image on target camera.")]
     public class RenderImageEvent : RouterEventNode<Camera>
     {
         private FlowOutput fOut;

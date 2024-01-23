@@ -9,8 +9,10 @@ using UnityEngine;
 namespace NodeCanvas.Framework
 {
     /// <summary>
-    ///     Base class for actions. Extend this to create your own. T is the agentType required by the action. Generic
-    ///     version where T is the AgentType (Component or Interface) required by the Action. For GameObject, use 'Transform'
+    ///     Base class for actions. Extend this to create your own. T is the agentType required by the
+    ///     action. Generic
+    ///     version where T is the AgentType (Component or Interface) required by the Action. For
+    ///     GameObject, use 'Transform'
     /// </summary>
     public abstract class ActionTask<T> : ActionTask where T : class
     {
@@ -40,17 +42,22 @@ namespace NodeCanvas.Framework
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Used to call an action for standalone execution providing a callback. Be careful! *This will make the action
+        ///     Used to call an action for standalone execution providing a callback. Be careful! *This will
+        ///     make the action
         ///     execute as a coroutine*
         /// </summary>
-        public void ExecuteIndependent(Component agent, IBlackboard blackboard, Action<Status> callback)
+        public void ExecuteIndependent(Component agent, IBlackboard blackboard,
+            Action<Status> callback)
         {
-            if (!isRunning) MonoManager.current.StartCoroutine(IndependentActionUpdater(agent, blackboard, callback));
+            if (!isRunning)
+                MonoManager.current.StartCoroutine(
+                    IndependentActionUpdater(agent, blackboard, callback));
         }
 
         //The internal updater for when an action has been called with a callback parameter and only then.
         //This is only used and usefull if user needs to execute an action task completely as standalone.
-        private IEnumerator IndependentActionUpdater(Component agent, IBlackboard blackboard, Action<Status> callback)
+        private IEnumerator IndependentActionUpdater(Component agent, IBlackboard blackboard,
+            Action<Status> callback)
         {
             while (Execute(agent, blackboard) == Status.Running) yield return null;
             if (callback != null) callback(status);
@@ -89,7 +96,8 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     Ends the action either in success or failure. Ending with null means that it's a cancel/interrupt. Null is
+        ///     Ends the action either in success or failure. Ending with null means that it's a
+        ///     cancel/interrupt. Null is
         ///     used by the external system. You should use true or false when calling EndAction within it.
         /// </summary>
         public void EndAction()
@@ -110,7 +118,8 @@ namespace NodeCanvas.Framework
             }
             latch = success != null ? true : false;
             isPaused = false;
-            status = success == null ? Status.Resting : success == true ? Status.Success : Status.Failure;
+            status = success == null ? Status.Resting :
+                success == true ? Status.Success : Status.Failure;
             OnStop(success == null);
         }
 
@@ -130,7 +139,8 @@ namespace NodeCanvas.Framework
         protected virtual void OnUpdate() { }
 
         /// <summary>
-        ///     Called whenever the action ends due to any reason with the argument denoting whether the action was
+        ///     Called whenever the action ends due to any reason with the argument denoting whether the action
+        ///     was
         ///     interrupted or finished properly.
         /// </summary>
         protected virtual void OnStop(bool interrupted)
@@ -149,6 +159,7 @@ namespace NodeCanvas.Framework
 
         ///----------------------------------------------------------------------------------------------
         [Obsolete("Use 'Execute'")]
-        public Status ExecuteAction(Component agent, IBlackboard blackboard) => Execute(agent, blackboard);
+        public Status ExecuteAction(Component agent, IBlackboard blackboard) =>
+            Execute(agent, blackboard);
     }
 }

@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Animator"), Category("Events/Object")
-     , Description(
+    [Name("Animator"), Category("Events/Object"),
+     Description(
          "Calls Animator based events. Note that using this node will override root motion as usual, but you can call 'Apply Builtin Root Motion' to get it back.")]
     public class AnimatorEvents : RouterEventNode<Animator>
     {

@@ -28,8 +28,8 @@ namespace ParadoxNotion.Design
         }
 
         ///<summary>Get a selection menu of types deriving base type</summary>
-        public static GenericMenu GetTypeSelectionMenu(Type baseType, Action<Type> callback, GenericMenu menu = null
-            , string subCategory = null)
+        public static GenericMenu GetTypeSelectionMenu(Type baseType, Action<Type> callback,
+            GenericMenu menu = null, string subCategory = null)
         {
             if (menu == null) menu = new GenericMenu();
             if (subCategory != null) subCategory = subCategory + "/";
@@ -38,27 +38,31 @@ namespace ParadoxNotion.Design
             };
             var scriptInfos = GetScriptInfosOfType(baseType);
             foreach (var info in scriptInfos.Where(info => string.IsNullOrEmpty(info.category)))
-                menu.AddItem(new GUIContent(subCategory + info.name), false, info.type != null ? Selected : null
-                    , info.type);
+                menu.AddItem(new GUIContent(subCategory + info.name), false,
+                    info.type != null ? Selected : null, info.type);
             foreach (var info in scriptInfos.Where(info => !string.IsNullOrEmpty(info.category)))
-                menu.AddItem(new GUIContent(subCategory + info.category + "/" + info.name), false
-                    , info.type != null ? Selected : null, info.type);
+                menu.AddItem(new GUIContent(subCategory + info.category + "/" + info.name), false,
+                    info.type != null ? Selected : null, info.type);
             return menu;
         }
 
         /// <summary>
-        ///     !* Providing an open GenericTypeDefinition for 'baseType', wraps the Preferred Types wihin the 1st Generic
+        ///     !* Providing an open GenericTypeDefinition for 'baseType', wraps the Preferred Types wihin the
+        ///     1st Generic
         ///     Argument of that Definition *!
         /// </summary>
-        public static GenericMenu GetPreferedTypesSelectionMenu(Type baseType, Action<Type> callback
-            , GenericMenu menu = null, string subCategory = null, bool showAddTypeOption = false)
+        public static GenericMenu GetPreferedTypesSelectionMenu(Type baseType,
+            Action<Type> callback, GenericMenu menu = null, string subCategory = null,
+            bool showAddTypeOption = false)
         {
             if (menu == null) menu = new GenericMenu();
             if (subCategory != null) subCategory = subCategory + "/";
             var constrainType = baseType;
-            var isGenericDefinition = baseType.IsGenericTypeDefinition && baseType.RTGetGenericArguments().Length == 1;
+            var isGenericDefinition = baseType.IsGenericTypeDefinition &&
+                baseType.RTGetGenericArguments().Length == 1;
             var genericDefinitionType = isGenericDefinition ? baseType : null;
-            if (isGenericDefinition) constrainType = genericDefinitionType.GetFirstGenericParameterConstraintType();
+            if (isGenericDefinition)
+                constrainType = genericDefinitionType.GetFirstGenericParameterConstraintType();
             GenericMenu.MenuFunction2 Selected = (object t) => {
                 callback((Type)t);
             };
@@ -67,45 +71,52 @@ namespace ParadoxNotion.Design
 
             foreach (var t in TypePrefs.GetPreferedTypesList(constrainType, true)) {
                 var nsString = t.NamespaceToPath() + "/";
-                var finalType = isGenericDefinition && genericDefinitionType.TryMakeGeneric(t, out var genericType)
-                    ? genericType : t;
+                var finalType =
+                    isGenericDefinition &&
+                    genericDefinitionType.TryMakeGeneric(t, out var genericType) ? genericType : t;
                 var finalString = nsString + finalType.FriendlyName();
                 menu.AddItem(new GUIContent(subCategory + finalString), false, Selected, finalType);
                 var listType = typeof(List<>).MakeGenericType(t);
                 var finalListType =
-                    isGenericDefinition && genericDefinitionType.TryMakeGeneric(listType, out var genericListType)
+                    isGenericDefinition &&
+                    genericDefinitionType.TryMakeGeneric(listType, out var genericListType)
                         ? genericListType : listType;
-                if (constrainType.IsAssignableFrom(finalListType)) listTypes[finalListType] = nsString;
+                if (constrainType.IsAssignableFrom(finalListType))
+                    listTypes[finalListType] = nsString;
                 var dictType = typeof(Dictionary<,>).MakeGenericType(typeof(string), t);
                 var finalDictType =
-                    isGenericDefinition && genericDefinitionType.TryMakeGeneric(dictType, out var genericDictType)
+                    isGenericDefinition &&
+                    genericDefinitionType.TryMakeGeneric(dictType, out var genericDictType)
                         ? genericDictType : dictType;
-                if (constrainType.IsAssignableFrom(finalDictType)) dictTypes[finalDictType] = nsString;
+                if (constrainType.IsAssignableFrom(finalDictType))
+                    dictTypes[finalDictType] = nsString;
 
                 //by request extra append dictionary <string, List<T>>
-                var dictListType =
-                    typeof(Dictionary<,>).MakeGenericType(typeof(string), typeof(List<>).MakeGenericType(t));
+                var dictListType = typeof(Dictionary<,>).MakeGenericType(typeof(string),
+                    typeof(List<>).MakeGenericType(t));
                 var finalDictListType =
                     isGenericDefinition &&
                     genericDefinitionType.TryMakeGeneric(dictListType, out var genericDictListType)
                         ? genericDictListType : dictListType;
-                if (constrainType.IsAssignableFrom(finalDictListType)) dictTypes[finalDictListType] = nsString;
+                if (constrainType.IsAssignableFrom(finalDictListType))
+                    dictTypes[finalDictListType] = nsString;
             }
             foreach (var pair in listTypes)
                 menu.AddItem(
-                    new GUIContent(subCategory + TypePrefs.LIST_MENU_STRING + pair.Value + pair.Key.FriendlyName())
-                    , false, Selected, pair.Key);
+                    new GUIContent(subCategory + TypePrefs.LIST_MENU_STRING + pair.Value +
+                        pair.Key.FriendlyName()), false, Selected, pair.Key);
             foreach (var pair in dictTypes)
                 menu.AddItem(
-                    new GUIContent(subCategory + TypePrefs.DICT_MENU_STRING + pair.Value + pair.Key.FriendlyName())
-                    , false, Selected, pair.Key);
+                    new GUIContent(subCategory + TypePrefs.DICT_MENU_STRING + pair.Value +
+                        pair.Key.FriendlyName()), false, Selected, pair.Key);
             if (showAddTypeOption)
                 menu.AddItem(new GUIContent(subCategory + "Add Type..."), false, () => {
                     TypePrefsEditorWindow.ShowWindow();
                 });
             if (menu.GetItemCount() == 0)
-                menu.AddDisabledItem(new GUIContent(string.Format("No {0} derived types found in Preferred Types List"
-                    , baseType.Name)));
+                menu.AddDisabledItem(new GUIContent(
+                    string.Format("No {0} derived types found in Preferred Types List",
+                        baseType.Name)));
             return menu;
         }
 
@@ -116,19 +127,21 @@ namespace ParadoxNotion.Design
         }
 
         ///----------------------------------------------------------------------------------------------
-        public static GenericMenu GetInstanceFieldSelectionMenu(Type type, Type fieldType, Action<FieldInfo> callback
-            , GenericMenu menu = null, string subMenu = null) =>
-            Internal_GetFieldSelectionMenu(BindingFlags.Public | BindingFlags.Instance, type, fieldType, callback, menu
-                , subMenu);
+        public static GenericMenu GetInstanceFieldSelectionMenu(Type type, Type fieldType,
+            Action<FieldInfo> callback, GenericMenu menu = null, string subMenu = null) =>
+            Internal_GetFieldSelectionMenu(BindingFlags.Public | BindingFlags.Instance, type,
+                fieldType, callback, menu, subMenu);
 
-        public static GenericMenu GetStaticFieldSelectionMenu(Type type, Type fieldType, Action<FieldInfo> callback
-            , GenericMenu menu = null, string subMenu = null) => Internal_GetFieldSelectionMenu(
-            BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type, fieldType, callback, menu
-            , subMenu);
+        public static GenericMenu GetStaticFieldSelectionMenu(Type type, Type fieldType,
+            Action<FieldInfo> callback, GenericMenu menu = null, string subMenu = null) =>
+            Internal_GetFieldSelectionMenu(
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type,
+                fieldType, callback, menu, subMenu);
 
         ///<summary>Get a GenericMenu for field selection in a type</summary>
-        private static GenericMenu Internal_GetFieldSelectionMenu(BindingFlags flags, Type type, Type fieldType
-            , Action<FieldInfo> callback, GenericMenu menu = null, string subMenu = null)
+        private static GenericMenu Internal_GetFieldSelectionMenu(BindingFlags flags, Type type,
+            Type fieldType, Action<FieldInfo> callback, GenericMenu menu = null,
+            string subMenu = null)
         {
             if (menu == null) menu = new GenericMenu();
             if (subMenu != null) subMenu = subMenu + "/";
@@ -136,31 +149,35 @@ namespace ParadoxNotion.Design
                 callback((FieldInfo)selectedField);
             };
 
-            foreach (var field in type.GetFields(flags).Where(field => fieldType.IsAssignableFrom(field.FieldType))) {
+            foreach (var field in type.GetFields(flags)
+                .Where(field => fieldType.IsAssignableFrom(field.FieldType))) {
                 var inherited = field.DeclaringType != type;
-                var category = inherited ? subMenu + type.FriendlyName() + "/Inherited" : subMenu + type.FriendlyName();
+                var category = inherited ? subMenu + type.FriendlyName() + "/Inherited"
+                    : subMenu + type.FriendlyName();
                 menu.AddItem(
-                    new GUIContent(string.Format("{0}/{1} : {2}", category, field.Name, field.FieldType.FriendlyName()))
-                    , false, Selected, field);
+                    new GUIContent(string.Format("{0}/{1} : {2}", category, field.Name,
+                        field.FieldType.FriendlyName())), false, Selected, field);
             }
             return menu;
         }
 
         ///----------------------------------------------------------------------------------------------
-        public static GenericMenu GetInstancePropertySelectionMenu(Type type, Type propType
-            , Action<PropertyInfo> callback, bool mustRead = true, bool mustWrite = true, GenericMenu menu = null
-            , string subMenu = null) => Internal_GetPropertySelectionMenu(BindingFlags.Public | BindingFlags.Instance
-            , type, propType, callback, mustRead, mustWrite, menu, subMenu);
+        public static GenericMenu GetInstancePropertySelectionMenu(Type type, Type propType,
+            Action<PropertyInfo> callback, bool mustRead = true, bool mustWrite = true,
+            GenericMenu menu = null, string subMenu = null) => Internal_GetPropertySelectionMenu(
+            BindingFlags.Public | BindingFlags.Instance, type, propType, callback, mustRead,
+            mustWrite, menu, subMenu);
 
-        public static GenericMenu GetStaticPropertySelectionMenu(Type type, Type propType, Action<PropertyInfo> callback
-            , bool mustRead = true, bool mustWrite = true, GenericMenu menu = null, string subMenu = null) =>
-            Internal_GetPropertySelectionMenu(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy
-                , type, propType, callback, mustRead, mustWrite, menu, subMenu);
+        public static GenericMenu GetStaticPropertySelectionMenu(Type type, Type propType,
+            Action<PropertyInfo> callback, bool mustRead = true, bool mustWrite = true,
+            GenericMenu menu = null, string subMenu = null) => Internal_GetPropertySelectionMenu(
+            BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type,
+            propType, callback, mustRead, mustWrite, menu, subMenu);
 
         ///<summary>Get a GenericMenu for properties of a type optionaly specifying mustRead & mustWrite</summary>
-        private static GenericMenu Internal_GetPropertySelectionMenu(BindingFlags flags, Type type, Type propType
-            , Action<PropertyInfo> callback, bool mustRead = true, bool mustWrite = true, GenericMenu menu = null
-            , string subMenu = null)
+        private static GenericMenu Internal_GetPropertySelectionMenu(BindingFlags flags, Type type,
+            Type propType, Action<PropertyInfo> callback, bool mustRead = true,
+            bool mustWrite = true, GenericMenu menu = null, string subMenu = null)
         {
             if (menu == null) menu = new GenericMenu();
             if (subMenu != null) subMenu = subMenu + "/";
@@ -172,36 +189,42 @@ namespace ParadoxNotion.Design
                 if (!prop.CanRead && mustRead) continue;
                 if (!prop.CanWrite && mustWrite) continue;
                 if (!propType.IsAssignableFrom(prop.PropertyType)) continue;
-                if (prop.GetCustomAttributes(typeof(ObsoleteAttribute), true).FirstOrDefault() != null) continue;
+                if (prop.GetCustomAttributes(typeof(ObsoleteAttribute), true).FirstOrDefault() !=
+                    null)
+                    continue;
                 var inherited = prop.DeclaringType != type;
-                var category = inherited ? subMenu + type.FriendlyName() + "/Inherited" : subMenu + type.FriendlyName();
+                var category = inherited ? subMenu + type.FriendlyName() + "/Inherited"
+                    : subMenu + type.FriendlyName();
                 menu.AddItem(
-                    new GUIContent(
-                        string.Format("{0}/{1} : {2}", category, prop.Name, prop.PropertyType.FriendlyName())), false
-                    , Selected, prop);
+                    new GUIContent(string.Format("{0}/{1} : {2}", category, prop.Name,
+                        prop.PropertyType.FriendlyName())), false, Selected, prop);
             }
             return menu;
         }
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Get a menu for instance methods</summary>
-        public static GenericMenu GetInstanceMethodSelectionMenu(Type type, Type returnType, Type acceptedParamsType
-            , Action<MethodInfo> callback, int maxParameters, bool propertiesOnly, bool excludeVoid = false
-            , GenericMenu menu = null, string subMenu = null) => Internal_GetMethodSelectionMenu(
-            BindingFlags.Public | BindingFlags.Instance, type, returnType, acceptedParamsType, callback, maxParameters
-            , propertiesOnly, excludeVoid, menu, subMenu);
+        public static GenericMenu GetInstanceMethodSelectionMenu(Type type, Type returnType,
+            Type acceptedParamsType, Action<MethodInfo> callback, int maxParameters,
+            bool propertiesOnly, bool excludeVoid = false, GenericMenu menu = null,
+            string subMenu = null) => Internal_GetMethodSelectionMenu(
+            BindingFlags.Public | BindingFlags.Instance, type, returnType, acceptedParamsType,
+            callback, maxParameters, propertiesOnly, excludeVoid, menu, subMenu);
 
         ///<summary>Get a menu for static methods</summary>
-        public static GenericMenu GetStaticMethodSelectionMenu(Type type, Type returnType, Type acceptedParamsType
-            , Action<MethodInfo> callback, int maxParameters, bool propertiesOnly, bool excludeVoid = false
-            , GenericMenu menu = null, string subMenu = null) => Internal_GetMethodSelectionMenu(
-            BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type, returnType
-            , acceptedParamsType, callback, maxParameters, propertiesOnly, excludeVoid, menu, subMenu);
+        public static GenericMenu GetStaticMethodSelectionMenu(Type type, Type returnType,
+            Type acceptedParamsType, Action<MethodInfo> callback, int maxParameters,
+            bool propertiesOnly, bool excludeVoid = false, GenericMenu menu = null,
+            string subMenu = null) => Internal_GetMethodSelectionMenu(
+            BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type,
+            returnType, acceptedParamsType, callback, maxParameters, propertiesOnly, excludeVoid,
+            menu, subMenu);
 
         ///<summary>Get a GenericMenu for method or property get/set methods selection in a type</summary>
-        private static GenericMenu Internal_GetMethodSelectionMenu(BindingFlags flags, Type type, Type returnType
-            , Type acceptedParamsType, Action<MethodInfo> callback, int maxParameters, bool propertiesOnly
-            , bool excludeVoid = false, GenericMenu menu = null, string subMenu = null)
+        private static GenericMenu Internal_GetMethodSelectionMenu(BindingFlags flags, Type type,
+            Type returnType, Type acceptedParamsType, Action<MethodInfo> callback,
+            int maxParameters, bool propertiesOnly, bool excludeVoid = false,
+            GenericMenu menu = null, string subMenu = null)
         {
             if (menu == null) menu = new GenericMenu();
             if (subMenu != null) subMenu = subMenu + "/";
@@ -223,45 +246,58 @@ namespace ParadoxNotion.Design
                 MemberInfo member = method;
                 //get the actual property to check for ObsoleteAttribute
                 if (method.Name.StartsWith("get_") || method.Name.StartsWith("set_"))
-                    member = method.DeclaringType.GetProperty(method.Name.Replace("get_", "").Replace("set_", ""));
+                    member = method.DeclaringType.GetProperty(method.Name.Replace("get_", "")
+                        .Replace("set_", ""));
                 if (member == null || member.RTIsDefined(typeof(ObsoleteAttribute), true)) continue;
                 var inherited = method.DeclaringType != type;
-                var category = inherited ? subMenu + type.FriendlyName() + "/Inherited" : subMenu + type.FriendlyName();
-                menu.AddItem(new GUIContent(category + "/" + method.SignatureName()), false, Selected, method);
+                var category = inherited ? subMenu + type.FriendlyName() + "/Inherited"
+                    : subMenu + type.FriendlyName();
+                menu.AddItem(new GUIContent(category + "/" + method.SignatureName()), false,
+                    Selected, method);
             }
             return menu;
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Get a GenericMenu for Instance Events of the type and only event handler type of System.Action</summary>
-        public static GenericMenu GetInstanceEventSelectionMenu(Type type, Type argType, Action<EventInfo> callback
-            , GenericMenu menu = null, string subMenu = null) =>
-            Internal_GetEventSelectionMenu(BindingFlags.Public | BindingFlags.Instance, type, argType, callback, menu
-                , subMenu);
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Get a GenericMenu for Instance Events of the type and only event handler type of
+        ///     System.Action
+        /// </summary>
+        public static GenericMenu GetInstanceEventSelectionMenu(Type type, Type argType,
+            Action<EventInfo> callback, GenericMenu menu = null, string subMenu = null) =>
+            Internal_GetEventSelectionMenu(BindingFlags.Public | BindingFlags.Instance, type,
+                argType, callback, menu, subMenu);
 
-        ///<summary>Get a GenericMenu for Static Events of the type and only event handler type of System.Action</summary>
-        public static GenericMenu GetStaticEventSelectionMenu(Type type, Type argType, Action<EventInfo> callback
-            , GenericMenu menu = null, string subMenu = null) => Internal_GetEventSelectionMenu(
-            BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type, argType, callback, menu
-            , subMenu);
+        /// <summary>
+        ///     Get a GenericMenu for Static Events of the type and only event handler type of
+        ///     System.Action
+        /// </summary>
+        public static GenericMenu GetStaticEventSelectionMenu(Type type, Type argType,
+            Action<EventInfo> callback, GenericMenu menu = null, string subMenu = null) =>
+            Internal_GetEventSelectionMenu(
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, type,
+                argType, callback, menu, subMenu);
 
         ///<summary>Get a GenericMenu for Events of the type and only event handler type of System.Action</summary>
-        private static GenericMenu Internal_GetEventSelectionMenu(BindingFlags flags, Type type, Type argType
-            , Action<EventInfo> callback, GenericMenu menu = null, string subMenu = null)
+        private static GenericMenu Internal_GetEventSelectionMenu(BindingFlags flags, Type type,
+            Type argType, Action<EventInfo> callback, GenericMenu menu = null,
+            string subMenu = null)
         {
             if (menu == null) menu = new GenericMenu();
             if (subMenu != null) subMenu = subMenu + "/";
             GenericMenu.MenuFunction2 Selected = delegate(object selectedEvent) {
                 callback((EventInfo)selectedEvent);
             };
-            var eventType = argType == null ? typeof(Action) : typeof(Action<>).MakeGenericType(new Type[] { argType });
+            var eventType = argType == null ? typeof(Action)
+                : typeof(Action<>).MakeGenericType(new Type[] { argType });
 
             foreach (var e in type.GetEvents(flags))
                 if (e.EventHandlerType == eventType) {
-                    var eventInfoString =
-                        string.Format("{0}({1})", e.Name, argType != null ? argType.FriendlyName() : "");
-                    menu.AddItem(new GUIContent(subMenu + type.FriendlyName() + "/" + eventInfoString), false, Selected
-                        , e);
+                    var eventInfoString = string.Format("{0}({1})", e.Name,
+                        argType != null ? argType.FriendlyName() : "");
+                    menu.AddItem(
+                        new GUIContent(subMenu + type.FriendlyName() + "/" + eventInfoString),
+                        false, Selected, e);
                 }
             return menu;
         }
@@ -278,8 +314,8 @@ namespace ParadoxNotion.Design
             public GenericMenu.MenuFunction2 func2;
             public object userData;
 
-            public MenuItemInfo(GUIContent c, bool sep, bool slc, GenericMenu.MenuFunction f1
-                , GenericMenu.MenuFunction2 f2, object o)
+            public MenuItemInfo(GUIContent c, bool sep, bool slc, GenericMenu.MenuFunction f1,
+                GenericMenu.MenuFunction2 f2, object o)
             {
                 isValid = true;
                 content = c;
@@ -294,20 +330,28 @@ namespace ParadoxNotion.Design
         ///<summary>Gets an array of MenuItemInfo out of the GenericMenu provided</summary>
         public static MenuItemInfo[] GetMenuItems(GenericMenu menu)
         {
-            var itemField = typeof(GenericMenu).GetField("menuItems", BindingFlags.Instance | BindingFlags.NonPublic);
+            var itemField = typeof(GenericMenu).GetField("menuItems",
+                BindingFlags.Instance | BindingFlags.NonPublic);
             if (itemField == null)
-                itemField = typeof(GenericMenu).GetField("m_MenuItems", BindingFlags.Instance | BindingFlags.NonPublic);
+                itemField = typeof(GenericMenu).GetField("m_MenuItems",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
             var items = itemField.GetValue(menu) as IList;
             if (items.Count == 0) return new MenuItemInfo[0];
             var itemType = items[0].GetType();
-            var contentGetter = ReflectionTools.GetFieldGetter<object, GUIContent>(itemType.GetField("content"));
-            var sepGetter = ReflectionTools.GetFieldGetter<object, bool>(itemType.GetField("separator"));
-            var selectedGetter = ReflectionTools.GetFieldGetter<object, bool>(itemType.GetField("on"));
+            var contentGetter =
+                ReflectionTools.GetFieldGetter<object, GUIContent>(itemType.GetField("content"));
+            var sepGetter =
+                ReflectionTools.GetFieldGetter<object, bool>(itemType.GetField("separator"));
+            var selectedGetter =
+                ReflectionTools.GetFieldGetter<object, bool>(itemType.GetField("on"));
             var func1Getter =
-                ReflectionTools.GetFieldGetter<object, GenericMenu.MenuFunction>(itemType.GetField("func"));
+                ReflectionTools.GetFieldGetter<object, GenericMenu.MenuFunction>(
+                    itemType.GetField("func"));
             var func2Getter =
-                ReflectionTools.GetFieldGetter<object, GenericMenu.MenuFunction2>(itemType.GetField("func2"));
-            var dataGetter = ReflectionTools.GetFieldGetter<object, object>(itemType.GetField("userData"));
+                ReflectionTools.GetFieldGetter<object, GenericMenu.MenuFunction2>(
+                    itemType.GetField("func2"));
+            var dataGetter =
+                ReflectionTools.GetFieldGetter<object, object>(itemType.GetField("userData"));
             var result = new List<MenuItemInfo>();
 
             foreach (var item in items) {
@@ -323,7 +367,8 @@ namespace ParadoxNotion.Design
         }
 
         ///<summary>Shows the Generic Menu as a browser with CompleteContextMenu.</summary>
-        public static void ShowAsBrowser(this GenericMenu menu, Vector2 pos, string title, Type keyType = null)
+        public static void ShowAsBrowser(this GenericMenu menu, Vector2 pos, string title,
+            Type keyType = null)
         {
             if (menu != null) GenericMenuBrowser.Show(menu, pos, title, keyType);
         }
@@ -331,11 +376,13 @@ namespace ParadoxNotion.Design
         ///<summary>Shows the Generic Menu as a browser with CompleteContextMenu.</summary>
         public static void ShowAsBrowser(this GenericMenu menu, string title, Type keyType = null)
         {
-            if (menu != null) GenericMenuBrowser.Show(menu, Event.current.mousePosition, title, keyType);
+            if (menu != null)
+                GenericMenuBrowser.Show(menu, Event.current.mousePosition, title, keyType);
         }
 
         ///<summary>Shortcut</summary>
-        public static void Show(this GenericMenu menu, bool asBrowser, string title, Type keyType = null)
+        public static void Show(this GenericMenu menu, bool asBrowser, string title,
+            Type keyType = null)
         {
             if (asBrowser) {
                 menu.ShowAsBrowser(title, keyType);

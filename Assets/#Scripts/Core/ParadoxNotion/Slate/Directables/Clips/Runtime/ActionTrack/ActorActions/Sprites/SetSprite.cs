@@ -65,7 +65,8 @@ namespace Slate.ActionClips
             if (sprite != null) {
                 var t = sprite.texture;
                 var tr = sprite.textureRect;
-                var r = new Rect(tr.x / t.width, tr.y / t.height, tr.width / t.width, tr.height / t.height);
+                var r = new Rect(tr.x / t.width, tr.y / t.height, tr.width / t.width,
+                    tr.height / t.height);
                 var viewRect = new Rect(right.x, right.y, right.height, right.height);
 
                 if (flipX) {

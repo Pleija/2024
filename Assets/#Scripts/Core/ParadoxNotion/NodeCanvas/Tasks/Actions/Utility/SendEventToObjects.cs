@@ -5,8 +5,9 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Utility")
-     , Description("Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
+    [Category("✫ Utility"),
+     Description(
+         "Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
     public class SendEventToObjects : ActionTask
     {
         [RequiredField]
@@ -15,7 +16,8 @@ namespace NodeCanvas.Tasks.Actions
         [RequiredField]
         public BBParameter<string> eventName;
 
-        protected override string info => string.Format("Send Event [{0}] to {1}", eventName, targetObjects);
+        protected override string info =>
+            string.Format("Send Event [{0}] to {1}", eventName, targetObjects);
 
         protected override void OnExecute()
         {
@@ -29,8 +31,9 @@ namespace NodeCanvas.Tasks.Actions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Utility")
-     , Description("Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
+    [Category("✫ Utility"),
+     Description(
+         "Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
     public class SendEventToObjects<T> : ActionTask
     {
         [RequiredField]
@@ -41,8 +44,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public BBParameter<T> eventValue;
 
-        protected override string info =>
-            string.Format("Send Event [{0}]({1}) to {2}", eventName, eventValue, targetObjects);
+        protected override string info => string.Format("Send Event [{0}]({1}) to {2}", eventName,
+            eventValue, targetObjects);
 
         protected override void OnExecute()
         {

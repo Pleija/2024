@@ -15,7 +15,8 @@ namespace NodeCanvas.Tasks.Actions
         [BlackboardOnly]
         public BBParameter<T> saveAs;
 
-        protected override string info => string.Format("{0} = {1} [{2}]", saveAs, targetList, index);
+        protected override string info =>
+            string.Format("{0} = {1} [{2}]", saveAs, targetList, index);
 
         protected override void OnExecute()
         {

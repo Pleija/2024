@@ -55,9 +55,12 @@ namespace ParadoxNotion.Design
         }
 #endif
 
-        ///<summary>Open utility window to inspect target object of type in context using read/write delegates.</summary>
-        public static void Show(string title, System.Type targetType, Object unityObjectContext
-            , System.Func<object> read, System.Action<object> write)
+        /// <summary>
+        ///     Open utility window to inspect target object of type in context using read/write
+        ///     delegates.
+        /// </summary>
+        public static void Show(string title, System.Type targetType, Object unityObjectContext,
+            System.Func<object> read, System.Action<object> write)
         {
             var window = current != null ? current : CreateInstance<GenericInspectorWindow>();
             window.friendlyTitle = title;
@@ -91,13 +94,15 @@ namespace ParadoxNotion.Design
                 return;
             }
             GUILayout.Space(10);
-            GUILayout.Label(string.Format("<size=14><b>{0}</b></size>", targetType.FriendlyName()), Styles.centerLabel);
+            GUILayout.Label(string.Format("<size=14><b>{0}</b></size>", targetType.FriendlyName()),
+                Styles.centerLabel);
             EditorUtils.Separator();
             GUILayout.Space(10);
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             var serializationInfo = new InspectedFieldInfo(unityObjectContext, null, null, null);
             var oldValue = read();
-            var newValue = EditorUtils.ReflectedFieldInspector(friendlyTitle, oldValue, targetType, serializationInfo);
+            var newValue = EditorUtils.ReflectedFieldInspector(friendlyTitle, oldValue, targetType,
+                serializationInfo);
             if (!Equals(oldValue, newValue) || GUI.changed) write(newValue);
             GUILayout.EndScrollView();
             willRepaint = true;

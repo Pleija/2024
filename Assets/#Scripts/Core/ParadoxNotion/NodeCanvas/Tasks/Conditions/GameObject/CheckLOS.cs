@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Target In Line Of Sight"), Category("GameObject")
-     , Description(
+    [Name("Target In Line Of Sight"), Category("GameObject"),
+     Description(
          "Check of agent is in line of sight with target by doing a linecast and optionaly save the distance")]
     public class CheckLOS : ConditionTask<Transform>
     {
@@ -25,7 +25,8 @@ namespace NodeCanvas.Tasks.Conditions
         {
             var t = LOSTarget.value.transform;
 
-            if (Physics.Linecast(agent.position + offset, t.position + offset, out hit, layerMask.value)) {
+            if (Physics.Linecast(agent.position + offset, t.position + offset, out hit,
+                layerMask.value)) {
                 var targetCollider = t.GetComponent<Collider>();
 
                 if (targetCollider == null || hit.collider != targetCollider) {
@@ -39,7 +40,8 @@ namespace NodeCanvas.Tasks.Conditions
         public override void OnDrawGizmosSelected()
         {
             if (agent && LOSTarget.value)
-                Gizmos.DrawLine(agent.position + offset, LOSTarget.value.transform.position + offset);
+                Gizmos.DrawLine(agent.position + offset,
+                    LOSTarget.value.transform.position + offset);
         }
     }
 }

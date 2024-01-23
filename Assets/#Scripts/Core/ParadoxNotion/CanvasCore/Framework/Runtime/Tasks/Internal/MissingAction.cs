@@ -6,8 +6,8 @@ using UnityEngine;
 namespace NodeCanvas.Framework.Internal
 {
     ///<summary> Injected when an ActionTask is missing. Recovers back when that ActionTask is found.</summary>
-    [DoNotList
-     , Description(
+    [DoNotList,
+     Description(
          "Please resolve the MissingAction issue by either replacing the action, importing the missing action type, or refactoring the type in GraphRefactor.")]
     public class MissingAction : ActionTask, IMissingRecoverable
     {
@@ -27,7 +27,9 @@ namespace NodeCanvas.Framework.Internal
             set => _recoveryState = value;
         }
 
-        protected override string info => ReflectionTools.FriendlyTypeName(_missingType).FormatError();
+        protected override string info =>
+            ReflectionTools.FriendlyTypeName(_missingType).FormatError();
+
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR

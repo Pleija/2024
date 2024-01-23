@@ -16,10 +16,11 @@ using UnityEngine.UIElements;
 
 public class DatabaseManager : OdinMenuEditorWindow
 {
-    private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(AssemblyUtilities
-        .GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
-            t.IsClass && !t.IsAbstract && typeof(ModelBase).IsAssignableFrom(t) && t != typeof(ModelBase) &&
-            !t.IsGenericType && !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
+    private static readonly HashSet<Type> ScriptableObjectTypes = new HashSet<Type>(
+        AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes).Where(t =>
+            t.IsClass && !t.IsAbstract && typeof(ModelBase).IsAssignableFrom(t) &&
+            t != typeof(ModelBase) && !t.IsGenericType &&
+            !typeof(EditorWindow).IsAssignableFrom(t) && !typeof(Editor).IsAssignableFrom(t)));
     //.ToHashSet();
 
     [MenuItem("Tools/Database Manager", priority = -10001)]
@@ -62,7 +63,8 @@ public class DatabaseManager : OdinMenuEditorWindow
         //tree.AddRange(ScriptableObjectTypes.Where(x => !x.IsAbstract), GetMenuPathForType);
         tree.AddRange(assets, x => {
             var path = AssetDatabase.GetAssetPath(x);
-            return Path.GetDirectoryName(path)!.Replace("/", " : ") + "/" + Path.GetFileNameWithoutExtension(path);
+            return Path.GetDirectoryName(path)!.Replace("/", " : ") + "/" +
+                Path.GetFileNameWithoutExtension(path);
         });
         tree.SortMenuItemsByName();
         tree.Selection.SelectionConfirmed += x => CreateAsset();
@@ -98,7 +100,8 @@ public class DatabaseManager : OdinMenuEditorWindow
 
     protected override void DrawEditor(int index)
     {
-        if (previewObject) GUILayout.Box(AssetDatabase.GetAssetPath(previewObject), GUILayout.ExpandWidth(true));
+        if (previewObject)
+            GUILayout.Box(AssetDatabase.GetAssetPath(previewObject), GUILayout.ExpandWidth(true));
         scroll = GUILayout.BeginScrollView(scroll);
         {
             var myStyle = new GUIStyle();
@@ -113,7 +116,8 @@ public class DatabaseManager : OdinMenuEditorWindow
             GUILayout.FlexibleSpace();
             SirenixEditorGUI.HorizontalLineSeparator(1);
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Select", GUILayoutOptions.Height(30))) AssetDatabase.OpenAsset(previewObject);
+            if (GUILayout.Button("Select", GUILayoutOptions.Height(30)))
+                AssetDatabase.OpenAsset(previewObject);
             if (GUILayout.Button("Create Asset", GUILayoutOptions.Height(30))) CreateAsset();
             GUILayout.EndHorizontal();
         }

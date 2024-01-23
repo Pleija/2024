@@ -28,13 +28,16 @@ namespace NodeCanvas
         {
             // if ( ParadoxNotion.Services.Threader.applicationIsPlaying ) { return; }
             _objectReferences = new List<Object>();
-            _serializedList = JSONSerializer.Serialize(typeof(ActionList), _actionList, _objectReferences);
+            _serializedList =
+                JSONSerializer.Serialize(typeof(ActionList), _actionList, _objectReferences);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            _actionList = JSONSerializer.Deserialize<ActionList>(_serializedList, _objectReferences);
-            if (_actionList == null) _actionList = (ActionList)Task.Create(typeof(ActionList), this);
+            _actionList =
+                JSONSerializer.Deserialize<ActionList>(_serializedList, _objectReferences);
+            if (_actionList == null)
+                _actionList = (ActionList)Task.Create(typeof(ActionList), this);
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -56,7 +59,8 @@ namespace NodeCanvas
         }
 
         ///----------------------------------------------------------------------------------------------
-        public static ActionListPlayer Create() => new GameObject("ActionList").AddComponent<ActionListPlayer>();
+        public static ActionListPlayer Create() =>
+            new GameObject("ActionList").AddComponent<ActionListPlayer>();
 
         protected void Awake()
         {
@@ -76,14 +80,14 @@ namespace NodeCanvas
 
         void ITaskSystem.SendEvent(string name, object value, object sender)
         {
-            ParadoxNotion.Services.Logger.LogWarning("Sending events to standalone action lists has no effect"
-                , LogTag.EXECUTION, this);
+            ParadoxNotion.Services.Logger.LogWarning(
+                "Sending events to standalone action lists has no effect", LogTag.EXECUTION, this);
         }
 
         void ITaskSystem.SendEvent<T>(string name, T value, object sender)
         {
-            ParadoxNotion.Services.Logger.LogWarning("Sending events to standalone action lists has no effect"
-                , LogTag.EXECUTION, this);
+            ParadoxNotion.Services.Logger.LogWarning(
+                "Sending events to standalone action lists has no effect", LogTag.EXECUTION, this);
         }
 
         [ContextMenu("Play")]
@@ -111,7 +115,8 @@ namespace NodeCanvas
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/Standalone Action List", false, 3)]
+        [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/Standalone Action List", false,
+            3)]
         private static void CreateActionListPlayer()
         {
             UnityEditor.Selection.activeObject = Create();
@@ -126,7 +131,8 @@ namespace NodeCanvas
 
         private void OnValidate()
         {
-            if (!Application.isPlaying && !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            if (!Application.isPlaying &&
+                !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
                 UpdateTasksOwner();
         }
 #endif

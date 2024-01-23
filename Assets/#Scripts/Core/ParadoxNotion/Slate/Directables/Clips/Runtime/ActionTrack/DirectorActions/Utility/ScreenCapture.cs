@@ -3,10 +3,10 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Utilities")
-     , Description(
-         "Render the cutscene in an image-sequence for the selected duration of the clip. Rendering is done in playmode only.")
-     , System.Obsolete("Use the new 'Render' feature")]
+    [Category("Utilities"),
+     Description(
+         "Render the cutscene in an image-sequence for the selected duration of the clip. Rendering is done in playmode only."),
+     System.Obsolete("Use the new 'Render' feature")]
     public class ScreenCapture : DirectorActionClip
     {
 #if UNITY_EDITOR
@@ -36,12 +36,15 @@ namespace Slate.ActionClips
 
         protected override void OnUpdate(float deltaTime, float previousTime)
         {
-            if (!Application.isPlaying || deltaTime == previousTime || string.IsNullOrEmpty(filename)) return;
+            if (!Application.isPlaying || deltaTime == previousTime ||
+                string.IsNullOrEmpty(filename))
+                return;
             var frame = (int)Mathf.Round(deltaTime * 30);
             frame = Mathf.Min(lastCapturedFrame, frame);
             if (deltaTime > previousTime) lastCapturedFrame++;
             if (deltaTime < previousTime) lastCapturedFrame--;
-            var final = string.Format(@"Assets\Flipbooks\{0}_#{1}.png", filename, frame.ToString("0000"));
+            var final = string.Format(@"Assets\Flipbooks\{0}_#{1}.png", filename,
+                frame.ToString("0000"));
             Application.CaptureScreenshot(final);
             Debug.Log(final);
         }

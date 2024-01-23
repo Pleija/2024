@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace ParadoxNotion.Design
 {
-    ///<summary> A simple Undo utility to avoid checking application playing, nulls and if unity editor all the time</summary>
+    /// <summary>
+    ///     A simple Undo utility to avoid checking application playing, nulls and if unity editor
+    ///     all the time
+    /// </summary>
     public static class UndoUtility
     {
         public static string lastOperationName { get; private set; }
@@ -13,7 +16,8 @@ namespace ParadoxNotion.Design
         public static void RecordObject(Object target, string name)
         {
 #if UNITY_EDITOR
-            if (Application.isPlaying || UnityEditor.EditorApplication.isUpdating || target == null) return;
+            if (Application.isPlaying || UnityEditor.EditorApplication.isUpdating || target == null)
+                return;
             lastOperationName = name;
             UnityEditor.Undo.RecordObject(target, name);
 #endif
@@ -24,7 +28,8 @@ namespace ParadoxNotion.Design
         public static void RecordObjectComplete(Object target, string name)
         {
 #if UNITY_EDITOR
-            if (Application.isPlaying || UnityEditor.EditorApplication.isUpdating || target == null) return;
+            if (Application.isPlaying || UnityEditor.EditorApplication.isUpdating || target == null)
+                return;
             lastOperationName = name;
             UnityEditor.Undo.RegisterCompleteObjectUndo(target, name);
 #endif
@@ -35,7 +40,8 @@ namespace ParadoxNotion.Design
         public static void SetDirty(Object target)
         {
 #if UNITY_EDITOR
-            if (Application.isPlaying || UnityEditor.EditorApplication.isUpdating || target == null) return;
+            if (Application.isPlaying || UnityEditor.EditorApplication.isUpdating || target == null)
+                return;
             UnityEditor.EditorUtility.SetDirty(target);
 #endif
         }
@@ -66,8 +72,8 @@ namespace ParadoxNotion.Design
         {
             var e = Event.current;
 
-            if (e.type == EventType.MouseDown || e.type == EventType.KeyDown || e.type == EventType.DragPerform ||
-                e.type == EventType.ExecuteCommand) {
+            if (e.type == EventType.MouseDown || e.type == EventType.KeyDown ||
+                e.type == EventType.DragPerform || e.type == EventType.ExecuteCommand) {
                 lastOperationName = name;
                 RecordObject(target, name);
             }

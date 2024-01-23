@@ -15,7 +15,9 @@ namespace FlowCanvas.Nodes
         protected Type targetType;
 
         protected Component targetComponent;
-        protected EventInfo eventInfo => targetType != null ? targetType.RTGetEvent(eventName) : null;
+
+        protected EventInfo eventInfo =>
+            targetType != null ? targetType.RTGetEvent(eventName) : null;
 
         public void SetEvent(EventInfo e, object instace = null)
         {

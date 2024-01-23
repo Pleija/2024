@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Execute Function", 10), Category("✫ Reflected")
-     , Description(
+    [Name("Execute Function", 10), Category("✫ Reflected"),
+     Description(
          "Execute a function on a script and save the return if any.\nIf function is an IEnumerator it will execute as a coroutine.")]
     public class ExecuteFunction_Multiplatform : ActionTask, IReflectedWrapper
     {
@@ -42,12 +42,16 @@ namespace NodeCanvas.Tasks.Actions
                 if (method == null) return "No Method Selected";
                 if (targetMethod == null) return method.AsString().FormatError();
                 var returnInfo =
-                    targetMethod.ReturnType == typeof(void) || targetMethod.ReturnType == typeof(IEnumerator) ? ""
+                    targetMethod.ReturnType == typeof(void) ||
+                    targetMethod.ReturnType == typeof(IEnumerator) ? ""
                         : returnValue.ToString() + " = ";
                 var paramInfo = "";
-                for (var i = 0; i < parameters.Count; i++) paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
-                var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}{1}.{2}({3})", returnInfo, mInfo, targetMethod.Name, paramInfo);
+                for (var i = 0; i < parameters.Count; i++)
+                    paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
+                var mInfo = targetMethod.IsStatic
+                    ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                return string.Format("{0}{1}.{2}({3})", returnInfo, mInfo, targetMethod.Name,
+                    paramInfo);
             }
         }
 
@@ -62,7 +66,8 @@ namespace NodeCanvas.Tasks.Actions
         protected override string OnInit()
         {
             if (method == null) return "No Method selected";
-            if (targetMethod == null) return string.Format("Missing Method '{0}'", method.AsString());
+            if (targetMethod == null)
+                return string.Format("Missing Method '{0}'", method.AsString());
 
             if (args == null) {
                 var methodParameters = targetMethod.GetParameters();
@@ -140,17 +145,17 @@ namespace NodeCanvas.Tasks.Actions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
-                            , SetMethod, 10, false, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(),
+                            typeof(object), typeof(object), SetMethod, 10, false, false, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 10
-                        , false, false, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object),
+                        typeof(object), SetMethod, 10, false, false, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
-                            , 10, false, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object),
+                            typeof(object), SetMethod, 10, false, false, menu);
                 }
                 menu.ShowAsBrowser("Select Method", GetType());
                 Event.current.Use();
@@ -158,18 +163,22 @@ namespace NodeCanvas.Tasks.Actions
 
             if (targetMethod != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Method", targetMethod.Name);
-                UnityEditor.EditorGUILayout.LabelField("Returns", targetMethod.ReturnType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
-                    , UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.LabelField("Returns",
+                    targetMethod.ReturnType.FriendlyName());
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
+                    UnityEditor.MessageType.None);
                 if (targetMethod.ReturnType == typeof(IEnumerator))
                     GUILayout.Label("<b>This will execute as a Coroutine!</b>");
                 GUILayout.EndVertical();
-                var paramNames = targetMethod.GetParameters().Select(p => p.Name.SplitCamelCase()).ToArray();
+                var paramNames = targetMethod.GetParameters().Select(p => p.Name.SplitCamelCase())
+                    .ToArray();
                 for (var i = 0; i < paramNames.Length; i++)
                     Editor.BBParameterEditor.ParameterField(paramNames[i], parameters[i]);
-                if (targetMethod.ReturnType != typeof(void) && targetMethod.ReturnType != typeof(IEnumerator))
+                if (targetMethod.ReturnType != typeof(void) &&
+                    targetMethod.ReturnType != typeof(IEnumerator))
                     Editor.BBParameterEditor.ParameterField("Save Return Value", returnValue, true);
             }
         }

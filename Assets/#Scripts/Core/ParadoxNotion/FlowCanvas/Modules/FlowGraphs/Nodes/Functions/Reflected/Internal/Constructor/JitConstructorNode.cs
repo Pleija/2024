@@ -23,7 +23,8 @@ namespace FlowCanvas.Nodes
         {
             var key = ReflectedNodesHelper.GetGeneratedKey(constructorInfo);
             if (Delegates.TryGetValue(key, out delegat) && delegat != null) return;
-            var dynamicMethod = new DynamicMethod("Constructor_Dynamic", null, DynParamTypes, typeof(JitMethodNode));
+            var dynamicMethod = new DynamicMethod("Constructor_Dynamic", null, DynParamTypes,
+                typeof(JitMethodNode));
             var ilGen = dynamicMethod.GetILGenerator();
             var returnId = -1;
 
@@ -90,7 +91,8 @@ namespace FlowCanvas.Nodes
         private void Call()
         {
             if (delegat != null) {
-                for (var i = 0; i <= delegateParams.Length - 1; i++) delegateParams[i].SetFromInput();
+                for (var i = 0; i <= delegateParams.Length - 1; i++)
+                    delegateParams[i].SetFromInput();
                 delegat(delegateParams);
             }
         }
@@ -105,8 +107,8 @@ namespace FlowCanvas.Nodes
 
             if (resultDef.paramMode != ParamMode.Undefined) {
                 tmpTypes[0] = resultDef.paramType;
-                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
-                    .CreateObjectUninitialized();
+                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                    .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 delegateParams[i].paramDef = resultDef;
                 i++;
             }
@@ -138,7 +140,8 @@ namespace FlowCanvas.Nodes
             return true;
         }
 
-        public override void RegisterPorts(FlowNode node, ReflectedMethodRegistrationOptions options)
+        public override void RegisterPorts(FlowNode node,
+            ReflectedMethodRegistrationOptions options)
         {
             if (actionCall == null) actionCall = Call;
 

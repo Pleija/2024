@@ -18,8 +18,8 @@ namespace NodeCanvas.Tasks.Actions
         public bool waitActionFinish = true;
 
         //holds the last played animationClip.value for each agent 
-        private static Dictionary<Animation, AnimationClip>
-            lastPlayedClips = new Dictionary<Animation, AnimationClip>();
+        private static Dictionary<Animation, AnimationClip> lastPlayedClips =
+            new Dictionary<Animation, AnimationClip>();
 
         protected override string info => "Anim " + animationClip.ToString();
 

@@ -66,13 +66,19 @@ namespace Slate
             set { }
         }
 
-        ///<summary>The blend in value of the clip. A value of zero means instant. Override for blendable in clips.</summary>
+        /// <summary>
+        ///     The blend in value of the clip. A value of zero means instant. Override for blendable in
+        ///     clips.
+        /// </summary>
         public virtual float blendIn {
             get => 0;
             set { }
         }
 
-        ///<summary>The blend out value of the clip. A value of zero means instant. Override for blendable out clips.</summary>
+        /// <summary>
+        ///     The blend out value of the clip. A value of zero means instant. Override for blendable out
+        ///     clips.
+        /// </summary>
         public virtual float blendOut {
             get => 0;
             set { }
@@ -100,19 +106,25 @@ namespace Slate
         [NonSerialized]
         private string[] _cachedAnimParamPaths;
 
-        private string[] animatedParameterPaths => _cachedAnimParamPaths != null ? _cachedAnimParamPaths
-            : _cachedAnimParamPaths = AnimationDataUtility.GetAnimatableMemberPaths(this);
+        private string[] animatedParameterPaths => _cachedAnimParamPaths != null
+            ? _cachedAnimParamPaths : _cachedAnimParamPaths =
+                AnimationDataUtility.GetAnimatableMemberPaths(this);
 
         //If the params target is not this, registration of parameters should be handled manually
-        protected virtual bool handleParametersRegistrationManually => !ReferenceEquals(animatedParametersTarget, this);
+        protected virtual bool handleParametersRegistrationManually =>
+            !ReferenceEquals(animatedParametersTarget, this);
 
         /// <summary>
-        ///     The target instance of the animated properties/fields. By default the instance of THIS action clip is used. Do
+        ///     The target instance of the animated properties/fields. By default the instance of THIS action
+        ///     clip is used. Do
         ///     NOT override if you don't know why! :)
         /// </summary>
         public virtual object animatedParametersTarget => this;
 
-        ///<summary>The interpolation to use when blending parameters. Only relevant when useWeightInParameters is true.</summary>
+        /// <summary>
+        ///     The interpolation to use when blending parameters. Only relevant when
+        ///     useWeightInParameters is true.
+        /// </summary>
         public virtual EaseType animatedParametersInterpolation => EaseType.Linear;
 
         ///<summary>Whether or not clip weight will be used in parameters automatically.</summary>
@@ -188,7 +200,8 @@ namespace Slate
             if (selected && actor != null && isValid) OnDrawGizmosSelected();
         }
 
-        private Dictionary<MemberInfo, Attribute[]> paramsAttributes = new Dictionary<MemberInfo, Attribute[]>();
+        private Dictionary<MemberInfo, Attribute[]> paramsAttributes =
+            new Dictionary<MemberInfo, Attribute[]>();
 
         void IDirectable.SceneGUI(bool selected)
         {
@@ -210,10 +223,13 @@ namespace Slate
                         attributes.FirstOrDefault(a => a is AnimatableParameterAttribute) as
                             AnimatableParameterAttribute;
 
-                    if (animAtt != null) //only in case parameter has been added manualy. Probably never.
+                    if (animAtt !=
+                        null) //only in case parameter has been added manualy. Probably never.
                         if (!string.IsNullOrEmpty(animAtt.link))
                             try {
-                                link = GetType().GetField(animAtt.link).GetValue(this) as ITransformRefParameter;
+                                link =
+                                    GetType().GetField(animAtt.link).GetValue(this) as
+                                        ITransformRefParameter;
                             }
                             catch (Exception exc) {
                                 Debug.LogException(exc);
@@ -222,50 +238,63 @@ namespace Slate
                     if (link == null || link.useAnimation) {
                         var space = link != null ? link.space : defaultTransformSpace;
                         var posHandleAtt =
-                            attributes.FirstOrDefault(a => a is PositionHandleAttribute) as PositionHandleAttribute;
+                            attributes.FirstOrDefault(a => a is PositionHandleAttribute) as
+                                PositionHandleAttribute;
 
                         if (posHandleAtt != null) {
                             Vector3? rotVal = null;
 
                             if (!string.IsNullOrEmpty(posHandleAtt.rotationPropertyName)) {
-                                var rotProp = GetType().RTGetFieldOrProp(posHandleAtt.rotationPropertyName);
-                                rotVal = rotProp != null ? (Vector3)rotProp.RTGetFieldOrPropValue(this) : default;
+                                var rotProp = GetType()
+                                    .RTGetFieldOrProp(posHandleAtt.rotationPropertyName);
+                                rotVal = rotProp != null
+                                    ? (Vector3)rotProp.RTGetFieldOrPropValue(this) : default;
                             }
                             DoParameterPositionHandle(animParam, space, rotVal);
                         }
                         var rotHandleAtt =
-                            attributes.FirstOrDefault(a => a is RotationHandleAttribute) as RotationHandleAttribute;
+                            attributes.FirstOrDefault(a => a is RotationHandleAttribute) as
+                                RotationHandleAttribute;
 
                         if (rotHandleAtt != null) {
-                            var posProp = GetType().RTGetFieldOrProp(rotHandleAtt.positionPropertyName);
-                            var posVal = posProp != null ? (Vector3)posProp.RTGetFieldOrPropValue(this) : default;
+                            var posProp = GetType()
+                                .RTGetFieldOrProp(rotHandleAtt.positionPropertyName);
+                            var posVal = posProp != null
+                                ? (Vector3)posProp.RTGetFieldOrPropValue(this) : default;
                             DoParameterRotationHandle(animParam, space, posVal);
                         }
                         var trajAtt =
-                            attributes.FirstOrDefault(a => a is ShowTrajectoryAttribute) as ShowTrajectoryAttribute;
+                            attributes.FirstOrDefault(a => a is ShowTrajectoryAttribute) as
+                                ShowTrajectoryAttribute;
                         if (trajAtt != null && animParam.enabled)
-                            CurveEditor3D.Draw3DCurve(animParam, this, GetSpaceTransform(space), length / 2, length);
+                            CurveEditor3D.Draw3DCurve(animParam, this, GetSpaceTransform(space),
+                                length / 2, length);
                     }
                 }
             OnSceneGUI();
         }
 
-        protected bool DoParameterPositionHandle(AnimatedParameter animParam, TransformSpace space) =>
+        protected bool
+            DoParameterPositionHandle(AnimatedParameter animParam, TransformSpace space) =>
             SceneGUIUtility.DoParameterPositionHandle(this, animParam, space, null);
 
-        protected bool DoParameterPositionHandle(AnimatedParameter animParam, TransformSpace space, Vector3? euler) =>
+        protected bool DoParameterPositionHandle(AnimatedParameter animParam, TransformSpace space,
+            Vector3? euler) =>
             SceneGUIUtility.DoParameterPositionHandle(this, animParam, space, euler);
 
-        protected bool DoParameterRotationHandle(AnimatedParameter animParam, TransformSpace space, Vector3 position) =>
+        protected bool DoParameterRotationHandle(AnimatedParameter animParam, TransformSpace space,
+            Vector3 position) =>
             SceneGUIUtility.DoParameterRotationHandle(this, animParam, space, position);
 
         protected bool DoVectorPositionHandle(TransformSpace space, ref Vector3 position) =>
             SceneGUIUtility.DoVectorPositionHandle(this, space, ref position);
 
-        protected bool DoVectorPositionHandle(TransformSpace space, Vector3 euler, ref Vector3 position) =>
+        protected bool DoVectorPositionHandle(TransformSpace space, Vector3 euler,
+            ref Vector3 position) =>
             SceneGUIUtility.DoVectorPositionHandle(this, space, euler, ref position);
 
-        protected bool DoVectorRotationHandle(TransformSpace space, Vector3 position, ref Vector3 euler) =>
+        protected bool DoVectorRotationHandle(TransformSpace space, Vector3 position,
+            ref Vector3 euler) =>
             SceneGUIUtility.DoVectorRotationHandle(this, space, position, ref euler);
 #endif
 
@@ -341,7 +370,10 @@ namespace Slate
         public Vector3 ActorPositionInSpace(TransformSpace space) =>
             IDirectableExtensions.ActorPositionInSpace(this, space);
 
-        ///<summary>Returns the transform object used for specified Space transformations. Null if World Space.</summary>
+        /// <summary>
+        ///     Returns the transform object used for specified Space transformations. Null if World
+        ///     Space.
+        /// </summary>
         public Transform GetSpaceTransform(TransformSpace space, GameObject actorOverride = null) =>
             IDirectableExtensions.GetSpaceTransform(this, space, actorOverride);
 
@@ -357,8 +389,12 @@ namespace Slate
         ///<summary>The weight of the clip at specified local time based on its blend properties.</summary>
         public float GetClipWeight(float time) => GetClipWeight(time, blendIn, blendOut);
 
-        ///<summary>The weight of the clip at specified local time based on provided override blend in/out properties</summary>
-        public float GetClipWeight(float time, float blendInOut) => GetClipWeight(time, blendInOut, blendInOut);
+        /// <summary>
+        ///     The weight of the clip at specified local time based on provided override blend in/out
+        ///     properties
+        /// </summary>
+        public float GetClipWeight(float time, float blendInOut) =>
+            GetClipWeight(time, blendInOut, blendInOut);
 
         public float GetClipWeight(float time, float blendIn, float blendOut) =>
             this.GetWeight(time, blendIn, blendOut);
@@ -367,13 +403,15 @@ namespace Slate
         public void TryMatchSubClipLength()
         {
             if (this is ISubClipContainable)
-                length = (this as ISubClipContainable).subClipLength / (this as ISubClipContainable).subClipSpeed;
+                length = (this as ISubClipContainable).subClipLength /
+                    (this as ISubClipContainable).subClipSpeed;
         }
 
         ///<summary>Try set the clip length to match previous subclip loop if this contains a subclip at all.</summary>
         public void TryMatchPreviousSubClipLoop()
         {
-            if (this is ISubClipContainable) length = (this as ISubClipContainable).GetPreviousLoopLocalTime();
+            if (this is ISubClipContainable)
+                length = (this as ISubClipContainable).GetPreviousLoopLocalTime();
         }
 
         ///<summary>Try set the clip length to match next subclip loop if this contains a subclip at all.</summary>
@@ -382,31 +420,34 @@ namespace Slate
             if (this is ISubClipContainable) {
                 var targetLength = (this as ISubClipContainable).GetNextLoopLocalTime();
                 var nextClip = GetNextClip();
-                if (nextClip == null || startTime + targetLength <= nextClip.startTime) length = targetLength;
+                if (nextClip == null || startTime + targetLength <= nextClip.startTime)
+                    length = targetLength;
             }
         }
 
         //...
-        private string GetParameterName<T, TResult>(System.Linq.Expressions.Expression<Func<T, TResult>> func) =>
+        private string GetParameterName<T, TResult>(
+            System.Linq.Expressions.Expression<Func<T, TResult>> func) =>
             ReflectionTools.GetMemberPath(func);
 
         /// <summary>
         ///     Get the AnimatedParameter of name. The name is usually the same as the field/property name that
         ///     [AnimatableParameter] is used on.
         /// </summary>
-        public AnimatedParameter GetParameter<T, TResult>(System.Linq.Expressions.Expression<Func<T, TResult>> func) =>
+        public AnimatedParameter GetParameter<T, TResult>(
+            System.Linq.Expressions.Expression<Func<T, TResult>> func) =>
             GetParameter(GetParameterName(func));
 
         /// <summary>
         ///     Get the AnimatedParameter of name. The name is usually the same as the field/property name that
         ///     [AnimatableParameter] is used on.
         /// </summary>
-        public AnimatedParameter GetParameter(string paramName) =>
-            animationData != null ? animationData.GetParameterOfName(paramName) : null;
+        public AnimatedParameter GetParameter(string paramName) => animationData != null
+            ? animationData.GetParameterOfName(paramName) : null;
 
         ///<summary>Enable/Disable an AnimatedParameter of name</summary>
-        public void SetParameterEnabled<T, TResult>(System.Linq.Expressions.Expression<Func<T, TResult>> func
-            , bool enabled)
+        public void SetParameterEnabled<T, TResult>(
+            System.Linq.Expressions.Expression<Func<T, TResult>> func, bool enabled)
         {
             SetParameterEnabled(GetParameterName(func), enabled);
         }
@@ -429,7 +470,8 @@ namespace Slate
         {
             if (handleParametersRegistrationManually) return;
             if (animatedParameterPaths != null && animatedParameterPaths.Length != 0)
-                animationData = new AnimationDataCollection(this, GetType(), animatedParameterPaths, null);
+                animationData =
+                    new AnimationDataCollection(this, GetType(), animatedParameterPaths, null);
         }
 
         //Validate the animation parameters vs the animation data collection to be synced, adding or removing as required.
@@ -449,7 +491,8 @@ namespace Slate
             //try append new
             for (var i = 0; i < animatedParameterPaths.Length; i++) {
                 var memberPath = animatedParameterPaths[i];
-                if (!string.IsNullOrEmpty(memberPath)) animationData.TryAddParameter(this, GetType(), memberPath, null);
+                if (!string.IsNullOrEmpty(memberPath))
+                    animationData.TryAddParameter(this, GetType(), memberPath, null);
             }
 
             //cleanup

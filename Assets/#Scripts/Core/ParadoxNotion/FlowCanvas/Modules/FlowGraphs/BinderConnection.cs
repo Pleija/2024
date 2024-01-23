@@ -53,10 +53,11 @@ namespace FlowCanvas
         }
 
         /// <summary>
-        ///     The binder type. In case of Value connection, BinderConnection<T> is used, else it's basicaly a Flow binding
+        ///     The binder type. In case of Value connection, BinderConnection
+        ///     <T> is used, else it's basicaly a Flow binding
         /// </summary>
-        public System.Type bindingType =>
-            GetType().RTIsGenericType() ? GetType().RTGetGenericArguments()[0] : typeof(Flow);
+        public System.Type bindingType => GetType().RTIsGenericType()
+            ? GetType().RTGetGenericArguments()[0] : typeof(Flow);
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Create a NEW BinderConnection object between two ports</summary>
@@ -71,7 +72,8 @@ namespace FlowCanvas
             if (source is FlowOutput && target is FlowInput) binder = new BinderConnection();
             if (source is ValueOutput && target is ValueInput)
                 binder = (BinderConnection)System.Activator.CreateInstance(
-                    typeof(BinderConnection<>).RTMakeGenericType(new System.Type[] { target.type }));
+                    typeof(BinderConnection<>).RTMakeGenericType(new System.Type[]
+                        { target.type }));
 
             if (binder != null) {
                 binder.sourcePortID = source.ID;
@@ -128,8 +130,11 @@ namespace FlowCanvas
             if (Application.isPlaying) Bind();
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Called after the node has GatherPorts to gather the references and validate the binding connection</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Called after the node has GatherPorts to gather the references and validate the binding
+        ///     connection
+        /// </summary>
         public void GatherAndValidateSourcePort()
         {
             _sourcePort = null; //refetch
@@ -142,8 +147,9 @@ namespace FlowCanvas
                     return;
                 }
                 //the cast is invalid
-                Logger.LogError(string.Format("Output Port with ID '{0}' cast is invalid.", sourcePortID)
-                    , LogTag.VALIDATION, sourceNode);
+                Logger.LogError(
+                    string.Format("Output Port with ID '{0}' cast is invalid.", sourcePortID),
+                    LogTag.VALIDATION, sourceNode);
                 sourcePort.FlagInvalidCast();
                 sourcePortID = sourcePort.ID;
                 sourcePort.connections++;
@@ -152,21 +158,25 @@ namespace FlowCanvas
 
             //the id is missing...
             Logger.LogError(
-                string.Format("Output Port with ID '{0}' is missing on node {1}", sourcePortID, sourceNode.name)
-                , LogTag.VALIDATION, sourceNode);
+                string.Format("Output Port with ID '{0}' is missing on node {1}", sourcePortID,
+                    sourceNode.name), LogTag.VALIDATION, sourceNode);
             var source = sourceNode as FlowNode;
             Port missingPort = null;
             if (bindingType == typeof(Flow))
                 missingPort = source.AddFlowOutput(sourcePortID, sourcePortID);
             else
-                missingPort = source.AddValueOutput(sourcePortID, sourcePortID, typeof(object), () => {
-                    throw new System.Exception("Port is missing");
-                });
+                missingPort = source.AddValueOutput(sourcePortID, sourcePortID, typeof(object),
+                    () => {
+                        throw new System.Exception("Port is missing");
+                    });
             missingPort.FlagMissing();
             missingPort.connections++;
         }
 
-        ///<summary>Called after the node has GatherPorts to gather the references and validate the binding connection</summary>
+        /// <summary>
+        ///     Called after the node has GatherPorts to gather the references and validate the binding
+        ///     connection
+        /// </summary>
         public void GatherAndValidateTargetPort()
         {
             _targetPort = null; //refetch
@@ -189,8 +199,9 @@ namespace FlowCanvas
                         return;
                     }
                     //the cast is invalid
-                    Logger.LogError(string.Format("Input Port with ID '{0}' cast is invalid.", targetPortID)
-                        , LogTag.VALIDATION, targetNode);
+                    Logger.LogError(
+                        string.Format("Input Port with ID '{0}' cast is invalid.", targetPortID),
+                        LogTag.VALIDATION, targetNode);
                     targetPort.FlagInvalidCast();
                     targetPortID = targetPort.ID;
                     targetPort.connections++;
@@ -200,8 +211,8 @@ namespace FlowCanvas
 
             //the id is missing...
             Logger.LogError(
-                string.Format("Input Port with ID '{0}' is missing on node {1}", targetPortID, targetNode.name)
-                , LogTag.VALIDATION, targetNode);
+                string.Format("Input Port with ID '{0}' is missing on node {1}", targetPortID,
+                    targetNode.name), LogTag.VALIDATION, targetNode);
             var target = targetNode as FlowNode;
             Port missingPort = null;
             if (bindingType == typeof(Flow))
@@ -220,28 +231,34 @@ namespace FlowCanvas
             CanBeBoundVerbosed(source, target, refConnection, out var v);
 
         /// <summary>
-        ///     Return whether or not source can connect to target. The return is a string with the reason why NOT, null if
-        ///     possible. Providing an existing ref connection, will bypass source/target validation respectively if that
+        ///     Return whether or not source can connect to target. The return is a string with the reason why
+        ///     NOT, null if
+        ///     possible. Providing an existing ref connection, will bypass source/target validation
+        ///     respectively if that
         ///     connection is already connected to that source/target port.
         /// </summary>
-        public static bool CanBeBoundVerbosed(Port source, Port target, BinderConnection refConnection
-            , out string verbose)
+        public static bool CanBeBoundVerbosed(Port source, Port target,
+            BinderConnection refConnection, out string verbose)
         {
             verbose = CanBeBoundVerbosed_Internal(source, target, refConnection);
             return verbose == null;
         }
 
         //...
-        private static string CanBeBoundVerbosed_Internal(Port source, Port target, BinderConnection refConnection)
+        private static string CanBeBoundVerbosed_Internal(Port source, Port target,
+            BinderConnection refConnection)
         {
             if (source == null || target == null) return "A port is null.";
             if (source == target)
                 // return "Can't connect port to itself.";
                 return string.Empty;
             if (source.parent == target.parent) return "Can't connect ports on the same node.";
-            if (source.parent == target.parent) return "Can't connect ports on the same parent node.";
-            if (source.IsInputPort() && target.IsInputPort()) return "Can't connect input to input.";
-            if (source.IsOutputPort() && target.IsOutputPort()) return "Can't connect output to output.";
+            if (source.parent == target.parent)
+                return "Can't connect ports on the same parent node.";
+            if (source.IsInputPort() && target.IsInputPort())
+                return "Can't connect input to input.";
+            if (source.IsOutputPort() && target.IsOutputPort())
+                return "Can't connect output to output.";
             if (source.IsFlowPort() != target.IsFlowPort())
                 return "Flow ports can only be connected to other Flow ports.";
             if (refConnection == null || refConnection.sourcePort != source)
@@ -252,12 +269,15 @@ namespace FlowCanvas
                     return "Target port can accept no more in connections.";
             if (!TypeConverter.HasConvertion(source.type, target.type))
                 return string.Format(
-                    "Can't connect ports. Type '{0}' is not assignable from Type '{1}' and there exists no automatic conversion for those types."
-                    , target.type.FriendlyName(), source.type.FriendlyName());
+                    "Can't connect ports. Type '{0}' is not assignable from Type '{1}' and there exists no automatic conversion for those types.",
+                    target.type.FriendlyName(), source.type.FriendlyName());
             return null;
         }
 
-        ///<summary>Callback from base class. The connection reference is already removed from target and source Nodes</summary>
+        /// <summary>
+        ///     Callback from base class. The connection reference is already removed from target and
+        ///     source Nodes
+        /// </summary>
         public override void OnDestroy()
         {
             if (sourcePort != null) {
@@ -302,10 +322,13 @@ namespace FlowCanvas
         private int lastBlinkFrame;
 
         public override TipConnectionStyle tipConnectionStyle => TipConnectionStyle.None;
-        public override Color defaultColor => bindingType == typeof(Flow) ? base.defaultColor : Color.grey;
+
+        public override Color defaultColor =>
+            bindingType == typeof(Flow) ? base.defaultColor : Color.grey;
 
         // public override Color defaultColor => bindingType == typeof(Flow) ? new Color(0.75f, 0.75f, 0.75f) : ParadoxNotion.Design.TypePrefs.GetTypeColor(bindingType);
-        public override float defaultSize => bindingType == typeof(Flow) ? base.defaultSize + 1 : base.defaultSize;
+        public override float defaultSize =>
+            bindingType == typeof(Flow) ? base.defaultSize + 1 : base.defaultSize;
 
         //...
         protected sealed override string GetConnectionInfo()
@@ -333,13 +356,13 @@ namespace FlowCanvas
             if (sourcePort == null || sourcePort.bindStatus != Port.BindStatus.Valid)
                 UnityEditor.EditorGUILayout.HelpBox(
                     string.Format(
-                        "Source Port with ID '{0}' is {1} on source node.\nYou should relink the connection or simply remove it."
-                        , sourcePortID, sourcePort?.bindStatus), UnityEditor.MessageType.Error);
+                        "Source Port with ID '{0}' is {1} on source node.\nYou should relink the connection or simply remove it.",
+                        sourcePortID, sourcePort?.bindStatus), UnityEditor.MessageType.Error);
             if (targetPort == null || targetPort.bindStatus != Port.BindStatus.Valid)
                 UnityEditor.EditorGUILayout.HelpBox(
                     string.Format(
-                        "Target Port with ID '{0}' is {1} on target node.\nYou should relink the connection or simply remove it."
-                        , targetPortID, targetPort?.bindStatus), UnityEditor.MessageType.Error);
+                        "Target Port with ID '{0}' is {1} on target node.\nYou should relink the connection or simply remove it.",
+                        targetPortID, targetPort?.bindStatus), UnityEditor.MessageType.Error);
         }
 
         //...

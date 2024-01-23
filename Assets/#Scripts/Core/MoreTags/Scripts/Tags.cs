@@ -24,7 +24,8 @@ namespace MoreTags
 
         public void AddTag(params string[] value)
         {
-            value.Where(x => !tags.Contains(x)).ForEach(x => tagData.data.Add(new TagData() { name = x }));
+            value.Where(x => !tags.Contains(x))
+                .ForEach(x => tagData.data.Add(new TagData() { name = x }));
         }
 
         private void Awake()
@@ -33,7 +34,8 @@ namespace MoreTags
 
             if (!root.Links.Contains(this) || root == this) {
                 root.Links.RemoveAll(t => !t);
-                var add = GetComponentsInChildren<Tags>(true).Where(x => !root.Links.Contains(x)).ToArray();
+                var add = GetComponentsInChildren<Tags>(true).Where(x => !root.Links.Contains(x))
+                    .ToArray();
                 root.Links.AddRange(add);
                 (root == this ? Links.ToArray() : add).ForEach(x => x.gameObject.AddTag(x.tags));
             }

@@ -8,7 +8,10 @@ using ParadoxNotion.Services;
 
 namespace ParadoxNotion.Serialization
 {
-    ///<summary>High-Level API. Serializes/Deserializes to/from JSON with a heavily modified 'FullSerializer'</summary>
+    /// <summary>
+    ///     High-Level API. Serializes/Deserializes to/from JSON with a heavily modified
+    ///     'FullSerializer'
+    /// </summary>
     public static class JSONSerializer
     {
         private static object serializerLock;
@@ -30,7 +33,8 @@ namespace ParadoxNotion.Serialization
 
 #if UNITY_2019_3_OR_NEWER
         //for "no domain reload"
-        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType
+            .SubsystemRegistration)]
         private static void __FlushDataCache()
         {
             dataCache = new Dictionary<string, fsData>();
@@ -39,8 +43,8 @@ namespace ParadoxNotion.Serialization
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Serialize to json</summary>
-        public static string Serialize(Type type, object instance, List<UnityEngine.Object> references = null
-            , bool pretyJson = false)
+        public static string Serialize(Type type, object instance,
+            List<UnityEngine.Object> references = null, bool pretyJson = false)
         {
             lock (serializerLock) {
                 serializer.PurgeTemporaryData();
@@ -50,11 +54,13 @@ namespace ParadoxNotion.Serialization
                 //UnityObject converter will still be used for every serialized property found within the object though.
                 var overrideConverterType = typeof(UnityEngine.Object).RTIsAssignableFrom(type)
                     ? typeof(fsReflectedConverter) : null;
-                var r = serializer.TrySerialize(type, instance, out data, overrideConverterType).AssertSuccess();
+                var r = serializer.TrySerialize(type, instance, out data, overrideConverterType)
+                    .AssertSuccess();
                 if (r.HasWarnings) Logger.LogWarning(r.ToString(), "Serialization");
                 serializer.ReferencesDatabase = null;
                 var json = fsJsonPrinter.ToJson(data, pretyJson);
-                if (Threader.applicationIsPlaying || UnityEngine.Application.isPlaying) dataCache[json] = data;
+                if (Threader.applicationIsPlaying || UnityEngine.Application.isPlaying)
+                    dataCache[json] = data;
                 return json;
             }
         }
@@ -65,21 +71,23 @@ namespace ParadoxNotion.Serialization
             (T)Internal_Deserialize(typeof(T), json, references, null);
 
         ///<summary>Deserialize from json</summary>
-        public static object Deserialize(Type type, string json, List<UnityEngine.Object> references = null) =>
+        public static object Deserialize(Type type, string json,
+            List<UnityEngine.Object> references = null) =>
             Internal_Deserialize(type, json, references, null);
 
         ///<summary>Deserialize overwrite from json</summary>
-        public static T TryDeserializeOverwrite<T>(T instance, string json, List<UnityEngine.Object> references = null)
-            where T : class => (T)Internal_Deserialize(typeof(T), json, references, instance);
+        public static T TryDeserializeOverwrite<T>(T instance, string json,
+            List<UnityEngine.Object> references = null) where T : class =>
+            (T)Internal_Deserialize(typeof(T), json, references, instance);
 
         ///<summary>Deserialize overwrite from json</summary>
-        public static object TryDeserializeOverwrite(object instance, string json
-            , List<UnityEngine.Object> references = null) =>
+        public static object TryDeserializeOverwrite(object instance, string json,
+            List<UnityEngine.Object> references = null) =>
             Internal_Deserialize(instance.GetType(), json, references, instance);
 
         ///<summary>Deserialize from json</summary>
-        private static object Internal_Deserialize(Type type, string json, List<UnityEngine.Object> references
-            , object instance)
+        private static object Internal_Deserialize(Type type, string json,
+            List<UnityEngine.Object> references, object instance)
         {
             lock (serializerLock) {
                 serializer.PurgeTemporaryData();
@@ -87,7 +95,8 @@ namespace ParadoxNotion.Serialization
 
                 if (Threader.applicationIsPlaying) {
                     //caching is useful only in playmode realy since editing is finalized
-                    if (!dataCache.TryGetValue(json, out data)) dataCache[json] = data = fsJsonParser.Parse(json);
+                    if (!dataCache.TryGetValue(json, out data))
+                        dataCache[json] = data = fsJsonParser.Parse(json);
                 }
                 else {
                     //in editor we just parse it
@@ -96,8 +105,10 @@ namespace ParadoxNotion.Serialization
                 serializer.ReferencesDatabase = references;
                 //We use Reflected converter if we deserialize overwrite a UnityObject directly.
                 //UnityObject converter will still be used for every serialized property found within the object though.
-                var overrideConverterType = instance is UnityEngine.Object ? typeof(fsReflectedConverter) : null;
-                var r = serializer.TryDeserialize(data, type, ref instance, overrideConverterType).AssertSuccess();
+                var overrideConverterType = instance is UnityEngine.Object
+                    ? typeof(fsReflectedConverter) : null;
+                var r = serializer.TryDeserialize(data, type, ref instance, overrideConverterType)
+                    .AssertSuccess();
                 if (r.HasWarnings) Logger.LogWarning(r.ToString(), "Serialization");
                 serializer.ReferencesDatabase = null;
                 return instance;
@@ -105,10 +116,12 @@ namespace ParadoxNotion.Serialization
         }
 
         /// <summary>
-        ///     Serialize instance without cycle refs support and execute call per object serialized within along with it's
+        ///     Serialize instance without cycle refs support and execute call per object serialized within
+        ///     along with it's
         ///     serialization data
         /// </summary>
-        public static void SerializeAndExecuteNoCycles(Type type, object instance, Action<object, fsData> call)
+        public static void SerializeAndExecuteNoCycles(Type type, object instance,
+            Action<object, fsData> call)
         {
             lock (serializerLock) {
                 serializer.IgnoreSerializeCycleReferences = true;
@@ -125,11 +138,12 @@ namespace ParadoxNotion.Serialization
         }
 
         /// <summary>
-        ///     Serialize instance without cycle refs support and execute before/after call per object serialized within along
+        ///     Serialize instance without cycle refs support and execute before/after call per object
+        ///     serialized within along
         ///     with it's serialization data
         /// </summary>
-        public static void SerializeAndExecuteNoCycles(Type type, object instance, Action<object> beforeCall
-            , Action<object, fsData> afterCall)
+        public static void SerializeAndExecuteNoCycles(Type type, object instance,
+            Action<object> beforeCall, Action<object, fsData> afterCall)
         {
             lock (serializerLock) {
                 serializer.IgnoreSerializeCycleReferences = true;
@@ -179,6 +193,7 @@ namespace ParadoxNotion.Serialization
         }
 
         ///<summary>Prettify existing json string</summary>
-        public static string PrettifyJson(string json) => fsJsonPrinter.PrettyJson(fsJsonParser.Parse(json));
+        public static string PrettifyJson(string json) =>
+            fsJsonPrinter.PrettyJson(fsJsonParser.Parse(json));
     }
 }

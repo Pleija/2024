@@ -11,7 +11,8 @@ namespace Slate
         {
             var att = (EnabledIfAttribute)attribute;
             var parent =
-                ReflectionTools.GetRelativeMemberParent(property.serializedObject.targetObject, property.propertyPath);
+                ReflectionTools.GetRelativeMemberParent(property.serializedObject.targetObject,
+                    property.propertyPath);
             var member = ReflectionTools.RTGetFieldOrProp(parent.GetType(), att.propertyName);
 
             if (member != null) {

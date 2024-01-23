@@ -27,11 +27,13 @@ namespace NodeCanvas.Tasks.Actions
             get {
                 if (method == null) return "No Method Selected";
                 if (targetMethod == null) return method.AsString().FormatError();
-                var returnInfo = targetMethod.ReturnType == typeof(void) ? "" : returnValue.ToString() + " = ";
+                var returnInfo = targetMethod.ReturnType == typeof(void) ? ""
+                    : returnValue.ToString() + " = ";
                 var paramInfo = "";
-                for (var i = 0; i < parameters.Count; i++) paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
-                return string.Format("{0}{1}.{2} ({3})", returnInfo, targetMethod.DeclaringType.FriendlyName()
-                    , targetMethod.Name, paramInfo);
+                for (var i = 0; i < parameters.Count; i++)
+                    paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
+                return string.Format("{0}{1}.{2} ({3})", returnInfo,
+                    targetMethod.DeclaringType.FriendlyName(), targetMethod.Name, paramInfo);
             }
         }
 
@@ -44,7 +46,8 @@ namespace NodeCanvas.Tasks.Actions
         protected override string OnInit()
         {
             if (method == null) return "No methMethodd selected";
-            if (targetMethod == null) return string.Format("Missing Method '{0}'", method.AsString());
+            if (targetMethod == null)
+                return string.Format("Missing Method '{0}'", method.AsString());
             return null;
         }
 

@@ -26,7 +26,8 @@ namespace Puerts
                 public Dictionary<Type, Node> Branchs = new Dictionary<Type, Node>();
             }
 
-            private static Dictionary<Type, Node> definitionTypeNodes = new Dictionary<Type, Node>();
+            private static Dictionary<Type, Node>
+                definitionTypeNodes = new Dictionary<Type, Node>();
 
             public static Type FindWrapperDefinition(Type genericType)
             {
@@ -44,8 +45,8 @@ namespace Puerts
                 return node.WrapperTypeDefinition;
             }
 
-            public static void AddWrapperTypeDefinition(Type typeDefinition, Type[] genericArgumentsType
-                , Type wrapperTypeDefinition)
+            public static void AddWrapperTypeDefinition(Type typeDefinition,
+                Type[] genericArgumentsType, Type wrapperTypeDefinition)
             {
                 Node node;
 
@@ -153,14 +154,15 @@ namespace Puerts
 
             if (p1 > 0 && !isQualifiedName) {
                 var qualified_name = className.Substring(0, p1 + 1);
-                var generic_params = className.Substring(p1 + 1, className.Length - qualified_name.Length - 1)
-                    .Split(',');
+                var generic_params = className
+                    .Substring(p1 + 1, className.Length - qualified_name.Length - 1).Split(',');
 
                 for (var i = 0; i < generic_params.Length; i++) {
                     var generic_param = GetType(generic_params[i].Trim());
                     if (generic_param == null) return null;
                     if (i != 0) qualified_name += ", ";
-                    qualified_name = qualified_name + "[" + generic_param.AssemblyQualifiedName + "]";
+                    qualified_name = qualified_name + "[" + generic_param.AssemblyQualifiedName +
+                        "]";
                 }
                 qualified_name += "]";
                 return GetType(qualified_name, true);

@@ -39,7 +39,8 @@ namespace FlowCanvas.Nodes
             instanceInput = null;
             var instance = Params.instanceDef;
             if (instance.paramMode != ParamMode.Undefined)
-                instanceInput = node.AddValueInput(instance.portName, instance.paramType, instance.portId);
+                instanceInput = node.AddValueInput(instance.portName, instance.paramType,
+                    instance.portId);
             var list = Params.paramDefinitions;
             if (list == null) return;
 
@@ -51,7 +52,8 @@ namespace FlowCanvas.Nodes
                 if (field != null) handler = GetPortHandler(field);
                 var method = def.presentedInfo as MethodInfo;
                 if (method != null) handler = GetPortHandler(method);
-                if (handler != null) node.AddValueOutput(def.portName, def.paramType, handler, def.portId);
+                if (handler != null)
+                    node.AddValueOutput(def.portName, def.paramType, handler, def.portId);
             }
         }
     }

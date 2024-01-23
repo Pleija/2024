@@ -17,11 +17,12 @@ public class PressMjs : AssetPostprocessor
         EditorApplication.delayCall += () => ready = true;
     }
 
-    public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets
-        , string[] movedFromAssetPaths)
+    public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets,
+        string[] movedAssets, string[] movedFromAssetPaths)
     {
         if (EditorApplication.isCompiling) return;
-        files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist")).ToArray();
+        files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist"))
+            .ToArray();
         if (files.Any()) EditorApplication.delayCall += Push;
     }
 
@@ -32,7 +33,8 @@ public class PressMjs : AssetPostprocessor
         files.ForEach(path => {
             Redis.Database.StringSet(path, File.ReadAllText(path));
         });
-        Debug.Log($"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
+        Debug.Log(
+            $"Pressed JS: {files.Length} {string.Join(", ", files.Select(Path.GetFileName))}");
         Redis.Publish("js", $"update js file(s): {files.Length}");
     }
 }

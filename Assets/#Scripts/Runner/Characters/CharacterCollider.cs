@@ -85,10 +85,12 @@ namespace Runner.Characters
         {
             if (sliding) {
                 m_Collider.size = Vector3.Scale(m_Collider.size, k_SlidingColliderScale);
-                m_Collider.center = m_Collider.center - new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
+                m_Collider.center = m_Collider.center -
+                    new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
             }
             else {
-                m_Collider.center = m_Collider.center + new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
+                m_Collider.center = m_Collider.center +
+                    new Vector3(0.0f, m_Collider.size.y * 0.5f, 0.0f);
                 m_Collider.size = Vector3.Scale(m_Collider.size, k_NotSlidingColliderScale);
             }
         }
@@ -97,8 +99,9 @@ namespace Runner.Characters
         {
             // Every coin registered to the magnetCoin list (used by the magnet powerup exclusively, but could be used by other power up) is dragged toward the player.
             for (var i = 0; i < magnetCoins.Count; ++i)
-                magnetCoins[i].transform.position = Vector3.MoveTowards(magnetCoins[i].transform.position
-                    , transform.position, k_MagnetSpeed * Time.deltaTime);
+                magnetCoins[i].transform.position = Vector3.MoveTowards(
+                    magnetCoins[i].transform.position, transform.position,
+                    k_MagnetSpeed * Time.deltaTime);
         }
 
         public void OnTriggerEnter(Collider c)

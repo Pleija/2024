@@ -23,7 +23,8 @@ namespace NodeCanvas.Tasks.Actions
         public static CameraFader current {
             get {
                 if (_current == null) _current = FindObjectOfType<CameraFader>();
-                if (_current == null) _current = new GameObject("_CameraFader").AddComponent<CameraFader>();
+                if (_current == null)
+                    _current = new GameObject("_CameraFader").AddComponent<CameraFader>();
                 return _current;
             }
         }

@@ -5,7 +5,8 @@ using ParadoxNotion;
 namespace FlowCanvas
 {
     /// <summary>
-    ///     Value bindings use the generic version of FlowBinderConnection. T is always the same at the 'target'
+    ///     Value bindings use the generic version of FlowBinderConnection. T is always the same at the
+    ///     'target'
     ///     ValueInput type.
     /// </summary>
     public class BinderConnection<T> : BinderConnection
@@ -38,7 +39,8 @@ namespace FlowCanvas
 
         protected override string GetTransferDataLabel()
         {
-            if (Application.isPlaying && hasExecute) return transferValue.ToStringAdvanced().CapLength(25);
+            if (Application.isPlaying && hasExecute)
+                return transferValue.ToStringAdvanced().CapLength(25);
             return null;
         }
 
@@ -47,8 +49,8 @@ namespace FlowCanvas
             base.OnConnectionInspectorGUI();
             if (sourcePort == null || targetPort == null) return;
             if (!targetPort.type.IsAssignableFrom(sourcePort.type))
-                GUILayout.Label(string.Format("AutoConvert: {0} ➲ {1}", sourcePort.type.FriendlyName()
-                    , targetPort.type.FriendlyName()));
+                GUILayout.Label(string.Format("AutoConvert: {0} ➲ {1}",
+                    sourcePort.type.FriendlyName(), targetPort.type.FriendlyName()));
         }
 
         //in editor binding this is appended to get the value, display it and blink the binder

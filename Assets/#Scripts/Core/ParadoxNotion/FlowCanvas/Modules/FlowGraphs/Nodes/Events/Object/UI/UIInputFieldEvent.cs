@@ -5,8 +5,8 @@ using System;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("UI Field Input"), Category("Events/Object/UI")
-     , Description("Called when the target UI Dropdown value changed.")]
+    [Name("UI Field Input"), Category("Events/Object/UI"),
+     Description("Called when the target UI Dropdown value changed.")]
     public class UIInputFieldEvent : EventNode<InputField>
     {
         private FlowOutput onValueChanged;

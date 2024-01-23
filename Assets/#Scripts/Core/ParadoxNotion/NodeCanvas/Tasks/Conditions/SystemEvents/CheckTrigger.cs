@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("System Events")
-     , Description(
-         "The agent is type of Transform so that Triggers can either work with a Collider or a Rigidbody attached.")
-     , Name("Check Trigger")]
+    [Category("System Events"),
+     Description(
+         "The agent is type of Transform so that Triggers can either work with a Collider or a Rigidbody attached."),
+     Name("Check Trigger")]
     public class CheckTrigger_Transform : ConditionTask<Transform>
     {
         public TriggerTypes checkType = TriggerTypes.TriggerEnter;
@@ -21,7 +21,9 @@ namespace NodeCanvas.Tasks.Conditions
         public BBParameter<GameObject> saveGameObjectAs;
 
         private bool stay;
-        protected override string info => checkType.ToString() + (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
+
+        protected override string info => checkType.ToString() +
+            (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
 
         protected override bool OnCheck()
         {
@@ -46,7 +48,8 @@ namespace NodeCanvas.Tasks.Conditions
             if (!specifiedTagOnly || data.value.gameObject.CompareTag(objectTag)) {
                 stay = true;
 
-                if (checkType == TriggerTypes.TriggerEnter || checkType == TriggerTypes.TriggerStay) {
+                if (checkType == TriggerTypes.TriggerEnter ||
+                    checkType == TriggerTypes.TriggerStay) {
                     saveGameObjectAs.value = data.value.gameObject;
                     YieldReturn(true);
                 }
@@ -80,7 +83,9 @@ namespace NodeCanvas.Tasks.Conditions
         public BBParameter<GameObject> saveGameObjectAs;
 
         private bool stay;
-        protected override string info => checkType.ToString() + (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
+
+        protected override string info => checkType.ToString() +
+            (specifiedTagOnly ? " '" + objectTag + "' tag" : "");
 
         protected override bool OnCheck()
         {
@@ -105,7 +110,8 @@ namespace NodeCanvas.Tasks.Conditions
             if (!specifiedTagOnly || data.value.gameObject.CompareTag(objectTag)) {
                 stay = true;
 
-                if (checkType == TriggerTypes.TriggerEnter || checkType == TriggerTypes.TriggerStay) {
+                if (checkType == TriggerTypes.TriggerEnter ||
+                    checkType == TriggerTypes.TriggerStay) {
                     saveGameObjectAs.value = data.value.gameObject;
                     YieldReturn(true);
                 }

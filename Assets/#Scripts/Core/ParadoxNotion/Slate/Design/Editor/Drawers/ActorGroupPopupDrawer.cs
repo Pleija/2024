@@ -17,9 +17,11 @@ namespace Slate
             var directable = property.serializedObject.targetObject as IDirectable;
 
             if (directable != null) {
-                var allActorGroups = (directable.root as Cutscene).groups.OfType<ActorGroup>().ToList();
+                var allActorGroups =
+                    (directable.root as Cutscene).groups.OfType<ActorGroup>().ToList();
                 var overrideCurrent = (ActorGroup)property.objectReferenceValue;
-                var overrideNew = EditorTools.Popup<ActorGroup>(position, label.text, overrideCurrent, allActorGroups);
+                var overrideNew = EditorTools.Popup<ActorGroup>(position, label.text,
+                    overrideCurrent, allActorGroups);
                 if (overrideNew != overrideCurrent) property.objectReferenceValue = overrideNew;
             }
         }

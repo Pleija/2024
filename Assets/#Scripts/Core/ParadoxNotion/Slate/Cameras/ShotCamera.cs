@@ -72,13 +72,16 @@ namespace Slate
         public DynamicCameraController dynamicController => _dynamicController;
 
         ///<summary>Does dynamic controller controls position?</summary>
-        public bool dynamicControlledPosition => dynamicController != null && dynamicController.controlsPosition;
+        public bool dynamicControlledPosition =>
+            dynamicController != null && dynamicController.controlsPosition;
 
         ///<summary>Does dynamic controller controls rotation?</summary>
-        public bool dynamicControlledRotation => dynamicController != null && dynamicController.controlsRotation;
+        public bool dynamicControlledRotation =>
+            dynamicController != null && dynamicController.controlsRotation;
 
         ///<summary>Does dynamic controller controls FOV?</summary>
-        public bool dynamicControlledFieldOfView => dynamicController != null && dynamicController.controlsFieldOfView;
+        public bool dynamicControlledFieldOfView =>
+            dynamicController != null && dynamicController.controlsFieldOfView;
 
         private void Awake()
         {
@@ -102,20 +105,25 @@ namespace Slate
             dynamicController.UpdateControllerSoft(this, directable);
         }
 
-        ///<summary>Set the target Transforms for the dynamic shot controller tranposer and composer functionality</summary>
+        /// <summary>
+        ///     Set the target Transforms for the dynamic shot controller tranposer and composer
+        ///     functionality
+        /// </summary>
         public void SetDynamicControllerTargets(Transform target)
         {
             SetDynamicControllerTargets(target, target);
         }
 
-        public void SetDynamicControllerTargets(Transform transposerTarget, Transform composerTarget)
+        public void SetDynamicControllerTargets(Transform transposerTarget,
+            Transform composerTarget)
         {
             dynamicController.transposer.target = transposerTarget;
             dynamicController.composer.target = composerTarget;
         }
 
         ///<summary>Get a RenderTexture of this camera with specified width and height.</summary>
-        public RenderTexture GetRenderTexture(int width, int height) => GetRenderTexture(width, height, cam.cameraType);
+        public RenderTexture GetRenderTexture(int width, int height) =>
+            GetRenderTexture(width, height, cam.cameraType);
 
         ///<summary>Get a RenderTexture of this camera with specified width and height.</summary>
         public RenderTexture GetRenderTexture(int width, int height, CameraType cameraType)
@@ -148,8 +156,8 @@ namespace Slate
             GameObject root = null;
 
             if (targetParent == null) {
-                root = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
-                    .FirstOrDefault(x => x.name == rootName);
+                root = UnityEngine.SceneManagement.SceneManager.GetActiveScene()
+                    .GetRootGameObjects().FirstOrDefault(x => x.name == rootName);
                 if (root == null) root = new GameObject(rootName);
             }
             else {
@@ -252,7 +260,8 @@ namespace Slate
             Gizmos.color = color;
             var hit = new RaycastHit();
             var hitPos = new Vector3(position.x, 0, position.z);
-            if (Physics.Linecast(position, position - new Vector3(0, 100, 0), out hit)) hitPos = hit.point;
+            if (Physics.Linecast(position, position - new Vector3(0, 100, 0), out hit))
+                hitPos = hit.point;
             var d = Vector3.Distance(hitPos, position);
             Gizmos.DrawCube(hitPos, new Vector3(0.2f, 0.05f, 0.2f));
             if (position.y > hitPos.y)

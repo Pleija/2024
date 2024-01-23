@@ -11,7 +11,8 @@ using ParadoxNotion.Serialization;
 namespace NodeCanvas.Framework
 {
     /// <summary>
-    ///     ActionList is an ActionTask itself that holds multiple ActionTasks which can be executed either in parallel or
+    ///     ActionList is an ActionTask itself that holds multiple ActionTasks which can be executed either
+    ///     in parallel or
     ///     in sequence.
     /// </summary>
     [DoNotList]
@@ -26,9 +27,9 @@ namespace NodeCanvas.Framework
         protected override string info {
             get {
                 if (actions.Count == 0) return "No Actions";
-                var finalText = actions.Count > 1 ? string.Format("<b>({0})</b>\n"
-                        , executionMode == ActionsExecutionMode.ActionsRunInSequence ? "In Sequence" : "In Parallel")
-                    : string.Empty;
+                var finalText = actions.Count > 1 ? string.Format("<b>({0})</b>\n",
+                    executionMode == ActionsExecutionMode.ActionsRunInSequence ? "In Sequence"
+                        : "In Parallel") : string.Empty;
 
                 for (var i = 0; i < actions.Count; i++) {
                     var action = actions[i];
@@ -36,7 +37,8 @@ namespace NodeCanvas.Framework
 
                     if (action.isUserEnabled) {
                         var prefix = action.isPaused ? "<b>||</b> " : action.isRunning ? "► " : "▪";
-                        finalText += prefix + action.summaryInfo + (i == actions.Count - 1 ? "" : "\n");
+                        finalText += prefix + action.summaryInfo +
+                            (i == actions.Count - 1 ? "" : "\n");
                     }
                 }
                 return finalText;
@@ -48,7 +50,8 @@ namespace NodeCanvas.Framework
         {
             var newList = (ActionList)base.Duplicate(newOwnerSystem);
             newList.actions.Clear();
-            foreach (var action in actions) newList.AddAction((ActionTask)action.Duplicate(newOwnerSystem));
+            foreach (var action in actions)
+                newList.AddAction((ActionTask)action.Duplicate(newOwnerSystem));
             return newList;
         }
 
@@ -196,10 +199,12 @@ namespace NodeCanvas.Framework
                 EditorGUILayout.BeginHorizontal("box");
                 GUI.color = Color.white.WithAlpha(action.isUserEnabled ? 0.8f : 0.25f);
                 GUI.enabled = !Application.isPlaying;
-                action.isUserEnabled = EditorGUILayout.Toggle(action.isUserEnabled, GUILayout.Width(18));
+                action.isUserEnabled =
+                    EditorGUILayout.Toggle(action.isUserEnabled, GUILayout.Width(18));
                 GUI.enabled = true;
-                GUILayout.Label((action.isPaused ? "<b>||</b> " : action.isRunning ? "► " : "") + action.summaryInfo
-                    , GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
+                GUILayout.Label(
+                    (action.isPaused ? "<b>||</b> " : action.isRunning ? "► " : "") +
+                    action.summaryInfo, GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
 
                 if (!Application.isPlaying && GUILayout.Button("X", GUILayout.Width(20))) {
                     UndoUtility.RecordObject(ownerSystem.contextObject, "List Remove Task");
@@ -210,7 +215,8 @@ namespace NodeCanvas.Framework
                 var lastRect = GUILayoutUtility.GetLastRect();
                 EditorGUIUtility.AddCursorRect(lastRect, MouseCursor.Link);
 
-                if (Event.current.type == EventType.MouseDown && lastRect.Contains(Event.current.mousePosition)) {
+                if (Event.current.type == EventType.MouseDown &&
+                    lastRect.Contains(Event.current.mousePosition)) {
                     currentViewAction = action == currentViewAction ? null : action;
                     Event.current.Use();
                 }
@@ -251,8 +257,9 @@ namespace NodeCanvas.Framework
             var path = EditorUtility.SaveFilePanelInProject("Save Preset", "", "actionList", "");
 
             if (!string.IsNullOrEmpty(path)) {
-                System.IO.File.WriteAllText(path
-                    , JSONSerializer.Serialize(typeof(ActionList), this, null, true)); //true for pretyJson
+                System.IO.File.WriteAllText(path,
+                    JSONSerializer.Serialize(typeof(ActionList), this, null,
+                        true)); //true for pretyJson
                 AssetDatabase.Refresh();
             }
         }

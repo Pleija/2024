@@ -5,13 +5,15 @@ using UnityEngine.EventSystems;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("UGUI")
-     , Description(
+    [Category("UGUI"),
+     Description(
          "Returns true when the selected event is triggered on the selected agent.\nYou can use this for both GUI and 3D objects.\nPlease make sure that Unity Event Systems are setup correctly")]
     public class InterceptEvent : ConditionTask<Transform>
     {
         public EventTriggerType eventType;
-        protected override string info => string.Format("{0} on {1}", eventType.ToString(), agentInfo);
+
+        protected override string info =>
+            string.Format("{0} on {1}", eventType.ToString(), agentInfo);
 
         protected override void OnEnable()
         {

@@ -23,7 +23,8 @@ namespace NodeCanvas.Editor
                 UndoUtility.RecordObjectComplete(graph, "Graph Pan");
             if (e.type == EventType.MouseUp || e.type == EventType.KeyUp) SnapNodesToGrid(graph);
 
-            if (e.type == EventType.KeyDown && e.keyCode == KeyCode.F && GUIUtility.keyboardControl == 0) {
+            if (e.type == EventType.KeyDown && e.keyCode == KeyCode.F &&
+                GUIUtility.keyboardControl == 0) {
                 FocusSelection();
                 e.Use();
             }
@@ -43,9 +44,10 @@ namespace NodeCanvas.Editor
                 e.Use();
             }
 
-            if ((e.button == 2 && e.type == EventType.MouseDrag && canvasRect.Contains(e.mousePosition)) ||
-                ( /*e.type == EventType.MouseDown ||*/e.type == EventType.MouseDrag /*&& e.alt*/ && e.isMouse &&
-                    GraphEditorUtility.activeElement == null)) {
+            if ((e.button == 2 && e.type == EventType.MouseDrag &&
+                canvasRect.Contains(e.mousePosition)) || ( /*e.type == EventType.MouseDown ||*/
+                e.type == EventType.MouseDrag /*&& e.alt*/ && e.isMouse &&
+                GraphEditorUtility.activeElement == null)) {
                 //Debug.Log($"Test: {GraphEditorUtility.activeElement?.GetType().FullName}");
                 pan += e.delta;
                 smoothPan = null;
@@ -55,7 +57,8 @@ namespace NodeCanvas.Editor
             if (e.type == EventType.MouseDown && e.button == 2) mouse2Down = true;
             if (e.type == EventType.MouseUp && e.button == 2) mouse2Down = false;
             if (e.alt || mouse2Down)
-                EditorGUIUtility.AddCursorRect(new Rect(0, 0, screenWidth, screenHeight), MouseCursor.Pan);
+                EditorGUIUtility.AddCursorRect(new Rect(0, 0, screenWidth, screenHeight),
+                    MouseCursor.Pan);
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -65,8 +68,9 @@ namespace NodeCanvas.Editor
             //Shortcuts
             if (GUIUtility.keyboardControl == 0) {
                 if (e.type == EventType.ValidateCommand)
-                    if (e.commandName == "Copy" || e.commandName == "Cut" || e.commandName == "Paste" ||
-                        e.commandName == "SoftDelete" || e.commandName == "Delete" || e.commandName == "Duplicate")
+                    if (e.commandName == "Copy" || e.commandName == "Cut" ||
+                        e.commandName == "Paste" || e.commandName == "SoftDelete" ||
+                        e.commandName == "Delete" || e.commandName == "Duplicate")
                         e.Use();
 
                 if (e.type == EventType.ExecuteCommand) {
@@ -75,7 +79,8 @@ namespace NodeCanvas.Editor
                         List<Node> selection = null;
                         if (GraphEditorUtility.activeNode != null)
                             selection = new List<Node> { GraphEditorUtility.activeNode };
-                        if (GraphEditorUtility.activeElements != null && GraphEditorUtility.activeElements.Count > 0)
+                        if (GraphEditorUtility.activeElements != null &&
+                            GraphEditorUtility.activeElements.Count > 0)
                             selection = GraphEditorUtility.activeElements.Cast<Node>().ToList();
 
                         if (selection != null) {
@@ -90,25 +95,29 @@ namespace NodeCanvas.Editor
                     //PASTE
                     if (e.commandName == "Paste") {
                         if (CopyBuffer.HasCache<Node[]>())
-                            TryPasteNodesInGraph(graph, CopyBuffer.GetCache<Node[]>()
-                                , canvasMousePos + new Vector2(500, 500) / graph.zoomFactor);
+                            TryPasteNodesInGraph(graph, CopyBuffer.GetCache<Node[]>(),
+                                canvasMousePos + new Vector2(500, 500) / graph.zoomFactor);
                         e.Use();
                     }
 
                     //DUPLICATE
                     if (e.commandName == "Duplicate") {
-                        if (GraphEditorUtility.activeElements != null && GraphEditorUtility.activeElements.Count > 0)
-                            TryPasteNodesInGraph(graph, GraphEditorUtility.activeElements.OfType<Node>().ToArray()
-                                , default);
+                        if (GraphEditorUtility.activeElements != null &&
+                            GraphEditorUtility.activeElements.Count > 0)
+                            TryPasteNodesInGraph(graph,
+                                GraphEditorUtility.activeElements.OfType<Node>().ToArray(),
+                                default);
                         if (GraphEditorUtility.activeNode != null)
-                            GraphEditorUtility.activeElement = GraphEditorUtility.activeNode.Duplicate(graph);
+                            GraphEditorUtility.activeElement =
+                                GraphEditorUtility.activeNode.Duplicate(graph);
                         //Connections can't be duplicated by themselves. They do so as part of multiple node duplication (at least 2).
                         e.Use();
                     }
 
                     //DELETE
                     if (e.commandName == "SoftDelete" || e.commandName == "Delete") {
-                        if (GraphEditorUtility.activeElements != null && GraphEditorUtility.activeElements.Count > 0) {
+                        if (GraphEditorUtility.activeElements != null &&
+                            GraphEditorUtility.activeElements.Count > 0) {
                             foreach (var obj in GraphEditorUtility.activeElements.ToArray()) {
                                 if (obj is Node) graph.RemoveNode(obj as Node);
                                 if (obj is Connection) graph.RemoveConnection(obj as Connection);
@@ -143,9 +152,10 @@ namespace NodeCanvas.Editor
                     GUIUtility.keyboardControl == 0 && !e.shift;
 
                 if (isContext || isShortcut) {
-                    GenericMenuBrowser.ShowAsync(e.mousePosition, "Add Node", graph.baseNodeType, () => {
-                        return GetAddNodeMenu(graph, canvasMousePos);
-                    });
+                    GenericMenuBrowser.ShowAsync(e.mousePosition, "Add Node", graph.baseNodeType,
+                        () => {
+                            return GetAddNodeMenu(graph, canvasMousePos);
+                        });
                     e.Use();
                 }
             }
@@ -174,9 +184,10 @@ namespace NodeCanvas.Editor
                     menu.AddSeparator("/");
                     var suffix = copiedNodes.Length == 1 ? copiedNodes[0].GetType().FriendlyName()
                         : copiedNodes.Length.ToString();
-                    menu.AddItem(new GUIContent(string.Format("Paste Node(s) ({0})", suffix)), false, () => {
-                        TryPasteNodesInGraph(graph, copiedNodes, canvasMousePos);
-                    });
+                    menu.AddItem(new GUIContent(string.Format("Paste Node(s) ({0})", suffix)),
+                        false, () => {
+                            TryPasteNodesInGraph(graph, copiedNodes, canvasMousePos);
+                        });
                 }
             return menu;
         }

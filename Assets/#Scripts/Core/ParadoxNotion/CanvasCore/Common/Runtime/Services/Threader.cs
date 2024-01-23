@@ -10,8 +10,9 @@ namespace ParadoxNotion.Services
     {
 #if UNITY_EDITOR
         //this is to be able to call isPlaying in other threads
-        [UnityEditor.InitializeOnLoadMethod
-         , UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        [UnityEditor.InitializeOnLoadMethod,
+         UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType
+             .SubsystemRegistration)]
 #if UNITY_2019_3_OR_NEWER
         //the 2nd attribute is used for 'no domain reload'
 #endif
@@ -24,8 +25,10 @@ namespace ParadoxNotion.Services
 
         private static void PlayModeChanged(UnityEditor.PlayModeStateChange state)
         {
-            if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode) applicationIsPlaying = true;
-            if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode) applicationIsPlaying = false;
+            if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode)
+                applicationIsPlaying = true;
+            if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+                applicationIsPlaying = false;
         }
 
 #else
@@ -47,8 +50,8 @@ namespace ParadoxNotion.Services
         }
 
         ///----------------------------------------------------------------------------------------------
-        public static Thread StartFunction<TResult>(Thread thread, Func<TResult> function
-            , Action<TResult> callback = null)
+        public static Thread StartFunction<TResult>(Thread thread, Func<TResult> function,
+            Action<TResult> callback = null)
         {
             if (thread != null && thread.IsAlive) thread.Abort();
             var result = default(TResult);

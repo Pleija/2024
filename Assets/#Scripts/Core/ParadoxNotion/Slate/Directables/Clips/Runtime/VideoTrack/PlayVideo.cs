@@ -4,8 +4,8 @@ using UnityEngine.Video;
 
 namespace Slate
 {
-    [Attachable(typeof(VideoTrack)), Name("Video Clip")
-     , Description("Play an imported Video Clip on the render camera or on a gameobject renderer.")]
+    [Attachable(typeof(VideoTrack)), Name("Video Clip"),
+     Description("Play an imported Video Clip on the render camera or on a gameobject renderer.")]
     public class PlayVideo : ActionClip, ISubClipContainable
     {
         [SerializeField, HideInInspector]
@@ -28,12 +28,13 @@ namespace Slate
         public float clipOffset;
         private VideoSampler.SampleSettings settings;
 
-        public override bool isValid => (videoSource == VideoSource.VideoClip && videoClip != null) ||
+        public override bool isValid =>
+            (videoSource == VideoSource.VideoClip && videoClip != null) ||
             (videoSource == VideoSource.Url && !string.IsNullOrEmpty(videoURL));
 
         public override string info => videoSource == VideoSource.VideoClip ? videoClip != null
-                ? videoClip.name + videoClip.originalPath.Substring(videoClip.originalPath.Length - 4) : "No Video"
-            : videoURL;
+            ? videoClip.name + videoClip.originalPath.Substring(videoClip.originalPath.Length - 4)
+            : "No Video" : videoURL;
 
         public override float length {
             get => _length;
@@ -102,9 +103,11 @@ namespace Slate
             settings.alpha = weight * track.targetCameraAlpha;
             settings.audioVolume = weight * track.targetCameraAlpha;
             if (videoSource == VideoSource.VideoClip)
-                VideoSampler.Sample(track.source, videoClip, null, clipTime, clipPreviousTime, settings);
+                VideoSampler.Sample(track.source, videoClip, null, clipTime, clipPreviousTime,
+                    settings);
             if (videoSource == VideoSource.Url)
-                VideoSampler.Sample(track.source, null, videoURL, clipTime, clipPreviousTime, settings);
+                VideoSampler.Sample(track.source, null, videoURL, clipTime, clipPreviousTime,
+                    settings);
         }
 
         private void Disable()
@@ -118,7 +121,8 @@ namespace Slate
         protected override void OnClipGUI(Rect rect)
         {
             if (videoSource == VideoSource.VideoClip && videoClip != null)
-                EditorTools.DrawLoopedLines(rect, (float)videoClip.length / subClipSpeed, length, clipOffset);
+                EditorTools.DrawLoopedLines(rect, (float)videoClip.length / subClipSpeed, length,
+                    clipOffset);
         }
 
 #endif

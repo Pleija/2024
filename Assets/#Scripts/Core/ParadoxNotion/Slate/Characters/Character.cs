@@ -5,7 +5,8 @@ using System.Linq;
 namespace Slate
 {
     /// <summary>
-    ///     This is a component that is required for a few action clips, as to centralize some properties to the actor
+    ///     This is a component that is required for a few action clips, as to centralize some properties
+    ///     to the actor
     ///     rather than the clip
     /// </summary>
     [AddComponentMenu("SLATE/Character")]

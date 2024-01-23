@@ -10,7 +10,10 @@ namespace NodeCanvas.Tasks.Conditions
         public BBParameter<string> targetString;
 
         public BBParameter<string> checkString;
-        protected override string info => string.Format("{0} Contains {1}", targetString, checkString);
+
+        protected override string info =>
+            string.Format("{0} Contains {1}", targetString, checkString);
+
         protected override bool OnCheck() => targetString.value.Contains(checkString.value);
     }
 }

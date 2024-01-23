@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Rendering")
-     , Description(
+    [Category("Rendering"),
+     Description(
          "An alternative way to fade the screen. Fade out/in can also be done through the Camera Shot clip in the Camera Track, but with this clip, more effects can be achieved.")]
     public class ScreenFader : DirectorActionClip
     {

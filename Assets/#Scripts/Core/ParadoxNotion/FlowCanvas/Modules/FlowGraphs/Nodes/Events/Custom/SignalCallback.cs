@@ -4,10 +4,10 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Events/Signals")
-     , Description(
-         "Check if a defined Signal has been invoked. Signals are similar to name-based events but are safer to changes and support multiple parameters.")
-     , HasRefreshButton, DropReferenceType(typeof(SignalDefinition)), ExecutionPriority(100)]
+    [Category("Events/Signals"),
+     Description(
+         "Check if a defined Signal has been invoked. Signals are similar to name-based events but are safer to changes and support multiple parameters."),
+     HasRefreshButton, DropReferenceType(typeof(SignalDefinition)), ExecutionPriority(100)]
     public class SignalCallback : RouterEventNode<Transform>, IDropedReferenceNode
     {
         [GatherPortsCallback]
@@ -23,8 +23,8 @@ namespace FlowCanvas.Nodes
         private Transform sender;
         private object[] args;
 
-        public override string name => base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]"
-            , signalDefinition != null ? signalDefinition.name : "NULL");
+        public override string name => base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]",
+            signalDefinition != null ? signalDefinition.name : "NULL");
 
         public void SetTarget(Object target)
         {

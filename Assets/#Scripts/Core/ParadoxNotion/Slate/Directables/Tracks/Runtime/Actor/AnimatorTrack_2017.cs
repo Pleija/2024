@@ -9,8 +9,8 @@ using UnityEngine.Playables;
 namespace Slate
 {
     [Description(
-         "The Animator Track works with an 'Animator' Component attached on the actor, but does not require or use the Controller assigned. Instead animation clips can be played directly.\n\nMultiple Animator Tracks can also be added each representing a different animation layer. Root Motion will only be used in Animator Track of Layer 0 (if enabled), which is always the first (bottom) Track.")
-     , Icon(typeof(Animator)), Attachable(typeof(ActorGroup))]
+         "The Animator Track works with an 'Animator' Component attached on the actor, but does not require or use the Controller assigned. Instead animation clips can be played directly.\n\nMultiple Animator Tracks can also be added each representing a different animation layer. Root Motion will only be used in Animator Track of Layer 0 (if enabled), which is always the first (bottom) Track."),
+     Icon(typeof(Animator)), Attachable(typeof(ActorGroup))]
     partial class AnimatorTrack
     {
         private const int ROOTMOTION_FRAMERATE = 30;
@@ -61,8 +61,8 @@ namespace Slate
 
         public override string info {
             get {
-                var info = string.Format("Layer: {0} | Mask: {1} | {2}", layerOrder.ToString()
-                    , mask != null ? mask.name : "None", blendMode);
+                var info = string.Format("Layer: {0} | Mask: {1} | {2}", layerOrder.ToString(),
+                    mask != null ? mask.name : "None", blendMode);
                 if (isMasterTrack) info += useRootMotion ? " | Use RM" : " | No RM";
                 return info;
             }
@@ -77,10 +77,13 @@ namespace Slate
         protected override bool OnInitialize()
         {
             if (animator == null) {
-                Debug.LogError("Animator Track requires that the actor has the Animator Component attached.", actor);
+                Debug.LogError(
+                    "Animator Track requires that the actor has the Animator Component attached.",
+                    actor);
                 return false;
             }
-            siblingTracks = parent.children.OfType<AnimatorTrack>().Where(t => t.isActive).Reverse().ToList();
+            siblingTracks = parent.children.OfType<AnimatorTrack>().Where(t => t.isActive).Reverse()
+                .ToList();
             return true;
         }
 
@@ -106,7 +109,9 @@ namespace Slate
         //...
         protected override void OnUpdate(float time, float previousTime)
         {
-            if (animator == null || !animator.gameObject.activeInHierarchy || !masterTrack.graph.IsValid()) return;
+            if (animator == null || !animator.gameObject.activeInHierarchy ||
+                !masterTrack.graph.IsValid())
+                return;
             if (isLastTrack) masterTrack.PostUpdateMasterTrack(time, previousTime);
         }
 
@@ -115,7 +120,8 @@ namespace Slate
             // if ( time >= endTime ) { return; }
 
             for (var i = 0; i < siblingTracks.Count; i++) {
-                var siblingCompountClipsWeight = siblingTracks[i].compountClipsWeight * siblingTracks[i].weight;
+                var siblingCompountClipsWeight =
+                    siblingTracks[i].compountClipsWeight * siblingTracks[i].weight;
                 masterLayerMixer.SetInputWeight(i + 1, siblingCompountClipsWeight);
             }
             graph.Evaluate(time - previousTime);
@@ -175,7 +181,8 @@ namespace Slate
         }
 
         //...
-        public void UpdateClip(PlayAnimatorClip playAnimClip, float clipTime, float clipPrevious, float clipWeight)
+        public void UpdateClip(PlayAnimatorClip playAnimClip, float clipTime, float clipPrevious,
+            float clipWeight)
         {
             var index = ports[playAnimClip];
             var clipPlayable = clipsMixer.GetInput(index);
@@ -203,7 +210,8 @@ namespace Slate
             graph = PlayableGraph.Create();
             animationOutput = AnimationPlayableOutput.Create(graph, "Animation", animator);
             masterLayerMixer = AnimationLayerMixerPlayable.Create(graph, siblingTracks.Count + 1);
-            animatorPlayable = AnimatorControllerPlayable.Create(graph, animator.runtimeAnimatorController);
+            animatorPlayable =
+                AnimatorControllerPlayable.Create(graph, animator.runtimeAnimatorController);
             graph.Connect(animatorPlayable, 0, masterLayerMixer, 0);
             masterLayerMixer.SetInputWeight(0, 1f);
 
@@ -214,9 +222,10 @@ namespace Slate
                 graph.Connect(clipsMixer, 0, masterLayerMixer, targetLayerMixInput);
                 masterLayerMixer.SetInputWeight(targetLayerMixInput, 1f);
                 if (animatorTrack.mask != null)
-                    masterLayerMixer.SetLayerMaskFromAvatarMask((uint)targetLayerMixInput, animatorTrack.mask);
-                masterLayerMixer.SetLayerAdditive((uint)targetLayerMixInput
-                    , animatorTrack.blendMode == AnimationBlendMode.Additive);
+                    masterLayerMixer.SetLayerMaskFromAvatarMask((uint)targetLayerMixInput,
+                        animatorTrack.mask);
+                masterLayerMixer.SetLayerAdditive((uint)targetLayerMixInput,
+                    animatorTrack.blendMode == AnimationBlendMode.Additive);
             }
             animationOutput.SetSourcePlayable(masterLayerMixer);
 
@@ -280,11 +289,13 @@ namespace Slate
             rmRotations = new List<Quaternion>();
             var updateInterval = 1f / ROOTMOTION_FRAMERATE;
 
-            for (var time = startTime - updateInterval; time <= endTime + updateInterval; time += updateInterval) {
+            for (var time = startTime - updateInterval; time <= endTime + updateInterval;
+                time += updateInterval) {
                 EvaluateTrackClips(time, time - updateInterval);
 
                 for (var i = 0; i < siblingTracks.Count; i++) {
-                    var siblingCompountClipsWeight = siblingTracks[i].compountClipsWeight * siblingTracks[i].weight;
+                    var siblingCompountClipsWeight =
+                        siblingTracks[i].compountClipsWeight * siblingTracks[i].weight;
                     masterLayerMixer.SetInputWeight(i + 1, siblingCompountClipsWeight);
                 }
                 if (activeClips > 0) graph.Evaluate(updateInterval);
@@ -322,12 +333,12 @@ namespace Slate
             var posNow = rmPositions[frame];
             var posNext = rmPositions[nextFrame];
             var snap = Vector3.Distance(posNow, posNext) > 1;
-            animator.transform.localPosition =
-                snap ? posNext : Vector3.Lerp(posNow, posNext, Mathf.InverseLerp(tNow, tNext, time));
+            animator.transform.localPosition = snap ? posNext
+                : Vector3.Lerp(posNow, posNext, Mathf.InverseLerp(tNow, tNext, time));
             var rotNow = rmRotations[frame];
             var rotNext = rmRotations[nextFrame];
-            animator.transform.localRotation =
-                snap ? rotNext : Quaternion.Lerp(rotNow, rotNext, Mathf.InverseLerp(tNow, tNext, time));
+            animator.transform.localRotation = snap ? rotNext
+                : Quaternion.Lerp(rotNow, rotNext, Mathf.InverseLerp(tNow, tNext, time));
         }
     }
 }

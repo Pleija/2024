@@ -30,8 +30,8 @@ namespace PuertsIl2cpp.Editor
                 var ret = new List<string>();
                 if (type.BaseType != null && type.BaseType.IsValueType)
                     ret.Add(TypeUtils.GetTypeSignature(type.BaseType));
-                foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance |
-                        BindingFlags.Public | BindingFlags.NonPublic))
+                foreach (var field in type.GetFields(BindingFlags.DeclaredOnly |
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                     // if ((field.FieldType.IsValueType && !field.FieldType.IsPrimitive))
                     // {
                     //     ret.AddRange(GetValueTypeFieldSignatures(field.FieldType));
@@ -72,8 +72,9 @@ namespace PuertsIl2cpp.Editor
                 parameterInfo.ParameterType.IsByRef || parameterInfo.ParameterType.IsPointer
                     ? parameterInfo.ParameterType.GetElementType() : parameterInfo.ParameterType;
 
-            public static void GenericArgumentInInstructions(MethodBase node, HashSet<Type> result
-                , HashSet<MethodBase> proceed, Func<MethodBase, IEnumerable<MethodBase>> callingMethodsGetter)
+            public static void GenericArgumentInInstructions(MethodBase node, HashSet<Type> result,
+                HashSet<MethodBase> proceed,
+                Func<MethodBase, IEnumerable<MethodBase>> callingMethodsGetter)
             {
                 var declaringType = node.DeclaringType;
                 if (proceed.Contains(node)) return;
@@ -81,11 +82,13 @@ namespace PuertsIl2cpp.Editor
                     foreach (var t in node.GetGenericArguments())
                         if (!t.IsDefined(typeof(CompilerGeneratedAttribute)))
                             result.Add(t);
-                if (declaringType != null && Utils.shouldNotGetArgumentsInInstructions(node)) return;
+                if (declaringType != null && Utils.shouldNotGetArgumentsInInstructions(node))
+                    return;
                 proceed.Add(node);
                 var callingMethods = callingMethodsGetter(node);
                 foreach (var callingMethod in callingMethods)
-                    GenericArgumentInInstructions(callingMethod, result, proceed, callingMethodsGetter);
+                    GenericArgumentInInstructions(callingMethod, result, proceed,
+                        callingMethodsGetter);
             }
 
             private static bool IterateAllValueType(Type type, List<ValueTypeInfo> list)
@@ -100,8 +103,8 @@ namespace PuertsIl2cpp.Editor
                             return false;
                     baseType = baseType.BaseType;
                 }
-                foreach (var field in type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance |
-                    BindingFlags.Public | BindingFlags.NonPublic))
+                foreach (var field in type.GetFields(BindingFlags.DeclaredOnly |
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                     if (field.FieldType.IsValueType && !field.FieldType.IsPrimitive)
                         if (!IterateAllValueType(field.FieldType, list))
                             return false;
@@ -118,8 +121,9 @@ namespace PuertsIl2cpp.Editor
                         }
                 }
                 list.Add(new ValueTypeInfo {
-                    Signature = TypeUtils.GetTypeSignature(type), CsName = type.Name
-                    , FieldSignatures = GetValueTypeFieldSignatures(type), NullableHasValuePosition = value,
+                    Signature = TypeUtils.GetTypeSignature(type), CsName = type.Name,
+                    FieldSignatures = GetValueTypeFieldSignatures(type),
+                    NullableHasValuePosition = value,
                 });
                 return true;
             }
@@ -127,20 +131,21 @@ namespace PuertsIl2cpp.Editor
             public static void GenCPPWrap(string saveTo, bool onlyConfigure = false)
             {
                 Utils.SetFilters(Puerts.Configure.GetFilters());
-                var types =
-                    from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
                     // where assembly.FullName.Contains("puerts") || assembly.FullName.Contains("Assembly-CSharp") || assembly.FullName.Contains("Unity")
                     where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
                     from type in assembly.GetTypes()
                     where type.IsPublic
                     select type;
-                const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static |
-                    BindingFlags.Public;
+                const BindingFlags flag = BindingFlags.DeclaredOnly | BindingFlags.Instance |
+                    BindingFlags.Static | BindingFlags.Public;
                 const BindingFlags flagForPuer = BindingFlags.DeclaredOnly | BindingFlags.Instance |
                     BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-                var typeExcludeDelegate = types.Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
+                var typeExcludeDelegate =
+                    types.Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t));
                 var ctorToWrapper = typeExcludeDelegate
-                    .SelectMany(t => t.GetConstructors(t.FullName.Contains("Puer") ? flagForPuer : flag))
+                    .SelectMany(t =>
+                        t.GetConstructors(t.FullName.Contains("Puer") ? flagForPuer : flag))
                     .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
                 var methodToWrap = typeExcludeDelegate
                     .SelectMany(t => t.GetMethods(t.FullName.Contains("Puer") ? flagForPuer : flag))
@@ -149,17 +154,24 @@ namespace PuertsIl2cpp.Editor
                     .SelectMany(t => t.GetFields(t.FullName.Contains("Puer") ? flagForPuer : flag))
                     .Where(m => Utils.getBindingMode(m) != Puerts.BindingMode.DontBinding);
                 var wrapperUsedTypes = types
-                    .Concat(ctorToWrapper.SelectMany(c => c.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
-                    .Concat(methodToWrap.SelectMany(m => m.GetParameters()).Select(pi => GetUnrefParameterType(pi)))
-                    .Concat(methodToWrap.Select(m => m.ReturnType)).Concat(fieldToWrapper.Select(f => f.FieldType))
-                    .Distinct();
+                    .Concat(ctorToWrapper.SelectMany(c => c.GetParameters())
+                        .Select(pi => GetUnrefParameterType(pi)))
+                    .Concat(methodToWrap.SelectMany(m => m.GetParameters())
+                        .Select(pi => GetUnrefParameterType(pi)))
+                    .Concat(methodToWrap.Select(m => m.ReturnType))
+                    .Concat(fieldToWrapper.Select(f => f.FieldType)).Distinct();
                 Type[] PuerDelegates = {
-                    typeof(Func<string, Puerts.JSObject>), typeof(Func<Puerts.JSObject, string, string>)
-                    , typeof(Func<Puerts.JSObject, string, int>), typeof(Func<Puerts.JSObject, string, uint>)
-                    , typeof(Func<Puerts.JSObject, string, long>), typeof(Func<Puerts.JSObject, string, ulong>)
-                    , typeof(Func<Puerts.JSObject, string, short>), typeof(Func<Puerts.JSObject, string, ushort>)
-                    , typeof(Func<Puerts.JSObject, string, float>), typeof(Func<Puerts.JSObject, string, double>)
-                    , typeof(Func<Puerts.JSObject, string, Puerts.JSObject>),
+                    typeof(Func<string, Puerts.JSObject>),
+                    typeof(Func<Puerts.JSObject, string, string>),
+                    typeof(Func<Puerts.JSObject, string, int>),
+                    typeof(Func<Puerts.JSObject, string, uint>),
+                    typeof(Func<Puerts.JSObject, string, long>),
+                    typeof(Func<Puerts.JSObject, string, ulong>),
+                    typeof(Func<Puerts.JSObject, string, short>),
+                    typeof(Func<Puerts.JSObject, string, ushort>),
+                    typeof(Func<Puerts.JSObject, string, float>),
+                    typeof(Func<Puerts.JSObject, string, double>),
+                    typeof(Func<Puerts.JSObject, string, Puerts.JSObject>),
                 };
                 var typeInGenericArgument = new HashSet<Type>();
                 var processed = new HashSet<MethodBase>();
@@ -167,32 +179,40 @@ namespace PuertsIl2cpp.Editor
                 foreach (var method in methodToWrap)
                     GenericArgumentInInstructions(method, typeInGenericArgument, processed, mb => {
                         try {
-                            if (mb.GetMethodBody() == null || mb.IsGenericMethodDefinition || mb.IsAbstract)
+                            if (mb.GetMethodBody() == null || mb.IsGenericMethodDefinition ||
+                                mb.IsAbstract)
                                 return new MethodBase[] { };
-                            return mb.GetInstructions().Select(i => i.Operand).Where(o => o is MethodBase)
-                                .Cast<MethodBase>();
+                            return mb.GetInstructions().Select(i => i.Operand)
+                                .Where(o => o is MethodBase).Cast<MethodBase>();
                         }
                         catch (Exception e) {
-                            Debug.LogWarning(string.Format("get instructions of {0} ({2}:{3}) throw {1}", mb, e.Message
-                                , mb.DeclaringType == null ? "" : mb.DeclaringType.Assembly.GetName().Name
-                                , mb.DeclaringType));
+                            Debug.LogWarning(string.Format(
+                                "get instructions of {0} ({2}:{3}) throw {1}", mb, e.Message,
+                                mb.DeclaringType == null ? ""
+                                    : mb.DeclaringType.Assembly.GetName().Name, mb.DeclaringType));
                             return new MethodBase[] { };
                         }
                     });
 #endif
-                var delegateToBridge = wrapperUsedTypes.Concat(PuerDelegates).Concat(typeInGenericArgument)
+                var delegateToBridge = wrapperUsedTypes.Concat(PuerDelegates)
+                    .Concat(typeInGenericArgument)
                     .Where(t => typeof(MulticastDelegate).IsAssignableFrom(t));
-                var delegateInvokes = delegateToBridge.Select(t => t.GetMethod("Invoke")).Where(m => m != null);
+                var delegateInvokes = delegateToBridge.Select(t => t.GetMethod("Invoke"))
+                    .Where(m => m != null);
                 var delegateUsedTypes = delegateInvokes.SelectMany(m => m.GetParameters())
-                    .Select(pi => GetUnrefParameterType(pi)).Concat(delegateInvokes.Select(m => m.ReturnType));
+                    .Select(pi => GetUnrefParameterType(pi))
+                    .Concat(delegateInvokes.Select(m => m.ReturnType));
                 var valueTypeInfos = new List<ValueTypeInfo>();
                 foreach (var type in wrapperUsedTypes.Concat(delegateUsedTypes))
                     IterateAllValueType(type, valueTypeInfos);
-                valueTypeInfos = valueTypeInfos.GroupBy(s => s.Signature).Select(s => s.FirstOrDefault()).ToList();
+                valueTypeInfos = valueTypeInfos.GroupBy(s => s.Signature)
+                    .Select(s => s.FirstOrDefault()).ToList();
                 var bridgeInfos = delegateInvokes.Select(m => new SignatureInfo {
-                    Signature = TypeUtils.GetMethodSignature(m, true), CsName = m.ToString()
-                    , ReturnSignature = TypeUtils.GetTypeSignature(m.ReturnType), ThisSignature = null
-                    , ParameterSignatures = m.GetParameters().Select(p => TypeUtils.GetParameterSignature(p)).ToList(),
+                    Signature = TypeUtils.GetMethodSignature(m, true), CsName = m.ToString(),
+                    ReturnSignature = TypeUtils.GetTypeSignature(m.ReturnType),
+                    ThisSignature = null,
+                    ParameterSignatures = m.GetParameters()
+                        .Select(p => TypeUtils.GetParameterSignature(p)).ToList(),
                 }).GroupBy(s => s.Signature).Select(s => s.FirstOrDefault()).ToList();
                 bridgeInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
                 var genWrapperCtor = ctorToWrapper;
@@ -203,9 +223,11 @@ namespace PuertsIl2cpp.Editor
                     var configure = Puerts.Configure.GetConfigureByTags(new List<string>() {
                         "Puerts.BindingAttribute",
                     });
-                    var configureTypes = new HashSet<Type>(configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
-                        .Where(o => o is Type).Cast<Type>().Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t))
-                        .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<")).Distinct().ToList());
+                    var configureTypes = new HashSet<Type>(configure["Puerts.BindingAttribute"]
+                        .Select(kv => kv.Key).Where(o => o is Type).Cast<Type>()
+                        .Where(t => !typeof(MulticastDelegate).IsAssignableFrom(t))
+                        .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<"))
+                        .Distinct().ToList());
 
                     // configureTypes.Clear();
                     genWrapperCtor = configureTypes.SelectMany(t => t.GetConstructors(flag))
@@ -221,54 +243,57 @@ namespace PuertsIl2cpp.Editor
                         .Concat(genWrapperCtor.SelectMany(c => c.GetParameters())
                             .Select(pi => GetUnrefParameterType(pi)))
                         .Concat(genWrapperMethod.SelectMany(m => m.GetParameters())
-                            .Select(pi => GetUnrefParameterType(pi))).Concat(genWrapperMethod.Select(m => m.ReturnType))
+                            .Select(pi => GetUnrefParameterType(pi)))
+                        .Concat(genWrapperMethod.Select(m => m.ReturnType))
                         .Concat(genWrapperField.Select(f => f.FieldType)).Distinct();
                     valueTypeInfos = new List<ValueTypeInfo>();
                     foreach (var type in configureUsedTypes.Concat(delegateUsedTypes))
                         IterateAllValueType(type, valueTypeInfos);
-                    valueTypeInfos = valueTypeInfos.GroupBy(s => s.Signature).Select(s => s.FirstOrDefault()).ToList();
+                    valueTypeInfos = valueTypeInfos.GroupBy(s => s.Signature)
+                        .Select(s => s.FirstOrDefault()).ToList();
                     Utils.SetFilters(null);
                 }
-                var wrapperInfos = genWrapperMethod.Where(m => !m.IsGenericMethodDefinition && !m.IsAbstract).Select(
-                    m => {
+                var wrapperInfos = genWrapperMethod
+                    .Where(m => !m.IsGenericMethodDefinition && !m.IsAbstract).Select(m => {
                         var isExtensionMethod = m.IsDefined(typeof(ExtensionAttribute));
                         return new SignatureInfo {
-                            Signature = TypeUtils.GetMethodSignature(m, false, isExtensionMethod), CsName = m.ToString()
-                            , ReturnSignature = TypeUtils.GetTypeSignature(m.ReturnType)
-                            , ThisSignature = TypeUtils.GetThisSignature(m, isExtensionMethod)
-                            , ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0)
-                                .Select(p => TypeUtils.GetParameterSignature(p)).ToList()
-                            ,
+                            Signature = TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
+                            CsName = m.ToString(),
+                            ReturnSignature = TypeUtils.GetTypeSignature(m.ReturnType),
+                            ThisSignature = TypeUtils.GetThisSignature(m, isExtensionMethod),
+                            ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0)
+                                .Select(p => TypeUtils.GetParameterSignature(p)).ToList(),
                         };
                     }).Concat(genWrapperCtor.Select(m => {
-                    var isExtensionMethod = false;
-                    return new SignatureInfo {
-                        Signature = TypeUtils.GetMethodSignature(m, false, isExtensionMethod), CsName = m.ToString()
-                        , ReturnSignature = "v", ThisSignature = "t"
-                        , ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0)
-                            .Select(p => TypeUtils.GetParameterSignature(p)).ToList()
-                        ,
-                    };
-                })).GroupBy(s => s.Signature).Select(s => s.FirstOrDefault()).ToList();
+                        var isExtensionMethod = false;
+                        return new SignatureInfo {
+                            Signature = TypeUtils.GetMethodSignature(m, false, isExtensionMethod),
+                            CsName = m.ToString(), ReturnSignature = "v", ThisSignature = "t",
+                            ParameterSignatures = m.GetParameters().Skip(isExtensionMethod ? 1 : 0)
+                                .Select(p => TypeUtils.GetParameterSignature(p)).ToList(),
+                        };
+                    })).GroupBy(s => s.Signature).Select(s => s.FirstOrDefault()).ToList();
                 wrapperInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
                 var fieldWrapperInfos = genWrapperField.Select(f => new SignatureInfo {
-                    Signature = (f.IsStatic ? "" : "t") + TypeUtils.GetTypeSignature(f.FieldType), CsName = f.ToString()
-                    , ReturnSignature = TypeUtils.GetTypeSignature(f.FieldType), ThisSignature = f.IsStatic ? "" : "t"
-                    , ParameterSignatures = null,
+                    Signature = (f.IsStatic ? "" : "t") + TypeUtils.GetTypeSignature(f.FieldType),
+                    CsName = f.ToString(),
+                    ReturnSignature = TypeUtils.GetTypeSignature(f.FieldType),
+                    ThisSignature = f.IsStatic ? "" : "t", ParameterSignatures = null,
                 }).GroupBy(s => s.Signature).Select(s => s.FirstOrDefault()).ToList();
                 fieldWrapperInfos.Sort((x, y) => string.CompareOrdinal(x.Signature, y.Signature));
 
                 using (var jsEnv = new Puerts.JsEnv()) {
                     jsEnv.UsingFunc<CppWrappersInfo, string>();
                     var cppWrapRender =
-                        jsEnv.ExecuteModule<Func<CppWrappersInfo, string>>("puerts/templates/cppwrapper.tpl.mjs"
-                            , "default");
+                        jsEnv.ExecuteModule<Func<CppWrappersInfo, string>>(
+                            "puerts/templates/cppwrapper.tpl.mjs", "default");
 
-                    using (var textWriter = new StreamWriter(Path.Combine(saveTo, "FunctionBridge.Gen.h"), false
-                        , Encoding.UTF8)) {
+                    using (var textWriter =
+                        new StreamWriter(Path.Combine(saveTo, "FunctionBridge.Gen.h"), false,
+                            Encoding.UTF8)) {
                         var fileContext = cppWrapRender(new CppWrappersInfo {
-                            ValueTypeInfos = valueTypeInfos, WrapperInfos = wrapperInfos, BridgeInfos = bridgeInfos
-                            , FieldWrapperInfos = fieldWrapperInfos,
+                            ValueTypeInfos = valueTypeInfos, WrapperInfos = wrapperInfos,
+                            BridgeInfos = bridgeInfos, FieldWrapperInfos = fieldWrapperInfos,
                         });
                         textWriter.Write(fileContext);
                         textWriter.Flush();
@@ -281,26 +306,27 @@ namespace PuertsIl2cpp.Editor
                 var configure = Puerts.Configure.GetConfigureByTags(new List<string>() {
                     "Puerts.BindingAttribute",
                 });
-                var genTypes = new HashSet<Type>(configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
-                    .Where(o => o is Type).Cast<Type>()
-                    .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<")).Distinct().ToList());
+                var genTypes = new HashSet<Type>(configure["Puerts.BindingAttribute"]
+                    .Select(kv => kv.Key).Where(o => o is Type).Cast<Type>()
+                    .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<")).Distinct()
+                    .ToList());
                 genTypes.Add(typeof(ArrayExtension));
                 // genTypes.Add(typeof(PuertsIl2cpp.ArrayExtension2));
-                var extendedType2extensionType = (
-                        from type in genTypes
+                var extendedType2extensionType = (from type in genTypes
 #if UNITY_EDITOR
-                        where !Path.GetFileName(type.Assembly.Location).Contains("Editor")
+                    where !Path.GetFileName(type.Assembly.Location).Contains("Editor")
 #endif
-                        from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                            .Select(method => TypeUtils.HandleMaybeGenericMethod(method))
-                            .Where(method => method != null)
-                        where Utils.isDefined(method, typeof(ExtensionAttribute))
-                        group type by Utils.getExtendedType(method))
-                    .ToDictionary(g => g.Key, g => (g as IEnumerable<Type>).Distinct().ToList()).ToList();
+                    from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                        .Select(method => TypeUtils.HandleMaybeGenericMethod(method))
+                        .Where(method => method != null)
+                    where Utils.isDefined(method, typeof(ExtensionAttribute))
+                    group type by Utils.getExtendedType(method)).ToDictionary(g => g.Key,
+                    g => (g as IEnumerable<Type>).Distinct().ToList()).ToList();
 
                 using (var jsEnv = new Puerts.JsEnv()) {
-                    var wrapRender = jsEnv.ExecuteModule<Func<List<KeyValuePair<Type, List<Type>>>, string>>(
-                        "puerts/templates/extension_methods_gen.tpl.mjs", "default");
+                    var wrapRender =
+                        jsEnv.ExecuteModule<Func<List<KeyValuePair<Type, List<Type>>>, string>>(
+                            "puerts/templates/extension_methods_gen.tpl.mjs", "default");
                     var fileContent = wrapRender(extendedType2extensionType);
                     var filePath = outDir + "ExtensionMethodInfos_Gen.cs";
 
@@ -316,13 +342,15 @@ namespace PuertsIl2cpp.Editor
                 var configure = Puerts.Configure.GetConfigureByTags(new List<string>() {
                     "Puerts.BindingAttribute",
                 });
-                var genTypes = configure["Puerts.BindingAttribute"].Select(kv => kv.Key).Where(o => o is Type)
-                    .Cast<Type>().Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<")).Distinct().ToList();
+                var genTypes = configure["Puerts.BindingAttribute"].Select(kv => kv.Key)
+                    .Where(o => o is Type).Cast<Type>()
+                    .Where(t => !t.IsGenericTypeDefinition && !t.Name.StartsWith("<")).Distinct()
+                    .ToList();
 
                 using (var jsEnv = new Puerts.JsEnv()) {
                     var linkXMLRender =
-                        jsEnv.ExecuteModule<Func<List<Type>, string>>("puerts/templates/linkxmlgen.tpl.mjs"
-                            , "LinkXMLTemplate");
+                        jsEnv.ExecuteModule<Func<List<Type>, string>>(
+                            "puerts/templates/linkxmlgen.tpl.mjs", "LinkXMLTemplate");
                     var linkXMLContent = linkXMLRender(genTypes);
                     var linkXMLPath = outDir + "link.xml";
 
@@ -336,13 +364,17 @@ namespace PuertsIl2cpp.Editor
             public static void CopyXIl2cppCPlugin(string outDir)
             {
                 var cPluginCode = new Dictionary<string, string>() {
-                    { "pesapi_adpt.c", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi_adpt.c").text }
-                    , { "pesapi.h", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi.h").text }
-                    , { "Puerts_il2cpp.cpp", Resources.Load<TextAsset>("puerts/xil2cpp/Puerts_il2cpp.cpp").text }
-                    , {
-                        "UnityExports4Puerts.h", Resources.Load<TextAsset>("puerts/xil2cpp/UnityExports4Puerts.h").text
-                    }
-                    ,
+                    {
+                        "pesapi_adpt.c",
+                        Resources.Load<TextAsset>("puerts/xil2cpp/pesapi_adpt.c").text
+                    },
+                    { "pesapi.h", Resources.Load<TextAsset>("puerts/xil2cpp/pesapi.h").text }, {
+                        "Puerts_il2cpp.cpp",
+                        Resources.Load<TextAsset>("puerts/xil2cpp/Puerts_il2cpp.cpp").text
+                    }, {
+                        "UnityExports4Puerts.h",
+                        Resources.Load<TextAsset>("puerts/xil2cpp/UnityExports4Puerts.h").text
+                    },
                 };
 
                 foreach (var cPlugin in cPluginCode) {
@@ -361,8 +393,8 @@ namespace PuertsIl2cpp.Editor
 
                 using (var jsEnv = new Puerts.JsEnv()) {
                     var macroHeaderRender =
-                        jsEnv.ExecuteModule<Func<bool, bool, string>>("puerts/xil2cpp/unityenv_for_puerts.h.tpl.mjs"
-                            , "default");
+                        jsEnv.ExecuteModule<Func<bool, bool, string>>(
+                            "puerts/xil2cpp/unityenv_for_puerts.h.tpl.mjs", "default");
                     var macroHeaderContent = macroHeaderRender(
 #if !UNITY_2021_1_OR_NEWER
                         false,

@@ -10,8 +10,11 @@ namespace ParadoxNotion.Design
     ///<summary>Documentation from XML</summary>
     public static class XMLDocs
     {
-        private static Dictionary<MemberInfo, XmlElement> cachedElements = new Dictionary<MemberInfo, XmlElement>();
-        private static Dictionary<MemberInfo, string> cachedSummaries = new Dictionary<MemberInfo, string>();
+        private static Dictionary<MemberInfo, XmlElement> cachedElements =
+            new Dictionary<MemberInfo, XmlElement>();
+
+        private static Dictionary<MemberInfo, string> cachedSummaries =
+            new Dictionary<MemberInfo, string>();
 
         ///<summary>Returns a chached summary info for member</summary>
         public static string GetMemberSummary(MemberInfo memberInfo)
@@ -19,8 +22,8 @@ namespace ParadoxNotion.Design
             string result;
             if (cachedSummaries.TryGetValue(memberInfo, out result)) return result;
             var element = GetXmlElementForMember(memberInfo);
-            return cachedSummaries[memberInfo] =
-                element != null ? element["summary"].InnerText.Trim() : "No Documentation Found";
+            return cachedSummaries[memberInfo] = element != null
+                ? element["summary"].InnerText.Trim() : "No Documentation Found";
         }
 
         ///<summary>Returns a chached return info for method</summary>
@@ -44,7 +47,8 @@ namespace ParadoxNotion.Design
                     var xmlElement = element as XmlElement;
                     if (xmlElement == null) continue;
                     var found = xmlElement.Attributes["name"];
-                    if (found != null && found.Value == parameterName) return xmlElement.InnerText.Trim();
+                    if (found != null && found.Value == parameterName)
+                        return xmlElement.InnerText.Trim();
                 }
             return null;
         }
@@ -76,16 +80,17 @@ namespace ParadoxNotion.Design
                 var methodInfo = (MethodInfo)memberInfo;
                 var parameters = methodInfo.GetParameters();
                 if (parameters.Length == 0)
-                    return GetDoc(methodInfo.DeclaringType, $"M:{methodInfo.DeclaringType.FullName}.{methodInfo.Name}");
+                    return GetDoc(methodInfo.DeclaringType,
+                        $"M:{methodInfo.DeclaringType.FullName}.{methodInfo.Name}");
                 var parametersString = string.Empty;
                 for (var i = 0; i < parameters.Length; i++)
                     parametersString += parameters[i].ParameterType.FullName +
                         (i < parameters.Length - 1 ? "," : string.Empty);
-                return GetDoc(methodInfo.DeclaringType
-                    , $"M:{methodInfo.DeclaringType.FullName}.{methodInfo.Name}({parametersString})");
+                return GetDoc(methodInfo.DeclaringType,
+                    $"M:{methodInfo.DeclaringType.FullName}.{methodInfo.Name}({parametersString})");
             }
-            return GetDoc(memberInfo.DeclaringType
-                , $"{memberInfo.MemberType.ToString()[0]}:{memberInfo.DeclaringType.FullName}.{memberInfo.Name}");
+            return GetDoc(memberInfo.DeclaringType,
+                $"{memberInfo.MemberType.ToString()[0]}:{memberInfo.DeclaringType.FullName}.{memberInfo.Name}");
         }
 
         private static XmlElement GetDoc(Type type, string pathName)
@@ -94,7 +99,8 @@ namespace ParadoxNotion.Design
             if (!File.Exists(xmlPath)) return null;
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlPath);
-            return xmlDocument.SelectSingleNode("//member[starts-with(@name, '" + pathName + "')]") as XmlElement;
+            return xmlDocument.SelectSingleNode("//member[starts-with(@name, '" + pathName + "')]")
+                as XmlElement;
         }
     }
 }

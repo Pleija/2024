@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Description("Perform a for loop"), Category("Flow Controllers/Iterators"), ContextDefinedInputs(typeof(int))
-     , ContextDefinedOutputs(typeof(int))]
+    [Description("Perform a for loop"), Category("Flow Controllers/Iterators"),
+     ContextDefinedInputs(typeof(int)), ContextDefinedOutputs(typeof(int))]
     public class ForLoop : FlowControlNode
     {
         [Tooltip("If true, loop will start from last and decrease by increment towards start")]

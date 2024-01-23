@@ -13,8 +13,10 @@ namespace NodeCanvas.Framework
     }
 
     /// <summary>
-    ///     Used on top of IGraphAssignable nodes to specify the target type for DragDrop operations It can be used on top
-    ///     of other node types if the graph checks for that (see GraphEditorUtility.GetDropedReferenceNodeTypes)
+    ///     Used on top of IGraphAssignable nodes to specify the target type for DragDrop operations It can
+    ///     be used on top
+    ///     of other node types if the graph checks for that (see
+    ///     GraphEditorUtility.GetDropedReferenceNodeTypes)
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class DropReferenceType : Attribute

@@ -13,8 +13,8 @@ namespace FlowCanvas.Nodes
         public static SharpEvent Create(EventInfo eventInfo)
         {
             if (eventInfo == null) return null;
-            var wrapper = (SharpEvent)typeof(SharpEvent<>).RTMakeGenericType(eventInfo.EventHandlerType)
-                .CreateObjectUninitialized();
+            var wrapper = (SharpEvent)typeof(SharpEvent<>)
+                .RTMakeGenericType(eventInfo.EventHandlerType).CreateObjectUninitialized();
             wrapper.eventInfo = eventInfo;
             return wrapper;
         }
@@ -26,8 +26,8 @@ namespace FlowCanvas.Nodes
         }
 
         ///<summary>Start listening to a reflected delegate event using this wrapper</summary>
-        public void StartListening(ReflectedDelegateEvent reflectedEvent
-            , ReflectedDelegateEvent.DelegateEventCallback callback)
+        public void StartListening(ReflectedDelegateEvent reflectedEvent,
+            ReflectedDelegateEvent.DelegateEventCallback callback)
         {
             if (reflectedEvent == null || callback == null) return;
             reflectedEvent.Add(callback);
@@ -35,8 +35,8 @@ namespace FlowCanvas.Nodes
         }
 
         ///<summary>Stop listening from a reflected delegate event using this wrapper</summary>
-        public void StopListening(ReflectedDelegateEvent reflectedEvent
-            , ReflectedDelegateEvent.DelegateEventCallback callback)
+        public void StopListening(ReflectedDelegateEvent reflectedEvent,
+            ReflectedDelegateEvent.DelegateEventCallback callback)
         {
             if (reflectedEvent == null || callback == null) return;
             reflectedEvent.Remove(callback);

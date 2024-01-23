@@ -16,8 +16,8 @@ namespace Slate.ActionClips
         private Quaternion originalRot;
         private Vector3 originalScale;
 
-        public override string info =>
-            string.Format("Set Parent Temporary\n{0}", newParent != null ? newParent.name : "none");
+        public override string info => string.Format("Set Parent Temporary\n{0}",
+            newParent != null ? newParent.name : "none");
 
         public override float length {
             get => _length;

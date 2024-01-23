@@ -58,7 +58,8 @@ namespace SqlCipher4Unity3D.Example
 #else
 #if false
             // check if file exists in Application.persistentDataPath
-            string filepath = string.Format("{0}/{1}", Application.persistentDataPath, DatabaseName);
+            string filepath =
+ string.Format("{0}/{1}", Application.persistentDataPath, DatabaseName);
 
             if (!File.Exists(filepath))
             {
@@ -115,10 +116,10 @@ namespace SqlCipher4Unity3D.Example
             if (drop) _connection.DropTable<Person>();
             _connection.CreateTable<Person>();
             _connection.InsertAll(new[] {
-                new Person { Id = 1, Name = "Tom", Surname = "Perez", Age = 56 }
-                , new Person { Id = 2, Name = "Fred", Surname = "Arthurson", Age = 16 }
-                , new Person { Id = 3, Name = "John", Surname = "Doe", Age = 25 }
-                , new Person { Id = 4, Name = "Roberto", Surname = "Huertas", Age = 37 },
+                new Person { Id = 1, Name = "Tom", Surname = "Perez", Age = 56 },
+                new Person { Id = 2, Name = "Fred", Surname = "Arthurson", Age = 16 },
+                new Person { Id = 3, Name = "John", Surname = "Doe", Age = 25 },
+                new Person { Id = 4, Name = "Roberto", Surname = "Huertas", Age = 37 },
             });
         }
 

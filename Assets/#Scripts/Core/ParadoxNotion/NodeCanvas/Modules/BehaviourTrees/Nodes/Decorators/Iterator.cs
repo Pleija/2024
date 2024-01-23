@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Iterate"), Category("Decorators")
-     , Description(
-         "Iterates a list and executes its child once for each element in that list. Keeps iterating until the Termination Policy is met or until the whole list is iterated, in which case the last iteration child status is returned.")
-     , Icon("List")]
+    [Name("Iterate"), Category("Decorators"),
+     Description(
+         "Iterates a list and executes its child once for each element in that list. Keeps iterating until the Termination Policy is met or until the whole list is iterated, in which case the last iteration child status is returned."),
+     Icon("List")]
     public class Iterator : BTDecorator
     {
         public enum TerminationConditions { None, FirstSuccess, FirstFailure }
@@ -18,13 +18,16 @@ namespace NodeCanvas.BehaviourTrees
         [RequiredField, BlackboardOnly, Tooltip("The list to iterate.")]
         public BBParameter<IList> targetList;
 
-        [BlackboardOnly, Name("Current Element"), Tooltip("Store the currently iterated list element in a variable.")]
+        [BlackboardOnly, Name("Current Element"),
+         Tooltip("Store the currently iterated list element in a variable.")]
         public BBObjectParameter current;
 
-        [BlackboardOnly, Name("Current Index"), Tooltip("Store the currently iterated list index in a variable.")]
+        [BlackboardOnly, Name("Current Index"),
+         Tooltip("Store the currently iterated list index in a variable.")]
         public BBParameter<int> storeIndex;
 
-        [Name("Termination Policy"), Tooltip("The condition for when to terminate the iteration and return status.")]
+        [Name("Termination Policy"),
+         Tooltip("The condition for when to terminate the iteration and return status.")]
         public TerminationConditions terminationCondition = TerminationConditions.None;
 
         [Tooltip("The maximum allowed iterations. Leave at -1 to iterate the whole list.")]
@@ -45,9 +48,11 @@ namespace NodeCanvas.BehaviourTrees
                 current.value = list[i];
                 storeIndex.value = i;
                 status = decoratedConnection.Execute(agent, blackboard);
-                if (status == Status.Success && terminationCondition == TerminationConditions.FirstSuccess)
+                if (status == Status.Success &&
+                    terminationCondition == TerminationConditions.FirstSuccess)
                     return Status.Success;
-                if (status == Status.Failure && terminationCondition == TerminationConditions.FirstFailure)
+                if (status == Status.Failure &&
+                    terminationCondition == TerminationConditions.FirstFailure)
                     return Status.Failure;
 
                 if (status == Status.Running) {
@@ -86,7 +91,8 @@ namespace NodeCanvas.BehaviourTrees
         protected override void OnNodeInspectorGUI()
         {
             DrawDefaultInspector();
-            var argType = targetList.refType != null ? targetList.refType.GetEnumerableElementType() : null;
+            var argType = targetList.refType != null ? targetList.refType.GetEnumerableElementType()
+                : null;
             if (current.varType != argType) current.SetType(argType);
         }
 #endif

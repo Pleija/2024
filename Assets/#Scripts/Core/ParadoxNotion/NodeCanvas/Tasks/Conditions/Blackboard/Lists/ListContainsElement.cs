@@ -4,7 +4,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Blackboard/Lists"), Description("Check if an element is contained in the target list")]
+    [Category("✫ Blackboard/Lists"),
+     Description("Check if an element is contained in the target list")]
     public class ListContainsElement<T> : ConditionTask
     {
         [RequiredField, BlackboardOnly]

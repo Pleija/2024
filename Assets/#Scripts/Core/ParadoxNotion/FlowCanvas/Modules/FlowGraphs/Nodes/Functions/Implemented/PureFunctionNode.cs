@@ -6,7 +6,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    ///<summary>Function Nodes return a value and can have up to 10 parameters. They don't need Flow execution.</summary>
+    /// <summary>
+    ///     Function Nodes return a value and can have up to 10 parameters. They don't need Flow
+    ///     execution.
+    /// </summary>
     public abstract class PureFunctionNodeBase : SimplexNode { }
 
     public abstract class PureFunctionNode<TResult> : PureFunctionNodeBase
@@ -114,7 +117,8 @@ namespace FlowCanvas.Nodes
         }
     }
 
-    public abstract class PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7> : PureFunctionNodeBase
+    public abstract class
+        PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7> : PureFunctionNodeBase
     {
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g);
 
@@ -133,7 +137,8 @@ namespace FlowCanvas.Nodes
         }
     }
 
-    public abstract class PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8> : PureFunctionNodeBase
+    public abstract class
+        PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8> : PureFunctionNodeBase
     {
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h);
 
@@ -148,12 +153,14 @@ namespace FlowCanvas.Nodes
             var p7 = node.AddValueInput<T7>(parameters[6].Name);
             var p8 = node.AddValueInput<T8>(parameters[7].Name);
             node.AddValueOutput<TResult>("Value", () => {
-                return Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value);
+                return Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value);
             });
         }
     }
 
-    public abstract class PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9> : PureFunctionNodeBase
+    public abstract class
+        PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9> : PureFunctionNodeBase
     {
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i);
 
@@ -169,12 +176,14 @@ namespace FlowCanvas.Nodes
             var p8 = node.AddValueInput<T8>(parameters[7].Name);
             var p9 = node.AddValueInput<T9>(parameters[8].Name);
             node.AddValueOutput<TResult>("Value", () => {
-                return Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value);
+                return Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value, p9.value);
             });
         }
     }
 
-    public abstract class PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : PureFunctionNodeBase
+    public abstract class
+        PureFunctionNode<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : PureFunctionNodeBase
     {
         public abstract TResult Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i, T10 j);
 
@@ -191,8 +200,8 @@ namespace FlowCanvas.Nodes
             var p9 = node.AddValueInput<T9>(parameters[8].Name);
             var p10 = node.AddValueInput<T10>(parameters[9].Name);
             node.AddValueOutput<TResult>("Value", () => {
-                return Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value
-                    , p10.value);
+                return Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                    p8.value, p9.value, p10.value);
             });
         }
     }

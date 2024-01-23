@@ -4,10 +4,10 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Events/Signals")
-     , Description(
-         "Invoke a defined Signal. Signals are similar to name-based events but are safer to changes and support multiple parameters.")
-     , HasRefreshButton, DropReferenceType(typeof(SignalDefinition))]
+    [Category("Events/Signals"),
+     Description(
+         "Invoke a defined Signal. Signals are similar to name-based events but are safer to changes and support multiple parameters."),
+     HasRefreshButton, DropReferenceType(typeof(SignalDefinition))]
     public class InvokeSignal : FlowNode, IDropedReferenceNode
     {
         [GatherPortsCallback]
@@ -24,8 +24,8 @@ namespace FlowCanvas.Nodes
         private ValueInput<Transform> target;
         private ValueInput[] inputArgs;
 
-        public override string name => base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]"
-            , signalDefinition != null ? signalDefinition.name : "NULL");
+        public override string name => base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]",
+            signalDefinition != null ? signalDefinition.name : "NULL");
 
         public void SetTarget(Object target)
         {
@@ -48,8 +48,10 @@ namespace FlowCanvas.Nodes
             var exit = AddFlowOutput(" ");
             AddFlowInput(" ", (f) => {
                 var args = new object[signalDefinition.parameters.Count];
-                for (var i = 0; i < signalDefinition.parameters.Count; i++) args[i] = inputArgs[i].value;
-                signalDefinition.Invoke(graphAgent.transform, global ? null : target.value, global, args);
+                for (var i = 0; i < signalDefinition.parameters.Count; i++)
+                    args[i] = inputArgs[i].value;
+                signalDefinition.Invoke(graphAgent.transform, global ? null : target.value, global,
+                    args);
                 f.Call(exit);
             });
         }

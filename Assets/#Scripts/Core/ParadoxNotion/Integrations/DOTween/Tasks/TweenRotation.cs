@@ -16,8 +16,8 @@ namespace NodeCanvas.Tasks.Actions
         public bool waitActionFinish = true;
         private string id;
 
-        protected override string info =>
-            string.Format("Tween {0} Rotation {1} {2}", agentInfo, relative ? "By" : "To", vector);
+        protected override string info => string.Format("Tween {0} Rotation {1} {2}", agentInfo,
+            relative ? "By" : "To", vector);
 
         protected override void OnExecute()
         {

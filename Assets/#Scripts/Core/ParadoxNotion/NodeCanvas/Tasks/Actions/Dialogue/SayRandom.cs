@@ -6,8 +6,8 @@ using NodeCanvas.DialogueTrees;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Dialogue"), Icon("Dialogue")
-     , Description("A random statement will be chosen each time for the actor to say")]
+    [Category("Dialogue"), Icon("Dialogue"),
+     Description("A random statement will be chosen each time for the actor to say")]
     public class SayRandom : ActionTask<IDialogueActor>
     {
         public List<Statement> statements = new List<Statement>();
@@ -33,11 +33,10 @@ namespace NodeCanvas.Tasks.Actions
             EditorUtils.ReorderableList(statements, options, (i, picked) => {
                 if (statements[i] == null) statements[i] = new Statement("...");
                 var statement = statements[i];
-                statement.text =
-                    UnityEditor.EditorGUILayout.TextArea(statement.text, (GUIStyle)"textField", GUILayout.Height(50));
-                statement.audio =
-                    (AudioClip)UnityEditor.EditorGUILayout.ObjectField("Audio Clip", statement.audio, typeof(AudioClip)
-                        , false);
+                statement.text = UnityEditor.EditorGUILayout.TextArea(statement.text,
+                    (GUIStyle)"textField", GUILayout.Height(50));
+                statement.audio = (AudioClip)UnityEditor.EditorGUILayout.ObjectField("Audio Clip",
+                    statement.audio, typeof(AudioClip), false);
                 statement.meta = UnityEditor.EditorGUILayout.TextField("Meta", statement.meta);
                 EditorUtils.Separator();
             });

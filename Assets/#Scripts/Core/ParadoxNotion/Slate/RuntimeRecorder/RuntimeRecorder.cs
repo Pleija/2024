@@ -47,12 +47,14 @@ namespace Slate
         //Init the Recorder for target root gameobject with specified options
         public void Initialize(GameObject root, Options options)
         {
-            targetObjects = options.includeRootGameObject ? root.GetComponentsInChildren<Transform>()
-                : root.GetComponentsInChildren<Transform>().Where(t => t != root.transform).ToArray();
+            targetObjects = options.includeRootGameObject
+                ? root.GetComponentsInChildren<Transform>() : root
+                    .GetComponentsInChildren<Transform>().Where(t => t != root.transform).ToArray();
             recorders = new TransformRecorder[targetObjects.Length];
 
             for (var i = 0; i < targetObjects.Length; i++) {
-                var path = UnityObjectUtility.CalculateTransformPath(root.transform, targetObjects[i]);
+                var path =
+                    UnityObjectUtility.CalculateTransformPath(root.transform, targetObjects[i]);
                 recorders[i] = new TransformRecorder(path, targetObjects[i]);
             }
         }

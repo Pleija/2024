@@ -5,8 +5,9 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [System.Obsolete, Category("Mutators (beta)"), Name("Root Switcher")
-     , Description("Switch the root node of the behaviour tree to a new one defined by tag\nBeta Feature!")]
+    [System.Obsolete, Category("Mutators (beta)"), Name("Root Switcher"),
+     Description(
+         "Switch the root node of the behaviour tree to a new one defined by tag\nBeta Feature!")]
     public class RootSwitcher : BTNode
     {
         public string targetNodeTag;
@@ -35,8 +36,8 @@ namespace NodeCanvas.BehaviourTrees
 
         protected override void OnNodeInspectorGUI()
         {
-            targetNodeTag = EditorUtils.Popup<string>("Node Tag", targetNodeTag
-                , graph.GetAllTagedNodes<Node>().Select(n => n.tag));
+            targetNodeTag = EditorUtils.Popup<string>("Node Tag", targetNodeTag,
+                graph.GetAllTagedNodes<Node>().Select(n => n.tag));
         }
 
 #endif

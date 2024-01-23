@@ -67,8 +67,10 @@ namespace Slate.ActionClips
             var weight = GetClipWeight(time);
             RenderSettings.fogColor = Color.Lerp(wasColor, fogColor, weight);
             RenderSettings.fogDensity = Mathf.Lerp(wasDensity, fogDensity, weight);
-            RenderSettings.fogStartDistance = Mathf.Lerp(wasStartDistance, linearFogStartDistance, weight);
-            RenderSettings.fogEndDistance = Mathf.Lerp(wasEndDistance, linearFogEndDistance, weight);
+            RenderSettings.fogStartDistance =
+                Mathf.Lerp(wasStartDistance, linearFogStartDistance, weight);
+            RenderSettings.fogEndDistance =
+                Mathf.Lerp(wasEndDistance, linearFogEndDistance, weight);
         }
 
         protected override void OnReverse()

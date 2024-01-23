@@ -12,14 +12,10 @@ namespace Puerts
 {
     public enum BindingMode
     {
-        FastBinding = 1024
-        , // static wrapper
-        LazyBinding = 128
-        , // reflect during first call
-        SlowBinding = 32
-        , // reflection to call
-        DontBinding = 2
-        , // not able to called in runtime. Also will not generate d.ts
+        FastBinding = 1024, // static wrapper
+        LazyBinding = 128,  // reflect during first call
+        SlowBinding = 32,   // reflection to call
+        DontBinding = 2,    // not able to called in runtime. Also will not generate d.ts
     }
 
     namespace TypeMapping

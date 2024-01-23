@@ -16,7 +16,8 @@ namespace Slate.ActionClips
             if (!actor.isInitialized) return true;
 
             //workaround Unity bug that takes place as soon as a scene is saved that renders animator error: "Animator is not playing an AnimatorController" when accessing parameters etc.
-            if (actor.runtimeAnimatorController != null && actor.GetCurrentAnimatorStateInfo(0).length == 0) {
+            if (actor.runtimeAnimatorController != null &&
+                actor.GetCurrentAnimatorStateInfo(0).length == 0) {
                 var wasActive = actor.gameObject.activeSelf;
                 actor.gameObject.SetActive(false);
                 actor.gameObject.SetActive(wasActive);

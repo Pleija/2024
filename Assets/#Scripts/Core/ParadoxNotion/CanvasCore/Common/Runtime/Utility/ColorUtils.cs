@@ -16,7 +16,8 @@ namespace ParadoxNotion
         public static Color Grey(float value) => new Color(value, value, value, 1);
 
         ///<summary>Convert Color to Hex.</summary>
-        private static Dictionary<Color32, string> colorHexCache = new Dictionary<Color32, string>();
+        private static Dictionary<Color32, string>
+            colorHexCache = new Dictionary<Color32, string>();
 
         public static string ColorToHex(Color32 color)
         {
@@ -29,7 +30,9 @@ namespace ParadoxNotion
 #endif
             string result;
             if (colorHexCache.TryGetValue(color, out result)) return result;
-            result = ("#" + color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2")).ToUpper();
+            result =
+                ("#" + color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2"))
+                .ToUpper();
             return colorHexCache[color] = result;
         }
 
@@ -41,7 +44,8 @@ namespace ParadoxNotion
         {
             Color result;
             if (hexColorCache.TryGetValue(hex, out result)) return result;
-            if (hex.Length != 6) throw new System.Exception("Invalid length for hex color provided");
+            if (hex.Length != 6)
+                throw new System.Exception("Invalid length for hex color provided");
             var r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
             var g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);

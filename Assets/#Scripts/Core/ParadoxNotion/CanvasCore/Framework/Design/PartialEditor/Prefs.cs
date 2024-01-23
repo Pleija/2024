@@ -55,7 +55,8 @@ namespace NodeCanvas.Editor
         private static void LoadData()
         {
             var pref = EditorPrefs.GetString(PREFS_KEY_NAME);
-            if (!string.IsNullOrEmpty(pref)) _data = JSONSerializer.Deserialize<SerializedData>(pref);
+            if (!string.IsNullOrEmpty(pref))
+                _data = JSONSerializer.Deserialize<SerializedData>(pref);
             if (_data == null) _data = new SerializedData();
         }
 
@@ -346,7 +347,8 @@ namespace NodeCanvas.Editor
             get => UnityEngine.Mathf.Clamp(data.minimapSizeY, MINIMAP_MIN_SIZE, MINIMAP_MAX_SIZE);
             set {
                 if (data.minimapSizeY != value) {
-                    data.minimapSizeY = UnityEngine.Mathf.Clamp(value, MINIMAP_MIN_SIZE, MINIMAP_MAX_SIZE);
+                    data.minimapSizeY =
+                        UnityEngine.Mathf.Clamp(value, MINIMAP_MIN_SIZE, MINIMAP_MAX_SIZE);
                     Save();
                 }
             }
@@ -357,7 +359,8 @@ namespace NodeCanvas.Editor
         //Save the prefs
         private static void Save()
         {
-            EditorPrefs.SetString(PREFS_KEY_NAME, JSONSerializer.Serialize(typeof(SerializedData), data));
+            EditorPrefs.SetString(PREFS_KEY_NAME,
+                JSONSerializer.Serialize(typeof(SerializedData), data));
         }
     }
 }

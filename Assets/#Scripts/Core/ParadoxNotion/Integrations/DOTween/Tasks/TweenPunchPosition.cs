@@ -17,11 +17,14 @@ namespace NodeCanvas.Tasks.Actions
         public bool useSnapping = false;
         public bool waitActionFinish = true;
         private string id;
-        protected override string info => string.Format("Punch {0} Position By {1}", agentInfo, ammount);
+
+        protected override string info =>
+            string.Format("Punch {0} Position By {1}", agentInfo, ammount);
 
         protected override void OnExecute()
         {
-            var tween = agent.DOPunchPosition(ammount.value, duration.value, vibrato, elasticity, useSnapping);
+            var tween = agent.DOPunchPosition(ammount.value, duration.value, vibrato, elasticity,
+                useSnapping);
             tween.SetDelay(delay.value);
             tween.SetEase(easeType);
             id = System.Guid.NewGuid().ToString();

@@ -70,8 +70,8 @@ namespace FlowCanvas
                 var valueType = value != null ? value.GetType() : null;
 
                 if (valueType != null && !valueType.RTIsAssignableTo(returnData.returnType)) {
-                    context.Fail(string.Format("Return Value is not of expected type '{0}'"
-                        , returnData.returnType.FriendlyName()));
+                    context.Fail(string.Format("Return Value is not of expected type '{0}'",
+                        returnData.returnType.FriendlyName()));
                     return;
                 }
             }
@@ -92,8 +92,8 @@ namespace FlowCanvas
         {
             if (breakCall == null) {
                 ParadoxNotion.Services.Logger.LogWarning(
-                    "Called EndBreakBlock without a previously BeginBreakBlock call."
-                    , NodeCanvas.Framework.LogTag.EXECUTION);
+                    "Called EndBreakBlock without a previously BeginBreakBlock call.",
+                    NodeCanvas.Framework.LogTag.EXECUTION);
                 return;
             }
             breakCall = null;

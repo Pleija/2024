@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Category("Branch")
-     , Description(
-         "Select a child to execute based on it's chance to be selected. An optional pre-Condition Task can be assigned to filter the child in or out of the selection probability.\nThe actor selected will be used for the condition checks.")
-     , Icon("ProbabilitySelector"), Color("b3ff7f")]
+    [Category("Branch"),
+     Description(
+         "Select a child to execute based on it's chance to be selected. An optional pre-Condition Task can be assigned to filter the child in or out of the selection probability.\nThe actor selected will be used for the condition checks."),
+     Icon("ProbabilitySelector"), Color("b3ff7f")]
     public class ProbabilitySelector : DTNode
     {
         public class Option
@@ -31,7 +31,8 @@ namespace NodeCanvas.DialogueTrees
 
         public override void OnChildConnected(int index)
         {
-            if (childOptions.Count < outConnections.Count) childOptions.Insert(index, new Option(1, graphBlackboard));
+            if (childOptions.Count < outConnections.Count)
+                childOptions.Insert(index, new Option(1, graphBlackboard));
         }
 
         public override void OnChildDisconnected(int index)
@@ -45,7 +46,8 @@ namespace NodeCanvas.DialogueTrees
 
             for (var i = 0; i < outConnections.Count; i++) {
                 var condition = childOptions[i].condition;
-                if (condition == null || condition.CheckOnce(finalActor.transform, blackboard)) successIndeces.Add(i);
+                if (condition == null || condition.CheckOnce(finalActor.transform, blackboard))
+                    successIndeces.Add(i);
             }
             var probability = Random.Range(0f, GetTotal());
 
@@ -87,8 +89,8 @@ namespace NodeCanvas.DialogueTrees
 #if UNITY_EDITOR
         public override string GetConnectionInfo(int i)
         {
-            var result = childOptions[i].condition != null ? childOptions[i].condition.summaryInfo + "\n"
-                : string.Empty;
+            var result = childOptions[i].condition != null
+                ? childOptions[i].condition.summaryInfo + "\n" : string.Empty;
             if (successIndeces == null || successIndeces.Contains(i))
                 return result + Mathf.Round(childOptions[i].weight.value / GetTotal() * 100) + "%";
             return result + "Condition Failed";
@@ -113,13 +115,15 @@ namespace NodeCanvas.DialogueTrees
 
         private void DrawOptionGUI(int i, float total)
         {
-            Editor.TaskEditor.TaskFieldMulti<ConditionTask>(childOptions[i].condition, DLGTree, (c) => {
-                childOptions[i].condition = c;
-            });
+            Editor.TaskEditor.TaskFieldMulti<ConditionTask>(childOptions[i].condition, DLGTree,
+                (c) => {
+                    childOptions[i].condition = c;
+                });
             EditorUtils.Separator();
             GUILayout.BeginHorizontal();
             Editor.BBParameterEditor.ParameterField("Weight", childOptions[i].weight);
-            GUILayout.Label(Mathf.Round(childOptions[i].weight.value / total * 100) + "%", GUILayout.Width(38));
+            GUILayout.Label(Mathf.Round(childOptions[i].weight.value / total * 100) + "%",
+                GUILayout.Width(38));
             GUILayout.EndHorizontal();
         }
 

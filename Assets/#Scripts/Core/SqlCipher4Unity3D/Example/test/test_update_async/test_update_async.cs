@@ -16,7 +16,8 @@ namespace SqlCipher4Unity3D.Example.test.test_update_async
         public int active_player { get; set; }
 
         public override string ToString() =>
-            string.Format("[level_story: save_name={0}, active_player={1}]", save_name, active_player);
+            string.Format("[level_story: save_name={0}, active_player={1}]", save_name,
+                active_player);
     }
 
     public class test_update_async : MonoBehaviour
@@ -30,13 +31,15 @@ namespace SqlCipher4Unity3D.Example.test.test_update_async
             await _dbconn1.DropTableAsync<player_profile>();
             await _dbconn1.CreateTableAsync<player_profile>();
             await _dbconn1.InsertAllAsync(new[] {
-                new player_profile { save_name = "p1", active_player = 1 }
-                , new player_profile { save_name = "p2", active_player = 1 }
-                , new player_profile { save_name = "p3", active_player = 1 },
+                new player_profile { save_name = "p1", active_player = 1 },
+                new player_profile { save_name = "p2", active_player = 1 },
+                new player_profile { save_name = "p3", active_player = 1 },
             });
-            foreach (var x in await _dbconn1.Table<player_profile>().ToListAsync()) Debug.Log($"before : {x}");
+            foreach (var x in await _dbconn1.Table<player_profile>().ToListAsync())
+                Debug.Log($"before : {x}");
             await wannabe_set_active_player("p2");
-            foreach (var x in await _dbconn1.Table<player_profile>().ToListAsync()) Debug.Log($"after : {x}");
+            foreach (var x in await _dbconn1.Table<player_profile>().ToListAsync())
+                Debug.Log($"after : {x}");
         }
 
         public async Task wannabe_set_active_player(string player_name)
@@ -55,11 +58,13 @@ namespace SqlCipher4Unity3D.Example.test.test_update_async
 
                     //if (player_name.Equals(player))
                     if (player_name.Equals(player.save_name)) {
-                        Debug.LogWarning($"Attempting to set the active_player field to: {player_name} -> {player}");
+                        Debug.LogWarning(
+                            $"Attempting to set the active_player field to: {player_name} -> {player}");
                         player.active_player = 1;
                     }
                     else {
-                        Debug.LogWarning($"Attempting to clear the active_player field for: {player_name} -> {player}");
+                        Debug.LogWarning(
+                            $"Attempting to clear the active_player field for: {player_name} -> {player}");
                         player.active_player = 0;
                     }
             await _dbconn1.UpdateAllAsync(active_players);

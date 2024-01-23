@@ -76,14 +76,15 @@ namespace NodeCanvas.Framework
             var _endRect = new Rect(0, 0, 16, 16);
             _endRect.center = toPos;
             endRect = _endRect;
-            CurveUtils.ResolveTangents(fromPos, toPos, sourceNode.rect, targetNode.rect, Prefs.connectionsMLT
-                , graph.flowDirection, out fromTangent, out toTangent);
+            CurveUtils.ResolveTangents(fromPos, toPos, sourceNode.rect, targetNode.rect,
+                Prefs.connectionsMLT, graph.flowDirection, out fromTangent, out toTangent);
 
             if (sourceNode == targetNode) {
                 fromTangent = fromTangent.normalized * 120;
                 toTangent = toTangent.normalized * 120;
             }
-            centerRect.center = CurveUtils.GetPosAlongCurve(fromPos, toPos, fromTangent, toTangent, 0.55f);
+            centerRect.center =
+                CurveUtils.GetPosAlongCurve(fromPos, toPos, fromTangent, toTangent, 0.55f);
             HandleEvents(fromPos, toPos);
             DrawConnection(fromPos, toPos);
 
@@ -101,8 +102,8 @@ namespace NodeCanvas.Framework
             //On click select this connection
             if (GraphEditorUtility.allowClick && e.type == EventType.MouseDown && e.button == 0) {
                 float norm;
-                var onConnection =
-                    CurveUtils.IsPosAlongCurve(fromPos, toPos, fromTangent, toTangent, e.mousePosition, out norm);
+                var onConnection = CurveUtils.IsPosAlongCurve(fromPos, toPos, fromTangent,
+                    toTangent, e.mousePosition, out norm);
                 var onStart = startRect.Contains(e.mousePosition);
                 var onEnd = endRect.Contains(e.mousePosition);
                 var onCenter = centerRect.Contains(e.mousePosition);
@@ -111,7 +112,9 @@ namespace NodeCanvas.Framework
                     GraphEditorUtility.activeElement = this;
                     relinkClickPos = e.mousePosition;
                     relinkSnaped = false;
-                    if (onConnection) relinkState = norm <= 0.55f || e.shift ? RelinkState.Source : RelinkState.Target;
+                    if (onConnection)
+                        relinkState = norm <= 0.55f || e.shift ? RelinkState.Source
+                            : RelinkState.Target;
                     if (onStart) relinkState = RelinkState.Source;
                     if (onEnd) relinkState = RelinkState.Target;
                     if (onCenter) relinkState = e.shift ? RelinkState.Source : RelinkState.Target;
@@ -121,7 +124,8 @@ namespace NodeCanvas.Framework
 
             if (relinkClickPos != null) {
                 if (relinkSnaped == false)
-                    if (Vector2.Distance(relinkClickPos.Value, e.mousePosition) > RELINK_DISTANCE_SNAP) {
+                    if (Vector2.Distance(relinkClickPos.Value, e.mousePosition) >
+                        RELINK_DISTANCE_SNAP) {
                         relinkSnaped = true;
                         sourceNode.OnActiveRelinkStart(this);
                     }
@@ -152,8 +156,10 @@ namespace NodeCanvas.Framework
             if (!Application.isPlaying) {
                 color = isActive ? defaultColor : Colors.Grey(0.3f);
                 var highlight = GraphEditorUtility.activeElement == this ||
-                    GraphEditorUtility.activeElement == sourceNode || GraphEditorUtility.activeElement == targetNode;
-                if (startRect.Contains(Event.current.mousePosition) || endRect.Contains(Event.current.mousePosition))
+                    GraphEditorUtility.activeElement == sourceNode ||
+                    GraphEditorUtility.activeElement == targetNode;
+                if (startRect.Contains(Event.current.mousePosition) ||
+                    endRect.Contains(Event.current.mousePosition))
                     highlight = true;
                 color.a = highlight ? 1 : color.a;
                 size = highlight ? defaultSize + 2 : defaultSize;
@@ -163,19 +169,21 @@ namespace NodeCanvas.Framework
             if (isRelinkingActive) {
                 if (relinkState == RelinkState.Source) fromPos = Event.current.mousePosition;
                 if (relinkState == RelinkState.Target) toPos = Event.current.mousePosition;
-                CurveUtils.ResolveTangents(fromPos, toPos, Prefs.connectionsMLT, graph.flowDirection, out fromTangent
-                    , out toTangent);
+                CurveUtils.ResolveTangents(fromPos, toPos, Prefs.connectionsMLT,
+                    graph.flowDirection, out fromTangent, out toTangent);
                 size = defaultSize;
             }
             var shadow = new Vector2(3.5f, 3.5f);
-            Handles.DrawBezier(fromPos, toPos + shadow, fromPos + shadow + fromTangent + shadow
-                , toPos + shadow + toTangent, Color.black.WithAlpha(0.1f), StyleSheet.bezierTexture, size + 10f);
-            Handles.DrawBezier(fromPos, toPos, fromPos + fromTangent, toPos + toTangent, color, StyleSheet.bezierTexture
-                , size);
+            Handles.DrawBezier(fromPos, toPos + shadow, fromPos + shadow + fromTangent + shadow,
+                toPos + shadow + toTangent, Color.black.WithAlpha(0.1f), StyleSheet.bezierTexture,
+                size + 10f);
+            Handles.DrawBezier(fromPos, toPos, fromPos + fromTangent, toPos + toTangent, color,
+                StyleSheet.bezierTexture, size);
             GUI.color = color.WithAlpha(1);
             if (tipConnectionStyle == TipConnectionStyle.Arrow)
                 GUI.DrawTexture(endRect, StyleSheet.GetDirectionArrow(toTangent.normalized));
-            if (tipConnectionStyle == TipConnectionStyle.Circle) GUI.DrawTexture(endRect, StyleSheet.circle);
+            if (tipConnectionStyle == TipConnectionStyle.Circle)
+                GUI.DrawTexture(endRect, StyleSheet.circle);
             GUI.color = Color.white;
         }
 
@@ -189,8 +197,10 @@ namespace NodeCanvas.Framework
             var extraInfo = sourceNode.GetConnectionInfo(sourceNode.outConnections.IndexOf(this));
 
             if (!string.IsNullOrEmpty(info) || !string.IsNullOrEmpty(extraInfo)) {
-                if (!string.IsNullOrEmpty(extraInfo) && !string.IsNullOrEmpty(info)) extraInfo = "\n" + extraInfo;
-                var textToShow = isExpanded ? string.Format("<size=9>{0}{1}</size>", info, extraInfo)
+                if (!string.IsNullOrEmpty(extraInfo) && !string.IsNullOrEmpty(info))
+                    extraInfo = "\n" + extraInfo;
+                var textToShow = isExpanded
+                    ? string.Format("<size=9>{0}{1}</size>", info, extraInfo)
                     : "<size=9>...</size>";
                 var finalSize = StyleSheet.box.CalcSize(EditorUtils.GetTempContent(textToShow));
                 centerRect.width = finalSize.x;
@@ -240,8 +250,8 @@ namespace NodeCanvas.Framework
             }
             var deltaTimeSinceChange = graph.elapsedTime - statusChangeTime;
             if (status != Status.Resting || size != defaultSize)
-                size = Mathf.Lerp(defaultSize + STATUS_BLINK_SIZE_ADD, defaultSize
-                    , deltaTimeSinceChange / STATUS_BLINK_DURATION);
+                size = Mathf.Lerp(defaultSize + STATUS_BLINK_SIZE_ADD, defaultSize,
+                    deltaTimeSinceChange / STATUS_BLINK_DURATION);
             if (status != Status.Resting || size == defaultSize) color = defaultColor;
 
             if (animate) {
@@ -256,7 +266,8 @@ namespace NodeCanvas.Framework
                     var pSize = Mathf.Lerp(0.5f, 1f, norm) * STATUS_BLINK_PACKET_SIZE;
                     packetColor.a = norm * (deltaTimeSinceChange / (STATUS_BLINK_DURATION + 0.25f));
                     var rect = new Rect(0, 0, pSize, pSize);
-                    rect.center = CurveUtils.GetPosAlongCurve(fromPos, toPos, fromTangent, toTangent, normPos);
+                    rect.center = CurveUtils.GetPosAlongCurve(fromPos, toPos, fromTangent,
+                        toTangent, normPos);
                     ;
                     GUI.color = packetColor;
                     GUI.DrawTexture(rect, StyleSheet.circle);
@@ -313,9 +324,10 @@ namespace NodeCanvas.Framework
         private GenericMenu GetConnectionMenu()
         {
             var menu = new GenericMenu();
-            menu.AddItem(new GUIContent(infoExpanded ? "Collapse Info" : "Expand Info"), false, () => {
-                infoExpanded = !infoExpanded;
-            });
+            menu.AddItem(new GUIContent(infoExpanded ? "Collapse Info" : "Expand Info"), false,
+                () => {
+                    infoExpanded = !infoExpanded;
+                });
             menu.AddItem(new GUIContent(isActive ? "Disable" : "Enable"), false, () => {
                 isActive = !isActive;
             });
@@ -329,21 +341,22 @@ namespace NodeCanvas.Framework
                 else
                     menu.AddDisabledItem(new GUIContent("Copy Assigned Condition"));
                 if (CopyBuffer.TryGet<Task>(out var copy))
-                    menu.AddItem(new GUIContent(string.Format("Paste Assigned Condition ({0})", copy.name)), false
-                        , () => {
+                    menu.AddItem(
+                        new GUIContent(string.Format("Paste Assigned Condition ({0})", copy.name)),
+                        false, () => {
                             if (assignable.task != null)
-                                if (!EditorUtility.DisplayDialog("Paste Condition"
-                                    , string.Format(
-                                        "Connection already has a Condition assigned '{0}'. Replace assigned condition with pasted condition '{1}'?"
-                                        , assignable.task.name, copy.name), "YES", "NO"))
+                                if (!EditorUtility.DisplayDialog("Paste Condition",
+                                    string.Format(
+                                        "Connection already has a Condition assigned '{0}'. Replace assigned condition with pasted condition '{1}'?",
+                                        assignable.task.name, copy.name), "YES", "NO"))
                                     return;
 
                             try {
                                 assignable.task = copy.Duplicate(graph);
                             }
                             catch {
-                                Logger.LogWarning("Can't paste Condition here. Incombatible Types.", LogTag.EDITOR
-                                    , this);
+                                Logger.LogWarning("Can't paste Condition here. Incombatible Types.",
+                                    LogTag.EDITOR, this);
                             }
                         });
                 else

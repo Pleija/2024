@@ -37,12 +37,21 @@ namespace App
             if (informationText) informationText.text = text;
             Debug.Log(text);
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            builder.AddProduct("10_premium", ProductType.Consumable
-                , new IDs { { "10_premium_google_v1", GooglePlay.Name }, { "10_premium_ios", AppleAppStore.Name } });
-            builder.AddProduct("50_premium", ProductType.Consumable
-                , new IDs { { "50_premium_google_v1", GooglePlay.Name }, { "50_premium_ios", AppleAppStore.Name } });
-            builder.AddProduct("100_premium", ProductType.Consumable
-                , new IDs { { "100_premium_google_v1", GooglePlay.Name }, { "100_premium_ios", AppleAppStore.Name } });
+            builder.AddProduct("10_premium", ProductType.Consumable,
+                new IDs {
+                    { "10_premium_google_v1", GooglePlay.Name },
+                    { "10_premium_ios", AppleAppStore.Name },
+                });
+            builder.AddProduct("50_premium", ProductType.Consumable,
+                new IDs {
+                    { "50_premium_google_v1", GooglePlay.Name },
+                    { "50_premium_ios", AppleAppStore.Name },
+                });
+            builder.AddProduct("100_premium", ProductType.Consumable,
+                new IDs {
+                    { "100_premium_google_v1", GooglePlay.Name },
+                    { "100_premium_ios", AppleAppStore.Name },
+                });
             UnityPurchasing.Initialize(this, builder);
         }
 

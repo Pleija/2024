@@ -12,26 +12,30 @@ namespace Puerts
 {
     public static class StaticTranslate<T>
     {
-        public delegate void PushFunc(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr func, T o);
+        public delegate void PushFunc(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr func, T o);
 
-        public delegate T GetFunc(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef);
+        public delegate T GetFunc(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef);
 
         public static PushFunc Set = DefaultPush;
         private static GeneralSetter Setter = null;
         public static GetFunc Get = DefaultGetResult;
         private static GeneralGetter Getter = null;
 
-        private static void DefaultPush(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr func, T o)
+        private static void DefaultPush(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr func, T o)
         {
-            if (Setter == null) Setter = JsEnv.jsEnvs[jsEnvIdx].GeneralSetterManager.GetTranslateFunc(typeof(T));
+            if (Setter == null)
+                Setter = JsEnv.jsEnvs[jsEnvIdx].GeneralSetterManager.GetTranslateFunc(typeof(T));
             Setter(jsEnvIdx, isolate, setValueApi, func, o);
         }
 
-        private static T DefaultGetResult(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr value
-            , bool isByRef)
+        private static T DefaultGetResult(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr value, bool isByRef)
         {
-            if (Getter == null) Getter = JsEnv.jsEnvs[jsEnvIdx].GeneralGetterManager.GetTranslateFunc(typeof(T));
+            if (Getter == null)
+                Getter = JsEnv.jsEnvs[jsEnvIdx].GeneralGetterManager.GetTranslateFunc(typeof(T));
             var obj = Getter(jsEnvIdx, isolate, getValueApi, value, isByRef);
             if (obj == null)
                 return default;
@@ -48,69 +52,77 @@ namespace Puerts
 
     public static class PrimitiveTypeTranslate
     {
-        public static void PushChar(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, char i)
+        public static void PushChar(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, char i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static char GetChar(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (char)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static char GetChar(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (char)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushSByte(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, sbyte i)
+        public static void PushSByte(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, sbyte i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static sbyte GetSByte(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (sbyte)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static sbyte GetSByte(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (sbyte)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushByte(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, byte i)
+        public static void PushByte(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, byte i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static byte GetByte(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (byte)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static byte GetByte(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (byte)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushInt16(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, short i)
+        public static void PushInt16(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, short i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static short GetInt16(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (short)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static short GetInt16(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (short)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushUInt16(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, ushort i)
+        public static void PushUInt16(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, ushort i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static ushort GetUInt16(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (ushort)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static ushort GetUInt16(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (ushort)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushInt32(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, int i)
+        public static void PushInt32(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, int i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static int GetInt32(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (int)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static int GetInt32(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (int)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushUInt32(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, uint i)
+        public static void PushUInt32(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, uint i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static uint GetUInt32(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (uint)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static uint GetUInt32(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (uint)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushInt64(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, long i)
+        public static void PushInt64(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, long i)
         {
             setValueApi.SetBigInt(isolate, holder, i);
         }
 
-        public static long GetInt64(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef)
+        public static long GetInt64(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef)
         {
             if (getValueApi.GetJsValueType(isolate, holder, isByRef) == JsValueType.NativeObject) {
                 var ptr = getValueApi.GetNativeObject(isolate, holder, isByRef);
@@ -125,45 +137,50 @@ namespace Puerts
             }
         }
 
-        public static void PushUInt64(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, ulong i)
+        public static void PushUInt64(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, ulong i)
         {
             setValueApi.SetBigInt(isolate, holder, (long)i);
         }
 
-        public static ulong GetUInt64(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (ulong)getValueApi.GetBigInt(isolate, holder, isByRef);
+        public static ulong GetUInt64(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (ulong)getValueApi.GetBigInt(isolate, holder, isByRef);
 
-        public static void PushDouble(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, double i)
+        public static void PushDouble(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, double i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static double GetDouble(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => getValueApi.GetNumber(isolate, holder, isByRef);
+        public static double GetDouble(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushFloat(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, float i)
+        public static void PushFloat(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, float i)
         {
             setValueApi.SetNumber(isolate, holder, i);
         }
 
-        public static float GetFloat(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => (float)getValueApi.GetNumber(isolate, holder, isByRef);
+        public static float GetFloat(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => (float)getValueApi.GetNumber(isolate, holder, isByRef);
 
-        public static void PushBoolean(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, bool i)
+        public static void PushBoolean(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, bool i)
         {
             setValueApi.SetBoolean(isolate, holder, i);
         }
 
-        public static bool GetBoolean(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => getValueApi.GetBoolean(isolate, holder, isByRef);
+        public static bool GetBoolean(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => getValueApi.GetBoolean(isolate, holder, isByRef);
 
-        public static void PushString(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, string i)
+        public static void PushString(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, string i)
         {
             setValueApi.SetString(isolate, holder, i);
         }
 
-        public static string GetString(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi, IntPtr holder
-            , bool isByRef) => getValueApi.GetString(isolate, holder, isByRef);
+        public static string GetString(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi,
+            IntPtr holder, bool isByRef) => getValueApi.GetString(isolate, holder, isByRef);
 
         // public static void PushDateTime(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder, DateTime date)
         // {
@@ -176,14 +193,15 @@ namespace Puerts
         //     return (new DateTime(1970, 1, 1)).AddMilliseconds(ticks);
         // }
 
-        public static void PushArrayBuffer(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi, IntPtr holder
-            , ArrayBuffer arrayBuffer)
+        public static void PushArrayBuffer(int jsEnvIdx, IntPtr isolate, ISetValueToJs setValueApi,
+            IntPtr holder, ArrayBuffer arrayBuffer)
         {
             setValueApi.SetArrayBuffer(isolate, holder, arrayBuffer);
         }
 
-        public static ArrayBuffer GetArrayBuffer(int jsEnvIdx, IntPtr isolate, IGetValueFromJs getValueApi
-            , IntPtr holder, bool isByRef) => getValueApi.GetArrayBuffer(isolate, holder, isByRef);
+        public static ArrayBuffer GetArrayBuffer(int jsEnvIdx, IntPtr isolate,
+            IGetValueFromJs getValueApi, IntPtr holder, bool isByRef) =>
+            getValueApi.GetArrayBuffer(isolate, holder, isByRef);
 
         internal static void Init()
         {

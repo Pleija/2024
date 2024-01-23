@@ -40,9 +40,10 @@ namespace NodeCanvas.BehaviourTrees
             menu.AddItem(new UnityEngine.GUIContent("Breakpoint"), isBreakpoint, () => {
                 isBreakpoint = !isBreakpoint;
             });
-            return ParadoxNotion.Design.EditorUtils.GetTypeSelectionMenu(typeof(BTDecorator), (t) => {
-                this.DecorateWith(t);
-            }, menu, "Decorate");
+            return ParadoxNotion.Design.EditorUtils.GetTypeSelectionMenu(typeof(BTDecorator),
+                (t) => {
+                    this.DecorateWith(t);
+                }, menu, "Decorate");
         }
 
 #endif

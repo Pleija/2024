@@ -29,7 +29,8 @@ namespace FlowCanvas.Nodes
 
         protected bool Init(FieldInfo field, ParametresDef parametres)
         {
-            if (field == null || field.FieldType.ContainsGenericParameters || field.FieldType.IsGenericTypeDefinition)
+            if (field == null || field.FieldType.ContainsGenericParameters ||
+                field.FieldType.IsGenericTypeDefinition)
                 return false;
             instanceDef = parametres.instanceDef;
             resultDef = parametres.resultDef;
@@ -38,6 +39,8 @@ namespace FlowCanvas.Nodes
         }
 
         protected abstract bool InitInternal(FieldInfo field);
-        public abstract void RegisterPorts(FlowNode node, ReflectedFieldNodeWrapper.AccessMode accessMode);
+
+        public abstract void RegisterPorts(FlowNode node,
+            ReflectedFieldNodeWrapper.AccessMode accessMode);
     }
 }

@@ -5,8 +5,8 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Mouse Pick"), Category("Events/Input (Legacy System)")
-     , Description(
+    [Name("Mouse Pick"), Category("Events/Input (Legacy System)"),
+     Description(
          "Called when any collider is clicked with the specified mouse button. PickInfo contains the information of the raycast event")]
     public class MousePickEvent : EventNode, IUpdatable
     {
@@ -28,8 +28,8 @@ namespace FlowCanvas.Nodes
         public void Update()
         {
             if (Input.GetMouseButtonDown((int)buttonKey.value))
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity
-                    , mask.value))
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit,
+                    Mathf.Infinity, mask.value))
                     o.Call(new Flow());
         }
     }

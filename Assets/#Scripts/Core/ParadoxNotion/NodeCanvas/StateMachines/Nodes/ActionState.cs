@@ -14,8 +14,8 @@ using Zu.TypeScript.TsTypes;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Action State", 100)
-     , Description(
+    [Name("Action State", 100),
+     Description(
          "Execute a number of Action Tasks OnEnter. All actions will be stoped OnExit. This state is Finished when all Actions are finished as well")]
     public class ActionState : FSMState, ITaskAssignable, IUpdatable
     {
@@ -112,7 +112,8 @@ namespace NodeCanvas.StateMachines
             if (actionList == null) return;
             EditorUtils.CoolLabel("Actions");
             GUI.color = repeatStateActions ? GUI.color : new Color(1, 1, 1, 0.5f);
-            repeatStateActions = UnityEditor.EditorGUILayout.ToggleLeft("Repeat State Actions", repeatStateActions);
+            repeatStateActions =
+                UnityEditor.EditorGUILayout.ToggleLeft("Repeat State Actions", repeatStateActions);
             GUI.color = Color.white;
             actionList.ShowListGUI();
             actionList.ShowNestedActionsGUI();

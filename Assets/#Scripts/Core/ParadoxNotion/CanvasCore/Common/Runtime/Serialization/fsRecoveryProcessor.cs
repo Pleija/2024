@@ -38,7 +38,8 @@ namespace ParadoxNotion.Serialization
                 //Recover possibly found serialized type
                 if (serializedType == typeof(TMissing)) {
                     //Does the missing type now exists?
-                    var missingType = ReflectionTools.GetType(json[FIELD_NAME_TYPE].AsString, storageType);
+                    var missingType =
+                        ReflectionTools.GetType(json[FIELD_NAME_TYPE].AsString, storageType);
 
                     //Finaly recover if we have a type
                     if (missingType != null) {

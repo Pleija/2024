@@ -4,8 +4,8 @@ using UnityEngine.Video;
 
 namespace Slate
 {
-    [Attachable(typeof(DirectorGroup)), Icon(typeof(VideoPlayer))
-     , Description(
+    [Attachable(typeof(DirectorGroup)), Icon(typeof(VideoPlayer)),
+     Description(
          "Plays video clips on the render camera. Please note that scrubbing might be choppy, but playing is not.")]
     public class VideoTrack : CutsceneTrack
     {
@@ -21,8 +21,9 @@ namespace Slate
 
         public VideoPlayer source { get; private set; }
 
-        public override string info => string.Format("{0} | {1} {2}", renderTarget
-            , targetMaterialRenderer != null ? targetMaterialRenderer.name : string.Empty, targetCameraAlpha);
+        public override string info => string.Format("{0} | {1} {2}", renderTarget,
+            targetMaterialRenderer != null ? targetMaterialRenderer.name : string.Empty,
+            targetCameraAlpha);
 
         protected override void OnEnter()
         {

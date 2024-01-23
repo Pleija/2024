@@ -5,8 +5,8 @@ using System.Linq;
 namespace Slate
 {
     [Description(
-         "The Animation Track works with the legacy 'Animation' Component. Each Animation Track represents a different layer of the animation system. The zero layered track (bottom) will blend in/out with the default animation clip set on the Animation Component of the actor if any, while all other Animation Tracks will play above.")
-     , Attachable(typeof(ActorGroup)), Category("Legacy"), Icon(typeof(UnityEngine.AI.NavMeshAgent))]
+         "The Animation Track works with the legacy 'Animation' Component. Each Animation Track represents a different layer of the animation system. The zero layered track (bottom) will blend in/out with the default animation clip set on the Animation Component of the actor if any, while all other Animation Tracks will play above."),
+     Attachable(typeof(ActorGroup)), Category("Legacy"), Icon(typeof(UnityEngine.AI.NavMeshAgent))]
     public class AnimationTrack : CutsceneTrack
     {
         [SerializeField, Range(0, 1)]
@@ -27,8 +27,9 @@ namespace Slate
         private Animation anim;
         private AnimationState state;
 
-        public override string info => string.Format("Layer: {0}, {1} {2}", layerOrder, animationBlendMode
-            , string.IsNullOrEmpty(mixTransformName) ? "" : ", " + mixTransformName);
+        public override string info => string.Format("Layer: {0}, {1} {2}", layerOrder,
+            animationBlendMode,
+            string.IsNullOrEmpty(mixTransformName) ? "" : ", " + mixTransformName);
 
         public override float blendIn => _blendIn;
         public override float blendOut => _blendOut;
@@ -49,8 +50,9 @@ namespace Slate
             anim = actor.GetComponent<Animation>();
 
             if (anim == null) {
-                Debug.LogError("The Animation Track requires the actor to have the 'Animation' Component attached"
-                    , actor);
+                Debug.LogError(
+                    "The Animation Track requires the actor to have the 'Animation' Component attached",
+                    actor);
                 return false;
             }
             return true;
@@ -103,10 +105,12 @@ namespace Slate
         public Transform GetMixTransform()
         {
             if (string.IsNullOrEmpty(mixTransformName)) return null;
-            var o = anim.transform.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == mixTransformName);
+            var o = anim.transform.GetComponentsInChildren<Transform>()
+                .FirstOrDefault(t => t.name == mixTransformName);
             if (o == null)
-                Debug.LogWarning("Cant find transform with name '" + mixTransformName + "' for PlayAnimation Action"
-                    , anim);
+                Debug.LogWarning(
+                    "Cant find transform with name '" + mixTransformName +
+                    "' for PlayAnimation Action", anim);
             return o;
         }
     }

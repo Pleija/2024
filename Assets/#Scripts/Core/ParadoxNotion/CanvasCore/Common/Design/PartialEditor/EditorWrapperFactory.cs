@@ -62,8 +62,8 @@ namespace ParadoxNotion.Design
             var field = type.RTGetField(name, /*include private base*/ true);
 
             if (field != null) {
-                var wrapper =
-                    (EditorPropertyWrapper<T>)typeof(EditorPropertyWrapper<>).MakeGenericType(typeof(T)).CreateObject();
+                var wrapper = (EditorPropertyWrapper<T>)typeof(EditorPropertyWrapper<>)
+                    .MakeGenericType(typeof(T)).CreateObject();
                 wrapper.Init(this, field);
                 return wrapper;
             }

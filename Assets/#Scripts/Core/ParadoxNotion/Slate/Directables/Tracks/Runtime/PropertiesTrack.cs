@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Slate
 {
-    [UniqueElement, Name("Properties Track"), Category("Legacy")
-     , Description(
+    [UniqueElement, Name("Properties Track"), Category("Legacy"),
+     Description(
          "With the Properties Track, you can select to animate any supported type property or field on any component on the actor, or within it's whole transform hierarchy.\n\nNote, that you can do exactly the same, by using the 'Animate Properties' ActionClip added in an 'Action Track'.")]
     ///<summary>Properties Tracks are able to animate any supported property type with AnimationCurves</summary>
     public abstract class PropertiesTrack : CutsceneTrack, IKeyable
@@ -23,7 +23,8 @@ namespace Slate
 
         protected override void OnEnter()
         {
-            animationData.SetVirtualTransformParent(this.GetSpaceTransform(TransformSpace.CutsceneSpace));
+            animationData.SetVirtualTransformParent(
+                this.GetSpaceTransform(TransformSpace.CutsceneSpace));
             animationData.SetSnapshot();
         }
 
@@ -67,27 +68,28 @@ namespace Slate
             GUI.enabled = wasEnable;
         }
 
-        public override void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime
-            , System.Func<float, float> TimeToPos)
+        public override void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime,
+            System.Func<float, float> TimeToPos)
         {
             var e = Event.current;
             var baseDopeRect = new Rect(posRect.xMin, posRect.yMin, posRect.width, defaultHeight);
             GUI.color = new Color(0.5f, 0.5f, 0.5f, 0.3f);
             GUI.Box(baseDopeRect, "", Styles.clipBoxHorizontalStyle);
             GUI.color = Color.white;
-            DopeSheetEditor.DrawDopeSheet(animationData, this, baseDopeRect, timeRect.x, timeRect.width);
+            DopeSheetEditor.DrawDopeSheet(animationData, this, baseDopeRect, timeRect.x,
+                timeRect.width);
 
             if (showCurves) {
-                var subDopeRect =
-                    Rect.MinMaxRect(posRect.xMin, posRect.yMin + defaultHeight, posRect.xMax, posRect.yMax);
+                var subDopeRect = Rect.MinMaxRect(posRect.xMin, posRect.yMin + defaultHeight,
+                    posRect.xMax, posRect.yMax);
                 DoClipCurves(e, subDopeRect, timeRect, TimeToPos, this);
             }
         }
 
         protected override void OnSceneGUI()
         {
-            if (actor == null || actor.Equals(null) || !showCurves || !isActive || animationData == null ||
-                !animationData.isValid)
+            if (actor == null || actor.Equals(null) || !showCurves || !isActive ||
+                animationData == null || !animationData.isValid)
                 return;
 
             for (var i = 0; i < animationData.animatedParameters.Count; i++) {

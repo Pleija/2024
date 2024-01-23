@@ -3,10 +3,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Update", 7), Category("Events/Graph")
-     , Description(
-         "Called per-frame.\nUpdate Interval optionally determines the period in seconds every which update is called. Leave at 0 to call update per-frame as normal.")
-     , ExecutionPriority(7)]
+    [Name("On Update", 7), Category("Events/Graph"),
+     Description(
+         "Called per-frame.\nUpdate Interval optionally determines the period in seconds every which update is called. Leave at 0 to call update per-frame as normal."),
+     ExecutionPriority(7)]
     public class UpdateEvent : EventNode, IUpdatable
     {
         public BBParameter<float> updateInterval = 0f;

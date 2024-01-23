@@ -7,14 +7,16 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal.DirectConverters
 {
     public class Vector2_DirectConverter : fsDirectConverter<Vector2>
     {
-        protected override fsResult DoSerialize(Vector2 model, Dictionary<string, fsData> serialized)
+        protected override fsResult DoSerialize(Vector2 model,
+            Dictionary<string, fsData> serialized)
         {
             SerializeMember(serialized, null, "x", model.x);
             SerializeMember(serialized, null, "y", model.y);
             return fsResult.Success;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Vector2 model)
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data,
+            ref Vector2 model)
         {
             var t0 = model.x;
             DeserializeMember(data, null, "x", out t0);

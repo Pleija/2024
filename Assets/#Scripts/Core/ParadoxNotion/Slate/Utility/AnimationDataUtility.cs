@@ -6,7 +6,10 @@ namespace Slate
 {
     public static class AnimationDataUtility
     {
-        ///<summary>Given an object, returns possible field and prop paths marked with [AnimatableParameter] attribute</summary>
+        /// <summary>
+        ///     Given an object, returns possible field and prop paths marked with [AnimatableParameter]
+        ///     attribute
+        /// </summary>
         public static string[] GetAnimatableMemberPaths(object root) =>
             Internal_GetAnimatableMemberPaths(root.GetType(), string.Empty);
 

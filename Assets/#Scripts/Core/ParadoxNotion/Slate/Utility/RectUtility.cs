@@ -50,21 +50,22 @@ namespace Slate
         ///<summary>Expands rect by margin</summary>
         public static Rect ExpandBy(this Rect rect, float margin) => rect.ExpandBy(margin, margin);
 
-        public static Rect ExpandBy(this Rect rect, float xMargin, float yMargin) => Rect.MinMaxRect(rect.xMin - xMargin
-            , rect.yMin - yMargin, rect.xMax + xMargin, rect.yMax + yMargin);
+        public static Rect ExpandBy(this Rect rect, float xMargin, float yMargin) =>
+            Rect.MinMaxRect(rect.xMin - xMargin, rect.yMin - yMargin, rect.xMax + xMargin,
+                rect.yMax + yMargin);
 
         //Transforms rect from one container to another container rect
         public static Rect TransformSpace(this Rect rect, Rect oldContainer, Rect newContainer)
         {
             var result = new Rect();
-            result.xMin = Mathf.Lerp(newContainer.xMin, newContainer.xMax
-                , Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMin));
-            result.xMax = Mathf.Lerp(newContainer.xMin, newContainer.xMax
-                , Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMax));
-            result.yMin = Mathf.Lerp(newContainer.yMin, newContainer.yMax
-                , Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMin));
-            result.yMax = Mathf.Lerp(newContainer.yMin, newContainer.yMax
-                , Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMax));
+            result.xMin = Mathf.Lerp(newContainer.xMin, newContainer.xMax,
+                Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMin));
+            result.xMax = Mathf.Lerp(newContainer.xMin, newContainer.xMax,
+                Mathf.InverseLerp(oldContainer.xMin, oldContainer.xMax, rect.xMax));
+            result.yMin = Mathf.Lerp(newContainer.yMin, newContainer.yMax,
+                Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMin));
+            result.yMax = Mathf.Lerp(newContainer.yMin, newContainer.yMax,
+                Mathf.InverseLerp(oldContainer.yMin, oldContainer.yMax, rect.yMax));
             return result;
         }
 
@@ -78,22 +79,22 @@ namespace Slate
 
             //All 8 vertices of the bounds
             var pts = new Vector2[8];
-            pts[0] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y
-                , b.center.z + b.extents.z));
-            pts[1] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y
-                , b.center.z - b.extents.z));
-            pts[2] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x, b.center.y - b.extents.y
-                , b.center.z + b.extents.z));
-            pts[3] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x, b.center.y - b.extents.y
-                , b.center.z - b.extents.z));
-            pts[4] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y
-                , b.center.z + b.extents.z));
-            pts[5] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y
-                , b.center.z - b.extents.z));
-            pts[6] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x, b.center.y - b.extents.y
-                , b.center.z + b.extents.z));
-            pts[7] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x, b.center.y - b.extents.y
-                , b.center.z - b.extents.z));
+            pts[0] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x,
+                b.center.y + b.extents.y, b.center.z + b.extents.z));
+            pts[1] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x,
+                b.center.y + b.extents.y, b.center.z - b.extents.z));
+            pts[2] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x,
+                b.center.y - b.extents.y, b.center.z + b.extents.z));
+            pts[3] = cam.WorldToViewportPoint(new Vector3(b.center.x + b.extents.x,
+                b.center.y - b.extents.y, b.center.z - b.extents.z));
+            pts[4] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x,
+                b.center.y + b.extents.y, b.center.z + b.extents.z));
+            pts[5] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x,
+                b.center.y + b.extents.y, b.center.z - b.extents.z));
+            pts[6] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x,
+                b.center.y - b.extents.y, b.center.z + b.extents.z));
+            pts[7] = cam.WorldToViewportPoint(new Vector3(b.center.x - b.extents.x,
+                b.center.y - b.extents.y, b.center.z - b.extents.z));
 
             // Calculate the min and max positions
             var min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);

@@ -13,6 +13,7 @@ namespace SqlCipher4Unity3D.Example.async
         public int Age { get; set; }
 
         public override string ToString() =>
-            string.Format("[Person: Id={0}, Name={1},  Surname={2}, Age={3}]", Id, Name, Surname, Age);
+            string.Format("[Person: Id={0}, Name={1},  Surname={2}, Age={3}]", Id, Name, Surname,
+                Age);
     }
 }

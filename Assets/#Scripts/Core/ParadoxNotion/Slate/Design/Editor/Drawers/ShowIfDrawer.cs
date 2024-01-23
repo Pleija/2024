@@ -16,9 +16,11 @@ namespace Slate
         {
             var att = (ShowIfAttribute)attribute;
             var parent =
-                ReflectionTools.GetRelativeMemberParent(property.serializedObject.targetObject, property.propertyPath);
+                ReflectionTools.GetRelativeMemberParent(property.serializedObject.targetObject,
+                    property.propertyPath);
             var member = ReflectionTools.RTGetFieldOrProp(parent.GetType(), att.propertyName);
-            var value = (int)System.Convert.ChangeType(member.RTGetFieldOrPropValue(parent), typeof(int));
+            var value =
+                (int)System.Convert.ChangeType(member.RTGetFieldOrPropValue(parent), typeof(int));
             show = value == att.value;
             if (show) EditorGUI.PropertyField(position, property, label);
         }

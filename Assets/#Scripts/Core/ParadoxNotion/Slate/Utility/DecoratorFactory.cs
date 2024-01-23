@@ -21,10 +21,13 @@ namespace Slate
     public static class DecoratorFactory
     {
         private static Dictionary<Type, Type> decoratorsTypeMap = new Dictionary<Type, Type>();
-        private static Dictionary<object, IDecorator> decoratorsInstanceMap = new Dictionary<object, IDecorator>();
+
+        private static Dictionary<object, IDecorator> decoratorsInstanceMap =
+            new Dictionary<object, IDecorator>();
 
         ///<summary>Returns a cached instance of decorator for target object</summary>
-        public static T Decorator<T>(this object target) where T : IDecorator => GetDecorator<T>(target);
+        public static T Decorator<T>(this object target) where T : IDecorator =>
+            GetDecorator<T>(target);
 
         ///<summary>Returns a cached instance of decorator for target object</summary>
         public static T GetDecorator<T>(object target) where T : IDecorator
@@ -56,8 +59,9 @@ namespace Slate
                     var att = current.RTGetAttribute<DecoratorAttribute>(true);
 
                     if (att == null) {
-                        Debug.LogWarning(string.Format("Decorator type '{0}' does not has a Decorator Attribute."
-                            , current.Name));
+                        Debug.LogWarning(string.Format(
+                            "Decorator type '{0}' does not has a Decorator Attribute.",
+                            current.Name));
                         continue;
                     }
                     if (att.targetType == targetType) directType = current;
@@ -68,11 +72,12 @@ namespace Slate
             }
 
             if (decoratorType == null) {
-                Debug.LogError(string.Format("No '{0}' Decorator type found for target type '{1}'.", typeof(T)
-                    , targetType));
+                Debug.LogError(string.Format("No '{0}' Decorator type found for target type '{1}'.",
+                    typeof(T), targetType));
                 return default;
             }
-            if (decoratorType.IsGenericTypeDefinition) decoratorType = decoratorType.MakeGenericType(targetType);
+            if (decoratorType.IsGenericTypeDefinition)
+                decoratorType = decoratorType.MakeGenericType(targetType);
             if (decoratorType.RTIsSubclassOf(typeof(ScriptableObject)))
                 return (T)(object)ScriptableObject.CreateInstance(decoratorType);
             return (T)Activator.CreateInstance(decoratorType);

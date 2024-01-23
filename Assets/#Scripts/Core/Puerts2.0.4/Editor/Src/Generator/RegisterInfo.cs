@@ -60,112 +60,132 @@ namespace Puerts.Editor
 
                 internal List<MemberRegisterInfoForGenerate> GetAllMember()
                 {
-                    return Collector.Select(kv => kv.Value).Concat(CollectorStatic.Select(kv => kv.Value)).ToList();
+                    return Collector.Select(kv => kv.Value)
+                        .Concat(CollectorStatic.Select(kv => kv.Value)).ToList();
                 }
             }
 
-            public static List<RegisterInfoForGenerate> GetRegisterInfos(List<Type> genTypes
-                , HashSet<Type> blittableCopyTypes)
+            public static List<RegisterInfoForGenerate> GetRegisterInfos(List<Type> genTypes,
+                HashSet<Type> blittableCopyTypes)
             {
                 var flag = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static |
                     BindingFlags.Public;
                 return genTypes.Where(type =>
-                    !(type.IsEnum || type.IsArray || (Utils.IsDelegate(type) && type != typeof(Delegate)))).Select(
-                    type => {
-                        var Collector = new MRICollector();
-                        var ctors = type.GetConstructors(flag).ToArray();
-                        var hasParamlessCtor = false;
+                    !(type.IsEnum || type.IsArray ||
+                        (Utils.IsDelegate(type) && type != typeof(Delegate)))).Select(type => {
+                    var Collector = new MRICollector();
+                    var ctors = type.GetConstructors(flag).ToArray();
+                    var hasParamlessCtor = false;
 
-                        foreach (var m in ctors) {
-                            if (m.GetParameters().Length == 0) hasParamlessCtor = true;
+                    foreach (var m in ctors) {
+                        if (m.GetParameters().Length == 0) hasParamlessCtor = true;
+                        Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
+                            Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString(),
+                            MemberType = "Constructor", IsStatic = false,
+                            Constructor = "Constructor",
+                        }, false);
+                    }
+                    if (!hasParamlessCtor && type.IsValueType)
+                        Collector.Add(".ctor", new MemberRegisterInfoForGenerate {
+                            Name = ".ctor", UseBindingMode = "FastBinding",
+                            MemberType = "Constructor", IsStatic = false,
+                            Constructor = "Constructor",
+                        }, false);
+
+                    foreach (var m in Puerts.Utils.GetMethodAndOverrideMethod(type, flag)
+                        .Where(m => !Utils.IsNotSupportedMember(m))
+                        .Where(m => Puerts.Utils.IsNotGenericOrValidGeneric(m)).ToArray())
+                        if (m.DeclaringType == type && m.IsSpecialName &&
+                            m.Name.StartsWith("op_") && m.IsStatic) {
+                            if (m.Name == "op_Explicit" || m.Name == "op_Implicit") continue;
                             Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
-                                Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                , MemberType = "Constructor", IsStatic = false, Constructor = "Constructor",
+                                Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                MemberType = "Method", IsStatic = m.IsStatic,
+                                Method = "O_" + m.Name,
                             }, false);
                         }
-                        if (!hasParamlessCtor && type.IsValueType)
-                            Collector.Add(".ctor", new MemberRegisterInfoForGenerate {
-                                Name = ".ctor", UseBindingMode = "FastBinding", MemberType = "Constructor"
-                                , IsStatic = false, Constructor = "Constructor",
-                            }, false);
-
-                        foreach (var m in Puerts.Utils.GetMethodAndOverrideMethod(type, flag)
-                            .Where(m => !Utils.IsNotSupportedMember(m))
-                            .Where(m => Puerts.Utils.IsNotGenericOrValidGeneric(m)).ToArray())
-                            if (m.DeclaringType == type && m.IsSpecialName && m.Name.StartsWith("op_") && m.IsStatic) {
-                                if (m.Name == "op_Explicit" || m.Name == "op_Implicit") continue;
-                                Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
-                                    Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                    , MemberType = "Method", IsStatic = m.IsStatic, Method = "O_" + m.Name,
-                                }, false);
-                            }
-                            else if (!m.IsSpecialName) {
-                                Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
-                                    Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                    , MemberType = "Method", IsStatic = m.IsStatic
-                                    , Method = (m.IsStatic ? "F_" : "M_") + m.Name,
-                                }, m.IsStatic);
-                            }
-                        foreach (var m in Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes))
-                            .Where(m => !Utils.IsNotSupportedMember(m))
-                            .Where(m => !m.IsGenericMethodDefinition || Puerts.Utils.IsNotGenericOrValidGeneric(m))
-                            .ToArray().Where(m => genTypes == null ? true : genTypes.Contains(m.DeclaringType))
-                            .ToArray())
+                        else if (!m.IsSpecialName) {
                             Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
-                                Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                , MemberType = "Method", IsStatic = false, Method = "M_" + m.Name,
-                            }, false);
-
-                        foreach (var m in type.GetEvents(Utils.Flags).Where(m => !Utils.IsNotSupportedMember(m))
-                            .ToArray()) {
-                            var addMethod = m.GetAddMethod();
-                            var removeMethod = m.GetRemoveMethod();
-                            if (addMethod != null && addMethod.IsPublic)
-                                Collector.Add("add_" + m.Name, new MemberRegisterInfoForGenerate {
-                                    Name = "add_" + m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                    , MemberType = "Method", IsStatic = addMethod.IsStatic, Method = "A_" + m.Name,
-                                }, false);
-                            if (removeMethod != null && removeMethod.IsPublic)
-                                Collector.Add("remove_" + m.Name, new MemberRegisterInfoForGenerate {
-                                    Name = "remove_" + m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                    , MemberType = "Method", IsStatic = removeMethod.IsStatic, Method = "R_" + m.Name,
-                                }, false);
-                        }
-
-                        foreach (var m in type.GetProperties(flag).Where(m => !Utils.IsNotSupportedMember(m)).ToArray())
-                            if (m.GetIndexParameters().GetLength(0) == 1) {
-                                var getMethod = m.GetGetMethod();
-                                var setMethod = m.GetSetMethod();
-                                if (getMethod != null && getMethod.IsPublic)
-                                    Collector.Add("get_Item", new MemberRegisterInfoForGenerate {
-                                        Name = "get_Item", UseBindingMode = Utils.getBindingMode(m).ToString()
-                                        , MemberType = "Method", IsStatic = getMethod.IsStatic, Method = "GetItem",
-                                    }, false);
-                                if (setMethod != null && setMethod.IsPublic)
-                                    Collector.Add("set_Item", new MemberRegisterInfoForGenerate {
-                                        Name = "set_Item", UseBindingMode = Utils.getBindingMode(m).ToString()
-                                        , MemberType = "Method", IsStatic = setMethod.IsStatic, Method = "SetItem",
-                                    }, false);
-                            }
-                            else if (m.GetIndexParameters().GetLength(0) == 0 && !m.IsSpecialName) {
-                                Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
-                                    Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                    , MemberType = "Property", IsStatic = m.GetAccessors(false).Any(x => x.IsStatic)
-                                    , PropertyGetter = m.GetGetMethod() != null ? "G_" + m.Name : null
-                                    , PropertySetter = m.GetSetMethod() != null ? "S_" + m.Name : null,
-                                }, m.GetAccessors(false).Any(x => x.IsStatic));
-                            }
-                        foreach (var m in type.GetFields(flag).Where(f => !Utils.IsNotSupportedMember(f)).ToArray())
-                            Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
-                                Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString()
-                                , MemberType = "Property", IsStatic = m.IsStatic, PropertyGetter = "G_" + m.Name
-                                , PropertySetter = !m.IsInitOnly && !m.IsLiteral ? "S_" + m.Name : null,
+                                Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                MemberType = "Method", IsStatic = m.IsStatic,
+                                Method = (m.IsStatic ? "F_" : "M_") + m.Name,
                             }, m.IsStatic);
-                        return new RegisterInfoForGenerate {
-                            WrapperName = Utils.GetWrapTypeName(type), BlittableCopy = blittableCopyTypes.Contains(type)
-                            , Type = type, Members = Collector.GetAllMember(),
-                        };
-                    }).ToList();
+                        }
+                    foreach (var m in Utils.GetExtensionMethods(type, new HashSet<Type>(genTypes))
+                        .Where(m => !Utils.IsNotSupportedMember(m))
+                        .Where(m =>
+                            !m.IsGenericMethodDefinition ||
+                            Puerts.Utils.IsNotGenericOrValidGeneric(m)).ToArray()
+                        .Where(m => genTypes == null ? true : genTypes.Contains(m.DeclaringType))
+                        .ToArray())
+                        Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
+                            Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString(),
+                            MemberType = "Method", IsStatic = false, Method = "M_" + m.Name,
+                        }, false);
+
+                    foreach (var m in type.GetEvents(Utils.Flags)
+                        .Where(m => !Utils.IsNotSupportedMember(m)).ToArray()) {
+                        var addMethod = m.GetAddMethod();
+                        var removeMethod = m.GetRemoveMethod();
+                        if (addMethod != null && addMethod.IsPublic)
+                            Collector.Add("add_" + m.Name, new MemberRegisterInfoForGenerate {
+                                Name = "add_" + m.Name,
+                                UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                MemberType = "Method", IsStatic = addMethod.IsStatic,
+                                Method = "A_" + m.Name,
+                            }, false);
+                        if (removeMethod != null && removeMethod.IsPublic)
+                            Collector.Add("remove_" + m.Name, new MemberRegisterInfoForGenerate {
+                                Name = "remove_" + m.Name,
+                                UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                MemberType = "Method", IsStatic = removeMethod.IsStatic,
+                                Method = "R_" + m.Name,
+                            }, false);
+                    }
+
+                    foreach (var m in type.GetProperties(flag)
+                        .Where(m => !Utils.IsNotSupportedMember(m)).ToArray())
+                        if (m.GetIndexParameters().GetLength(0) == 1) {
+                            var getMethod = m.GetGetMethod();
+                            var setMethod = m.GetSetMethod();
+                            if (getMethod != null && getMethod.IsPublic)
+                                Collector.Add("get_Item", new MemberRegisterInfoForGenerate {
+                                    Name = "get_Item",
+                                    UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                    MemberType = "Method", IsStatic = getMethod.IsStatic,
+                                    Method = "GetItem",
+                                }, false);
+                            if (setMethod != null && setMethod.IsPublic)
+                                Collector.Add("set_Item", new MemberRegisterInfoForGenerate {
+                                    Name = "set_Item",
+                                    UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                    MemberType = "Method", IsStatic = setMethod.IsStatic,
+                                    Method = "SetItem",
+                                }, false);
+                        }
+                        else if (m.GetIndexParameters().GetLength(0) == 0 && !m.IsSpecialName) {
+                            Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
+                                Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString(),
+                                MemberType = "Property",
+                                IsStatic = m.GetAccessors(false).Any(x => x.IsStatic),
+                                PropertyGetter = m.GetGetMethod() != null ? "G_" + m.Name : null,
+                                PropertySetter = m.GetSetMethod() != null ? "S_" + m.Name : null,
+                            }, m.GetAccessors(false).Any(x => x.IsStatic));
+                        }
+                    foreach (var m in type.GetFields(flag)
+                        .Where(f => !Utils.IsNotSupportedMember(f)).ToArray())
+                        Collector.Add(m.Name, new MemberRegisterInfoForGenerate {
+                            Name = m.Name, UseBindingMode = Utils.getBindingMode(m).ToString(),
+                            MemberType = "Property", IsStatic = m.IsStatic,
+                            PropertyGetter = "G_" + m.Name,
+                            PropertySetter = !m.IsInitOnly && !m.IsLiteral ? "S_" + m.Name : null,
+                        }, m.IsStatic);
+                    return new RegisterInfoForGenerate {
+                        WrapperName = Utils.GetWrapTypeName(type),
+                        BlittableCopy = blittableCopyTypes.Contains(type), Type = type,
+                        Members = Collector.GetAllMember(),
+                    };
+                }).ToList();
             }
         }
     }

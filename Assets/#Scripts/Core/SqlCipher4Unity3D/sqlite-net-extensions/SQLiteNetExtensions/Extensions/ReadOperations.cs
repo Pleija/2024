@@ -26,7 +26,10 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     Fetches all the entities of the specified type with the filter and fetches all the relationship
         ///     properties of all the returned elements.
         /// </summary>
-        /// <returns>List of all the elements of the type T that matches the filter with the children already loaded</returns>
+        /// <returns>
+        ///     List of all the elements of the type T that matches the filter with the children already
+        ///     loaded
+        /// </returns>
         /// <param name="conn">SQLite Net connection object</param>
         /// <param name="filter">
         ///     Filter that will be passed to the <c>Where</c> clause when fetching
@@ -38,8 +41,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static List<T> GetAllWithChildren<T>(this SQLiteConnection conn, Expression<Func<T, bool>> filter = null
-            , bool recursive = false) where T : class, new()
+        public static List<T> GetAllWithChildren<T>(this SQLiteConnection conn,
+            Expression<Func<T, bool>> filter = null, bool recursive = false) where T : class, new()
         {
             var elements = conn.Table<T>();
             if (filter != null) elements = elements.Where(filter);
@@ -50,7 +53,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
         /// <summary>
         ///     Obtains the object from the database and fetches all the properties annotated with
-        ///     any subclass of <c>RelationshipAttribute</c>. If the object with the specified primary key doesn't
+        ///     any subclass of <c>RelationshipAttribute</c>. If the object with the specified primary key
+        ///     doesn't
         ///     exist in the database, an exception will be raised.
         /// </summary>
         /// <returns>The object with all the children loaded</returns>
@@ -61,8 +65,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static T GetWithChildren<T>(this SQLiteConnection conn, object pk, bool recursive = false)
-            where T : new()
+        public static T GetWithChildren<T>(this SQLiteConnection conn, object pk,
+            bool recursive = false) where T : new()
         {
             var element = conn.Get<T>(pk);
             conn.GetChildren(element, recursive);
@@ -73,7 +77,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     The behavior is the same that <c>GetWithChildren</c> but it returns null if the object doesn't
         ///     exist in the database instead of throwing an exception
         ///     Obtains the object from the database and fetch all the properties annotated with
-        ///     any subclass of <c>RelationshipAttribute</c>. If the object with the specified primary key doesn't
+        ///     any subclass of <c>RelationshipAttribute</c>. If the object with the specified primary key
+        ///     doesn't
         ///     exist in the database, it will return null
         /// </summary>
         /// <returns>The object with all the children loaded or null if it doesn't exist</returns>
@@ -84,16 +89,18 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static T FindWithChildren<T>(this SQLiteConnection conn, object pk, bool recursive = false)
-            where T : new()
+        public static T FindWithChildren<T>(this SQLiteConnection conn, object pk,
+            bool recursive = false) where T : new()
         {
             var element = conn.Find<T>(pk);
-            if (!EqualityComparer<T>.Default.Equals(element, default)) conn.GetChildren(element, recursive);
+            if (!EqualityComparer<T>.Default.Equals(element, default))
+                conn.GetChildren(element, recursive);
             return element;
         }
 
         /// <summary>
-        ///     Fetches all the properties annotated with any subclass of <c>RelationshipAttribute</c> of the current
+        ///     Fetches all the properties annotated with any subclass of <c>RelationshipAttribute</c> of the
+        ///     current
         ///     object and keeps fetching recursively if the <c>recursive</c> flag has been set.
         /// </summary>
         /// <param name="conn">SQLite Net connection object</param>
@@ -103,7 +110,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static void GetChildren<T>(this SQLiteConnection conn, T element, bool recursive = false)
+        public static void GetChildren<T>(this SQLiteConnection conn, T element,
+            bool recursive = false)
         {
             GetChildrenRecursive(conn, element, false, recursive);
         }
@@ -120,10 +128,11 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static void GetChild<T>(this SQLiteConnection conn, T element, string relationshipProperty
-            , bool recursive = false)
+        public static void GetChild<T>(this SQLiteConnection conn, T element,
+            string relationshipProperty, bool recursive = false)
         {
-            conn.GetChild(element, element.GetType().GetRuntimeProperty(relationshipProperty), recursive);
+            conn.GetChild(element, element.GetType().GetRuntimeProperty(relationshipProperty),
+                recursive);
         }
 
         /// <summary>
@@ -141,8 +150,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static void GetChild<T>(this SQLiteConnection conn, T element
-            , Expression<Func<T, object>> propertyExpression, bool recursive = false)
+        public static void GetChild<T>(this SQLiteConnection conn, T element,
+            Expression<Func<T, object>> propertyExpression, bool recursive = false)
         {
             conn.GetChild(element, ReflectionExtensions.GetProperty(propertyExpression), recursive);
         }
@@ -159,21 +168,22 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         ///     <c>CascadeOperation.CascadeRead</c> will be loaded recusively.
         /// </param>
         /// <typeparam name="T">Entity type where the object should be fetched from</typeparam>
-        public static void GetChild<T>(this SQLiteConnection conn, T element, PropertyInfo relationshipProperty
-            , bool recursive = false)
+        public static void GetChild<T>(this SQLiteConnection conn, T element,
+            PropertyInfo relationshipProperty, bool recursive = false)
         {
             conn.GetChildRecursive(element, relationshipProperty, recursive, new ObjectCache());
         }
 #endregion
 
 #region Private methods
-        private static void GetChildrenRecursive(this SQLiteConnection conn, object element, bool onlyCascadeChildren
-            , bool recursive, ObjectCache objectCache = null)
+        private static void GetChildrenRecursive(this SQLiteConnection conn, object element,
+            bool onlyCascadeChildren, bool recursive, ObjectCache objectCache = null)
         {
             objectCache = objectCache ?? new ObjectCache();
 
             foreach (var relationshipProperty in element.GetType().GetRelationshipProperties()) {
-                var relationshipAttribute = relationshipProperty.GetAttribute<RelationshipAttribute>();
+                var relationshipAttribute =
+                    relationshipProperty.GetAttribute<RelationshipAttribute>();
                 if (!onlyCascadeChildren || relationshipAttribute.IsCascadeRead)
                     conn.GetChildRecursive(element, relationshipProperty, recursive, objectCache);
                 else if (relationshipAttribute is TextBlobAttribute)
@@ -181,46 +191,53 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             }
         }
 
-        private static void GetChildRecursive(this SQLiteConnection conn, object element
-            , PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
+        private static void GetChildRecursive(this SQLiteConnection conn, object element,
+            PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
         {
             var relationshipAttribute = relationshipProperty.GetAttribute<RelationshipAttribute>();
             if (relationshipAttribute is OneToOneAttribute)
-                conn.GetOneToOneChildren(new List<object> { element }, relationshipProperty, recursive, objectCache);
+                conn.GetOneToOneChildren(new List<object> { element }, relationshipProperty,
+                    recursive, objectCache);
             else if (relationshipAttribute is OneToManyAttribute)
                 conn.GetOneToManyChildren(element, relationshipProperty, recursive, objectCache);
             else if (relationshipAttribute is ManyToOneAttribute)
-                conn.GetManyToOneChildren(new List<object> { element }, relationshipProperty, recursive, objectCache);
+                conn.GetManyToOneChildren(new List<object> { element }, relationshipProperty,
+                    recursive, objectCache);
             else if (relationshipAttribute is ManyToManyAttribute)
                 conn.GetManyToManyChildren(element, relationshipProperty, recursive, objectCache);
             else if (relationshipAttribute is TextBlobAttribute)
                 TextBlobOperations.GetTextBlobChild(element, relationshipProperty);
         }
 
-        private static object GetOneToOneChildren<T>(this SQLiteConnection conn, IList<T> elements
-            , PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
+        private static object GetOneToOneChildren<T>(this SQLiteConnection conn, IList<T> elements,
+            PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
         {
             var primaryKeys = new Dictionary<object, IList<T>>();
             var type = elements[0].GetType();
             EnclosedType enclosedType;
             var entityType = relationshipProperty.GetEntityType(out enclosedType);
-            Assert(enclosedType == EnclosedType.None, type, relationshipProperty
-                , "OneToOne relationship cannot be of type List or Array");
+            Assert(enclosedType == EnclosedType.None, type, relationshipProperty,
+                "OneToOne relationship cannot be of type List or Array");
             var currentEntityPrimaryKeyProperty = type.GetPrimaryKey();
             var otherEntityPrimaryKeyProperty = entityType.GetPrimaryKey();
-            Assert(currentEntityPrimaryKeyProperty != null || otherEntityPrimaryKeyProperty != null, type
-                , relationshipProperty, "At least one entity in a OneToOne relationship must have Primary Key");
+            Assert(currentEntityPrimaryKeyProperty != null || otherEntityPrimaryKeyProperty != null,
+                type, relationshipProperty,
+                "At least one entity in a OneToOne relationship must have Primary Key");
             var currentEntityForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty);
-            var otherEntityForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty, inverse: true);
-            Assert(currentEntityForeignKeyProperty != null || otherEntityForeignKeyProperty != null, type
-                , relationshipProperty, "At least one entity in a OneToOne relationship must have Foreign Key");
-            var hasForeignKey = otherEntityPrimaryKeyProperty != null && currentEntityForeignKeyProperty != null;
-            var hasInverseForeignKey = currentEntityPrimaryKeyProperty != null && otherEntityForeignKeyProperty != null;
-            Assert(hasForeignKey || hasInverseForeignKey, type, relationshipProperty
-                , "Missing either ForeignKey or PrimaryKey for a complete OneToOne relationship");
+            var otherEntityForeignKeyProperty =
+                type.GetForeignKeyProperty(relationshipProperty, inverse: true);
+            Assert(currentEntityForeignKeyProperty != null || otherEntityForeignKeyProperty != null,
+                type, relationshipProperty,
+                "At least one entity in a OneToOne relationship must have Foreign Key");
+            var hasForeignKey = otherEntityPrimaryKeyProperty != null &&
+                currentEntityForeignKeyProperty != null;
+            var hasInverseForeignKey = currentEntityPrimaryKeyProperty != null &&
+                otherEntityForeignKeyProperty != null;
+            Assert(hasForeignKey || hasInverseForeignKey, type, relationshipProperty,
+                "Missing either ForeignKey or PrimaryKey for a complete OneToOne relationship");
             var tableMapping = conn.GetMapping(entityType);
-            Assert(tableMapping != null, type, relationshipProperty
-                , "There's no mapping table for OneToOne relationship");
+            Assert(tableMapping != null, type, relationshipProperty,
+                "There's no mapping table for OneToOne relationship");
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
 
             foreach (var element in elements) {
@@ -233,7 +250,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
                     if (keyValue != null) {
                         // Try to load from cache when possible
-                        if (recursive) value = (T)GetObjectFromCache(entityType, keyValue, objectCache);
+                        if (recursive)
+                            value = (T)GetObjectFromCache(entityType, keyValue, objectCache);
                         if (value != null) isLoadedFromCache = true;
                     }
                 }
@@ -241,16 +259,18 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                     keyValue = currentEntityPrimaryKeyProperty.GetValue(element, null);
 
                     // Try to replace the loaded entity with the same object from the cache whenever possible
-                    value = recursive ? (T)ReplaceWithCacheObjectIfPossible(value, otherEntityPrimaryKeyProperty
-                        , objectCache, out isLoadedFromCache) : value;
+                    value = recursive ? (T)ReplaceWithCacheObjectIfPossible(value,
+                        otherEntityPrimaryKeyProperty, objectCache, out isLoadedFromCache) : value;
                 }
 
                 if (isLoadedFromCache) {
                     relationshipProperty.SetValue(element, value, null);
-                    if (value != null && inverseProperty != null) inverseProperty.SetValue(value, element, null);
+                    if (value != null && inverseProperty != null)
+                        inverseProperty.SetValue(value, element, null);
                 }
                 else {
-                    if (keyValue != null) AddPrimaryKeyToDictionary<T>(keyValue, element, primaryKeys);
+                    if (keyValue != null)
+                        AddPrimaryKeyToDictionary<T>(keyValue, element, primaryKeys);
                 }
             }
 
@@ -261,12 +281,13 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 else
                     columnName = tableMapping.PK.Name;
                 var placeHolders = string.Join(",", Enumerable.Repeat("?", primaryKeys.Count));
-                var query = string.Format("select * from [{0}] where [{1}] in ({2})", tableMapping.TableName, columnName
-                    , placeHolders);
+                var query = string.Format("select * from [{0}] where [{1}] in ({2})",
+                    tableMapping.TableName, columnName, placeHolders);
                 IList<object> values = conn.Query(tableMapping, query, primaryKeys.Keys.ToArray());
 
                 if (values.Count > 0) {
-                    var keyProperty = otherEntityForeignKeyProperty ?? values[0].GetType().GetPrimaryKey();
+                    var keyProperty = otherEntityForeignKeyProperty ??
+                        values[0].GetType().GetPrimaryKey();
 
                     foreach (var value in values) {
                         var keyValue = keyProperty.GetValue(value);
@@ -279,8 +300,9 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                                     inverseProperty.SetValue(value, keyElement, null);
 
                                 if (value != null && recursive) {
-                                    SaveObjectToCache(value, otherEntityPrimaryKeyProperty.GetValue(value, null)
-                                        , objectCache);
+                                    SaveObjectToCache(value,
+                                        otherEntityPrimaryKeyProperty.GetValue(value, null),
+                                        objectCache);
                                     conn.GetChildrenRecursive(value, true, recursive, objectCache);
                                 }
                             }
@@ -290,24 +312,24 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             return elements[0];
         }
 
-        private static object GetManyToOneChildren<T>(this SQLiteConnection conn, IList<T> elements
-            , PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
+        private static object GetManyToOneChildren<T>(this SQLiteConnection conn, IList<T> elements,
+            PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
         {
             var primaryKeys = new Dictionary<object, IList<T>>();
             var type = elements[0].GetType();
             EnclosedType enclosedType;
             var entityType = relationshipProperty.GetEntityType(out enclosedType);
-            Assert(enclosedType == EnclosedType.None, type, relationshipProperty
-                , "ManyToOne relationship cannot be of type List or Array");
+            Assert(enclosedType == EnclosedType.None, type, relationshipProperty,
+                "ManyToOne relationship cannot be of type List or Array");
             var otherEntityPrimaryKeyProperty = entityType.GetPrimaryKey();
-            Assert(otherEntityPrimaryKeyProperty != null, type, relationshipProperty
-                , "ManyToOne relationship destination must have Primary Key");
+            Assert(otherEntityPrimaryKeyProperty != null, type, relationshipProperty,
+                "ManyToOne relationship destination must have Primary Key");
             var currentEntityForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty);
-            Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty
-                , "ManyToOne relationship origin must have Foreign Key");
+            Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty,
+                "ManyToOne relationship origin must have Foreign Key");
             var tableMapping = conn.GetMapping(entityType);
-            Assert(tableMapping != null, type, relationshipProperty
-                , "There's no mapping table for OneToMany relationship destination");
+            Assert(tableMapping != null, type, relationshipProperty,
+                "There's no mapping table for OneToMany relationship destination");
 
             foreach (var element in elements) {
                 object value = null;
@@ -316,7 +338,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
                 if (foreignKeyValue != null) {
                     // Try to load from cache when possible
-                    if (recursive) value = GetObjectFromCache(entityType, foreignKeyValue, objectCache);
+                    if (recursive)
+                        value = GetObjectFromCache(entityType, foreignKeyValue, objectCache);
                     if (value == null)
                         AddPrimaryKeyToDictionary<T>(foreignKeyValue, element, primaryKeys);
                     else
@@ -327,8 +350,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
             if (primaryKeys.Count > 0) {
                 var placeHolders = string.Join(",", Enumerable.Repeat("?", primaryKeys.Count));
-                var query = string.Format("select * from [{0}] where [{1}] in ({2})", tableMapping.TableName
-                    , tableMapping.PK.Name, placeHolders);
+                var query = string.Format("select * from [{0}] where [{1}] in ({2})",
+                    tableMapping.TableName, tableMapping.PK.Name, placeHolders);
                 IList<object> values = conn.Query(tableMapping, query, primaryKeys.Keys.ToArray());
 
                 if (values.Count > 0) {
@@ -343,8 +366,9 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                                 relationshipProperty.SetValue(keyElement, value, null);
 
                                 if (value != null && recursive) {
-                                    SaveObjectToCache(value, otherEntityPrimaryKeyProperty.GetValue(value, null)
-                                        , objectCache);
+                                    SaveObjectToCache(value,
+                                        otherEntityPrimaryKeyProperty.GetValue(value, null),
+                                        objectCache);
                                     conn.GetChildrenRecursive(value, true, recursive, objectCache);
                                 }
                             }
@@ -354,8 +378,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             return elements[0];
         }
 
-        private static void AddPrimaryKeyToDictionary<T>(object key, T element
-            , Dictionary<object, IList<T>> primaryKeys)
+        private static void AddPrimaryKeyToDictionary<T>(object key, T element,
+            Dictionary<object, IList<T>> primaryKeys)
         {
             IList<T> list;
 
@@ -368,38 +392,40 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             }
         }
 
-        private static IEnumerable GetOneToManyChildren<T>(this SQLiteConnection conn, T element
-            , PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
+        private static IEnumerable GetOneToManyChildren<T>(this SQLiteConnection conn, T element,
+            PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
         {
             var type = element.GetType();
             EnclosedType enclosedType;
             var entityType = relationshipProperty.GetEntityType(out enclosedType);
-            Assert(enclosedType != EnclosedType.None, type, relationshipProperty
-                , "OneToMany relationship must be a List or Array");
+            Assert(enclosedType != EnclosedType.None, type, relationshipProperty,
+                "OneToMany relationship must be a List or Array");
             var currentEntityPrimaryKeyProperty = type.GetPrimaryKey();
-            Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty
-                , "OneToMany relationship origin must have Primary Key");
-            var otherEntityForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty, inverse: true);
-            Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty
-                , "OneToMany relationship destination must have Foreign Key to the origin class");
+            Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty,
+                "OneToMany relationship origin must have Primary Key");
+            var otherEntityForeignKeyProperty =
+                type.GetForeignKeyProperty(relationshipProperty, inverse: true);
+            Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty,
+                "OneToMany relationship destination must have Foreign Key to the origin class");
             var otherEntityPrimaryKeyProperty = entityType.GetPrimaryKey();
             var tableMapping = conn.GetMapping(entityType);
-            Assert(tableMapping != null, type, relationshipProperty
-                , "There's no mapping table for OneToMany relationship destination");
+            Assert(tableMapping != null, type, relationshipProperty,
+                "There's no mapping table for OneToMany relationship destination");
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
             IList<T> cascadeElements = new List<T>();
             IList values = null;
             var primaryKeyValue = currentEntityPrimaryKeyProperty.GetValue(element, null);
 
             if (primaryKeyValue != null) {
-                var query = string.Format("select * from [{0}] where [{1}] = ?", entityType.GetTableName()
-                    , otherEntityForeignKeyProperty.GetColumnName());
+                var query = string.Format("select * from [{0}] where [{1}] = ?",
+                    entityType.GetTableName(), otherEntityForeignKeyProperty.GetColumnName());
                 var queryResults = conn.Query(tableMapping, query, primaryKeyValue);
                 Array array = null;
 
                 // Create a generic list of the expected type
                 if (enclosedType == EnclosedType.List)
-                    values = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entityType));
+                    values = (IList)Activator.CreateInstance(
+                        typeof(List<>).MakeGenericType(entityType));
                 else if (enclosedType == EnclosedType.ObservableCollection)
                     values = (IList)Activator.CreateInstance(
                         typeof(ObservableCollection<>).MakeGenericType(entityType));
@@ -410,8 +436,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 foreach (T result in queryResults) {
                     // Replace obtained value with a cached one whenever possible
                     var loadedFromCache = false;
-                    var value = recursive ? ReplaceWithCacheObjectIfPossible(result, otherEntityPrimaryKeyProperty
-                        , objectCache, out loadedFromCache) : result;
+                    var value = recursive ? ReplaceWithCacheObjectIfPossible(result,
+                        otherEntityPrimaryKeyProperty, objectCache, out loadedFromCache) : result;
                     if (array != null)
                         array.SetValue(value, i);
                     else
@@ -431,13 +457,14 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             return values;
         }
 
-        private static void GetChildrenRecursiveBatched<T>(this SQLiteConnection conn, IList<T> elements
-            , ObjectCache objectCache)
+        private static void GetChildrenRecursiveBatched<T>(this SQLiteConnection conn,
+            IList<T> elements, ObjectCache objectCache)
         {
             var element = elements[0];
 
             foreach (var relationshipProperty in element.GetType().GetRelationshipProperties()) {
-                var relationshipAttribute = relationshipProperty.GetAttribute<RelationshipAttribute>();
+                var relationshipAttribute =
+                    relationshipProperty.GetAttribute<RelationshipAttribute>();
 
                 if (relationshipAttribute.IsCascadeRead) {
                     if (relationshipAttribute is OneToOneAttribute)
@@ -446,7 +473,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                         foreach (var e in elements)
                             conn.GetOneToManyChildren(e, relationshipProperty, true, objectCache);
                     else if (relationshipAttribute is ManyToOneAttribute)
-                        conn.GetManyToOneChildren(elements, relationshipProperty, true, objectCache);
+                        conn.GetManyToOneChildren(elements, relationshipProperty, true,
+                            objectCache);
                     else if (relationshipAttribute is ManyToManyAttribute)
                         foreach (var e in elements)
                             conn.GetManyToManyChildren(e, relationshipProperty, true, objectCache);
@@ -454,13 +482,14 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                         TextBlobOperations.GetTextBlobChild(element, relationshipProperty);
                 }
                 else if (relationshipAttribute is TextBlobAttribute) {
-                    foreach (var e in elements) conn.GetChildRecursive(e, relationshipProperty, false, objectCache);
+                    foreach (var e in elements)
+                        conn.GetChildRecursive(e, relationshipProperty, false, objectCache);
                 }
             }
         }
 
-        private static IEnumerable GetManyToManyChildren<T>(this SQLiteConnection conn, T element
-            , PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
+        private static IEnumerable GetManyToManyChildren<T>(this SQLiteConnection conn, T element,
+            PropertyInfo relationshipProperty, bool recursive, ObjectCache objectCache)
         {
             var type = element.GetType();
             EnclosedType enclosedType;
@@ -472,37 +501,39 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var otherEntityForeignKeyProperty = manyToManyMetaInfo.DestinationProperty;
             var intermediateType = manyToManyMetaInfo.IntermediateType;
             var tableMapping = conn.GetMapping(entityType);
-            Assert(enclosedType != EnclosedType.None, type, relationshipProperty
-                , "ManyToMany relationship must be a List or Array");
-            Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty
-                , "ManyToMany relationship origin must have Primary Key");
-            Assert(otherEntityPrimaryKeyProperty != null, type, relationshipProperty
-                , "ManyToMany relationship destination must have Primary Key");
-            Assert(intermediateType != null, type, relationshipProperty
-                , "ManyToMany relationship intermediate type cannot be null");
-            Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty
-                , "ManyToMany relationship origin must have a foreign key defined in the intermediate type");
-            Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty
-                , "ManyToMany relationship destination must have a foreign key defined in the intermediate type");
-            Assert(tableMapping != null, type, relationshipProperty
-                , "There's no mapping table defined for ManyToMany relationship origin");
+            Assert(enclosedType != EnclosedType.None, type, relationshipProperty,
+                "ManyToMany relationship must be a List or Array");
+            Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty,
+                "ManyToMany relationship origin must have Primary Key");
+            Assert(otherEntityPrimaryKeyProperty != null, type, relationshipProperty,
+                "ManyToMany relationship destination must have Primary Key");
+            Assert(intermediateType != null, type, relationshipProperty,
+                "ManyToMany relationship intermediate type cannot be null");
+            Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty,
+                "ManyToMany relationship origin must have a foreign key defined in the intermediate type");
+            Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty,
+                "ManyToMany relationship destination must have a foreign key defined in the intermediate type");
+            Assert(tableMapping != null, type, relationshipProperty,
+                "There's no mapping table defined for ManyToMany relationship origin");
             IList cascadeElements = new List<object>();
             IList values = null;
             var primaryKeyValue = currentEntityPrimaryKeyProperty.GetValue(element, null);
 
             if (primaryKeyValue != null) {
                 // Obtain the relationship keys
-                var keysQuery = string.Format("select [{0}] from [{1}] where [{2}] = ?"
-                    , otherEntityForeignKeyProperty.GetColumnName(), intermediateType.GetTableName()
-                    , currentEntityForeignKeyProperty.GetColumnName());
-                var query = string.Format("select * from [{0}] where [{1}] in ({2})", entityType.GetTableName()
-                    , otherEntityPrimaryKeyProperty.GetColumnName(), keysQuery);
+                var keysQuery = string.Format("select [{0}] from [{1}] where [{2}] = ?",
+                    otherEntityForeignKeyProperty.GetColumnName(), intermediateType.GetTableName(),
+                    currentEntityForeignKeyProperty.GetColumnName());
+                var query = string.Format("select * from [{0}] where [{1}] in ({2})",
+                    entityType.GetTableName(), otherEntityPrimaryKeyProperty.GetColumnName(),
+                    keysQuery);
                 var queryResults = conn.Query(tableMapping, query, primaryKeyValue);
                 Array array = null;
 
                 // Create a generic list of the expected type
                 if (enclosedType == EnclosedType.List)
-                    values = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entityType));
+                    values = (IList)Activator.CreateInstance(
+                        typeof(List<>).MakeGenericType(entityType));
                 else if (enclosedType == EnclosedType.ObservableCollection)
                     values = (IList)Activator.CreateInstance(
                         typeof(ObservableCollection<>).MakeGenericType(entityType));
@@ -513,8 +544,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 foreach (var result in queryResults) {
                     // Replace obtained value with a cached one whenever possible
                     var loadedFromCache = false;
-                    var value = recursive ? ReplaceWithCacheObjectIfPossible(result, otherEntityPrimaryKeyProperty
-                        , objectCache, out loadedFromCache) : result;
+                    var value = recursive ? ReplaceWithCacheObjectIfPossible(result,
+                        otherEntityPrimaryKeyProperty, objectCache, out loadedFromCache) : result;
                     if (array != null)
                         array.SetValue(value, i);
                     else
@@ -530,11 +561,12 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             return values;
         }
 
-        private static object ReplaceWithCacheObjectIfPossible(object element, PropertyInfo primaryKeyProperty
-            , ObjectCache objectCache, out bool isLoadedFromCache)
+        private static object ReplaceWithCacheObjectIfPossible(object element,
+            PropertyInfo primaryKeyProperty, ObjectCache objectCache, out bool isLoadedFromCache)
         {
             isLoadedFromCache = false;
-            if (element == null || primaryKeyProperty == null || objectCache == null) return element;
+            if (element == null || primaryKeyProperty == null || objectCache == null)
+                return element;
             object primaryKey = null;
             primaryKey = primaryKeyProperty.GetValue(element, null);
             if (primaryKey == null) return element;
@@ -558,17 +590,20 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 throw new IncorrectRelationshipException(type.Name, property.Name, message);
         }
 
-        private static object GetObjectFromCache(Type objectType, object primaryKey, ObjectCache objectCache)
+        private static object GetObjectFromCache(Type objectType, object primaryKey,
+            ObjectCache objectCache)
         {
             if (objectCache == null) return null;
             var typeName = objectType.FullName;
             Dictionary<object, object> typeDict = null;
             object value = null;
-            if (objectCache.TryGetValue(typeName, out typeDict)) typeDict.TryGetValue(primaryKey, out value);
+            if (objectCache.TryGetValue(typeName, out typeDict))
+                typeDict.TryGetValue(primaryKey, out value);
             return value;
         }
 
-        private static void SaveObjectToCache(object element, object primaryKey, ObjectCache objectCache)
+        private static void SaveObjectToCache(object element, object primaryKey,
+            ObjectCache objectCache)
         {
             if (objectCache == null || primaryKey == null || element == null) return;
             var typeName = element.GetType().FullName;

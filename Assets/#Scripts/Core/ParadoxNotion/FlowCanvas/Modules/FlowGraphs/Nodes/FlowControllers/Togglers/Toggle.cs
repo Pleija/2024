@@ -2,8 +2,8 @@
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Togglers")
-     , Description(
+    [Category("Flow Controllers/Togglers"),
+     Description(
          "When In is called, calls On or Off depending on the current toggle state. Whenever Toggle input is called the state changes.")]
     public class Toggle : FlowControlNode
     {

@@ -3,10 +3,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("While True"), Category("Flow Controllers/Iterators")
-     , Description(
-         "Once called, will continuously call 'Do' while the input boolean condition is true. Once condition becomes or is false, 'Done' is called")
-     , ContextDefinedInputs(typeof(bool))]
+    [Name("While True"), Category("Flow Controllers/Iterators"),
+     Description(
+         "Once called, will continuously call 'Do' while the input boolean condition is true. Once condition becomes or is false, 'Done' is called"),
+     ContextDefinedInputs(typeof(bool))]
     public class While : FlowControlNode
     {
         private UnityEngine.Coroutine coroutine;
@@ -34,7 +34,8 @@ namespace FlowCanvas.Nodes
             });
         }
 
-        private IEnumerator DoWhile(FlowOutput fUpdate, FlowOutput fFinish, Flow f, ValueInput<bool> condition)
+        private IEnumerator DoWhile(FlowOutput fUpdate, FlowOutput fFinish, Flow f,
+            ValueInput<bool> condition)
         {
             var active = true;
             f.BeginBreakBlock(() => {

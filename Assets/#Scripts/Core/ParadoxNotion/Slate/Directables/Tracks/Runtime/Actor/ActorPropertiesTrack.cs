@@ -7,8 +7,10 @@
         protected override void OnCreate()
         {
             base.OnCreate();
-            animationData.TryAddParameter(this, typeof(UnityEngine.Transform), "localPosition", null);
-            animationData.TryAddParameter(this, typeof(UnityEngine.Transform), "localEulerAngles", null);
+            animationData.TryAddParameter(this, typeof(UnityEngine.Transform), "localPosition",
+                null);
+            animationData.TryAddParameter(this, typeof(UnityEngine.Transform), "localEulerAngles",
+                null);
         }
     }
 }

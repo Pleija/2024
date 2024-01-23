@@ -8,14 +8,16 @@ using System.Linq;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Property (Desktop Only)", 7), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
-     , Description("This version works in destop/JIT platform only.\n\nSet a property on a script.")]
+    [Name("Set Property (Desktop Only)", 7),
+     Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
+     Description("This version works in destop/JIT platform only.\n\nSet a property on a script.")]
     public class SetProperty : ActionTask, IReflectedWrapper
     {
         [SerializeField]
         protected ReflectedActionWrapper functionWrapper;
 
-        private MethodInfo targetMethod => functionWrapper != null ? functionWrapper.GetMethod() : null;
+        private MethodInfo targetMethod =>
+            functionWrapper != null ? functionWrapper.GetMethod() : null;
 
         public override System.Type agentType {
             get {
@@ -28,17 +30,20 @@ namespace NodeCanvas.Tasks.Actions
             get {
                 if (functionWrapper == null) return "No Property Selected";
                 if (targetMethod == null) return functionWrapper.AsString().FormatError();
-                var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1} = {2}", mInfo, targetMethod.Name, functionWrapper.GetVariables()[0]);
+                var mInfo = targetMethod.IsStatic
+                    ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                return string.Format("{0}.{1} = {2}", mInfo, targetMethod.Name,
+                    functionWrapper.GetVariables()[0]);
             }
         }
 
-        ParadoxNotion.Serialization.ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() =>
-            functionWrapper?.GetSerializedMethod();
+        ParadoxNotion.Serialization.ISerializedReflectedInfo IReflectedWrapper.
+            GetSerializedInfo() => functionWrapper?.GetSerializedMethod();
 
         public override void OnValidate(ITaskSystem ownerSystem)
         {
-            if (functionWrapper != null && functionWrapper.HasChanged()) SetMethod(functionWrapper.GetMethod());
+            if (functionWrapper != null && functionWrapper.HasChanged())
+                SetMethod(functionWrapper.GetMethod());
         }
 
         //store the method info on init for performance
@@ -85,17 +90,17 @@ namespace NodeCanvas.Tasks.Actions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(void), typeof(object)
-                            , SetMethod, 1, true, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(),
+                            typeof(void), typeof(object), SetMethod, 1, true, false, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1, true
-                        , false, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(void), typeof(object),
+                        SetMethod, 1, true, false, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1
-                            , true, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(void),
+                            typeof(object), SetMethod, 1, true, false, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();
@@ -103,14 +108,16 @@ namespace NodeCanvas.Tasks.Actions
 
             if (targetMethod != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Property", targetMethod.Name);
-                UnityEditor.EditorGUILayout.LabelField("Set Type"
-                    , functionWrapper.GetVariables()[0].varType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
-                    , UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.LabelField("Set Type",
+                    functionWrapper.GetVariables()[0].varType.FriendlyName());
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
+                    UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
-                Editor.BBParameterEditor.ParameterField("Set Value", functionWrapper.GetVariables()[0]);
+                Editor.BBParameterEditor.ParameterField("Set Value",
+                    functionWrapper.GetVariables()[0]);
             }
         }
 

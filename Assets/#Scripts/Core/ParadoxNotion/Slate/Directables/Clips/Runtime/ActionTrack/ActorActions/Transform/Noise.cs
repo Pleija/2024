@@ -40,7 +40,8 @@ namespace Slate.ActionClips
 
         protected override void OnCreate()
         {
-            seed = new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100));
+            seed = new Vector3(Random.Range(-100, 100), Random.Range(-100, 100),
+                Random.Range(-100, 100));
         }
 
         protected override void OnEnter()
@@ -58,7 +59,8 @@ namespace Slate.ActionClips
             pos.y = Mathf.PerlinNoise(seed.y + time * frequency, 0);
             pos.z = Mathf.PerlinNoise(seed.z + time * frequency, 0);
             pos = Vector3.Scale(pos, amplitude) /* _fbmNorm*/;
-            actor.transform.position = Vector3.Lerp(wasPosition, wasPosition + pos, GetClipWeight(time));
+            actor.transform.position =
+                Vector3.Lerp(wasPosition, wasPosition + pos, GetClipWeight(time));
         }
     }
 }

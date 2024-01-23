@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("Character")
-     , Description(
+    [Category("Character"),
+     Description(
          "Sets a collection of BlendShapes (an expression), which you can create in the Character Component Inspector of the actor.")]
     public class CharacterExpression : ActorActionClip<Character>
     {
@@ -73,7 +73,8 @@ namespace Slate.ActionClips
         protected override void OnUpdate(float deltaTime)
         {
             if (expression != null) {
-                var value = Easing.Ease(EaseType.QuadraticInOut, originalWeight, weight, GetClipWeight(deltaTime));
+                var value = Easing.Ease(EaseType.QuadraticInOut, originalWeight, weight,
+                    GetClipWeight(deltaTime));
                 expression.weight = value;
             }
         }

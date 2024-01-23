@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Debug Log"), Category("✫ Utility")
-     , Description(
+    [Name("Debug Log"), Category("✫ Utility"),
+     Description(
          "Display a UI label on the agent's position if seconds to run is not 0 and also logs the message, which can also be mapped to any variable.")]
     public class DebugLogText : ActionTask<Transform>
     {
@@ -23,32 +23,39 @@ namespace NodeCanvas.Tasks.Actions
         public LogMode logMode;
         public CompactStatus finishStatus = CompactStatus.Success;
 
-        protected override string info =>
-            "Log " + log.ToString() + (secondsToRun > 0 ? " for " + secondsToRun + " sec." : "");
+        protected override string info => "Log " + log.ToString() +
+            (secondsToRun > 0 ? " for " + secondsToRun + " sec." : "");
 
         protected override void OnExecute()
         {
-            if (verboseMode == VerboseMode.LogAndDisplayLabel || verboseMode == VerboseMode.LogOnly) {
+            if (verboseMode == VerboseMode.LogAndDisplayLabel ||
+                verboseMode == VerboseMode.LogOnly) {
                 var label = string.Format("(<b>{0}</b>) {1}", agent.gameObject.name, log.value);
-                if (logMode == LogMode.Log) ParadoxNotion.Services.Logger.Log(label, LogTag.EXECUTION, this);
-                if (logMode == LogMode.Warning) ParadoxNotion.Services.Logger.LogWarning(label, LogTag.EXECUTION, this);
-                if (logMode == LogMode.Error) ParadoxNotion.Services.Logger.LogError(label, LogTag.EXECUTION, this);
+                if (logMode == LogMode.Log)
+                    ParadoxNotion.Services.Logger.Log(label, LogTag.EXECUTION, this);
+                if (logMode == LogMode.Warning)
+                    ParadoxNotion.Services.Logger.LogWarning(label, LogTag.EXECUTION, this);
+                if (logMode == LogMode.Error)
+                    ParadoxNotion.Services.Logger.LogError(label, LogTag.EXECUTION, this);
             }
-            if (verboseMode == VerboseMode.LogAndDisplayLabel || verboseMode == VerboseMode.DisplayLabelOnly)
+            if (verboseMode == VerboseMode.LogAndDisplayLabel ||
+                verboseMode == VerboseMode.DisplayLabelOnly)
                 if (secondsToRun > 0)
                     MonoManager.current.onGUI += OnGUI;
         }
 
         protected override void OnStop()
         {
-            if (verboseMode == VerboseMode.LogAndDisplayLabel || verboseMode == VerboseMode.DisplayLabelOnly)
+            if (verboseMode == VerboseMode.LogAndDisplayLabel ||
+                verboseMode == VerboseMode.DisplayLabelOnly)
                 if (secondsToRun > 0)
                     MonoManager.current.onGUI -= OnGUI;
         }
 
         protected override void OnUpdate()
         {
-            if (elapsedTime >= secondsToRun) EndAction(finishStatus == CompactStatus.Success ? true : false);
+            if (elapsedTime >= secondsToRun)
+                EndAction(finishStatus == CompactStatus.Success ? true : false);
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -56,7 +63,8 @@ namespace NodeCanvas.Tasks.Actions
         private void OnGUI()
         {
             if (Camera.main == null) return;
-            var point = Camera.main.WorldToScreenPoint(agent.position + new Vector3(0, labelYOffset, 0));
+            var point =
+                Camera.main.WorldToScreenPoint(agent.position + new Vector3(0, labelYOffset, 0));
             var size = GUI.skin.label.CalcSize(new GUIContent(log.value));
             var r = new Rect(point.x - size.x / 2, Screen.height - point.y, size.x + 10, size.y);
             GUI.color = Color.white.WithAlpha(0.5f);

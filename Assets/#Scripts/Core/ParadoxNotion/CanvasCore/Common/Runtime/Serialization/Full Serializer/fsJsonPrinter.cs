@@ -270,7 +270,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         ///<summary> Utility method that converts a double to a string.</summary>
         private static string ConvertDoubleToString(double d)
         {
-            if (double.IsInfinity(d) || double.IsNaN(d)) return d.ToString(CultureInfo.InvariantCulture);
+            if (double.IsInfinity(d) || double.IsNaN(d))
+                return d.ToString(CultureInfo.InvariantCulture);
             var doubledString = d.ToString(CultureInfo.InvariantCulture);
 
             // NOTE/HACK: If we don't serialize with a period or an exponent,

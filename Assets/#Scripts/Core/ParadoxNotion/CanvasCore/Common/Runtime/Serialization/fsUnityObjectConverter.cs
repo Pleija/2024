@@ -6,11 +6,14 @@ namespace ParadoxNotion.Serialization
     ///<summary>Handles UnityObject references serialization</summary>
     public class fsUnityObjectConverter : fsConverter
     {
-        public override bool CanProcess(Type type) => typeof(UnityEngine.Object).RTIsAssignableFrom(type);
+        public override bool CanProcess(Type type) =>
+            typeof(UnityEngine.Object).RTIsAssignableFrom(type);
+
         public override bool RequestCycleSupport(Type storageType) => false;
         public override bool RequestInheritanceSupport(Type storageType) => false;
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             var database = Serializer.ReferencesDatabase;
 

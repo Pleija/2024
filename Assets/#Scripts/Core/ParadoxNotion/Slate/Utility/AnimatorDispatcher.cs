@@ -9,7 +9,9 @@ namespace Slate
     {
         public event System.Action<int> onAnimatorIK;
         private Animator _animator;
-        private Animator animator => _animator != null ? _animator : _animator = GetComponent<Animator>();
+
+        private Animator animator =>
+            _animator != null ? _animator : _animator = GetComponent<Animator>();
 
         private void OnAnimatorIK(int index)
         {

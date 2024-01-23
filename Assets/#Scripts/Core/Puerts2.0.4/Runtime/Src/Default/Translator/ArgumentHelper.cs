@@ -12,43 +12,47 @@ namespace Puerts
 {
     public struct ArgHelper
     {
-        public static T[] GetParams<T>(int jsEnvIdx, IntPtr isolate, IntPtr info, int start, int end, IntPtr v8Value)
+        public static T[] GetParams<T>(int jsEnvIdx, IntPtr isolate, IntPtr info, int start,
+            int end, IntPtr v8Value)
         {
             var result = new T[end - start];
 
             for (var i = start; i < end; i++) {
                 var val = i == start ? v8Value : PuertsDLL.GetArgumentValue(info, i);
-                result[i - start] =
-                    StaticTranslate<T>.Get(jsEnvIdx, isolate, NativeValueApi.GetValueFromArgument, val, false);
+                result[i - start] = StaticTranslate<T>.Get(jsEnvIdx, isolate,
+                    NativeValueApi.GetValueFromArgument, val, false);
             }
             return result;
         }
 
-        public static bool IsMatchParams(int jsEnvIdx, IntPtr isolate, IntPtr info, JsValueType expectJsType
-            , Type expectCsType, int start, int end, IntPtr v8Value, ref object arg, ref JsValueType argValueType)
+        public static bool IsMatchParams(int jsEnvIdx, IntPtr isolate, IntPtr info,
+            JsValueType expectJsType, Type expectCsType, int start, int end, IntPtr v8Value,
+            ref object arg, ref JsValueType argValueType)
         {
-            if (!IsMatch(jsEnvIdx, isolate, expectJsType, expectCsType, false, false, v8Value, ref arg
-                , ref argValueType))
+            if (!IsMatch(jsEnvIdx, isolate, expectJsType, expectCsType, false, false, v8Value,
+                ref arg, ref argValueType))
                 return false;
 
             for (var i = start + 1; i < end; i++) {
                 var value = PuertsDLL.GetArgumentValue(info, i);
                 object argObj = null;
                 var valueType = JsValueType.Invalid;
-                if (!IsMatch(jsEnvIdx, isolate, expectJsType, expectCsType, false, false, value, ref argObj
-                    , ref valueType))
+                if (!IsMatch(jsEnvIdx, isolate, expectJsType, expectCsType, false, false, value,
+                    ref argObj, ref valueType))
                     return false;
             }
             return true;
         }
 
-        public static bool IsMatch(int jsEnvIdx, IntPtr isolate, JsValueType expectJsType, Type expectCsType
-            , bool isByRef, bool isOut, IntPtr v8Value, ref object arg, ref JsValueType argValueType //,
+        public static bool IsMatch(int jsEnvIdx, IntPtr isolate, JsValueType expectJsType,
+            Type expectCsType, bool isByRef, bool isOut, IntPtr v8Value, ref object arg,
+            ref JsValueType argValueType //,
             // ref Type csType
         )
         {
             Type csType = null;
-            if (argValueType == JsValueType.Invalid) argValueType = PuertsDLL.GetJsValueType(isolate, v8Value, false);
+            if (argValueType == JsValueType.Invalid)
+                argValueType = PuertsDLL.GetJsValueType(isolate, v8Value, false);
 
             if (argValueType == JsValueType.JsObject) {
                 if (isByRef) {
@@ -65,8 +69,8 @@ namespace Puerts
 
             if (argValueType == JsValueType.NativeObject && expectCsType.IsPrimitive) {
                 if (arg == null)
-                    arg = JsEnv.jsEnvs[jsEnvIdx].GeneralGetterManager.AnyTranslator(jsEnvIdx, isolate
-                        , NativeValueApi.GetValueFromArgument, v8Value, isByRef);
+                    arg = JsEnv.jsEnvs[jsEnvIdx].GeneralGetterManager.AnyTranslator(jsEnvIdx,
+                        isolate, NativeValueApi.GetValueFromArgument, v8Value, isByRef);
                 if (arg.GetType() == expectCsType) return true;
             }
             if ((expectJsType & argValueType) != argValueType) return false;
@@ -74,16 +78,20 @@ namespace Puerts
             if (argValueType == JsValueType.NativeObject) {
                 if (expectCsType.IsArray) {
                     if (arg == null)
-                        arg = JsEnv.jsEnvs[jsEnvIdx].GeneralGetterManager.AnyTranslator(jsEnvIdx, isolate
-                            , NativeValueApi.GetValueFromArgument, v8Value, isByRef);
+                        arg = JsEnv.jsEnvs[jsEnvIdx].GeneralGetterManager.AnyTranslator(jsEnvIdx,
+                            isolate, NativeValueApi.GetValueFromArgument, v8Value, isByRef);
                     return expectCsType != null && expectCsType.IsAssignableFrom(arg.GetType());
                 }
                 else {
                     if (csType == null) {
-                        var typeId = NativeValueApi.GetValueFromArgument.GetTypeId(isolate, v8Value, isByRef);
-                        if (typeId >= 0) csType = JsEnv.jsEnvs[jsEnvIdx].TypeManager.GetType(typeId);
+                        var typeId =
+                            NativeValueApi.GetValueFromArgument.GetTypeId(isolate, v8Value,
+                                isByRef);
+                        if (typeId >= 0)
+                            csType = JsEnv.jsEnvs[jsEnvIdx].TypeManager.GetType(typeId);
                     }
-                    return csType != null && expectCsType != null && expectCsType.IsAssignableFrom(csType);
+                    return csType != null && expectCsType != null &&
+                        expectCsType.IsAssignableFrom(csType);
                 }
             }
             return true;
@@ -94,7 +102,8 @@ namespace Puerts
     {
         public static void Set<T>(int jsEnvIdx, IntPtr isolate, IntPtr info, T result)
         {
-            StaticTranslate<T>.Set(jsEnvIdx, isolate, NativeValueApi.SetValueToResult, info, result);
+            StaticTranslate<T>.Set(jsEnvIdx, isolate, NativeValueApi.SetValueToResult, info,
+                result);
         }
     }
 }

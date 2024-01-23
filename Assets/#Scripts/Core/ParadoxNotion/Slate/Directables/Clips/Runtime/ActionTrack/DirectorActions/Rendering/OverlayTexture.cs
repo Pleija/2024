@@ -27,7 +27,9 @@ namespace Slate.ActionClips
         public Vector2 position;
 
         public EaseType interpolation = EaseType.QuadraticInOut;
-        public override string info => string.Format("Overlay '{0}'", texture != null ? texture.name : "NONE");
+
+        public override string info =>
+            string.Format("Overlay '{0}'", texture != null ? texture.name : "NONE");
 
         public override float length {
             get => _length;

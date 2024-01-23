@@ -17,7 +17,8 @@ namespace NodeCanvas.DialogueTrees
         public override string name {
             get {
                 if (requireActorSelection) {
-                    if (DLGTree.definedActorParameterNames.Contains(actorName)) return string.Format("{0}", actorName);
+                    if (DLGTree.definedActorParameterNames.Contains(actorName))
+                        return string.Format("{0}", actorName);
                     return string.Format("<color=#d63e3e>* {0} *</color>", _actorName);
                 }
                 return base.name;
@@ -64,7 +65,8 @@ namespace NodeCanvas.DialogueTrees
         {
             if (requireActorSelection) {
                 GUI.backgroundColor = Colors.lightBlue;
-                actorName = EditorUtils.Popup<string>(actorName, DLGTree.definedActorParameterNames);
+                actorName =
+                    EditorUtils.Popup<string>(actorName, DLGTree.definedActorParameterNames);
                 GUI.backgroundColor = Color.white;
             }
             base.OnNodeInspectorGUI();

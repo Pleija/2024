@@ -3,8 +3,8 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform")
-     , Description(
+    [Category("Transform"),
+     Description(
          "Smoothly match the selected transforms of the actor and to the target for a period of time and then back again to their original values. If you don't want to smooth back to the original values, set BlendOut to 0.")]
     public class MatchTransformsToTarget : ActorActionClip
     {
@@ -30,7 +30,9 @@ namespace Slate.ActionClips
         private Vector3 lastPos;
         private Quaternion lastRot;
         private Vector3 lastScale;
-        public override string info => "Match Transforms\n" + (targetObject ? targetObject.name : "NONE");
+
+        public override string info =>
+            "Match Transforms\n" + (targetObject ? targetObject.name : "NONE");
 
         public override float length {
             get => _length;
@@ -61,7 +63,8 @@ namespace Slate.ActionClips
             if (matchPosition) {
                 var targetPos = targetObject.transform.TransformPoint(positionOffset);
                 if (length > 0)
-                    actor.transform.position = Easing.Ease(interpolation, lastPos, targetPos, GetClipWeight(time));
+                    actor.transform.position = Easing.Ease(interpolation, lastPos, targetPos,
+                        GetClipWeight(time));
                 else
                     actor.transform.position = targetPos;
             }
@@ -69,15 +72,16 @@ namespace Slate.ActionClips
             if (matchRotation) {
                 var targetRot = targetObject.rotation * Quaternion.Euler(rotationOffset);
                 if (length > 0)
-                    actor.transform.rotation = Easing.Ease(interpolation, lastRot, targetRot, GetClipWeight(time));
+                    actor.transform.rotation = Easing.Ease(interpolation, lastRot, targetRot,
+                        GetClipWeight(time));
                 else
                     actor.transform.rotation = targetRot;
             }
 
             if (matchScale) {
                 if (length > 0)
-                    actor.transform.localScale = Easing.Ease(interpolation, lastScale
-                        , targetObject.localScale + scaleOffset, GetClipWeight(time));
+                    actor.transform.localScale = Easing.Ease(interpolation, lastScale,
+                        targetObject.localScale + scaleOffset, GetClipWeight(time));
                 else
                     actor.transform.localScale = targetObject.localScale + scaleOffset;
             }

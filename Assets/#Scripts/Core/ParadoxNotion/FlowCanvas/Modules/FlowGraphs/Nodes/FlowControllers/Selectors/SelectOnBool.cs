@@ -2,8 +2,9 @@
 
 namespace FlowCanvas.Nodes
 {
-    [ExposeAsDefinition, Category("Flow Controllers/Selectors")
-     , Description("Select a Result value out of the two input cases provided, based on a boolean Condition")]
+    [ExposeAsDefinition, Category("Flow Controllers/Selectors"),
+     Description(
+         "Select a Result value out of the two input cases provided, based on a boolean Condition")]
     public class SelectOnBool<T> : FlowControlNode
     {
         private ValueInput<bool> condition;

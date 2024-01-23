@@ -5,7 +5,8 @@ using Logger = ParadoxNotion.Services.Logger;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility"), Description("Check if an event is received and return true for one frame")]
+    [Category("✫ Utility"),
+     Description("Check if an event is received and return true for one frame")]
     public class CheckEvent : ConditionTask<GraphOwner>
     {
         [RequiredField]
@@ -28,16 +29,17 @@ namespace NodeCanvas.Tasks.Conditions
         private void OnCustomEvent(string eventName, IEventData data)
         {
             if (eventName.Equals(this.eventName.value, System.StringComparison.OrdinalIgnoreCase)) {
-                Logger.Log(string.Format("Event Received from ({0}): '{1}'", agent.gameObject.name, name), LogTag.EVENT
-                    , this);
+                Logger.Log(
+                    string.Format("Event Received from ({0}): '{1}'", agent.gameObject.name, name),
+                    LogTag.EVENT, this);
                 YieldReturn(true);
             }
         }
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Utility")
-     , Description(
+    [Category("✫ Utility"),
+     Description(
          "Check if an event is received and return true for one frame. Optionaly save the received event's value")]
     public class CheckEvent<T> : ConditionTask<GraphOwner>
     {
@@ -47,7 +49,8 @@ namespace NodeCanvas.Tasks.Conditions
         [BlackboardOnly]
         public BBParameter<T> saveEventValue;
 
-        protected override string info => string.Format("Event [{0}]\n{1} = EventValue", eventName, saveEventValue);
+        protected override string info =>
+            string.Format("Event [{0}]\n{1} = EventValue", eventName, saveEventValue);
 
         protected override void OnEnable()
         {
@@ -67,8 +70,9 @@ namespace NodeCanvas.Tasks.Conditions
                 if (data is EventData<T>) //avoid boxing if able
                     saveEventValue.value = ((EventData<T>)data).value;
                 else if (data.valueBoxed is T) saveEventValue.value = (T)data.valueBoxed;
-                Logger.Log(string.Format("Event Received from ({0}): '{1}'", agent.gameObject.name, eventName)
-                    , LogTag.EVENT, this);
+                Logger.Log(
+                    string.Format("Event Received from ({0}): '{1}'", agent.gameObject.name,
+                        eventName), LogTag.EVENT, this);
                 YieldReturn(true);
             }
         }

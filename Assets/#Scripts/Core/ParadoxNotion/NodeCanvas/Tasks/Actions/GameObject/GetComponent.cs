@@ -10,7 +10,8 @@ namespace NodeCanvas.Tasks.Actions
         [BlackboardOnly]
         public BBParameter<T> saveAs;
 
-        protected override string info => string.Format("Get {0} as {1}", typeof(T).Name, saveAs.ToString());
+        protected override string info =>
+            string.Format("Get {0} as {1}", typeof(T).Name, saveAs.ToString());
 
         protected override void OnExecute()
         {

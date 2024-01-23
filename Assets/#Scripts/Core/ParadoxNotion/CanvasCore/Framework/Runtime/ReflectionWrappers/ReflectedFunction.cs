@@ -154,7 +154,8 @@ namespace NodeCanvas.Framework.Internal
 
         public override void Init(object instance)
         {
-            call = GetMethod().RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, TResult>>(instance);
+            call = GetMethod()
+                .RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, TResult>>(instance);
         }
 
         public override object Call()
@@ -184,7 +185,8 @@ namespace NodeCanvas.Framework.Internal
 
         public override void Init(object instance)
         {
-            call = GetMethod().RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, T6, TResult>>(instance);
+            call = GetMethod()
+                .RTCreateDelegate<FunctionCall<T1, T2, T3, T4, T5, T6, TResult>>(instance);
         }
 
         public override object Call()

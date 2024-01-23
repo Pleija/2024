@@ -8,7 +8,8 @@ namespace Slate
     public static class IDirectableExtensions
     {
         ///<summary>The length of the directable</summary>
-        public static float GetLength(this IDirectable directable) => directable.endTime - directable.startTime;
+        public static float GetLength(this IDirectable directable) =>
+            directable.endTime - directable.startTime;
 
         ///<summary>The local time of the directable based on root current time</summary>
         public static float RootTimeToLocalTime(this IDirectable directable) =>
@@ -38,7 +39,8 @@ namespace Slate
         public static bool CanCrossBlend(this IDirectable directable, IDirectable other)
         {
             if (directable == null || other == null) return false;
-            if ((directable.canCrossBlend || other.canCrossBlend) && directable.GetType() == other.GetType())
+            if ((directable.canCrossBlend || other.canCrossBlend) &&
+                directable.GetType() == other.GetType())
                 return true;
             return false;
         }
@@ -46,7 +48,8 @@ namespace Slate
         ///<summary>Does the directable has real blend in ability?</summary>
         public static bool CanBlendIn(this IDirectable directable)
         {
-            var blendInProp = directable.GetType().GetProperty("blendIn", BindingFlags.Instance | BindingFlags.Public);
+            var blendInProp = directable.GetType()
+                .GetProperty("blendIn", BindingFlags.Instance | BindingFlags.Public);
             return blendInProp != null && blendInProp.CanWrite && directable.blendIn != -1 &&
                 blendInProp.DeclaringType != typeof(ActionClip);
         }
@@ -54,8 +57,8 @@ namespace Slate
         ///<summary>Does the directable has real blend out ability?</summary>
         public static bool CanBlendOut(this IDirectable directable)
         {
-            var blendOutProp =
-                directable.GetType().GetProperty("blendOut", BindingFlags.Instance | BindingFlags.Public);
+            var blendOutProp = directable.GetType()
+                .GetProperty("blendOut", BindingFlags.Instance | BindingFlags.Public);
             return blendOutProp != null && blendOutProp.CanWrite && directable.blendOut != -1 &&
                 blendOutProp.DeclaringType != typeof(ActionClip);
         }
@@ -63,17 +66,20 @@ namespace Slate
         ///<summary>Can the directable scale (adjust length)?</summary>
         public static bool CanScale(this IDirectable directable)
         {
-            var lengthProp = directable.GetType().GetProperty("length", BindingFlags.Instance | BindingFlags.Public);
-            return lengthProp != null && lengthProp.CanWrite && lengthProp.DeclaringType != typeof(ActionClip);
+            var lengthProp = directable.GetType()
+                .GetProperty("length", BindingFlags.Instance | BindingFlags.Public);
+            return lengthProp != null && lengthProp.CanWrite &&
+                lengthProp.DeclaringType != typeof(ActionClip);
         }
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Utility to check if delta (time - previous time) are close enough to trigger something that should only
+        ///     Utility to check if delta (time - previous time) are close enough to trigger something that
+        ///     should only
         ///     trigger when they are
         /// </summary>
-        public static bool WithinBufferTriggerRange(this IDirectable directable, float time, float previousTime
-            , bool bypass = false)
+        public static bool WithinBufferTriggerRange(this IDirectable directable, float time,
+            float previousTime, bool bypass = false)
         {
             if (directable.root.isReSampleFrame) return false;
             return time - previousTime <= 0.1f * directable.root.playbackSpeed || bypass;
@@ -136,7 +142,8 @@ namespace Slate
         public static float GetWeight(this IDirectable directable, float time, float blendInOut) =>
             GetWeight(directable, time, blendInOut, blendInOut);
 
-        public static float GetWeight(this IDirectable directable, float time, float blendIn, float blendOut)
+        public static float GetWeight(this IDirectable directable, float time, float blendIn,
+            float blendOut)
         {
             var length = GetLength(directable);
             if (time <= 0) return blendIn <= 0 ? 1 : 0;
@@ -146,44 +153,52 @@ namespace Slate
             return 1;
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Returns the transform object used for specified Space transformations. Null if World Space.</summary>
-        public static Transform GetSpaceTransform(this IDirectable directable, TransformSpace space
-            , GameObject actorOverride = null)
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns the transform object used for specified Space transformations. Null if World
+        ///     Space.
+        /// </summary>
+        public static Transform GetSpaceTransform(this IDirectable directable, TransformSpace space,
+            GameObject actorOverride = null)
         {
             if (space == TransformSpace.CutsceneSpace) return directable.root?.context?.transform;
             var actor = actorOverride != null ? actorOverride : directable.actor;
 
             if (actor != null) {
-                if (space == TransformSpace.ActorSpace) return actor != null ? actor.transform : null;
-                if (space == TransformSpace.ParentSpace) return actor != null ? actor.transform.parent : null;
+                if (space == TransformSpace.ActorSpace)
+                    return actor != null ? actor.transform : null;
+                if (space == TransformSpace.ParentSpace)
+                    return actor != null ? actor.transform.parent : null;
             }
             return null; //world space
         }
 
         ///<summary>Transforms a point in specified space</summary>
-        public static Vector3 TransformPosition(this IDirectable directable, Vector3 point, TransformSpace space)
+        public static Vector3 TransformPosition(this IDirectable directable, Vector3 point,
+            TransformSpace space)
         {
             var t = directable.GetSpaceTransform(space);
             return t != null ? t.TransformPoint(point) : point;
         }
 
         ///<summary>Inverse Transforms a point in specified space</summary>
-        public static Vector3 InverseTransformPosition(this IDirectable directable, Vector3 point, TransformSpace space)
+        public static Vector3 InverseTransformPosition(this IDirectable directable, Vector3 point,
+            TransformSpace space)
         {
             var t = directable.GetSpaceTransform(space);
             return t != null ? t.InverseTransformPoint(point) : point;
         }
 
-        public static Quaternion TransformRotation(this IDirectable directable, Vector3 euler, TransformSpace space)
+        public static Quaternion TransformRotation(this IDirectable directable, Vector3 euler,
+            TransformSpace space)
         {
             var t = directable.GetSpaceTransform(space);
             if (t != null) return t.rotation * Quaternion.Euler(euler);
             return Quaternion.Euler(euler);
         }
 
-        public static Vector3 InverseTransformRotation(this IDirectable directable, Quaternion rot
-            , TransformSpace space)
+        public static Vector3 InverseTransformRotation(this IDirectable directable, Quaternion rot,
+            TransformSpace space)
         {
             var t = directable.GetSpaceTransform(space);
             if (t != null) return (Quaternion.Inverse(t.rotation) * rot).eulerAngles;
@@ -191,8 +206,10 @@ namespace Slate
         }
 
         ///<summary>Returns the final actor position in specified Space (InverseTransform Space)</summary>
-        public static Vector3 ActorPositionInSpace(this IDirectable directable, TransformSpace space) =>
-            directable.actor != null ? directable.InverseTransformPosition(directable.actor.transform.position, space)
+        public static Vector3
+            ActorPositionInSpace(this IDirectable directable, TransformSpace space) =>
+            directable.actor != null
+                ? directable.InverseTransformPosition(directable.actor.transform.position, space)
                 : directable.root.context.transform.position;
 
         ///----------------------------------------------------------------------------------------------
@@ -237,8 +254,11 @@ namespace Slate
         }
 #endif
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Returns AnimationCurves of ALL (enabled and disabled) animated parameters stored in animationData of keyable.</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns AnimationCurves of ALL (enabled and disabled) animated parameters stored in
+        ///     animationData of keyable.
+        /// </summary>
         public static AnimationCurve[] GetCurvesAll(this IKeyable keyable)
         {
             if (keyable.animationData != null && keyable.animationData.isValid)
@@ -263,13 +283,15 @@ namespace Slate
             var case1 = ReferenceEquals(CutsceneUtility.selectedObject, keyable);
             var activeTransform = UnityEditor.Selection.activeTransform;
             var actor = keyable.actor;
-            var case2 = actor != null && activeTransform != null && activeTransform.IsChildOf(actor.transform);
+            var case2 = actor != null && activeTransform != null &&
+                activeTransform.IsChildOf(actor.transform);
             if (case1 || case2) return keyable.animationData.TryAutoKey(time);
             return false;
         }
 
         ///<summary>Try add parameter in animation data of keyable</summary>
-        public static bool TryAddParameter(this IKeyable keyable, Type type, string memberPath, string transformPath) =>
+        public static bool TryAddParameter(this IKeyable keyable, Type type, string memberPath,
+            string transformPath) =>
             keyable.animationData.TryAddParameter(keyable, type, memberPath, transformPath);
 #endif
     }

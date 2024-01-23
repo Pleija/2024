@@ -16,7 +16,8 @@ namespace FlowCanvas.Nodes
 
     /// ----------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Base class for event nodes that require a specific target Component or GameObject. (use Transform for
+    ///     Base class for event nodes that require a specific target Component or GameObject. (use
+    ///     Transform for
     ///     GameObjects).
     /// </summary>
     [ContextDefinedOutputs(typeof(Wild))]
@@ -24,8 +25,8 @@ namespace FlowCanvas.Nodes
     {
         public BBParameter<T> target;
 
-        public override string name => string.Format("{0} ({1})", base.name.ToUpper()
-            , !target.useBlackboard && target.value == null ? "Self" : target.ToString());
+        public override string name => string.Format("{0} ({1})", base.name.ToUpper(),
+            !target.useBlackboard && target.value == null ? "Self" : target.ToString());
 
         //...
         public override void OnPostGraphStarted()
@@ -36,13 +37,15 @@ namespace FlowCanvas.Nodes
         ///<summary>Resolve component from Self if 'target' is null</summary>
         protected void ResolveSelf()
         {
-            if (!target.useBlackboard && target.value == null) target.value = graphAgent.GetComponent<T>();
+            if (!target.useBlackboard && target.value == null)
+                target.value = graphAgent.GetComponent<T>();
         }
     }
 
     /// ----------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Base class for event nodes with single or multiple target Component(s) that work with MonoBehaviour-based
+    ///     Base class for event nodes with single or multiple target Component(s) that work with
+    ///     MonoBehaviour-based
     ///     event callbacks raised through EventRouter. (use Transform for GameObjects)
     /// </summary>
     [ContextDefinedOutputs(typeof(Wild))]
@@ -60,7 +63,8 @@ namespace FlowCanvas.Nodes
             get {
                 var text = string.Empty;
                 if (targetMode == TargetMode.SingleTarget)
-                    text = !target.useBlackboard && target.value == null ? "Self" : target.ToString();
+                    text = !target.useBlackboard && target.value == null ? "Self"
+                        : target.ToString();
                 else
                     text = targets.ToString();
                 return string.Format("{0} ({1})", base.name.ToUpper(), text);
@@ -78,11 +82,13 @@ namespace FlowCanvas.Nodes
         {
             //SINGLE TARGET
             if (targetMode == TargetMode.SingleTarget) {
-                if (!target.useBlackboard && target.value == null) target.value = graphAgent.GetComponent<T>();
+                if (!target.useBlackboard && target.value == null)
+                    target.value = graphAgent.GetComponent<T>();
                 var o = target.value;
 
                 if (o == null) {
-                    Fail(string.Format("Target is missing component of type '{0}'", typeof(T).Name));
+                    Fail(string.Format("Target is missing component of type '{0}'",
+                        typeof(T).Name));
                     return;
                 }
                 Subscribe(o.gameObject.GetAddComponent<ParadoxNotion.Services.EventRouter>());
@@ -98,7 +104,8 @@ namespace FlowCanvas.Nodes
                 }
                 foreach (var target in list)
                     if (target != null)
-                        Subscribe(target.gameObject.GetAddComponent<ParadoxNotion.Services.EventRouter>());
+                        Subscribe(target.gameObject
+                            .GetAddComponent<ParadoxNotion.Services.EventRouter>());
             }
         }
 
@@ -107,7 +114,8 @@ namespace FlowCanvas.Nodes
         {
             //SINGLE TARGET
             if (targetMode == TargetMode.SingleTarget && target.value != null) {
-                var router = target.value.gameObject.GetComponent<ParadoxNotion.Services.EventRouter>();
+                var router = target.value.gameObject
+                    .GetComponent<ParadoxNotion.Services.EventRouter>();
                 if (router != null) UnSubscribe(router);
             }
 
@@ -115,7 +123,8 @@ namespace FlowCanvas.Nodes
             if (targetMode == TargetMode.MultipleTargets && targets.value != null)
                 foreach (var target in targets.value)
                     if (target != null) {
-                        var router = target.gameObject.GetComponent<ParadoxNotion.Services.EventRouter>();
+                        var router = target.gameObject
+                            .GetComponent<ParadoxNotion.Services.EventRouter>();
                         if (router != null) UnSubscribe(router);
                     }
         }

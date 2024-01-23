@@ -16,7 +16,8 @@ namespace NodeCanvas.Tasks.Conditions
         [Tooltip("A layer mask to use for line of sight check.")]
         public BBParameter<LayerMask> layerMask = (LayerMask)(-1);
 
-        [Tooltip("Distance within which the target can be seen (or rather sensed) regardless of view angle.")]
+        [Tooltip(
+            "Distance within which the target can be seen (or rather sensed) regardless of view angle.")]
         public BBParameter<float> awarnessDistance = 0f;
 
         [SliderField(1, 180)]
@@ -32,14 +33,17 @@ namespace NodeCanvas.Tasks.Conditions
             if (!t.gameObject.activeInHierarchy) return false;
 
             if (Vector3.Distance(agent.position, t.position) <= awarnessDistance.value) {
-                if (Physics.Linecast(agent.position + offset, t.position + offset, out hit, layerMask.value))
+                if (Physics.Linecast(agent.position + offset, t.position + offset, out hit,
+                    layerMask.value))
                     if (hit.collider != t.GetComponent<Collider>())
                         return false;
                 return true;
             }
             if (Vector3.Distance(agent.position, t.position) > maxDistance.value) return false;
-            if (Vector3.Angle(t.position - agent.position, agent.forward) > viewAngle.value) return false;
-            if (Physics.Linecast(agent.position + offset, t.position + offset, out hit, layerMask.value))
+            if (Vector3.Angle(t.position - agent.position, agent.forward) > viewAngle.value)
+                return false;
+            if (Physics.Linecast(agent.position + offset, t.position + offset, out hit,
+                layerMask.value))
                 if (hit.collider != t.GetComponent<Collider>())
                     return false;
             return true;
@@ -49,8 +53,10 @@ namespace NodeCanvas.Tasks.Conditions
         {
             if (agent != null) {
                 Gizmos.DrawLine(agent.position, agent.position + offset);
-                Gizmos.DrawLine(agent.position + offset, agent.position + offset + agent.forward * maxDistance.value);
-                Gizmos.DrawWireSphere(agent.position + offset + agent.forward * maxDistance.value, 0.1f);
+                Gizmos.DrawLine(agent.position + offset,
+                    agent.position + offset + agent.forward * maxDistance.value);
+                Gizmos.DrawWireSphere(agent.position + offset + agent.forward * maxDistance.value,
+                    0.1f);
                 Gizmos.DrawWireSphere(agent.position, awarnessDistance.value);
                 Gizmos.matrix = Matrix4x4.TRS(agent.position + offset, agent.rotation, Vector3.one);
                 Gizmos.DrawFrustum(Vector3.zero, viewAngle.value, 5, 0, 1f);

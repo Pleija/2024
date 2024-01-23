@@ -10,8 +10,8 @@ namespace Slate.ActionClips
         [Tooltip("The parameter value to use when calling the method")]
         public T value;
 
-        public override string info =>
-            string.Format("Message\n{0}({1})", message, value != null ? value.ToString() : "null");
+        public override string info => string.Format("Message\n{0}({1})", message,
+            value != null ? value.ToString() : "null");
 
         public override bool isValid => !string.IsNullOrEmpty(message);
         public override Type parameterType => typeof(T);

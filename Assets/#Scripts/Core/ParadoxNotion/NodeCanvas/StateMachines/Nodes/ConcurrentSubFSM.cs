@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Parallel Sub FSM", -1), Description("Execute a Sub FSM in parallel and for as long as this FSM is running.")
-     , Category("SubGraphs"), Color("ff64cb")]
+    [Name("Parallel Sub FSM", -1),
+     Description("Execute a Sub FSM in parallel and for as long as this FSM is running."),
+     Category("SubGraphs"), Color("ff64cb")]
     public class ConcurrentSubFSM : FSMNodeNested<FSM>, IUpdatable
     {
         [SerializeField, ExposeField, Name("Parallel FSM")]

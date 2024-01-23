@@ -6,8 +6,9 @@ namespace FlowCanvas.Nodes
     //We can't use proper versioning here since for that we would need to utilize GetComponent,
     //which is not possible to do in Deserialization. As such we make a completely new version.
 
-    [Name("Collision"), Category("Events/Object")
-     , Description("Called when Collision based events happen on target and expose collision information")]
+    [Name("Collision"), Category("Events/Object"),
+     Description(
+         "Called when Collision based events happen on target and expose collision information")]
     public class CollisionEvents_Rigidbody : RouterEventNode<Rigidbody>
     {
         private FlowOutput onEnter;
@@ -72,8 +73,10 @@ namespace FlowCanvas.Nodes
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Name("Collision"), Category("Events/Object")
-     , Description("Called when Collision based events happen on target and expose collision information"), DoNotList]
+    [Name("Collision"), Category("Events/Object"),
+     Description(
+         "Called when Collision based events happen on target and expose collision information"),
+     DoNotList]
     public class CollisionEvents : RouterEventNode<Collider>
     {
         private FlowOutput onEnter;

@@ -5,7 +5,8 @@ using UnityEditor;
 using UnityEngine;
 
 [ShowOdinSerializedPropertiesInInspector]
-public abstract class BehaviourBase : MonoBehaviour, ISerializationCallbackReceiver, ISupportsPrefabSerialization
+public abstract class BehaviourBase : MonoBehaviour, ISerializationCallbackReceiver,
+    ISupportsPrefabSerialization
 {
 #region Odin
     [SerializeField, HideInInspector]

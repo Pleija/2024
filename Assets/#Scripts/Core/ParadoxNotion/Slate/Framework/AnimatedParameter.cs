@@ -39,9 +39,14 @@ namespace Slate
                 declaringType = ReflectionTools.GetType(declaringTypeName);
 
                 if (declaringType != null) {
-                    property = ReflectionTools.GetRelativeMember(declaringType, parameterName) as PropertyInfo;
-                    field = ReflectionTools.GetRelativeMember(declaringType, parameterName) as FieldInfo;
-                    animatedType = property != null ? property.PropertyType : field != null ? field.FieldType : null;
+                    property =
+                        ReflectionTools.GetRelativeMember(declaringType, parameterName) as
+                            PropertyInfo;
+                    field =
+                        ReflectionTools.GetRelativeMember(declaringType,
+                            parameterName) as FieldInfo;
+                    animatedType = property != null ? property.PropertyType :
+                        field != null ? field.FieldType : null;
                 }
             }
         }
@@ -49,8 +54,11 @@ namespace Slate
         ///<summary>The type of the parameter.</summary>
         public enum ParameterType { NotSet, Property, Field }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>This event is raised when a parameter is changed with argument being the IAnimatableData parameter.</summary>
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     This event is raised when a parameter is changed with argument being the IAnimatableData
+        ///     parameter.
+        /// </summary>
         public static event Action<IAnimatableData> onParameterChanged;
 
         ///----------------------------------------------------------------------------------------------
@@ -114,7 +122,8 @@ namespace Slate
                 if (_parameterModel == null) {
                     Type modelType = null;
                     if (parameterModelsMap.TryGetValue(animatedType, out modelType))
-                        _parameterModel = Activator.CreateInstance(modelType) as IAnimatedParameterModel;
+                        _parameterModel =
+                            Activator.CreateInstance(modelType) as IAnimatedParameterModel;
                 }
                 return _parameterModel;
             }
@@ -208,7 +217,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     External means that the parameter was not created by the use of [AnimatableParameter] attribute, but rather
+        ///     External means that the parameter was not created by the use of [AnimatableParameter]
+        ///     attribute, but rather
         ///     added manually.
         /// </summary>
         public bool isExternal => animatableAttribute == null;
@@ -226,21 +236,25 @@ namespace Slate
         {
             parameterModelsMap = new Dictionary<Type, Type>();
 
-            foreach (var type in ReflectionTools.GetImplementationsOf(typeof(IAnimatedParameterModel))) {
+            foreach (var type in ReflectionTools.GetImplementationsOf(
+                typeof(IAnimatedParameterModel))) {
                 var decAtt = type.RTGetAttribute<DecoratorAttribute>(false);
                 if (decAtt != null)
                     parameterModelsMap[decAtt.targetType] = type;
                 else
-                    Debug.LogError(string.Format("{0} is missing the Decorator attribute", type.Name));
+                    Debug.LogError(string.Format("{0} is missing the Decorator attribute",
+                        type.Name));
             }
             supportedTypes = parameterModelsMap.Keys.ToArray();
         }
 
         /// <summary>
-        ///     Creates a new animated parameter out of a member info that optionaly exists on a component in child transform
+        ///     Creates a new animated parameter out of a member info that optionaly exists on a component in
+        ///     child transform
         ///     of root transform.
         /// </summary>
-        public AnimatedParameter(IKeyable keyable, Type type, string memberPath, string transformPath)
+        public AnimatedParameter(IKeyable keyable, Type type, string memberPath,
+            string transformPath)
         {
             this.keyable = keyable;
             var member = ReflectionTools.GetRelativeMember(type, memberPath);
@@ -254,14 +268,17 @@ namespace Slate
                 ConstructWithField((FieldInfo)member, type, memberPath, transformPath);
                 return;
             }
-            Debug.LogError("MemberInfo provided is neither Property, nor Field, or can't be found.");
+            Debug.LogError(
+                "MemberInfo provided is neither Property, nor Field, or can't be found.");
         }
 
         //construct with FieldInfo
-        private void ConstructWithField(FieldInfo targetField, Type type, string memberPath, string transformPath)
+        private void ConstructWithField(FieldInfo targetField, Type type, string memberPath,
+            string transformPath)
         {
             if (!supportedTypes.Contains(targetField.FieldType)) {
-                Debug.LogError(string.Format("Type '{0}' is not supported for animation", targetField.FieldType));
+                Debug.LogError(string.Format("Type '{0}' is not supported for animation",
+                    targetField.FieldType));
                 return;
             }
 
@@ -279,11 +296,12 @@ namespace Slate
         }
 
         //construct with PropertyInfo
-        private void ConstructWithProperty(PropertyInfo targetProperty, Type type, string memberPath
-            , string transformPath)
+        private void ConstructWithProperty(PropertyInfo targetProperty, Type type,
+            string memberPath, string transformPath)
         {
             if (!supportedTypes.Contains(targetProperty.PropertyType)) {
-                Debug.LogError(string.Format("Type '{0}' is not supported for animation", targetProperty.PropertyType));
+                Debug.LogError(string.Format("Type '{0}' is not supported for animation",
+                    targetProperty.PropertyType));
                 return;
             }
 
@@ -315,9 +333,13 @@ namespace Slate
         ///<summary>The curves used</summary>
         public AnimationCurve[] GetCurves() => curves;
 
-        ///<summary>Returns true if this animated parameter points to the same property/field as the provided one does.</summary>
+        /// <summary>
+        ///     Returns true if this animated parameter points to the same property/field as the provided
+        ///     one does.
+        /// </summary>
         public bool CompareTo(AnimatedParameter other) => parameterName == other.parameterName &&
-            declaringType == other.declaringType && transformHierarchyPath == other.transformHierarchyPath;
+            declaringType == other.declaringType &&
+            transformHierarchyPath == other.transformHierarchyPath;
 
         //Initialize the curves
         private void InitializeCurves()
@@ -349,7 +371,8 @@ namespace Slate
             if (!isValid) return;
 #if UNITY_EDITOR
             {
-                if (!Application.isPlaying && Prefs.autoKey && Prefs.autoFirstKey && !HasAnyKey()) TryKeyIdentity(0);
+                if (!Application.isPlaying && Prefs.autoKey && Prefs.autoFirstKey && !HasAnyKey())
+                    TryKeyIdentity(0);
             }
 #endif
 
@@ -379,7 +402,8 @@ namespace Slate
 
             // Evaluate_1_Curves(time, previousTime, weight);
             // Evaluate_2_Expression(time, previousTime, weight);
-            if (!Evaluate_2_Expression(time, previousTime, weight)) Evaluate_1_Curves(time, previousTime, weight);
+            if (!Evaluate_2_Expression(time, previousTime, weight))
+                Evaluate_1_Curves(time, previousTime, weight);
         }
 
         ///<summary>Evaluate the curve keyframes if any</summary>
@@ -399,7 +423,8 @@ namespace Slate
                             Action commit = () => {
                                 TryAutoKey(time);
                             };
-                            var paramCallbacks = new CutsceneUtility.ChangedParameterCallbacks(restore, commit);
+                            var paramCallbacks =
+                                new CutsceneUtility.ChangedParameterCallbacks(restore, commit);
                             CutsceneUtility.changedParameterCallbacks[this] = paramCallbacks;
                         }
                         return; //auto-key or not, return if the parameter changed
@@ -496,7 +521,8 @@ namespace Slate
             if (targetObject == null || targetObject.Equals(null)) return null;
 
             //if snapshot not null, means at least one time this has been evaluated
-            if (_resolvedMemberObject != null && !_resolvedMemberObject.Equals(null) && snapshot != null)
+            if (_resolvedMemberObject != null && !_resolvedMemberObject.Equals(null) &&
+                snapshot != null)
                 return _resolvedMemberObject;
             var result = targetObject;
 
@@ -506,7 +532,8 @@ namespace Slate
 
                 if (!string.IsNullOrEmpty(transformHierarchyPath)) {
                     var leafTransform =
-                        UnityObjectUtility.ResolveTransformPath(leafGameObject.transform, transformHierarchyPath);
+                        UnityObjectUtility.ResolveTransformPath(leafGameObject.transform,
+                            transformHierarchyPath);
                     leafGameObject = leafTransform != null ? leafTransform.gameObject : null;
                 }
                 result = leafGameObject != null ? leafGameObject.GetComponent(declaringType) : null;
@@ -517,7 +544,8 @@ namespace Slate
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Gets the current raw property value from target boxed to object</summary>
-        public object GetCurrentValueAsObject() => parameterModel.ConvertToObject(GetCurrentValueAsFloats());
+        public object GetCurrentValueAsObject() =>
+            parameterModel.ConvertToObject(GetCurrentValueAsFloats());
 
         ///<summary>Gets the current raw property value from target as floats[]</summary>
         private float[] GetCurrentValueAsFloats()
@@ -556,7 +584,8 @@ namespace Slate
         }
 
         /// <summary>
-        ///     Sets the current value to the object, given a float[] that represents that value. This avoids boxing and thus
+        ///     Sets the current value to the object, given a float[] that represents that value. This avoids
+        ///     boxing and thus
         ///     allocations.
         /// </summary>
         private void SetCurrentValue(float[] floats)
@@ -622,7 +651,8 @@ namespace Slate
 
         /// ----------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Try add key at time, with identity value either from existing curves or in case of no curves, from current
+        ///     Try add key at time, with identity value either from existing curves or in case of no curves,
+        ///     from current
         ///     property value.
         /// </summary>
         public bool TryKeyIdentity(float time)
@@ -634,7 +664,8 @@ namespace Slate
             }
             RecordUndo();
             var keyAdded = false;
-            var mode = parameterModel.ForceStepMode() ? TangentMode.Constant : Prefs.defaultTangentMode;
+            var mode = parameterModel.ForceStepMode() ? TangentMode.Constant
+                : Prefs.defaultTangentMode;
             for (var i = 0; i < curves.Length; i++)
                 if (CurveUtility.AddKey(curves[i], time, curves[i].Evaluate(time), mode))
                     keyAdded = true;
@@ -651,7 +682,8 @@ namespace Slate
 #if UNITY_EDITOR
             RecordUndo();
             var floats = GetCurrentValueAsFloats();
-            var mode = parameterModel.ForceStepMode() ? TangentMode.Constant : Prefs.defaultTangentMode;
+            var mode = parameterModel.ForceStepMode() ? TangentMode.Constant
+                : Prefs.defaultTangentMode;
             if (enabled)
                 for (var i = 0; i < curves.Length; i++)
                     CurveUtility.AddKey(curves[i], time, floats[i], mode);
@@ -726,7 +758,8 @@ namespace Slate
         {
             if (string.IsNullOrEmpty(serializedData)) return "NOT SET!";
             var name = parameterName;
-            if (animatableAttribute != null && !string.IsNullOrEmpty(animatableAttribute.customName))
+            if (animatableAttribute != null &&
+                !string.IsNullOrEmpty(animatableAttribute.customName))
                 name = animatableAttribute.customName;
             if (!isValid) return string.Format("*{0}*", name);
             if (!isExternal) name = name.Substring(name.LastIndexOf('.') + 1);
@@ -736,7 +769,8 @@ namespace Slate
             if (isExternal) name = string.Format("{0} <i>({1})</i>", name, declaringType.Name);
             if (!enabled) name += " <i>(Disabled)</i>";
             name = name.SplitCamelCase();
-            return string.IsNullOrEmpty(transformHierarchyPath) ? name : transformHierarchyPath + "/" + name;
+            return string.IsNullOrEmpty(transformHierarchyPath) ? name
+                : transformHierarchyPath + "/" + name;
         }
 
         ///<summary>Returns formated text of value at time</summary>

@@ -74,8 +74,8 @@ namespace Puerts
                         // NOOP
                     }
                     else if (lastSlash != i - 1 && dots == 2) {
-                        if (res.Length < 2 || lastSegmentLength != 2 || res[res.Length - 1] != '.' ||
-                            res[res.Length - 2] != '.') {
+                        if (res.Length < 2 || lastSegmentLength != 2 ||
+                            res[res.Length - 1] != '.' || res[res.Length - 2] != '.') {
                             if (res.Length > 2) {
                                 var lastSlashIndex = res.LastIndexOf('/');
 

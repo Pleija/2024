@@ -12,7 +12,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
             return true;
         }
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        public override fsResult TrySerialize(object instance, out fsData serialized,
+            Type storageType)
         {
             serialized = fsData.CreateDictionary();
             var result = fsResult.Success;
@@ -35,11 +36,13 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     propertyValue = fsMetaType.Get(property.StorageType).CreateInstance();
                     property.Write(instance, propertyValue);
                 }
-                else if (fsGlobalConfig.SerializeDefaultValues == false && defaultInstance != null) {
+                else if (fsGlobalConfig.SerializeDefaultValues == false &&
+                    defaultInstance != null) {
                     if (Equals(propertyValue, property.Read(defaultInstance))) continue;
                 }
                 fsData serializedData;
-                var itemResult = Serializer.TrySerialize(property.StorageType, propertyValue, out serializedData);
+                var itemResult = Serializer.TrySerialize(property.StorageType, propertyValue,
+                    out serializedData);
                 result.AddMessages(itemResult);
                 if (itemResult.Failed) continue;
                 serialized.AsDictionary[property.JsonName] = serializedData;
@@ -66,10 +69,11 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
 
                     //This does not work well with no serializing default values -> Find a workaround.
                     if (fsGlobalConfig.SerializeDefaultValues)
-                        if (metaType.DeserializeOverwriteRequest || typeof(ICollection).IsAssignableFrom(storageType))
+                        if (metaType.DeserializeOverwriteRequest ||
+                            typeof(ICollection).IsAssignableFrom(storageType))
                             deserializedValue = property.Read(instance);
-                    var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType, ref deserializedValue
-                        , null);
+                    var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType,
+                        ref deserializedValue, null);
                     result.AddMessages(itemResult);
                     if (itemResult.Failed) continue;
                     property.Write(instance, deserializedValue);

@@ -11,7 +11,8 @@ using UnityEngine;
 namespace NodeCanvas.Framework
 {
     /// <summary>
-    ///     ConditionList is a ConditionTask itself that holds many ConditionTasks. It can be set to either require all
+    ///     ConditionList is a ConditionTask itself that holds many ConditionTasks. It can be set to either
+    ///     require all
     ///     true or any true.
     /// </summary>
     [DoNotList]
@@ -25,7 +26,8 @@ namespace NodeCanvas.Framework
         protected override string info {
             get {
                 if (conditions.Count == 0) return "No Conditions";
-                var finalText = conditions.Count > 1 ? "<b>(" + (allTrueRequired ? "ALL True" : "ANY True") + ")</b>\n"
+                var finalText = conditions.Count > 1
+                    ? "<b>(" + (allTrueRequired ? "ALL True" : "ANY True") + ")</b>\n"
                     : string.Empty;
 
                 for (var i = 0; i < conditions.Count; i++) {
@@ -33,7 +35,8 @@ namespace NodeCanvas.Framework
 
                     if (conditions[i].isUserEnabled) {
                         var prefix = "▪";
-                        finalText += prefix + conditions[i].summaryInfo + (i == conditions.Count - 1 ? "" : "\n");
+                        finalText += prefix + conditions[i].summaryInfo +
+                            (i == conditions.Count - 1 ? "" : "\n");
                     }
                 }
                 return finalText;
@@ -97,7 +100,8 @@ namespace NodeCanvas.Framework
         public void AddCondition(ConditionTask condition)
         {
             if (condition is ConditionList) {
-                foreach (var subCondition in (condition as ConditionList).conditions) AddCondition(subCondition);
+                foreach (var subCondition in (condition as ConditionList).conditions)
+                    AddCondition(subCondition);
                 return;
             }
 #if UNITY_EDITOR
@@ -142,13 +146,16 @@ namespace NodeCanvas.Framework
             if (conditions.Count == 1) return;
             EditorUtils.ReorderableList(conditions, (i, picked) => {
                 var condition = conditions[i];
-                GUI.color = Color.white.WithAlpha(condition == currentViewCondition ? 0.75f : 0.25f);
+                GUI.color =
+                    Color.white.WithAlpha(condition == currentViewCondition ? 0.75f : 0.25f);
                 GUILayout.BeginHorizontal("box");
                 GUI.color = Color.white.WithAlpha(condition.isUserEnabled ? 0.8f : 0.25f);
                 GUI.enabled = !Application.isPlaying;
-                condition.isUserEnabled = EditorGUILayout.Toggle(condition.isUserEnabled, GUILayout.Width(18));
+                condition.isUserEnabled =
+                    EditorGUILayout.Toggle(condition.isUserEnabled, GUILayout.Width(18));
                 GUI.enabled = true;
-                GUILayout.Label(condition.summaryInfo, GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
+                GUILayout.Label(condition.summaryInfo, GUILayout.MinWidth(0),
+                    GUILayout.ExpandWidth(true));
 
                 if (!Application.isPlaying && GUILayout.Button("X", GUILayout.MaxWidth(20))) {
                     UndoUtility.RecordObject(ownerSystem.contextObject, "List Remove Task");
@@ -159,7 +166,8 @@ namespace NodeCanvas.Framework
                 var lastRect = GUILayoutUtility.GetLastRect();
                 EditorGUIUtility.AddCursorRect(lastRect, MouseCursor.Link);
 
-                if (Event.current.type == EventType.MouseDown && lastRect.Contains(Event.current.mousePosition)) {
+                if (Event.current.type == EventType.MouseDown &&
+                    lastRect.Contains(Event.current.mousePosition)) {
                     currentViewCondition = condition == currentViewCondition ? null : condition;
                     Event.current.Use();
                 }
@@ -200,8 +208,9 @@ namespace NodeCanvas.Framework
             var path = EditorUtility.SaveFilePanelInProject("Save Preset", "", "conditionList", "");
 
             if (!string.IsNullOrEmpty(path)) {
-                System.IO.File.WriteAllText(path
-                    , JSONSerializer.Serialize(typeof(ConditionList), this, null, true)); //true for pretyJson
+                System.IO.File.WriteAllText(path,
+                    JSONSerializer.Serialize(typeof(ConditionList), this, null,
+                        true)); //true for pretyJson
                 AssetDatabase.Refresh();
             }
         }

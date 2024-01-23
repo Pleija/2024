@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-    [Category("Renderer")
-     , Description(
+    [Category("Renderer"),
+     Description(
          "Scroll/Offset the material texture. Usefull for scrolling backgrounds, screens, or other similar effects.")]
     public class ScrollMaterialTexture : ActorActionClip<Renderer>
     {
@@ -19,7 +19,9 @@ namespace Slate.ActionClips
         public EaseType interpolation = EaseType.QuadraticInOut;
         private Vector2 originalOffset;
         public override string info => string.Format("Scroll Texture / sec\n{0}", speed);
-        public override bool isValid => actor != null && actor.sharedMaterial.HasProperty(propertyName);
+
+        public override bool isValid =>
+            actor != null && actor.sharedMaterial.HasProperty(propertyName);
 
         public override float length {
             get => _length;
@@ -27,7 +29,9 @@ namespace Slate.ActionClips
         }
 
         public override float blendIn => length;
-        private Material targetMaterial => Application.isPlaying ? actor.material : actor.sharedMaterial;
+
+        private Material targetMaterial =>
+            Application.isPlaying ? actor.material : actor.sharedMaterial;
 
         protected override void OnEnter()
         {
@@ -36,8 +40,8 @@ namespace Slate.ActionClips
 
         protected override void OnUpdate(float time)
         {
-            var newOffset = Easing.Ease(interpolation, originalOffset, originalOffset + speed * length
-                , GetClipWeight(time));
+            var newOffset = Easing.Ease(interpolation, originalOffset,
+                originalOffset + speed * length, GetClipWeight(time));
             targetMaterial.SetTextureOffset(propertyName, newOffset);
         }
 

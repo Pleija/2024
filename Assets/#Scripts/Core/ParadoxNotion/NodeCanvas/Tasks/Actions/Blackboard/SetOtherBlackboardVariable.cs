@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"), Description("Use this to set a variable on any blackboard by overriding the agent")]
+    [Category("✫ Blackboard"),
+     Description("Use this to set a variable on any blackboard by overriding the agent")]
     public class SetOtherBlackboardVariable : ActionTask<Blackboard>
     {
         [RequiredField]
@@ -13,8 +14,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public BBObjectParameter newValue;
 
-        protected override string info => string.Format("<b>{0}</b> = {1}", targetVariableName.ToString()
-            , newValue != null ? newValue.ToString() : "");
+        protected override string info => string.Format("<b>{0}</b> = {1}",
+            targetVariableName.ToString(), newValue != null ? newValue.ToString() : "");
 
         protected override void OnExecute()
         {

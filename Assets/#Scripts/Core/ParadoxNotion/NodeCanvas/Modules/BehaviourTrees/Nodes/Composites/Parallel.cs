@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Parallel", 8), Category("Composites")
-     , Description(
-         "Executes all children simultaneously and return Success or Failure depending on the selected Policy.")
-     , Icon("Parallel"), Color("ff64cb")]
+    [Name("Parallel", 8), Category("Composites"),
+     Description(
+         "Executes all children simultaneously and return Success or Failure depending on the selected Policy."),
+     Icon("Parallel"), Color("ff64cb")]
     public class Parallel : BTComposite
     {
         public enum ParallelPolicy { FirstFailure, FirstSuccess, FirstSuccessOrFailure }
@@ -17,8 +17,8 @@ namespace NodeCanvas.BehaviourTrees
         [Tooltip("The policy determines when the Parallel node will end and return its Status.")]
         public ParallelPolicy policy = ParallelPolicy.FirstFailure;
 
-        [Name("Repeat")
-         , Tooltip(
+        [Name("Repeat"),
+         Tooltip(
              "If true, finished children are repeated until the Policy set is met, or until all children have had a chance to finish at least once.")]
         public bool dynamic;
 
@@ -92,7 +92,8 @@ namespace NodeCanvas.BehaviourTrees
 #if UNITY_EDITOR
         protected override void OnNodeGUI()
         {
-            GUILayout.Label((dynamic ? "<b>REPEAT</b>\n" : "") + policy.ToString().SplitCamelCase());
+            GUILayout.Label((dynamic ? "<b>REPEAT</b>\n" : "") +
+                policy.ToString().SplitCamelCase());
         }
 
 #endif

@@ -2,7 +2,8 @@
 
 namespace Slate.ActionClips
 {
-    [Category("Environment"), Description("Animate the time scale. Can be used to create slow motion effects as well.")]
+    [Category("Environment"),
+     Description("Animate the time scale. Can be used to create slow motion effects as well.")]
     public class AnimateTimeScale : DirectorActionClip
     {
         [SerializeField, HideInInspector]

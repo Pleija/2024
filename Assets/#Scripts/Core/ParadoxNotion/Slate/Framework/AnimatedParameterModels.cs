@@ -42,7 +42,9 @@ namespace Slate
             return new float[1] { (bool)value ? 1 : 0 };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0})", floats[0] >= 1 ? "true" : "false");
+        public string GetKeyLabel(params float[] floats) =>
+            string.Format("({0})", floats[0] >= 1 ? "true" : "false");
+
         private Action<object, bool> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
@@ -53,7 +55,8 @@ namespace Slate
 
         public float[] GetDirect(object target, MemberInfo info)
         {
-            return new float[1] { (bool)ReflectionTools.RTGetFieldOrPropValue(info, target) ? 1 : 0 };
+            return new float[1]
+                { (bool)ReflectionTools.RTGetFieldOrPropValue(info, target) ? 1 : 0 };
         }
     }
 
@@ -70,7 +73,9 @@ namespace Slate
             return new float[1] { (int)value };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0})", floats[0].ToString("0"));
+        public string GetKeyLabel(params float[] floats) =>
+            string.Format("({0})", floats[0].ToString("0"));
+
         private Action<object, int> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
@@ -98,7 +103,9 @@ namespace Slate
             return new float[1] { (float)value };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0})", floats[0].ToString("0.0"));
+        public string GetKeyLabel(params float[] floats) =>
+            string.Format("({0})", floats[0].ToString("0.0"));
+
         private Action<object, float> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
@@ -127,14 +134,15 @@ namespace Slate
             return new float[2] { vector.x, vector.y };
         }
 
-        public string GetKeyLabel(params float[] floats) =>
-            string.Format("({0},{1})", floats[0].ToString("0"), floats[1].ToString("0"));
+        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1})",
+            floats[0].ToString("0"), floats[1].ToString("0"));
 
         private Action<object, Vector2> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
         {
-            if (setter == null) setter = ReflectionTools.GetFieldOrPropSetter<object, Vector2>(info);
+            if (setter == null)
+                setter = ReflectionTools.GetFieldOrPropSetter<object, Vector2>(info);
             setter(target, new Vector2(floats[0], floats[1]));
         }
 
@@ -151,7 +159,9 @@ namespace Slate
     {
         public bool ForceStepMode() => false;
         public int RequiredCurvesCount() => 3;
-        public object ConvertToObject(params float[] floats) => new Vector3(floats[0], floats[1], floats[2]);
+
+        public object ConvertToObject(params float[] floats) =>
+            new Vector3(floats[0], floats[1], floats[2]);
 
         public float[] ConvertToFloats(object value)
         {
@@ -159,14 +169,15 @@ namespace Slate
             return new float[3] { vector.x, vector.y, vector.z };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2})", floats[0].ToString("0")
-            , floats[1].ToString("0"), floats[2].ToString("0"));
+        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2})",
+            floats[0].ToString("0"), floats[1].ToString("0"), floats[2].ToString("0"));
 
         private Action<object, Vector3> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
         {
-            if (setter == null) setter = ReflectionTools.GetFieldOrPropSetter<object, Vector3>(info);
+            if (setter == null)
+                setter = ReflectionTools.GetFieldOrPropSetter<object, Vector3>(info);
             setter(target, new Vector3(floats[0], floats[1], floats[2]));
         }
 
@@ -183,7 +194,9 @@ namespace Slate
     {
         public bool ForceStepMode() => false;
         public int RequiredCurvesCount() => 4;
-        public object ConvertToObject(params float[] floats) => new Color(floats[0], floats[1], floats[2], floats[3]);
+
+        public object ConvertToObject(params float[] floats) =>
+            new Color(floats[0], floats[1], floats[2], floats[3]);
 
         public float[] ConvertToFloats(object value)
         {
@@ -194,7 +207,8 @@ namespace Slate
         public string GetKeyLabel(params float[] floats)
         {
             Color32 color = new Color(floats[0], floats[1], floats[2], floats[3]);
-            var hexColor = ("#" + color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2")).ToLower();
+            var hexColor = ("#" + color.r.ToString("X2") + color.g.ToString("X2") +
+                color.b.ToString("X2")).ToLower();
             return string.Format("(<color={0}><size=14>●</size></color>)", hexColor);
         }
 
@@ -219,7 +233,9 @@ namespace Slate
     {
         public bool ForceStepMode() => false;
         public int RequiredCurvesCount() => 4;
-        public object ConvertToObject(params float[] floats) => new Vector4(floats[0], floats[1], floats[2], floats[3]);
+
+        public object ConvertToObject(params float[] floats) =>
+            new Vector4(floats[0], floats[1], floats[2], floats[3]);
 
         public float[] ConvertToFloats(object value)
         {
@@ -227,14 +243,16 @@ namespace Slate
             return new float[4] { vector.x, vector.y, vector.z, vector.w };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3})", floats[0].ToString("0")
-            , floats[1].ToString("0"), floats[2].ToString("0"), floats[3].ToString("0"));
+        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3})",
+            floats[0].ToString("0"), floats[1].ToString("0"), floats[2].ToString("0"),
+            floats[3].ToString("0"));
 
         private Action<object, Vector4> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
         {
-            if (setter == null) setter = ReflectionTools.GetFieldOrPropSetter<object, Vector4>(info);
+            if (setter == null)
+                setter = ReflectionTools.GetFieldOrPropSetter<object, Vector4>(info);
             setter(target, new Vector4(floats[0], floats[1], floats[2], floats[3]));
         }
 
@@ -261,14 +279,16 @@ namespace Slate
             return new float[4] { quaternion.x, quaternion.y, quaternion.z, quaternion.w };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3})", floats[0].ToString("0")
-            , floats[1].ToString("0"), floats[2].ToString("0"), floats[3].ToString("0"));
+        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3})",
+            floats[0].ToString("0"), floats[1].ToString("0"), floats[2].ToString("0"),
+            floats[3].ToString("0"));
 
         private Action<object, Quaternion> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
         {
-            if (setter == null) setter = ReflectionTools.GetFieldOrPropSetter<object, Quaternion>(info);
+            if (setter == null)
+                setter = ReflectionTools.GetFieldOrPropSetter<object, Quaternion>(info);
             setter(target, new Quaternion(floats[0], floats[1], floats[2], floats[3]));
         }
 
@@ -285,7 +305,9 @@ namespace Slate
     {
         public bool ForceStepMode() => false;
         public int RequiredCurvesCount() => 4;
-        public object ConvertToObject(params float[] floats) => new Rect(floats[0], floats[1], floats[2], floats[3]);
+
+        public object ConvertToObject(params float[] floats) =>
+            new Rect(floats[0], floats[1], floats[2], floats[3]);
 
         public float[] ConvertToFloats(object value)
         {
@@ -293,8 +315,9 @@ namespace Slate
             return new float[4] { rect.x, rect.y, rect.width, rect.height };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3})", floats[0].ToString("0")
-            , floats[1].ToString("0"), floats[2].ToString("0"), floats[3].ToString("0"));
+        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3})",
+            floats[0].ToString("0"), floats[1].ToString("0"), floats[2].ToString("0"),
+            floats[3].ToString("0"));
 
         private Action<object, Rect> setter;
 
@@ -318,35 +341,41 @@ namespace Slate
         public bool ForceStepMode() => false;
         public int RequiredCurvesCount() => 6;
 
-        public object ConvertToObject(params float[] floats) => new Bounds(new Vector3(floats[0], floats[1], floats[2])
-            , new Vector3(floats[3], floats[4], floats[5]));
+        public object ConvertToObject(params float[] floats) => new Bounds(
+            new Vector3(floats[0], floats[1], floats[2]),
+            new Vector3(floats[3], floats[4], floats[5]));
 
         public float[] ConvertToFloats(object value)
         {
             var bounds = (Bounds)value;
-            return new float[6]
-                { bounds.center.x, bounds.center.y, bounds.center.z, bounds.size.x, bounds.size.y, bounds.size.z };
+            return new float[6] {
+                bounds.center.x, bounds.center.y, bounds.center.z, bounds.size.x, bounds.size.y,
+                bounds.size.z,
+            };
         }
 
-        public string GetKeyLabel(params float[] floats) => string.Format("({0},{1},{2},{3},{4},{5})"
-            , floats[0].ToString("0"), floats[1].ToString("0"), floats[2].ToString("0"), floats[3].ToString("0")
-            , floats[4].ToString("0"), floats[5].ToString("0"));
+        public string GetKeyLabel(params float[] floats) => string.Format(
+            "({0},{1},{2},{3},{4},{5})", floats[0].ToString("0"), floats[1].ToString("0"),
+            floats[2].ToString("0"), floats[3].ToString("0"), floats[4].ToString("0"),
+            floats[5].ToString("0"));
 
         private Action<object, Bounds> setter;
 
         public void SetDirect(object target, MemberInfo info, params float[] floats)
         {
             if (setter == null) setter = ReflectionTools.GetFieldOrPropSetter<object, Bounds>(info);
-            setter(target
-                , new Bounds(new Vector3(floats[0], floats[1], floats[2])
-                    , new Vector3(floats[3], floats[4], floats[5])));
+            setter(target,
+                new Bounds(new Vector3(floats[0], floats[1], floats[2]),
+                    new Vector3(floats[3], floats[4], floats[5])));
         }
 
         public float[] GetDirect(object target, MemberInfo info)
         {
             var bounds = (Bounds)ReflectionTools.RTGetFieldOrPropValue(info, target);
-            return new float[6]
-                { bounds.center.x, bounds.center.y, bounds.center.z, bounds.size.x, bounds.size.y, bounds.size.z };
+            return new float[6] {
+                bounds.center.x, bounds.center.y, bounds.center.z, bounds.size.x, bounds.size.y,
+                bounds.size.z,
+            };
         }
     }
 }

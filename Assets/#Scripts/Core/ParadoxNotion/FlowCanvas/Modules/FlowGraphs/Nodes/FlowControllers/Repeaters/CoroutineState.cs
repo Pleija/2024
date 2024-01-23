@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Coroutine"), Category("Flow Controllers/Iterators")
-     , Description("Start a Coroutine that will repeat until Break is signaled")]
+    [Name("Coroutine"), Category("Flow Controllers/Iterators"),
+     Description("Start a Coroutine that will repeat until Break is signaled")]
     public class CoroutineState : FlowControlNode
     {
         private bool active = false;
@@ -34,7 +34,8 @@ namespace FlowCanvas.Nodes
             });
         }
 
-        private IEnumerator DoRepeat(FlowOutput fStart, FlowOutput fUpdate, FlowOutput fFinish, Flow f)
+        private IEnumerator DoRepeat(FlowOutput fStart, FlowOutput fUpdate, FlowOutput fFinish,
+            Flow f)
         {
             fStart.Call(f);
             f.BeginBreakBlock(() => {

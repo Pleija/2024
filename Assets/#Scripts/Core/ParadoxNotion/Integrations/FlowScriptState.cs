@@ -5,10 +5,10 @@ using FlowCanvas;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Sub FlowScript")
-     , Description(
-         "Adds a FlowCanvas FlowScript as a nested State of the FSM. The FlowScript State is never finished by itself, unless a 'Finish' node is used in the FlowScript. Success/Failure events can optionlay be used alongside with a CheckEvent on state transitions to catch whether the FlowScript Finished in success or failure.")
-     , DropReferenceType(typeof(FlowScript)), Icon("FS")]
+    [Name("Sub FlowScript"),
+     Description(
+         "Adds a FlowCanvas FlowScript as a nested State of the FSM. The FlowScript State is never finished by itself, unless a 'Finish' node is used in the FlowScript. Success/Failure events can optionlay be used alongside with a CheckEvent on state transitions to catch whether the FlowScript Finished in success or failure."),
+     DropReferenceType(typeof(FlowScript)), Icon("FS")]
     public class FlowScriptState : FSMStateNested<FlowScript>
     {
         [SerializeField, ExposeField]

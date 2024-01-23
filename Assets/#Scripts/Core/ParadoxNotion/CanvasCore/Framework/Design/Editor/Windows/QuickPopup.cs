@@ -19,7 +19,9 @@ namespace NodeCanvas.Editor
         }
 
         public QuickPopup(System.Action Call) => this.Call = Call;
-        public override Vector2 GetWindowSize() => new Vector2(myRect.xMin + myRect.xMax, myRect.yMin + myRect.yMax);
+
+        public override Vector2 GetWindowSize() =>
+            new Vector2(myRect.xMin + myRect.xMax, myRect.yMin + myRect.yMax);
 
         public override void OnGUI(Rect rect)
         {

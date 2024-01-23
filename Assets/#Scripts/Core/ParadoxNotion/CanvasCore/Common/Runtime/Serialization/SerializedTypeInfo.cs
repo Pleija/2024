@@ -37,6 +37,7 @@ namespace ParadoxNotion.Serialization
         public override string ToString() => _baseInfo;
 
         //operator
-        public static implicit operator Type(SerializedTypeInfo value) => value != null ? value._type : null;
+        public static implicit operator Type(SerializedTypeInfo value) =>
+            value != null ? value._type : null;
     }
 }

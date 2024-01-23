@@ -3,8 +3,9 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform")
-     , Description("Rotate the actor around target position or object by specified degrees and optionaly per second.")]
+    [Category("Transform"),
+     Description(
+         "Rotate the actor around target position or object by specified degrees and optionaly per second.")]
     public class RotateAround : ActorActionClip
     {
         [SerializeField, HideInInspector]
@@ -25,8 +26,9 @@ namespace Slate.ActionClips
             set => targetPosition.value = value;
         }
 
-        public override string info => string.Format("Rotate {0}{1} Around\n{2}", rotation
-            , perSecond ? " Per Second" : "", targetPosition.useAnimation ? "" : targetPosition.ToString());
+        public override string info => string.Format("Rotate {0}{1} Around\n{2}", rotation,
+            perSecond ? " Per Second" : "",
+            targetPosition.useAnimation ? "" : targetPosition.ToString());
 
         public override float length {
             get => _length;

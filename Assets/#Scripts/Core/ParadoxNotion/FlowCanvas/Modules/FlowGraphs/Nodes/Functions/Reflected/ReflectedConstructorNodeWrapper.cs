@@ -18,15 +18,16 @@ namespace FlowCanvas.Nodes
 
         public override string name {
             get {
-                if (constructor != null) return string.Format("New {0} ()", constructor.DeclaringType.FriendlyName());
+                if (constructor != null)
+                    return string.Format("New {0} ()", constructor.DeclaringType.FriendlyName());
                 if (_constructor != null) return _constructor.AsString().FormatError();
                 return "NOT SET";
             }
         }
 
 #if UNITY_EDITOR
-        public override string description => constructor != null ? XMLDocs.GetMemberSummary(constructor.DeclaringType)
-            : "Missing Constructor";
+        public override string description => constructor != null
+            ? XMLDocs.GetMemberSummary(constructor.DeclaringType) : "Missing Constructor";
 #endif
 
         ///<summary>Set a new ConstructorInfo to be used by ReflectedConstructorNode</summary>
@@ -50,8 +51,10 @@ namespace FlowCanvas.Nodes
             options.callable = callable;
             options.exposeParams = exposeParams;
             options.exposedParamsCount = exposedParamsCount;
-            reflectedConstructorNode = BaseReflectedConstructorNode.GetConstructorNode(constructor, options);
-            if (reflectedConstructorNode != null) reflectedConstructorNode.RegisterPorts(this, options);
+            reflectedConstructorNode =
+                BaseReflectedConstructorNode.GetConstructorNode(constructor, options);
+            if (reflectedConstructorNode != null)
+                reflectedConstructorNode.RegisterPorts(this, options);
         }
     }
 }

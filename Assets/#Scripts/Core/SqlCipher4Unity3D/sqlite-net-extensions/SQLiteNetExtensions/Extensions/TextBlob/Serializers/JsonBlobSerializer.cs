@@ -6,14 +6,16 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions.TextBlob.Serializers
+namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions.TextBlob.
+    Serializers
 {
     public class TupleConverter<T1, T2> : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture,
+            object value)
         {
             var elements = Convert.ToString(value).Trim('(').Trim(')')
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -25,8 +27,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
     {
         public string Serialize(object element)
         {
-            TypeDescriptor.AddAttributes(typeof((int, int))
-                , new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
+            TypeDescriptor.AddAttributes(typeof((int, int)),
+                new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
             return JsonConvert.SerializeObject(element);
         }
 
@@ -36,8 +38,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
             //Debug.Log(type.Name);
             try {
-                TypeDescriptor.AddAttributes(typeof((int, int))
-                    , new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
+                TypeDescriptor.AddAttributes(typeof((int, int)),
+                    new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
 
                 //var json = JsonConvert.SerializeObject(dictionary);
                 return JsonConvert.DeserializeObject<Dictionary<(int, int), string>>(text);

@@ -2,8 +2,9 @@
 
 namespace Slate.ActionClips
 {
-    [Category("Environment")
-     , Description("Animate the gravity physics are using for Rigidbodies. This applies to both 2D and 3D Physics.")]
+    [Category("Environment"),
+     Description(
+         "Animate the gravity physics are using for Rigidbodies. This applies to both 2D and 3D Physics.")]
     public class AnimateGravity : DirectorActionClip
     {
         [SerializeField, HideInInspector]

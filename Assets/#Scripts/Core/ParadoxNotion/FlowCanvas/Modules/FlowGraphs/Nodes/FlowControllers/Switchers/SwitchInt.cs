@@ -4,10 +4,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Switch Integer (Legacy)"), Category("Flow Controllers/Switchers")
-     , Description(
-         "Branch the Flow based on an integer value. The Default output is called when the Index value is out of range.")
-     , ContextDefinedInputs(typeof(int)), System.Obsolete("Use Switch Integer")]
+    [Name("Switch Integer (Legacy)"), Category("Flow Controllers/Switchers"),
+     Description(
+         "Branch the Flow based on an integer value. The Default output is called when the Index value is out of range."),
+     ContextDefinedInputs(typeof(int)), System.Obsolete("Use Switch Integer")]
     public class SwitchInt : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

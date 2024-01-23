@@ -25,7 +25,9 @@ namespace Runner.Game
     /// </summary>
     public class GameState : AState
     {
-        public static GameState self => m_Instance ? m_Instance : m_Instance = FindObjectOfType<GameState>(true);
+        public static GameState self =>
+            m_Instance ? m_Instance : m_Instance = FindObjectOfType<GameState>(true);
+
         private static GameState m_Instance;
 
         private void Awake()
@@ -98,7 +100,8 @@ namespace Runner.Game
             pauseButton.gameObject.SetActive(!trackManager.isTutorial);
             m_CountdownRectTransform = countdownText.GetComponent<RectTransform>();
             m_LifeHearts = new Image[k_MaxLives];
-            for (var i = 0; i < k_MaxLives; ++i) m_LifeHearts[i] = lifeRectTransform.GetChild(i).GetComponent<Image>();
+            for (var i = 0; i < k_MaxLives; ++i)
+                m_LifeHearts[i] = lifeRectTransform.GetChild(i).GetComponent<Image>();
 
             if (MusicPlayer.instance.GetStem(0) != gameTheme) {
                 MusicPlayer.instance.SetStem(0, gameTheme);
@@ -130,7 +133,8 @@ namespace Runner.Game
 
             if (!trackManager.isRerun) {
                 m_TimeSinceStart = 0;
-                trackManager.characterController.currentLife = trackManager.characterController.maxLife;
+                trackManager.characterController.currentLife =
+                    trackManager.characterController.maxLife;
             }
             currentModifier.OnRunStart(this);
             m_IsTutorial = !PlayerData.instance.tutorialDone;
@@ -141,7 +145,8 @@ namespace Runner.Game
                 tutorialValidatedObstacles.text = $"0/{k_ObstacleToClear}";
                 m_DisplayTutorial = true;
                 trackManager.newSegmentCreated = segment => {
-                    if (trackManager.currentZone != 0 && !m_CountObstacles && m_NextValidSegment == null)
+                    if (trackManager.currentZone != 0 && !m_CountObstacles &&
+                        m_NextValidSegment == null)
                         m_NextValidSegment = segment;
                 };
                 trackManager.currentSegementChanged = segment => {
@@ -152,7 +157,8 @@ namespace Runner.Game
                         m_CountObstacles = true;
                         m_NextValidSegment = null;
                         m_DisplayTutorial = true;
-                        tutorialValidatedObstacles.text = $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
+                        tutorialValidatedObstacles.text =
+                            $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
                     }
                 };
             }
@@ -208,15 +214,16 @@ namespace Runner.Game
                         Health = chrCtrl.currentLife == 3 ? 100 : chrCtrl.currentLife * 33.3f;
                         oldLife = chrCtrl.currentLife;
                         // HealthImage.fillAmount = ;
-                        DOTween.To(() => HealthImage.fillAmount, x => HealthImage.fillAmount = x
-                            , chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
+                        DOTween.To(() => HealthImage.fillAmount, x => HealthImage.fillAmount = x,
+                            chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
                             //
                         });
                         m_PreReady = false;
-                        DOTween.To(() => PreHeathImage.fillAmount, x => PreHeathImage.fillAmount = x
-                            , chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
-                            m_PreReady = true;
-                        });
+                        DOTween.To(() => PreHeathImage.fillAmount,
+                                x => PreHeathImage.fillAmount = x, chrCtrl.currentLife / 3f, 1)
+                            .SetEase(Ease.Linear).OnComplete(() => {
+                                m_PreReady = true;
+                            });
                     }
 
                     if (chrCtrl.currentLife < 3) {
@@ -401,7 +408,8 @@ namespace Runner.Game
             //since premium are directly added to the PlayerData premium count, we also need to remove them from the current run premium count
             // (as if you had 0, grabbed 3 during that run, you can directly buy a new chance). But for the case where you add one in the playerdata
             // and grabbed 2 during that run, we don't want to remove 3, otherwise will have -1 premium for that run!
-            trackManager.characterController.premium -= Mathf.Min(trackManager.characterController.premium, 3);
+            trackManager.characterController.premium -=
+                Mathf.Min(trackManager.characterController.premium, 3);
             SecondWind();
         }
 
@@ -465,21 +473,25 @@ namespace Runner.Game
         {
             if (trackManager.segments.Count == 0) return;
 
-            if (AudioListener.pause && !trackManager.characterController.tutorialWaitingForValidation) {
+            if (AudioListener.pause &&
+                !trackManager.characterController.tutorialWaitingForValidation) {
                 m_DisplayTutorial = false;
                 DisplayTutorial(false);
             }
-            var ratio = trackManager.currentSegmentDistance / trackManager.currentSegment.worldLength;
+            var ratio = trackManager.currentSegmentDistance /
+                trackManager.currentSegment.worldLength;
             var nextObstaclePosition =
                 m_CurrentSegmentObstacleIndex < trackManager.currentSegment.obstaclePositions.Length
-                    ? trackManager.currentSegment.obstaclePositions[m_CurrentSegmentObstacleIndex] : float.MaxValue;
+                    ? trackManager.currentSegment.obstaclePositions[m_CurrentSegmentObstacleIndex]
+                    : float.MaxValue;
 
             if (m_CountObstacles && ratio > nextObstaclePosition + 0.05f) {
                 m_CurrentSegmentObstacleIndex += 1;
 
                 if (!trackManager.characterController.characterCollider.tutorialHitObstacle) {
                     m_TutorialClearedObstacle += 1;
-                    tutorialValidatedObstacles.text = $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
+                    tutorialValidatedObstacles.text =
+                        $"{m_TutorialClearedObstacle}/{k_ObstacleToClear}";
                 }
                 trackManager.characterController.characterCollider.tutorialHitObstacle = false;
 

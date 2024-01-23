@@ -30,7 +30,8 @@ namespace NodeCanvas.Tasks.Actions
             }
             agent.speed = speed.value;
 
-            if ((agent.transform.position - target.value.transform.position).magnitude >= fledDistance.value) {
+            if ((agent.transform.position - target.value.transform.position).magnitude >=
+                fledDistance.value) {
                 EndAction(true);
                 return;
             }

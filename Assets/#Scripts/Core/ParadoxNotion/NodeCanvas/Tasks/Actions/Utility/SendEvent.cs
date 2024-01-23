@@ -5,8 +5,8 @@ using ParadoxNotion.Services;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Utility")
-     , Description(
+    [Category("✫ Utility"),
+     Description(
          "Send a graph event. If global is true, all graph owners in scene will receive this event. Use along with the 'Check Event' Condition")]
     public class SendEvent : ActionTask<GraphOwner>
     {
@@ -16,8 +16,8 @@ namespace NodeCanvas.Tasks.Actions
         public BBParameter<float> delay;
         public bool sendGlobal;
 
-        protected override string info => (sendGlobal ? "Global " : "") + "Send Event [" + eventName + "]" +
-            (delay.value > 0 ? " after " + delay + " sec." : "");
+        protected override string info => (sendGlobal ? "Global " : "") + "Send Event [" +
+            eventName + "]" + (delay.value > 0 ? " after " + delay + " sec." : "");
 
         protected override void OnUpdate()
         {
@@ -32,8 +32,8 @@ namespace NodeCanvas.Tasks.Actions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Utility")
-     , Description(
+    [Category("✫ Utility"),
+     Description(
          "Send a graph event with T value. If global is true, all graph owners in scene will receive this event. Use along with the 'Check Event' Condition")]
     public class SendEvent<T> : ActionTask<GraphOwner>
     {
@@ -44,8 +44,9 @@ namespace NodeCanvas.Tasks.Actions
         public BBParameter<float> delay;
         public bool sendGlobal;
 
-        protected override string info => string.Format("{0} Event [{1}] ({2}){3}", sendGlobal ? "Global " : ""
-            , eventName, eventValue, delay.value > 0 ? " after " + delay + " sec." : "");
+        protected override string info => string.Format("{0} Event [{1}] ({2}){3}",
+            sendGlobal ? "Global " : "", eventName, eventValue,
+            delay.value > 0 ? " after " + delay + " sec." : "");
 
         protected override void OnUpdate()
         {

@@ -22,7 +22,7 @@ namespace Slate
             });
         }
 
-        public static GameObject Create() =>
-            new GameObject("Cutscene Starter").AddComponent<PlayCutsceneOnStart>().gameObject;
+        public static GameObject Create() => new GameObject("Cutscene Starter")
+            .AddComponent<PlayCutsceneOnStart>().gameObject;
     }
 }

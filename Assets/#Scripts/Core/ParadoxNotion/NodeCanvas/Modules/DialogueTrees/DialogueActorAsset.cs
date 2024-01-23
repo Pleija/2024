@@ -28,8 +28,8 @@ namespace NodeCanvas.DialogueTrees
         public Sprite portraitSprite {
             get {
                 if (_portraitSprite == null && portrait != null)
-                    _portraitSprite = Sprite.Create(portrait, new Rect(0, 0, portrait.width, portrait.height)
-                        , new Vector2(0.5f, 0.5f));
+                    _portraitSprite = Sprite.Create(portrait,
+                        new Rect(0, 0, portrait.width, portrait.height), new Vector2(0.5f, 0.5f));
                 return _portraitSprite;
             }
         }

@@ -81,12 +81,14 @@ namespace Puerts
                     parameterType = parameterType.GetElementType();
                     hasParamsArray = true;
                 }
-                paramTypes[i] = parameterType.IsByRef ? parameterType.GetElementType() : parameterType;
+                paramTypes[i] = parameterType.IsByRef ? parameterType.GetElementType()
+                    : parameterType;
                 paramJSTypeMasks[i] = GeneralGetterManager.GetJsTypeMask(parameterType);
                 argsTranslateFuncs[i] = jsEnv.GeneralGetterManager.GetTranslateFunc(parameterType);
                 paramIsByRef[i] = parameterType.IsByRef;
                 if (parameterType.IsByRef)
-                    byRefValueSetFuncs[i] = jsEnv.GeneralSetterManager.GetTranslateFunc(parameterType.GetElementType());
+                    byRefValueSetFuncs[i] =
+                        jsEnv.GeneralSetterManager.GetTranslateFunc(parameterType.GetElementType());
                 isOut[i] = parameterType.IsByRef && parameterInfo.IsOut && !parameterInfo.IsIn;
                 if (i < optionalParamPos && parameterInfo.IsOptional) optionalParamPos = i;
 #if NET_2_0 || NET_2_0_SUBSET
@@ -127,13 +129,17 @@ namespace Puerts
                         if (isOut[i]) // 是out直接过
                             continue;
                         else // 是ref则取里面的类型
-                            argJsType = PuertsDLL.GetJsValueType(jsCallInfo.Isolate, jsCallInfo.NativePtrs[i], true);
+                            argJsType = PuertsDLL.GetJsValueType(jsCallInfo.Isolate,
+                                jsCallInfo.NativePtrs[i], true);
                     }
-                    if (!Utils.IsJsValueTypeMatchType(argJsType, paramTypes[i], paramJSTypeMasks[i], () => {
-                        jsCallInfo.Values[i] = jsEnv.GeneralGetterManager.AnyTranslator(jsEnv.Idx, jsCallInfo.Isolate
-                            , NativeValueApi.GetValueFromArgument, jsCallInfo.NativePtrs[i], paramIsByRef[i]);
-                        return jsCallInfo.Values[i];
-                    }, jsCallInfo.Values[i]))
+                    if (!Utils.IsJsValueTypeMatchType(argJsType, paramTypes[i], paramJSTypeMasks[i],
+                        () => {
+                            jsCallInfo.Values[i] =
+                                jsEnv.GeneralGetterManager.AnyTranslator(jsEnv.Idx,
+                                    jsCallInfo.Isolate, NativeValueApi.GetValueFromArgument,
+                                    jsCallInfo.NativePtrs[i], paramIsByRef[i]);
+                            return jsCallInfo.Values[i];
+                        }, jsCallInfo.Values[i]))
                         return false;
                 }
             return true;
@@ -143,13 +149,14 @@ namespace Puerts
         {
             for (var i = 0; i < paramLength; i++)
                 if (hasParamsArray && i == paramLength - 1) {
-                    var paramArray = Array.CreateInstance(paramTypes[paramLength - 1]
-                        , callInfo.Length < paramLength ? 0 : callInfo.Length + 1 - paramLength);
+                    var paramArray = Array.CreateInstance(paramTypes[paramLength - 1],
+                        callInfo.Length < paramLength ? 0 : callInfo.Length + 1 - paramLength);
                     var translateFunc = argsTranslateFuncs[i];
                     for (var j = i; j < callInfo.Length; j++)
                         paramArray.SetValue(
-                            translateFunc(jsEnv.Idx, callInfo.Isolate, NativeValueApi.GetValueFromArgument
-                                , callInfo.NativePtrs[j], false), j - i);
+                            translateFunc(jsEnv.Idx, callInfo.Isolate,
+                                NativeValueApi.GetValueFromArgument, callInfo.NativePtrs[j], false),
+                            j - i);
                     args[i] = paramArray;
                 }
                 else if (i >= callInfo.Length && i >= optionalParamPos) {
@@ -164,8 +171,9 @@ namespace Puerts
                         if (callInfo.Values[i] != null)
                             args[i] = callInfo.Values[i];
                         else
-                            args[i] = argsTranslateFuncs[i](jsEnv.Idx, callInfo.Isolate
-                                , NativeValueApi.GetValueFromArgument, callInfo.NativePtrs[i], paramIsByRef[i]);
+                            args[i] = argsTranslateFuncs[i](jsEnv.Idx, callInfo.Isolate,
+                                NativeValueApi.GetValueFromArgument, callInfo.NativePtrs[i],
+                                paramIsByRef[i]);
                     }
                 }
             return args;
@@ -176,8 +184,9 @@ namespace Puerts
             if (argsWithNewRef == null) argsWithNewRef = args;
             for (var i = 0; i < paramLength; i++)
                 if (paramIsByRef[i])
-                    byRefValueSetFuncs[i](jsEnv.Idx, callInfo.Isolate, NativeValueApi.SetValueToByRefArgument
-                        , callInfo.NativePtrs[i], argsWithNewRef[i]);
+                    byRefValueSetFuncs[i](jsEnv.Idx, callInfo.Isolate,
+                        NativeValueApi.SetValueToByRefArgument, callInfo.NativePtrs[i],
+                        argsWithNewRef[i]);
         }
 
         public void ClearArguments()
@@ -196,9 +205,12 @@ namespace Puerts
         private GeneralSetter resultSetter = null;
         private bool extensionMethod = false;
 
-        public OverloadReflectionWrap(MethodBase methodBase, JsEnv jsEnv, bool extensionMethod = false)
+        public OverloadReflectionWrap(MethodBase methodBase, JsEnv jsEnv,
+            bool extensionMethod = false)
         {
-            parameters = new Parameters(methodBase.GetParameters().Skip(extensionMethod ? 1 : 0).ToArray(), jsEnv);
+            parameters =
+                new Parameters(methodBase.GetParameters().Skip(extensionMethod ? 1 : 0).ToArray(),
+                    jsEnv);
             this.extensionMethod = extensionMethod;
 
             if (methodBase.IsConstructor) {
@@ -229,11 +241,13 @@ namespace Puerts
                     : jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, jsCallInfo.Self);
                 var args = parameters.GetArguments(jsCallInfo);
                 if (extensionMethod)
-                    args = new object[] { jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, jsCallInfo.Self) }.Concat(args)
-                        .ToArray();
+                    args = new object[]
+                            { jsEnv.GeneralGetterManager.GetSelf(jsEnv.Idx, jsCallInfo.Self) }
+                        .Concat(args).ToArray();
                 var ret = methodInfo.Invoke(target, args);
                 parameters.FillByRefParameters(jsCallInfo, args);
-                resultSetter(jsEnv.Idx, jsCallInfo.Isolate, NativeValueApi.SetValueToResult, jsCallInfo.Info, ret);
+                resultSetter(jsEnv.Idx, jsCallInfo.Isolate, NativeValueApi.SetValueToResult,
+                    jsCallInfo.Info, ret);
             }
             finally {
                 parameters.ClearArguments();
@@ -265,18 +279,22 @@ namespace Puerts
             if (argumentsLen == 1)
                 try {
                     var arg0 = PuertsDLL.GetArgumentValue(info, 0);
-                    var arg0type = NativeValueApi.GetValueFromArgument.GetJsValueType(isolate, arg0, false);
+                    var arg0type =
+                        NativeValueApi.GetValueFromArgument.GetJsValueType(isolate, arg0, false);
 
                     if (arg0type == JsValueType.Function || arg0type == JsValueType.NativeObject) {
-                        var obj = translateFunc(jsEnvIdx, isolate, NativeValueApi.GetValueFromArgument, arg0, false);
+                        var obj = translateFunc(jsEnvIdx, isolate,
+                            NativeValueApi.GetValueFromArgument, arg0, false);
                         if (obj != null) return obj;
                     }
                 }
                 catch (Exception e) {
-                    PuertsDLL.ThrowException(isolate, "c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                    PuertsDLL.ThrowException(isolate,
+                        "c# exception:" + e.Message + ",stack:" + e.StackTrace);
                     return null;
                 }
-            PuertsDLL.ThrowException(isolate, "invalid arguments to constructor of " + delegateType.GetFriendlyName());
+            PuertsDLL.ThrowException(isolate,
+                "invalid arguments to constructor of " + delegateType.GetFriendlyName());
             return null;
         }
     }
@@ -298,7 +316,8 @@ namespace Puerts
                 var callInfo = new JSCallInfo(isolate, info, self, argumentsLen);
 
                 if (overloads.Count == 1 &&
-                    overloads[0].parameters.optionalParamPos == overloads[0].parameters.paramLength &&
+                    overloads[0].parameters.optionalParamPos ==
+                    overloads[0].parameters.paramLength &&
                     overloads[0].parameters.paramLength == callInfo.Length) {
                     overloads[0].Invoke(callInfo);
                     return;
@@ -313,15 +332,17 @@ namespace Puerts
                         }
                     }
                 }
-                PuertsDLL.ThrowException(isolate
-                    , "invalid arguments to " + name + " or the overload is striped by unity");
+                PuertsDLL.ThrowException(isolate,
+                    "invalid arguments to " + name + " or the overload is striped by unity");
             }
             catch (TargetInvocationException e) {
-                PuertsDLL.ThrowException(isolate
-                    , "c# exception:" + e.InnerException.Message + ",stack:" + e.InnerException.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "c# exception:" + e.InnerException.Message + ",stack:" +
+                    e.InnerException.StackTrace);
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate, "c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
 
@@ -334,15 +355,17 @@ namespace Puerts
                     var overload = overloads[i];
                     if (overload.IsMatch(jsCallInfo)) return overload.Construct(jsCallInfo);
                 }
-                PuertsDLL.ThrowException(isolate
-                    , "invalid arguments to " + name + " or the overload is striped by unity");
+                PuertsDLL.ThrowException(isolate,
+                    "invalid arguments to " + name + " or the overload is striped by unity");
             }
             catch (TargetInvocationException e) {
-                PuertsDLL.ThrowException(isolate
-                    , "c# exception:" + e.InnerException.Message + ",stack:" + e.InnerException.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "c# exception:" + e.InnerException.Message + ",stack:" +
+                    e.InnerException.StackTrace);
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate, "c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
             return null;
         }

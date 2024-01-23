@@ -14,9 +14,9 @@ namespace Slate.ActionClips
         private string _lastLayer;
         private int _lastOrder;
 
-        public override string info => string.Format("Set Sorting Layer\n{0} ({1})"
-            , SortingLayer.IsValid(sortingLayerID) ? SortingLayer.IDToName(sortingLayerID) : SortingLayer.layers[0].name
-            , sortingOrder);
+        public override string info => string.Format("Set Sorting Layer\n{0} ({1})",
+            SortingLayer.IsValid(sortingLayerID) ? SortingLayer.IDToName(sortingLayerID)
+                : SortingLayer.layers[0].name, sortingOrder);
 
         protected override void OnEnter()
         {

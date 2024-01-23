@@ -3,8 +3,8 @@ using UnityEngine;
 namespace Slate.ActionClips
 {
     [Description(
-         "Animate an actor IK Goal. Please note that the Animator needs to have a Controller assigned and 'IK Pass' must be enabled in that Controller.")
-     , Category("Animator IK Control"), Attachable(typeof(ActorActionTrack))]
+         "Animate an actor IK Goal. Please note that the Animator needs to have a Controller assigned and 'IK Pass' must be enabled in that Controller."),
+     Category("Animator IK Control"), Attachable(typeof(ActorActionTrack))]
     public class AnimateLimbIK : ActorActionClip<Animator>
     {
         [SerializeField, HideInInspector]
@@ -23,7 +23,8 @@ namespace Slate.ActionClips
 
         public TransformRefPositionRotation IKTarget;
 
-        [AnimatableParameter(link = nameof(IKTarget)), ShowTrajectory, PositionHandle(nameof(targetRotation))]
+        [AnimatableParameter(link = nameof(IKTarget)), ShowTrajectory,
+         PositionHandle(nameof(targetRotation))]
         public Vector3 targetPosition {
             get => IKTarget.position;
             set => IKTarget.position = value;

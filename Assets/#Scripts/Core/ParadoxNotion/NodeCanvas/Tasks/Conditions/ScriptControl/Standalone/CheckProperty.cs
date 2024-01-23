@@ -8,8 +8,9 @@ using System.Linq;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Check Property (Desktop Only)"), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
-     , Description(
+    [Name("Check Property (Desktop Only)"),
+     Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
+     Description(
          "This version works in destop/JIT platform only.\n\nCheck a property on a script and return if it's equal or not to the check value")]
     public class CheckProperty : ConditionTask
     {
@@ -22,7 +23,8 @@ namespace NodeCanvas.Tasks.Conditions
         [SerializeField]
         protected CompareMethod comparison;
 
-        private MethodInfo targetMethod => functionWrapper != null ? functionWrapper.GetMethod() : null;
+        private MethodInfo targetMethod =>
+            functionWrapper != null ? functionWrapper.GetMethod() : null;
 
         public override System.Type agentType {
             get {
@@ -35,15 +37,17 @@ namespace NodeCanvas.Tasks.Conditions
             get {
                 if (functionWrapper == null) return "No Property Selected";
                 if (targetMethod == null) return functionWrapper.AsString().FormatError();
-                var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1}{2}", mInfo, targetMethod.Name
-                    , OperationTools.GetCompareString(comparison) + checkValue.ToString());
+                var mInfo = targetMethod.IsStatic
+                    ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
+                return string.Format("{0}.{1}{2}", mInfo, targetMethod.Name,
+                    OperationTools.GetCompareString(comparison) + checkValue.ToString());
             }
         }
 
         public override void OnValidate(ITaskSystem ownerSystem)
         {
-            if (functionWrapper != null && functionWrapper.HasChanged()) SetMethod(functionWrapper.GetMethod());
+            if (functionWrapper != null && functionWrapper.HasChanged())
+                SetMethod(functionWrapper.GetMethod());
         }
 
         //store the method info on agent set for performance
@@ -65,10 +69,11 @@ namespace NodeCanvas.Tasks.Conditions
         {
             if (functionWrapper == null) return true;
             if (checkValue.varType == typeof(float))
-                return OperationTools.Compare((float)functionWrapper.Call(), (float)checkValue.value, comparison
-                    , 0.05f);
+                return OperationTools.Compare((float)functionWrapper.Call(),
+                    (float)checkValue.value, comparison, 0.05f);
             if (checkValue.varType == typeof(int))
-                return OperationTools.Compare((int)functionWrapper.Call(), (int)checkValue.value, comparison);
+                return OperationTools.Compare((int)functionWrapper.Call(), (int)checkValue.value,
+                    comparison);
             return ObjectUtils.AnyEquals(functionWrapper.Call(), checkValue.value);
         }
 
@@ -93,17 +98,17 @@ namespace NodeCanvas.Tasks.Conditions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
-                            , SetMethod, 0, true, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(),
+                            typeof(object), typeof(object), SetMethod, 0, true, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0
-                        , true, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object),
+                        typeof(object), SetMethod, 0, true, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
-                            , 0, true, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object),
+                            typeof(object), SetMethod, 0, true, true, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();
@@ -111,11 +116,14 @@ namespace NodeCanvas.Tasks.Conditions
 
             if (targetMethod != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Type",
+                    targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Property", targetMethod.Name);
                 GUILayout.EndVertical();
-                GUI.enabled = checkValue.varType == typeof(float) || checkValue.varType == typeof(int);
-                comparison = (CompareMethod)UnityEditor.EditorGUILayout.EnumPopup("Comparison", comparison);
+                GUI.enabled = checkValue.varType == typeof(float) ||
+                    checkValue.varType == typeof(int);
+                comparison =
+                    (CompareMethod)UnityEditor.EditorGUILayout.EnumPopup("Comparison", comparison);
                 GUI.enabled = true;
                 Editor.BBParameterEditor.ParameterField("Value", checkValue);
             }

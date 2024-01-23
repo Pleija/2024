@@ -17,10 +17,11 @@ using Zu.TypeScript.TsTypes;
 namespace NodeCanvas.StateMachines
 {
     ///<summary> Use FSMs to create state like behaviours</summary>
-    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/"
-         , resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/"
-         , forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/")
-     , CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/FSM Asset")]
+    [GraphInfo(packageName = "NodeCanvas",
+         docsURL = "https://nodecanvas.paradoxnotion.com/documentation/",
+         resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/",
+         forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/"),
+     CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/FSM Asset")]
     public class FSM : Graph
     {
         ///<summary>Transition Calling Mode (see "EnterState")</summary>
@@ -58,8 +59,8 @@ namespace NodeCanvas.StateMachines
         public sealed override bool canAcceptVariableDrops => false;
         public sealed override PlanarDirection flowDirection => PlanarDirection.Auto;
 
-        public bool isReady => agent != null && !agent.name.Contains(".") && !agent.name.Contains("(") &&
-            !agent.name.Contains(" ");
+        public bool isReady => agent != null && !agent.name.Contains(".") &&
+            !agent.name.Contains("(") && !agent.name.Contains(" ");
 
         protected override void OnGraphValidate()
         {
@@ -122,7 +123,8 @@ namespace NodeCanvas.StateMachines
                     Stop(false);
                     return;
                 }
-                if (onStateUpdate != null && currentState.status == Status.Running) onStateUpdate(currentState);
+                if (onStateUpdate != null && currentState.status == Status.Running)
+                    onStateUpdate(currentState);
 
                 //this can only happen if FSM stoped just now (from the above update)
                 if (currentState == null) {
@@ -131,7 +133,8 @@ namespace NodeCanvas.StateMachines
                 }
 
                 //state has nowhere to go..
-                if (currentState.status != Status.Running && currentState.outConnections.Count == 0) {
+                if (currentState.status != Status.Running &&
+                    currentState.outConnections.Count == 0) {
                     //...but we have a stacked state -> pop return to it
                     if (stateStack.Count > 0) {
                         var popState = stateStack.Pop();
@@ -176,18 +179,21 @@ namespace NodeCanvas.StateMachines
                     Js.self.Eval<Action>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke();
                     break;
                 case 1:
-                    Js.self.Eval<Action<object>>($"${FsmName}.{fn}.bind(${FsmName})")?.Invoke(param[0]);
+                    Js.self.Eval<Action<object>>($"${FsmName}.{fn}.bind(${FsmName})")
+                        ?.Invoke(param[0]);
                     break;
                 case 2:
                     Js.self.Eval<Action<object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1]);
                     break;
                 case 3:
-                    Js.self.Eval<Action<object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
-                        .Invoke(param[0], param[1], param[2]);
+                    Js.self.Eval<Action<object, object, object>>(
+                        $"${FsmName}.{fn}.bind(${FsmName})").Invoke(param[0], param[1], param[2]);
                     break;
                 case 4:
-                    Js.self.Eval<Action<object, object, object, object>>($"${FsmName}.{fn}.bind(${FsmName})")
+                    Js.self
+                        .Eval<Action<object, object, object, object>>(
+                            $"${FsmName}.{fn}.bind(${FsmName})")
                         .Invoke(param[0], param[1], param[2], param[4]);
                     break;
                 default: return;
@@ -198,16 +204,19 @@ namespace NodeCanvas.StateMachines
         {
             if (Js.self.Eval<JSObject>($"${FsmName}?.{fn}") != null)
                 return param.Length switch {
-                    0   => Js.self.Eval<Func<T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke()
-                    , 1 => Js.self.Eval<Func<object, T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(param[0])
-                    , 2 => Js.self.Eval<Func<object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
-                        .Invoke(param[0], param[1])
-                    , 3 => Js.self.Eval<Func<object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
-                        .Invoke(param[0], param[1], param[2])
-                    , 4 => Js.self.Eval<Func<object, object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
-                        .Invoke(param[0], param[1], param[2], param[4])
-                    , _ => default
-                    ,
+                    0 => Js.self.Eval<Func<T>>($"${FsmName}.{fn}.bind(${FsmName})").Invoke(),
+                    1 => Js.self.Eval<Func<object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                        .Invoke(param[0]),
+                    2 => Js.self.Eval<Func<object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                        .Invoke(param[0], param[1]),
+                    3 => Js.self
+                        .Eval<Func<object, object, object, T>>($"${FsmName}.{fn}.bind(${FsmName})")
+                        .Invoke(param[0], param[1], param[2]),
+                    4 => Js.self
+                        .Eval<Func<object, object, object, object, T>>(
+                            $"${FsmName}.{fn}.bind(${FsmName})")
+                        .Invoke(param[0], param[1], param[2], param[4]),
+                    _ => default,
                 };
             Debug.Log($"${FsmName}.{fn} is undefined");
             return default;
@@ -217,7 +226,8 @@ namespace NodeCanvas.StateMachines
         public bool EnterState(FSMState newState, TransitionCallMode callMode)
         {
             if (!isRunning) {
-                Logger.LogWarning("Tried to EnterState on an FSM that was not running", LogTag.EXECUTION, this);
+                Logger.LogWarning("Tried to EnterState on an FSM that was not running",
+                    LogTag.EXECUTION, this);
                 return false;
             }
 
@@ -228,7 +238,8 @@ namespace NodeCanvas.StateMachines
 
             //todo: 添加tags判断
             //newState.CheckJsBind();
-            if (!string.IsNullOrEmpty(newState.customName) && !InvokeFunc<bool>("match", newState)) return false;
+            if (!string.IsNullOrEmpty(newState.customName) && !InvokeFunc<bool>("match", newState))
+                return false;
 
             if (currentState != null) {
                 if (onStateExit != null) onStateExit(currentState);
@@ -239,8 +250,9 @@ namespace NodeCanvas.StateMachines
                 if (callMode == TransitionCallMode.Stacked) {
                     stateStack.Push(currentState);
                     if (stateStack.Count > 5)
-                        Logger.LogWarning("State stack exceeds 5. Ensure that you are not cycling stack calls"
-                            , LogTag.EXECUTION, this);
+                        Logger.LogWarning(
+                            "State stack exceeds 5. Ensure that you are not cycling stack calls",
+                            LogTag.EXECUTION, this);
                 }
             }
             if (callMode == TransitionCallMode.Clean) stateStack.Clear();
@@ -261,8 +273,8 @@ namespace NodeCanvas.StateMachines
                 EnterState(state, callMode);
                 return state;
             }
-            Logger.LogWarning("No State with name '" + stateName + "' found on FSM '" + name + "'", LogTag.EXECUTION
-                , this);
+            Logger.LogWarning("No State with name '" + stateName + "' found on FSM '" + name + "'",
+                LogTag.EXECUTION, this);
             return null;
         }
 
@@ -297,11 +309,14 @@ namespace NodeCanvas.StateMachines
             }
         }
 
-        public FSMState PeekStack() => stateStack != null && stateStack.Count > 0 ? stateStack.Peek() : null;
+        public FSMState PeekStack() =>
+            stateStack != null && stateStack.Count > 0 ? stateStack.Peek() : null;
+
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/State Machine Asset", false, 1)]
+        [UnityEditor.MenuItem("Tools/ParadoxNotion/NodeCanvas/Create/State Machine Asset", false,
+            1)]
         private static void Editor_CreateGraph()
         {
             var newGraph = EditorUtils.CreateAsset<FSM>();

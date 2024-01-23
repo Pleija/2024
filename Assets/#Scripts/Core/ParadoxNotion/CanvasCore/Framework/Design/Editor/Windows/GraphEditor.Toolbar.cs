@@ -33,18 +33,21 @@ namespace NodeCanvas.Editor
                 EditorGUIUtility.PingObject(owner);
             }
 
-            if (EditorUtility.IsPersistent(graph) && GUILayout.Button("Select Graph", EditorStyles.toolbarButton)) {
+            if (EditorUtility.IsPersistent(graph) &&
+                GUILayout.Button("Select Graph", EditorStyles.toolbarButton)) {
                 Selection.activeObject = graph;
                 EditorGUIUtility.PingObject(graph);
             }
             GUILayout.Space(10);
             EditorGUIUtility.SetIconSize(new Vector2(15, 15));
-            if (GUILayout.Button(new GUIContent(StyleSheet.log, "Open Graph Console"), EditorStyles.toolbarButton))
+            if (GUILayout.Button(new GUIContent(StyleSheet.log, "Open Graph Console"),
+                EditorStyles.toolbarButton))
                 GraphConsole.ShowWindow();
-            if (GUILayout.Button(new GUIContent(StyleSheet.lens, "Open Graph Explorer"), EditorStyles.toolbarButton))
+            if (GUILayout.Button(new GUIContent(StyleSheet.lens, "Open Graph Explorer"),
+                EditorStyles.toolbarButton))
                 GraphExplorer.ShowWindow();
-            if (GUILayout.Button(new GUIContent(StyleSheet.refactor, "Open Graph Refactor")
-                , EditorStyles.toolbarButton))
+            if (GUILayout.Button(new GUIContent(StyleSheet.refactor, "Open Graph Refactor"),
+                EditorStyles.toolbarButton))
                 GraphRefactor.ShowWindow();
             EditorGUIUtility.SetIconSize(Vector2.zero);
             GUILayout.Space(10);
@@ -69,9 +72,10 @@ namespace NodeCanvas.Editor
             GUI.backgroundColor = Color.clear;
             GUI.color = new Color(1, 1, 1, 0.4f);
             if (GUILayout.Button(
-                string.Format("{0} @ {1} v{2}", graph.GetType().Name
-                    , graphInfoAtt != null ? graphInfoAtt.packageName : "NodeCanvas"
-                    , Framework.Internal.GraphSource.FRAMEWORK_VERSION.ToString("0.00")), EditorStyles.toolbarButton))
+                string.Format("{0} @ {1} v{2}", graph.GetType().Name,
+                    graphInfoAtt != null ? graphInfoAtt.packageName : "NodeCanvas",
+                    Framework.Internal.GraphSource.FRAMEWORK_VERSION.ToString("0.00")),
+                EditorStyles.toolbarButton))
                 Help.BrowseURL("https://paradoxnotion.com");
             EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(), MouseCursor.Link);
             GUI.color = Color.white;
@@ -80,21 +84,25 @@ namespace NodeCanvas.Editor
 
             //GRAPHOWNER JUMP SELECTION
             if (owner != null)
-                if (GUILayout.Button(string.Format("[{0}]", owner.gameObject.name), EditorStyles.toolbarDropDown
-                    , GUILayout.Width(120))) {
+                if (GUILayout.Button(string.Format("[{0}]", owner.gameObject.name),
+                    EditorStyles.toolbarDropDown, GUILayout.Width(120))) {
                     var menu = new GenericMenu();
 
-                    foreach (var _o in FindObjectsOfType<GraphOwner>().OrderBy(x => x.gameObject != owner.gameObject)) {
+                    foreach (var _o in FindObjectsOfType<GraphOwner>()
+                        .OrderBy(x => x.gameObject != owner.gameObject)) {
                         var o = _o;
-                        menu.AddItem(new GUIContent(o.gameObject.name + "/" + o.GetType().Name), o == owner, () => {
-                            SetReferences(o);
-                        });
+                        menu.AddItem(new GUIContent(o.gameObject.name + "/" + o.GetType().Name),
+                            o == owner, () => {
+                                SetReferences(o);
+                            });
                     }
                     menu.ShowAsContext();
                 }
-            Prefs.isEditorLocked = GUILayout.Toggle(Prefs.isEditorLocked, "Lock", EditorStyles.toolbarButton);
+            Prefs.isEditorLocked =
+                GUILayout.Toggle(Prefs.isEditorLocked, "Lock", EditorStyles.toolbarButton);
             GUI.contentColor = EditorGUIUtility.isProSkin ? Color.white : Colors.Grey(0.5f);
-            if (GUILayout.Button(Icons.helpIcon, EditorStyles.toolbarButton)) WelcomeWindow.ShowWindow(graph.GetType());
+            if (GUILayout.Button(Icons.helpIcon, EditorStyles.toolbarButton))
+                WelcomeWindow.ShowWindow(graph.GetType());
             GUI.contentColor = Color.white;
             GUILayout.Space(4);
             GUILayout.EndHorizontal();
@@ -109,26 +117,28 @@ namespace NodeCanvas.Editor
         {
             var menu = new GenericMenu();
             menu.AddItem(new GUIContent("Clear"), false, () => {
-                if (EditorUtility.DisplayDialog("Clear Canvas"
-                    , "This will delete all nodes of the currently viewing graph!\nAre you sure?", "YES", "NO!"))
+                if (EditorUtility.DisplayDialog("Clear Canvas",
+                    "This will delete all nodes of the currently viewing graph!\nAre you sure?",
+                    "YES", "NO!"))
                     graph.ClearGraph();
             });
             menu.AddItem(new GUIContent("Import JSON"), false, () => {
-                if (graph.allNodes.Count > 0 && !EditorUtility.DisplayDialog("Import Graph"
-                    , "All current graph information will be lost. Are you sure?", "YES", "NO"))
+                if (graph.allNodes.Count > 0 && !EditorUtility.DisplayDialog("Import Graph",
+                    "All current graph information will be lost. Are you sure?", "YES", "NO"))
                     return;
-                var path = EditorUtility.OpenFilePanel(string.Format("Import '{0}' Graph", graph.GetType().Name)
-                    , "Assets", graph.GetGraphJSONFileExtension());
+                var path = EditorUtility.OpenFilePanel(
+                    string.Format("Import '{0}' Graph", graph.GetType().Name), "Assets",
+                    graph.GetGraphJSONFileExtension());
                 if (!string.IsNullOrEmpty(path))
                     if (graph.Deserialize(System.IO.File.ReadAllText(path), null, true) ==
                         false) //true: validate, null: graph._objectReferences
-                        EditorUtility.DisplayDialog("Import Failure", "Please read the logs for more information", "OK"
-                            , string.Empty);
+                        EditorUtility.DisplayDialog("Import Failure",
+                            "Please read the logs for more information", "OK", string.Empty);
             });
             menu.AddItem(new GUIContent("Export JSON"), false, () => {
                 var path = EditorUtility.SaveFilePanelInProject(
-                    string.Format("Export '{0}' Graph", graph.GetType().Name), graph.name
-                    , graph.GetGraphJSONFileExtension(), string.Empty);
+                    string.Format("Export '{0}' Graph", graph.GetType().Name), graph.name,
+                    graph.GetGraphJSONFileExtension(), string.Empty);
 
                 if (!string.IsNullOrEmpty(path)) {
                     var json = graph.Serialize(null);
@@ -140,8 +150,8 @@ namespace NodeCanvas.Editor
             menu.AddItem(new GUIContent("Export JSON (Include SubGraphs)"), false, () => {
                 foreach (var subgraph in graph.GetAllNestedGraphs<Graph>(true).Prepend(graph)) {
                     var subpath = EditorUtility.SaveFilePanelInProject(
-                        string.Format("Export '{0}' Graph", subgraph.GetType().Name), subgraph.name
-                        , subgraph.GetGraphJSONFileExtension(), string.Empty);
+                        string.Format("Export '{0}' Graph", subgraph.GetType().Name), subgraph.name,
+                        subgraph.GetGraphJSONFileExtension(), string.Empty);
 
                     if (!string.IsNullOrEmpty(subpath)) {
                         var subjson = subgraph.Serialize(null);
@@ -153,7 +163,8 @@ namespace NodeCanvas.Editor
             });
             menu.AddItem(new GUIContent("Show JSON"), false, () => {
                 graph.SelfSerialize();
-                ParadoxNotion.Serialization.JSONSerializer.ShowData(graph.GetSerializedJsonData(), graph.name);
+                ParadoxNotion.Serialization.JSONSerializer.ShowData(graph.GetSerializedJsonData(),
+                    graph.name);
             });
             return menu;
         }
@@ -167,9 +178,9 @@ namespace NodeCanvas.Editor
             //Bind
             if (!Application.isPlaying && owner != null && !owner.graphIsBound)
                 menu.AddItem(new GUIContent("Bind To Owner"), false, () => {
-                    if (EditorUtility.DisplayDialog("Bind Graph"
-                        , "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?"
-                        , "YES", "NO")) {
+                    if (EditorUtility.DisplayDialog("Bind Graph",
+                        "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?",
+                        "YES", "NO")) {
                         UndoUtility.RecordObject(owner, "New Local Graph");
                         owner.SetBoundGraphReference(owner.graph);
                         UndoUtility.SetDirty(owner);
@@ -196,17 +207,19 @@ namespace NodeCanvas.Editor
             if (graph.blackboard != null)
                 foreach (var bb in graph.blackboard.GetAllParents(true).Reverse()) {
                     var category = "Promote Missing Parameters To Variables/";
-                    menu.AddItem(new GUIContent(category + $"In '{bb.identifier}' Blackboard"), false, () => {
-                        if (EditorUtility.DisplayDialog("Promote Missing Parameters"
-                            , "This will fill the target Blackboard with a Variable for each defined missing Parameter in the graph.\nContinue?"
-                            , "YES", "NO")) {
-                            UndoUtility.RecordObject(graph, "Promote Variables");
-                            UndoUtility.RecordObject(bb.unityContextObject, "Promote Variables");
-                            graph.PromoteMissingParametersToVariables(bb);
-                            UndoUtility.SetDirty(graph);
-                            UndoUtility.SetDirty(bb.unityContextObject);
-                        }
-                    });
+                    menu.AddItem(new GUIContent(category + $"In '{bb.identifier}' Blackboard"),
+                        false, () => {
+                            if (EditorUtility.DisplayDialog("Promote Missing Parameters",
+                                "This will fill the target Blackboard with a Variable for each defined missing Parameter in the graph.\nContinue?",
+                                "YES", "NO")) {
+                                UndoUtility.RecordObject(graph, "Promote Variables");
+                                UndoUtility.RecordObject(bb.unityContextObject,
+                                    "Promote Variables");
+                                graph.PromoteMissingParametersToVariables(bb);
+                                UndoUtility.SetDirty(graph);
+                                UndoUtility.SetDirty(bb.unityContextObject);
+                            }
+                        });
                 }
             else
                 menu.AddDisabledItem(new GUIContent("Promote Defined Parameters To Variables"));
@@ -240,9 +253,10 @@ namespace NodeCanvas.Editor
             menu.AddItem(new GUIContent("Show Node IDs"), Prefs.showNodeIDs, () => {
                 Prefs.showNodeIDs = !Prefs.showNodeIDs;
             });
-            menu.AddItem(new GUIContent("Show Node Running Times"), Prefs.showNodeElapsedTimes, () => {
-                Prefs.showNodeElapsedTimes = !Prefs.showNodeElapsedTimes;
-            });
+            menu.AddItem(new GUIContent("Show Node Running Times"), Prefs.showNodeElapsedTimes,
+                () => {
+                    Prefs.showNodeElapsedTimes = !Prefs.showNodeElapsedTimes;
+                });
             menu.AddItem(new GUIContent("Show Grid"), Prefs.showGrid, () => {
                 Prefs.showGrid = !Prefs.showGrid;
             });
@@ -255,18 +269,20 @@ namespace NodeCanvas.Editor
             menu.AddItem(new GUIContent("Log Variables Info"), Prefs.logVariablesInfo, () => {
                 Prefs.logVariablesInfo = !Prefs.logVariablesInfo;
             });
-            menu.AddItem(new GUIContent("Breakpoints Pause Editor"), Prefs.breakpointPauseEditor, () => {
-                Prefs.breakpointPauseEditor = !Prefs.breakpointPauseEditor;
-            });
+            menu.AddItem(new GUIContent("Breakpoints Pause Editor"), Prefs.breakpointPauseEditor,
+                () => {
+                    Prefs.breakpointPauseEditor = !Prefs.breakpointPauseEditor;
+                });
             menu.AddItem(new GUIContent("Animate Inspector Panel"), Prefs.animatePanels, () => {
                 Prefs.animatePanels = !Prefs.animatePanels;
             });
             menu.AddItem(new GUIContent("Show Hierarchy Icons"), Prefs.showHierarchyIcons, () => {
                 Prefs.showHierarchyIcons = !Prefs.showHierarchyIcons;
             });
-            menu.AddItem(new GUIContent("Collapse Generics In Browser"), Prefs.collapseGenericTypes, () => {
-                Prefs.collapseGenericTypes = !Prefs.collapseGenericTypes;
-            });
+            menu.AddItem(new GUIContent("Collapse Generics In Browser"), Prefs.collapseGenericTypes,
+                () => {
+                    Prefs.collapseGenericTypes = !Prefs.collapseGenericTypes;
+                });
             menu.AddItem(new GUIContent("Connection Style/Hard"), false, () => {
                 Prefs.connectionsMLT = 1f;
             });
@@ -280,9 +296,10 @@ namespace NodeCanvas.Editor
                 Prefs.connectionsMLT = 0f;
             });
             if (graph.isTree)
-                menu.AddItem(new GUIContent("Automatic Hierarchical Move"), Prefs.hierarchicalMove, () => {
-                    Prefs.hierarchicalMove = !Prefs.hierarchicalMove;
-                });
+                menu.AddItem(new GUIContent("Automatic Hierarchical Move"), Prefs.hierarchicalMove,
+                    () => {
+                        Prefs.hierarchicalMove = !Prefs.hierarchicalMove;
+                    });
             menu.AddItem(new GUIContent("Open Preferred Types Editor..."), false, () => {
                 TypePrefsEditorWindow.ShowWindow();
             });

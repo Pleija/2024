@@ -6,10 +6,12 @@ namespace ParadoxNotion
     public static class LayerUtils
     {
         ///<summary>Create LayerMask from layer names</summary>
-        public static LayerMask CreateFromNames(params string[] layerNames) => LayerNamesToMask(layerNames);
+        public static LayerMask CreateFromNames(params string[] layerNames) =>
+            LayerNamesToMask(layerNames);
 
         ///<summary>Create LayerMask from layer numbers</summary>
-        public static LayerMask CreateFromNumbers(params int[] layerNumbers) => LayerNumbersToMask(layerNumbers);
+        public static LayerMask CreateFromNumbers(params int[] layerNumbers) =>
+            LayerNumbersToMask(layerNumbers);
 
         ///<summary>Layer names to LayerMask</summary>
         public static LayerMask LayerNamesToMask(params string[] layerNames)

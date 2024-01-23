@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Keyboard Key"), Category("Events/Input (Legacy System)")
-     , Description("Calls respective outputs when the defined keyboard key is pressed down, held down or released")]
+    [Name("Keyboard Key"), Category("Events/Input (Legacy System)"),
+     Description(
+         "Calls respective outputs when the defined keyboard key is pressed down, held down or released")]
     public class KeyboardEvents : EventNode, IUpdatable
     {
         public BBParameter<KeyCode> keyCode = KeyCode.Space;

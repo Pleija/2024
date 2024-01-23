@@ -12,7 +12,8 @@ namespace SqlCipher4Unity3D.SQLite.Attribute
 
         /// <summary>
         ///     Flag whether to create the table without rowid (see https://sqlite.org/withoutrowid.html)
-        ///     The default is <c>false</c> so that sqlite adds an implicit <c>rowid</c> to every table created.
+        ///     The default is <c>false</c> so that sqlite adds an implicit <c>rowid</c> to every table
+        ///     created.
         /// </summary>
         public bool WithoutRowId { get; set; }
 

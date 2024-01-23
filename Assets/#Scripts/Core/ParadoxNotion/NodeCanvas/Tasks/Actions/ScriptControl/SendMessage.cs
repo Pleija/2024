@@ -26,7 +26,9 @@ namespace NodeCanvas.Tasks.Actions
         public BBParameter<string> methodName;
 
         public BBParameter<T> argument;
-        protected override string info => string.Format("Message {0}({1})", methodName, argument.ToString());
+
+        protected override string info =>
+            string.Format("Message {0}({1})", methodName, argument.ToString());
 
         protected override void OnExecute()
         {

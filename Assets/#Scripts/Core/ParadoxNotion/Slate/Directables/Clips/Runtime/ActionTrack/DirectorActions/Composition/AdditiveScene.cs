@@ -8,8 +8,8 @@ using System.Collections.Generic;
 
 namespace Slate.ActionClips
 {
-    [Category("Composition")
-     , Description(
+    [Category("Composition"),
+     Description(
          "Additive load a Scene for a duration of time, or permanentely if length is zero.\n\nIf 'Update Root Cutscenes' is true, all root cutscenes objects of that scene will also be updated for the duration of the clip with an optional time offset provided.")]
     public class AdditiveScene : DirectorActionClip, ISubClipContainable
     {
@@ -63,8 +63,8 @@ namespace Slate.ActionClips
 
 #if UNITY_EDITOR
 
-        public override string info =>
-            string.Format("        SubScene\n        '{0}'", sceneAsset ? sceneAsset.name : "NONE");
+        public override string info => string.Format("        SubScene\n        '{0}'",
+            sceneAsset ? sceneAsset.name : "NONE");
 
         protected override void OnAfterValidate()
         {
@@ -150,8 +150,10 @@ namespace Slate.ActionClips
 
             if (subScene.isLoaded && subScene.IsValid())
                 foreach (var go in subScene.GetRootGameObjects()) {
-                    go.transform.position += TransformPosition(scenePosition, (TransformSpace)space);
-                    go.transform.rotation *= TransformRotation(sceneRotation, (TransformSpace)space);
+                    go.transform.position +=
+                        TransformPosition(scenePosition, (TransformSpace)space);
+                    go.transform.rotation *=
+                        TransformRotation(sceneRotation, (TransformSpace)space);
                     //clean up cameras
                     var cam = go.GetComponent(typeof(IDirectableCamera)) as IDirectableCamera;
 

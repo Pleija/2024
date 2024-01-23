@@ -3,8 +3,8 @@ using ParadoxNotion.Services;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("On Late Update", 6), Category("Events/Graph"), Description("Called per-frame, but after normal Update")
-     , ExecutionPriority(6)]
+    [Name("On Late Update", 6), Category("Events/Graph"),
+     Description("Called per-frame, but after normal Update"), ExecutionPriority(6)]
     public class LateUpdateEvent : EventNode
     {
         private FlowOutput lateUpdate;

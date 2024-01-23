@@ -19,7 +19,8 @@ namespace Slate
                 var components = action.actor.GetComponents<Component>();
 
                 foreach (var c in components) {
-                    var methods = c.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public);
+                    var methods = c.GetType()
+                        .GetMethods(BindingFlags.Instance | BindingFlags.Public);
 
                     foreach (var m in methods) {
                         if (m.Name.StartsWith("get_") || m.Name.StartsWith("set_")) continue;

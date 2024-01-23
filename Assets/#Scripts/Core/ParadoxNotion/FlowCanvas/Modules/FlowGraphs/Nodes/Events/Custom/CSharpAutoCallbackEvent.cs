@@ -7,8 +7,8 @@ using NodeCanvas.Framework;
 
 namespace FlowCanvas.Nodes
 {
-    [DoNotList, Name("C# Event")
-     , Description(
+    [DoNotList, Name("C# Event"),
+     Description(
          "Automatically Subscribes to the target C# Event when the graph is enabled, and is called when the event is raised")]
     public class CSharpAutoCallbackEvent : EventNode, IReflectedWrapper
     {
@@ -28,7 +28,8 @@ namespace FlowCanvas.Nodes
                 if (_event == null) return "No Event";
                 if (eventInfo == null) return _event.AsString().FormatError();
                 if (isStaticEvent)
-                    return string.Format("{0} ({1})", base.name, eventInfo.RTReflectedOrDeclaredType().FriendlyName());
+                    return string.Format("{0} ({1})", base.name,
+                        eventInfo.RTReflectedOrDeclaredType().FriendlyName());
                 return base.name;
             }
         }
@@ -47,8 +48,8 @@ namespace FlowCanvas.Nodes
             var delegateType = eventInfo.EventHandlerType;
             if (reflectedEvent == null) reflectedEvent = new ReflectedDelegateEvent(delegateType);
             if (!isStaticEvent)
-                instancePort = AddValueInput(eventInfo.RTReflectedOrDeclaredType().FriendlyName()
-                    , eventInfo.RTReflectedOrDeclaredType(), "Instance");
+                instancePort = AddValueInput(eventInfo.RTReflectedOrDeclaredType().FriendlyName(),
+                    eventInfo.RTReflectedOrDeclaredType(), "Instance");
             var parameters = delegateType.RTGetDelegateTypeParameters();
             args = new object[parameters.Length];
 

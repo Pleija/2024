@@ -17,11 +17,13 @@ namespace Runner.Obstacles
         public override IEnumerator Spawn(TrackSegment segment, float t)
         {
             //the tutorial very firts barricade need to be center and alone, so player can swipe safely in bother direction to avoid it
-            var isTutorialFirst = TrackManager.instance.isTutorial && TrackManager.instance.firstObstacle &&
-                segment == segment.manager.currentSegment;
+            var isTutorialFirst = TrackManager.instance.isTutorial &&
+                TrackManager.instance.firstObstacle && segment == segment.manager.currentSegment;
             if (isTutorialFirst) TrackManager.instance.firstObstacle = false;
-            var count = isTutorialFirst ? 1 : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
-            var startLane = isTutorialFirst ? 0 : Random.Range(k_LeftMostLaneIndex, k_RightMostLaneIndex + 1);
+            var count = isTutorialFirst ? 1
+                : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
+            var startLane = isTutorialFirst ? 0
+                : Random.Range(k_LeftMostLaneIndex, k_RightMostLaneIndex + 1);
             Vector3 position;
             Quaternion rotation;
             segment.GetPointAt(t, out position, out rotation);
@@ -33,7 +35,8 @@ namespace Runner.Obstacles
                 yield return op;
 
                 if (op.Result == null) {
-                    Debug.LogWarning(string.Format("Unable to load obstacle {0}.", gameObject.name));
+                    Debug.LogWarning(string.Format("Unable to load obstacle {0}.",
+                        gameObject.name));
                     yield break;
                 }
                 var obj = Instantiate(op.Result, position, rotation); //  as GameObject;
@@ -45,7 +48,8 @@ namespace Runner.Obstacles
                     Debug.Log(gameObject.name);
                 }
                 else {
-                    obj.transform.position += obj.transform.right * lane * segment.manager.laneOffset;
+                    obj.transform.position +=
+                        obj.transform.right * lane * segment.manager.laneOffset;
                     obj.transform.SetParent(segment.objectRoot, true);
 
                     //TODO : remove that hack related to #issue7

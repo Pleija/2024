@@ -60,12 +60,12 @@ namespace NodeCanvas.Tasks.Conditions
 
     //previous versions
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events")
-     , Description(
-         "Will subscribe to a public event of Action type and return true when the event is raised.\n(eg public event System.Action [name])")
-     , fsMigrateVersions(typeof(CheckCSharpEvent_0))]
-    public class CheckCSharpEvent : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEvent_0>
-        , IMigratable<CheckStaticCSharpEvent>
+    [Category("✫ Reflected/Events"),
+     Description(
+         "Will subscribe to a public event of Action type and return true when the event is raised.\n(eg public event System.Action [name])"),
+     fsMigrateVersions(typeof(CheckCSharpEvent_0))]
+    public class CheckCSharpEvent : ConditionTask, IReflectedWrapper,
+        IMigratable<CheckCSharpEvent_0>, IMigratable<CheckStaticCSharpEvent>
     {
         ///----------------------------------------------------------------------------------------------
         void IMigratable<CheckCSharpEvent_0>.Migrate(CheckCSharpEvent_0 model)
@@ -115,12 +115,14 @@ namespace NodeCanvas.Tasks.Conditions
 
         protected override void OnEnable()
         {
-            if (handler != null) targetEvent.AddEventHandler(targetEvent.IsStatic() ? null : agent, handler);
+            if (handler != null)
+                targetEvent.AddEventHandler(targetEvent.IsStatic() ? null : agent, handler);
         }
 
         protected override void OnDisable()
         {
-            if (handler != null) targetEvent.RemoveEventHandler(targetEvent.IsStatic() ? null : agent, handler);
+            if (handler != null)
+                targetEvent.RemoveEventHandler(targetEvent.IsStatic() ? null : agent, handler);
         }
 
         public void Raised()
@@ -149,14 +151,16 @@ namespace NodeCanvas.Tasks.Conditions
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
                         .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), null, SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), null,
+                            SetTargetEvent, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticEventSelectionMenu(t, null, SetTargetEvent, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(t, null, SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(t, null, SetTargetEvent,
+                            menu);
                 }
                 menu.ShowAsBrowser("Select Event", GetType());
                 Event.current.Use();
@@ -164,7 +168,8 @@ namespace NodeCanvas.Tasks.Conditions
 
             if (targetEvent != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Selected Type", targetEvent.DeclaringType.FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Selected Type",
+                    targetEvent.DeclaringType.FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Selected Event", targetEvent.Name);
                 GUILayout.EndVertical();
             }
@@ -173,12 +178,12 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events")
-     , Description(
-         "Will subscribe to a public event of Action<T> type and return true when the event is raised.\n(eg public event System.Action<T> [name])")
-     , fsMigrateVersions(typeof(CheckCSharpEvent_0<>))]
-    public class CheckCSharpEvent<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEvent_0<T>>
-        , IMigratable<CheckStaticCSharpEvent<T>>
+    [Category("✫ Reflected/Events"),
+     Description(
+         "Will subscribe to a public event of Action<T> type and return true when the event is raised.\n(eg public event System.Action<T> [name])"),
+     fsMigrateVersions(typeof(CheckCSharpEvent_0<>))]
+    public class CheckCSharpEvent<T> : ConditionTask, IReflectedWrapper,
+        IMigratable<CheckCSharpEvent_0<T>>, IMigratable<CheckStaticCSharpEvent<T>>
     {
         ///----------------------------------------------------------------------------------------------
         void IMigratable<CheckCSharpEvent_0<T>>.Migrate(CheckCSharpEvent_0<T> model)
@@ -229,12 +234,14 @@ namespace NodeCanvas.Tasks.Conditions
 
         protected override void OnEnable()
         {
-            if (handler != null) targetEvent.AddEventHandler(targetEvent.IsStatic() ? null : agent, handler);
+            if (handler != null)
+                targetEvent.AddEventHandler(targetEvent.IsStatic() ? null : agent, handler);
         }
 
         protected override void OnDisable()
         {
-            if (handler != null) targetEvent.RemoveEventHandler(targetEvent.IsStatic() ? null : agent, handler);
+            if (handler != null)
+                targetEvent.RemoveEventHandler(targetEvent.IsStatic() ? null : agent, handler);
         }
 
         public void Raised(T eventValue)
@@ -259,16 +266,19 @@ namespace NodeCanvas.Tasks.Conditions
                 var menu = new UnityEditor.GenericMenu();
 
                 if (agent != null) {
-                    foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T), SetTargetEvent
-                            , menu);
+                    foreach (var comp in agent.GetComponents(typeof(Component))
+                        .Where(c => c.hideFlags == 0))
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T),
+                            SetTargetEvent, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticEventSelectionMenu(t, typeof(T), SetTargetEvent, menu);
+                    menu = EditorUtils.GetStaticEventSelectionMenu(t, typeof(T), SetTargetEvent,
+                        menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(t, typeof(T), SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(t, typeof(T),
+                            SetTargetEvent, menu);
                 }
                 menu.ShowAsBrowser("Select Event", GetType());
                 Event.current.Use();
@@ -276,7 +286,8 @@ namespace NodeCanvas.Tasks.Conditions
 
             if (targetEvent != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Selected Type", targetEvent.DeclaringType.FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Selected Type",
+                    targetEvent.DeclaringType.FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Selected Event", targetEvent.Name);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Save Value As", saveAs, true);
@@ -286,11 +297,12 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events")
-     , Description(
-         "Will subscribe to a public event of Action<T> type and return true when the event is raised and it's value is equal to provided value as well.\n(eg public event System.Action<T> [name])")
-     , fsMigrateVersions(typeof(CheckCSharpEventValue_0<>))]
-    public class CheckCSharpEventValue<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEventValue_0<T>>
+    [Category("✫ Reflected/Events"),
+     Description(
+         "Will subscribe to a public event of Action<T> type and return true when the event is raised and it's value is equal to provided value as well.\n(eg public event System.Action<T> [name])"),
+     fsMigrateVersions(typeof(CheckCSharpEventValue_0<>))]
+    public class CheckCSharpEventValue<T> : ConditionTask, IReflectedWrapper,
+        IMigratable<CheckCSharpEventValue_0<T>>
     {
         ///----------------------------------------------------------------------------------------------
         void IMigratable<CheckCSharpEventValue_0<T>>.Migrate(CheckCSharpEventValue_0<T> model)
@@ -336,12 +348,14 @@ namespace NodeCanvas.Tasks.Conditions
 
         protected override void OnEnable()
         {
-            if (handler != null) targetEvent.AddEventHandler(targetEvent.IsStatic() ? null : agent, handler);
+            if (handler != null)
+                targetEvent.AddEventHandler(targetEvent.IsStatic() ? null : agent, handler);
         }
 
         protected override void OnDisable()
         {
-            if (handler != null) targetEvent.RemoveEventHandler(targetEvent.IsStatic() ? null : agent, handler);
+            if (handler != null)
+                targetEvent.RemoveEventHandler(targetEvent.IsStatic() ? null : agent, handler);
         }
 
         public void Raised(T eventValue)
@@ -365,16 +379,19 @@ namespace NodeCanvas.Tasks.Conditions
                 var menu = new UnityEditor.GenericMenu();
 
                 if (agent != null) {
-                    foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T), SetTargetEvent
-                            , menu);
+                    foreach (var comp in agent.GetComponents(typeof(Component))
+                        .Where(c => c.hideFlags == 0))
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T),
+                            SetTargetEvent, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticEventSelectionMenu(t, typeof(T), SetTargetEvent, menu);
+                    menu = EditorUtils.GetStaticEventSelectionMenu(t, typeof(T), SetTargetEvent,
+                        menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(t, typeof(T), SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(t, typeof(T),
+                            SetTargetEvent, menu);
                 }
                 menu.ShowAsBrowser("Select Event", GetType());
                 Event.current.Use();
@@ -382,7 +399,8 @@ namespace NodeCanvas.Tasks.Conditions
 
             if (targetEvent != null) {
                 GUILayout.BeginVertical("box");
-                UnityEditor.EditorGUILayout.LabelField("Selected Type", targetEvent.DeclaringType.FriendlyName());
+                UnityEditor.EditorGUILayout.LabelField("Selected Type",
+                    targetEvent.DeclaringType.FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Selected Event", targetEvent.Name);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Check Value", checkValue);

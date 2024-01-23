@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Latch Integer"), Category("Flow Controllers/Flow Convert")
-     , Description("Convert a Flow signal to an integer value"), ContextDefinedOutputs(typeof(int))]
+    [Name("Latch Integer"), Category("Flow Controllers/Flow Convert"),
+     Description("Convert a Flow signal to an integer value"), ContextDefinedOutputs(typeof(int))]
     public class LatchInt : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

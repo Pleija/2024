@@ -35,7 +35,8 @@ namespace NodeCanvas.Editor
             //we need capture the objects for the delegate callback
             var _field = fieldInfo;
             var _context = context;
-            TaskEditor.TaskFieldMulti(instance, system, _field.FieldType, (t) => _field.SetValue(_context, t));
+            TaskEditor.TaskFieldMulti(instance, system, _field.FieldType,
+                (t) => _field.SetValue(_context, t));
             EditorUtils.Separator();
             return instance;
         }

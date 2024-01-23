@@ -58,11 +58,11 @@ namespace NodeCanvas.Editor
             messages = new List<Logger.Message>();
             graphsMap = new Dictionary<Graph, List<Logger.Message>>();
             styleMap = new Dictionary<LogType, ConsoleStyle> {
-                { LogType.Log, new ConsoleStyle(Icons.infoIcon, "eeeeee") }
-                , { LogType.Warning, new ConsoleStyle(Icons.warningIcon, "f6ff00") }
-                , { LogType.Error, new ConsoleStyle(Icons.errorIcon, "db3b3b") }
-                , { LogType.Exception, new ConsoleStyle(Icons.errorIcon, "db3b3b") }
-                , { LogType.Assert, new ConsoleStyle(Icons.infoIcon, "eeeeee") },
+                { LogType.Log, new ConsoleStyle(Icons.infoIcon, "eeeeee") },
+                { LogType.Warning, new ConsoleStyle(Icons.warningIcon, "f6ff00") },
+                { LogType.Error, new ConsoleStyle(Icons.errorIcon, "db3b3b") },
+                { LogType.Exception, new ConsoleStyle(Icons.errorIcon, "db3b3b") },
+                { LogType.Assert, new ConsoleStyle(Icons.infoIcon, "eeeeee") },
             };
         }
 
@@ -143,47 +143,53 @@ namespace NodeCanvas.Editor
             GUILayout.BeginHorizontal(EditorStyles.toolbar);
             GUILayout.Space(4);
             var ascending = Prefs.consoleLogOrder == Prefs.ConsoleLogOrder.Ascending;
-            var newValue = GUILayout.Toggle(ascending, new GUIContent(ascending ? "▲" : "▼"), "label"
-                , GUILayout.Width(15));
+            var newValue = GUILayout.Toggle(ascending, new GUIContent(ascending ? "▲" : "▼"),
+                "label", GUILayout.Width(15));
             if (ascending != newValue)
-                Prefs.consoleLogOrder = newValue ? Prefs.ConsoleLogOrder.Ascending : Prefs.ConsoleLogOrder.Descending;
+                Prefs.consoleLogOrder = newValue ? Prefs.ConsoleLogOrder.Ascending
+                    : Prefs.ConsoleLogOrder.Descending;
             GUILayout.Space(2);
-            Prefs.consoleLogInfo = GUILayout.Toggle(Prefs.consoleLogInfo, new GUIContent(Icons.infoIcon)
-                , logTypeFilterStyle, GUILayout.Width(30));
+            Prefs.consoleLogInfo = GUILayout.Toggle(Prefs.consoleLogInfo,
+                new GUIContent(Icons.infoIcon), logTypeFilterStyle, GUILayout.Width(30));
             GUILayout.Space(2);
-            Prefs.consoleLogWarning = GUILayout.Toggle(Prefs.consoleLogWarning, new GUIContent(Icons.warningIcon)
-                , logTypeFilterStyle, GUILayout.Width(30));
+            Prefs.consoleLogWarning = GUILayout.Toggle(Prefs.consoleLogWarning,
+                new GUIContent(Icons.warningIcon), logTypeFilterStyle, GUILayout.Width(30));
             GUILayout.Space(2);
-            Prefs.consoleLogError = GUILayout.Toggle(Prefs.consoleLogError, new GUIContent(Icons.errorIcon)
-                , logTypeFilterStyle, GUILayout.Width(30));
+            Prefs.consoleLogError = GUILayout.Toggle(Prefs.consoleLogError,
+                new GUIContent(Icons.errorIcon), logTypeFilterStyle, GUILayout.Width(30));
             GUILayout.FlexibleSpace();
-            Prefs.consoleClearOnPlay = GUILayout.Toggle(Prefs.consoleClearOnPlay, new GUIContent("Clear On Play")
-                , logTypeFilterStyle, GUILayout.Width(100));
-            if (GUILayout.Button("Clear", EditorStyles.toolbarButton, GUILayout.Width(70))) messages.Clear();
+            Prefs.consoleClearOnPlay = GUILayout.Toggle(Prefs.consoleClearOnPlay,
+                new GUIContent("Clear On Play"), logTypeFilterStyle, GUILayout.Width(100));
+            if (GUILayout.Button("Clear", EditorStyles.toolbarButton, GUILayout.Width(70)))
+                messages.Clear();
             GUILayout.EndHorizontal();
             if (messages.Count == 0)
                 EditorGUILayout.HelpBox(
-                    "This console will catch graph related logs and display them here instead of the normal Unity console, thus save bloat from the Unity console.\nFurthermore, any log displayed here can be clicked to focus the relevant graph element that the log relates to automatically.\nIt is recommended to dock this console below the Graph Editor for easier debugging."
-                    , MessageType.Info);
+                    "This console will catch graph related logs and display them here instead of the normal Unity console, thus save bloat from the Unity console.\nFurthermore, any log displayed here can be clicked to focus the relevant graph element that the log relates to automatically.\nIt is recommended to dock this console below the Graph Editor for easier debugging.",
+                    MessageType.Info);
             scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-            for (var i = ascending ? messages.Count - 1 : 0; ascending ? i >= 0 : i < messages.Count
-                ; i = ascending ? i - 1 : i + 1) {
+            for (var i = ascending ? messages.Count - 1 : 0;
+                ascending ? i >= 0 : i < messages.Count; i = ascending ? i - 1 : i + 1) {
                 var msg = messages[i];
                 if (ascending && messages.Count - i > MAX_VIEW_MESSAGES) continue;
                 if (!ascending && messages.Count - MAX_VIEW_MESSAGES > i) continue;
                 if (IsFiltered(msg.type)) continue;
-                if (EditorGUIUtility.isProSkin) GUI.color = Color.black.WithAlpha(i % 2 == 0 ? 0.3f : 0);
-                if (!EditorGUIUtility.isProSkin) GUI.color = Color.white.WithAlpha(i % 2 == 0 ? 0.3f : 0);
+                if (EditorGUIUtility.isProSkin)
+                    GUI.color = Color.black.WithAlpha(i % 2 == 0 ? 0.3f : 0);
+                if (!EditorGUIUtility.isProSkin)
+                    GUI.color = Color.white.WithAlpha(i % 2 == 0 ? 0.3f : 0);
                 GUILayout.BeginHorizontal(GUI.skin.box);
                 GUI.color = Color.white;
                 var content = GetFormatedGUIContentForMessage(msg);
-                GUILayout.Label(content, Styles.leftLabel, GUILayout.Width(0), GUILayout.ExpandWidth(true));
+                GUILayout.Label(content, Styles.leftLabel, GUILayout.Width(0),
+                    GUILayout.ExpandWidth(true));
                 if (GUILayout.Button("X", GUILayout.Width(18))) messages.RemoveAt(i);
                 GUILayout.EndHorizontal();
                 var lastRect = GUILayoutUtility.GetLastRect();
                 EditorGUIUtility.AddCursorRect(lastRect, MouseCursor.Link);
-                if (lastRect.Contains(e.mousePosition) && e.type == EventType.MouseDown) ProccessMessage(msg);
+                if (lastRect.Contains(e.mousePosition) && e.type == EventType.MouseDown)
+                    ProccessMessage(msg);
             }
             GUILayout.EndScrollView();
         }
@@ -194,7 +200,9 @@ namespace NodeCanvas.Editor
             if (!msg.IsValid()) return GUIContent.none;
             var tagText = string.Format("<b>({0} {1})</b>", msg.tag, msg.type.ToString());
             var map = styleMap[msg.type];
-            return new GUIContent(string.Format("<color=#{0}>{1}: {2}</color>", map.hex, tagText, msg.text), map.icon);
+            return new GUIContent(
+                string.Format("<color=#{0}>{1}: {2}</color>", map.hex, tagText, msg.text),
+                map.icon);
         }
 
         ///<summary>Fetch last logger message of target graph</summary>
@@ -232,11 +240,13 @@ namespace NodeCanvas.Editor
             //cease here if no graph
             if (graph == null) return;
             var editor = GraphEditor.current;
-            if (editor == null || GraphEditor.currentGraph != graph) editor = GraphEditor.OpenWindow(graph);
+            if (editor == null || GraphEditor.currentGraph != graph)
+                editor = GraphEditor.OpenWindow(graph);
             IGraphElement element = null;
             if (msg.context is IGraphElement) element = (IGraphElement)msg.context;
             if (msg.context is Task) element = graph.GetTaskParentElement((Task)msg.context);
-            if (msg.context is BBParameter) element = graph.GetParameterParentElement((BBParameter)msg.context);
+            if (msg.context is BBParameter)
+                element = graph.GetParameterParentElement((BBParameter)msg.context);
             EditorApplication.delayCall += () => GraphEditor.FocusElement(element, true);
         }
     }

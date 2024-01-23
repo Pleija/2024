@@ -29,8 +29,9 @@ namespace FlowCanvas.Nodes
                 sw.Start();
                 o.Call(new Flow());
                 sw.Stop();
-                Logger.Log(string.Format("Debug Event Elapsed Time: {0} ms.", sw.ElapsedMilliseconds), LogTag.EDITOR
-                    , this);
+                Logger.Log(
+                    string.Format("Debug Event Elapsed Time: {0} ms.", sw.ElapsedMilliseconds),
+                    LogTag.EDITOR, this);
             }
         }
 
@@ -42,7 +43,8 @@ namespace FlowCanvas.Nodes
                     //we do this only for the debugging to show, cause it doesn if we fire the port in here (OnGUI) but it works fine otherwise
                     send = true;
                 else
-                    Logger.LogWarning("Debug Flow Signal Event will only work in PlayMode", LogTag.EDITOR, this);
+                    Logger.LogWarning("Debug Flow Signal Event will only work in PlayMode",
+                        LogTag.EDITOR, this);
             }
         }
 

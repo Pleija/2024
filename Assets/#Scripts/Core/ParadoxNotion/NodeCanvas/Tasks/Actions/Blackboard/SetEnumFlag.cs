@@ -11,7 +11,9 @@ public class SetEnumFlag : ActionTask
 
     public readonly BBObjectParameter Flag = new BBObjectParameter(typeof(Enum));
     public readonly BBParameter<bool> Clear = new BBParameter<bool>();
-    protected override string info => $"{(Clear.value ? "Clear" : "Set")} {Variable} for {Flag} flag";
+
+    protected override string info =>
+        $"{(Clear.value ? "Clear" : "Set")} {Variable} for {Flag} flag";
 
     protected override void OnExecute()
     {

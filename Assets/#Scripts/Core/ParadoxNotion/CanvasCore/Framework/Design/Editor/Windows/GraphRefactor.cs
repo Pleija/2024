@@ -74,8 +74,9 @@ namespace NodeCanvas.Editor
             reflectedMap = new Dictionary<string, List<ISerializedReflectedInfo>>();
             reflectedChangesMap = new Dictionary<string, fsData>();
             var graph = GraphEditor.currentGraph;
-            JSONSerializer.SerializeAndExecuteNoCycles(typeof(NodeCanvas.Framework.Internal.GraphSource)
-                , graph.GetGraphSource(), DoCollect);
+            JSONSerializer.SerializeAndExecuteNoCycles(
+                typeof(NodeCanvas.Framework.Internal.GraphSource), graph.GetGraphSource(),
+                DoCollect);
         }
 
         //...
@@ -106,12 +107,14 @@ namespace NodeCanvas.Editor
 
             foreach (var missingParameter in graph.GetDefinedParameters()
                 .Where(p => p.varRef == null && !p.isPresumedDynamic)) {
-                var key = string.Format("{0}({1})", missingParameter.name, missingParameter.varType.Name);
+                var key = string.Format("{0}({1})", missingParameter.name,
+                    missingParameter.varType.Name);
                 List<BBParameter> collection;
 
                 if (!missingParametersMap.TryGetValue(key, out collection)) {
                     collection = new List<BBParameter>();
-                    var fakeParam = new Framework.Internal.BBObjectParameter(missingParameter.varType);
+                    var fakeParam =
+                        new Framework.Internal.BBObjectParameter(missingParameter.varType);
                     fakeParam.name = missingParameter.name;
                     fakeParam.bb = missingParameter.bb;
                     fakeParam.useBlackboard = missingParameter.useBlackboard;
@@ -205,7 +208,8 @@ namespace NodeCanvas.Editor
         private void OnGUI()
         {
             if (Application.isPlaying) {
-                ShowNotification(new GUIContent("Refactor only works in editor mode. Please exit play mode."));
+                ShowNotification(
+                    new GUIContent("Refactor only works in editor mode. Please exit play mode."));
                 return;
             }
 
@@ -215,11 +219,12 @@ namespace NodeCanvas.Editor
             }
             RemoveNotification();
             EditorGUILayout.HelpBox(
-                "Batch refactor missing nodes, tasks, parameters, types as well as missing reflection based methods, properties, fields and so on references. Note that changes made here are irreversible. Please proceed with caution.\n\n1) Hit Gather to fetch missing elements from the currently viewing graph in the editor.\n2) Rename elements serialization data to their new name (keep the same format).\n3) Hit Save to commit your changes."
-                , MessageType.Info);
+                "Batch refactor missing nodes, tasks, parameters, types as well as missing reflection based methods, properties, fields and so on references. Note that changes made here are irreversible. Please proceed with caution.\n\n1) Hit Gather to fetch missing elements from the currently viewing graph in the editor.\n2) Rename elements serialization data to their new name (keep the same format).\n3) Hit Save to commit your changes.",
+                MessageType.Info);
             if (GUILayout.Button("Gather", GUILayout.Height(30))) Gather();
             EditorUtils.Separator();
-            if (recoverablesMap == null || reflectedMap == null || missingParametersMap == null) return;
+            if (recoverablesMap == null || reflectedMap == null || missingParametersMap == null)
+                return;
             EditorUtils.CoolLabel("Recoverables");
             EditorGUI.indentLevel = 1;
             DoRecoverables();
@@ -232,7 +237,8 @@ namespace NodeCanvas.Editor
             EditorGUI.indentLevel = 1;
             DoParameters();
 
-            if (recoverableChangesMap.Count > 0 || reflectedChangesMap.Count > 0 || missingParametersMap.Count > 0) {
+            if (recoverableChangesMap.Count > 0 || reflectedChangesMap.Count > 0 ||
+                missingParametersMap.Count > 0) {
                 EditorUtils.Separator();
                 if (GUILayout.Button("Save", GUILayout.Height(30))) Save();
             }
@@ -251,7 +257,8 @@ namespace NodeCanvas.Editor
 
             foreach (var pair in recoverablesMap) {
                 var originalName = pair.Key;
-                GUILayout.Label(string.Format("<b>{0} occurencies: Type '{1}'</b>", pair.Value.Count, originalName));
+                GUILayout.Label(string.Format("<b>{0} occurencies: Type '{1}'</b>",
+                    pair.Value.Count, originalName));
                 GUILayout.Space(5);
                 var typeName = recoverableChangesMap[originalName];
                 typeName = EditorGUILayout.TextField("Type Name", typeName);
@@ -270,7 +277,8 @@ namespace NodeCanvas.Editor
 
             foreach (var pair in reflectedMap) {
                 var information = pair.Key;
-                GUILayout.Label(string.Format("<b>{0} occurencies: '{1}'</b>", pair.Value.Count, information));
+                GUILayout.Label(string.Format("<b>{0} occurencies: '{1}'</b>", pair.Value.Count,
+                    information));
                 GUILayout.Space(5);
                 var data = reflectedChangesMap[information];
                 var dict = new Dictionary<string, fsData>(data.AsDictionary);

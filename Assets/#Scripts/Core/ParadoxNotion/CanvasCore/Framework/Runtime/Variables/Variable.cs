@@ -12,8 +12,8 @@ using Logger = ParadoxNotion.Services.Logger;
 namespace NodeCanvas.Framework
 {
 #if UNITY_EDITOR //handles missing variable types
-    [fsObject(Processor = typeof(fsRecoveryProcessor<Variable, MissingVariableType>)), Serializable, fsUninitialized
-     , SpoofAOT]
+    [fsObject(Processor = typeof(fsRecoveryProcessor<Variable, MissingVariableType>)), Serializable,
+     fsUninitialized, SpoofAOT]
 #endif
     ///<summary>Variables are stored in Blackboards and can optionaly be bound to Properties or Fields of a Unity Component</summary>
     public abstract class Variable
@@ -163,7 +163,9 @@ namespace NodeCanvas.Framework
         ///<summary>Checks whether a convertion from type is possible</summary>
         public bool CanConvertFrom(Type fromType) => GetSetConverter(fromType) != null;
 
-        ///<summary>Gets an Action<object> that converts the value fromType if possible. Null if not.</summary>
+        /// <summary>
+        ///     Gets an Action<object> that converts the value fromType if possible. Null if not.
+        /// </summary>
         public Action<object> GetSetConverter(Type fromType)
         {
             if (varType.RTIsAssignableFrom(fromType)) return (x) => value = x;
@@ -206,7 +208,8 @@ namespace NodeCanvas.Framework
         ///<summary>The value as type T when accessing as this type</summary>
         public new T value {
             get {
-                if (typeof(T) == typeof(AssetReference) && assetObject) _value = (T)(object)assetObject.Reference;
+                if (typeof(T) == typeof(AssetReference) && assetObject)
+                    _value = (T)(object)assetObject.Reference;
                 return getter != null ? getter() : _value;
             }
             set {
@@ -235,7 +238,9 @@ namespace NodeCanvas.Framework
 
         public Variable(string name) : base(name, Guid.NewGuid().ToString()) { }
         public Variable(string name, string ID) : base(name, ID) { }
-        public Variable(string name, Type type) : base(name, Guid.NewGuid().ToString()) => varType = type;
+
+        public Variable(string name, Type type) : base(name, Guid.NewGuid().ToString()) =>
+            varType = type;
 
         ///<summary>Same as .value. Used for binding.</summary>
         public override object GetValueBoxed() =>
@@ -261,7 +266,8 @@ namespace NodeCanvas.Framework
         public override void BindProperty(MemberInfo prop, GameObject target = null)
         {
             if (prop is PropertyInfo || prop is FieldInfo) {
-                _propertyPath = string.Format("{0}.{1}", prop.RTReflectedOrDeclaredType().FullName, prop.Name);
+                _propertyPath = string.Format("{0}.{1}", prop.RTReflectedOrDeclaredType().FullName,
+                    prop.Name);
                 if (target != null) InitializePropertyBinding(target, false);
             }
         }
@@ -282,7 +288,8 @@ namespace NodeCanvas.Framework
         }
 
         /// <summary>
-        ///     Initialize the property binding for target gameobject. The gameobject is only used in case the binding is not
+        ///     Initialize the property binding for target gameobject. The gameobject is only used in case the
+        ///     binding is not
         ///     static.
         /// </summary>
         public override void InitializePropertyBinding(GameObject go, bool callSetter = false)
@@ -297,8 +304,8 @@ namespace NodeCanvas.Framework
 
             if (type == null) {
                 Logger.LogError(
-                    string.Format("Type '{0}' not found for Blackboard Variable '{1}' Binding.", typeString, name)
-                    , LogTag.VARIABLE, go);
+                    string.Format("Type '{0}' not found for Blackboard Variable '{1}' Binding.",
+                        typeString, name), LogTag.VARIABLE, go);
                 return;
             }
             var member = type.RTGetFieldOrProp(memberString);
@@ -310,8 +317,8 @@ namespace NodeCanvas.Framework
                 if (instance == null && !field.IsStatic) {
                     Logger.LogError(
                         string.Format(
-                            "A Blackboard Variable '{0}' is due to bind to a Component type that is missing '{1}'. Binding ignored"
-                            , name, typeString), LogTag.VARIABLE, go);
+                            "A Blackboard Variable '{0}' is due to bind to a Component type that is missing '{1}'. Binding ignored",
+                            name, typeString), LogTag.VARIABLE, go);
                     return;
                 }
 
@@ -336,14 +343,15 @@ namespace NodeCanvas.Framework
                 var prop = (PropertyInfo)member;
                 var getMethod = prop.RTGetGetMethod();
                 var setMethod = prop.RTGetSetMethod();
-                var isStatic = (getMethod != null && getMethod.IsStatic) || (setMethod != null && setMethod.IsStatic);
+                var isStatic = (getMethod != null && getMethod.IsStatic) ||
+                    (setMethod != null && setMethod.IsStatic);
                 var instance = isStatic ? null : go.GetComponent(type);
 
                 if (instance == null && !isStatic) {
                     Logger.LogError(
                         string.Format(
-                            "A Blackboard Variable '{0}' is due to bind to a Component type that is missing '{1}'. Binding ignored."
-                            , name, typeString), LogTag.VARIABLE, go);
+                            "A Blackboard Variable '{0}' is due to bind to a Component type that is missing '{1}'. Binding ignored.",
+                            name, typeString), LogTag.VARIABLE, go);
                     return;
                 }
 
@@ -360,8 +368,8 @@ namespace NodeCanvas.Framework
                     getter = () => {
                         Logger.LogError(
                             string.Format(
-                                "You tried to Get a Property Bound Variable '{0}', but the Bound Property '{1}' is Write Only!"
-                                , name, _propertyPath), LogTag.VARIABLE, go);
+                                "You tried to Get a Property Bound Variable '{0}', but the Bound Property '{1}' is Write Only!",
+                                name, _propertyPath), LogTag.VARIABLE, go);
                         return default;
                     };
 
@@ -380,16 +388,16 @@ namespace NodeCanvas.Framework
                     setter = (o) => {
                         Logger.LogError(
                             string.Format(
-                                "You tried to Set a Property Bound Variable '{0}', but the Bound Property '{1}' is Read Only!"
-                                , name, _propertyPath), LogTag.VARIABLE, go);
+                                "You tried to Set a Property Bound Variable '{0}', but the Bound Property '{1}' is Read Only!",
+                                name, _propertyPath), LogTag.VARIABLE, go);
                     };
                 }
                 return;
             }
             Logger.LogError(
                 string.Format(
-                    "A Blackboard Variable '{0}' is due to bind to a property/field named '{1}' that does not exist on type '{2}'. Binding ignored"
-                    , name, memberString, type.FullName), LogTag.VARIABLE, go);
+                    "A Blackboard Variable '{0}' is due to bind to a property/field named '{1}' that does not exist on type '{2}'. Binding ignored",
+                    name, memberString, type.FullName), LogTag.VARIABLE, go);
         }
     }
 }

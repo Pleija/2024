@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("AND"), Category("Flow Controllers/Flow Merge")
-     , Description(
+    [Name("AND"), Category("Flow Controllers/Flow Merge"),
+     Description(
          "Await all flow inputs to be called within the max allowed await time before Out is called.\n- If MaxAwaitTime is 0, then all inputs must be called at the same time.\n- If MaxAwaitTime is -1, then the await time is infinity.")]
     public class ANDMerge : FlowControlNode
     {

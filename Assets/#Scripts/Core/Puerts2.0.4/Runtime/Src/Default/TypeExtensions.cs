@@ -138,13 +138,16 @@ namespace Puerts
 #endif
         }
 
-        internal static bool IsStruct(this Type type) => type.IsValueType() && !type.IsEnum() && !type.IsPrimitive();
+        internal static bool IsStruct(this Type type) =>
+            type.IsValueType() && !type.IsEnum() && !type.IsPrimitive();
 
         private static string GetNameWithoutNamespace(Type type)
         {
             if (type.IsGenericType) {
-                var genericArgumentNames = type.GetGenericArguments().Select(x => GetFriendlyName(x)).ToArray();
-                return type.Name.Split('`')[0] + "<" + string.Join(", ", genericArgumentNames) + ">";
+                var genericArgumentNames = type.GetGenericArguments()
+                    .Select(x => GetFriendlyName(x)).ToArray();
+                return type.Name.Split('`')[0] + "<" + string.Join(", ", genericArgumentNames) +
+                    ">";
             }
             else {
                 return type.Name;
@@ -196,8 +199,8 @@ namespace Puerts
             }
             else if (type.IsArray) {
                 if (type.GetArrayRank() > 1)
-                    return GetFriendlyName(type.GetElementType()) + "[" + new string(',', type.GetArrayRank() - 1) +
-                        "]";
+                    return GetFriendlyName(type.GetElementType()) + "[" +
+                        new string(',', type.GetArrayRank() - 1) + "]";
                 else
                     return GetFriendlyName(type.GetElementType()) + "[]";
             }
@@ -207,7 +210,8 @@ namespace Puerts
             else if (type.IsNested) {
                 if (type.DeclaringType.IsNested) {
                     if (type.DeclaringType.IsGenericTypeDefinition)
-                        return GetFriendlyName(type.DeclaringType, type.GetGenericArguments()) + '.' + type.Name;
+                        return GetFriendlyName(type.DeclaringType, type.GetGenericArguments()) +
+                            '.' + type.Name;
                     else
                         return GetFriendlyName(type.DeclaringType) + '.' + type.Name;
                 }
@@ -215,17 +219,19 @@ namespace Puerts
                     var genericArgumentNames =
                         (genericArguments == null ? type.GetGenericArguments() : genericArguments)
                         .Select(x => GetFriendlyName(x)).ToArray();
-                    return type.DeclaringType.FullName.Split('`')[0] + "<" + string.Join(", ", genericArgumentNames) +
-                        ">" + '.' + type.Name;
+                    return type.DeclaringType.FullName.Split('`')[0] + "<" +
+                        string.Join(", ", genericArgumentNames) + ">" + '.' + type.Name;
                 }
                 else {
-                    return GetFriendlyName(type.DeclaringType) + '.' + GetNameWithoutNamespace(type);
+                    return GetFriendlyName(type.DeclaringType) + '.' +
+                        GetNameWithoutNamespace(type);
                 }
             }
             else if (type.IsGenericType) {
-                var genericArgumentNames = type.GetGenericArguments().Select(x => GetFriendlyName(x)).ToArray();
-                return (type.FullName == null ? type.Namespace + "." + type.Name : type.FullName).Split('`')[0] + "<" +
-                    string.Join(", ", genericArgumentNames) + ">";
+                var genericArgumentNames = type.GetGenericArguments()
+                    .Select(x => GetFriendlyName(x)).ToArray();
+                return (type.FullName == null ? type.Namespace + "." + type.Name : type.FullName)
+                    .Split('`')[0] + "<" + string.Join(", ", genericArgumentNames) + ">";
             }
             else {
                 return type.FullName;

@@ -20,15 +20,15 @@ namespace Puerts
             get {
                 if (!type_def_extention_method.Any()) {
                     CheckExtensions();
-                    _cache = (
-                            from type in type_def_extention_method.Distinct()
-                            // #if UNITY_EDITOR
-                            //                                       where !type.Assembly.Location.Contains("Editor")
-                            // #endif
-                            from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                            where method.IsDefined(typeof(ExtensionAttribute), false) /*&& IsSupportedMethod(method)*/
-                            group method by GetExtendedType(method))
-                        .ToDictionary(g => g.Key, g => g as IEnumerable<MethodInfo>);
+                    _cache = (from type in type_def_extention_method.Distinct()
+                        // #if UNITY_EDITOR
+                        //                                       where !type.Assembly.Location.Contains("Editor")
+                        // #endif
+                        from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                        where method.IsDefined(typeof(ExtensionAttribute),
+                            false) /*&& IsSupportedMethod(method)*/
+                        group method by GetExtendedType(method)).ToDictionary(g => g.Key,
+                        g => g as IEnumerable<MethodInfo>);
                 }
                 return _cache;
             }
@@ -46,7 +46,8 @@ namespace Puerts
             //     where method.IsDefined(typeof(ExtensionAttribute), false) /*&& IsSupportedMethod(method)*/
             //     group method by GetExtendedType(method)).ToDictionary(g => g.Key, g => g as IEnumerable<MethodInfo>);
             // Debug.Log(type_def_extention_method.Count);
-            Debug.Log(extensionMethodMap.Values.SelectMany(x => x).Where(t => t.Name.Contains("ForEach")).Select(x =>
+            Debug.Log(extensionMethodMap.Values.SelectMany(x => x)
+                .Where(t => t.Name.Contains("ForEach")).Select(x =>
                     //   x.GetNiceName())
                     $"{x.ReturnType.GetTsTypeName()} {x.DeclaringType.GetTsTypeName()}.{x.Name}{(x.ContainsGenericParameters ? "<" + x.GetGenericArguments().Select(t => t.GetTsTypeName()).JoinStr(", ") + ">" : "")}({x.GetParameters().Select(p => p.Name + ": " + p.ParameterType.GetTsTypeName(true)).JoinStr(", ")})")
                 .JoinStr("\n"));
@@ -72,14 +73,16 @@ namespace Puerts
                 if (parameterType.IsGenericParameter) {
                     // 所有参数的基类都不是值类型，且不是另一个泛型
                     if (parameterType.BaseType != null && (parameterType.BaseType.IsValueType ||
-                        (parameterType.BaseType.IsGenericType && !parameterType.BaseType.IsGenericTypeDefinition)))
+                        (parameterType.BaseType.IsGenericType &&
+                            !parameterType.BaseType.IsGenericTypeDefinition)))
                         return false;
                     var parameterConstraints = parameterType.GetGenericParameterConstraints();
                     // 所有泛型参数都有值类型约束
                     if (parameterConstraints.Length == 0) return false;
                     foreach (var parameterConstraint in parameterConstraints)
                         // 所有泛型参数的类型约束都不是值类型
-                        if (!parameterConstraint.IsClass() || parameterConstraint == typeof(ValueType))
+                        if (!parameterConstraint.IsClass() ||
+                            parameterConstraint == typeof(ValueType))
                             return false;
                     hasValidGenericParameter = true;
                     if (!returnTypeValid)
@@ -96,7 +99,8 @@ namespace Puerts
             var type = method.GetParameters()[0].ParameterType;
             if (!type.IsGenericParameter) return type;
             var parameterConstraints = type.GetGenericParameterConstraints();
-            if (parameterConstraints.Length == 0) return method.DeclaringType; // throw new InvalidOperationException();
+            if (parameterConstraints.Length == 0)
+                return method.DeclaringType; // throw new InvalidOperationException();
             var firstParameterConstraint = parameterConstraints[0];
             if (!firstParameterConstraint.IsClass()) ; //throw new InvalidOperationException();
             return firstParameterConstraint;
@@ -172,8 +176,10 @@ namespace Puerts
                 if (underlyingType != null) return GetTsTypeName(underlyingType) + " | null";
                 var fullName = type.FullName == null ? type.ToString() : type.FullName;
                 var parts = fullName.Replace('+', '.').Split('`');
-                var argTypenames = type.GetGenericArguments().Select(x => GetTsTypeName(x)).ToArray();
-                return parts[0] + '$' + parts[1].Split('[')[0] + "<" + string.Join(", ", argTypenames) + ">";
+                var argTypenames =
+                    type.GetGenericArguments().Select(x => GetTsTypeName(x)).ToArray();
+                return parts[0] + '$' + parts[1].Split('[')[0] + "<" +
+                    string.Join(", ", argTypenames) + ">";
             }
             else if (type.FullName == null) {
                 return type.ToString();
@@ -196,10 +202,11 @@ namespace Puerts
 
             while (enumerator.MoveNext()) {
                 var type = enumerator.Current;
-                if (type.IsDefined(typeof(ExtensionAttribute), false)) type_def_extention_method.Add(type);
+                if (type.IsDefined(typeof(ExtensionAttribute), false))
+                    type_def_extention_method.Add(type);
                 if (!type.IsAbstract() || !type.IsSealed()) continue;
-                var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic |
-                    BindingFlags.DeclaredOnly);
+                var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public |
+                    BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
                 for (var i = 0; i < fields.Length; i++) {
                     var field = fields[i];
@@ -214,8 +221,8 @@ namespace Puerts
                         }
                     }
                 }
-                var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic |
-                    BindingFlags.DeclaredOnly);
+                var props = type.GetProperties(BindingFlags.Static | BindingFlags.Public |
+                    BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
                 for (var i = 0; i < props.Length; i++) {
                     var prop = props[i];

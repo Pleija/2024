@@ -66,8 +66,8 @@ namespace Slate
         public static Vector2 GetGameViewSize() => Handles.GetMainGameViewSize();
 
         ///<summary>Pops a menu for animatable properties selection</summary>
-        public static void ShowAnimatedPropertySelectionMenu(GameObject root
-            , AnimationDataCollection.AddParameterDelegate callback)
+        public static void ShowAnimatedPropertySelectionMenu(GameObject root,
+            AnimationDataCollection.AddParameterDelegate callback)
         {
             var menu = new GenericMenu();
 
@@ -75,31 +75,38 @@ namespace Slate
                 var comp = _comp;
                 if (comp == null) continue;
                 var compType = comp.GetType();
-                var transformPath = UnityObjectUtility.CalculateTransformPath(root.transform, comp.transform);
+                var transformPath =
+                    UnityObjectUtility.CalculateTransformPath(root.transform, comp.transform);
                 var displayTransformPath = "Self";
                 if (comp.gameObject != root) displayTransformPath = "Children/" + transformPath;
 
                 if (comp is Transform) {
                     //special treat
-                    menu.AddItem(new GUIContent(displayTransformPath + "/Transform/Position"), false, () => {
-                        callback(typeof(Transform), "localPosition", transformPath);
-                    });
-                    menu.AddItem(new GUIContent(displayTransformPath + "/Transform/Rotation"), false, () => {
-                        callback(typeof(Transform), "localEulerAngles", transformPath);
-                    });
-                    menu.AddItem(new GUIContent(displayTransformPath + "/Transform/Scale"), false, () => {
-                        callback(typeof(Transform), "localScale", transformPath);
-                    });
+                    menu.AddItem(new GUIContent(displayTransformPath + "/Transform/Position"),
+                        false, () => {
+                            callback(typeof(Transform), "localPosition", transformPath);
+                        });
+                    menu.AddItem(new GUIContent(displayTransformPath + "/Transform/Rotation"),
+                        false, () => {
+                            callback(typeof(Transform), "localEulerAngles", transformPath);
+                        });
+                    menu.AddItem(new GUIContent(displayTransformPath + "/Transform/Scale"), false,
+                        () => {
+                            callback(typeof(Transform), "localScale", transformPath);
+                        });
                     //if its Transform itself, continue, otherwise append (this is basically done for RectTransform).
                     if (compType == typeof(Transform)) continue;
                 }
                 Predicate<Type> shouldInclude = (t) => AnimatedParameter.supportedTypes.Contains(t);
-                Predicate<Type> shouldContinue = (t) => !typeof(UnityEngine.Object).IsAssignableFrom(t) &&
-                    !t.IsValueType && !t.IsEnum && !typeof(IEnumerable).IsAssignableFrom(t); //TODO: List & Enum support
+                Predicate<Type> shouldContinue = (t) =>
+                    !typeof(UnityEngine.Object).IsAssignableFrom(t) && !t.IsValueType &&
+                    !t.IsEnum &&
+                    !typeof(IEnumerable).IsAssignableFrom(t); //TODO: List & Enum support
 
-                foreach (var path in ReflectionTools.GetMemberPaths(compType, shouldInclude, shouldContinue)) {
-                    var finalPath = string.Format("{0}/{1}/{2}", displayTransformPath, compType.Name.SplitCamelCase()
-                        , path.Replace('.', '/').SplitCamelCase());
+                foreach (var path in ReflectionTools.GetMemberPaths(compType, shouldInclude,
+                    shouldContinue)) {
+                    var finalPath = string.Format("{0}/{1}/{2}", displayTransformPath,
+                        compType.Name.SplitCamelCase(), path.Replace('.', '/').SplitCamelCase());
                     menu.AddItem(new GUIContent(finalPath), false, () => {
                         callback(compType, path, transformPath);
                     });
@@ -110,11 +117,12 @@ namespace Slate
         }
 
         ///<summary>Generic Popup for selection of any element within a list</summary>
-        public static T Popup<T>(string prefix, T selected, List<T> options, params GUILayoutOption[] GUIOptions) =>
+        public static T Popup<T>(string prefix, T selected, List<T> options,
+            params GUILayoutOption[] GUIOptions) =>
             Popup<T>(null, prefix, selected, options, GUIOptions);
 
-        public static T Popup<T>(Rect? rect, string prefix, T selected, List<T> options
-            , params GUILayoutOption[] GUIOptions)
+        public static T Popup<T>(Rect? rect, string prefix, T selected, List<T> options,
+            params GUILayoutOption[] GUIOptions)
         {
             var index = 0;
             if (options.Contains(selected)) index = options.IndexOf(selected) + 1;
@@ -131,7 +139,8 @@ namespace Slate
 
             if (!string.IsNullOrEmpty(prefix)) {
                 if (rect == null)
-                    index = EditorGUILayout.Popup(prefix, index, stringedOptions.ToArray(), GUIOptions);
+                    index = EditorGUILayout.Popup(prefix, index, stringedOptions.ToArray(),
+                        GUIOptions);
                 else
                     index = EditorGUI.Popup(rect.Value, prefix, index, stringedOptions.ToArray());
             }
@@ -146,7 +155,8 @@ namespace Slate
         }
 
         ///<summary>Generic Popup for selection of any element within a list without adding NONE</summary>
-        public static T CleanPopup<T>(string prefix, T selected, List<T> options, params GUILayoutOption[] GUIOptions)
+        public static T CleanPopup<T>(string prefix, T selected, List<T> options,
+            params GUILayoutOption[] GUIOptions)
         {
             var index = -1;
             if (options.Contains(selected)) index = options.IndexOf(selected);
@@ -176,16 +186,22 @@ namespace Slate
             var infos = new List<TypeMetaInfo>();
 
             foreach (var type in ReflectionTools.GetImplementationsOf(baseType)) {
-                if (type.GetCustomAttributes(typeof(ObsoleteAttribute), true).FirstOrDefault() != null) continue;
+                if (type.GetCustomAttributes(typeof(ObsoleteAttribute), true).FirstOrDefault() !=
+                    null)
+                    continue;
                 var info = new TypeMetaInfo();
                 info.type = type;
-                var nameAtt = type.GetCustomAttributes(typeof(NameAttribute), true).FirstOrDefault() as NameAttribute;
+                var nameAtt =
+                    type.GetCustomAttributes(typeof(NameAttribute), true).FirstOrDefault() as
+                        NameAttribute;
                 info.name = nameAtt != null ? nameAtt.name : type.Name.SplitCamelCase();
                 var catAtt =
-                    type.GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as CategoryAttribute;
+                    type.GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as
+                        CategoryAttribute;
                 if (catAtt != null) info.category = catAtt.category;
                 var attachAtt =
-                    type.GetCustomAttributes(typeof(AttachableAttribute), true).FirstOrDefault() as AttachableAttribute;
+                    type.GetCustomAttributes(typeof(AttachableAttribute), true).FirstOrDefault() as
+                        AttachableAttribute;
                 if (attachAtt != null) info.attachableTypes = attachAtt.types;
                 info.isUnique = type.IsDefined(typeof(UniqueElementAttribute), true);
                 infos.Add(info);
@@ -196,12 +212,14 @@ namespace Slate
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Get an object's fold state</summary>
-        private static Dictionary<object, AnimBool> foldOutStates = new Dictionary<object, AnimBool>();
+        private static Dictionary<object, AnimBool> foldOutStates =
+            new Dictionary<object, AnimBool>();
 
         public static float GetObjectFoldOutFaded(object o)
         {
             AnimBool fold = null;
-            return foldOutStates.TryGetValue(o, out fold) ? fold.faded : (foldOutStates[o] = new AnimBool(false)).faded;
+            return foldOutStates.TryGetValue(o, out fold) ? fold.faded
+                : (foldOutStates[o] = new AnimBool(false)).faded;
         }
 
         public static bool GetObjectFoldOut(object o)
@@ -227,7 +245,8 @@ namespace Slate
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Get a texture from an audio clip</summary>
-        private static Dictionary<AudioClip, Texture2D> audioTextures = new Dictionary<AudioClip, Texture2D>();
+        private static Dictionary<AudioClip, Texture2D> audioTextures =
+            new Dictionary<AudioClip, Texture2D>();
 
         public static Texture2D GetAudioClipTexture(AudioClip clip, int width, int height)
         {
@@ -244,8 +263,8 @@ namespace Slate
                 audioTextures[clip] = Styles.whiteTexture;
                 Debug.LogWarning(
                     string.Format(
-                        "Can't get preview audio texture from audio clip '{0}' because its load type is set to compressed"
-                        , clip.name), clip);
+                        "Can't get preview audio texture from audio clip '{0}' because its load type is set to compressed",
+                        clip.name), clip);
                 return null;
             }
             texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -258,11 +277,13 @@ namespace Slate
             var i = 0;
 
             while (i < width) {
-                var barHeight = Mathf.CeilToInt(Mathf.Clamp(Mathf.Abs(samples[i * step]) * height, 0, height));
+                var barHeight =
+                    Mathf.CeilToInt(Mathf.Clamp(Mathf.Abs(samples[i * step]) * height, 0, height));
                 var add = samples[i * step] > 0 ? 1 : -1;
                 for (var j = 0; j < barHeight; j++)
-                    texture.SetPixel(i, Mathf.FloorToInt(height / 2) - Mathf.FloorToInt(barHeight / 2) * add + j * add
-                        , Color.white);
+                    texture.SetPixel(i,
+                        Mathf.FloorToInt(height / 2) - Mathf.FloorToInt(barHeight / 2) * add +
+                        j * add, Color.white);
                 ++i;
             }
             texture.Apply();
@@ -270,9 +291,13 @@ namespace Slate
             return texture;
         }
 
-        ///----------------------------------------------------------------------------------------------
-        ///<summary>Draws a looped audio clip texture within Rect and within provided maxLength (with optional offset).</summary>
-        public static void DrawLoopedAudioTexture(Rect rect, AudioClip audioClip, float maxLength, float offset)
+        /// ----------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Draws a looped audio clip texture within Rect and within provided maxLength (with optional
+        ///     offset).
+        /// </summary>
+        public static void DrawLoopedAudioTexture(Rect rect, AudioClip audioClip, float maxLength,
+            float offset)
         {
             if (audioClip == null) return;
             var audioRect = rect;
@@ -296,7 +321,10 @@ namespace Slate
             }
         }
 
-        ///<summary>Draws looped vertical lines within Rect and withn provided maxLength (with optional offset)</summary>
+        /// <summary>
+        ///     Draws looped vertical lines within Rect and withn provided maxLength (with optional
+        ///     offset)
+        /// </summary>
         public static void DrawLoopedLines(Rect rect, float length, float maxLength, float offset)
         {
             if (length != 0 && maxLength != 0) {

@@ -12,15 +12,18 @@ namespace FlowCanvas
     public static class TypeConverter
     {
         ///<summary>Custom Converter delegate</summary>
-        public delegate ValueHandler<object> CustomConverter(Type sourceType, Type targetType
-            , ValueHandler<object> func);
+        public delegate ValueHandler<object> CustomConverter(Type sourceType, Type targetType,
+            ValueHandler<object> func);
 
         ///<summary>Subscribe to custom converter</summary>
         public static event CustomConverter customConverter;
 
-        ///<summary>Returns a function that can convert from source type to target type with given func as the current value</summary>
-        public static ValueHandler<T> GetConverterFuncFromTo<T>(Type sourceType, Type targetType
-            , ValueHandler<object> func)
+        /// <summary>
+        ///     Returns a function that can convert from source type to target type with given func as the
+        ///     current value
+        /// </summary>
+        public static ValueHandler<T> GetConverterFuncFromTo<T>(Type sourceType, Type targetType,
+            ValueHandler<object> func)
         {
             // Custom Converter
             if (customConverter != null) {
@@ -70,14 +73,16 @@ namespace FlowCanvas
                 };
 
             //from convertible to Vector3
-            if (targetType == typeof(Vector3) && typeof(IConvertible).RTIsAssignableFrom(sourceType))
+            if (targetType == typeof(Vector3) &&
+                typeof(IConvertible).RTIsAssignableFrom(sourceType))
                 return () => {
                     var f = (float)Convert.ChangeType(func(), typeof(float));
                     return (T)(object)new Vector3(f, f, f);
                 };
 
             //from UnityObject to bool
-            if (targetType == typeof(bool) && typeof(UnityEngine.Object).RTIsAssignableFrom(sourceType))
+            if (targetType == typeof(bool) &&
+                typeof(UnityEngine.Object).RTIsAssignableFrom(sourceType))
                 return () => {
                     return (T)(object)(func() as UnityEngine.Object != null);
                 };
@@ -120,7 +125,8 @@ namespace FlowCanvas
                         return (T)func();
                     }
                     catch {
-                        return (T)exp.Method.Invoke(null, ReflectionTools.SingleTempArgsArray(func()));
+                        return (T)exp.Method.Invoke(null,
+                            ReflectionTools.SingleTempArgsArray(func()));
                     }
                 };
             ///----------------------------------------------------------------------------------------------
@@ -148,7 +154,8 @@ namespace FlowCanvas
                 };
 
             //from component to Quaternion (rotation)
-            if (targetType == typeof(Quaternion) && typeof(Component).RTIsAssignableFrom(sourceType))
+            if (targetType == typeof(Quaternion) &&
+                typeof(Component).RTIsAssignableFrom(sourceType))
                 return () => {
                     try {
                         return (T)(object)(func() as Component).transform.rotation;
@@ -171,7 +178,8 @@ namespace FlowCanvas
             ///----------------------------------------------------------------------------------------------
 
             //from component to component
-            if (typeof(Component).RTIsAssignableFrom(targetType) && typeof(Component).RTIsAssignableFrom(sourceType))
+            if (typeof(Component).RTIsAssignableFrom(targetType) &&
+                typeof(Component).RTIsAssignableFrom(sourceType))
                 return () => {
                     try {
                         return (T)(object)(func() as Component).GetComponent(targetType);
@@ -182,7 +190,8 @@ namespace FlowCanvas
                 };
 
             //from gameobject to component
-            if (typeof(Component).RTIsAssignableFrom(targetType) && sourceType == typeof(GameObject))
+            if (typeof(Component).RTIsAssignableFrom(targetType) &&
+                sourceType == typeof(GameObject))
                 return () => {
                     try {
                         return (T)(object)(func() as GameObject).GetComponent(targetType);
@@ -193,7 +202,8 @@ namespace FlowCanvas
                 };
 
             //from component to gameobject
-            if (targetType == typeof(GameObject) && typeof(Component).RTIsAssignableFrom(sourceType))
+            if (targetType == typeof(GameObject) &&
+                typeof(Component).RTIsAssignableFrom(sourceType))
                 return () => {
                     try {
                         return (T)(object)(func() as Component).gameObject;

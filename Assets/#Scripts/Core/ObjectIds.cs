@@ -66,12 +66,14 @@ public class ObjectIds : View<ObjectIds>
 
     public void Save()
     {
-        all = gameObject.scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<Transform>(true))
-            .Distinct().Select(x => x.gameObject).ToList();
+        all = gameObject.scene.GetRootGameObjects()
+            .SelectMany(x => x.GetComponentsInChildren<Transform>(true)).Distinct()
+            .Select(x => x.gameObject).ToList();
         items = all.Select(x => new Item() { gameObject = x }).ToList();
         Redis.Database.KeyDelete($"SceneData:{gameObject.scene.name}");
         items.ForEach(Press);
-        Redis.Database.StringSet($"SceneData:{gameObject.scene.name}:this", JsonUtility.ToJson(this));
+        Redis.Database.StringSet($"SceneData:{gameObject.scene.name}:this",
+            JsonUtility.ToJson(this));
         Debug.Log($"Setup Ids: {items.Count}");
     }
 
@@ -84,12 +86,14 @@ public class ObjectIds : View<ObjectIds>
         data.position = data.gameObject.transform.localPosition;
         data.scale = data.gameObject.transform.localScale;
         data.rotation = data.gameObject.transform.localRotation;
-        data.parent = data.gameObject.transform.parent != null ? items.First(x => x.gameObject).guid : null;
+        data.parent = data.gameObject.transform.parent != null ? items.First(x => x.gameObject).guid
+            : null;
 
         if (data.gameObject.TryGetComponent(typeof(RectTransform), out var rect)) {
             data.rectTransformData = new RectTransformData();
             data.rectTransformData.PullFromTransform(rect as RectTransform);
         }
-        Redis.Database.HashSet($"SceneData:{gameObject.scene.name}", data.guid, JsonUtility.ToJson(data));
+        Redis.Database.HashSet($"SceneData:{gameObject.scene.name}", data.guid,
+            JsonUtility.ToJson(data));
     }
 }

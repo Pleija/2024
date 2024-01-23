@@ -5,9 +5,12 @@ using ParadoxNotion;
 
 namespace NodeCanvas.Framework.Internal
 {
-    ///<summary>Missing node types are deserialized into this on deserialization and can load back if type is found</summary>
-    [DoNotList
-     , Description(
+    /// <summary>
+    ///     Missing node types are deserialized into this on deserialization and can load back if type
+    ///     is found
+    /// </summary>
+    [DoNotList,
+     Description(
          "Please resolve the MissingConnection issue by either replacing the connection, importing the missing connection type, or refactoring the type in GraphRefactor.")]
     public sealed class MissingConnection : Connection, IMissingRecoverable
     {

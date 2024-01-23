@@ -75,13 +75,16 @@ namespace ParadoxNotion.Design
         public override object OnGUI(GUIContent content, object instance)
         {
             if (!string.IsNullOrEmpty(attribute.methodName)) {
-                var method = info.wrapperInstanceContext.GetType().RTGetMethod(attribute.methodName);
+                var method = info.wrapperInstanceContext.GetType()
+                    .RTGetMethod(attribute.methodName);
 
                 if (method != null && method.GetParameters().Length == 0) {
-                    if (GUILayout.Button(attribute.buttonTitle)) method.Invoke(info.wrapperInstanceContext, null);
+                    if (GUILayout.Button(attribute.buttonTitle))
+                        method.Invoke(info.wrapperInstanceContext, null);
                 }
                 else {
-                    GUILayout.Label(string.Format("Can't find ShowIf method '{0}'.", attribute.methodName));
+                    GUILayout.Label(string.Format("Can't find ShowIf method '{0}'.",
+                        attribute.methodName));
                 }
             }
             return MoveNextDrawer();
@@ -96,14 +99,16 @@ namespace ParadoxNotion.Design
             var newValue = MoveNextDrawer();
 
             if (!Equals(newValue, instance)) {
-                var method = info.wrapperInstanceContext.GetType().RTGetMethod(attribute.methodName);
+                var method = info.wrapperInstanceContext.GetType()
+                    .RTGetMethod(attribute.methodName);
 
                 if (method != null && method.GetParameters().Length == 0) {
                     fieldInfo.SetValue(context, newValue); //manual set field before invoke
                     method.Invoke(info.wrapperInstanceContext, null);
                 }
                 else {
-                    GUILayout.Label(string.Format("Can't find Callback method '{0}'.", attribute.methodName));
+                    GUILayout.Label(string.Format("Can't find Callback method '{0}'.",
+                        attribute.methodName));
                 }
             }
             return newValue;
@@ -116,8 +121,10 @@ namespace ParadoxNotion.Design
     {
         public override object OnGUI(GUIContent content, object instance)
         {
-            if (fieldInfo.FieldType == typeof(float)) return Mathf.Max((float)MoveNextDrawer(), (float)attribute.min);
-            if (fieldInfo.FieldType == typeof(int)) return Mathf.Max((int)MoveNextDrawer(), (int)attribute.min);
+            if (fieldInfo.FieldType == typeof(float))
+                return Mathf.Max((float)MoveNextDrawer(), (float)attribute.min);
+            if (fieldInfo.FieldType == typeof(int))
+                return Mathf.Max((int)MoveNextDrawer(), (int)attribute.min);
             return MoveNextDrawer();
         }
     }
@@ -130,7 +137,8 @@ namespace ParadoxNotion.Design
         {
             if (fieldInfo.FieldType == typeof(float))
                 return EditorGUILayout.DelayedFloatField(content, (float)instance);
-            if (fieldInfo.FieldType == typeof(int)) return EditorGUILayout.DelayedIntField(content, (int)instance);
+            if (fieldInfo.FieldType == typeof(int))
+                return EditorGUILayout.DelayedIntField(content, (int)instance);
             if (fieldInfo.FieldType == typeof(string))
                 return EditorGUILayout.DelayedTextField(content, (string)instance);
             return MoveNextDrawer();
@@ -142,8 +150,10 @@ namespace ParadoxNotion.Design
     {
         public override object OnGUI(GUIContent content, object instance)
         {
-            if (typeof(Object).IsAssignableFrom(fieldInfo.FieldType) || fieldInfo.FieldType.IsInterface)
-                return EditorGUILayout.ObjectField(content, instance as Object, fieldInfo.FieldType, true);
+            if (typeof(Object).IsAssignableFrom(fieldInfo.FieldType) ||
+                fieldInfo.FieldType.IsInterface)
+                return EditorGUILayout.ObjectField(content, instance as Object, fieldInfo.FieldType,
+                    true);
             return MoveNextDrawer();
         }
     }
@@ -168,9 +178,11 @@ namespace ParadoxNotion.Design
         public override object OnGUI(GUIContent content, object instance)
         {
             if (fieldInfo.FieldType == typeof(float))
-                return EditorGUILayout.Slider(content, (float)instance, (float)attribute.min, (float)attribute.max);
+                return EditorGUILayout.Slider(content, (float)instance, (float)attribute.min,
+                    (float)attribute.max);
             if (fieldInfo.FieldType == typeof(int))
-                return EditorGUILayout.IntSlider(content, (int)instance, (int)attribute.min, (int)attribute.max);
+                return EditorGUILayout.IntSlider(content, (int)instance, (int)attribute.min,
+                    (int)attribute.max);
             return MoveNextDrawer();
         }
     }
@@ -180,7 +192,8 @@ namespace ParadoxNotion.Design
     {
         public override object OnGUI(GUIContent content, object instance)
         {
-            if (fieldInfo.FieldType == typeof(int)) return EditorGUILayout.LayerField(content, (int)instance);
+            if (fieldInfo.FieldType == typeof(int))
+                return EditorGUILayout.LayerField(content, (int)instance);
             return MoveNextDrawer();
         }
     }
@@ -190,7 +203,8 @@ namespace ParadoxNotion.Design
     {
         public override object OnGUI(GUIContent content, object instance)
         {
-            if (fieldInfo.FieldType == typeof(string)) return EditorGUILayout.TagField(content, (string)instance);
+            if (fieldInfo.FieldType == typeof(string))
+                return EditorGUILayout.TagField(content, (string)instance);
             return MoveNextDrawer();
         }
     }
@@ -210,8 +224,8 @@ namespace ParadoxNotion.Design
         {
             if (fieldInfo.FieldType == typeof(string)) {
                 GUILayout.Label(content);
-                return EditorGUILayout.TextArea((string)instance, areaStyle
-                    , GUILayout.Height(attribute.numberOfLines * areaStyle.lineHeight));
+                return EditorGUILayout.TextArea((string)instance, areaStyle,
+                    GUILayout.Height(attribute.numberOfLines * areaStyle.lineHeight));
             }
             return MoveNextDrawer();
         }
@@ -225,8 +239,8 @@ namespace ParadoxNotion.Design
         public override object OnGUI(GUIContent content, object instance)
         {
             var options = ReflectionTools.GetImplementationsOf(fieldInfo.FieldType);
-            var selection = EditorUtils.Popup<System.Type>(content
-                , instance != null ? instance.GetType() : fieldInfo.FieldType, options);
+            var selection = EditorUtils.Popup<System.Type>(content,
+                instance != null ? instance.GetType() : fieldInfo.FieldType, options);
             if (selection == null) return instance = null;
             if (instance == null || instance.GetType() != selection)
                 if (!typeof(Object).IsAssignableFrom(selection))

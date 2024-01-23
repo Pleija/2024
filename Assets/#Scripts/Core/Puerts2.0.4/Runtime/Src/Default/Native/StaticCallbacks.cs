@@ -13,7 +13,8 @@ namespace Puerts
     internal class StaticCallbacks
     {
         [MonoPInvokeCallback(typeof(V8FunctionCallback))]
-        internal static void JsEnvCallbackWrap(IntPtr isolate, IntPtr info, IntPtr self, int paramLen, long data)
+        internal static void JsEnvCallbackWrap(IntPtr isolate, IntPtr info, IntPtr self,
+            int paramLen, long data)
         {
             try {
                 int jsEnvIdx, callbackIdx;
@@ -21,8 +22,8 @@ namespace Puerts
                 JsEnv.jsEnvs[jsEnvIdx].InvokeCallback(isolate, callbackIdx, info, self, paramLen);
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "JsEnvCallbackWrap c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "JsEnvCallbackWrap c# exception:" + e.Message + ",stack:" + e.StackTrace);
             }
         }
 
@@ -43,18 +44,20 @@ namespace Puerts
             try {
                 int jsEnvIdx, callbackIdx;
                 Utils.LongToTwoInt(data, out jsEnvIdx, out callbackIdx);
-                var ret = JsEnv.jsEnvs[jsEnvIdx].InvokeConstructor(isolate, callbackIdx, info, paramLen);
+                var ret = JsEnv.jsEnvs[jsEnvIdx]
+                    .InvokeConstructor(isolate, callbackIdx, info, paramLen);
                 return ret;
             }
             catch (Exception e) {
-                PuertsDLL.ThrowException(isolate
-                    , "ConstructorWrap c# exception:" + e.Message + ",stack:" + e.StackTrace);
+                PuertsDLL.ThrowException(isolate,
+                    "ConstructorWrap c# exception:" + e.Message + ",stack:" + e.StackTrace);
                 return IntPtr.Zero;
             }
         }
 
         [MonoPInvokeCallback(typeof(V8FunctionCallback))]
-        internal static void ReturnTrue(IntPtr isolate, IntPtr info, IntPtr self, int paramLen, long data)
+        internal static void ReturnTrue(IntPtr isolate, IntPtr info, IntPtr self, int paramLen,
+            long data)
         {
             PuertsDLL.ReturnBoolean(isolate, info, true);
         }

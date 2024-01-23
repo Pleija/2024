@@ -37,8 +37,10 @@ namespace Slate
         {
             Handles.BeginGUI();
             var e = Event.current;
-            Handles.Label(point.position + new Vector3(0, HandleUtility.GetHandleSize(point.position) * 0.4f, 0)
-                , index.ToString());
+            Handles.Label(
+                point.position +
+                new Vector3(0, HandleUtility.GetHandleSize(point.position) * 0.4f, 0),
+                index.ToString());
             Handles.color = Prefs.gizmosColor;
             var pointGUISize = HandleUtility.GetHandleSize(point.position) * 0.1f;
 
@@ -58,11 +60,13 @@ namespace Slate
                         var menu = new GenericMenu();
                         if (nextPoint != null)
                             menu.AddItem(new GUIContent("Add Point After"), false, () => {
-                                path.AddPointAt(BezierPath.GetPositionAt(point, nextPoint, 0.5f), index + 1);
+                                path.AddPointAt(BezierPath.GetPositionAt(point, nextPoint, 0.5f),
+                                    index + 1);
                             });
                         if (previousPoint != null)
                             menu.AddItem(new GUIContent("Add Point Before"), false, () => {
-                                path.AddPointAt(BezierPath.GetPositionAt(previousPoint, point, 0.5f), index);
+                                path.AddPointAt(
+                                    BezierPath.GetPositionAt(previousPoint, point, 0.5f), index);
                             });
                         menu.AddItem(new GUIContent("Tangent/Connected"), false, () => {
                             point.handleStyle = BezierPoint.HandleStyle.Connected;
@@ -83,25 +87,30 @@ namespace Slate
                 }
             }
             var newPosition = point.position;
-            if (point == selectedPoint) newPosition = Handles.PositionHandle(point.position, Quaternion.identity);
-            Handles.FreeMoveHandle(point.position, Quaternion.identity, pointGUISize, Vector3.zero
-                , Handles.RectangleHandleCap);
+            if (point == selectedPoint)
+                newPosition = Handles.PositionHandle(point.position, Quaternion.identity);
+            Handles.FreeMoveHandle(point.position, Quaternion.identity, pointGUISize, Vector3.zero,
+                Handles.RectangleHandleCap);
 
             if (newPosition != point.position) {
                 point.position = newPosition;
                 path.SetDirty();
             }
-            var newGlobal1 = Handles.FreeMoveHandle(point.handle1Position, Quaternion.identity
-                , HandleUtility.GetHandleSize(point.handle1Position) * 0.075f, Vector3.zero, Handles.CircleHandleCap);
-            if (selectedPoint == point) newGlobal1 = Handles.PositionHandle(newGlobal1, Quaternion.identity);
+            var newGlobal1 = Handles.FreeMoveHandle(point.handle1Position, Quaternion.identity,
+                HandleUtility.GetHandleSize(point.handle1Position) * 0.075f, Vector3.zero,
+                Handles.CircleHandleCap);
+            if (selectedPoint == point)
+                newGlobal1 = Handles.PositionHandle(newGlobal1, Quaternion.identity);
 
             if (point.handle1Position != newGlobal1) {
                 point.handle1Position = newGlobal1;
                 path.SetDirty();
             }
-            var newGlobal2 = Handles.FreeMoveHandle(point.handle2Position, Quaternion.identity
-                , HandleUtility.GetHandleSize(point.handle2Position) * 0.075f, Vector3.zero, Handles.CircleHandleCap);
-            if (selectedPoint == point) newGlobal2 = Handles.PositionHandle(newGlobal2, Quaternion.identity);
+            var newGlobal2 = Handles.FreeMoveHandle(point.handle2Position, Quaternion.identity,
+                HandleUtility.GetHandleSize(point.handle2Position) * 0.075f, Vector3.zero,
+                Handles.CircleHandleCap);
+            if (selectedPoint == point)
+                newGlobal2 = Handles.PositionHandle(newGlobal2, Quaternion.identity);
 
             if (point.handle2Position != newGlobal2) {
                 point.handle2Position = newGlobal2;

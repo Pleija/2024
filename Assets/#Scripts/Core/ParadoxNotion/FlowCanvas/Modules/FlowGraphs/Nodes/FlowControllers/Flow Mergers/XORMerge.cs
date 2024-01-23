@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("XOR"), Category("Flow Controllers/Flow Merge")
-     , Description("Calls Out when either single Input is called, but no other is in the same frame."), System.Obsolete]
+    [Name("XOR"), Category("Flow Controllers/Flow Merge"),
+     Description(
+         "Calls Out when either single Input is called, but no other is in the same frame."),
+     System.Obsolete]
     public class XORMerge : FlowControlNode
     {
         [SerializeField, ExposeField, GatherPortsCallback, MinValue(2), DelayedField]

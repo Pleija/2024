@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Slate.ActionClips
 {
-    [Category("Transform")
-     , Description(
+    [Category("Transform"),
+     Description(
          "Attach an object to a child transform of the actor (or the actor itself) either permantentely or temporary if length is greater than zero.")]
     public class AttachObject : ActorActionClip
     {
@@ -50,13 +50,15 @@ namespace Slate.ActionClips
 
         private void Do()
         {
-            snapshot = new TransformSnapshot(targetObject.gameObject, TransformSnapshot.StoreMode.RootOnly);
+            snapshot = new TransformSnapshot(targetObject.gameObject,
+                TransformSnapshot.StoreMode.RootOnly);
             var finalTransform = actor.transform.FindInChildren(childTransformName, true);
 
             if (finalTransform == null) {
                 Debug.LogError(
-                    string.Format("Child Transform with name '{0}', can't be found on actor '{1}' hierarchy"
-                        , childTransformName, actor.name), actor.gameObject);
+                    string.Format(
+                        "Child Transform with name '{0}', can't be found on actor '{1}' hierarchy",
+                        childTransformName, actor.name), actor.gameObject);
                 return;
             }
             targetObject.SetParent(finalTransform);

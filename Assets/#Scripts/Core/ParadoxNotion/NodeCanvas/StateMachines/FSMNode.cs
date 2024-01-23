@@ -51,8 +51,8 @@ namespace NodeCanvas.StateMachines
         }
 
         //Draw the ports and connections
-        protected sealed override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
-            , float zoomFactor)
+        protected sealed override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass,
+            Vector2 canvasMousePos, float zoomFactor)
         {
             var e = Event.current;
 
@@ -94,16 +94,21 @@ namespace NodeCanvas.StateMachines
 
             if (maxOutConnections != 0)
                 if (fullDrawPass || drawCanvas.Overlaps(rect)) {
-                    UnityEditor.EditorGUIUtility.AddCursorRect(portRectLeft, UnityEditor.MouseCursor.ArrowPlus);
-                    UnityEditor.EditorGUIUtility.AddCursorRect(portRectRight, UnityEditor.MouseCursor.ArrowPlus);
-                    UnityEditor.EditorGUIUtility.AddCursorRect(portRectBottom, UnityEditor.MouseCursor.ArrowPlus);
+                    UnityEditor.EditorGUIUtility.AddCursorRect(portRectLeft,
+                        UnityEditor.MouseCursor.ArrowPlus);
+                    UnityEditor.EditorGUIUtility.AddCursorRect(portRectRight,
+                        UnityEditor.MouseCursor.ArrowPlus);
+                    UnityEditor.EditorGUIUtility.AddCursorRect(portRectBottom,
+                        UnityEditor.MouseCursor.ArrowPlus);
                     GUI.color = new Color(1, 1, 1, 0.3f);
                     GUI.DrawTexture(portRectLeft, Editor.StyleSheet.arrowLeft);
                     GUI.DrawTexture(portRectRight, Editor.StyleSheet.arrowRight);
-                    if (maxInConnections == 0) GUI.DrawTexture(portRectBottom, Editor.StyleSheet.arrowBottom);
+                    if (maxInConnections == 0)
+                        GUI.DrawTexture(portRectBottom, Editor.StyleSheet.arrowBottom);
                     GUI.color = Color.white;
 
-                    if (Editor.GraphEditorUtility.allowClick && e.type == EventType.MouseDown && e.button == 0) {
+                    if (Editor.GraphEditorUtility.allowClick && e.type == EventType.MouseDown &&
+                        e.button == 0) {
                         if (portRectLeft.Contains(e.mousePosition)) {
                             clickedPort = new GUIPort(this, portRectLeft.center);
                             dragDropMisses = 0;
@@ -126,8 +131,9 @@ namespace NodeCanvas.StateMachines
 
             //draw new linking
             if (clickedPort != null && clickedPort.parent == this)
-                UnityEditor.Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos, e.mousePosition
-                    , new Color(0.5f, 0.5f, 0.8f, 0.8f), Editor.StyleSheet.bezierTexture, 2);
+                UnityEditor.Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos,
+                    e.mousePosition, new Color(0.5f, 0.5f, 0.8f, 0.8f),
+                    Editor.StyleSheet.bezierTexture, 2);
 
             //draw out connections
             for (var i = 0; i < outConnections.Count; i++) {
@@ -144,7 +150,8 @@ namespace NodeCanvas.StateMachines
                     Mathf.Abs(rect.center.x - targetPos.x) < 200)
                     sourcePos = portRectBottom.center;
                 var boundRect = RectUtils.GetBoundRect(sourcePos, targetPos);
-                if (fullDrawPass || drawCanvas.Overlaps(boundRect)) connection.DrawConnectionGUI(sourcePos, targetPos);
+                if (fullDrawPass || drawCanvas.Overlaps(boundRect))
+                    connection.DrawConnectionGUI(sourcePos, targetPos);
             }
         }
 
@@ -158,14 +165,16 @@ namespace NodeCanvas.StateMachines
             if (style == 0) {
                 if (sourcePos.x <= thisPos.x) {
                     if (sourcePos.y <= thisPos.y)
-                        return new Vector2(rect.center.x - 15, rect.yMin - (this == graph.primeNode ? 20 : 0));
+                        return new Vector2(rect.center.x - 15,
+                            rect.yMin - (this == graph.primeNode ? 20 : 0));
                     else
                         return new Vector2(rect.center.x - 15, rect.yMax + 2);
                 }
 
                 if (sourcePos.x > thisPos.x) {
                     if (sourcePos.y <= thisPos.y)
-                        return new Vector2(rect.center.x + 15, rect.yMin - (this == graph.primeNode ? 20 : 0));
+                        return new Vector2(rect.center.x + 15,
+                            rect.yMin - (this == graph.primeNode ? 20 : 0));
                     else
                         return new Vector2(rect.center.x + 15, rect.yMax + 2);
                 }

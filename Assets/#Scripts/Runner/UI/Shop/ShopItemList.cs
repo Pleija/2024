@@ -10,8 +10,8 @@ namespace Runner.UI.Shop
     public class ShopItemList : ShopList
     {
         public static Consumable.Consumable.ConsumableType[] s_ConsumablesTypes =
-            System.Enum.GetValues(typeof(Consumable.Consumable.ConsumableType)) as Consumable.Consumable.ConsumableType
-                [];
+            System.Enum.GetValues(typeof(Consumable.Consumable.ConsumableType)) as
+                Consumable.Consumable.ConsumableType[];
 
         public override void Populate()
         {
@@ -23,8 +23,8 @@ namespace Runner.UI.Shop
                 if (c != null)
                     Addressables.LoadAssetAsync<GameObject>(prefabItem).Completed += (op) => {
                         if (op.Result == null) {
-                            Debug.LogWarning(string.Format("Unable to load item shop list {0}."
-                                , prefabItem.RuntimeKey));
+                            Debug.LogWarning(string.Format("Unable to load item shop list {0}.",
+                                prefabItem.RuntimeKey));
                             return;
                         }
                         var newEntry = op.Result.Instantiate().OnDestroyRelease(op);
@@ -90,15 +90,16 @@ namespace Runner.UI.Shop
             var itemId = c.GetConsumableName();
             var itemType = "consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level
-                , transactionId);
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId,
+                itemType, level, transactionId);
             if (c.GetPrice() > 0)
-                AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                           // Currency type
+                AnalyticsEvent.ItemSpent(AcquisitionType.Soft, // Currency type
                     transactionContext, c.GetPrice(), itemId, PlayerData.instance.coins, // Balance
                     itemType, level, transactionId);
             if (c.GetPremiumCost() > 0)
-                AnalyticsEvent.ItemSpent(AcquisitionType.Premium,                                // Currency type
-                    transactionContext, c.GetPremiumCost(), itemId, PlayerData.instance.premium, // Balance
+                AnalyticsEvent.ItemSpent(AcquisitionType.Premium, // Currency type
+                    transactionContext, c.GetPremiumCost(), itemId,
+                    PlayerData.instance.premium, // Balance
                     itemType, level, transactionId);
 #endif
             Refresh();

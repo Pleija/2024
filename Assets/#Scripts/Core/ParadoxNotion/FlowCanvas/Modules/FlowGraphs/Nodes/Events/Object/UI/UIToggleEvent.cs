@@ -5,7 +5,8 @@ using System;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("UI Toggle"), Category("Events/Object/UI"), Description("Called when the target UI Toggle value changed.")]
+    [Name("UI Toggle"), Category("Events/Object/UI"),
+     Description("Called when the target UI Toggle value changed.")]
     public class UIToggleEvent : EventNode<UnityEngine.UI.Toggle>
     {
         private FlowOutput o;

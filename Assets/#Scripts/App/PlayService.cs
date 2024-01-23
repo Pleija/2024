@@ -28,7 +28,8 @@ namespace App
                 await AuthenticationService.Instance.LinkWithGooglePlayGamesAsync(authCode);
                 Debug.Log("Link is successful.");
             }
-            catch (AuthenticationException ex) when (ex.HResult == AuthenticationErrorCodes.AccountAlreadyLinked) {
+            catch (AuthenticationException ex) when (ex.HResult ==
+                AuthenticationErrorCodes.AccountAlreadyLinked) {
                 // Prompt the player with an error message.
                 Debug.LogError("This user is already linked with another account. Log in instead.");
             }
@@ -88,8 +89,9 @@ namespace App
             if (AuthenticationService.Instance.IsAuthorized) {
                 var user = (PlayGamesLocalUser)Social.localUser;
                 Debug.LogFormat("UserName: {0} id: {1} Avatar URL: {2} ", //Email: {3} Token: {4}
-                    ((PlayGamesLocalUser)Social.localUser).userName, ((PlayGamesLocalUser)Social.localUser).id
-                    , ((PlayGamesLocalUser)Social.localUser).AvatarURL
+                    ((PlayGamesLocalUser)Social.localUser).userName,
+                    ((PlayGamesLocalUser)Social.localUser).id,
+                    ((PlayGamesLocalUser)Social.localUser).AvatarURL
                     //,
                     // ((PlayGamesLocalUser)UnityEngine.Social.localUser).Email,
                     // ((PlayGamesLocalUser)UnityEngine.Social.localUser).GetIdToken()

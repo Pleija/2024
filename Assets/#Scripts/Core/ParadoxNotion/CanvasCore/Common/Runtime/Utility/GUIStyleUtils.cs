@@ -11,7 +11,8 @@ namespace ParadoxNotion
             return style;
         }
 
-        public static GUIStyle Padding(this GUIStyle style, int left, int right, int top, int bottom)
+        public static GUIStyle Padding(this GUIStyle style, int left, int right, int top,
+            int bottom)
         {
             style.padding = new RectOffset(left, right, top, bottom);
             return style;
@@ -23,7 +24,8 @@ namespace ParadoxNotion
             return style;
         }
 
-        public static GUIStyle Overflow(this GUIStyle style, int left, int right, int top, int bottom)
+        public static GUIStyle Overflow(this GUIStyle style, int left, int right, int top,
+            int bottom)
         {
             style.overflow = new RectOffset(left, right, top, bottom);
             return style;

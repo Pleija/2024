@@ -5,9 +5,9 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Switchers")
-     , Description("Branch the Flow based on a comparison between two comparable objects")
-     , ContextDefinedInputs(typeof(IComparable))]
+    [Category("Flow Controllers/Switchers"),
+     Description("Branch the Flow based on a comparison between two comparable objects"),
+     ContextDefinedInputs(typeof(IComparable))]
     public class SwitchComparison : FlowControlNode
     {
         protected override void RegisterPorts()

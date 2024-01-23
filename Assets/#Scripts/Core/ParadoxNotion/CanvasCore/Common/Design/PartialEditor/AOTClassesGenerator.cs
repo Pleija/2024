@@ -13,16 +13,17 @@ namespace ParadoxNotion.Design
     {
         //always spoof those for shake of convenience
         private static readonly List<Type> defaultSpoofTypes = new List<Type> {
-            typeof(bool), typeof(float), typeof(int), typeof(Vector2), typeof(Vector3), typeof(Vector4)
-            , typeof(Quaternion), typeof(Keyframe), typeof(Bounds), typeof(Color), typeof(Rect), typeof(ContactPoint)
-            , typeof(ContactPoint2D), typeof(Collision), typeof(Collision2D), typeof(RaycastHit), typeof(RaycastHit2D)
-            , typeof(Ray), typeof(Space),
+            typeof(bool), typeof(float), typeof(int), typeof(Vector2), typeof(Vector3),
+            typeof(Vector4), typeof(Quaternion), typeof(Keyframe), typeof(Bounds), typeof(Color),
+            typeof(Rect), typeof(ContactPoint), typeof(ContactPoint2D), typeof(Collision),
+            typeof(Collision2D), typeof(RaycastHit), typeof(RaycastHit2D), typeof(Ray),
+            typeof(Space),
         };
 
         ///<summary>Custom generic types to spoof were we cant use [SpoofAOT]</summary>
         private static readonly List<Type> customGenericSpoof = new List<Type> {
-            typeof(Action<>), typeof(Func<>), typeof(UnityEngine.Events.UnityAction<>), typeof(IList<>), typeof(List<>)
-            , typeof(Nullable<>),
+            typeof(Action<>), typeof(Func<>), typeof(UnityEngine.Events.UnityAction<>),
+            typeof(IList<>), typeof(List<>), typeof(Nullable<>),
         };
 
         ///<summary>Generates AOT classes file out of preferred types list</summary>
@@ -32,8 +33,8 @@ namespace ParadoxNotion.Design
             var spoofTypes = defaultSpoofTypes.Where(t => t.IsValueType).ToList();
             spoofTypes.AddRange(targetTypes.Where(t => t.IsValueType && !spoofTypes.Contains(t)));
             spoofTypes = spoofTypes.Distinct().ToList();
-            var types = ReflectionTools.GetAllTypes(true).Where(t => t.RTIsDefined(typeof(SpoofAOTAttribute), true))
-                .Distinct();
+            var types = ReflectionTools.GetAllTypes(true)
+                .Where(t => t.RTIsDefined(typeof(SpoofAOTAttribute), true)).Distinct();
             var nTypes = 0;
             var nMethods = 0;
             var sb = new StringBuilder();
@@ -50,33 +51,42 @@ namespace ParadoxNotion.Design
 
             //Generic Types
             foreach (var type in types)
-                if (!type.IsAbstract && type.IsGenericTypeDefinition && type.RTGetGenericArguments().Length == 1) {
-                    var constrains = type.RTGetGenericArguments()[0].GetGenericParameterConstraints();
+                if (!type.IsAbstract && type.IsGenericTypeDefinition &&
+                    type.RTGetGenericArguments().Length == 1) {
+                    var constrains = type.RTGetGenericArguments()[0]
+                        .GetGenericParameterConstraints();
 
-                    if (constrains.Length == 0 || constrains[0].IsValueType || constrains[0] == typeof(Enum)) {
+                    if (constrains.Length == 0 || constrains[0].IsValueType ||
+                        constrains[0] == typeof(Enum)) {
                         if (typeof(Delegate).IsAssignableFrom(type)) {
                             nTypes++;
-                            sb.AppendLine(string.Format("\t\tvoid {0}()"
-                                , type.FriendlyName(true).Replace(".", "_").Replace("<T>", "_Delegate")) + "{");
+                            sb.AppendLine(string.Format("\t\tvoid {0}()",
+                                type.FriendlyName(true).Replace(".", "_")
+                                    .Replace("<T>", "_Delegate")) + "{");
 
                             foreach (var spoofType in spoofTypes) {
-                                var a = type.FriendlyName(true).Replace("<T>", "<" + spoofType.FullName + ">")
+                                var a = type.FriendlyName(true)
+                                    .Replace("<T>", "<" + spoofType.FullName + ">")
                                     .Replace("+", ".");
-                                var b = "_" + type.FriendlyName(true).Replace(".", "_").Replace("<T>"
-                                    , "_" + spoofType.FullName.Replace(".", "_").Replace("+", "_"));
+                                var b = "_" + type.FriendlyName(true).Replace(".", "_")
+                                    .Replace("<T>",
+                                        "_" + spoofType.FullName.Replace(".", "_")
+                                            .Replace("+", "_"));
                                 sb.AppendLine(string.Format("\t\t\t{0} {1};", a, b));
                             }
                             sb.AppendLine("\t\t}");
                         }
                         else {
                             foreach (var spoofType in spoofTypes) {
-                                if (constrains.Length == 1 && constrains[0] == typeof(Enum) && !spoofType.IsEnum)
+                                if (constrains.Length == 1 && constrains[0] == typeof(Enum) &&
+                                    !spoofType.IsEnum)
                                     continue;
                                 nTypes++;
-                                var a = type.FriendlyName(true).Replace("<T>", "<" + spoofType.FullName + ">")
+                                var a = type.FriendlyName(true)
+                                    .Replace("<T>", "<" + spoofType.FullName + ">")
                                     .Replace("+", ".");
-                                var b = type.FriendlyName(true).Replace(".", "_").Replace("<T>"
-                                    , "_" + spoofType.FullName.Replace(".", "_").Replace("+", "_"));
+                                var b = type.FriendlyName(true).Replace(".", "_").Replace("<T>",
+                                    "_" + spoofType.FullName.Replace(".", "_").Replace("+", "_"));
                                 sb.AppendLine(string.Format("\t\t{0} {1};", a, b));
                             }
                         }
@@ -94,18 +104,20 @@ namespace ParadoxNotion.Design
                     BindingFlags.Public | BindingFlags.DeclaredOnly)) {
                     if (method.IsObsolete()) continue;
 
-                    if (method.IsGenericMethodDefinition && method.RTGetGenericArguments().Length == 1) {
-                        var constrains = method.RTGetGenericArguments()[0].GetGenericParameterConstraints();
+                    if (method.IsGenericMethodDefinition &&
+                        method.RTGetGenericArguments().Length == 1) {
+                        var constrains = method.RTGetGenericArguments()[0]
+                            .GetGenericParameterConstraints();
 
                         if (constrains.Length == 0 || constrains[0].IsValueType) {
                             index++;
                             var decType = method.DeclaringType;
                             var varName = "_" + decType.FullName.Replace(".", "_");
-                            sb.AppendLine(string.Format("\t\tvoid {0}_{1}_{2}()", decType.FullName.Replace(".", "_")
-                                , method.Name, index) + " {");
+                            sb.AppendLine(string.Format("\t\tvoid {0}_{1}_{2}()",
+                                decType.FullName.Replace(".", "_"), method.Name, index) + " {");
                             if (!method.IsStatic)
-                                sb.AppendLine(string.Format("\t\t\t{0} {1} = default({2});", decType.FullName, varName
-                                    , decType.FullName));
+                                sb.AppendLine(string.Format("\t\t\t{0} {1} = default({2});",
+                                    decType.FullName, varName, decType.FullName));
 
                             foreach (var spoofType in spoofTypes) {
                                 nMethods++;
@@ -118,7 +130,8 @@ namespace ParadoxNotion.Design
                                 for (var i = 0; i < parameters.Length; i++) {
                                     var parameter = parameters[i];
                                     var toString = parameter.ParameterType.FullName;
-                                    if (parameter.ParameterType.IsGenericParameter) toString = spoofType.FullName;
+                                    if (parameter.ParameterType.IsGenericParameter)
+                                        toString = spoofType.FullName;
 
                                     if (parameter.ParameterType.IsGenericType) {
                                         toString = parameter.ParameterType.FriendlyName(true)
@@ -130,7 +143,8 @@ namespace ParadoxNotion.Design
                                     if (i < parameters.Length - 1) paramsString += ", ";
                                 }
                                 var d = paramsString;
-                                sb.AppendLine(string.Format("\t\t\t{0}.{1}<{2}>( {3} );", a, b, c, d));
+                                sb.AppendLine(string.Format("\t\t\t{0}.{1}<{2}>( {3} );", a, b, c,
+                                    d));
                             }
                             sb.AppendLine("\t\t}");
                             sb.AppendLine();
@@ -151,14 +165,17 @@ namespace ParadoxNotion.Design
                 foreach (var genericType in customGenericSpoof) {
                     nTypes++;
                     var a = genericType.FriendlyName(true).Replace("<T>", "<" + sName + ">");
-                    var b = genericType.FriendlyName(true).Replace(".", "_").Replace("<T>", "_") + fName;
+                    var b = genericType.FriendlyName(true).Replace(".", "_").Replace("<T>", "_") +
+                        fName;
                     sb.AppendLine(string.Format("\t\t\t{0} {1};", a, b));
                 }
                 nTypes++;
                 sb.AppendLine(string.Format(
-                    "\t\t\tSystem.Collections.Generic.IDictionary<System.String, {0}> IDict_{1};", sName, fName));
-                sb.AppendLine(string.Format("\t\t\tSystem.Collections.Generic.Dictionary<System.String, {0}> Dict_{1};"
-                    , sName, fName));
+                    "\t\t\tSystem.Collections.Generic.IDictionary<System.String, {0}> IDict_{1};",
+                    sName, fName));
+                sb.AppendLine(string.Format(
+                    "\t\t\tSystem.Collections.Generic.Dictionary<System.String, {0}> Dict_{1};",
+                    sName, fName));
                 sb.AppendLine("\t\t\t///------");
             }
             sb.AppendLine("\t\t}");
@@ -190,13 +207,15 @@ namespace ParadoxNotion.Design
 
             //get assembly from a common paradoxnotion *runtime* type
             var paradoxAsmName = typeof(Serialization.JSONSerializer).Assembly.GetName().Name;
-            sb.AppendLine(string.Format("\t<assembly fullname=\"{0}\" preserve=\"all\">", paradoxAsmName));
+            sb.AppendLine(string.Format("\t<assembly fullname=\"{0}\" preserve=\"all\">",
+                paradoxAsmName));
             sb.AppendLine("\t</assembly>");
 
             foreach (var pair in pairs) {
                 sb.AppendLine(string.Format("\t<assembly fullname=\"{0}\">", pair.Key));
                 foreach (var type in pair.Value)
-                    sb.AppendLine("\t\t<type fullname=\"" + type.FullName + "\" preserve=\"all\"/>");
+                    sb.AppendLine("\t\t<type fullname=\"" + type.FullName +
+                        "\" preserve=\"all\"/>");
                 sb.AppendLine("\t</assembly>");
             }
             sb.AppendLine("</linker>");

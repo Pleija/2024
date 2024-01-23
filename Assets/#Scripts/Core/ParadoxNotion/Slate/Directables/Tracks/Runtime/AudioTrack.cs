@@ -4,9 +4,10 @@ using UnityEngine.Audio;
 
 namespace Slate
 {
-    [Name("Audio Track")
-     , Description("All audio clips played by this track will be send to the selected AudioMixer if any.")
-     , Icon(typeof(AudioClip))]
+    [Name("Audio Track"),
+     Description(
+         "All audio clips played by this track will be send to the selected AudioMixer if any."),
+     Icon(typeof(AudioClip))]
     ///<summary>AudioTracks are able to play AudioClips through the PlayAudio ActionClip</summary>
     public abstract class AudioTrack : CutsceneTrack
     {
@@ -31,8 +32,8 @@ namespace Slate
         [SerializeField]
         protected bool _bypassReverb;
 
-        public override string info => string.Format("Mixer: {0} | Volume: {1}", mixer != null ? mixer.name : "NONE"
-            , _masterVolume.ToString("0.0"));
+        public override string info => string.Format("Mixer: {0} | Volume: {1}",
+            mixer != null ? mixer.name : "NONE", _masterVolume.ToString("0.0"));
 
         public AudioSource source { get; private set; }
         public AudioSampler.SampleSettings sampleSettings { get; private set; }

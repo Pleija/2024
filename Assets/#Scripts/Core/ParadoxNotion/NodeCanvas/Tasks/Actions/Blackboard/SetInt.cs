@@ -4,7 +4,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Integer"), Category("✫ Blackboard"), Description("Set a blackboard integer variable")]
+    [Name("Set Integer"), Category("✫ Blackboard"),
+     Description("Set a blackboard integer variable")]
     public class SetInt : ActionTask
     {
         [BlackboardOnly]
@@ -12,7 +13,9 @@ namespace NodeCanvas.Tasks.Actions
 
         public OperationMethod Operation = OperationMethod.Set;
         public BBParameter<int> valueB;
-        protected override string info => valueA + OperationTools.GetOperationString(Operation) + valueB;
+
+        protected override string info =>
+            valueA + OperationTools.GetOperationString(Operation) + valueB;
 
         protected override void OnExecute()
         {

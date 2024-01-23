@@ -32,7 +32,8 @@ namespace Slate.ActionClips
                 actor.transform.eulerAngles = targetRotation;
                 return;
             }
-            actor.transform.eulerAngles = Easing.Ease(interpolation, originalRot, targetRotation, deltaTime / length);
+            actor.transform.eulerAngles = Easing.Ease(interpolation, originalRot, targetRotation,
+                deltaTime / length);
         }
 
         protected override void OnReverse()

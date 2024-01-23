@@ -16,7 +16,8 @@ namespace Slate.ActionClips
         public new T actor {
             get {
                 if (_actorComponent != null) return _actorComponent;
-                return _actorComponent = base.actor != null ? base.actor.GetComponentInChildren<T>() : null;
+                return _actorComponent =
+                    base.actor != null ? base.actor.GetComponentInChildren<T>() : null;
                 /*
                 if ( _actorComponent != null && _actorComponent.gameObject == base.actor ) {
                     return _actorComponent;

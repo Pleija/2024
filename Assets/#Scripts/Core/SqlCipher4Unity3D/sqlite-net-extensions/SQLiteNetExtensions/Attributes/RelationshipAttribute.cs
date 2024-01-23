@@ -6,7 +6,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public abstract class RelationshipAttribute : IgnoreAttribute
     {
-        protected RelationshipAttribute(string foreignKey, string inverseForeignKey, string inverseProperty)
+        protected RelationshipAttribute(string foreignKey, string inverseForeignKey,
+            string inverseProperty)
         {
             InverseForeignKey = inverseForeignKey;
             InverseProperty = inverseProperty;

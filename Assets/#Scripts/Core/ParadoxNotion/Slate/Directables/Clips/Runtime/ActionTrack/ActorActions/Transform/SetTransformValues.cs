@@ -20,8 +20,10 @@ namespace Slate.ActionClips
         protected override void OnEnter()
         {
             undo = new TransformSnapshot(actor, TransformSnapshot.StoreMode.RootOnly);
-            if (setPosition) actor.transform.position = TransformPosition(position, (TransformSpace)space);
-            if (setRotation) actor.transform.rotation = TransformRotation(rotation, (TransformSpace)space);
+            if (setPosition)
+                actor.transform.position = TransformPosition(position, (TransformSpace)space);
+            if (setRotation)
+                actor.transform.rotation = TransformRotation(rotation, (TransformSpace)space);
             if (setScale) actor.transform.localScale = scale;
         }
 
@@ -35,7 +37,8 @@ namespace Slate.ActionClips
         {
             if (setPosition) {
                 DoVectorPositionHandle((TransformSpace)space, ref position);
-                if (setRotation) DoVectorRotationHandle((TransformSpace)space, position, ref rotation);
+                if (setRotation)
+                    DoVectorRotationHandle((TransformSpace)space, position, ref rotation);
             }
         }
 #endif

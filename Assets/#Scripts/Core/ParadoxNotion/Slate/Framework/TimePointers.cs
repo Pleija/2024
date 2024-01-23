@@ -10,8 +10,11 @@
         void Update(float currentTime, float previousTime);
     }
 
-    ///----------------------------------------------------------------------------------------------
-    ///<summary>Wraps the startTime of a group, track or clip (IDirectable) along with it's relevant execution</summary>
+    /// ----------------------------------------------------------------------------------------------
+    /// <summary>
+    ///     Wraps the startTime of a group, track or clip (IDirectable) along with it's relevant
+    ///     execution
+    /// </summary>
     public struct StartTimePointer : IDirectableTimePointer
     {
         private bool triggered;
@@ -41,8 +44,8 @@
         void IDirectableTimePointer.Update(float currentTime, float previousTime)
         {
             //update target and try auto-key
-            if (currentTime >= target.startTime && currentTime < target.endTime && currentTime > 0 &&
-                currentTime < target.root.length) {
+            if (currentTime >= target.startTime && currentTime < target.endTime &&
+                currentTime > 0 && currentTime < target.root.length) {
                 var deltaMoveClip = target.startTime - lastTargetStartTime;
                 var localCurrentTime = target.ToLocalTime(currentTime);
                 var localPreviousTime = target.ToLocalTime(previousTime + deltaMoveClip);
@@ -70,8 +73,11 @@
         }
     }
 
-    ///----------------------------------------------------------------------------------------------
-    ///<summary>Wraps the endTime of a group, track or clip (IDirectable) along with it's relevant execution</summary>
+    /// ----------------------------------------------------------------------------------------------
+    /// <summary>
+    ///     Wraps the endTime of a group, track or clip (IDirectable) along with it's relevant
+    ///     execution
+    /// </summary>
     public struct EndTimePointer : IDirectableTimePointer
     {
         private bool triggered;

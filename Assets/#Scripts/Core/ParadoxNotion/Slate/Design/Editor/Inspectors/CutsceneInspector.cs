@@ -24,7 +24,10 @@ namespace Slate
         private static Cutscene cutscene;
         private static bool willResample;
         private static bool willDirty;
-        private static Dictionary<Object, Editor> directableEditors = new Dictionary<Object, Editor>();
+
+        private static Dictionary<Object, Editor> directableEditors =
+            new Dictionary<Object, Editor>();
+
         private static Editor currentDirectableEditor;
 
         //...
@@ -63,7 +66,8 @@ namespace Slate
             cutscene = (Cutscene)target;
 
             if (EditorUtility.IsPersistent(cutscene)) {
-                EditorGUILayout.HelpBox("To edit a cutscene prefab please open it first.", MessageType.Info);
+                EditorGUILayout.HelpBox("To edit a cutscene prefab please open it first.",
+                    MessageType.Info);
                 return;
             }
             var e = Event.current;
@@ -71,7 +75,8 @@ namespace Slate
 
             if (e.rawType == EventType.MouseDown && e.button == 0) {
                 //generic undo
-                Undo.RegisterFullObjectHierarchyUndo(cutscene.groupsRoot.gameObject, "Cutscene Inspector");
+                Undo.RegisterFullObjectHierarchyUndo(cutscene.groupsRoot.gameObject,
+                    "Cutscene Inspector");
                 Undo.RecordObject(cutscene, "Cutscene Inspector");
                 willDirty = true;
             }
@@ -116,7 +121,8 @@ namespace Slate
             var lastRect = GUILayoutUtility.GetLastRect();
             EditorGUIUtility.AddCursorRect(lastRect, MouseCursor.Link);
 
-            if (Event.current.type == EventType.MouseDown && lastRect.Contains(Event.current.mousePosition)) {
+            if (Event.current.type == EventType.MouseDown &&
+                lastRect.Contains(Event.current.mousePosition)) {
                 optionsFold = !optionsFold;
                 Event.current.Use();
             }
@@ -130,7 +136,8 @@ namespace Slate
                 EditorGUILayout.PropertyField(playbackSpeedProp);
                 EditorGUILayout.PropertyField(playOnStartProp);
                 EditorGUILayout.PropertyField(explLayersProp);
-                if (explLayersProp.boolValue == true) EditorGUILayout.PropertyField(activeLayersProp);
+                if (explLayersProp.boolValue == true)
+                    EditorGUILayout.PropertyField(activeLayersProp);
                 serializedObject.ApplyModifiedProperties();
                 DoActorsInspector();
             }
@@ -147,9 +154,11 @@ namespace Slate
                 var exists = false;
 
                 foreach (var group in cutscene.groups.OfType<ActorGroup>()) {
-                    var name = string.IsNullOrEmpty(group.name) ? "(No Name Specified)" : group.name;
+                    var name = string.IsNullOrEmpty(group.name) ? "(No Name Specified)"
+                        : group.name;
                     group.actor =
-                        EditorGUILayout.ObjectField(name, group.actor, typeof(GameObject), true) as GameObject;
+                        EditorGUILayout.ObjectField(name, group.actor, typeof(GameObject), true) as
+                            GameObject;
                     exists = true;
                 }
                 if (!exists) GUILayout.Label("No Actor Groups");
@@ -163,9 +172,10 @@ namespace Slate
         {
             var selection = CutsceneUtility.selectedObject as Object; //cast object
 
-            if (currentDirectableEditor != null && (currentDirectableEditor.target != selection || selection == null)) {
-                var disableMethod = currentDirectableEditor.GetType().GetMethod("OnDisable"
-                    , BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
+            if (currentDirectableEditor != null &&
+                (currentDirectableEditor.target != selection || selection == null)) {
+                var disableMethod = currentDirectableEditor.GetType().GetMethod("OnDisable",
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
                     BindingFlags.FlattenHierarchy);
                 if (disableMethod != null) disableMethod.Invoke(currentDirectableEditor, null);
             }
@@ -179,8 +189,8 @@ namespace Slate
                 directableEditors[selection] = newEditor = CreateEditor(selection);
 
             if (currentDirectableEditor != newEditor) {
-                var enableMethod = newEditor.GetType().GetMethod("OnEnable"
-                    , BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
+                var enableMethod = newEditor.GetType().GetMethod("OnEnable",
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
                     BindingFlags.FlattenHierarchy);
                 if (enableMethod != null) enableMethod.Invoke(newEditor, null);
                 currentDirectableEditor = newEditor;
@@ -195,7 +205,9 @@ namespace Slate
         private static void ShowPreliminaryInspector()
         {
             var type = CutsceneUtility.selectedObject.GetType();
-            var nameAtt = type.GetCustomAttributes(typeof(NameAttribute), false).FirstOrDefault() as NameAttribute;
+            var nameAtt =
+                type.GetCustomAttributes(typeof(NameAttribute), false).FirstOrDefault() as
+                    NameAttribute;
             var name = nameAtt != null ? nameAtt.name : type.Name.SplitCamelCase();
             var withinRange = cutscene.currentTime > 0 &&
                 cutscene.currentTime >= CutsceneUtility.selectedObject.startTime &&
@@ -207,8 +219,8 @@ namespace Slate
             GUI.color = new Color(0, 0, 0, 0.2f);
             GUILayout.BeginHorizontal(Styles.headerBoxStyle);
             GUI.color = Color.white;
-            GUILayout.Label(string.Format("<b><size=18>{0}{1}</size></b>"
-                , withinRange && keyable && isActive ? "<color=#eb5b50>●</color> " : "", name));
+            GUILayout.Label(string.Format("<b><size=18>{0}{1}</size></b>",
+                withinRange && keyable && isActive ? "<color=#eb5b50>●</color> " : "", name));
             GUI.backgroundColor = default;
             var clip = CutsceneUtility.selectedObject as ActionClip;
 
@@ -230,7 +242,8 @@ namespace Slate
                     type.GetCustomAttributes(typeof(DescriptionAttribute), true).FirstOrDefault() as
                         DescriptionAttribute;
                 var description = descAtt != null ? descAtt.description : null;
-                if (!string.IsNullOrEmpty(description)) EditorGUILayout.HelpBox(description, MessageType.None);
+                if (!string.IsNullOrEmpty(description))
+                    EditorGUILayout.HelpBox(description, MessageType.None);
             }
             GUILayout.Space(2);
         }

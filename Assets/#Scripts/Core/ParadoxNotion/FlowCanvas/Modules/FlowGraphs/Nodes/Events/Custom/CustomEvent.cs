@@ -4,10 +4,10 @@ using Logger = ParadoxNotion.Services.Logger;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("Custom Event", 100)
-     , Description(
-         "Called when a custom event is received on target(s).\n- Receiver, is the object which received the event.\n- Sender, is the object which invoked the event.\n\n- To send an event from a graph use the SendEvent node.\n- To send an event from code use: 'FlowScriptController.SendEvent(string)'")
-     , Category("Events/Custom"), ExecutionPriority(100)]
+    [Name("Custom Event", 100),
+     Description(
+         "Called when a custom event is received on target(s).\n- Receiver, is the object which received the event.\n- Sender, is the object which invoked the event.\n\n- To send an event from a graph use the SendEvent node.\n- To send an event from code use: 'FlowScriptController.SendEvent(string)'"),
+     Category("Events/Custom"), ExecutionPriority(100)]
     public class CustomEvent : RouterEventNode<GraphOwner>
     {
         [RequiredField, DelayedField]
@@ -16,7 +16,9 @@ namespace FlowCanvas.Nodes
         private FlowOutput onReceived;
         private GraphOwner sender;
         private GraphOwner receiver;
-        public override string name => base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]", eventName);
+
+        public override string name =>
+            base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]", eventName);
 
         protected override void Subscribe(ParadoxNotion.Services.EventRouter router)
         {
@@ -45,18 +47,19 @@ namespace FlowCanvas.Nodes
                 var senderGraph = Graph.GetElementGraph(msg.sender);
                 sender = senderGraph != null ? senderGraph.agent as GraphOwner : null;
                 receiver = ResolveReceiver(msg.receiver);
-                Logger.Log(string.Format("Event Received from ({0}): '{1}'", receiver.name, eventName), LogTag.EVENT
-                    , this);
+                Logger.Log(
+                    string.Format("Event Received from ({0}): '{1}'", receiver.name, eventName),
+                    LogTag.EVENT, this);
                 onReceived.Call(new Flow());
             }
         }
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Name("Custom Event", 100)
-     , Description(
-         "Called when a custom event is received on target(s).\n- Receiver, is the object which received the event.\n- Sender, is the object which invoked the event.\n\n- To send an event from a graph use the SendEvent(T) node.\n- To send an event from code use: 'FlowScriptController.SendEvent(string, T)'")
-     , Category("Events/Custom"), ContextDefinedOutputs(typeof(Wild))]
+    [Name("Custom Event", 100),
+     Description(
+         "Called when a custom event is received on target(s).\n- Receiver, is the object which received the event.\n- Sender, is the object which invoked the event.\n\n- To send an event from a graph use the SendEvent(T) node.\n- To send an event from code use: 'FlowScriptController.SendEvent(string, T)'"),
+     Category("Events/Custom"), ContextDefinedOutputs(typeof(Wild))]
     public class CustomEvent<T> : RouterEventNode<GraphOwner>
     {
         [RequiredField, DelayedField]
@@ -66,7 +69,9 @@ namespace FlowCanvas.Nodes
         private GraphOwner sender;
         private GraphOwner receiver;
         private T receivedValue;
-        public override string name => base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]", eventName);
+
+        public override string name =>
+            base.name + string.Format(" [ <color=#DDDDDD>{0}</color> ]", eventName);
 
         protected override void Subscribe(ParadoxNotion.Services.EventRouter router)
         {
@@ -101,8 +106,9 @@ namespace FlowCanvas.Nodes
                 if (msg is ParadoxNotion.EventData<T>)
                     receivedValue = ((ParadoxNotion.EventData<T>)msg).value;
                 else if (msg.valueBoxed is T) receivedValue = (T)msg.valueBoxed;
-                Logger.Log(string.Format("Event Received from ({0}): '{1}'", receiver.name, eventName), LogTag.EVENT
-                    , this);
+                Logger.Log(
+                    string.Format("Event Received from ({0}): '{1}'", receiver.name, eventName),
+                    LogTag.EVENT, this);
                 onReceived.Call(new Flow());
             }
         }

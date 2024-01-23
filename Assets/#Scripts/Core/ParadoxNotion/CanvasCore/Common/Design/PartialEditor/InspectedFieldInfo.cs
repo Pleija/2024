@@ -3,7 +3,10 @@ using System.Reflection;
 
 namespace ParadoxNotion.Design
 {
-    ///<summary>Contains info about inspected field rin regards to reflected inspector and object/attribute drawers</summary>
+    /// <summary>
+    ///     Contains info about inspected field rin regards to reflected inspector and
+    ///     object/attribute drawers
+    /// </summary>
     public struct InspectedFieldInfo
     {
         ///<summary>The field inspected</summary>
@@ -15,15 +18,18 @@ namespace ParadoxNotion.Design
         ///<summary>the parent instance the field lives within</summary>
         public object parentInstanceContext;
 
-        ///<summary>In case instance lives in wrapped context (eg lists) otherwise the same as parentInstanceContext</summary>
+        /// <summary>
+        ///     In case instance lives in wrapped context (eg lists) otherwise the same as
+        ///     parentInstanceContext
+        /// </summary>
         public object wrapperInstanceContext;
 
         ///<summary>attributes found on field</summary>
         public object[] attributes;
 
         //...
-        public InspectedFieldInfo(UnityEngine.Object unityObjectContext, FieldInfo field, object parentInstanceContext
-            , object[] attributes)
+        public InspectedFieldInfo(UnityEngine.Object unityObjectContext, FieldInfo field,
+            object parentInstanceContext, object[] attributes)
         {
             this.unityObjectContext = unityObjectContext;
             this.field = field;

@@ -18,9 +18,12 @@ namespace Slate
         static UnityObjectUtility()
         {
             var t = typeof(Transform);
-            _getLocalEulerAngles = t.GetMethod("GetLocalEulerAngles", BindingFlags.Instance | BindingFlags.NonPublic);
-            _setLocalEulerAngles = t.GetMethod("SetLocalEulerAngles", BindingFlags.Instance | BindingFlags.NonPublic);
-            _rotationOrder = t.GetProperty("rotationOrder", BindingFlags.Instance | BindingFlags.NonPublic);
+            _getLocalEulerAngles = t.GetMethod("GetLocalEulerAngles",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            _setLocalEulerAngles = t.GetMethod("SetLocalEulerAngles",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            _rotationOrder = t.GetProperty("rotationOrder",
+                BindingFlags.Instance | BindingFlags.NonPublic);
             _rotationOrderArgGet = new object[1];
             _rotationOrderArgSet = new object[2];
         }

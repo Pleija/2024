@@ -14,8 +14,8 @@ namespace Slate
         }
 
         ///----------------------------------------------------------------------------------------------
-        [MenuItem("Tools/ParadoxNotion/SLATE/", false, 500)
-         , MenuItem("Tools/ParadoxNotion/SLATE/Open SLATE", false, 500)]
+        [MenuItem("Tools/ParadoxNotion/SLATE/", false, 500),
+         MenuItem("Tools/ParadoxNotion/SLATE/Open SLATE", false, 500)]
         public static void OpenDirectorWindow()
         {
             CutsceneEditor.ShowWindow(null);
@@ -53,8 +53,8 @@ namespace Slate
             return path;
         }
 
-        [MenuItem("Tools/ParadoxNotion/SLATE/Create/", false, 500)
-         , MenuItem("Tools/ParadoxNotion/SLATE/Create/Cutscene Starter", false, 500)]
+        [MenuItem("Tools/ParadoxNotion/SLATE/Create/", false, 500),
+         MenuItem("Tools/ParadoxNotion/SLATE/Create/Cutscene Starter", false, 500)]
         public static GameObject CreateCutsceneStartPlayer()
         {
             var go = PlayCutsceneOnStart.Create();

@@ -50,7 +50,8 @@ namespace Slate
                 "The point of interest offset from the target in it's local space we actually care about to stay within the composition frame.")]
             public Vector3 targetOffset;
 
-            [Min(0f), Tooltip("The point of interest area size to stay within the composition frame.")]
+            [Min(0f),
+             Tooltip("The point of interest area size to stay within the composition frame.")]
             public float targetSize = 0.25f;
 
             [Tooltip("The center of the view frame")]
@@ -87,14 +88,17 @@ namespace Slate
         public Composer composer => _composer;
 
         ///<summary>Does controller controls position?</summary>
-        public bool controlsPosition => _transposer != null && _transposer.trackingMode != Transposer.TrackingMode.None;
+        public bool controlsPosition => _transposer != null &&
+            _transposer.trackingMode != Transposer.TrackingMode.None;
 
         ///<summary>Does controller controls rotation?</summary>
-        public bool controlsRotation => _composer != null && _composer.trackingMode != Composer.TrackingMode.None;
+        public bool controlsRotation =>
+            _composer != null && _composer.trackingMode != Composer.TrackingMode.None;
 
         ///<summary>Does the controller controls FOV?</summary>
         public bool controlsFieldOfView => _composer != null &&
-            _composer.trackingMode == Composer.TrackingMode.FrameComposition && _composer.zoomAtTargetFrame;
+            _composer.trackingMode == Composer.TrackingMode.FrameComposition &&
+            _composer.zoomAtTargetFrame;
 
         ///<summary>Update controller for target directable camera from target directable element (eg clip).</summary>
         public void UpdateControllerHard(IDirectableCamera directableCamera, IDirectable directable)
@@ -107,7 +111,8 @@ namespace Slate
             UpdateController(directableCamera, directable, false);
         }
 
-        private void UpdateController(IDirectableCamera directableCamera, IDirectable directable, bool isHard)
+        private void UpdateController(IDirectableCamera directableCamera, IDirectable directable,
+            bool isHard)
         {
             //UpdateController is called more than once per frame if same shot is used from multiple clips in a cutscene.
             //Ensure that this is updated only once per frame.
@@ -119,7 +124,8 @@ namespace Slate
             var deltaTime = rootDelta != 0 ? rootDelta : Time.deltaTime;
             var cam = directableCamera.cam;
 
-            if (transposer.target != null && transposer.trackingMode != Transposer.TrackingMode.None) {
+            if (transposer.target != null &&
+                transposer.trackingMode != Transposer.TrackingMode.None) {
                 var targetPos = transposer.target.position;
                 if (transposer.offsetMode == Transposer.OffsetMode.LocalSpace)
                     targetPos = transposer.target.TransformPoint(transposer.targetOffset);
@@ -144,30 +150,40 @@ namespace Slate
                     var dMax = Vector3.Distance(transposer.railStart, transposer.railEnd);
                     var dCurrent = Vector3.Distance(transposer.railStart, projectT);
                     var normDistance = dCurrent / dMax + transposer.railOffset;
-                    targetPos = Vector3.Lerp(transposer.railStart, transposer.railEnd, normDistance);
+                    targetPos = Vector3.Lerp(transposer.railStart, transposer.railEnd,
+                        normDistance);
                 }
-                if (isHard || transposer.smoothDamping == MIN_DAMP) directableCamera.position = targetPos;
-                directableCamera.position = Vector3.Lerp(directableCamera.position, targetPos
-                    , deltaTime * (MAX_DAMP / transposer.smoothDamping));
+                if (isHard || transposer.smoothDamping == MIN_DAMP)
+                    directableCamera.position = targetPos;
+                directableCamera.position = Vector3.Lerp(directableCamera.position, targetPos,
+                    deltaTime * (MAX_DAMP / transposer.smoothDamping));
             }
 
             if (composer.target != null && composer.trackingMode != Composer.TrackingMode.None)
                 if (composer.trackingMode == Composer.TrackingMode.FrameComposition) {
                     var wasRotation = directableCamera.rotation;
                     var pointWorldPos = composer.target.TransformPoint(composer.targetOffset);
-                    var rotationToTarget = Quaternion.LookRotation(pointWorldPos - directableCamera.position);
+                    var rotationToTarget =
+                        Quaternion.LookRotation(pointWorldPos - directableCamera.position);
                     directableCamera.rotation = rotationToTarget;
-                    var left = Mathf.Clamp01(composer.frameCenter.x + 0.5f - composer.frameExtends.x / 2);
-                    var right = Mathf.Clamp01(composer.frameCenter.x + 0.5f + composer.frameExtends.x / 2);
-                    var top = Mathf.Clamp01(composer.frameCenter.y + 0.5f - composer.frameExtends.y / 2);
-                    var bottom = Mathf.Clamp01(composer.frameCenter.y + 0.5f + composer.frameExtends.y / 2);
+                    var left =
+                        Mathf.Clamp01(composer.frameCenter.x + 0.5f - composer.frameExtends.x / 2);
+                    var right =
+                        Mathf.Clamp01(composer.frameCenter.x + 0.5f + composer.frameExtends.x / 2);
+                    var top = Mathf.Clamp01(composer.frameCenter.y + 0.5f -
+                        composer.frameExtends.y / 2);
+                    var bottom =
+                        Mathf.Clamp01(composer.frameCenter.y + 0.5f + composer.frameExtends.y / 2);
                     var viewFrame = Rect.MinMaxRect(left, top, right, bottom);
-                    var worldFrameCenter = cam.ViewportToWorldPoint(new Vector3(1 - viewFrame.center.x
-                        , viewFrame.center.y, Vector3.Distance(directableCamera.position, pointWorldPos)));
-                    var rotationToFrame = Quaternion.LookRotation(worldFrameCenter - directableCamera.position);
+                    var worldFrameCenter = cam.ViewportToWorldPoint(
+                        new Vector3(1 - viewFrame.center.x, viewFrame.center.y,
+                            Vector3.Distance(directableCamera.position, pointWorldPos)));
+                    var rotationToFrame =
+                        Quaternion.LookRotation(worldFrameCenter - directableCamera.position);
                     directableCamera.rotation = wasRotation;
-                    var interestBounds = new Bounds(pointWorldPos
-                        , new Vector3(composer.targetSize, composer.targetSize, composer.targetSize) * 2);
+                    var interestBounds = new Bounds(pointWorldPos,
+                        new Vector3(composer.targetSize, composer.targetSize, composer.targetSize) *
+                        2);
                     var interestViewFrame = interestBounds.ToViewRect(cam);
 
                     if (isHard || composer.smoothDamping == MIN_DAMP) {
@@ -180,7 +196,8 @@ namespace Slate
                         var normyMax = interestViewFrame.yMax - viewFrame.yMax;
                         var norm = Mathf.Max(normxMin, normxMax, normyMin, normyMax, 0);
                         var normDamp = MAX_DAMP / composer.smoothDamping * norm;
-                        directableCamera.rotation = Quaternion.Lerp(wasRotation, rotationToFrame, normDamp);
+                        directableCamera.rotation =
+                            Quaternion.Lerp(wasRotation, rotationToFrame, normDamp);
                     }
 
                     //dutch tilt
@@ -209,15 +226,22 @@ namespace Slate
             if (composer.target != null && composer.trackingMode != Composer.TrackingMode.None)
                 if (composer.trackingMode == Composer.TrackingMode.FrameComposition) {
                     var cam = directableCamera.cam;
-                    var left = Mathf.Clamp01(composer.frameCenter.x + 0.5f - composer.frameExtends.x / 2);
-                    var right = Mathf.Clamp01(composer.frameCenter.x + 0.5f + composer.frameExtends.x / 2);
-                    var top = Mathf.Clamp01(composer.frameCenter.y + 0.5f - composer.frameExtends.y / 2);
-                    var bottom = Mathf.Clamp01(composer.frameCenter.y + 0.5f + composer.frameExtends.y / 2);
+                    var left =
+                        Mathf.Clamp01(composer.frameCenter.x + 0.5f - composer.frameExtends.x / 2);
+                    var right =
+                        Mathf.Clamp01(composer.frameCenter.x + 0.5f + composer.frameExtends.x / 2);
+                    var top = Mathf.Clamp01(composer.frameCenter.y + 0.5f -
+                        composer.frameExtends.y / 2);
+                    var bottom =
+                        Mathf.Clamp01(composer.frameCenter.y + 0.5f + composer.frameExtends.y / 2);
                     var viewFrame = Rect.MinMaxRect(left, top, right, bottom);
                     //view frame
-                    var min = new Vector2(viewFrame.xMin * container.width, viewFrame.yMin * container.height);
-                    var max = new Vector2(viewFrame.xMax * container.width, viewFrame.yMax * container.height);
-                    GUI.Box(Rect.MinMaxRect(min.x, min.y, max.x, max.y), "", Styles.hollowFrameStyle);
+                    var min = new Vector2(viewFrame.xMin * container.width,
+                        viewFrame.yMin * container.height);
+                    var max = new Vector2(viewFrame.xMax * container.width,
+                        viewFrame.yMax * container.height);
+                    GUI.Box(Rect.MinMaxRect(min.x, min.y, max.x, max.y), "",
+                        Styles.hollowFrameStyle);
                     //dark
                     var leftGuide = Rect.MinMaxRect(0, 0, min.x, container.height);
                     var rightGuide = Rect.MinMaxRect(max.x, 0, container.width, container.height);
@@ -240,11 +264,12 @@ namespace Slate
                     GUI.DrawTexture(bottonLine, Styles.whiteTexture);
                     GUI.color = Color.white;
                     var pointPos = composer.target.TransformPoint(composer.targetOffset);
-                    var bounds = new Bounds(pointPos
-                        , new Vector3(composer.targetSize, composer.targetSize, composer.targetSize) * 2);
+                    var bounds = new Bounds(pointPos,
+                        new Vector3(composer.targetSize, composer.targetSize, composer.targetSize) *
+                        2);
                     var rect = bounds.ToViewRect(cam);
-                    rect = new Rect(rect.x * container.width, rect.y * container.height, rect.width * container.width
-                        , rect.height * container.height);
+                    rect = new Rect(rect.x * container.width, rect.y * container.height,
+                        rect.width * container.width, rect.height * container.height);
                     GUI.color = Color.green;
                     GUI.Box(rect, "", Styles.hollowFrameStyle); //subject area
                     var pointRect = new Rect(0, 0, 10, 10);
@@ -267,7 +292,8 @@ namespace Slate
         {
             Gizmos.color = Prefs.gizmosColor;
 
-            if (transposer.target != null && transposer.trackingMode != Transposer.TrackingMode.None) {
+            if (transposer.target != null &&
+                transposer.trackingMode != Transposer.TrackingMode.None) {
                 var targetPos = transposer.target.position;
                 if (transposer.offsetMode == Transposer.OffsetMode.LocalSpace)
                     targetPos = transposer.target.TransformPoint(transposer.targetOffset);
@@ -302,11 +328,15 @@ namespace Slate
         ///<summary>OnSceneGUI</summary>
         public void DoSceneGUI(IDirectableCamera directableCamera)
         {
-            if (transposer.target != null && transposer.trackingMode != Transposer.TrackingMode.None)
+            if (transposer.target != null &&
+                transposer.trackingMode != Transposer.TrackingMode.None)
                 if (transposer.trackingMode == Transposer.TrackingMode.RailTracking) {
                     UnityEditor.EditorGUI.BeginChangeCheck();
-                    var rStart = UnityEditor.Handles.PositionHandle(transposer.railStart, Quaternion.identity);
-                    var rEnd = UnityEditor.Handles.PositionHandle(transposer.railEnd, Quaternion.identity);
+                    var rStart =
+                        UnityEditor.Handles.PositionHandle(transposer.railStart,
+                            Quaternion.identity);
+                    var rEnd =
+                        UnityEditor.Handles.PositionHandle(transposer.railEnd, Quaternion.identity);
 
                     if (UnityEditor.EditorGUI.EndChangeCheck()) {
                         UnityEditor.Undo.RecordObject(directableCamera as Object, "Rail Change");

@@ -63,7 +63,8 @@ namespace Puerts
             return
                 // .cjs asset is only supported in unity2018+
 #if UNITY_2018_1_OR_NEWER
-                filepath.EndsWith(".cjs") || filepath.EndsWith(".mjs") ? filepath.Substring(0, filepath.Length - 4) :
+                filepath.EndsWith(".cjs") || filepath.EndsWith(".mjs")
+                    ? filepath.Substring(0, filepath.Length - 4) :
 #endif
                     filepath;
         }
@@ -107,8 +108,9 @@ namespace Puerts
 #if UNITY_EDITOR
             if (file) debugPath = Path.GetFullPath(AssetDatabase.GetAssetPath(file));
 #endif
-            if (file && (Path.GetExtension(filepath) == ".proto" || Path.GetExtension(filepath) == ".mjs") &&
-                file.text.IsBase64())
+            if (file &&
+                (Path.GetExtension(filepath) == ".proto" ||
+                    Path.GetExtension(filepath) == ".mjs") && file.text.IsBase64())
                 return file.text.FromBase64();
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
             debugpath = debugpath.Replace("/", "\\");

@@ -11,8 +11,9 @@ namespace FlowCanvas.Nodes
         public override bool Invoke(object OBJECT) => OBJECT != null && !OBJECT.Equals(null);
     }
 
-    [Category("Operators")
-     , Description("Returns whether the input object is of type T as well as the object itself for convenience.")]
+    [Category("Operators"),
+     Description(
+         "Returns whether the input object is of type T as well as the object itself for convenience.")]
     public class IsOfType : PureFunctionNode<bool, object, Type>
     {
         public object OBJECT { get; private set; }
@@ -35,7 +36,8 @@ namespace FlowCanvas.Nodes
     [Category("Operators/Any"), Name("≥"), Description("Any Greater Or Equal Than")]
     public class AnyGreaterEqualThan : PureFunctionNode<bool, IComparable, IComparable>
     {
-        public override bool Invoke(IComparable a, IComparable b) => a.CompareTo(b) == 1 || Equals(a, b);
+        public override bool Invoke(IComparable a, IComparable b) =>
+            a.CompareTo(b) == 1 || Equals(a, b);
     }
 
     [Category("Operators/Any"), Name("<"), Description("Any Less Than")]
@@ -47,7 +49,8 @@ namespace FlowCanvas.Nodes
     [Category("Operators/Any"), Name("≤"), Description("Any Less Or Equal Than")]
     public class AnyLessEqualThan : PureFunctionNode<bool, IComparable, IComparable>
     {
-        public override bool Invoke(IComparable a, IComparable b) => a.CompareTo(b) == -1 || Equals(a, b);
+        public override bool Invoke(IComparable a, IComparable b) =>
+            a.CompareTo(b) == -1 || Equals(a, b);
     }
 
     [Category("Operators/Any"), Name("="), Description("Any Equal To")]
@@ -130,17 +133,19 @@ namespace FlowCanvas.Nodes
         public override bool Invoke(float a, float b) => a != b;
     }
 
-    [Category("Operators/Floats"), Name("Invert"), Description("Float Invert the input ( value = value * -1 )")]
+    [Category("Operators/Floats"), Name("Invert"),
+     Description("Float Invert the input ( value = value * -1 )")]
     public class FloatInvert : PureFunctionNode<float, float>
     {
         public override float Invoke(float value) => value * -1;
     }
 
-    [Category("Operators/Floats")
-     , Description("Float Round value to closest of interval ( round(value / interval) * interval )")]
+    [Category("Operators/Floats"),
+     Description("Float Round value to closest of interval ( round(value / interval) * interval )")]
     public class FloatSnap : PureFunctionNode<int, float, int>
     {
-        public override int Invoke(float value, int interval) => (int)Mathf.Round(value / interval) * interval;
+        public override int Invoke(float value, int interval) =>
+            (int)Mathf.Round(value / interval) * interval;
     }
 
     //--INTEGER
@@ -211,17 +216,20 @@ namespace FlowCanvas.Nodes
         public override bool Invoke(int a, int b) => a != b;
     }
 
-    [Category("Operators/Integers"), Name("Invert"), Description("Integer Invert the input ( value = value * -1 )")]
+    [Category("Operators/Integers"), Name("Invert"),
+     Description("Integer Invert the input ( value = value * -1 )")]
     public class IntegerInvert : PureFunctionNode<int, int>
     {
         public override int Invoke(int value) => value * -1;
     }
 
-    [Category("Operators/Integers")
-     , Description("Integer Round value to closest of interval ( round(value / interval) * interval )")]
+    [Category("Operators/Integers"),
+     Description(
+         "Integer Round value to closest of interval ( round(value / interval) * interval )")]
     public class IntegerSnap : PureFunctionNode<int, int, int>
     {
-        public override int Invoke(int value, int interval) => (int)Mathf.Round(value / interval) * interval;
+        public override int Invoke(int value, int interval) =>
+            (int)Mathf.Round(value / interval) * interval;
     }
 
     //--BOOLEAN
@@ -332,7 +340,8 @@ namespace FlowCanvas.Nodes
         public override Vector3 Invoke(Vector3 a, float b) => a / b;
     }
 
-    [Category("Operators/Vector3"), Name("Invert"), Description("Vector3 Invert the input ( value = value * -1 )")]
+    [Category("Operators/Vector3"), Name("Invert"),
+     Description("Vector3 Invert the input ( value = value * -1 )")]
     public class Vector3Invert : PureFunctionNode<Vector3, Vector3>
     {
         public override Vector3 Invoke(Vector3 value) => value * -1;

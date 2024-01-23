@@ -5,8 +5,8 @@ using System;
 
 namespace FlowCanvas.Nodes
 {
-    [Name("UI Scrollbar"), Category("Events/Object/UI")
-     , Description("Called when the target UI Scrollbar value changed.")]
+    [Name("UI Scrollbar"), Category("Events/Object/UI"),
+     Description("Called when the target UI Scrollbar value changed.")]
     public class UIScrollbarEvent : EventNode<Scrollbar>
     {
         private FlowOutput o;

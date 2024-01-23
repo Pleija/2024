@@ -3,10 +3,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-    [Category("Flow Controllers/Flow Merge")
-     , Description(
-         "Await all flow inputs to be called within the max allowed await time.\n- If MaxAwaitTime is 0, then all inputs must be called at the same time.\n- If MaxAwaitTime is -1, then the await time is infinity.")
-     , System.Obsolete("Use AND")]
+    [Category("Flow Controllers/Flow Merge"),
+     Description(
+         "Await all flow inputs to be called within the max allowed await time.\n- If MaxAwaitTime is 0, then all inputs must be called at the same time.\n- If MaxAwaitTime is -1, then the await time is infinity."),
+     System.Obsolete("Use AND")]
     public class AwaitAll : FlowControlNode
     {
         [SerializeField, ExposeField, MinValue(2), DelayedField, GatherPortsCallback]

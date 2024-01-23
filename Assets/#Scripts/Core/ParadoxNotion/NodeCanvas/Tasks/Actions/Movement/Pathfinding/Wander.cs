@@ -7,7 +7,8 @@ using NavMeshHit = UnityEngine.AI.NavMeshHit;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Movement/Pathfinding"), Description("Makes the agent wander randomly within the navigation map")]
+    [Category("Movement/Pathfinding"),
+     Description("Makes the agent wander randomly within the navigation map")]
     public class Wander : ActionTask<NavMeshAgent>
     {
         [Tooltip("The speed to wander with.")]
@@ -22,7 +23,8 @@ namespace NodeCanvas.Tasks.Actions
         [Tooltip("A wander point can't be further than this distance")]
         public BBParameter<float> maxWanderDistance = 20;
 
-        [Tooltip("If enabled, will keep wandering forever. If not, only one wander point will be performed.")]
+        [Tooltip(
+            "If enabled, will keep wandering forever. If not, only one wander point will be performed.")]
         public bool repeat = true;
 
         protected override void OnExecute()
@@ -33,7 +35,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnUpdate()
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + keepDistance.value) {
+            if (!agent.pathPending &&
+                agent.remainingDistance <= agent.stoppingDistance + keepDistance.value) {
                 if (repeat)
                     DoWander();
                 else

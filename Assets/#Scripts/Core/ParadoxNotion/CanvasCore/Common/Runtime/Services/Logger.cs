@@ -68,7 +68,8 @@ namespace ParadoxNotion.Services
         }
 
         ///<summary>Log Exception</summary>
-        public static void LogException(System.Exception exception, string tag = null, object context = null)
+        public static void LogException(System.Exception exception, string tag = null,
+            object context = null)
         {
             Internal_Log(LogType.Exception, exception, tag, context);
         }

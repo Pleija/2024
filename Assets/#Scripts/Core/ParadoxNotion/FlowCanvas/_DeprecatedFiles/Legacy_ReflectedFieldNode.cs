@@ -9,16 +9,16 @@ namespace FlowCanvas.Nodes.Legacy
     {
         public static ReflectedFieldNode Create(FieldInfo field) => new PureReflectedFieldNode();
 
-        public abstract void RegisterPorts(FlowNode node, FieldInfo field
-            , ReflectedFieldNodeWrapper.AccessMode accessMode);
+        public abstract void RegisterPorts(FlowNode node, FieldInfo field,
+            ReflectedFieldNodeWrapper.AccessMode accessMode);
     }
 
     //Pure refelction based
     [System.Obsolete]
     public sealed class PureReflectedFieldNode : ReflectedFieldNode
     {
-        public override void RegisterPorts(FlowNode node, FieldInfo field
-            , ReflectedFieldNodeWrapper.AccessMode accessMode)
+        public override void RegisterPorts(FlowNode node, FieldInfo field,
+            ReflectedFieldNodeWrapper.AccessMode accessMode)
         {
             if (field.IsConstant()) {
                 var constantValue = field.GetValue(null);

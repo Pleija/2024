@@ -26,9 +26,11 @@ namespace FlowCanvas.Nodes
         protected int _exposedParamsCount;
 
         protected abstract ISerializedMethodBaseInfo serializedMethodBase { get; }
-        private MethodBase method => serializedMethodBase != null ? serializedMethodBase.GetMethodBase() : null;
+        private MethodBase method =>
+            serializedMethodBase != null ? serializedMethodBase.GetMethodBase() : null;
 #if UNITY_EDITOR
-        public override string description => method != null ? XMLDocs.GetMemberSummary(method) : "Missing Method";
+        public override string description =>
+            method != null ? XMLDocs.GetMemberSummary(method) : "Missing Method";
 #endif
 
         public bool callable {
@@ -101,13 +103,13 @@ namespace FlowCanvas.Nodes
             if (method != null) {
                 var overloads = new List<MethodBase>();
                 if (method is MethodInfo)
-                    foreach (var m in method.DeclaringType.GetMethods(BindingFlags.Instance | BindingFlags.Static |
-                        BindingFlags.Public))
+                    foreach (var m in method.DeclaringType.GetMethods(BindingFlags.Instance |
+                        BindingFlags.Static | BindingFlags.Public))
                         if (m.Name == method.Name)
                             overloads.Add(m);
                 if (method is ConstructorInfo)
-                    foreach (var m in method.DeclaringType.GetConstructors(BindingFlags.Instance | BindingFlags.Static |
-                        BindingFlags.Public))
+                    foreach (var m in method.DeclaringType.GetConstructors(BindingFlags.Instance |
+                        BindingFlags.Static | BindingFlags.Public))
                         if (m.Name == method.Name)
                             overloads.Add(m);
 
@@ -115,9 +117,10 @@ namespace FlowCanvas.Nodes
                     foreach (var _m in overloads) {
                         var m = _m;
                         var isSame = m.SignatureName() == method.SignatureName();
-                        menu.AddItem(new GUIContent("Change Method Overload/" + m.SignatureName()), isSame, () => {
-                            SetMethodBase(m);
-                        });
+                        menu.AddItem(new GUIContent("Change Method Overload/" + m.SignatureName()),
+                            isSame, () => {
+                                SetMethodBase(m);
+                            });
                     }
 
                 if (method.IsGenericMethod && method is MethodInfo) {
@@ -128,9 +131,11 @@ namespace FlowCanvas.Nodes
                         var type = _type;
                         var isSame = arg1 == type;
                         if (methodInfo.TryMakeGeneric(type, out var genericMethodInfo))
-                            menu.AddItem(new GUIContent("Change Generic Type/" + type.FriendlyName()), isSame, () => {
-                                SetMethodBase(genericMethodInfo);
-                            });
+                            menu.AddItem(
+                                new GUIContent("Change Generic Type/" + type.FriendlyName()),
+                                isSame, () => {
+                                    SetMethodBase(genericMethodInfo);
+                                });
                     }
                 }
             }
@@ -142,29 +147,32 @@ namespace FlowCanvas.Nodes
             if (method != null) {
                 System.Type returnType = null;
                 if (method is MethodInfo) returnType = (method as MethodInfo).ReturnType;
-                if (method is ConstructorInfo) returnType = (method as ConstructorInfo).DeclaringType;
+                if (method is ConstructorInfo)
+                    returnType = (method as ConstructorInfo).DeclaringType;
                 if (returnType != typeof(void) && !method.Name.StartsWith("get_"))
                     callable = UnityEditor.EditorGUILayout.Toggle(
-                        EditorUtils.GetTempContent("Callable", null, "Enable this to explicitely call the node.")
-                        , callable);
+                        EditorUtils.GetTempContent("Callable", null,
+                            "Enable this to explicitely call the node."), callable);
                 var parameters = method.GetParameters();
                 var lastParam = parameters.LastOrDefault();
 
                 if (lastParam != null && lastParam.IsParams(parameters)) {
                     exposeParams = UnityEditor.EditorGUILayout.Toggle(
-                        EditorUtils.GetTempContent("Expose Parameters", null
-                            , "This method accepts a params array. You can chose to expose the array to individual ports.")
-                        , exposeParams);
+                        EditorUtils.GetTempContent("Expose Parameters", null,
+                            "This method accepts a params array. You can chose to expose the array to individual ports."),
+                        exposeParams);
 
                     if (exposeParams) {
                         UnityEditor.EditorGUI.indentLevel++;
                         exposedParamsCount =
-                            UnityEditor.EditorGUILayout.DelayedIntField("Parameters Count", exposedParamsCount);
+                            UnityEditor.EditorGUILayout.DelayedIntField("Parameters Count",
+                                exposedParamsCount);
                         UnityEditor.EditorGUI.indentLevel--;
                     }
                 }
             }
-            if (method == null && serializedMethodBase != null) GUILayout.Label(serializedMethodBase.AsString());
+            if (method == null && serializedMethodBase != null)
+                GUILayout.Label(serializedMethodBase.AsString());
             base.OnNodeInspectorGUI();
             /*
             if (method != null){

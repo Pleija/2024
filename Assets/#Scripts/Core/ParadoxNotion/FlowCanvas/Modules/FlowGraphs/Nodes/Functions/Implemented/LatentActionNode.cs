@@ -5,7 +5,8 @@ using ParadoxNotion.Services;
 namespace FlowCanvas.Nodes
 {
     /// <summary>
-    ///     Latent Action Nodes do not return any value and can span within multiple frames and have up to 10 parameters.
+    ///     Latent Action Nodes do not return any value and can span within multiple frames and have up to
+    ///     10 parameters.
     ///     They need Flow execution.
     /// </summary>
     public abstract class LatentActionNodeBase : SimplexNode
@@ -61,7 +62,8 @@ namespace FlowCanvas.Nodes
                 return;
             }
             if (routineQueue == null) routineQueue = new Queue<RoutineData>();
-            if (allowRoutineQueueing && invocationMode == InvocationMode.QueueCalls) routineQueue.Enqueue(data);
+            if (allowRoutineQueueing && invocationMode == InvocationMode.QueueCalls)
+                routineQueue.Enqueue(data);
         }
 
         //breaks all coroutine queues
@@ -254,7 +256,8 @@ namespace FlowCanvas.Nodes
             var p6 = node.AddValueInput<T6>(parameters[5].Name);
             var p7 = node.AddValueInput<T7>(parameters[6].Name);
             node.AddFlowInput("In", (f) => {
-                Begin(Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value), f);
+                Begin(Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value),
+                    f);
             });
         }
     }
@@ -274,12 +277,15 @@ namespace FlowCanvas.Nodes
             var p7 = node.AddValueInput<T7>(parameters[6].Name);
             var p8 = node.AddValueInput<T8>(parameters[7].Name);
             node.AddFlowInput("In", (f) => {
-                Begin(Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value), f);
+                Begin(
+                    Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                        p8.value), f);
             });
         }
     }
 
-    public abstract class LatentActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9> : LatentActionNodeBase
+    public abstract class
+        LatentActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9> : LatentActionNodeBase
     {
         public abstract IEnumerator Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i);
 
@@ -295,15 +301,18 @@ namespace FlowCanvas.Nodes
             var p8 = node.AddValueInput<T8>(parameters[7].Name);
             var p9 = node.AddValueInput<T9>(parameters[8].Name);
             node.AddFlowInput("In", (f) => {
-                Begin(Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value)
-                    , f);
+                Begin(
+                    Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                        p8.value, p9.value), f);
             });
         }
     }
 
-    public abstract class LatentActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : LatentActionNodeBase
+    public abstract class
+        LatentActionNode<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : LatentActionNodeBase
     {
-        public abstract IEnumerator Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i, T10 j);
+        public abstract IEnumerator Invoke(T1 a, T2 b, T3 c, T4 d, T5 e, T6 f, T7 g, T8 h, T9 i,
+            T10 j);
 
         protected sealed override void OnRegisterDerivedPorts(FlowNode node)
         {
@@ -319,8 +328,8 @@ namespace FlowCanvas.Nodes
             var p10 = node.AddValueInput<T10>(parameters[9].Name);
             node.AddFlowInput("In", (f) => {
                 Begin(
-                    Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value, p8.value, p9.value
-                        , p10.value), f);
+                    Invoke(p1.value, p2.value, p3.value, p4.value, p5.value, p6.value, p7.value,
+                        p8.value, p9.value, p10.value), f);
             });
         }
     }

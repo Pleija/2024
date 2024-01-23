@@ -5,10 +5,10 @@ using FlowCanvas;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Sub FlowScript")
-     , Description(
-         "Executes a sub FlowScript. Returns Running while the sub FlowScript is active. You can Finish the FlowScript with the 'Finish' node and return Success or Failure.")
-     , Icon("FS"), DropReferenceType(typeof(FlowScript))]
+    [Name("Sub FlowScript"),
+     Description(
+         "Executes a sub FlowScript. Returns Running while the sub FlowScript is active. You can Finish the FlowScript with the 'Finish' node and return Success or Failure."),
+     Icon("FS"), DropReferenceType(typeof(FlowScript))]
     public class BTNestedFlowScript : BTNodeNested<FlowScript>
     {
         [SerializeField, ExposeField]

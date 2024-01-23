@@ -31,7 +31,8 @@ namespace FlowCanvas.Nodes
         {
             _eventType = eventType;
             if (_eventType == null || !_eventType.RTIsSubclassOf(typeof(UnityEventBase))) return;
-            var invokeMethod = _eventType.GetMethod("Invoke", BindingFlags.Public | BindingFlags.Instance);
+            var invokeMethod =
+                _eventType.GetMethod("Invoke", BindingFlags.Public | BindingFlags.Instance);
             _parameters = invokeMethod.GetParameters();
             var thisType = GetType();
             if (_parameters.Length == 0) _callMethod = thisType.RTGetMethod("CallbackMethod0");
@@ -40,11 +41,15 @@ namespace FlowCanvas.Nodes
             if (_parameters.Length == 3) _callMethod = thisType.RTGetMethod("CallbackMethod3");
             if (_parameters.Length == 4) _callMethod = thisType.RTGetMethod("CallbackMethod4");
             if (_callMethod.IsGenericMethodDefinition)
-                _callMethod = _callMethod.MakeGenericMethod(_parameters.Select(p => p.ParameterType).ToArray());
+                _callMethod =
+                    _callMethod.MakeGenericMethod(
+                        _parameters.Select(p => p.ParameterType).ToArray());
             var typeArray = new Type[] { typeof(object), typeof(MethodInfo) };
             var flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            _addListenerMethod = typeof(UnityEventBase).GetMethod("AddListener", flags, null, typeArray, null);
-            _removeListenerMethod = typeof(UnityEventBase).GetMethod("RemoveListener", flags, null, typeArray, null);
+            _addListenerMethod =
+                typeof(UnityEventBase).GetMethod("AddListener", flags, null, typeArray, null);
+            _removeListenerMethod =
+                typeof(UnityEventBase).GetMethod("RemoveListener", flags, null, typeArray, null);
         }
 
         ///<summary>Subscribe to target unity event</summary>

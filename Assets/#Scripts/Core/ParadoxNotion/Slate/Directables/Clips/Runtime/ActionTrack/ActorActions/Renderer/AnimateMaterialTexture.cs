@@ -48,7 +48,8 @@ namespace Slate.ActionClips
             set => _blendOut = value;
         }
 
-        private Material targetMaterial => Application.isPlaying ? actor.material : actor.sharedMaterial;
+        private Material targetMaterial =>
+            Application.isPlaying ? actor.material : actor.sharedMaterial;
 
         protected override void OnEnter()
         {

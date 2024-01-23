@@ -11,7 +11,10 @@ namespace NodeCanvas.Framework
         Status status { get; }
     }
 
-    ///<summary>An interface to update nodes that need concurent updating apart from their normal 'Execution'.</summary>
+    /// <summary>
+    ///     An interface to update nodes that need concurent updating apart from their normal
+    ///     'Execution'.
+    /// </summary>
     public interface IUpdatable : IGraphElement
     {
         void Update();
@@ -51,7 +54,10 @@ namespace NodeCanvas.Framework
     ///<summary>Use the generic ITaskAssignable when the Task type is known</summary>
     public interface ITaskAssignable<T> : ITaskAssignable where T : Task { }
 
-    ///<summary>Just a simple way to have a link draw to target reference if any for nodes that do have a node reference</summary>
+    /// <summary>
+    ///     Just a simple way to have a link draw to target reference if any for nodes that do have a
+    ///     node reference
+    /// </summary>
     public interface IHaveNodeReference : IGraphElement
     {
         INodeReference targetReference { get; }

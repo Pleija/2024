@@ -15,7 +15,10 @@ namespace NodeCanvas.BehaviourTrees
             }
         }
 
-        ///<summary>The interval in seconds to update the BT. 0 for every frame. Sets the BehaviourTree's updateInterval</summary>
+        /// <summary>
+        ///     The interval in seconds to update the BT. 0 for every frame. Sets the BehaviourTree's
+        ///     updateInterval
+        /// </summary>
         public float updateInterval {
             get => behaviour != null ? behaviour.updateInterval : 0;
             set {
@@ -30,8 +33,8 @@ namespace NodeCanvas.BehaviourTrees
         public Status Tick()
         {
             if (behaviour == null) {
-                ParadoxNotion.Services.Logger.LogWarning("There is no Behaviour Tree assigned", LogTag.EXECUTION
-                    , gameObject);
+                ParadoxNotion.Services.Logger.LogWarning("There is no Behaviour Tree assigned",
+                    LogTag.EXECUTION, gameObject);
                 return Status.Resting;
             }
             UpdateBehaviour();

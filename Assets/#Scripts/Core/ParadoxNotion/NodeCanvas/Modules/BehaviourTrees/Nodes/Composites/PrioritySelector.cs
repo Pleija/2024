@@ -15,10 +15,10 @@ namespace NodeCanvas.BehaviourTrees
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("Composites")
-     , Description(
-         "Used for Utility AI, the Priority Selector executes the child with the highest utility weight. If it fails, the Priority Selector will continue with the next highest utility weight child until one Succeeds, or until all Fail (similar to how a normal Selector does).\n\nEach child branch represents a desire, where each desire has one or more consideration which are all averaged.\nConsiderations are a pair of input value and curve, which together produce the consideration utility weight.\n\nIf Dynamic option is enabled, will continously evaluate utility weights and execute the child with the highest one regardless of what status the children return.")
-     , Icon("Priority"), Color("b3ff7f"), fsMigrateVersions(typeof(PrioritySelector_0))]
+    [Category("Composites"),
+     Description(
+         "Used for Utility AI, the Priority Selector executes the child with the highest utility weight. If it fails, the Priority Selector will continue with the next highest utility weight child until one Succeeds, or until all Fail (similar to how a normal Selector does).\n\nEach child branch represents a desire, where each desire has one or more consideration which are all averaged.\nConsiderations are a pair of input value and curve, which together produce the consideration utility weight.\n\nIf Dynamic option is enabled, will continously evaluate utility weights and execute the child with the highest one regardless of what status the children return."),
+     Icon("Priority"), Color("b3ff7f"), fsMigrateVersions(typeof(PrioritySelector_0))]
     public class PrioritySelector : BTComposite, IMigratable<PrioritySelector_0>
     {
         ///----------------------------------------------------------------------------------------------
@@ -71,7 +71,9 @@ namespace NodeCanvas.BehaviourTrees
         {
             public BBParameter<float> input;
             public BBParameter<AnimationCurve> function;
-            public float utility => function.value != null ? function.value.Evaluate(input.value) : input.value;
+
+            public float utility => function.value != null ? function.value.Evaluate(input.value)
+                : input.value;
 
             public Consideration(IBlackboard blackboard)
             {
@@ -126,7 +128,8 @@ namespace NodeCanvas.BehaviourTrees
             ///----------------------------------------------------------------------------------------------
             if (status == Status.Resting)
                 orderedConnections = outConnections
-                    .OrderBy(c => desires[outConnections.IndexOf(c)].GetCompoundUtility()).ToArray();
+                    .OrderBy(c => desires[outConnections.IndexOf(c)].GetCompoundUtility())
+                    .ToArray();
 
             for (var i = orderedConnections.Length; i-- > 0;) {
                 status = orderedConnections[i].Execute(agent, blackboard);
@@ -153,12 +156,14 @@ namespace NodeCanvas.BehaviourTrees
         public override string GetConnectionInfo(int i)
         {
             var desire = desires[i];
-            var desireName = string.IsNullOrEmpty(desire.name) ? "DESIRE " + i.ToString() : desire.name;
+            var desireName = string.IsNullOrEmpty(desire.name) ? "DESIRE " + i.ToString()
+                : desire.name;
             var result = desireName.ToUpper() + "\n";
             for (var j = 0; j < desire.considerations.Count; j++)
                 result += desire.considerations[j].input.ToString() + " (" +
                     desire.considerations[j].utility.ToString("0.00") + ")" + "\n";
-            return result += string.Format("<b>Avg.</b> ({0})", desire.GetCompoundUtility().ToString("0.00"));
+            return result += string.Format("<b>Avg.</b> ({0})",
+                desire.GetCompoundUtility().ToString("0.00"));
         }
 
         //..
@@ -172,10 +177,11 @@ namespace NodeCanvas.BehaviourTrees
                 var consideration = desire.considerations[j];
                 GUILayout.BeginVertical("box");
                 consideration.input =
-                    (BBParameter<float>)Editor.BBParameterEditor.ParameterField("Input", consideration.input, true);
+                    (BBParameter<float>)Editor.BBParameterEditor.ParameterField("Input",
+                        consideration.input, true);
                 consideration.function =
-                    (BBParameter<AnimationCurve>)Editor.BBParameterEditor.ParameterField("Curve"
-                        , consideration.function);
+                    (BBParameter<AnimationCurve>)Editor.BBParameterEditor.ParameterField("Curve",
+                        consideration.function);
                 GUILayout.EndVertical();
             });
             if (GUILayout.Button("Add Consideration")) desire.AddConsideration(graphBlackboard);
@@ -195,9 +201,9 @@ namespace NodeCanvas.BehaviourTrees
                 return;
             }
             dynamic = UnityEditor.EditorGUILayout.Toggle(
-                new GUIContent("Dynamic"
-                    , "If enabled, will continously evaluate utility weights and execute the child with the highest one accordingly. In this mode child return status does not matter.")
-                , dynamic);
+                new GUIContent("Dynamic",
+                    "If enabled, will continously evaluate utility weights and execute the child with the highest one accordingly. In this mode child return status does not matter."),
+                dynamic);
             EditorUtils.Separator();
             EditorUtils.CoolLabel("Desires");
             var optionsA = new EditorUtils.ReorderableListOptions();
@@ -205,11 +211,14 @@ namespace NodeCanvas.BehaviourTrees
             optionsA.allowRemove = false;
             EditorUtils.ReorderableList(desires, optionsA, (i, pickedA) => {
                 var desire = desires[i];
-                var desireName = string.IsNullOrEmpty(desire.name) ? "DESIRE " + i.ToString() : desire.name;
-                desire.foldout = UnityEditor.EditorGUILayout.Foldout(desire.foldout, new GUIContent(desireName));
+                var desireName = string.IsNullOrEmpty(desire.name) ? "DESIRE " + i.ToString()
+                    : desire.name;
+                desire.foldout =
+                    UnityEditor.EditorGUILayout.Foldout(desire.foldout, new GUIContent(desireName));
 
                 if (desire.foldout) {
-                    desire.name = UnityEditor.EditorGUILayout.TextField("   Friendly Name", desire.name);
+                    desire.name =
+                        UnityEditor.EditorGUILayout.TextField("   Friendly Name", desire.name);
                     OnConnectionInspectorGUI(i);
                 }
             });

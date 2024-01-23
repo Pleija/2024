@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-    ///<summary>Task Action is used to check ConditionTasks within the flowgraph in a simplified manner without exposing ports</summary>
+    /// <summary>
+    ///     Task Action is used to check ConditionTasks within the flowgraph in a simplified manner
+    ///     without exposing ports
+    /// </summary>
     [Description(
         "Returns an encapsulated condition check without exposing any value ports other than the boolean check")]
     public class TaskCondition : FlowNode, ITaskAssignable<ConditionTask>

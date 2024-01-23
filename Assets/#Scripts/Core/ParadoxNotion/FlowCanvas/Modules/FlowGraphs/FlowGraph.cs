@@ -11,9 +11,10 @@ using Logger = ParadoxNotion.Services.Logger;
 namespace FlowCanvas
 {
     ///<summary>Base class for flow graphs.</summary>
-    [GraphInfo(packageName = "FlowCanvas", docsURL = "https://flowcanvas.paradoxnotion.com/documentation/"
-         , resourcesURL = "https://flowcanvas.paradoxnotion.com/downloads/"
-         , forumsURL = "https://flowcanvas.paradoxnotion.com/forums-page/"), System.Serializable]
+    [GraphInfo(packageName = "FlowCanvas",
+         docsURL = "https://flowcanvas.paradoxnotion.com/documentation/",
+         resourcesURL = "https://flowcanvas.paradoxnotion.com/downloads/",
+         forumsURL = "https://flowcanvas.paradoxnotion.com/forums-page/"), System.Serializable]
     public abstract class FlowGraph : Graph
     {
         private List<IUpdatable> updatableNodes;
@@ -40,8 +41,12 @@ namespace FlowCanvas
             return null;
         }
 
-        ///<summary>Calls a custom function in the flowgraph async. When the function is done, it will callback with return value</summary>
-        public void CallFunctionAsync(string name, System.Action<object> callback, params object[] args)
+        /// <summary>
+        ///     Calls a custom function in the flowgraph async. When the function is done, it will
+        ///     callback with return value
+        /// </summary>
+        public void CallFunctionAsync(string name, System.Action<object> callback,
+            params object[] args)
         {
             Debug.Assert(isRunning, "Trying to Execute Function but graph is not running");
             IInvokable func = null;
@@ -55,7 +60,8 @@ namespace FlowCanvas
             if (type == typeof(GameObject)) return agent.gameObject;
             if (type == typeof(Transform)) return agent.transform;
             if (type == typeof(Component)) return agent;
-            if (cachedAgentComponents == null) cachedAgentComponents = new Dictionary<System.Type, Component>();
+            if (cachedAgentComponents == null)
+                cachedAgentComponents = new Dictionary<System.Type, Component>();
             Component component = null;
             if (cachedAgentComponents.TryGetValue(type, out component)) return component;
             if (typeof(Component).RTIsAssignableFrom(type) || type.RTIsInterface())
@@ -109,7 +115,8 @@ namespace FlowCanvas
             for (var i = 0; i < macroWrappers.Count; i++) {
                 var macroWrapper = macroWrappers[i];
                 if (macroWrapper.macro != null)
-                    macroWrapper.macro.StartGraph(agent, blackboard.parent, UpdateMode.Manual, null);
+                    macroWrapper.macro.StartGraph(agent, blackboard.parent, UpdateMode.Manual,
+                        null);
             }
         }
 
@@ -140,13 +147,15 @@ namespace FlowCanvas
 #if UNITY_EDITOR
 
         //Append menu items in canvas right click context menu (provided menu is completely overriden here)
-        protected override UnityEditor.GenericMenu OnCanvasContextMenu(UnityEditor.GenericMenu menu, Vector2 mousePos)
+        protected override UnityEditor.GenericMenu OnCanvasContextMenu(UnityEditor.GenericMenu menu,
+            Vector2 mousePos)
         {
             return FlowGraphExtensions.GetFullNodesMenu(this, mousePos, null, null);
         }
 
         //Append ConvertToMacro feature
-        protected override UnityEditor.GenericMenu OnNodesContextMenu(UnityEditor.GenericMenu menu, Node[] nodes)
+        protected override UnityEditor.GenericMenu OnNodesContextMenu(UnityEditor.GenericMenu menu,
+            Node[] nodes)
         {
             menu.AddItem(new GUIContent("Convert To Macro"), false, () => {
                 FlowGraphExtensions.ConvertNodesToMacro(nodes.ToList());
@@ -159,20 +168,24 @@ namespace FlowCanvas
         {
             UnityEditor.EditorGUIUtility.SetIconSize(new Vector2(14, 14));
             if (GUILayout.Button(
-                EditorUtils.GetTempContent(NodeCanvas.Editor.StyleSheet.verboseLevel1, "Minimize All/Selected")
-                , UnityEditor.EditorStyles.toolbarButton))
-                foreach (var node in NodeCanvas.Editor.GraphEditorUtility.GetSelectedOrAll(this).OfType<FlowNode>())
+                EditorUtils.GetTempContent(NodeCanvas.Editor.StyleSheet.verboseLevel1,
+                    "Minimize All/Selected"), UnityEditor.EditorStyles.toolbarButton))
+                foreach (var node in NodeCanvas.Editor.GraphEditorUtility.GetSelectedOrAll(this)
+                    .OfType<FlowNode>())
                     node.verboseLevel = Node.VerboseLevel.Compact;
             if (GUILayout.Button(
-                EditorUtils.GetTempContent(NodeCanvas.Editor.StyleSheet.verboseLevel2
-                    , "Connected Ports Only on All/Selected"), UnityEditor.EditorStyles.toolbarButton))
-                foreach (var node in NodeCanvas.Editor.GraphEditorUtility.GetSelectedOrAll(this).OfType<FlowNode>())
+                EditorUtils.GetTempContent(NodeCanvas.Editor.StyleSheet.verboseLevel2,
+                    "Connected Ports Only on All/Selected"),
+                UnityEditor.EditorStyles.toolbarButton))
+                foreach (var node in NodeCanvas.Editor.GraphEditorUtility.GetSelectedOrAll(this)
+                    .OfType<FlowNode>())
                     node.verboseLevel = Node.VerboseLevel.Partial;
             if (GUILayout.Button(
-                EditorUtils.GetTempContent(NodeCanvas.Editor.StyleSheet.verboseLevel3
-                    , "Maximize All/Selected\n(You can also hold S Key over a node to temporarily maximize it)")
-                , UnityEditor.EditorStyles.toolbarButton))
-                foreach (var node in NodeCanvas.Editor.GraphEditorUtility.GetSelectedOrAll(this).OfType<FlowNode>())
+                EditorUtils.GetTempContent(NodeCanvas.Editor.StyleSheet.verboseLevel3,
+                    "Maximize All/Selected\n(You can also hold S Key over a node to temporarily maximize it)"),
+                UnityEditor.EditorStyles.toolbarButton))
+                foreach (var node in NodeCanvas.Editor.GraphEditorUtility.GetSelectedOrAll(this)
+                    .OfType<FlowNode>())
                     node.verboseLevel = Node.VerboseLevel.Full;
             UnityEditor.EditorGUIUtility.SetIconSize(Vector2.zero);
         }
@@ -181,10 +194,11 @@ namespace FlowCanvas
         protected override void OnDropAccepted(Object o, Vector2 mousePos)
         {
             if (o == null) return;
-            if (UnityEditor.EditorUtility.IsPersistent(this) && !UnityEditor.EditorUtility.IsPersistent(o))
+            if (UnityEditor.EditorUtility.IsPersistent(this) &&
+                !UnityEditor.EditorUtility.IsPersistent(o))
                 Logger.Log(
-                    "This Graph is an asset. The dragged object is a scene reference. The reference will not persist!"
-                    , LogTag.EDITOR);
+                    "This Graph is an asset. The dragged object is a scene reference. The reference will not persist!",
+                    LogTag.EDITOR);
             var targetType = o.GetType();
             var menu = new UnityEditor.GenericMenu();
             menu = AppendDragAndDropObjectMenu(menu, o, "", mousePos);
@@ -192,42 +206,48 @@ namespace FlowCanvas
             menu = this.AppendTypeReflectionNodesMenu(menu, targetType, "", mousePos, null, o);
 
             if (o is GameObject)
-                foreach (var component in (o as GameObject).GetComponents<Component>().Where(c => c.hideFlags == 0)) {
+                foreach (var component in (o as GameObject).GetComponents<Component>()
+                    .Where(c => c.hideFlags == 0)) {
                     var cType = component.GetType();
                     menu = AppendDragAndDropObjectMenu(menu, component, cType.Name + "/", mousePos);
-                    menu = this.AppendTypeReflectionNodesMenu(menu, cType, "", mousePos, null, component);
+                    menu = this.AppendTypeReflectionNodesMenu(menu, cType, "", mousePos, null,
+                        component);
                 }
             menu.ShowAsBrowser("Add Node For Drag & Drop Instance");
             Event.current.Use();
         }
 
         //Used above for convenience
-        private UnityEditor.GenericMenu AppendDragAndDropObjectMenu(UnityEditor.GenericMenu menu, Object o
-            , string category, Vector2 mousePos)
+        private UnityEditor.GenericMenu AppendDragAndDropObjectMenu(UnityEditor.GenericMenu menu,
+            Object o, string category, Vector2 mousePos)
         {
             foreach (var _wrapperType in NodeCanvas.Editor.GraphEditorUtility
                 .GetDropedReferenceNodeTypes<IDropedReferenceNode>(o)) {
                 var wrapperType = _wrapperType;
                 if (baseNodeType.IsAssignableFrom(wrapperType))
-                    menu.AddItem(new GUIContent(string.Format(category + "Add Node ({0})", wrapperType.FriendlyName()))
-                        , false, (x) => {
+                    menu.AddItem(
+                        new GUIContent(string.Format(category + "Add Node ({0})",
+                            wrapperType.FriendlyName())), false, (x) => {
                             this.AddDropedReferenceNode(wrapperType, mousePos, null, (Object)x);
                         }, o);
             }
             if (o is IExternalImplementedNode)
                 menu.AddItem(new GUIContent(category + "Add Implemented Node"), false, (x) => {
-                    this.AddExternalImplementedNodeWrapper(mousePos, null, (IExternalImplementedNode)x);
+                    this.AddExternalImplementedNodeWrapper(mousePos, null,
+                        (IExternalImplementedNode)x);
                 }, o);
             var targetType = o.GetType();
-            menu.AddItem(new GUIContent(string.Format(category + "Make Variable ({0})", targetType.FriendlyName()))
-                , false, (x) => {
+            menu.AddItem(
+                new GUIContent(string.Format(category + "Make Variable ({0})",
+                    targetType.FriendlyName())), false, (x) => {
                     this.AddVariableGet(targetType, null, null, mousePos, null, x);
                 }, o);
             return menu;
         }
 
         ///<summary>Show Get/Set variable menu</summary>
-        protected override void OnVariableDropInGraph(IBlackboard bb, Variable variable, Vector2 mousePos)
+        protected override void OnVariableDropInGraph(IBlackboard bb, Variable variable,
+            Vector2 mousePos)
         {
             if (variable != null) {
                 var menu = new UnityEditor.GenericMenu();

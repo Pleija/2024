@@ -43,8 +43,8 @@ public class Singleton<T> : View<T> where T : Singleton<T>
     public static void EditorUpdate()
     {
         if (m_Instance) {
-            UpdateMethodInfo ??= m_Instance.GetType().GetMethod("Update"
-                , BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            UpdateMethodInfo ??= m_Instance.GetType().GetMethod("Update",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             if (UpdateMethodInfo != null) {
                 UpdateMethodInfo.Invoke(m_Instance, null);
