@@ -2,7 +2,7 @@
 
 import './ExtensionDecl.mjs'
 
-const { $ref, $unref, $generic, $promise, $typeof } = puer;
+const {$ref, $unref, $generic, $promise, $typeof} = puer;
 
 //静态函数
 CS.UnityEngine.Debug.Log('hello world');

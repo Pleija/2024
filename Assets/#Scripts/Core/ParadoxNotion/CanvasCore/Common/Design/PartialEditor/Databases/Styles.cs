@@ -116,10 +116,10 @@ namespace ParadoxNotion.Design
                 if (_portContentImage == null) {
                     _portContentImage = new GUIStyle(GUI.skin.label);
                     _portContentImage.alignment = TextAnchor.MiddleCenter;
-                    _portContentImage.padding = new RectOffset(0, 0, _portContentImage.padding.top,
-                        _portContentImage.padding.bottom);
-                    _portContentImage.margin = new RectOffset(0, 0, _portContentImage.margin.top,
-                        _portContentImage.margin.bottom);
+                    _portContentImage.padding = new RectOffset(0, 0, _portContentImage.padding.top
+                        , _portContentImage.padding.bottom);
+                    _portContentImage.margin = new RectOffset(0, 0, _portContentImage.margin.top
+                        , _portContentImage.margin.bottom);
                 }
                 return _portContentImage;
             }
@@ -131,10 +131,10 @@ namespace ParadoxNotion.Design
             get {
                 if (_proxyRightContentLabel == null) {
                     _proxyRightContentLabel = new GUIStyle(rightLabel);
-                    _proxyRightContentLabel.margin = new RectOffset(0, 0, _proxyRightContentLabel.margin.top,
-                        _proxyRightContentLabel.margin.bottom);
-                    _proxyRightContentLabel.padding = new RectOffset(8, 0, _proxyRightContentLabel.padding.top,
-                        _proxyRightContentLabel.padding.bottom);
+                    _proxyRightContentLabel.margin = new RectOffset(0, 0, _proxyRightContentLabel.margin.top
+                        , _proxyRightContentLabel.margin.bottom);
+                    _proxyRightContentLabel.padding = new RectOffset(8, 0, _proxyRightContentLabel.padding.top
+                        , _proxyRightContentLabel.padding.bottom);
                 }
                 return _proxyRightContentLabel;
             }
@@ -146,10 +146,10 @@ namespace ParadoxNotion.Design
             get {
                 if (_proxyLeftContentLabel == null) {
                     _proxyLeftContentLabel = new GUIStyle(leftLabel);
-                    _proxyLeftContentLabel.margin = new RectOffset(0, 0, _proxyLeftContentLabel.margin.top,
-                        _proxyLeftContentLabel.margin.bottom);
-                    _proxyLeftContentLabel.padding = new RectOffset(0, 8, _proxyLeftContentLabel.padding.top,
-                        _proxyLeftContentLabel.padding.bottom);
+                    _proxyLeftContentLabel.margin = new RectOffset(0, 0, _proxyLeftContentLabel.margin.top
+                        , _proxyLeftContentLabel.margin.bottom);
+                    _proxyLeftContentLabel.padding = new RectOffset(0, 8, _proxyLeftContentLabel.padding.top
+                        , _proxyLeftContentLabel.padding.bottom);
                 }
                 return _proxyLeftContentLabel;
             }

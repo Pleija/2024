@@ -38,26 +38,26 @@ public class ObjectIds : View<ObjectIds>
 
         public void PullFromTransform(RectTransform transform)
         {
-            this.LocalPosition = transform.localPosition;
-            this.AnchorMin = transform.anchorMin;
-            this.AnchorMax = transform.anchorMax;
-            this.Pivot = transform.pivot;
-            this.AnchoredPosition = transform.anchoredPosition;
-            this.SizeDelta = transform.sizeDelta;
-            this.Rotation = transform.localRotation;
-            this.Scale = transform.localScale;
+            LocalPosition = transform.localPosition;
+            AnchorMin = transform.anchorMin;
+            AnchorMax = transform.anchorMax;
+            Pivot = transform.pivot;
+            AnchoredPosition = transform.anchoredPosition;
+            SizeDelta = transform.sizeDelta;
+            Rotation = transform.localRotation;
+            Scale = transform.localScale;
         }
 
         public void PushToTransform(RectTransform transform)
         {
-            transform.localPosition = this.LocalPosition;
-            transform.anchorMin = this.AnchorMin;
-            transform.anchorMax = this.AnchorMax;
-            transform.pivot = this.Pivot;
-            transform.anchoredPosition = this.AnchoredPosition;
-            transform.sizeDelta = this.SizeDelta;
-            transform.localRotation = this.Rotation;
-            transform.localScale = this.Scale;
+            transform.localPosition = LocalPosition;
+            transform.anchorMin = AnchorMin;
+            transform.anchorMax = AnchorMax;
+            transform.pivot = Pivot;
+            transform.anchoredPosition = AnchoredPosition;
+            transform.sizeDelta = SizeDelta;
+            transform.localRotation = Rotation;
+            transform.localScale = Scale;
         }
     }
 

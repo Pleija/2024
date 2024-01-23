@@ -19,9 +19,8 @@ namespace NodeCanvas.Framework
         public abstract Variable varRefBoxed { get; }
 
         public static ExposedParameter CreateInstance(Variable target) =>
-            (ExposedParameter)System.Activator.CreateInstance(
-                typeof(ExposedParameter<>).MakeGenericType(target.varType),
-                ParadoxNotion.ReflectionTools.SingleTempArgsArray(target));
+            (ExposedParameter)System.Activator.CreateInstance(typeof(ExposedParameter<>).MakeGenericType(target.varType)
+                , ParadoxNotion.ReflectionTools.SingleTempArgsArray(target));
     }
 
     ///<summary>See ExposedParameter</summary>

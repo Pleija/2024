@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility"),
-     Description(
+    [Category("✫ Utility")
+     , Description(
          "Check for an invoked Signal with agent as the target. If Signal was invoked as global, then the target does not matter.")]
     public class CheckSignal : ConditionTask<Transform>
     {
@@ -59,8 +59,8 @@ namespace NodeCanvas.Tasks.Conditions
             foreach (var parameter in parameters) {
                 BBObjectParameter bbParam = null;
                 if (!argumentsMap.TryGetValue(parameter.ID, out bbParam))
-                    bbParam = argumentsMap[parameter.ID] =
-                        new BBObjectParameter(parameter.type) { useBlackboard = true, bb = ownerSystemBlackboard };
+                    bbParam = argumentsMap[parameter.ID] = new BBObjectParameter(parameter.type)
+                        { useBlackboard = true, bb = ownerSystemBlackboard };
                 Editor.BBParameterEditor.ParameterField(parameter.name, bbParam, true);
             }
             foreach (var key in argumentsMap.Keys.ToArray())

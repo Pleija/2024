@@ -4,28 +4,28 @@ using ParadoxNotion.Services;
 
 namespace FlowCanvas.Nodes
 {
-
-    [Name("On Application Quit")]
-    [Category("Events/Application")]
-    [Description("Called when the Application quit")]
+    [Name("On Application Quit"), Category("Events/Application"), Description("Called when the Application quit")]
     public class ApplicationQuitEvent : EventNode
     {
-
         private FlowOutput quit;
 
-        public override void OnGraphStarted() {
+        public override void OnGraphStarted()
+        {
             MonoManager.current.onApplicationQuit += ApplicationQuit;
         }
 
-        public override void OnGraphStoped() {
+        public override void OnGraphStoped()
+        {
             MonoManager.current.onApplicationQuit -= ApplicationQuit;
         }
 
-        void ApplicationQuit() {
+        private void ApplicationQuit()
+        {
             quit.Call(new Flow());
         }
 
-        protected override void RegisterPorts() {
+        protected override void RegisterPorts()
+        {
             quit = AddFlowOutput("Out");
         }
     }

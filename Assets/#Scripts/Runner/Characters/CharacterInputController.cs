@@ -138,7 +138,8 @@ namespace Runner.Characters
         {
             for (var i = 0; i < m_ActiveConsumables.Count; ++i) {
                 m_ActiveConsumables[i].Ended(this);
-                /*Addressables.ReleaseInstance*/Destroy(m_ActiveConsumables[i].gameObject);
+                /*Addressables.ReleaseInstance*/
+                Destroy(m_ActiveConsumables[i].gameObject);
             }
             m_ActiveConsumables.Clear();
         }
@@ -255,12 +256,12 @@ namespace Runner.Characters
                         verticalTargetPosition.y = Mathf.Sin(ratio * Mathf.PI) * jumpHeight;
                     }
                 }
-                else if
-                    (!AudioListener
+                else if (
+                    !AudioListener
                         .pause) //use AudioListener.pause as it is an easily accessible singleton & it is set when the app is in pause too
                 {
-                    verticalTargetPosition.y = Mathf.MoveTowards(verticalTargetPosition.y, 0,
-                        k_GroundingSpeed * Time.deltaTime);
+                    verticalTargetPosition.y =
+                        Mathf.MoveTowards(verticalTargetPosition.y, 0, k_GroundingSpeed * Time.deltaTime);
 
                     if (Mathf.Approximately(verticalTargetPosition.y, 0f)) {
                         character.animator.SetBool(s_JumpingHash, false);
@@ -268,14 +269,14 @@ namespace Runner.Characters
                     }
                 }
             }
-            characterCollider.transform.localPosition = Vector3.MoveTowards(characterCollider.transform.localPosition,
-                verticalTargetPosition, laneChangeSpeed * Time.deltaTime);
+            characterCollider.transform.localPosition = Vector3.MoveTowards(characterCollider.transform.localPosition
+                , verticalTargetPosition, laneChangeSpeed * Time.deltaTime);
 
             // Put blob shadow under the character.
             RaycastHit hit;
 
-            if (Physics.Raycast(characterCollider.transform.position + Vector3.up, Vector3.down, out hit,
-                    k_ShadowRaycastDistance, m_ObstacleLayer)) {
+            if (Physics.Raycast(characterCollider.transform.position + Vector3.up, Vector3.down, out hit
+                , k_ShadowRaycastDistance, m_ObstacleLayer)) {
                 blobShadow.transform.position = hit.point + Vector3.up * k_ShadowGroundOffset;
             }
             else {
@@ -287,12 +288,10 @@ namespace Runner.Characters
 
         public void Jump()
         {
-            if (!m_IsRunning)
-                return;
+            if (!m_IsRunning) return;
 
             if (!m_Jumping) {
-                if (m_Sliding)
-                    StopSliding();
+                if (m_Sliding) StopSliding();
                 var correctJumpLength = jumpLength * (1.0f + trackManager.speedRatio);
                 m_JumpStart = trackManager.worldDistance;
                 var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctJumpLength);
@@ -313,12 +312,10 @@ namespace Runner.Characters
 
         public void Slide()
         {
-            if (!m_IsRunning)
-                return;
+            if (!m_IsRunning) return;
 
             if (!m_Sliding) {
-                if (m_Jumping)
-                    StopJumping();
+                if (m_Jumping) StopJumping();
                 var correctSlideLength = slideLength * (1.0f + trackManager.speedRatio);
                 m_SlideStart = trackManager.worldDistance;
                 var animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctSlideLength);
@@ -341,8 +338,7 @@ namespace Runner.Characters
 
         public void ChangeLane(int direction)
         {
-            if (!m_IsRunning)
-                return;
+            if (!m_IsRunning) return;
             var targetLane = m_CurrentLane + direction;
             if (targetLane < 0 || targetLane > 2)
                 // Ignore, we are on the borders.
@@ -367,7 +363,8 @@ namespace Runner.Characters
                 if (m_ActiveConsumables[i].GetType() == c.GetType()) {
                     // If we already have an active consumable of that type, we just reset the time
                     m_ActiveConsumables[i].ResetTime();
-                    /*Addressables.ReleaseInstance*/Destroy(c.gameObject);
+                    /*Addressables.ReleaseInstance*/
+                    Destroy(c.gameObject);
                     return;
                 }
 

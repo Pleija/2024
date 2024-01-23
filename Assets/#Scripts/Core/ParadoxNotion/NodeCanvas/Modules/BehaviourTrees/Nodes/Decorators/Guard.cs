@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Guard"), Category("Decorators"), Icon("Shield"),
-     Description(
+    [Name("Guard"), Category("Decorators"), Icon("Shield")
+     , Description(
          "Protects the decorated child from running if another Guard with the same token is already guarding (Running) that token.\nGuarding is global for all of the agent Behaviour Trees.")]
     public class Guard : BTDecorator
     {

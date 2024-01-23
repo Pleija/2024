@@ -9,7 +9,9 @@ namespace FlowCanvas.Nodes
 {
     public class JitConstructorNode : BaseReflectedConstructorNode
     {
-        private static readonly Dictionary<string, UniversalDelegate> Delegates = new Dictionary<string, UniversalDelegate>(StringComparer.Ordinal);
+        private static readonly Dictionary<string, UniversalDelegate> Delegates =
+            new Dictionary<string, UniversalDelegate>(StringComparer.Ordinal);
+
         private static readonly Type[] DynParamTypes = { typeof(UniversalDelegateParam[]) };
         private readonly Type[] tmpTypes = new Type[1];
         private readonly Type[] tmpTypes2 = new Type[2];
@@ -17,22 +19,24 @@ namespace FlowCanvas.Nodes
         private UniversalDelegateParam[] delegateParams;
         private Action actionCall;
 
-        private void CreateDelegat() {
+        private void CreateDelegat()
+        {
             var key = ReflectedNodesHelper.GetGeneratedKey(constructorInfo);
-            if ( Delegates.TryGetValue(key, out delegat) && delegat != null ) return;
+            if (Delegates.TryGetValue(key, out delegat) && delegat != null) return;
+            var dynamicMethod = new DynamicMethod("Constructor_Dynamic", null, DynParamTypes, typeof(JitMethodNode));
+            var ilGen = dynamicMethod.GetILGenerator();
+            var returnId = -1;
 
-            DynamicMethod dynamicMethod = new DynamicMethod("Constructor_Dynamic", null, DynParamTypes, typeof(JitMethodNode));
-            ILGenerator ilGen = dynamicMethod.GetILGenerator();
-            int returnId = -1;
-            for ( int i = 0; i <= delegateParams.Length - 1; i++ ) {
+            for (var i = 0; i <= delegateParams.Length - 1; i++) {
                 var param = delegateParams[i];
                 var def = param.paramDef;
                 //declare local variables in method
                 ilGen.DeclareLocal(param.GetCurrentType());
-                if ( def.paramMode == ParamMode.Result ) returnId = i;
+                if (def.paramMode == ParamMode.Result) returnId = i;
             }
+
             //store values to local variables
-            for ( int i = 0; i <= delegateParams.Length - 1; i++ ) {
+            for (var i = 0; i <= delegateParams.Length - 1; i++) {
                 var param = delegateParams[i];
                 //load first argument of method to stack, in our situation it "delegateParams" array
                 ilGen.Emit(OpCodes.Ldarg, 0);
@@ -45,26 +49,27 @@ namespace FlowCanvas.Nodes
                 //set local variable to loaded value
                 ilGen.Emit(OpCodes.Stloc, i);
             }
-            for ( int i = 0; i <= delegateParams.Length - 1; i++ ) {
+
+            for (var i = 0; i <= delegateParams.Length - 1; i++) {
                 var param = delegateParams[i];
                 var def = param.paramDef;
-                if ( def.paramMode != ParamMode.Instance && def.paramMode != ParamMode.Result ) {
-                    if ( def.paramMode == ParamMode.In ) {
+
+                if (def.paramMode != ParamMode.Instance && def.paramMode != ParamMode.Result) {
+                    if (def.paramMode == ParamMode.In)
                         //load local variable for call if it simple param
                         ilGen.Emit(OpCodes.Ldloc, i);
-                    } else {
+                    else
                         //load reference to local variable for call if it out or ref param
                         ilGen.Emit(OpCodes.Ldloca, i);
-                    }
                 }
             }
             ilGen.Emit(OpCodes.Newobj, constructorInfo);
-            if ( returnId >= 0 ) {
+            if (returnId >= 0)
                 //set result of code to local var
                 ilGen.Emit(OpCodes.Stloc, returnId);
-            }
+
             //return local vals to our array
-            for ( int i = 0; i <= delegateParams.Length - 1; i++ ) {
+            for (var i = 0; i <= delegateParams.Length - 1; i++) {
                 var param = delegateParams[i];
                 //load first argument of method to stack, in our sytuation it "delegateParams" array
                 ilGen.Emit(OpCodes.Ldarg, 0);
@@ -82,41 +87,48 @@ namespace FlowCanvas.Nodes
             Delegates[key] = delegat;
         }
 
-        private void Call() {
-            if ( delegat != null ) {
-                for ( int i = 0; i <= delegateParams.Length - 1; i++ ) {
-                    delegateParams[i].SetFromInput();
-                }
+        private void Call()
+        {
+            if (delegat != null) {
+                for (var i = 0; i <= delegateParams.Length - 1; i++) delegateParams[i].SetFromInput();
                 delegat(delegateParams);
             }
         }
 
-        protected override bool InitInternal(ConstructorInfo constructor) {
+        protected override bool InitInternal(ConstructorInfo constructor)
+        {
             delegat = null;
-            int cnt = paramDefinitions.Count;
-            if ( resultDef.paramMode != ParamMode.Undefined ) cnt++;
+            var cnt = paramDefinitions.Count;
+            if (resultDef.paramMode != ParamMode.Undefined) cnt++;
             delegateParams = new UniversalDelegateParam[cnt];
-            int i = 0;
-            if ( resultDef.paramMode != ParamMode.Undefined ) {
+            var i = 0;
+
+            if (resultDef.paramMode != ParamMode.Undefined) {
                 tmpTypes[0] = resultDef.paramType;
-                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
+                delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes)
+                    .CreateObjectUninitialized();
                 delegateParams[i].paramDef = resultDef;
                 i++;
             }
-            for ( int j = 0; j <= paramDefinitions.Count - 1; j++ ) {
-                if ( options.exposeParams && paramDefinitions[j].isParamsArray ) {
+
+            for (var j = 0; j <= paramDefinitions.Count - 1; j++) {
+                if (options.exposeParams && paramDefinitions[j].isParamsArray) {
                     tmpTypes2[0] = paramDefinitions[j].paramType;
                     tmpTypes2[1] = paramDefinitions[j].arrayType;
-                    delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<,>).RTMakeGenericType(tmpTypes2).CreateObjectUninitialized();
+                    delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<,>)
+                        .RTMakeGenericType(tmpTypes2).CreateObjectUninitialized();
                     delegateParams[i].paramsArrayNeeded = options.exposeParams;
                     delegateParams[i].paramsArrayCount = options.exposedParamsCount;
-                } else {
+                }
+                else {
                     tmpTypes[0] = paramDefinitions[j].paramType;
-                    delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>).RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
+                    delegateParams[i] = (UniversalDelegateParam)typeof(UniversalDelegateParam<>)
+                        .RTMakeGenericType(tmpTypes).CreateObjectUninitialized();
                 }
                 delegateParams[i].paramDef = paramDefinitions[j];
                 i++;
             }
+
             try {
                 CreateDelegat();
             }
@@ -126,28 +138,34 @@ namespace FlowCanvas.Nodes
             return true;
         }
 
-        public override void RegisterPorts(FlowNode node, ReflectedMethodRegistrationOptions options) {
-            if ( actionCall == null ) actionCall = Call;
-            if ( options.callable ) {
+        public override void RegisterPorts(FlowNode node, ReflectedMethodRegistrationOptions options)
+        {
+            if (actionCall == null) actionCall = Call;
+
+            if (options.callable) {
                 var output = node.AddFlowOutput(" ");
-                node.AddFlowInput(" ", flow =>
-                {
+                node.AddFlowInput(" ", flow => {
                     Call();
                     output.Call(flow);
                 });
             }
-            for ( int i = 0; i <= delegateParams.Length - 1; i++ ) {
+
+            for (var i = 0; i <= delegateParams.Length - 1; i++) {
                 var param = delegateParams[i];
                 var def = param.paramDef;
-                if ( def.paramMode == ParamMode.Result ) {
+
+                if (def.paramMode == ParamMode.Result) {
                     param.RegisterAsOutput(node, options.callable ? null : actionCall);
-                } else {
-                    if ( def.paramMode == ParamMode.Ref ) {
+                }
+                else {
+                    if (def.paramMode == ParamMode.Ref) {
                         param.RegisterAsInput(node);
                         param.RegisterAsOutput(node, options.callable ? null : actionCall);
-                    } else if ( def.paramMode == ParamMode.In ) {
+                    }
+                    else if (def.paramMode == ParamMode.In) {
                         param.RegisterAsInput(node);
-                    } else if ( def.paramMode == ParamMode.Out ) {
+                    }
+                    else if (def.paramMode == ParamMode.Out) {
                         param.RegisterAsOutput(node, options.callable ? null : actionCall);
                     }
                 }

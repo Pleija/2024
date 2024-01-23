@@ -34,8 +34,8 @@ namespace NodeCanvas.Tasks.Actions
                     for (var i = 1; i < variables.Length; i++)
                         paramInfo += (i != 1 ? ", " : "") + variables[i].ToString();
                 }
-                return string.Format("{0}{1}.{2} ({3})", returnInfo, targetMethod.DeclaringType.FriendlyName(),
-                    targetMethod.Name, paramInfo);
+                return string.Format("{0}{1}.{2} ({3})", returnInfo, targetMethod.DeclaringType.FriendlyName()
+                    , targetMethod.Name, paramInfo);
             }
         }
 

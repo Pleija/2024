@@ -200,8 +200,8 @@ namespace NodeCanvas.Framework
             var path = EditorUtility.SaveFilePanelInProject("Save Preset", "", "conditionList", "");
 
             if (!string.IsNullOrEmpty(path)) {
-                System.IO.File.WriteAllText(path,
-                    JSONSerializer.Serialize(typeof(ConditionList), this, null, true)); //true for pretyJson
+                System.IO.File.WriteAllText(path
+                    , JSONSerializer.Serialize(typeof(ConditionList), this, null, true)); //true for pretyJson
                 AssetDatabase.Refresh();
             }
         }

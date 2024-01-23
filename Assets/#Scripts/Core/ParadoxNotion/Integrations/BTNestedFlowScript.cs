@@ -5,48 +5,42 @@ using FlowCanvas;
 
 namespace NodeCanvas.BehaviourTrees
 {
-
-    [Name("Sub FlowScript")]
-    [Description("Executes a sub FlowScript. Returns Running while the sub FlowScript is active. You can Finish the FlowScript with the 'Finish' node and return Success or Failure.")]
-    [ParadoxNotion.Design.Icon("FS")]
-    [DropReferenceType(typeof(FlowScript))]
+    [Name("Sub FlowScript")
+     , Description(
+         "Executes a sub FlowScript. Returns Running while the sub FlowScript is active. You can Finish the FlowScript with the 'Finish' node and return Success or Failure.")
+     , Icon("FS"), DropReferenceType(typeof(FlowScript))]
     public class BTNestedFlowScript : BTNodeNested<FlowScript>
     {
-
         [SerializeField, ExposeField]
         private BBParameter<FlowScript> _flowScript = null;
 
-        public override FlowScript subGraph { get { return _flowScript.value; } set { _flowScript.value = value; } }
+        public override FlowScript subGraph {
+            get => _flowScript.value;
+            set => _flowScript.value = value;
+        }
+
         public override BBParameter subGraphParameter => _flowScript;
 
-        protected override Status OnExecute(Component agent, IBlackboard blackboard) {
+        protected override Status OnExecute(Component agent, IBlackboard blackboard)
+        {
+            if (subGraph == null) return Status.Optional;
 
-            if ( subGraph == null ) {
-                return Status.Optional;
-            }
-
-            if ( status == Status.Resting ) {
+            if (status == Status.Resting) {
                 status = Status.Running;
                 this.TryStartSubGraph(agent, OnFlowScriptFinished);
             }
-
-            if ( status == Status.Running ) {
-                currentInstance.UpdateGraph(this.graph.deltaTime);
-            }
-
+            if (status == Status.Running) currentInstance.UpdateGraph(graph.deltaTime);
             return status;
         }
 
-        void OnFlowScriptFinished(bool success) {
-            if ( status == Status.Running ) {
-                status = success ? Status.Success : Status.Failure;
-            }
+        private void OnFlowScriptFinished(bool success)
+        {
+            if (status == Status.Running) status = success ? Status.Success : Status.Failure;
         }
 
-        protected override void OnReset() {
-            if ( currentInstance != null ) {
-                currentInstance.Stop();
-            }
+        protected override void OnReset()
+        {
+            if (currentInstance != null) currentInstance.Stop();
         }
     }
 }

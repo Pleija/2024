@@ -27,7 +27,7 @@ export const DevDebug = async function () {
             }
         }
     }, {
-        k:[111],
+        k: [111],
         other: "rich",
         money: 100,
     }]);

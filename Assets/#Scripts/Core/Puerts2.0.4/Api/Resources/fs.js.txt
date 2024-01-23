@@ -16,4 +16,4 @@ export function readFile(name, callback) {
 
 }
 
-module.exports = exports = global.fs ??= { existsSync, readFileSync, readFile }
+module.exports = exports = global.fs ??= {existsSync, readFileSync, readFile}

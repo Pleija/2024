@@ -1,12 +1,11 @@
 /*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
+ * Tencent is pleased to support the open source community by making Puerts available.
+ * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
+ * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
+ * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
+ */
 
 #if !EXPERIMENTAL_IL2CPP_PUERTS || !ENABLE_IL2CPP
-
 using System;
 
 namespace Puerts
@@ -14,115 +13,65 @@ namespace Puerts
     public static class NativeValueApi
     {
         public static IGetValueFromJs GetValueFromArgument = new GetValueFromArgumentImpl();
-
         public static IGetValueFromJs GetValueFromResult = new GetValueFromResultImpl();
-
         public static ISetValueToJs SetValueToResult = new SetValueToResultImpl();
-
         public static ISetValueToJs SetValueToByRefArgument = new SetValueToByRefArgumentImpl();
-
         public static ISetValueToJs SetValueToArgument = new SetValueToArgumentImpl();
     }
 
     public interface ISetValueToJs
     {
         void SetNativeObject(IntPtr isolate, IntPtr holder, int classID, IntPtr self);
-
         void SetJSObject(IntPtr isolate, IntPtr holder, IntPtr JSObject);
-
         void SetFunction(IntPtr isolate, IntPtr holder, IntPtr JSFunction);
-
         void SetNumber(IntPtr isolate, IntPtr holder, double number);
-
         void SetString(IntPtr isolate, IntPtr holder, string str);
-
         void SetBigInt(IntPtr isolate, IntPtr holder, long number);
-
         void SetBoolean(IntPtr isolate, IntPtr holder, bool b);
-
         void SetDate(IntPtr isolate, IntPtr holder, double date);
-
         void SetNull(IntPtr isolate, IntPtr holder);
-
         void SetArrayBuffer(IntPtr isolate, IntPtr holder, ArrayBuffer arrayBuffer);
     }
 
     public interface IGetValueFromJs
     {
         JsValueType GetJsValueType(IntPtr isolate, IntPtr holder, bool isByRef);
-
         double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef);
-
         double GetDate(IntPtr isolate, IntPtr holder, bool isByRef);
-
         string GetString(IntPtr isolate, IntPtr holder, bool isByRef);
-
         bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef);
-
         long GetBigInt(IntPtr isolate, IntPtr holder, bool isByRef);
-
         IntPtr GetNativeObject(IntPtr isolate, IntPtr holder, bool isByRef);
-
         int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef);
-
         IntPtr GetJSObject(IntPtr isolate, IntPtr holder, bool isByRef);
-
         IntPtr GetFunction(IntPtr isolate, IntPtr holder, bool isByRef);
-
         ArrayBuffer GetArrayBuffer(IntPtr isolate, IntPtr holder, bool isByRef);
     }
 
     public class GetValueFromResultImpl : IGetValueFromJs
     {
-        public long GetBigInt(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetBigIntFromResultCheck(holder);
-        }
+        public long GetBigInt(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetBigIntFromResultCheck(holder);
 
-        public bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetBooleanFromResult(holder);
-        }
+        public bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetBooleanFromResult(holder);
+        public double GetDate(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetDateFromResult(holder);
 
-        public double GetDate(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetDateFromResult(holder);
-        }
+        public IntPtr GetFunction(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetFunctionFromResult(holder);
 
-        public IntPtr GetFunction(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetFunctionFromResult(holder);
-        }
+        public IntPtr GetJSObject(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetJSObjectFromResult(holder);
 
-        public IntPtr GetJSObject(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetJSObjectFromResult(holder);
-        }
+        public JsValueType GetJsValueType(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetResultType(holder);
 
-        public JsValueType GetJsValueType(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetResultType(holder);
-        }
+        public double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetNumberFromResult(holder);
 
-        public double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetNumberFromResult(holder);
-        }
+        public IntPtr GetNativeObject(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetObjectFromResult(holder);
 
-        public IntPtr GetNativeObject(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetObjectFromResult(holder);
-        }
-
-        public int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetTypeIdFromResult(holder);
-        }
-
-        public string GetString(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetStringFromResult(holder);
-        }
+        public int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetTypeIdFromResult(holder);
+        public string GetString(IntPtr isolate, IntPtr holder, bool isByRef) => PuertsDLL.GetStringFromResult(holder);
 
         public ArrayBuffer GetArrayBuffer(IntPtr isolate, IntPtr holder, bool isByRef)
         {
@@ -134,55 +83,35 @@ namespace Puerts
 
     public class GetValueFromArgumentImpl : IGetValueFromJs
     {
-        public long GetBigInt(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetBigIntFromValueChecked(isolate, holder, isByRef);
-        }
+        public long GetBigInt(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetBigIntFromValueChecked(isolate, holder, isByRef);
 
-        public bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetBooleanFromValue(isolate, holder, isByRef);
-        }
+        public bool GetBoolean(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetBooleanFromValue(isolate, holder, isByRef);
 
-        public double GetDate(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetDateFromValue(isolate, holder, isByRef);
-        }
+        public double GetDate(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetDateFromValue(isolate, holder, isByRef);
 
-        public IntPtr GetFunction(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetFunctionFromValue(isolate, holder, isByRef);
-        }
+        public IntPtr GetFunction(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetFunctionFromValue(isolate, holder, isByRef);
 
-        public IntPtr GetJSObject(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetJSObjectFromValue(isolate, holder, isByRef);
-        }
+        public IntPtr GetJSObject(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetJSObjectFromValue(isolate, holder, isByRef);
 
-        public JsValueType GetJsValueType(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetJsValueType(isolate, holder, isByRef);
-        }
+        public JsValueType GetJsValueType(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetJsValueType(isolate, holder, isByRef);
 
-        public double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetNumberFromValue(isolate, holder, isByRef);
-        }
+        public double GetNumber(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetNumberFromValue(isolate, holder, isByRef);
 
-        public IntPtr GetNativeObject(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetObjectFromValue(isolate, holder, isByRef);
-        }
+        public IntPtr GetNativeObject(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetObjectFromValue(isolate, holder, isByRef);
 
-        public int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetTypeIdFromValue(isolate, holder, isByRef);
-        }
+        public int GetTypeId(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetTypeIdFromValue(isolate, holder, isByRef);
 
-        public string GetString(IntPtr isolate, IntPtr holder, bool isByRef)
-        {
-            return PuertsDLL.GetStringFromValue(isolate, holder, isByRef);
-        }
+        public string GetString(IntPtr isolate, IntPtr holder, bool isByRef) =>
+            PuertsDLL.GetStringFromValue(isolate, holder, isByRef);
 
         public ArrayBuffer GetArrayBuffer(IntPtr isolate, IntPtr holder, bool isByRef)
         {
@@ -197,13 +126,9 @@ namespace Puerts
         public void SetArrayBuffer(IntPtr isolate, IntPtr holder, ArrayBuffer arrayBuffer)
         {
             if (arrayBuffer == null || arrayBuffer.Bytes == null)
-            {
                 PuertsDLL.ReturnArrayBuffer(isolate, holder, null, 0);
-            }
             else
-            {
                 PuertsDLL.ReturnArrayBuffer(isolate, holder, arrayBuffer.Bytes, arrayBuffer.Count);
-            }
         }
 
         public void SetBigInt(IntPtr isolate, IntPtr holder, long number)
@@ -257,13 +182,9 @@ namespace Puerts
         public void SetArrayBuffer(IntPtr isolate, IntPtr holder, ArrayBuffer arrayBuffer)
         {
             if (arrayBuffer == null || arrayBuffer.Bytes == null)
-            {
                 PuertsDLL.SetArrayBufferToOutValue(isolate, holder, null, 0);
-            }
             else
-            {
                 PuertsDLL.SetArrayBufferToOutValue(isolate, holder, arrayBuffer.Bytes, arrayBuffer.Count);
-            }
         }
 
         public void SetBigInt(IntPtr isolate, IntPtr holder, long number)
@@ -317,13 +238,9 @@ namespace Puerts
         public void SetArrayBuffer(IntPtr isolate, IntPtr holder, ArrayBuffer arrayBuffer)
         {
             if (arrayBuffer == null || arrayBuffer.Bytes == null)
-            {
                 PuertsDLL.PushArrayBufferForJSFunction(holder, null, 0);
-            }
             else
-            {
                 PuertsDLL.PushArrayBufferForJSFunction(holder, arrayBuffer.Bytes, arrayBuffer.Count);
-            }
         }
 
         public void SetBigInt(IntPtr isolate, IntPtr holder, long number)
@@ -374,4 +291,3 @@ namespace Puerts
 }
 
 #endif
-

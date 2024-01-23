@@ -26,8 +26,8 @@ namespace ParadoxNotion.Serialization
 
             if (_constructor != null) {
                 _baseInfo = _constructor.RTReflectedOrDeclaredType().FullName + "|" + "$Constructor";
-                _paramsInfo = string.Join("|",
-                    _constructor.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
+                _paramsInfo = string.Join("|"
+                    , _constructor.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
             }
         }
 

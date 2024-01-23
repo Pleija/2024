@@ -19,8 +19,7 @@ namespace Runner.Obstacles
             //the tutorial very firts barricade need to be center and alone, so player can swipe safely in bother direction to avoid it
             var isTutorialFirst = TrackManager.instance.isTutorial && TrackManager.instance.firstObstacle &&
                 segment == segment.manager.currentSegment;
-            if (isTutorialFirst)
-                TrackManager.instance.firstObstacle = false;
+            if (isTutorialFirst) TrackManager.instance.firstObstacle = false;
             var count = isTutorialFirst ? 1 : Random.Range(k_MinObstacleCount, k_MaxObstacleCount + 1);
             var startLane = isTutorialFirst ? 0 : Random.Range(k_LeftMostLaneIndex, k_RightMostLaneIndex + 1);
             Vector3 position;

@@ -13,8 +13,8 @@ namespace NodeCanvas.Tasks.Actions
 
         public BBObjectParameter newValue;
 
-        protected override string info => string.Format("<b>{0}</b> = {1}", targetVariableName.ToString(),
-            newValue != null ? newValue.ToString() : "");
+        protected override string info => string.Format("<b>{0}</b> = {1}", targetVariableName.ToString()
+            , newValue != null ? newValue.ToString() : "");
 
         protected override void OnExecute()
         {

@@ -8,23 +8,22 @@ namespace FlowCanvas.Nodes
     {
         protected static event Func<MethodInfo, BaseReflectedMethodNode> OnGetAotReflectedMethodNode;
 
-        public static BaseReflectedMethodNode GetMethodNode(MethodInfo targetMethod, ReflectedMethodRegistrationOptions options) {
+        public static BaseReflectedMethodNode GetMethodNode(MethodInfo targetMethod
+            , ReflectedMethodRegistrationOptions options)
+        {
             ParametresDef paramDef;
-            if ( !ReflectedNodesHelper.InitParams(targetMethod, out paramDef) ) return null;
+            if (!ReflectedNodesHelper.InitParams(targetMethod, out paramDef)) return null;
 #if !NET_STANDARD_2_0 && (UNITY_EDITOR || (!ENABLE_IL2CPP && (UNITY_STANDALONE || UNITY_ANDROID || UNITY_WSA)))
             var jit = new JitMethodNode();
             jit.options = options;
-            if ( jit.Init(targetMethod, paramDef) ) {
-                return jit;
-            }
+            if (jit.Init(targetMethod, paramDef)) return jit;
 #endif
-            if ( OnGetAotReflectedMethodNode != null ) {
+            if (OnGetAotReflectedMethodNode != null) {
                 var eventAot = OnGetAotReflectedMethodNode(targetMethod);
-                if ( eventAot != null ) {
+
+                if (eventAot != null) {
                     eventAot.options = options;
-                    if ( eventAot.Init(targetMethod, paramDef) ) {
-                        return eventAot;
-                    }
+                    if (eventAot.Init(targetMethod, paramDef)) return eventAot;
                 }
             }
             var aot = new PureReflectedMethodNode();
@@ -38,8 +37,9 @@ namespace FlowCanvas.Nodes
         protected ParamDef resultDef;
         protected ReflectedMethodRegistrationOptions options;
 
-        protected bool Init(MethodInfo method, ParametresDef parametres) {
-            if ( method == null || method.ContainsGenericParameters || method.IsGenericMethodDefinition ) return false;
+        protected bool Init(MethodInfo method, ParametresDef parametres)
+        {
+            if (method == null || method.ContainsGenericParameters || method.IsGenericMethodDefinition) return false;
             paramDefinitions = parametres.paramDefinitions == null ? new List<ParamDef>() : parametres.paramDefinitions;
             instanceDef = parametres.instanceDef;
             resultDef = parametres.resultDef;
@@ -48,7 +48,6 @@ namespace FlowCanvas.Nodes
         }
 
         protected abstract bool InitInternal(MethodInfo method);
-
         public abstract void RegisterPorts(FlowNode node, ReflectedMethodRegistrationOptions options);
     }
 }

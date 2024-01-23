@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Sub BehaviourTree"),
-     Description(
-         "Execute a Behaviour Tree OnEnter. OnExit that Behavior Tree will be stoped or paused based on the relevant specified setting. You can optionaly specify a Success Event and a Failure Event which will be sent when the BT's root node status returns either of the two. If so, use alongside with a CheckEvent on a transition."),
-     DropReferenceType(typeof(BehaviourTree)), Icon("BT")]
+    [Name("Sub BehaviourTree")
+     , Description(
+         "Execute a Behaviour Tree OnEnter. OnExit that Behavior Tree will be stoped or paused based on the relevant specified setting. You can optionaly specify a Success Event and a Failure Event which will be sent when the BT's root node status returns either of the two. If so, use alongside with a CheckEvent on a transition.")
+     , DropReferenceType(typeof(BehaviourTree)), Icon("BT")]
     public class NestedBTState : FSMStateNested<BehaviourTree>
     {
         public enum BTExecutionMode { Once, Repeat }

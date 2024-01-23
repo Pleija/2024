@@ -68,8 +68,8 @@ namespace NodeCanvas.Editor
                 GUI.backgroundColor = Color.white.WithAlpha(0.3f);
                 var content = EditorUtils.GetTempContent(graph.comments);
                 var calcHeight = StyleSheet.commentsBox.CalcHeight(content, Prefs.inspectorPanelWidth);
-                var rect = new Rect(canvasRect.xMin + 2, canvasRect.yMax - calcHeight - 2, Prefs.inspectorPanelWidth,
-                    calcHeight);
+                var rect = new Rect(canvasRect.xMin + 2, canvasRect.yMax - calcHeight - 2, Prefs.inspectorPanelWidth
+                    , calcHeight);
                 GUI.Box(rect, graph.comments, StyleSheet.commentsBox);
                 GUI.backgroundColor = Color.white;
             }
@@ -111,8 +111,8 @@ namespace NodeCanvas.Editor
                 : inspectedElement.name;
             GUI.Box(groupRect, displayName, StyleSheet.editorPanel);
             var headerRect = new Rect(inspectorPanel.x, inspectorPanel.y, inspectorPanel.width, 30);
-            var resizeRect = Rect.MinMaxRect(inspectorPanel.xMax - 2, inspectorPanel.yMin, inspectorPanel.xMax + 2,
-                inspectorPanel.yMax);
+            var resizeRect = Rect.MinMaxRect(inspectorPanel.xMax - 2, inspectorPanel.yMin, inspectorPanel.xMax + 2
+                , inspectorPanel.yMax);
             var popRect = new Rect(0, 0, 16, 16);
             var gearRect = new Rect(0, 0, 16, 16);
             popRect.center = new Vector2(inspectorPanel.xMin + 10, headerRect.center.y);
@@ -128,12 +128,13 @@ namespace NodeCanvas.Editor
             if (isResizingInspectorPanel && e.type == EventType.Layout) Prefs.inspectorPanelWidth += e.delta.x;
             if (e.rawType == EventType.MouseUp) isResizingInspectorPanel = false;
             GUI.color = GUI.color.WithAlpha(0.5f);
-            if (GUI.Button(popRect, EditorUtils.GetTempContent(Icons.minMaxIcon, "Open External Inspector"),
-                    GUIStyle.none)) ExternalInspectorWindow.ShowWindow();
+            if (GUI.Button(popRect, EditorUtils.GetTempContent(Icons.minMaxIcon, "Open External Inspector")
+                , GUIStyle.none))
+                ExternalInspectorWindow.ShowWindow();
             GUI.color = Color.white;
             if (inspectedElement is Node)
-                if (GUI.Button(gearRect, EditorUtils.GetTempContent(Icons.gearPopupIcon, "Context Menu"),
-                        GUIStyle.none))
+                if (GUI.Button(gearRect, EditorUtils.GetTempContent(Icons.gearPopupIcon, "Context Menu")
+                    , GUIStyle.none))
                     Node.GetNodeMenu_Single(inspectedElement as Node).ShowAsContext();
             EditorGUIUtility.AddCursorRect(headerRect, MouseCursor.Link);
             if (GUI.Button(headerRect, string.Empty, GUIStyle.none)) Prefs.showNodePanel = !Prefs.showNodePanel;
@@ -141,8 +142,8 @@ namespace NodeCanvas.Editor
 
             if (Prefs.showNodePanel) {
                 var contentRect = Rect.MinMaxRect(2, headerHeight, inspectorPanel.width - 2, inspectorPanel.height);
-                var position = Rect.MinMaxRect(0, headerHeight, inspectorPanel.width + scrollWidth,
-                    Mathf.Min(inspectorPanel.height, canvasRect.height - posX));
+                var position = Rect.MinMaxRect(0, headerHeight, inspectorPanel.width + scrollWidth
+                    , Mathf.Min(inspectorPanel.height, canvasRect.height - posX));
                 var viewRect = Rect.MinMaxRect(0, headerHeight, inspectorPanel.width, inspectorPanel.height);
                 inspectorPanelNeedsScroller = position.height < viewRect.height;
                 inspectorPanelScrollPos =
@@ -187,8 +188,8 @@ namespace NodeCanvas.Editor
             blackboardPanel.y = posY;
             blackboardPanel.width = Prefs.blackboardPanelWidth;
             blackboardPanel.height = blackboardPanelHeight;
-            var resizeRect = Rect.MinMaxRect(blackboardPanel.xMin - 2, blackboardPanel.yMin, blackboardPanel.xMin + 2,
-                blackboardPanel.yMax);
+            var resizeRect = Rect.MinMaxRect(blackboardPanel.xMin - 2, blackboardPanel.yMin, blackboardPanel.xMin + 2
+                , blackboardPanel.yMax);
             EditorGUIUtility.AddCursorRect(resizeRect, MouseCursor.ResizeHorizontal);
 
             if (e.type == EventType.MouseDown && resizeRect.Contains(e.mousePosition)) {
@@ -207,8 +208,8 @@ namespace NodeCanvas.Editor
 
             if (Prefs.showBlackboard) {
                 var contentRect = Rect.MinMaxRect(2, headerHeight, blackboardPanel.width - 2, blackboardPanel.height);
-                var position = Rect.MinMaxRect(0, headerHeight, blackboardPanel.width + scrollWidth,
-                    Mathf.Min(blackboardPanel.height, canvasRect.height - posX) + scrollWidth);
+                var position = Rect.MinMaxRect(0, headerHeight, blackboardPanel.width + scrollWidth
+                    , Mathf.Min(blackboardPanel.height, canvasRect.height - posX) + scrollWidth);
                 var viewRect = Rect.MinMaxRect(0, headerHeight, blackboardPanel.width, blackboardPanel.height);
                 blackboardPanelNeedsScroller = position.height < viewRect.height;
                 blackboardPanelScrollPos =
@@ -234,12 +235,12 @@ namespace NodeCanvas.Editor
 
             if (graph.canAcceptVariableDrops && BlackboardEditor.pickedVariable != null &&
                 BlackboardEditor.pickedVariableBlackboard.IsPartOf(graph.blackboard)) {
-                GUI.Label(new Rect(e.mousePosition.x + 15, e.mousePosition.y, 100, 18), "Drop Variable",
-                    StyleSheet.labelOnCanvas);
+                GUI.Label(new Rect(e.mousePosition.x + 15, e.mousePosition.y, 100, 18), "Drop Variable"
+                    , StyleSheet.labelOnCanvas);
 
                 if (e.type == EventType.MouseUp && !blackboardPanel.Contains(e.mousePosition)) {
-                    graph.CallbackOnVariableDropInGraph(BlackboardEditor.pickedVariableBlackboard,
-                        BlackboardEditor.pickedVariable, canvasMousePos);
+                    graph.CallbackOnVariableDropInGraph(BlackboardEditor.pickedVariableBlackboard
+                        , BlackboardEditor.pickedVariable, canvasMousePos);
                     BlackboardEditor.ResetPick();
                 }
             }

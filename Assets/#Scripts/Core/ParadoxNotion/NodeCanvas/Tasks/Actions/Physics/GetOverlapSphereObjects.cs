@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Physics"),
-     Description(
+    [Category("Physics")
+     , Description(
          "Gets a lists of game objects that are in the physics overlap sphere at the position of the agent, excluding the agent")]
     public class GetOverlapSphereObjects : ActionTask<Transform>
     {

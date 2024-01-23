@@ -1,5 +1,5 @@
-import {Mission} from "Main/Mission.mjs";
-import {StateNode} from "Common/StateNode.mjs";
+import { Mission } from "Main/Mission.mjs";
+import { StateNode } from "Common/StateNode.mjs";
 
 export class MissionState extends StateNode<Mission> {
     init() {

@@ -4,7 +4,7 @@
 * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
-import { FOR } from './tte.mjs'
+import {FOR} from './tte.mjs'
 
 export default function RegisterInfoTemplate(TypeRegisterInfos) {
     const typeRegisterInfos = listToJsArray(TypeRegisterInfos);
@@ -31,7 +31,7 @@ namespace PuertsStaticWrap
 
                 Members = new System.Collections.Generic.Dictionary<string, MemberRegisterInfo>
                 {
-                    ${FOR(listToJsArray(item.Members), member=> `
+                    ${FOR(listToJsArray(item.Members), member => `
                     {"${member.Name}${member.IsStatic ? '_static' : ''}", new MemberRegisterInfo { Name = "${member.Name}", IsStatic = ${member.IsStatic}, MemberType = MemberType.${member.MemberType}, UseBindingMode = BindingMode.${member.UseBindingMode}
 #if !EXPERIMENTAL_IL2CPP_PUERTS
                     ${member.UseBindingMode == 'FastBinding' ? referWrapperMember(item.WrapperName, member.Constructor, member.Method, member.PropertyGetter, member.PropertySetter) : ''}
@@ -46,16 +46,16 @@ namespace PuertsStaticWrap
         public static void AddRegisterInfoGetterIntoJsEnv(JsEnv jsEnv)
         {
             ${FOR(typeRegisterInfos, item => {
-                let ret = `
+        let ret = `
                 jsEnv.AddRegisterInfoGetter(typeof(${CS.Puerts.TypeExtensions.GetFriendlyName(item.Type)}), GetRegisterInfo_${item.WrapperName});`
-                if (item.BlittableCopy) {
-                    ret += `
+        if (item.BlittableCopy) {
+            ret += `
 #if !EXPERIMENTAL_IL2CPP_PUERTS
-                ${item.BlittableCopy ? item.WrapperName + ".InitBlittableCopy(jsEnv);": ""}                    
+                ${item.BlittableCopy ? item.WrapperName + ".InitBlittableCopy(jsEnv);" : ""}                    
 #endif`
-                }
-                return ret;
-            })}
+        }
+        return ret;
+    })}
         }
     }
 }`.trim();

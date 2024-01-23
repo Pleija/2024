@@ -7,10 +7,10 @@ using ParadoxNotion.Serialization.FullSerializer;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Name("Sub Dialogue Tree"),
-     Description(
-         "Execute a Sub Dialogue Tree. When that Dialogue Tree is finished, this node will continue either in Success or Failure if it has any connections. Useful for making reusable and self-contained Dialogue Trees."),
-     DropReferenceType(typeof(DialogueTree)), Icon("Dialogue")]
+    [Name("Sub Dialogue Tree")
+     , Description(
+         "Execute a Sub Dialogue Tree. When that Dialogue Tree is finished, this node will continue either in Success or Failure if it has any connections. Useful for making reusable and self-contained Dialogue Trees.")
+     , DropReferenceType(typeof(DialogueTree)), Icon("Dialogue")]
     public class SubDialogueTree : DTNodeNested<DialogueTree>, IUpdatable
     {
         [SerializeField, ExposeField]
@@ -36,8 +36,8 @@ namespace NodeCanvas.DialogueTrees
             currentInstance = (DialogueTree)this.CheckInstance();
             this.TryWriteAndBindMappedVariables();
             TryWriteMappedActorParameters();
-            currentInstance.StartGraph(finalActor is Component ? (Component)finalActor : finalActor.transform,
-                bb.parent, Graph.UpdateMode.Manual, OnSubDialogueFinish);
+            currentInstance.StartGraph(finalActor is Component ? (Component)finalActor : finalActor.transform, bb.parent
+                , Graph.UpdateMode.Manual, OnSubDialogueFinish);
             return Status.Running;
         }
 
@@ -85,8 +85,8 @@ namespace NodeCanvas.DialogueTrees
             EditorUtils.Separator();
             EditorUtils.CoolLabel("SubGraph Actor Parameters Mapping");
             UnityEditor.EditorGUILayout.HelpBox(
-                "Map SubGraph actor parameters from this graph actor parameters. Leaving [NONE] will not affect the parameter.",
-                UnityEditor.MessageType.Info);
+                "Map SubGraph actor parameters from this graph actor parameters. Leaving [NONE] will not affect the parameter."
+                , UnityEditor.MessageType.Info);
             if (subGraph.actorParameters.Count == 0) return;
             if (_actorParametersMap == null) _actorParametersMap = new Dictionary<string, string>();
 

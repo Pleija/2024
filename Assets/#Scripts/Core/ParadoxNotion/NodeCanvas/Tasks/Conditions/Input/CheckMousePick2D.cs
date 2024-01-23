@@ -25,10 +25,8 @@ namespace NodeCanvas.Tasks.Conditions
         protected override string info {
             get {
                 var finalString = buttonKey.ToString() + " Click";
-                if (!savePosAs.isNone)
-                    finalString += "\nSavePos As " + savePosAs;
-                if (!saveGoAs.isNone)
-                    finalString += "\nSaveGo As " + saveGoAs;
+                if (!savePosAs.isNone) finalString += "\nSavePos As " + savePosAs;
+                if (!saveGoAs.isNone) finalString += "\nSaveGo As " + saveGoAs;
                 return finalString;
             }
         }

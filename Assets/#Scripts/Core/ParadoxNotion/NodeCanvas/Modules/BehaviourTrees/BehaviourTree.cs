@@ -5,10 +5,10 @@ using UnityEngine;
 namespace NodeCanvas.BehaviourTrees
 {
     ///<summary> BehaviourTrees are used to create advanced AI and logic based on simple rules.</summary>
-    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/",
-         resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/",
-         forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/"),
-     CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Behaviour Tree Asset")]
+    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/"
+         , resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/"
+         , forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/")
+     , CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Behaviour Tree Asset")]
     public class BehaviourTree : Graph
     {
         ///----------------------------------------------------------------------------------------------

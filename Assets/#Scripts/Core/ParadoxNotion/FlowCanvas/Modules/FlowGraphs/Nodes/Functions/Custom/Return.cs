@@ -2,20 +2,22 @@
 
 namespace FlowCanvas.Nodes
 {
-    [Description("Should always be used to return out of a Custom Function. The return value is only required if the Custom Function returns a value as well.")]
-    [Category("Functions/Custom")]
-    [ContextDefinedInputs(typeof(object))]
+    [Description(
+         "Should always be used to return out of a Custom Function. The return value is only required if the Custom Function returns a value as well.")
+     , Category("Functions/Custom"), ContextDefinedInputs(typeof(object))]
     public class Return : FlowControlNode
     {
         [GatherPortsCallback]
         public bool useReturnValue = true;
+
         private ValueInput<object> returnPort;
 
-        protected override void RegisterPorts() {
-            if ( useReturnValue ) {
-                returnPort = AddValueInput<object>("Value");
-            }
-            AddFlowInput(SPACE, (f) => { f.Return(useReturnValue ? returnPort.value : null, this); });
+        protected override void RegisterPorts()
+        {
+            if (useReturnValue) returnPort = AddValueInput<object>("Value");
+            AddFlowInput(SPACE, (f) => {
+                f.Return(useReturnValue ? returnPort.value : null, this);
+            });
         }
     }
 

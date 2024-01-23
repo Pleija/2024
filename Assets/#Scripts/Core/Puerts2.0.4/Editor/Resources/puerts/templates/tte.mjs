@@ -13,24 +13,44 @@ class TTFor {
         return this.str;
     }
 }
+
 class TTIf {
     constructor(exp) {
         this.b = !!exp;
     }
-    isTrue() { return this.b }
-    isFalse() { return !this.b }
+
+    isTrue() {
+        return this.b
+    }
+
+    isFalse() {
+        return !this.b
+    }
+
     toString() {
         throw new Error('invalid TTE use. please sure that you use the template literal as tagged template');
     }
 };
-class TTEndif { };
-class TTElse { };
+
+class TTEndif {
+};
+
+class TTElse {
+};
+
 class TTElseif {
     constructor(exp) {
         this.b = !!exp;
     }
-    isTrue() { return this.b }
-    isFalse() { return !this.b }
+
+    isTrue() {
+        return this.b
+    }
+
+    isFalse() {
+        return !this.b
+    }
+
     toString() {
         throw new Error('invalid TTE use. please sure that you use the template literal as tagged template');
     }
@@ -38,17 +58,20 @@ class TTElseif {
 
 let scopeLevel = 0;
 let resultInScope = [];
+
 function enterScope() {
     const curScopeLevel = scopeLevel++
     resultInScope[curScopeLevel] = [];
     return curScopeLevel
 }
+
 function exitScope(curScopeLevel) {
     const ret = resultInScope[curScopeLevel];
     resultInScope[curScopeLevel] = [];
     scopeLevel--;
     return ret
 }
+
 export default function TaggedTemplateEngine(str, ...exps) {
     let ret = '';
     let justAddedAnEmptyExp = false;
@@ -124,12 +147,13 @@ export default function TaggedTemplateEngine(str, ...exps) {
         }
         ret += str;
     }
+
     function WillConnectWithAnEmptyLine(str1, str2) {
         if (!str1.indexOf || !str2.indexOf) return [];
         const str1LastLineSeq = str1.lastIndexOf('\n');
         const str2FirstLineSeq = str2.indexOf('\n');
         if (
-            str1LastLineSeq != -1 && str1.substring(str1LastLineSeq).trim()== "" && 
+            str1LastLineSeq != -1 && str1.substring(str1LastLineSeq).trim() == "" &&
             str2FirstLineSeq != -1 && str2.substring(0, str2FirstLineSeq).trim() == ""
         ) {
             return [str1LastLineSeq, str2FirstLineSeq]
@@ -154,6 +178,7 @@ class Elser {
             this.done = true;
         }
     }
+
     ELSE(contentFn) {
         if (!this.done) {
             const scope = enterScope();
@@ -164,6 +189,7 @@ class Elser {
         }
         return this;
     }
+
     ELSEIF(b, contentFn) {
         if (!this.done && b) {
             const scope = enterScope();
@@ -174,10 +200,12 @@ class Elser {
         }
         return this;
     }
+
     toString() {
         return this.content || "";
     }
 }
+
 export function IF(b, contentFn) {
     if (!contentFn) {
         return new TTIf(b);
@@ -186,15 +214,19 @@ export function IF(b, contentFn) {
         return new Elser(b, contentFn);
     }
 }
+
 export function ELSE() {
     return TTElse
 }
+
 export function ELSEIF(b) {
     return new TTElseif(b);
 }
+
 export function ENDIF() {
     return TTEndif
 }
+
 export function FOR(arr, fn, joiner = '') {
     if (!arr || !(arr instanceof Array)) return '';
 
@@ -208,9 +240,9 @@ export function FOR(arr, fn, joiner = '') {
 
     return new TTFor(ret
         .filter(str => !str.trim || str.trim() != "")
-        .map(str => { 
+        .map(str => {
             if (!str.lastIndexOf) return str;
-            const lastLineSeq = str.lastIndexOf('\n'); 
+            const lastLineSeq = str.lastIndexOf('\n');
             if (str.substring(lastLineSeq).trim() == "") return str.substring(0, lastLineSeq);
             else return str;
         })
@@ -222,7 +254,11 @@ if (typeof process != 'undefined' && process.env.__TEST == 1) {
 
     assertEqual(TaggedTemplateEngine`1`, '1')
     assertEqual(TaggedTemplateEngine`1${2}1`, '121')
-    assertEqual(TaggedTemplateEngine`1${new class { toString() { return '3' } }}1`, '131')
+    assertEqual(TaggedTemplateEngine`1${new class {
+        toString() {
+            return '3'
+        }
+    }}1`, '131')
     assertEqual(TaggedTemplateEngine`1${IF(true)}2${ENDIF()}1`, '121')
     assertEqual(TaggedTemplateEngine`1${IF(false)}2${ENDIF()}1`, '11')
     assertEqual(TaggedTemplateEngine`1${IF(false)}2${ELSE()}3${ENDIF()}1`, '131')
@@ -233,13 +269,19 @@ if (typeof process != 'undefined' && process.env.__TEST == 1) {
     assertEqual(TaggedTemplateEngine`1${IF(true)}2${IF(false)}3${ENDIF()}2${ENDIF()}1`, '1221')
     assertEqual(TaggedTemplateEngine`1${IF(true)}2${IF(false)}3${IF(true)}4${ENDIF()}3${ENDIF()}2${ENDIF()}1`, '1221')
     assertEqual(TaggedTemplateEngine`1${FOR([2, 3, 4], item => item)}5`, '12345');
-    assertEqual(TaggedTemplateEngine`1${FOR([2, 3, 4], item => { TaggedTemplateEngine`_` })}5`, '1___5');
-    assertEqual(TaggedTemplateEngine`1 ${FOR([2, 3], item => { TaggedTemplateEngine`${FOR([4, 5], jtem => TaggedTemplateEngine`${item}*${jtem}=${item * jtem}`, ' ')}` }, ' ')} 5`, '1 2*4=8 2*5=10 3*4=12 3*5=15 5');
+    assertEqual(TaggedTemplateEngine`1${FOR([2, 3, 4], item => {
+        TaggedTemplateEngine`_`
+    })}5`, '1___5');
+    assertEqual(TaggedTemplateEngine`1 ${FOR([2, 3], item => {
+        TaggedTemplateEngine`${FOR([4, 5], jtem => TaggedTemplateEngine`${item}*${jtem}=${item * jtem}`, ' ')}`
+    }, ' ')} 5`, '1 2*4=8 2*5=10 3*4=12 3*5=15 5');
     assertEqual(TaggedTemplateEngine`1${IF(true, () => '2')}3`, '123');
-    assertEqual(TaggedTemplateEngine`1${IF(false, () => '2').ELSE(()=> '3')}4`, '134');
-    assertEqual(TaggedTemplateEngine`1${IF(false, () => '2').ELSEIF(true, ()=> '3').ELSE(()=> '4')}5`, '135');
-    assertEqual(TaggedTemplateEngine`1${IF(false, () => '2').ELSEIF(false, ()=> '3').ELSE(()=> '4')}5`, '145');
-    assertEqual(TaggedTemplateEngine`1${IF(true, () => {TaggedTemplateEngine`2`})}3`, '123');
+    assertEqual(TaggedTemplateEngine`1${IF(false, () => '2').ELSE(() => '3')}4`, '134');
+    assertEqual(TaggedTemplateEngine`1${IF(false, () => '2').ELSEIF(true, () => '3').ELSE(() => '4')}5`, '135');
+    assertEqual(TaggedTemplateEngine`1${IF(false, () => '2').ELSEIF(false, () => '3').ELSE(() => '4')}5`, '145');
+    assertEqual(TaggedTemplateEngine`1${IF(true, () => {
+        TaggedTemplateEngine`2`
+    })}3`, '123');
     assertEqual(TaggedTemplateEngine`1
     ${'      '}
     1`, '1\n    1')
@@ -265,7 +307,7 @@ if (typeof process != 'undefined' && process.env.__TEST == 1) {
     assertEqual(TaggedTemplateEngine`
     struct 1
     {
-        ${FOR([2,3,4], (s, i) => TaggedTemplateEngine`
+        ${FOR([2, 3, 4], (s, i) => TaggedTemplateEngine`
         p${i};
         `)}
     };`, '1')
@@ -278,6 +320,7 @@ if (typeof process != 'undefined' && process.env.__TEST == 1) {
             throw new Error(`${a} != ${b}`);
         }
     }
+
     function assertThrow(a, message) {
         let res;
         try {
@@ -288,5 +331,6 @@ if (typeof process != 'undefined' && process.env.__TEST == 1) {
         }
         throw new Error(`got result ${res}. does not detected error '${message}'`);
     }
+
     console.log('all passed');
 }

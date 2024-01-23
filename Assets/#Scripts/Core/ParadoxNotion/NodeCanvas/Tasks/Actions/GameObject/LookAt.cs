@@ -28,8 +28,7 @@ namespace NodeCanvas.Tasks.Actions
             var lookPos = lookTarget.value.transform.position;
             lookPos.y = agent.position.y;
             agent.LookAt(lookPos);
-            if (!repeat)
-                EndAction(true);
+            if (!repeat) EndAction(true);
         }
     }
 }

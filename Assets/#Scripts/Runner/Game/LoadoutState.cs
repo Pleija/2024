@@ -142,7 +142,7 @@ namespace Runner.Game
         {
             if (missionPopup) missionPopup.gameObject.SetActive(false);
             inventoryCanvas.gameObject.SetActive(false);
-            if (m_Character != null) /*Addressables.ReleaseInstance*/Destroy(m_Character);
+            if (m_Character != null) /*Addressables.ReleaseInstance*/ Destroy(m_Character);
             var gs = to as GameState;
             skyMeshFilter.gameObject.SetActive(false);
             UIGroundFilter.gameObject.SetActive(false);
@@ -155,8 +155,8 @@ namespace Runner.Game
 
                 if (m_PowerupToUse != Consumable.Consumable.ConsumableType.NONE) {
                     PlayerData.instance.Consume(m_PowerupToUse);
-                    var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse),
-                        (GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
+                    var inv = Instantiate(ConsumableDatabase.GetConsumbale(m_PowerupToUse)
+                        , (GameObject.Find("/InGame") ?? new GameObject("InGame")).transform);
                     inv.gameObject.SetActive(false);
                     gs.trackManager.characterController.inventory = inv;
                 }
@@ -212,8 +212,7 @@ namespace Runner.Game
             m_UsedAccessory += dir;
             if (m_UsedAccessory >= m_OwnedAccesories.Count)
                 m_UsedAccessory = -1;
-            else if (m_UsedAccessory < -1)
-                m_UsedAccessory = m_OwnedAccesories.Count - 1;
+            else if (m_UsedAccessory < -1) m_UsedAccessory = m_OwnedAccesories.Count - 1;
             if (m_UsedAccessory != -1)
                 PlayerData.instance.usedAccessory = m_OwnedAccesories[m_UsedAccessory];
             else
@@ -289,7 +288,8 @@ namespace Runner.Game
                         newChar.transform.SetParent(charPosition, false);
                         newChar.transform.rotation = k_FlippedYAxisRotation;
                         if (m_Character != null) Destroy(m_Character);
-                        /*Addressables.ReleaseInstance*/Destroy(m_Character);
+                        /*Addressables.ReleaseInstance*/
+                        Destroy(m_Character);
                         m_Character = newChar;
                         OnCharacterCreate.Invoke(newChar);
                         charNameDisplay.text = c.characterName;
@@ -358,8 +358,8 @@ namespace Runner.Game
                 else if (m_UsedPowerupIndex < 0)
                     m_UsedPowerupIndex = (int)Consumable.Consumable.ConsumableType.MAX_COUNT - 1;
                 var count = 0;
-                if (PlayerData.instance.consumables.TryGetValue(
-                        (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex, out count) && count > 0)
+                if (PlayerData.instance.consumables.TryGetValue((Consumable.Consumable.ConsumableType)m_UsedPowerupIndex
+                    , out count) && count > 0)
                     found = true;
             } while (m_UsedPowerupIndex != 0 && !found);
             m_PowerupToUse = (Consumable.Consumable.ConsumableType)m_UsedPowerupIndex;

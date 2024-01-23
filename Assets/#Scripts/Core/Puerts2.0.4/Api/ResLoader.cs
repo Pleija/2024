@@ -16,11 +16,8 @@ public class ResLoader : ILoader, IModuleChecker
     public ResLoader() { }
     //public ResLoader(string root) => ResLoader.root = root;
 
-    public string PathToUse(string filepath)
-    {
-        return filepath.EndsWith(".cjs") || filepath.EndsWith(".mjs") ? filepath.Substring(0, filepath.Length - 4)
-            : filepath;
-    }
+    public string PathToUse(string filepath) => filepath.EndsWith(".cjs") || filepath.EndsWith(".mjs")
+        ? filepath.Substring(0, filepath.Length - 4) : filepath;
 
     public string AssetPath(string filepath) =>
         filepath.EndsWith(".proto") ? $"Assets/Res/proto/{filepath}" : $"{root}/{filepath}";
@@ -28,12 +25,9 @@ public class ResLoader : ILoader, IModuleChecker
     public bool FileExists(string filepath)
     {
         if (!Path.HasExtension(filepath)) filepath += ".mjs";
-
         var assetPath = AssetPath(filepath);
 #if UNITY_EDITOR
-        if (File.Exists(assetPath)) {
-            return true;
-        }
+        if (File.Exists(assetPath)) return true;
 #endif
         var pathToUse = PathToUse(filepath);
         var exist =
@@ -49,48 +43,30 @@ public class ResLoader : ILoader, IModuleChecker
     public string ReadFile(string filepath, out string debugPath)
     {
         if (!Path.HasExtension(filepath)) filepath += ".mjs";
-
         var assetPath = AssetPath(filepath);
         debugPath = Path.GetFullPath(assetPath);
         TextAsset file = null;
 #if UNITY_EDITOR
-        if (File.Exists(assetPath)) {
-            file = AssetDatabase.LoadAssetAtPath<TextAsset>(assetPath);
-        }
+        if (File.Exists(assetPath)) file = AssetDatabase.LoadAssetAtPath<TextAsset>(assetPath);
 #endif
 
         if (file == null && (Application.isEditor || Debug.isDebugBuild)) {
             var content = Redis.Database.StringGet(assetPath);
-
-            if (!string.IsNullOrEmpty(content)) {
-                return content;
-            }
+            if (!string.IsNullOrEmpty(content)) return content;
         }
-
-        if (Cache.TryGetValue(filepath, out var result)) {
-            return result;
-        }
+        if (Cache.TryGetValue(filepath, out var result)) return result;
         file ??= assets.FirstOrDefault(x => x.path == assetPath)?.file;
-
-        if (!file) {
-            if (Res.Exists<TextAsset>(assetPath) is { } loc) {
+        if (!file)
+            if (Res.Exists<TextAsset>(assetPath) is { } loc)
                 file = Addressables.LoadAssetAsync<TextAsset>(loc.PrimaryKey).WaitForCompletion();
-            }
-            // else if (Res.Exists<TextAsset>($"Assets/Res/proto/{filepath}") is { } location) {
-            //     file = Addressables.LoadAssetAsync<TextAsset>(location.PrimaryKey).WaitForCompletion();
-            // }
-        }
+        // else if (Res.Exists<TextAsset>($"Assets/Res/proto/{filepath}") is { } location) {
+        //     file = Addressables.LoadAssetAsync<TextAsset>(location.PrimaryKey).WaitForCompletion();
+        // }
         file ??= Resources.Load<TextAsset>(PathToUse(filepath));
-
-        if (file && file.text.IsBase64()) {
-            return Cache[filepath] = file.text.FromBase64();
-            //XXTEA.DecryptBase64StringToString(file.text);
-        }
+        if (file && file.text.IsBase64()) return Cache[filepath] = file.text.FromBase64();
+        //XXTEA.DecryptBase64StringToString(file.text);
         return file == null ? null : Cache[filepath] = file.text;
     }
 
-    public bool IsESM(string filepath)
-    {
-        return filepath.Length >= 4 && !filepath.EndsWith(".cjs");
-    }
+    public bool IsESM(string filepath) => filepath.Length >= 4 && !filepath.EndsWith(".cjs");
 }

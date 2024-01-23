@@ -69,8 +69,8 @@ namespace App
         public bool isDebug = false;
 
         // 渗透方法
-        private void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> func, bool isBegin = false,
-            [CallerMemberName] string callname = "") where T : IEventSystemHandler
+        private void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> func, bool isBegin = false
+            , [CallerMemberName] string callname = "") where T : IEventSystemHandler
         {
             if (isDebug) Debug.Log($"{callname} => begin: {isBegin}");
 

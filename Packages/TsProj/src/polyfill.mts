@@ -18,6 +18,5 @@ global.getAllMethod = function getAllMethod(toCheck: any): string[] {
 }
 
 
-
 Js.self.UsingFunc($typeof(FSMState), $typeof(CS.System.Boolean));
 Js.self.UsingFunc($typeof(CS.System.Object), $typeof(CS.System.Boolean));

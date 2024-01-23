@@ -1,9 +1,9 @@
 /*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
+ * Tencent is pleased to support the open source community by making Puerts available.
+ * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
+ * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
+ * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
+ */
 
 using System;
 using System.IO;
@@ -26,71 +26,46 @@ namespace Puerts
             public string ToJsDoc()
             {
                 var sb = new StringBuilder();
-                if (this.summary != null && this.summary.Length > 1)
-                {
+
+                if (summary != null && summary.Length > 1) {
                     sb.AppendLine("/**");
-                    foreach (var line in this.summary)
-                    {
+                    foreach (var line in summary)
                         //sb.AppendLine($" * {line.Replace('\r', ' ')}");
                         sb.AppendLine(string.Format(" * {0}", line.Replace('\r', ' ')));
-                    }
                 }
-                else
-                {
-                    if (this.summary == null || this.summary.Length == 0 || string.IsNullOrEmpty(this.summary[0]))
-                    {
-                        if (this.parameters.Count == 0 && string.IsNullOrEmpty(this.returns))
-                        {
-                            return sb.ToString();
-                        }
-
-                        if ((this.parameters != null || this.parameters.Count == 0) && string.IsNullOrEmpty(this.returns))
-                        {
+                else {
+                    if (summary == null || summary.Length == 0 || string.IsNullOrEmpty(summary[0])) {
+                        if (parameters.Count == 0 && string.IsNullOrEmpty(returns)) return sb.ToString();
+                        if ((parameters != null || parameters.Count == 0) && string.IsNullOrEmpty(returns))
                             sb.Append("/**");
-                        }
                         else
-                        {
                             sb.AppendLine("/**");
-                        }
                     }
-                    else
-                    {
-                        if ((this.parameters != null || this.parameters.Count == 0) && string.IsNullOrEmpty(this.returns))
-                        {
+                    else {
+                        if ((parameters != null || parameters.Count == 0) && string.IsNullOrEmpty(returns))
                             //sb.Append($"/** {this.summary[0]}");
-                            sb.AppendLine(string.Format("/** {0}", this.summary[0]));
-                        }
+                            sb.AppendLine(string.Format("/** {0}", summary[0]));
                         else
-                        {
                             //sb.AppendLine($"/** {this.summary[0]}");
-                            sb.AppendLine(string.Format("/** {0}", this.summary[0]));
-                        }
+                            sb.AppendLine(string.Format("/** {0}", summary[0]));
                     }
                 }
 
-                if (this.parameters != null)
-                {
-                    foreach (var kv in this.parameters)
-                    {
+                if (parameters != null)
+                    foreach (var kv in parameters) {
                         var pname = kv.Key;
                         var ptext = kv.Value;
                         //sb.AppendLine($" * @param {pname} {ptext}");
                         sb.AppendLine(string.Format(" * @param ${0} {1}", pname, ptext));
                     }
-                }
-
-                if (!string.IsNullOrEmpty(this.returns))
-                {
+                if (!string.IsNullOrEmpty(returns))
                     //sb.AppendLine($" * @returns {this.returns}");
-                    sb.AppendLine(string.Format(" * @returns {0}", this.returns));
-                }
-
+                    sb.AppendLine(string.Format(" * @returns {0}", returns));
                 return sb.ToString().Replace("*/", "* /") + " */";
             }
         }
 
         private static Dictionary<Assembly, DocResolver> _resolvers = new Dictionary<Assembly, DocResolver>();
-
         private StringBuilder _sb = new StringBuilder();
         private Dictionary<string, DocBody> _tdocs = new Dictionary<string, DocBody>();
         private Dictionary<string, DocBody> _pdocs = new Dictionary<string, DocBody>();
@@ -100,11 +75,11 @@ namespace Puerts
         public static DocResolver GetResolver(Assembly assembly)
         {
             DocResolver resolver;
-            if (!_resolvers.TryGetValue(assembly, out resolver))
-            {
+
+            if (!_resolvers.TryGetValue(assembly, out resolver)) {
                 resolver = _resolvers[assembly] = new DocResolver();
-                if (!LoadXmlDocFrom(resolver, assembly.Location))
-                {
+
+                if (!LoadXmlDocFrom(resolver, assembly.Location)) {
                     // var fi = new FileInfo(assembly.Location);
                     // LoadXmlDocFrom(resolver, Path.Combine(bindingManager.prefs.xmlDocDir, fi.Name));
                 }
@@ -114,19 +89,15 @@ namespace Puerts
 
         public static bool LoadXmlDocFrom(DocResolver resolver, string location)
         {
-            try
-            {
+            try {
                 var ext = Path.GetExtension(location);
                 var xmlFilePath = location.Substring(0, location.Length - ext.Length) + ".xml";
                 //增加文档查找路径 
                 if (!File.Exists(xmlFilePath))
-                {
                     xmlFilePath = xmlFilePath.Replace("Library\\ScriptAssemblies\\", "Library\\CommonetDocs\\");
-                }
                 return resolver.ParseXml(xmlFilePath);
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 return false;
             }
         }
@@ -134,39 +105,24 @@ namespace Puerts
         public static string GetTsDocument(MethodBase methodBase)
         {
             //return GetResolver(methodBase.DeclaringType.Assembly).GetDocBody(methodBase)?.ToJsDoc() ?? "";
-
             var docBody = GetResolver(methodBase.DeclaringType.Assembly).GetDocBody(methodBase);
-
-            if (docBody != null && docBody.ToJsDoc() != null)
-            {
-                return docBody.ToJsDoc();
-            }
+            if (docBody != null && docBody.ToJsDoc() != null) return docBody.ToJsDoc();
             return "";
         }
 
         public static string GetTsDocument(FieldInfo fieldInfo)
         {
             //return GetResolver(fieldInfo.DeclaringType.Assembly).GetDocBody(fieldInfo)?.ToJsDoc() ?? "";
-
             var docBody = GetResolver(fieldInfo.DeclaringType.Assembly).GetDocBody(fieldInfo);
-
-            if (docBody != null && docBody.ToJsDoc() != null)
-            {
-                return docBody.ToJsDoc();
-            }
+            if (docBody != null && docBody.ToJsDoc() != null) return docBody.ToJsDoc();
             return "";
         }
 
         public static string GetTsDocument(PropertyInfo propertyInfo)
         {
             //return GetResolver(propertyInfo.DeclaringType.Assembly).GetDocBody(propertyInfo)?.ToJsDoc() ?? "";
-
             var docBody = GetResolver(propertyInfo.DeclaringType.Assembly).GetDocBody(propertyInfo);
-
-            if (docBody != null && docBody.ToJsDoc() != null)
-            {
-                return docBody.ToJsDoc();
-            }
+            if (docBody != null && docBody.ToJsDoc() != null) return docBody.ToJsDoc();
             return "";
         }
 
@@ -174,11 +130,7 @@ namespace Puerts
         {
             //return GetResolver(type.Assembly).GetDocBody(type)?.ToJsDoc() ?? "";
             var docBody = GetResolver(type.Assembly).GetDocBody(type);
-
-            if (docBody != null && docBody.ToJsDoc() != null)
-            {
-                return docBody.ToJsDoc();
-            }
+            if (docBody != null && docBody.ToJsDoc() != null) return docBody.ToJsDoc();
             return "";
         }
 
@@ -191,33 +143,23 @@ namespace Puerts
 
         public DocBody GetDocBody(Type type)
         {
-            if (type.IsGenericType || type.IsGenericTypeDefinition || !type.IsPublic)
-            {
-                return null;
-            }
+            if (type.IsGenericType || type.IsGenericTypeDefinition || !type.IsPublic) return null;
             var xName = type.FullName;
             DocBody body;
             _tdocs.TryGetValue(xName, out body);
             return body;
         }
 
-        public DocBody GetDocBody<T>(T methodBase)
-        where T : MethodBase
+        public DocBody GetDocBody<T>(T methodBase) where T : MethodBase
         {
-            if (methodBase.IsGenericMethod || !methodBase.IsPublic || methodBase.ContainsGenericParameters)
-            {
-                return null;
-            }
+            if (methodBase.IsGenericMethod || !methodBase.IsPublic || methodBase.ContainsGenericParameters) return null;
             var declType = methodBase.DeclaringType;
             //_sb.Clear();
             _sb.Remove(0, _sb.Length);
             _sb.Append(declType.FullName);
             _sb.Append('.');
             _sb.Append(methodBase.Name);
-            if (!ExtractMethodParamters(methodBase, _sb))
-            {
-                return null;
-            }
+            if (!ExtractMethodParamters(methodBase, _sb)) return null;
             var xName = _sb.ToString();
             DocBody body;
             _mdocs.TryGetValue(xName, out body);
@@ -226,10 +168,7 @@ namespace Puerts
 
         public DocBody GetDocBody(FieldInfo fieldInfo)
         {
-            if (!fieldInfo.IsPublic)
-            {
-                return null;
-            }
+            if (!fieldInfo.IsPublic) return null;
             var declType = fieldInfo.DeclaringType;
             var xName = declType.FullName + "." + fieldInfo.Name;
             DocBody body;
@@ -239,10 +178,7 @@ namespace Puerts
 
         public DocBody GetDocBody(PropertyInfo propertyInfo)
         {
-            if (propertyInfo.GetGetMethod() == null || !propertyInfo.GetGetMethod().IsPublic)
-            {
-                return null;
-            }
+            if (propertyInfo.GetGetMethod() == null || !propertyInfo.GetGetMethod().IsPublic) return null;
             var declType = propertyInfo.DeclaringType;
             var xName = declType.FullName + "." + propertyInfo.Name;
             DocBody body;
@@ -250,61 +186,36 @@ namespace Puerts
             return body;
         }
 
-        private bool ExtractMethodParamters<T>(T methodBase, StringBuilder sb)
-        where T : MethodBase
+        private bool ExtractMethodParamters<T>(T methodBase, StringBuilder sb) where T : MethodBase
         {
             var parameters = methodBase.GetParameters();
-            if (parameters.Length > 0)
-                sb.Append('(');
-            for (int i = 0, size = parameters.Length; i < size; i++)
-            {
+            if (parameters.Length > 0) sb.Append('(');
+
+            for (int i = 0, size = parameters.Length; i < size; i++) {
                 var type = parameters[i].ParameterType;
-                if (type.IsGenericType)
-                {
-                    return false;
-                }
+                if (type.IsGenericType) return false;
                 sb.Append(type.FullName);
-                if (i != size - 1)
-                {
-                    sb.Append(',');
-                }
+                if (i != size - 1) sb.Append(',');
             }
-            if (parameters.Length > 0)
-                sb.Append(')');
+            if (parameters.Length > 0) sb.Append(')');
             return true;
         }
 
         private void ParseXmlMember(XmlReader reader, DocBody body, string elementName)
         {
-            while (reader.Read())
-            {
+            while (reader.Read()) {
                 var type = reader.NodeType;
-
-                if (type == XmlNodeType.EndElement && reader.Name == elementName)
-                {
-                    break;
-                }
-
+                if (type == XmlNodeType.EndElement && reader.Name == elementName) break;
                 if (type == XmlNodeType.Element && reader.Name == "summary")
-                {
                     body.summary = ReadTextBlock(reader, body, "summary");
-                }
 
-                if (type == XmlNodeType.Element && reader.Name == "param")
-                {
+                if (type == XmlNodeType.Element && reader.Name == "param") {
                     var pname = reader.GetAttribute("name");
                     var ptext = ReadSingleTextBlock(reader, body, "param");
-
-                    if (!string.IsNullOrEmpty(ptext))
-                    {
-                        body.parameters[pname] = ptext;
-                    }
+                    if (!string.IsNullOrEmpty(ptext)) body.parameters[pname] = ptext;
                 }
-
                 if (type == XmlNodeType.Element && reader.Name == "returns")
-                {
                     body.returns = ReadSingleTextBlock(reader, body, "returns");
-                }
             }
         }
 
@@ -313,50 +224,29 @@ namespace Puerts
             var lines = new List<string>();
 
             if (!reader.IsEmptyElement)
-            {
-                while (reader.Read())
-                {
+                while (reader.Read()) {
                     var type = reader.NodeType;
-                    if (type == XmlNodeType.EndElement && reader.Name == elementName)
-                    {
-                        break;
-                    }
+                    if (type == XmlNodeType.EndElement && reader.Name == elementName) break;
 
                     if (type == XmlNodeType.Element && reader.Name == "para")
-                    {
                         lines.Add(ReadElementContentAsString(reader, body, "para"));
-                    }
                     else if (type == XmlNodeType.Text || type == XmlNodeType.CDATA)
-                    {
-                        foreach (var line in reader.Value.Split('\n'))
-                        {
+                        foreach (var line in reader.Value.Split('\n')) {
                             var trim = line.Trim();
-                            if (trim.Length > 0)
-                            {
-                                lines.Add(trim);
-                            }
+                            if (trim.Length > 0) lines.Add(trim);
                         }
-                    }
                 }
-            }
-
             return lines.ToArray();
         }
 
         private string ReadElementContentAsString(XmlReader reader, DocBody body, string elementName)
         {
             var text = string.Empty;
-            while (reader.Read())
-            {
+
+            while (reader.Read()) {
                 var type = reader.NodeType;
-                if (type == XmlNodeType.EndElement && reader.Name == elementName)
-                {
-                    break;
-                }
-                if (type == XmlNodeType.Text)
-                {
-                    text = reader.Value;
-                }
+                if (type == XmlNodeType.EndElement && reader.Name == elementName) break;
+                if (type == XmlNodeType.Text) text = reader.Value;
             }
             return text;
         }
@@ -365,58 +255,52 @@ namespace Puerts
         {
             //_sb.Clear();
             _sb.Remove(0, _sb.Length);
+
             if (!reader.IsEmptyElement)
-            {
-                while (reader.Read())
-                {
+                while (reader.Read()) {
                     var type = reader.NodeType;
-                    if (type == XmlNodeType.EndElement && reader.Name == elementName)
-                    {
-                        break;
-                    }
-                    if (type == XmlNodeType.Element && reader.Name == "para")
-                    {
+                    if (type == XmlNodeType.EndElement && reader.Name == elementName) break;
+
+                    if (type == XmlNodeType.Element && reader.Name == "para") {
                         _sb.Append(ReadElementContentAsString(reader, body, "para"));
                         _sb.Append(' ');
                     }
-                    if (type == XmlNodeType.Text)
-                    {
-                        _sb.Append(reader.Value);
-                    }
+                    if (type == XmlNodeType.Text) _sb.Append(reader.Value);
                 }
-            }
             return _sb.ToString();
         }
 
         public bool ParseXml(string filename)
         {
-            if (!File.Exists(filename))
-            {
-                return false;
-            }
+            if (!File.Exists(filename)) return false;
 
             // Debug.LogFormat("read doc: {0}", filename);
-            using (var fs = File.OpenRead(filename))
-            {
-                using (var reader = XmlReader.Create(fs))
-                {
-                    while (reader.Read())
-                    {
+            using (var fs = File.OpenRead(filename)) {
+                using (var reader = XmlReader.Create(fs)) {
+                    while (reader.Read()) {
                         var type = reader.NodeType;
-                        if (type == XmlNodeType.Element && reader.Name == "member")
-                        {
+
+                        if (type == XmlNodeType.Element && reader.Name == "member") {
                             var body = new DocBody();
                             var name = reader.GetAttribute("name");
-                            if (name.Length > 2)
-                            {
+
+                            if (name.Length > 2) {
                                 var subname = name.Substring(2);
                                 body.name = subname;
-                                switch (name[0])
-                                {
-                                    case 'F': _fdocs[subname] = body; break;
-                                    case 'P': _pdocs[subname] = body; break;
-                                    case 'M': _mdocs[subname] = body; break;
-                                    case 'T': _tdocs[subname] = body; break;
+
+                                switch (name[0]) {
+                                    case 'F':
+                                        _fdocs[subname] = body;
+                                        break;
+                                    case 'P':
+                                        _pdocs[subname] = body;
+                                        break;
+                                    case 'M':
+                                        _mdocs[subname] = body;
+                                        break;
+                                    case 'T':
+                                        _tdocs[subname] = body;
+                                        break;
                                 }
                             }
                             ParseXmlMember(reader, body, "member");
@@ -424,7 +308,6 @@ namespace Puerts
                     }
                 }
             }
-
             return true;
         }
     }

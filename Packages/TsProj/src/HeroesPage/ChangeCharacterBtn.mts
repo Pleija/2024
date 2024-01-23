@@ -1,4 +1,4 @@
-import {StateFsm} from "Common/StateFsm.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
 import Leaderboard = CS.Runner.UI.Leaderboard;
 import LoadoutState = CS.Runner.Game.LoadoutState;
 import Button = CS.UnityEngine.UI.Button;
@@ -14,7 +14,7 @@ export class ChangeCharacterBtn extends StateFsm {
             $LoadingCharPos.unityChan.gameObject.SetActive(!$LoadingCharPos.unityChan.gameObject.activeInHierarchy);
         };
         this.agent.Get(Button).onClick.AddListener(fn);
-  
+
         // LoadoutState.self.m_Character.SetActive(false);
         // $LoadingCharPos.unityChan.gameObject.SetActive(true);
 

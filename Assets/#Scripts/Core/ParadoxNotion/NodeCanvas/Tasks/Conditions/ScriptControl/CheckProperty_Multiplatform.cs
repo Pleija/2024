@@ -9,8 +9,8 @@ using System.Linq;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Check Property", 9), Category("✫ Reflected"),
-     Description("Check a property on a script and return if it's equal or not to the check value")]
+    [Name("Check Property", 9), Category("✫ Reflected")
+     , Description("Check a property on a script and return if it's equal or not to the check value")]
     public class CheckProperty_Multiplatform : ConditionTask, IReflectedWrapper
     {
         [SerializeField]
@@ -36,8 +36,8 @@ namespace NodeCanvas.Tasks.Conditions
                 if (method == null) return "No Property Selected";
                 if (targetMethod == null) return method.AsString().FormatError();
                 var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1}{2}", mInfo, targetMethod.Name,
-                    OperationTools.GetCompareString(comparison) + checkValue.ToString());
+                return string.Format("{0}.{1}{2}", mInfo, targetMethod.Name
+                    , OperationTools.GetCompareString(comparison) + checkValue.ToString());
             }
         }
 
@@ -61,11 +61,11 @@ namespace NodeCanvas.Tasks.Conditions
         {
             var instance = targetMethod.IsStatic ? null : agent;
             if (checkValue.varType == typeof(float))
-                return OperationTools.Compare((float)targetMethod.Invoke(instance, null), (float)checkValue.value,
-                    comparison, 0.05f);
+                return OperationTools.Compare((float)targetMethod.Invoke(instance, null), (float)checkValue.value
+                    , comparison, 0.05f);
             if (checkValue.varType == typeof(int))
-                return OperationTools.Compare((int)targetMethod.Invoke(instance, null), (int)checkValue.value,
-                    comparison);
+                return OperationTools.Compare((int)targetMethod.Invoke(instance, null), (int)checkValue.value
+                    , comparison);
             return ObjectUtils.AnyEquals(targetMethod.Invoke(instance, null), checkValue.value);
         }
 
@@ -89,18 +89,18 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object),
-                            typeof(object), SetMethod, 0, true, true, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
+                            , SetMethod, 0, true, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0,
-                        true, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0
+                        , true, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod,
-                            0, true, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
+                            , 0, true, true, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();
@@ -110,8 +110,8 @@ namespace NodeCanvas.Tasks.Conditions
                 GUILayout.BeginVertical("box");
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Property", targetMethod.Name);
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
+                    , UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 GUI.enabled = checkValue.varType == typeof(float) || checkValue.varType == typeof(int);
                 comparison = (CompareMethod)UnityEditor.EditorGUILayout.EnumPopup("Comparison", comparison);

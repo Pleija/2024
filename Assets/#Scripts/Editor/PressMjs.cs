@@ -17,8 +17,8 @@ public class PressMjs : AssetPostprocessor
         EditorApplication.delayCall += () => ready = true;
     }
 
-    public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
-        string[] movedFromAssetPaths)
+    public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets
+        , string[] movedFromAssetPaths)
     {
         if (EditorApplication.isCompiling) return;
         files = importedAssets.Where(x => x.EndsWith(".mjs") && x.StartsWith("Assets/Res/dist")).ToArray();

@@ -210,22 +210,23 @@ namespace ParadoxNotion.Design
         {
             if (fieldInfo.FieldType == typeof(string)) {
                 GUILayout.Label(content);
-                return EditorGUILayout.TextArea((string)instance, areaStyle,
-                    GUILayout.Height(attribute.numberOfLines * areaStyle.lineHeight));
+                return EditorGUILayout.TextArea((string)instance, areaStyle
+                    , GUILayout.Height(attribute.numberOfLines * areaStyle.lineHeight));
             }
             return MoveNextDrawer();
         }
     }
 
-    /// <summary>Can be used on an interface to popup select a concrete implementation.
+    /// <summary>
+    ///     Can be used on an interface to popup select a concrete implementation.
     ///     <summary>
     public class ReferenceFieldDrawer : AttributeDrawer<ReferenceFieldAttribute>
     {
         public override object OnGUI(GUIContent content, object instance)
         {
             var options = ReflectionTools.GetImplementationsOf(fieldInfo.FieldType);
-            var selection = EditorUtils.Popup<System.Type>(content,
-                instance != null ? instance.GetType() : fieldInfo.FieldType, options);
+            var selection = EditorUtils.Popup<System.Type>(content
+                , instance != null ? instance.GetType() : fieldInfo.FieldType, options);
             if (selection == null) return instance = null;
             if (instance == null || instance.GetType() != selection)
                 if (!typeof(Object).IsAssignableFrom(selection))

@@ -1,7 +1,7 @@
-import {StateFsm} from "Common/StateFsm.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
 import $typeof = puer.$typeof;
 import Button = CS.UnityEngine.UI.Button;
-import {iterator} from "Common/Iterator.mjs";
+import { iterator } from "Common/Iterator.mjs";
 import Image = CS.UnityEngine.UI.Image;
 import Sprite = CS.UnityEngine.Sprite;
 import Color = CS.UnityEngine.Color;

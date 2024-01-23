@@ -3,10 +3,8 @@ using UnityEngine;
 
 public static class CoroutineHelper
 {
-    public static Coroutine StartStaticCoroutine(this IEnumerator enumerator)
-    {
-        return CoroutineHandler.StartStaticCoroutine(enumerator);
-    }
+    public static Coroutine StartStaticCoroutine(this IEnumerator enumerator) =>
+        CoroutineHandler.StartStaticCoroutine(enumerator);
 }
 
 /// <summary>
@@ -29,8 +27,7 @@ public class CoroutineHandler : MonoBehaviour
 
     public void OnDisable()
     {
-        if (m_Instance)
-            Destroy(m_Instance.gameObject);
+        if (m_Instance) Destroy(m_Instance.gameObject);
     }
 
     public static Coroutine StartStaticCoroutine(IEnumerator coroutine) => instance.StartCoroutine(coroutine);

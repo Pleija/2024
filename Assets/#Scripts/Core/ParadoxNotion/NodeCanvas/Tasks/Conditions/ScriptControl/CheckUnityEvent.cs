@@ -40,9 +40,9 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events"),
-     Description("Will subscribe to a public UnityEvent and return true when that event is raised."),
-     fsMigrateVersions(typeof(CheckUnityEvent_0))]
+    [Category("✫ Reflected/Events")
+     , Description("Will subscribe to a public UnityEvent and return true when that event is raised.")
+     , fsMigrateVersions(typeof(CheckUnityEvent_0))]
     public class CheckUnityEvent : ConditionTask, IReflectedWrapper, IMigratable<CheckUnityEvent_0>
     {
         ///----------------------------------------------------------------------------------------------
@@ -123,24 +123,24 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector))) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent),
-                            SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent),
-                            SetTargetEvent, true, false, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector))) {
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent)
+                            , SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent)
+                            , SetTargetEvent, true, false, menu);
                     }
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(UnityEvent), SetTargetEvent, menu);
-                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true,
-                        false, menu);
+                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true, false
+                        , menu);
 
                     if (typeof(Component).IsAssignableFrom(t)) {
                         menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent), SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true,
-                            false, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent), SetTargetEvent, true
+                            , false, menu);
                     }
                 }
                 menu.ShowAsBrowser("Select Event", GetType());
@@ -159,9 +159,9 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events"),
-     Description("Will subscribe to a public UnityEvent<T> and return true when that event is raised."),
-     fsMigrateVersions(typeof(CheckUnityEvent_0<>))]
+    [Category("✫ Reflected/Events")
+     , Description("Will subscribe to a public UnityEvent<T> and return true when that event is raised.")
+     , fsMigrateVersions(typeof(CheckUnityEvent_0<>))]
     public class CheckUnityEvent<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckUnityEvent_0<T>>
     {
         ///----------------------------------------------------------------------------------------------
@@ -243,24 +243,24 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0)) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
-                            SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
-                            SetTargetEvent, true, false, menu);
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>)
+                            , SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>)
+                            , SetTargetEvent, true, false, menu);
                     }
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, menu);
-                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true,
-                        false, menu);
+                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true
+                        , false, menu);
 
                     if (typeof(Component).IsAssignableFrom(t)) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
-                            menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
-                            true, false, menu);
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent
+                            , menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent
+                            , true, false, menu);
                     }
                 }
                 menu.ShowAsBrowser("Select Event", GetType());
@@ -280,10 +280,10 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events"),
-     Description(
-         "Will subscribe to a public UnityEvent<T> and return true when that event is raised and it's value is equal to provided value as well."),
-     fsMigrateVersions(typeof(CheckUnityEventValue_0<>))]
+    [Category("✫ Reflected/Events")
+     , Description(
+         "Will subscribe to a public UnityEvent<T> and return true when that event is raised and it's value is equal to provided value as well.")
+     , fsMigrateVersions(typeof(CheckUnityEventValue_0<>))]
     public class CheckUnityEventValue<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckUnityEventValue_0<T>>
     {
         ///----------------------------------------------------------------------------------------------
@@ -364,24 +364,24 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0)) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
-                            SetTargetEvent, menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>),
-                            SetTargetEvent, true, false, menu);
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(UnityEvent<T>)
+                            , SetTargetEvent, menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(), typeof(UnityEvent<T>)
+                            , SetTargetEvent, true, false, menu);
                     }
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
                     menu = EditorUtils.GetStaticFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, menu);
-                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true,
-                        false, menu);
+                    menu = EditorUtils.GetStaticPropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent, true
+                        , false, menu);
 
                     if (typeof(Component).IsAssignableFrom(t)) {
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
-                            menu);
-                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent,
-                            true, false, menu);
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent
+                            , menu);
+                        menu = EditorUtils.GetInstancePropertySelectionMenu(t, typeof(UnityEvent<T>), SetTargetEvent
+                            , true, false, menu);
                     }
                 }
                 menu.ShowAsBrowser("Select Event", GetType());

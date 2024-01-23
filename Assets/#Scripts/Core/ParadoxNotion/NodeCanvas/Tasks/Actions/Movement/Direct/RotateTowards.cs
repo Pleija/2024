@@ -27,8 +27,8 @@ namespace NodeCanvas.Tasks.Actions
             }
             var dir = target.value.transform.position - agent.position;
             agent.rotation =
-                Quaternion.LookRotation(Vector3.RotateTowards(agent.forward, dir, speed.value * Time.deltaTime, 0),
-                    upVector.value);
+                Quaternion.LookRotation(Vector3.RotateTowards(agent.forward, dir, speed.value * Time.deltaTime, 0)
+                    , upVector.value);
             if (!waitActionFinish) EndAction();
         }
     }

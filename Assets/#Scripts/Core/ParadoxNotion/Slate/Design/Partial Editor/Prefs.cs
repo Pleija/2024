@@ -1,21 +1,16 @@
 ﻿#if UNITY_EDITOR
-
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-
 #if SLATE_USE_FRAMECAPTURER
 using Slate.UTJ.FrameCapturer;
 #endif
 
-
 namespace Slate
 {
-
     ///<summary>SLATE editor preferences</summary>
     public static class Prefs
     {
-
         public const string USE_HDRP_DEFINE = "SLATE_USE_HDRP";
         public const string USE_URP_DEFINE = "SLATE_USE_URP";
         public const string USE_POSTSTACK_DEFINE = "SLATE_USE_POSTSTACK";
@@ -23,7 +18,7 @@ namespace Slate
         public const string USE_FRAMECAPTURER_DEFINE = "SLATE_USE_FRAMECAPTURER";
 
         [System.Serializable]
-        class SerializedData
+        private class SerializedData
         {
             public bool showTransforms = false;
             public bool compactMode = false;
@@ -42,7 +37,7 @@ namespace Slate
             public bool showDescriptions = true;
             public float gizmosLightness = 0f;
             public Color motionPathsColor = Color.black;
-            public Prefs.RenderSettings renderSettings = new Prefs.RenderSettings();
+            public RenderSettings renderSettings = new RenderSettings();
             public float trackListLeftMargin = 280f;
             public bool autoCreateDirectorCamera = true;
             public bool autoKey = true;
@@ -52,29 +47,15 @@ namespace Slate
         }
 
         [System.Serializable]
-        public enum KeyframesStyle
-        {
-            PerTangentMode,
-            AlwaysDiamond
-        }
+        public enum KeyframesStyle { PerTangentMode, AlwaysDiamond }
 
         [System.Serializable]
-        public enum TimeStepMode
-        {
-            Seconds,
-            Frames
-        }
+        public enum TimeStepMode { Seconds, Frames }
 
         [System.Serializable]
         public class RenderSettings
         {
-
-            public enum FileNameMode
-            {
-                UseCutsceneName,
-                SpecifyFileName,
-            }
-
+            public enum FileNameMode { UseCutsceneName, SpecifyFileName }
 #if SLATE_USE_FRAMECAPTURER
             public MovieEncoder.Type renderFormat = MovieEncoder.Type.PNG;
             public string folderName = "SlateRenders";
@@ -84,18 +65,15 @@ namespace Slate
             public bool renderPasses = false;
             public bool captureAudio = false;
 #endif
-
         }
 
         private static SerializedData _data;
+
         private static SerializedData data {
-            get
-            {
-                if ( _data == null ) {
+            get {
+                if (_data == null) {
                     _data = JsonUtility.FromJson<SerializedData>(EditorPrefs.GetString("Slate.EditorPreferences"));
-                    if ( _data == null ) {
-                        _data = new SerializedData();
-                    }
+                    if (_data == null) _data = new SerializedData();
                 }
                 return _data;
             }
@@ -105,119 +83,219 @@ namespace Slate
         public static int[] frameRates = new int[] { 24, 30, 60 };
 
         public static bool showTransforms {
-            get { return data.showTransforms; }
-            set { if ( data.showTransforms != value ) { data.showTransforms = value; Save(); } }
+            get => data.showTransforms;
+            set {
+                if (data.showTransforms != value) {
+                    data.showTransforms = value;
+                    Save();
+                }
+            }
         }
 
         public static bool compactMode {
-            get { return data.compactMode; }
-            set { if ( data.compactMode != value ) { data.compactMode = value; Save(); } }
+            get => data.compactMode;
+            set {
+                if (data.compactMode != value) {
+                    data.compactMode = value;
+                    Save();
+                }
+            }
         }
 
         public static float gizmosLightness {
-            get { return data.gizmosLightness; }
-            set { if ( data.gizmosLightness != value ) { data.gizmosLightness = value; Save(); } }
+            get => data.gizmosLightness;
+            set {
+                if (data.gizmosLightness != value) {
+                    data.gizmosLightness = value;
+                    Save();
+                }
+            }
         }
 
-        public static Color gizmosColor {
-            get { return new Color(data.gizmosLightness, data.gizmosLightness, data.gizmosLightness); }
-        }
+        public static Color gizmosColor => new Color(data.gizmosLightness, data.gizmosLightness, data.gizmosLightness);
 
         public static bool showShotThumbnails {
-            get { return data.showShotThumbnails; }
-            set { if ( data.showShotThumbnails != value ) { data.showShotThumbnails = value; Save(); } }
+            get => data.showShotThumbnails;
+            set {
+                if (data.showShotThumbnails != value) {
+                    data.showShotThumbnails = value;
+                    Save();
+                }
+            }
         }
 
         public static bool showDopesheetKeyValues {
-            get { return data.showDopesheetKeyValues; }
-            set { if ( data.showDopesheetKeyValues != value ) { data.showDopesheetKeyValues = value; Save(); } }
+            get => data.showDopesheetKeyValues;
+            set {
+                if (data.showDopesheetKeyValues != value) {
+                    data.showDopesheetKeyValues = value;
+                    Save();
+                }
+            }
         }
 
         public static KeyframesStyle keyframesStyle {
-            get { return data.keyframesStyle; }
-            set { if ( data.keyframesStyle != value ) { data.keyframesStyle = value; Save(); } }
+            get => data.keyframesStyle;
+            set {
+                if (data.keyframesStyle != value) {
+                    data.keyframesStyle = value;
+                    Save();
+                }
+            }
         }
 
         public static bool scrollWheelZooms {
-            get { return data.scrollWheelZooms; }
-            set { if ( data.scrollWheelZooms != value ) { data.scrollWheelZooms = value; Save(); } }
+            get => data.scrollWheelZooms;
+            set {
+                if (data.scrollWheelZooms != value) {
+                    data.scrollWheelZooms = value;
+                    Save();
+                }
+            }
         }
 
         public static bool showDescriptions {
-            get { return data.showDescriptions; }
-            set { if ( data.showDescriptions != value ) { data.showDescriptions = value; Save(); } }
+            get => data.showDescriptions;
+            set {
+                if (data.showDescriptions != value) {
+                    data.showDescriptions = value;
+                    Save();
+                }
+            }
         }
 
         public static Color motionPathsColor {
-            get { return data.motionPathsColor; }
-            set { if ( data.motionPathsColor != value ) { data.motionPathsColor = value; Save(); } }
+            get => data.motionPathsColor;
+            set {
+                if (data.motionPathsColor != value) {
+                    data.motionPathsColor = value;
+                    Save();
+                }
+            }
         }
 
         public static int thumbnailsRefreshInterval {
-            get { return data.thumbnailsRefreshInterval; }
-            set { if ( data.thumbnailsRefreshInterval != value ) { data.thumbnailsRefreshInterval = value; Save(); } }
+            get => data.thumbnailsRefreshInterval;
+            set {
+                if (data.thumbnailsRefreshInterval != value) {
+                    data.thumbnailsRefreshInterval = value;
+                    Save();
+                }
+            }
         }
 
         public static bool lockHorizontalCurveEditing {
-            get { return data.lockHorizontalCurveEditing; }
-            set { if ( data.lockHorizontalCurveEditing != value ) { data.lockHorizontalCurveEditing = value; Save(); } }
+            get => data.lockHorizontalCurveEditing;
+            set {
+                if (data.lockHorizontalCurveEditing != value) {
+                    data.lockHorizontalCurveEditing = value;
+                    Save();
+                }
+            }
         }
 
         public static TangentMode defaultTangentMode {
-            get { return data.defaultTangentMode; }
-            set { if ( data.defaultTangentMode != value ) { data.defaultTangentMode = value; Save(); } }
+            get => data.defaultTangentMode;
+            set {
+                if (data.defaultTangentMode != value) {
+                    data.defaultTangentMode = value;
+                    Save();
+                }
+            }
         }
 
-        public static Prefs.RenderSettings renderSettings {
-            get { return data.renderSettings; }
-            set { data.renderSettings = value; Save(); }
+        public static RenderSettings renderSettings {
+            get => data.renderSettings;
+            set {
+                data.renderSettings = value;
+                Save();
+            }
         }
 
         public static bool autoCleanKeysOffRange {
-            get { return data.autoCleanKeysOffRange; }
-            set { if ( data.autoCleanKeysOffRange != value ) { data.autoCleanKeysOffRange = value; Save(); } }
+            get => data.autoCleanKeysOffRange;
+            set {
+                if (data.autoCleanKeysOffRange != value) {
+                    data.autoCleanKeysOffRange = value;
+                    Save();
+                }
+            }
         }
 
         public static bool autoFirstKey {
-            get { return data.autoFirstKey; }
-            set { if ( data.autoFirstKey != value ) { data.autoFirstKey = value; Save(); } }
+            get => data.autoFirstKey;
+            set {
+                if (data.autoFirstKey != value) {
+                    data.autoFirstKey = value;
+                    Save();
+                }
+            }
         }
 
         public static float trackListLeftMargin {
-            get { return data.trackListLeftMargin; }
-            set { if ( data.trackListLeftMargin != value ) { data.trackListLeftMargin = value; Save(); } }
+            get => data.trackListLeftMargin;
+            set {
+                if (data.trackListLeftMargin != value) {
+                    data.trackListLeftMargin = value;
+                    Save();
+                }
+            }
         }
 
         public static bool autoCreateDirectorCamera {
-            get { return data.autoCreateDirectorCamera; }
-            set { if ( data.autoCreateDirectorCamera != value ) { data.autoCreateDirectorCamera = value; Save(); } }
+            get => data.autoCreateDirectorCamera;
+            set {
+                if (data.autoCreateDirectorCamera != value) {
+                    data.autoCreateDirectorCamera = value;
+                    Save();
+                }
+            }
         }
 
         public static bool autoKey {
-            get { return data.autoKey; }
-            set { if ( data.autoKey != value ) { data.autoKey = value; Save(); } }
+            get => data.autoKey;
+            set {
+                if (data.autoKey != value) {
+                    data.autoKey = value;
+                    Save();
+                }
+            }
         }
 
         public static bool magnetSnapping {
-            get { return data.magnetSnapping; }
-            set { if ( data.magnetSnapping != value ) { data.magnetSnapping = value; Save(); } }
+            get => data.magnetSnapping;
+            set {
+                if (data.magnetSnapping != value) {
+                    data.magnetSnapping = value;
+                    Save();
+                }
+            }
         }
 
         public static bool rippleMode {
-            get { return data.rippleMode; }
-            set { if ( data.rippleMode != value ) { data.rippleMode = value; Save(); } }
+            get => data.rippleMode;
+            set {
+                if (data.rippleMode != value) {
+                    data.rippleMode = value;
+                    Save();
+                }
+            }
         }
 
         public static bool retimeMode {
-            get { return data.retimeMode; }
-            set { if ( data.retimeMode != value ) { data.retimeMode = value; Save(); } }
+            get => data.retimeMode;
+            set {
+                if (data.retimeMode != value) {
+                    data.retimeMode = value;
+                    Save();
+                }
+            }
         }
 
         public static TimeStepMode timeStepMode {
-            get { return data.timeStepMode; }
-            set
-            {
-                if ( data.timeStepMode != value ) {
+            get => data.timeStepMode;
+            set {
+                if (data.timeStepMode != value) {
                     data.timeStepMode = value;
                     frameRate = value == TimeStepMode.Frames ? 30 : 10;
                     Save();
@@ -226,17 +304,28 @@ namespace Slate
         }
 
         public static int frameRate {
-            get { return data.frameRate; }
-            set { if ( data.frameRate != value ) { data.frameRate = value; snapInterval = 1f / value; Save(); } }
+            get => data.frameRate;
+            set {
+                if (data.frameRate != value) {
+                    data.frameRate = value;
+                    snapInterval = 1f / value;
+                    Save();
+                }
+            }
         }
 
         public static float snapInterval {
-            get { return Mathf.Max(data.snapInterval, 0.001f); }
-            set { if ( data.snapInterval != value ) { data.snapInterval = Mathf.Max(value, 0.001f); Save(); } }
+            get => Mathf.Max(data.snapInterval, 0.001f);
+            set {
+                if (data.snapInterval != value) {
+                    data.snapInterval = Mathf.Max(value, 0.001f);
+                    Save();
+                }
+            }
         }
 
-
-        static void Save() {
+        private static void Save()
+        {
             EditorPrefs.SetString("Slate.EditorPreferences", JsonUtility.ToJson(data));
         }
     }

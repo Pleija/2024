@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Movement/Direct"),
-     Description(
+    [Category("Movement/Direct")
+     , Description(
          "Move & turn the agent based on input values provided ranging from -1 to 1, per second (using delta time)")]
     public class InputMove : ActionTask<Transform>
     {

@@ -1,5 +1,5 @@
-import {StateFsm} from "Common/StateFsm.mjs";
-import {MenuAreaStart} from "Main/MenuArea/MenuAreaStart.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
+import { MenuAreaStart } from "Main/MenuArea/MenuAreaStart.mjs";
 import $typeof = puer.$typeof;
 import HorizontalScrollSnap = CS.UnityEngine.UI.Extensions.HorizontalScrollSnap;
 import ScrollRect = CS.UnityEngine.UI.ScrollRect;
@@ -26,8 +26,8 @@ export class MenuArea extends StateFsm {
         scroll.onValueChanged.AddListener(value => {
             //console.log(value.x, value.y);
         });
-       //let rt = (this.snap.GetComponent($typeof(ScrollRect)) as ScrollRect).content.GetComponent($typeof(RectTransform)) as RectTransform;
-       //rt.sizeDelta = new Vector2(3600, rt.sizeDelta.y);
+        //let rt = (this.snap.GetComponent($typeof(ScrollRect)) as ScrollRect).content.GetComponent($typeof(RectTransform)) as RectTransform;
+        //rt.sizeDelta = new Vector2(3600, rt.sizeDelta.y);
         this.snap.GoToScreen(2);
     }
 }

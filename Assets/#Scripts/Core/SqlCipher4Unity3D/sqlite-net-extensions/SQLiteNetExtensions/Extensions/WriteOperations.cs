@@ -72,8 +72,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         /// <param name="conn">SQLite Net connection object</param>
         /// <param name="element">Object to be inserted.</param>
         /// <param name="recursive">If set to <c>true</c> all the insert-cascade properties will be inserted</param>
-        public static void InsertOrReplaceWithChildren(this SQLiteConnection conn, object element,
-            bool recursive = false)
+        public static void InsertOrReplaceWithChildren(this SQLiteConnection conn, object element
+            , bool recursive = false)
         {
             conn.InsertWithChildrenRecursive(element, true, recursive);
         }
@@ -90,8 +90,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         /// <param name="conn">SQLite Net connection object</param>
         /// <param name="elements">Objects to be inserted.</param>
         /// <param name="recursive">If set to <c>true</c> all the insert-cascade properties will be inserted</param>
-        public static void InsertAllWithChildren(this SQLiteConnection conn, IEnumerable elements,
-            bool recursive = false)
+        public static void InsertAllWithChildren(this SQLiteConnection conn, IEnumerable elements
+            , bool recursive = false)
         {
             conn.InsertAllWithChildrenRecursive(elements, false, recursive);
         }
@@ -108,8 +108,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         /// <param name="conn">SQLite Net connection object</param>
         /// <param name="elements">Objects to be inserted.</param>
         /// <param name="recursive">If set to <c>true</c> all the insert-cascade properties will be inserted</param>
-        public static void InsertOrReplaceAllWithChildren(this SQLiteConnection conn, IEnumerable elements,
-            bool recursive = false)
+        public static void InsertOrReplaceAllWithChildren(this SQLiteConnection conn, IEnumerable elements
+            , bool recursive = false)
         {
             conn.InsertAllWithChildrenRecursive(elements, true, recursive);
         }
@@ -166,8 +166,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         }
 
 #region Private methods
-        private static void InsertAllWithChildrenRecursive(this SQLiteConnection conn, IEnumerable elements,
-            bool replace, bool recursive, ISet<object> objectCache = null)
+        private static void InsertAllWithChildrenRecursive(this SQLiteConnection conn, IEnumerable elements
+            , bool replace, bool recursive, ISet<object> objectCache = null)
         {
             if (elements == null) return;
             objectCache = objectCache ?? new HashSet<object>();
@@ -177,8 +177,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             foreach (var element in insertedElements) conn.UpdateWithChildren(element);
         }
 
-        private static void InsertWithChildrenRecursive(this SQLiteConnection conn, object element, bool replace,
-            bool recursive, ISet<object> objectCache = null)
+        private static void InsertWithChildrenRecursive(this SQLiteConnection conn, object element, bool replace
+            , bool recursive, ISet<object> objectCache = null)
         {
             objectCache = objectCache ?? new HashSet<object>();
             if (objectCache.Contains(element)) return;
@@ -188,8 +188,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             conn.UpdateWithChildren(element);
         }
 
-        private static void InsertChildrenRecursive(this SQLiteConnection conn, object element, bool replace,
-            bool recursive, ISet<object> objectCache = null)
+        private static void InsertChildrenRecursive(this SQLiteConnection conn, object element, bool replace
+            , bool recursive, ISet<object> objectCache = null)
         {
             if (element == null) return;
             objectCache = objectCache ?? new HashSet<object>();
@@ -204,8 +204,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             }
         }
 
-        private static void InsertValue(this SQLiteConnection conn, object value, bool replace, bool recursive,
-            ISet<object> objectCache)
+        private static void InsertValue(this SQLiteConnection conn, object value, bool replace, bool recursive
+            , ISet<object> objectCache)
         {
             if (value == null) return;
             var enumerable = value as IEnumerable;
@@ -224,8 +224,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             }
         }
 
-        private static IEnumerable InsertElements(this SQLiteConnection conn, IEnumerable elements, bool replace,
-            ISet<object> objectCache)
+        private static IEnumerable InsertElements(this SQLiteConnection conn, IEnumerable elements, bool replace
+            , ISet<object> objectCache)
         {
             if (elements == null) return Enumerable.Empty<object>();
             objectCache = objectCache ?? new HashSet<object>();
@@ -242,8 +242,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             return elementsToInsert;
         }
 
-        private static void InsertElement(this SQLiteConnection conn, object element, bool replace,
-            ISet<object> objectCache)
+        private static void InsertElement(this SQLiteConnection conn, object element, bool replace
+            , ISet<object> objectCache)
         {
             var primaryKeyProperty = element.GetType().GetPrimaryKey();
             var isAutoIncrementPrimaryKey = primaryKeyProperty != null &&
@@ -251,8 +251,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             conn.InsertElement(element, replace, primaryKeyProperty, isAutoIncrementPrimaryKey, objectCache);
         }
 
-        private static void InsertElement(this SQLiteConnection conn, object element, bool replace,
-            PropertyInfo primaryKeyProperty, bool isAutoIncrementPrimaryKey, ISet<object> objectCache)
+        private static void InsertElement(this SQLiteConnection conn, object element, bool replace
+            , PropertyInfo primaryKeyProperty, bool isAutoIncrementPrimaryKey, ISet<object> objectCache)
         {
             if (element == null || (objectCache != null && objectCache.Contains(element))) return;
             var isPrimaryKeySet = false;
@@ -271,8 +271,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 conn.Insert(element);
         }
 
-        private static void DeleteAllRecursive(this SQLiteConnection conn, IEnumerable elements, bool recursive,
-            ISet<object> objectCache = null)
+        private static void DeleteAllRecursive(this SQLiteConnection conn, IEnumerable elements, bool recursive
+            , ISet<object> objectCache = null)
         {
             if (elements == null) return;
             var isRootElement = objectCache == null;
@@ -299,8 +299,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             if (isRootElement) conn.DeleteAllObjects(objectCache);
         }
 
-        private static void DeleteValueRecursive(this SQLiteConnection conn, object value, bool recursive,
-            ISet<object> objectCache)
+        private static void DeleteValueRecursive(this SQLiteConnection conn, object value, bool recursive
+            , ISet<object> objectCache)
         {
             if (value == null) return;
             var enumerable = value as IEnumerable ?? new[] { value };
@@ -339,10 +339,10 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                         EnclosedType enclosedType;
                         var entityType = relationshipProperty.GetEntityType(out enclosedType);
                         var destinationPrimaryKeyProperty = entityType.GetPrimaryKey();
-                        Assert(enclosedType == EnclosedType.None, type, relationshipProperty,
-                            "ToOne relationships cannot be lists or arrays");
-                        Assert(destinationPrimaryKeyProperty != null, type, relationshipProperty,
-                            "Found foreign key but destination Type doesn't have primary key");
+                        Assert(enclosedType == EnclosedType.None, type, relationshipProperty
+                            , "ToOne relationships cannot be lists or arrays");
+                        Assert(destinationPrimaryKeyProperty != null, type, relationshipProperty
+                            , "Found foreign key but destination Type doesn't have primary key");
                         var relationshipValue = relationshipProperty.GetValue(element, null);
                         object foreignKeyValue = null;
                         if (relationshipValue != null)
@@ -372,8 +372,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             }
         }
 
-        private static void UpdateOneToManyInverseForeignKey(this SQLiteConnection conn, object element,
-            PropertyInfo relationshipProperty)
+        private static void UpdateOneToManyInverseForeignKey(this SQLiteConnection conn, object element
+            , PropertyInfo relationshipProperty)
         {
             var type = element.GetType();
             EnclosedType enclosedType;
@@ -381,23 +381,23 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var originPrimaryKeyProperty = type.GetPrimaryKey();
             var inversePrimaryKeyProperty = entityType.GetPrimaryKey();
             var inverseForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty, inverse: true);
-            Assert(enclosedType != EnclosedType.None, type, relationshipProperty,
-                "OneToMany relationships must be List or Array of entities");
-            Assert(originPrimaryKeyProperty != null, type, relationshipProperty,
-                "OneToMany relationships require Primary Key in the origin entity");
-            Assert(inversePrimaryKeyProperty != null, type, relationshipProperty,
-                "OneToMany relationships require Primary Key in the destination entity");
-            Assert(inverseForeignKeyProperty != null, type, relationshipProperty,
-                "Unable to find foreign key for OneToMany relationship");
+            Assert(enclosedType != EnclosedType.None, type, relationshipProperty
+                , "OneToMany relationships must be List or Array of entities");
+            Assert(originPrimaryKeyProperty != null, type, relationshipProperty
+                , "OneToMany relationships require Primary Key in the origin entity");
+            Assert(inversePrimaryKeyProperty != null, type, relationshipProperty
+                , "OneToMany relationships require Primary Key in the destination entity");
+            Assert(inverseForeignKeyProperty != null, type, relationshipProperty
+                , "Unable to find foreign key for OneToMany relationship");
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
 
             if (inverseProperty != null) {
                 EnclosedType inverseEnclosedType;
                 var inverseEntityType = inverseProperty.GetEntityType(out inverseEnclosedType);
-                Assert(inverseEnclosedType == EnclosedType.None, type, relationshipProperty,
-                    "OneToMany inverse relationship shouldn't be List or Array");
-                Assert(inverseEntityType == type, type, relationshipProperty,
-                    "OneToMany inverse relationship is not the expected type");
+                Assert(inverseEnclosedType == EnclosedType.None, type, relationshipProperty
+                    , "OneToMany inverse relationship shouldn't be List or Array");
+                Assert(inverseEntityType == type, type, relationshipProperty
+                    , "OneToMany inverse relationship is not the expected type");
             }
             var keyValue = originPrimaryKeyProperty.GetValue(element, null);
             var children = (IEnumerable)relationshipProperty.GetValue(element, null);
@@ -412,8 +412,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 }
 
             // Delete previous relationships
-            var deleteQuery = string.Format("update [{0}] set [{1}] = NULL where [{1}] == ?", entityType.GetTableName(),
-                inverseForeignKeyProperty.GetColumnName());
+            var deleteQuery = string.Format("update [{0}] set [{1}] = NULL where [{1}] == ?", entityType.GetTableName()
+                , inverseForeignKeyProperty.GetColumnName());
             var deleteParamaters = new List<object> { keyValue };
             conn.Execute(deleteQuery, deleteParamaters.ToArray());
             var chunks = Split(childrenKeyList, queryLimit);
@@ -424,17 +424,17 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
                 // Objects already updated, now change the database
                 var childrenPlaceHolders = string.Join(",", Enumerable.Repeat("?", chunk.Count));
-                var query = string.Format("update [{0}] set [{1}] = ? where [{2}] in ({3})", entityType.GetTableName(),
-                    inverseForeignKeyProperty.GetColumnName(), inversePrimaryKeyProperty.GetColumnName(),
-                    childrenPlaceHolders);
+                var query = string.Format("update [{0}] set [{1}] = ? where [{2}] in ({3})", entityType.GetTableName()
+                    , inverseForeignKeyProperty.GetColumnName(), inversePrimaryKeyProperty.GetColumnName()
+                    , childrenPlaceHolders);
                 var parameters = new List<object> { keyValue };
                 parameters.AddRange(chunk);
                 conn.Execute(query, parameters.ToArray());
             }
         }
 
-        private static void UpdateOneToOneInverseForeignKey(this SQLiteConnection conn, object element,
-            PropertyInfo relationshipProperty)
+        private static void UpdateOneToOneInverseForeignKey(this SQLiteConnection conn, object element
+            , PropertyInfo relationshipProperty)
         {
             var type = element.GetType();
             EnclosedType enclosedType;
@@ -442,17 +442,17 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var originPrimaryKeyProperty = type.GetPrimaryKey();
             var inversePrimaryKeyProperty = entityType.GetPrimaryKey();
             var inverseForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty, inverse: true);
-            Assert(enclosedType == EnclosedType.None, type, relationshipProperty,
-                "OneToOne relationships cannot be List or Array of entities");
+            Assert(enclosedType == EnclosedType.None, type, relationshipProperty
+                , "OneToOne relationships cannot be List or Array of entities");
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
 
             if (inverseProperty != null) {
                 EnclosedType inverseEnclosedType;
                 var inverseEntityType = inverseProperty.GetEntityType(out inverseEnclosedType);
-                Assert(inverseEnclosedType == EnclosedType.None, type, relationshipProperty,
-                    "OneToOne inverse relationship shouldn't be List or Array");
-                Assert(inverseEntityType == type, type, relationshipProperty,
-                    "OneToOne inverse relationship is not the expected type");
+                Assert(inverseEnclosedType == EnclosedType.None, type, relationshipProperty
+                    , "OneToOne inverse relationship shouldn't be List or Array");
+                Assert(inverseEntityType == type, type, relationshipProperty
+                    , "OneToOne inverse relationship is not the expected type");
             }
             object keyValue = null;
             if (originPrimaryKeyProperty != null && inverseForeignKeyProperty != null)
@@ -469,20 +469,20 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
             // Objects already updated, now change the database
             if (inverseForeignKeyProperty != null && inversePrimaryKeyProperty != null) {
-                var query = string.Format("update [{0}] set [{1}] = ? where [{2}] == ?", entityType.GetTableName(),
-                    inverseForeignKeyProperty.GetColumnName(), inversePrimaryKeyProperty.GetColumnName());
+                var query = string.Format("update [{0}] set [{1}] = ? where [{2}] == ?", entityType.GetTableName()
+                    , inverseForeignKeyProperty.GetColumnName(), inversePrimaryKeyProperty.GetColumnName());
                 conn.Execute(query, keyValue, childKey);
 
                 // Delete previous relationships
-                var deleteQuery = string.Format("update [{0}] set [{1}] = NULL where [{1}] == ? and [{2}] not in (?)",
-                    entityType.GetTableName(), inverseForeignKeyProperty.GetColumnName(),
-                    inversePrimaryKeyProperty.GetColumnName());
+                var deleteQuery = string.Format("update [{0}] set [{1}] = NULL where [{1}] == ? and [{2}] not in (?)"
+                    , entityType.GetTableName(), inverseForeignKeyProperty.GetColumnName()
+                    , inversePrimaryKeyProperty.GetColumnName());
                 conn.Execute(deleteQuery, keyValue, childKey ?? "");
             }
         }
 
-        private static void UpdateManyToManyForeignKeys(this SQLiteConnection conn, object element,
-            PropertyInfo relationshipProperty)
+        private static void UpdateManyToManyForeignKeys(this SQLiteConnection conn, object element
+            , PropertyInfo relationshipProperty)
         {
             var type = element.GetType();
             EnclosedType enclosedType;
@@ -493,23 +493,25 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var currentEntityForeignKeyProperty = manyToManyMetaInfo.OriginProperty;
             var otherEntityForeignKeyProperty = manyToManyMetaInfo.DestinationProperty;
             var intermediateType = manyToManyMetaInfo.IntermediateType;
-            Assert(enclosedType != EnclosedType.None, type, relationshipProperty,
-                "ManyToMany relationship must be a List or Array");
-            Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty,
-                "ManyToMany relationship origin must have Primary Key");
-            Assert(otherEntityPrimaryKeyProperty != null, type, relationshipProperty,
-                "ManyToMany relationship destination must have Primary Key");
-            Assert(intermediateType != null, type, relationshipProperty,
-                "ManyToMany relationship intermediate type cannot be null");
-            Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty,
-                "ManyToMany relationship origin must have a foreign key defined in the intermediate type");
-            Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty,
-                "ManyToMany relationship destination must have a foreign key defined in the intermediate type");
+            Assert(enclosedType != EnclosedType.None, type, relationshipProperty
+                , "ManyToMany relationship must be a List or Array");
+            Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty
+                , "ManyToMany relationship origin must have Primary Key");
+            Assert(otherEntityPrimaryKeyProperty != null, type, relationshipProperty
+                , "ManyToMany relationship destination must have Primary Key");
+            Assert(intermediateType != null, type, relationshipProperty
+                , "ManyToMany relationship intermediate type cannot be null");
+            Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty
+                , "ManyToMany relationship origin must have a foreign key defined in the intermediate type");
+            Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty
+                , "ManyToMany relationship destination must have a foreign key defined in the intermediate type");
             var primaryKey = currentEntityPrimaryKeyProperty.GetValue(element, null);
 
             // Obtain the list of children keys
             var childList = (IEnumerable)relationshipProperty.GetValue(element, null);
-            var childKeyList = (from object child in childList ?? new List<object>()
+            var childKeyList =
+            (
+                from object child in childList ?? new List<object>()
                 select otherEntityPrimaryKeyProperty.GetValue(child, null)).ToList();
             var currentChildKeyList = new List<object>();
             var chunks = Split(childKeyList, queryLimit);
@@ -520,14 +522,15 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
                 // Check for already existing relationships
                 var childrenPlaceHolders = string.Join(",", Enumerable.Repeat("?", chunk.Count));
-                var currentChildrenQuery = string.Format("select [{0}] from [{1}] where [{2}] == ? and [{0}] in ({3})",
-                    otherEntityForeignKeyProperty.GetColumnName(), intermediateType.GetTableName(),
-                    currentEntityForeignKeyProperty.GetColumnName(), childrenPlaceHolders);
+                var currentChildrenQuery = string.Format("select [{0}] from [{1}] where [{2}] == ? and [{0}] in ({3})"
+                    , otherEntityForeignKeyProperty.GetColumnName(), intermediateType.GetTableName()
+                    , currentEntityForeignKeyProperty.GetColumnName(), childrenPlaceHolders);
                 var parameters = new List<object> { primaryKey };
                 parameters.AddRange(chunk);
                 currentChildKeyList.AddRange(
-                    from object child in conn.Query(conn.GetMapping(intermediateType), currentChildrenQuery,
-                        parameters.ToArray()) select otherEntityForeignKeyProperty.GetValue(child, null));
+                    from object child in conn.Query(conn.GetMapping(intermediateType), currentChildrenQuery
+                        , parameters.ToArray())
+                    select otherEntityForeignKeyProperty.GetValue(child, null));
             }
 
             // Insert missing relationships in the intermediate table
@@ -547,24 +550,24 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 var childrenPlaceHolders = string.Join(",", Enumerable.Repeat("?", chunk.Count));
 
                 // Delete any other pending relationship
-                var deleteQuery = string.Format("delete from [{0}] where [{1}] == ? and [{2}] not in ({3})",
-                    intermediateType.GetTableName(), currentEntityForeignKeyProperty.GetColumnName(),
-                    otherEntityForeignKeyProperty.GetColumnName(), childrenPlaceHolders);
+                var deleteQuery = string.Format("delete from [{0}] where [{1}] == ? and [{2}] not in ({3})"
+                    , intermediateType.GetTableName(), currentEntityForeignKeyProperty.GetColumnName()
+                    , otherEntityForeignKeyProperty.GetColumnName(), childrenPlaceHolders);
                 var parameters = new List<object> { primaryKey };
                 parameters.AddRange(chunk);
                 conn.Execute(deleteQuery, parameters.ToArray());
             }
         }
 
-        private static void DeleteAllIds(this SQLiteConnection conn, object[] primaryKeyValues, string entityName,
-            string primaryKeyName)
+        private static void DeleteAllIds(this SQLiteConnection conn, object[] primaryKeyValues, string entityName
+            , string primaryKeyName)
         {
             if (primaryKeyValues == null || primaryKeyValues.Length == 0) return;
 
             if (primaryKeyValues.Length <= queryLimit) {
                 var placeholdersString = string.Join(",", Enumerable.Repeat("?", primaryKeyValues.Length));
-                var deleteQuery = string.Format("delete from [{0}] where [{1}] in ({2})", entityName, primaryKeyName,
-                    placeholdersString);
+                var deleteQuery = string.Format("delete from [{0}] where [{1}] in ({2})", entityName, primaryKeyName
+                    , placeholdersString);
                 conn.Execute(deleteQuery, primaryKeyValues);
             }
             else {
@@ -584,8 +587,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         private static void Assert(bool assertion, Type type, PropertyInfo property, string message)
         {
             if (EnableRuntimeAssertions && !assertion)
-                throw new IncorrectRelationshipException(type.Name, property != null ? property.Name : string.Empty,
-                    message);
+                throw new IncorrectRelationshipException(type.Name, property != null ? property.Name : string.Empty
+                    , message);
         }
 #endregion
     }

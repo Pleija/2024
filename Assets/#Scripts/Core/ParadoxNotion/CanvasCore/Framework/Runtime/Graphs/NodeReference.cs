@@ -13,8 +13,8 @@ namespace NodeCanvas.Framework
     }
 
     ///<summary>A utility to have nodes weak reference other nodes</summary>
-    [Serializable, ParadoxNotion.Serialization.FullSerializer.fsForward(nameof(_targetNodeUID)),
-     ParadoxNotion.Serialization.FullSerializer.fsAutoInstance]
+    [Serializable, ParadoxNotion.Serialization.FullSerializer.fsForward(nameof(_targetNodeUID))
+     , ParadoxNotion.Serialization.FullSerializer.fsAutoInstance]
     public class NodeReference<T> : INodeReference where T : Node
     {
         [SerializeField]

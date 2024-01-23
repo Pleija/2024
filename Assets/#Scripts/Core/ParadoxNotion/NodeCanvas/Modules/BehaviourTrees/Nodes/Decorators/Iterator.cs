@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Iterate"), Category("Decorators"),
-     Description(
-         "Iterates a list and executes its child once for each element in that list. Keeps iterating until the Termination Policy is met or until the whole list is iterated, in which case the last iteration child status is returned."),
-     Icon("List")]
+    [Name("Iterate"), Category("Decorators")
+     , Description(
+         "Iterates a list and executes its child once for each element in that list. Keeps iterating until the Termination Policy is met or until the whole list is iterated, in which case the last iteration child status is returned.")
+     , Icon("List")]
     public class Iterator : BTDecorator
     {
         public enum TerminationConditions { None, FirstSuccess, FirstFailure }

@@ -5,35 +5,36 @@ using System;
 
 namespace FlowCanvas.Nodes
 {
-
-    [Name("UI Toggle")]
-    [Category("Events/Object/UI")]
-    [Description("Called when the target UI Toggle value changed.")]
+    [Name("UI Toggle"), Category("Events/Object/UI"), Description("Called when the target UI Toggle value changed.")]
     public class UIToggleEvent : EventNode<UnityEngine.UI.Toggle>
     {
-
         private FlowOutput o;
         private bool state;
 
-        public override void OnPostGraphStarted() {
+        public override void OnPostGraphStarted()
+        {
             ResolveSelf();
-            if ( !target.isNull ) {
-                target.value.onValueChanged.AddListener(OnValueChanged);
-            }
-        }
-        public override void OnGraphStoped() {
-            if ( !target.isNull ) {
-                target.value.onValueChanged.RemoveListener(OnValueChanged);
-            }
+            if (!target.isNull) target.value.onValueChanged.AddListener(OnValueChanged);
         }
 
-        protected override void RegisterPorts() {
+        public override void OnGraphStoped()
+        {
+            if (!target.isNull) target.value.onValueChanged.RemoveListener(OnValueChanged);
+        }
+
+        protected override void RegisterPorts()
+        {
             o = AddFlowOutput("Value Changed");
-            AddValueOutput<UnityEngine.UI.Toggle>("This", () => { return base.target.value; });
-            AddValueOutput<bool>("Value", () => { return state; });
+            AddValueOutput<UnityEngine.UI.Toggle>("This", () => {
+                return target.value;
+            });
+            AddValueOutput<bool>("Value", () => {
+                return state;
+            });
         }
 
-        void OnValueChanged(bool state) {
+        private void OnValueChanged(bool state)
+        {
             this.state = state;
             o.Call(new Flow());
         }

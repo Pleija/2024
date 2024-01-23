@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Parallel", 8), Category("Composites"),
-     Description(
-         "Executes all children simultaneously and return Success or Failure depending on the selected Policy."),
-     Icon("Parallel"), Color("ff64cb")]
+    [Name("Parallel", 8), Category("Composites")
+     , Description(
+         "Executes all children simultaneously and return Success or Failure depending on the selected Policy.")
+     , Icon("Parallel"), Color("ff64cb")]
     public class Parallel : BTComposite
     {
         public enum ParallelPolicy { FirstFailure, FirstSuccess, FirstSuccessOrFailure }
@@ -17,8 +17,8 @@ namespace NodeCanvas.BehaviourTrees
         [Tooltip("The policy determines when the Parallel node will end and return its Status.")]
         public ParallelPolicy policy = ParallelPolicy.FirstFailure;
 
-        [Name("Repeat"),
-         Tooltip(
+        [Name("Repeat")
+         , Tooltip(
              "If true, finished children are repeated until the Policy set is met, or until all children have had a chance to finish at least once.")]
         public bool dynamic;
 
@@ -44,9 +44,11 @@ namespace NodeCanvas.BehaviourTrees
 
                 if (defferedStatus == Status.Resting) {
                     if (status == Status.Failure && (policy == ParallelPolicy.FirstFailure ||
-                            policy == ParallelPolicy.FirstSuccessOrFailure)) defferedStatus = Status.Failure;
+                        policy == ParallelPolicy.FirstSuccessOrFailure))
+                        defferedStatus = Status.Failure;
                     if (status == Status.Success && (policy == ParallelPolicy.FirstSuccess ||
-                            policy == ParallelPolicy.FirstSuccessOrFailure)) defferedStatus = Status.Success;
+                        policy == ParallelPolicy.FirstSuccessOrFailure))
+                        defferedStatus = Status.Success;
                 }
 
                 if (status != Status.Running && !isConnectionFinished) {
@@ -65,10 +67,8 @@ namespace NodeCanvas.BehaviourTrees
                 ResetRunning();
 
                 switch (policy) {
-                    case ParallelPolicy.FirstFailure:
-                        return Status.Success;
-                    case ParallelPolicy.FirstSuccess:
-                        return Status.Failure;
+                    case ParallelPolicy.FirstFailure: return Status.Success;
+                    case ParallelPolicy.FirstSuccess: return Status.Failure;
                 }
             }
             return Status.Running;

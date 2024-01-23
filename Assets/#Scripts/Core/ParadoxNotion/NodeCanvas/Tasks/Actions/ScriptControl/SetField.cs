@@ -21,8 +21,8 @@ namespace NodeCanvas.Tasks.Actions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected"), Description("Set a variable on a script"), Name("Set Field", 5),
-     fsMigrateVersions(typeof(SetField_0))]
+    [Category("✫ Reflected"), Description("Set a variable on a script"), Name("Set Field", 5)
+     , fsMigrateVersions(typeof(SetField_0))]
     public class SetField : ActionTask, IReflectedWrapper, IMigratable<SetField_0>
     {
         ///----------------------------------------------------------------------------------------------
@@ -90,9 +90,9 @@ namespace NodeCanvas.Tasks.Actions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object), SetTargetField,
-                            menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object), SetTargetField
+                            , menu);
                     menu.AddSeparator("/");
                 }
 
@@ -110,8 +110,8 @@ namespace NodeCanvas.Tasks.Actions
                 UnityEditor.EditorGUILayout.LabelField("Type", targetField.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Field", targetField.Name);
                 UnityEditor.EditorGUILayout.LabelField("Field Type", targetField.FieldType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetField),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetField)
+                    , UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Set Value", setValue);
             }

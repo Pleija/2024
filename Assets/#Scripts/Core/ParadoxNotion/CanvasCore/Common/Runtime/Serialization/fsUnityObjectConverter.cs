@@ -61,7 +61,8 @@ namespace ParadoxNotion.Serialization
                     "A Unity Object reference has not been deserialized because no database entry was found in provided database references.");
             var reference = database[index];
             if (ReferenceEquals(reference as UnityEngine.Object, null) ||
-                storageType.RTIsAssignableFrom(reference.GetType())) instance = reference;
+                storageType.RTIsAssignableFrom(reference.GetType()))
+                instance = reference;
             return fsResult.Success;
         }
 

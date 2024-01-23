@@ -11,9 +11,6 @@ namespace SqlCipher4Unity3D
 {
     public class TypeDataScheme : DataScheme
     {
-        public DataScheme Create(Type type)
-        {
-            return this;
-        }
+        public DataScheme Create(Type type) => this;
     }
 }

@@ -26,11 +26,11 @@ public class Sample : MonoBehaviour
         var lookup = Enumerable.Range(0, tags.Length).ToDictionary(k => tags[k], v => colors[v]);
 
         foreach (var tag in tags)
-        foreach (var go in ((TagPattern)tag).GameObjects()) {
-            var mpb = new MaterialPropertyBlock();
-            mpb.SetColor("_Color", lookup[tag]);
-            go.GetComponent<MeshRenderer>().SetPropertyBlock(mpb);
-        }
+            foreach (var go in ((TagPattern)tag).GameObjects()) {
+                var mpb = new MaterialPropertyBlock();
+                mpb.SetColor("_Color", lookup[tag]);
+                go.GetComponent<MeshRenderer>().SetPropertyBlock(mpb);
+            }
     }
 
     private void Update() { }

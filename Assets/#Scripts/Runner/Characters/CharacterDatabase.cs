@@ -18,8 +18,7 @@ namespace Runner.Characters
         public static Character GetCharacter(string type)
         {
             Character c;
-            if (m_CharactersDict == null || !m_CharactersDict.TryGetValue(type, out c))
-                return null;
+            if (m_CharactersDict == null || !m_CharactersDict.TryGetValue(type, out c)) return null;
             return c;
         }
 

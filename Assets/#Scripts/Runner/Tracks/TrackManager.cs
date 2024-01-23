@@ -150,8 +150,7 @@ namespace Runner.Tracks
         {
             characterController.StartMoving();
             m_IsMoving = true;
-            if (isRestart)
-                m_Speed = minSpeed;
+            if (isRestart) m_Speed = minSpeed;
         }
 
         public void StopMove()
@@ -199,8 +198,8 @@ namespace Runner.Tracks
                 yield return op;
 
                 if (op.Result == null) {
-                    Debug.LogWarning(string.Format("Unable to load character {0}.",
-                        PlayerData.instance.characters[PlayerData.instance.usedCharacter]));
+                    Debug.LogWarning(string.Format("Unable to load character {0}."
+                        , PlayerData.instance.characters[PlayerData.instance.usedCharacter]));
                     yield break;
                 }
                 var obj = Instantiate(op.Result, Vector3.zero, Quaternion.identity);
@@ -238,12 +237,12 @@ namespace Runner.Tracks
                 PlayerData.instance.StartRunMissions(this);
 #if UNITY_ANALYTICS
                 AnalyticsEvent.GameStart(new Dictionary<string, object> {
-                    { "theme", m_CurrentThemeData.themeName },
-                    { "character", player.characterName }, {
-                        "accessory",
-                        PlayerData.instance.usedAccessory >= 0
+                    { "theme", m_CurrentThemeData.themeName }, { "character", player.characterName }, {
+                        "accessory"
+                        , PlayerData.instance.usedAccessory >= 0
                             ? player.accessories[PlayerData.instance.usedAccessory].accessoryName : "none"
-                    },
+                    }
+                    ,
                 });
 #endif
             }
@@ -255,16 +254,19 @@ namespace Runner.Tracks
         public void End()
         {
             foreach (var seg in m_Segments) {
-                /*Addressables.ReleaseInstance*/Destroy(seg.gameObject);
+                /*Addressables.ReleaseInstance*/
+                Destroy(seg.gameObject);
                 _spawnedSegments--;
             }
             for (var i = 0; i < m_PastSegments.Count; ++i)
-                /*Addressables.ReleaseInstance*/Destroy(m_PastSegments[i].gameObject);
+                /*Addressables.ReleaseInstance*/
+                Destroy(m_PastSegments[i].gameObject);
             m_Segments.Clear();
             m_PastSegments.Clear();
             characterController.End();
             gameObject.SetActive(false);
-            /*Addressables.ReleaseInstance*/Destroy(characterController.character.gameObject);
+            /*Addressables.ReleaseInstance*/
+            Destroy(characterController.character.gameObject);
             characterController.character = null;
             Camera.main.transform.SetParent(null);
             Camera.main.transform.position = m_CameraOriginalPos;
@@ -313,8 +315,7 @@ namespace Runner.Tracks
                         _parallaxRootChildren++;
                     }
                 }
-            if (!m_IsMoving)
-                return;
+            if (!m_IsMoving) return;
             var scaledSpeed = m_Speed * Time.deltaTime;
             m_ScoreAccum += scaledSpeed;
             m_CurrentZoneDistance += scaledSpeed;
@@ -424,8 +425,7 @@ namespace Runner.Tracks
         public void ChangeZone()
         {
             m_CurrentZone += 1;
-            if (m_CurrentZone >= m_CurrentThemeData.zones.Length)
-                m_CurrentZone = 0;
+            if (m_CurrentZone >= m_CurrentThemeData.zones.Length) m_CurrentZone = 0;
             m_CurrentZoneDistance = 0;
         }
 
@@ -444,8 +444,8 @@ namespace Runner.Tracks
             yield return segmentToUseOp;
 
             if (segmentToUseOp.Result == null) {
-                Debug.LogWarning(string.Format("Unable to load segment {0}.",
-                    m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse].Asset.name));
+                Debug.LogWarning(string.Format("Unable to load segment {0}."
+                    , m_CurrentThemeData.zones[m_CurrentZone].prefabList[segmentUse].Asset.name));
                 yield break;
             }
             var obj = Instantiate(segmentToUseOp.Result, _offScreenSpawnPos, Quaternion.identity);
@@ -499,8 +499,7 @@ namespace Runner.Tracks
 
             if (obj != null) {
                 var obstacle = obj.GetComponent<Obstacle>();
-                if (obstacle != null)
-                    yield return obstacle.Spawn(segment, segment.obstaclePositions[posIndex]);
+                if (obstacle != null) yield return obstacle.Spawn(segment, segment.obstaclePositions[posIndex]);
             }
         }
 
@@ -520,8 +519,8 @@ namespace Runner.Tracks
                     var laneValid = true;
                     var testedLane = currentLane;
 
-                    while (Physics.CheckSphere(pos + (testedLane - 1) * laneOffset * (rot * Vector3.right), 0.4f,
-                               1 << 9)) {
+                    while (Physics.CheckSphere(pos + (testedLane - 1) * laneOffset * (rot * Vector3.right), 0.4f
+                        , 1 << 9)) {
                         testedLane = (testedLane + 1) % 3;
 
                         if (currentLane == testedLane) {
@@ -549,8 +548,8 @@ namespace Runner.Tracks
                                 yield return op;
 
                                 if (op.Result == null) {
-                                    Debug.LogWarning(string.Format("Unable to load consumable {0}.",
-                                        consumableDatabase.consumbales[picked].gameObject.name));
+                                    Debug.LogWarning(string.Format("Unable to load consumable {0}."
+                                        , consumableDatabase.consumbales[picked].gameObject.name));
                                     yield break;
                                 }
                                 toUse = Instantiate(op.Result, pos, rot).Of(x => x.OnDestroyAsObservable().Subscribe(
@@ -569,8 +568,8 @@ namespace Runner.Tracks
                             yield return op;
 
                             if (op.Result == null) {
-                                Debug.LogWarning(string.Format("Unable to load collectable {0}.",
-                                    currentTheme.premiumCollectible.name));
+                                Debug.LogWarning(string.Format("Unable to load collectable {0}."
+                                    , currentTheme.premiumCollectible.name));
                                 yield break;
                             }
                             toUse = Instantiate(op.Result, pos, rot).OnDestroyRelease(op);

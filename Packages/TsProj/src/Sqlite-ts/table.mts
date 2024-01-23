@@ -7,89 +7,89 @@ import { ColumnInfo, ConstructorClass, TableInfo } from './types.mjs'
 import { Utils } from './utils.mjs'
 
 export class Table<M, T extends ConstructorClass<M>, TDb> extends Dialect<
-  M,
-  TDb
+    M,
+    TDb
 > {
-  static buildTableInfo<M, T extends ConstructorClass<M>>(
-    db: Db<any>,
-    entity: T,
-    name: string
-  ): TableInfo<M> {
-    const table = new entity()
+    static buildTableInfo<M, T extends ConstructorClass<M>>(
+        db: Db<any>,
+        entity: T,
+        name: string
+    ): TableInfo<M> {
+        const table = new entity()
 
-    const properties = Object.getOwnPropertyNames(table)
-    const descriptor = {}
-    const columns: { [key: string]: { primary: boolean } & ColumnInfo } = {}
+        const properties = Object.getOwnPropertyNames(table)
+        const descriptor = {}
+        const columns: { [key: string]: { primary: boolean } & ColumnInfo } = {}
 
-    for (const key of properties) {
-      ;(descriptor as any)[key] = key
+        for (const key of properties) {
+            ;(descriptor as any)[key] = key
 
-      let primary = false
-      let column = Reflect.getMetadata(
-        COLUMN_META_KEY,
-        table,
-        key
-      ) as ColumnInfo
+            let primary = false
+            let column = Reflect.getMetadata(
+                COLUMN_META_KEY,
+                table,
+                key
+            ) as ColumnInfo
 
-      if (!column) {
-        column = Reflect.getMetadata(PRIMARY_META_KEY, table, key) as ColumnInfo
-        primary = true
-      }
+            if (!column) {
+                column = Reflect.getMetadata(PRIMARY_META_KEY, table, key) as ColumnInfo
+                primary = true
+            }
 
-      if (column) {
-        columns[key] = {
-          primary,
-          ...column
+            if (column) {
+                columns[key] = {
+                    primary,
+                    ...column
+                }
+            }
         }
-      }
+
+        return {
+            db,
+            name,
+            columns,
+            descriptor
+        }
     }
 
-    return {
-      db,
-      name,
-      columns,
-      descriptor
-    }
-  }
-
-  constructor(entity: T, name: string, db: Db<T>) {
-    super(Table.buildTableInfo(db, entity, name))
-    this._mapResult = this._mapResult.bind(this)
-  }
-
-  async buildBackupSql() {
-    const { db, name, columns } = this.info
-
-    const cols = Object.keys(columns)
-      .map(c => Utils.quote(c))
-      .join(', ')
-    const tbl = Utils.quote(name)
-
-    // get data values
-    const values = await db.query(`SELECT ${cols} FROM ${tbl}`)
-    if (!values || !values.length) {
-      return ''
+    constructor(entity: T, name: string, db: Db<T>) {
+        super(Table.buildTableInfo(db, entity, name))
+        this._mapResult = this._mapResult.bind(this)
     }
 
-    // build ordered column names
-    const keys = Object.keys(values[0])
+    async buildBackupSql() {
+        const {db, name, columns} = this.info
 
-    // build insert values sql
-    const sql = `INSERT INTO ${tbl} (${keys
-      .map(c => Utils.quote(c))
-      .join(', ')}) VALUES ${values
-      .map(value => {
-        return (
-          '(' +
-          keys
-            .map(col =>
-              Utils.asRawValue(this.info.columns[col].type, value[col])
-            )
-            .join(',') +
-          ')'
-        )
-      })
-      .join(',')}`
-    return sql + ';'
-  }
+        const cols = Object.keys(columns)
+            .map(c => Utils.quote(c))
+            .join(', ')
+        const tbl = Utils.quote(name)
+
+        // get data values
+        const values = await db.query(`SELECT ${cols} FROM ${tbl}`)
+        if (!values || !values.length) {
+            return ''
+        }
+
+        // build ordered column names
+        const keys = Object.keys(values[0])
+
+        // build insert values sql
+        const sql = `INSERT INTO ${tbl} (${keys
+            .map(c => Utils.quote(c))
+            .join(', ')}) VALUES ${values
+            .map(value => {
+                return (
+                    '(' +
+                    keys
+                        .map(col =>
+                            Utils.asRawValue(this.info.columns[col].type, value[col])
+                        )
+                        .join(',') +
+                    ')'
+                )
+            })
+            .join(',')}`
+        return sql + ';'
+    }
 }

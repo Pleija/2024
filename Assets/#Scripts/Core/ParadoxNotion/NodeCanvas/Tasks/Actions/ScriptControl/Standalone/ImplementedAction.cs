@@ -8,8 +8,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Implemented Action (Desktop Only)", 9), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
-     Description(
+    [Name("Implemented Action (Desktop Only)", 9), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
+     , Description(
          "This version works in destop/JIT platform only.\n\nCalls a function that has signature of 'public Status NAME()' or 'public Status NAME(T)'. You should return Status.Success, Failure or Running within that function.")]
     public class ImplementedAction : ActionTask, IReflectedWrapper
     {
@@ -31,8 +31,8 @@ namespace NodeCanvas.Tasks.Actions
                 if (functionWrapper == null) return "No Action Selected";
                 if (targetMethod == null) return functionWrapper.AsString().FormatError();
                 var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("[ {0}.{1}({2}) ]", mInfo, targetMethod.Name,
-                    functionWrapper.GetVariables().Length == 2 ? functionWrapper.GetVariables()[1].ToString() : "");
+                return string.Format("[ {0}.{1}({2}) ]", mInfo, targetMethod.Name
+                    , functionWrapper.GetVariables().Length == 2 ? functionWrapper.GetVariables()[1].ToString() : "");
             }
         }
 
@@ -99,18 +99,18 @@ namespace NodeCanvas.Tasks.Actions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(Status),
-                            typeof(object), SetMethod, 1, false, true, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(Status), typeof(object)
+                            , SetMethod, 1, false, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod, 1,
-                        false, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod, 1
+                        , false, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod,
-                            1, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(Status), typeof(object), SetMethod
+                            , 1, false, true, menu);
                 }
                 menu.ShowAsBrowser("Select Action Method", GetType());
                 Event.current.Use();

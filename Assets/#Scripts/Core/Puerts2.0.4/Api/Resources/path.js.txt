@@ -11,8 +11,8 @@ export function resolve(dir, url) {
     return CS.System.IO.Path.Combine(dir, url);
 }
 
-export function join(dir, url){
+export function join(dir, url) {
     return resolve(dir, url);
 }
 
-module.exports = exports = global.path ??= { dirname, resolve, join }
+module.exports = exports = global.path ??= {dirname, resolve, join}

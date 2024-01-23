@@ -1,5 +1,5 @@
-import {StateFsm} from "Common/StateFsm.mjs";
-import {Start} from "Game/HpSlider/Start.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
+import { Start } from "Game/HpSlider/Start.mjs";
 
 export class HpSlider extends StateFsm {
     Start: Start;

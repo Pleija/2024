@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Utility"),
-     Description("Sends an event to all GraphOwners within range of the agent and over time like a shockwave.")]
+    [Category("✫ Utility")
+     , Description("Sends an event to all GraphOwners within range of the agent and over time like a shockwave.")]
     public class ShoutEvent : ActionTask<Transform>
     {
         [RequiredField]

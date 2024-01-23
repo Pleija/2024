@@ -20,134 +20,62 @@ public sealed class XXTEA
 {
     public static string Key = "2E52766A-2B1D-4783-A80E-15E0E2609CAB";
     private static readonly UTF8Encoding utf8 = new UTF8Encoding();
-    private const UInt32 delta = 0x9E3779B9;
+    private const uint delta = 0x9E3779B9;
 
-    private static UInt32 MX(UInt32 sum, UInt32 y, UInt32 z, Int32 p, UInt32 e, UInt32[] k)
-    {
-        return (z >> 5 ^ y << 2) + (y >> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z);
-    }
+    private static uint MX(uint sum, uint y, uint z, int p, uint e, uint[] k) =>
+        (((z >> 5) ^ (y << 2)) + ((y >> 3) ^ (z << 4))) ^ ((sum ^ y) + (k[(p & 3) ^ e] ^ z));
 
     private XXTEA() { }
 
-    public static Byte[] Encrypt(Byte[] data, Byte[] key)
+    public static byte[] Encrypt(byte[] data, byte[] key)
     {
-        if(data.Length == 0) {
-            return data;
-        }
-        return ToByteArray(
-            Encrypt(ToUInt32Array(data, true), ToUInt32Array(FixKey(key), false)), false);
+        if (data.Length == 0) return data;
+        return ToByteArray(Encrypt(ToUInt32Array(data, true), ToUInt32Array(FixKey(key), false)), false);
     }
 
-    public static Byte[] Encrypt(String data, Byte[] key)
+    public static byte[] Encrypt(string data, byte[] key) => Encrypt(utf8.GetBytes(data), key);
+    public static byte[] Encrypt(byte[] data, string key) => Encrypt(data, utf8.GetBytes(key));
+    public static byte[] Encrypt(string data, string key) => Encrypt(utf8.GetBytes(data), utf8.GetBytes(key));
+    public static string EncryptToBase64String(byte[] data, byte[] key) => Convert.ToBase64String(Encrypt(data, key));
+    public static string EncryptToBase64String(string data, byte[] key) => Convert.ToBase64String(Encrypt(data, key));
+    public static string EncryptToBase64String(byte[] data, string key) => Convert.ToBase64String(Encrypt(data, key));
+    public static string EncryptToBase64String(byte[] data) => Convert.ToBase64String(Encrypt(data, Key));
+    public static string EncryptToBase64String(string data, string key) => Convert.ToBase64String(Encrypt(data, key));
+    public static string EncryptToBase64String(string data) => Convert.ToBase64String(Encrypt(data, Key));
+
+    public static byte[] Decrypt(byte[] data, byte[] key)
     {
-        return Encrypt(utf8.GetBytes(data), key);
+        if (data.Length == 0) return data;
+        return ToByteArray(Decrypt(ToUInt32Array(data, false), ToUInt32Array(FixKey(key), false)), true);
     }
 
-    public static Byte[] Encrypt(Byte[] data, String key)
-    {
-        return Encrypt(data, utf8.GetBytes(key));
-    }
+    public static byte[] Decrypt(byte[] data, string key) => Decrypt(data, utf8.GetBytes(key));
+    public static byte[] DecryptBase64String(string data, byte[] key) => Decrypt(Convert.FromBase64String(data), key);
+    public static byte[] DecryptBase64String(string data, string key) => Decrypt(Convert.FromBase64String(data), key);
+    public static string DecryptToString(byte[] data, byte[] key) => utf8.GetString(Decrypt(data, key));
+    public static string DecryptToString(byte[] data, string key) => utf8.GetString(Decrypt(data, key));
 
-    public static Byte[] Encrypt(String data, String key)
-    {
-        return Encrypt(utf8.GetBytes(data), utf8.GetBytes(key));
-    }
+    public static string DecryptBase64StringToString(string data, byte[] key) =>
+        utf8.GetString(DecryptBase64String(data, key));
 
-    public static String EncryptToBase64String(Byte[] data, Byte[] key)
-    {
-        return Convert.ToBase64String(Encrypt(data, key));
-    }
+    public static string DecryptBase64StringToString(string data, string key) =>
+        utf8.GetString(DecryptBase64String(data, key));
 
-    public static String EncryptToBase64String(String data, Byte[] key)
-    {
-        return Convert.ToBase64String(Encrypt(data, key));
-    }
+    public static string DecryptBase64StringToString(string data) => utf8.GetString(DecryptBase64String(data, Key));
 
-    public static String EncryptToBase64String(Byte[] data, String key)
+    private static uint[] Encrypt(uint[] v, uint[] k)
     {
-        return Convert.ToBase64String(Encrypt(data, key));
-    }
-
-    public static String EncryptToBase64String(Byte[] data)
-    {
-        return Convert.ToBase64String(Encrypt(data, Key));
-    }
-
-    public static String EncryptToBase64String(String data, String key)
-    {
-        return Convert.ToBase64String(Encrypt(data, key));
-    }
-
-    public static String EncryptToBase64String(String data)
-    {
-        return Convert.ToBase64String(Encrypt(data, Key));
-    }
-
-    public static Byte[] Decrypt(Byte[] data, Byte[] key)
-    {
-        if(data.Length == 0) {
-            return data;
-        }
-        return ToByteArray(
-            Decrypt(ToUInt32Array(data, false), ToUInt32Array(FixKey(key), false)), true);
-    }
-
-    public static Byte[] Decrypt(Byte[] data, String key)
-    {
-        return Decrypt(data, utf8.GetBytes(key));
-    }
-
-    public static Byte[] DecryptBase64String(String data, Byte[] key)
-    {
-        return Decrypt(Convert.FromBase64String(data), key);
-    }
-
-    public static Byte[] DecryptBase64String(String data, String key)
-    {
-        return Decrypt(Convert.FromBase64String(data), key);
-    }
-
-    public static String DecryptToString(Byte[] data, Byte[] key)
-    {
-        return utf8.GetString(Decrypt(data, key));
-    }
-
-    public static String DecryptToString(Byte[] data, String key)
-    {
-        return utf8.GetString(Decrypt(data, key));
-    }
-
-    public static String DecryptBase64StringToString(String data, Byte[] key)
-    {
-        return utf8.GetString(DecryptBase64String(data, key));
-    }
-
-    public static String DecryptBase64StringToString(String data, String key)
-    {
-        return utf8.GetString(DecryptBase64String(data, key));
-    }
-
-    public static String DecryptBase64StringToString(String data)
-    {
-        return utf8.GetString(DecryptBase64String(data, Key));
-    }
-
-    private static UInt32[] Encrypt(UInt32[] v, UInt32[] k)
-    {
-        Int32 n = v.Length - 1;
-
-        if(n < 1) {
-            return v;
-        }
-        UInt32 z = v[n], y, sum = 0, e;
-        Int32 p, q = 6 + 52 / (n + 1);
+        var n = v.Length - 1;
+        if (n < 1) return v;
+        uint z = v[n], y, sum = 0, e;
+        int p, q = 6 + 52 / (n + 1);
 
         unchecked {
-            while(0 < q--) {
+            while (0 < q--) {
                 sum += delta;
-                e = sum >> 2 & 3;
+                e = (sum >> 2) & 3;
 
-                for(p = 0; p < n; p++) {
+                for (p = 0; p < n; p++) {
                     y = v[p + 1];
                     z = v[p] += MX(sum, y, z, p, e, k);
                 }
@@ -158,23 +86,20 @@ public sealed class XXTEA
         return v;
     }
 
-    private static UInt32[] Decrypt(UInt32[] v, UInt32[] k)
+    private static uint[] Decrypt(uint[] v, uint[] k)
     {
-        Int32 n = v.Length - 1;
-
-        if(n < 1) {
-            return v;
-        }
-        UInt32 z, y = v[0], sum, e;
-        Int32 p, q = 6 + 52 / (n + 1);
+        var n = v.Length - 1;
+        if (n < 1) return v;
+        uint z, y = v[0], sum, e;
+        int p, q = 6 + 52 / (n + 1);
 
         unchecked {
-            sum = (UInt32)(q * delta);
+            sum = (uint)(q * delta);
 
-            while(sum != 0) {
-                e = sum >> 2 & 3;
+            while (sum != 0) {
+                e = (sum >> 2) & 3;
 
-                for(p = n; p > 0; p--) {
+                for (p = n; p > 0; p--) {
                     z = v[p - 1];
                     y = v[p] -= MX(sum, y, z, p, e, k);
                 }
@@ -186,58 +111,46 @@ public sealed class XXTEA
         return v;
     }
 
-    private static Byte[] FixKey(Byte[] key)
+    private static byte[] FixKey(byte[] key)
     {
-        if(key.Length == 16) return key;
-        Byte[] fixedkey = new Byte[16];
-
-        if(key.Length < 16) {
+        if (key.Length == 16) return key;
+        var fixedkey = new byte[16];
+        if (key.Length < 16)
             key.CopyTo(fixedkey, 0);
-        }
-        else {
+        else
             Array.Copy(key, 0, fixedkey, 0, 16);
-        }
         return fixedkey;
     }
 
-    private static UInt32[] ToUInt32Array(Byte[] data, Boolean includeLength)
+    private static uint[] ToUInt32Array(byte[] data, bool includeLength)
     {
-        Int32 length = data.Length;
-        Int32 n = (((length & 3) == 0) ? (length >> 2) : ((length >> 2) + 1));
-        UInt32[] result;
+        var length = data.Length;
+        var n = (length & 3) == 0 ? length >> 2 : (length >> 2) + 1;
+        uint[] result;
 
-        if(includeLength) {
-            result = new UInt32[n + 1];
-            result[n] = (UInt32)length;
+        if (includeLength) {
+            result = new uint[n + 1];
+            result[n] = (uint)length;
         }
         else {
-            result = new UInt32[n];
+            result = new uint[n];
         }
-
-        for(Int32 i = 0; i < length; i++) {
-            result[i >> 2] |= (UInt32)data[i] << ((i & 3) << 3);
-        }
+        for (var i = 0; i < length; i++) result[i >> 2] |= (uint)data[i] << ((i & 3) << 3);
         return result;
     }
 
-    private static Byte[] ToByteArray(UInt32[] data, Boolean includeLength)
+    private static byte[] ToByteArray(uint[] data, bool includeLength)
     {
-        Int32 n = data.Length << 2;
+        var n = data.Length << 2;
 
-        if(includeLength) {
-            Int32 m = (Int32)data[data.Length - 1];
+        if (includeLength) {
+            var m = (int)data[data.Length - 1];
             n -= 4;
-
-            if((m < n - 3) || (m > n)) {
-                return null;
-            }
+            if (m < n - 3 || m > n) return null;
             n = m;
         }
-        Byte[] result = new Byte[n];
-
-        for(Int32 i = 0; i < n; i++) {
-            result[i] = (Byte)(data[i >> 2] >> ((i & 3) << 3));
-        }
+        var result = new byte[n];
+        for (var i = 0; i < n; i++) result[i] = (byte)(data[i >> 2] >> ((i & 3) << 3));
         return result;
     }
 }

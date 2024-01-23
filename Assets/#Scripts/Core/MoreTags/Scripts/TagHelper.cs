@@ -240,8 +240,7 @@ namespace MoreTags
 
         public static void DestroyGameObject(params GameObject[] list)
         {
-            foreach (var go in list)
-                Object.DestroyImmediate(go);
+            foreach (var go in list) Object.DestroyImmediate(go);
         }
 
         public static TagPattern Test() =>

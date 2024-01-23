@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Repeat"), Category("Decorators"),
-     Description("Repeats the child either x times or until it returns the specified status, or forever."),
-     Icon("Repeat")]
+    [Name("Repeat"), Category("Decorators")
+     , Description("Repeats the child either x times or until it returns the specified status, or forever.")
+     , Icon("Repeat")]
     public class Repeater : BTDecorator
     {
         public enum RepeaterMode { RepeatTimes = 0, RepeatUntil = 1, RepeatForever = 2 }
@@ -28,10 +28,8 @@ namespace NodeCanvas.BehaviourTrees
             status = decoratedConnection.Execute(agent, blackboard);
 
             switch (status) {
-                case Status.Resting:
-                    return Status.Running;
-                case Status.Running:
-                    return Status.Running;
+                case Status.Resting: return Status.Running;
+                case Status.Running: return Status.Running;
             }
 
             switch (repeaterMode) {
@@ -58,8 +56,7 @@ namespace NodeCanvas.BehaviourTrees
         {
             if (repeaterMode == RepeaterMode.RepeatTimes) {
                 GUILayout.Label(repeatTimes + " Times");
-                if (Application.isPlaying)
-                    GUILayout.Label("Iteration: " + currentIteration.ToString());
+                if (Application.isPlaying) GUILayout.Label("Iteration: " + currentIteration.ToString());
             }
             else if (repeaterMode == RepeaterMode.RepeatUntil) {
                 GUILayout.Label("Until " + repeatUntilStatus);

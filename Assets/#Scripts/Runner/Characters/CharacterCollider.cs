@@ -4,6 +4,7 @@ using Runner.Obstacles;
 using Runner.Tracks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+
 #pragma warning disable CS0108, CS0114
 
 namespace Runner.Characters
@@ -96,18 +97,18 @@ namespace Runner.Characters
         {
             // Every coin registered to the magnetCoin list (used by the magnet powerup exclusively, but could be used by other power up) is dragged toward the player.
             for (var i = 0; i < magnetCoins.Count; ++i)
-                magnetCoins[i].transform.position = Vector3.MoveTowards(magnetCoins[i].transform.position,
-                    transform.position, k_MagnetSpeed * Time.deltaTime);
+                magnetCoins[i].transform.position = Vector3.MoveTowards(magnetCoins[i].transform.position
+                    , transform.position, k_MagnetSpeed * Time.deltaTime);
         }
 
         public void OnTriggerEnter(Collider c)
         {
             if (c.gameObject.layer == k_CoinsLayerIndex) {
-                if (magnetCoins.Contains(c.gameObject))
-                    magnetCoins.Remove(c.gameObject);
+                if (magnetCoins.Contains(c.gameObject)) magnetCoins.Remove(c.gameObject);
 
                 if (c.GetComponent<Coin>().isPremium) {
-                    /*Addressables.ReleaseInstance*/Destroy(c.gameObject);
+                    /*Addressables.ReleaseInstance*/
+                    Destroy(c.gameObject);
                     PlayerData.instance.premium.Value += 1;
                     controller.premium += 1;
                     m_Audio.PlayOneShot(premiumSound);
@@ -120,15 +121,15 @@ namespace Runner.Characters
                 }
             }
             else if (c.gameObject.layer == k_ObstacleLayerIndex) {
-                if (m_Invincible || controller.IsCheatInvincible())
-                    return;
+                if (m_Invincible || controller.IsCheatInvincible()) return;
                 controller.StopMoving();
                 c.enabled = false;
                 var ob = c.gameObject.GetComponent<Obstacle>();
                 if (ob != null)
                     ob.Impacted();
                 else
-                    /*Addressables.ReleaseInstance*/Destroy(c.gameObject);
+                    /*Addressables.ReleaseInstance*/
+                    Destroy(c.gameObject);
                 if (TrackManager.instance.isTutorial)
                     m_TutorialHitObstacle = true;
                 else

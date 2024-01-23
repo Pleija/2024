@@ -56,8 +56,8 @@ namespace ParadoxNotion.Design
 #endif
 
         ///<summary>Open utility window to inspect target object of type in context using read/write delegates.</summary>
-        public static void Show(string title, System.Type targetType, Object unityObjectContext,
-            System.Func<object> read, System.Action<object> write)
+        public static void Show(string title, System.Type targetType, Object unityObjectContext
+            , System.Func<object> read, System.Action<object> write)
         {
             var window = current != null ? current : CreateInstance<GenericInspectorWindow>();
             window.friendlyTitle = title;

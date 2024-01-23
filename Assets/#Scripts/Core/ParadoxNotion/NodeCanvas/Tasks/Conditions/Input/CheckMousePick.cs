@@ -37,8 +37,8 @@ namespace NodeCanvas.Tasks.Conditions
         protected override bool OnCheck()
         {
             if (Input.GetMouseButtonDown((int)buttonKey))
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity,
-                        1 << layer)) {
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity
+                    , 1 << layer)) {
                     saveGoAs.value = hit.collider.gameObject;
                     saveDistanceAs.value = hit.distance;
                     savePosAs.value = hit.point;

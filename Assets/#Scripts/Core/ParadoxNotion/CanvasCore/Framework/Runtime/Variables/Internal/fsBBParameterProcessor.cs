@@ -13,8 +13,8 @@ namespace NodeCanvas.Framework.Internal
     public class fsBBParameterProcessor : fsRecoveryProcessor<BBParameter, MissingBBParameterType>
     {
         //...
-        public override void OnBeforeDeserializeAfterInstanceCreation(Type storageType, object instance,
-            ref fsData data)
+        public override void OnBeforeDeserializeAfterInstanceCreation(Type storageType, object instance
+            , ref fsData data)
         {
             if (ParadoxNotion.Services.Threader.applicationIsPlaying) return;
 

@@ -1,11 +1,11 @@
-import {StateFsm} from "Common/StateFsm.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
 import Blackboard = CS.NodeCanvas.Framework.Blackboard;
 import ActionState = CS.NodeCanvas.StateMachines.ActionState;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
 import FSM = CS.NodeCanvas.StateMachines.FSM;
 import * as fs from "fs";
 import Component = CS.UnityEngine.Component;
-import {iterator} from "Common/Iterator.mjs";
+import { iterator } from "Common/Iterator.mjs";
 import $typeof = puer.$typeof;
 
 export declare interface IStateNode<T extends StateFsm> {

@@ -37,8 +37,8 @@ namespace ParadoxNotion.Serialization
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (_memberInfo != null)
-                _baseInfo = string.Format("{0}|{1}", _memberInfo.RTReflectedOrDeclaredType().FullName,
-                    _memberInfo.Name);
+                _baseInfo = string.Format("{0}|{1}", _memberInfo.RTReflectedOrDeclaredType().FullName
+                    , _memberInfo.Name);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()

@@ -306,8 +306,8 @@ namespace App
             if (Application.isEditor) {
 #if UNITY_EDITOR
                 var path = AssetDatabase.GetAssetPath(scene.editorAsset);
-                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(path /*"Assets/Scenes/Start.unity"*/,
-                    new LoadSceneParameters() { loadSceneMode = LoadSceneMode.Single });
+                var p1 = EditorSceneManager.LoadSceneAsyncInPlayMode(path /*"Assets/Scenes/Start.unity"*/
+                    , new LoadSceneParameters() { loadSceneMode = LoadSceneMode.Single });
 
                 // while(!p1.isDone && p1.) {
                 //     progress.value = 0.9f - p1.progress;

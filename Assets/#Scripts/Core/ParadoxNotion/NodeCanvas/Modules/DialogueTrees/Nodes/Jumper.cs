@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Name("JUMP"),
-     Description(
-         "Select a target node to jump to.\nFor your convenience in identifying nodes in the dropdown, please give a Tag name to the nodes you want to use in this way."),
-     Category("Control"), Icon("Set"), Color("6ebbff")]
+    [Name("JUMP")
+     , Description(
+         "Select a target node to jump to.\nFor your convenience in identifying nodes in the dropdown, please give a Tag name to the nodes you want to use in this way.")
+     , Category("Control"), Icon("Set"), Color("6ebbff")]
     public class Jumper : DTNode, IHaveNodeReference
     {
         [ParadoxNotion.Serialization.FullSerializer.fsSerializeAs("_sourceNodeUID")]

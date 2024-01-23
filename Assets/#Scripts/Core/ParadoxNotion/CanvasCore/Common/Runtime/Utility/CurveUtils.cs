@@ -8,8 +8,8 @@ namespace ParadoxNotion
         private const float POS_CHECK_DISTANCE = 10f;
 
         ///<summary>Get position on curve from, to, by t</summary>
-        public static Vector2 GetPosAlongCurve(Vector2 from, Vector2 to, Vector2 fromTangent, Vector2 toTangent,
-            float t)
+        public static Vector2 GetPosAlongCurve(Vector2 from, Vector2 to, Vector2 fromTangent, Vector2 toTangent
+            , float t)
         {
             var u = 1.0f - t;
             var tt = t * t;
@@ -24,16 +24,16 @@ namespace ParadoxNotion
         }
 
         ///<summary>Is target position along from, to curve</summary>
-        public static bool IsPosAlongCurve(Vector2 from, Vector2 to, Vector2 fromTangent, Vector2 toTangent,
-            Vector2 targetPosition)
+        public static bool IsPosAlongCurve(Vector2 from, Vector2 to, Vector2 fromTangent, Vector2 toTangent
+            , Vector2 targetPosition)
         {
             float norm = 0;
             return IsPosAlongCurve(from, to, fromTangent, toTangent, targetPosition, out norm);
         }
 
         ///<summary>Is target position along from, to curve</summary>
-        public static bool IsPosAlongCurve(Vector2 from, Vector2 to, Vector2 fromTangent, Vector2 toTangent,
-            Vector2 targetPosition, out float norm)
+        public static bool IsPosAlongCurve(Vector2 from, Vector2 to, Vector2 fromTangent, Vector2 toTangent
+            , Vector2 targetPosition, out float norm)
         {
             if (RectUtils.GetBoundRect(from, to).ExpandBy(POS_CHECK_DISTANCE).Contains(targetPosition))
                 for (var i = 0f; i <= POS_CHECK_RES; i++) {
@@ -49,8 +49,8 @@ namespace ParadoxNotion
         }
 
         //Resolve relevant tangency
-        public static void ResolveTangents(Vector2 from, Vector2 to, float rigidMlt, PlanarDirection direction,
-            out Vector2 fromTangent, out Vector2 toTangent)
+        public static void ResolveTangents(Vector2 from, Vector2 to, float rigidMlt, PlanarDirection direction
+            , out Vector2 fromTangent, out Vector2 toTangent)
         {
             var fromRect = new Rect(0, 0, 1, 1);
             var toRect = new Rect(0, 0, 1, 1);
@@ -60,8 +60,8 @@ namespace ParadoxNotion
         }
 
         //Resolve relevant tangency
-        public static void ResolveTangents(Vector2 from, Vector2 to, Rect fromRect, Rect toRect, float rigidMlt,
-            PlanarDirection direction, out Vector2 fromTangent, out Vector2 toTangent)
+        public static void ResolveTangents(Vector2 from, Vector2 to, Rect fromRect, Rect toRect, float rigidMlt
+            , PlanarDirection direction, out Vector2 fromTangent, out Vector2 toTangent)
         {
             var tangentX = Mathf.Abs(from.x - to.x) * rigidMlt;
             tangentX = Mathf.Max(tangentX, 25);

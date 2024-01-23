@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("GameObject"),
-     Description("Checks the current speed of the agent against a value based on it's Rigidbody velocity")]
+    [Category("GameObject")
+     , Description("Checks the current speed of the agent against a value based on it's Rigidbody velocity")]
     public class CheckSpeed : ConditionTask<Rigidbody>
     {
         public CompareMethod checkType = CompareMethod.EqualTo;

@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Target In Line Of Sight"), Category("GameObject"),
-     Description("Check of agent is in line of sight with target by doing a linecast and optionaly save the distance")]
+    [Name("Target In Line Of Sight"), Category("GameObject")
+     , Description(
+         "Check of agent is in line of sight with target by doing a linecast and optionaly save the distance")]
     public class CheckLOS : ConditionTask<Transform>
     {
         [RequiredField]

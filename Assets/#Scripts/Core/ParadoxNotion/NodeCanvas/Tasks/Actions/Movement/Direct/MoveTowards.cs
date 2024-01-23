@@ -20,8 +20,8 @@ namespace NodeCanvas.Tasks.Actions
                 EndAction();
                 return;
             }
-            agent.position = Vector3.MoveTowards(agent.position, target.value.transform.position,
-                speed.value * Time.deltaTime);
+            agent.position = Vector3.MoveTowards(agent.position, target.value.transform.position
+                , speed.value * Time.deltaTime);
             if (!waitActionFinish) EndAction();
         }
     }

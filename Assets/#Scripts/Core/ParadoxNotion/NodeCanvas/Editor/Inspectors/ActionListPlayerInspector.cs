@@ -16,8 +16,8 @@ namespace NodeCanvas.Editor
             GUI.skin.label.richText = true;
             GUILayout.Space(10);
             list.playOnAwake = EditorGUILayout.Toggle("Play On Awake", list.playOnAwake);
-            list.blackboard = (Blackboard)EditorGUILayout.ObjectField("Target Blackboard", (Blackboard)list.blackboard,
-                typeof(Blackboard), true);
+            list.blackboard = (Blackboard)EditorGUILayout.ObjectField("Target Blackboard", (Blackboard)list.blackboard
+                , typeof(Blackboard), true);
             TaskEditor.TaskFieldSingle(list.actionList, null, false);
             EditorUtils.EndOfInspector();
             if (Event.current.isMouse || list.actionList.isRunning) Repaint();

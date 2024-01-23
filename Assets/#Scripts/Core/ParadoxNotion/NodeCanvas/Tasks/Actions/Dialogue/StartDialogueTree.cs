@@ -5,10 +5,10 @@ using NodeCanvas.DialogueTrees;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("Dialogue"),
-     Description(
-         "Starts the Dialogue Tree assigned on a Dialogue Tree Controller object with specified agent used for 'Instigator'."),
-     Icon("Dialogue")]
+    [Category("Dialogue")
+     , Description(
+         "Starts the Dialogue Tree assigned on a Dialogue Tree Controller object with specified agent used for 'Instigator'.")
+     , Icon("Dialogue")]
     public class StartDialogueTree : ActionTask<IDialogueActor>
     {
         [RequiredField]

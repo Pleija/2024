@@ -61,12 +61,8 @@ namespace MoreTags
         {
             var origin = tags;
             tags = s_TagTable.Select((kv) => new TagData() {
-                name = kv.Key,
-                color = kv.Value.color,
-                value = kv.Value.value,
-                cost = kv.Value.cost,
-                enable = kv.Value.enable,
-                number = kv.Value.number,
+                name = kv.Key, color = kv.Value.color, value = kv.Value.value, cost = kv.Value.cost
+                , enable = kv.Value.enable, number = kv.Value.number,
                 //gameObjects = kv.Value.gameObjects.ToArray(), //.Where(go => go != null && go.scene == scene)
                 //     .ToArray()
             }).Where(x => origin.All(t => t.name != x.name)).Union(tags).ToList();
@@ -104,22 +100,19 @@ namespace MoreTags
         public static void CheckGameObjectTag(GameObject go)
         {
             var tags = go.GetComponent<Tags>();
-            if (tags == null)
-                go.AddComponent<Tags>();
+            if (tags == null) go.AddComponent<Tags>();
         }
 
         public static void RemoveUnusedTag()
         {
             RemoveNullGameObject();
             var remove = s_TagTable.Where(kv => !s_TagTable[kv.Key].gameObjects.Any()).Select(kv => kv.Key).ToArray();
-            foreach (var key in remove)
-                s_TagTable.Remove(key);
+            foreach (var key in remove) s_TagTable.Remove(key);
         }
 
         public static void RemoveNullGameObject()
         {
-            foreach (var data in s_TagTable)
-                data.Value.gameObjects.RemoveWhere(go => go == null);
+            foreach (var data in s_TagTable) data.Value.gameObjects.RemoveWhere(go => go == null);
         }
 
         public static void SearchFrom(IEnumerable<GameObject> list = null)
@@ -169,8 +162,7 @@ namespace MoreTags
         {
             CheckTagManager(go.scene);
             AddTag(tags);
-            foreach (var tag in tags)
-                s_TagTable[tag].gameObjects.Add(go);
+            foreach (var tag in tags) s_TagTable[tag].gameObjects.Add(go);
             CheckGameObjectTag(go);
         }
 
@@ -296,8 +288,7 @@ namespace MoreTags
                     if (!s_TagTable.ContainsKey(tag))
                         return Empty();
                 var e = WithInternal(tags.First());
-                foreach (var tag in tags.Skip(1))
-                    e = e.And(s_TagTable[tag].gameObjects, s_SearchFrom);
+                foreach (var tag in tags.Skip(1)) e = e.And(s_TagTable[tag].gameObjects, s_SearchFrom);
                 return e;
             }
 
@@ -311,8 +302,7 @@ namespace MoreTags
                         list.Add(tag);
                 if (list.Count == 0) return Empty();
                 var e = WithInternal(list.First());
-                foreach (var tag in list.Skip(1))
-                    e = e.Or(s_TagTable[tag].gameObjects, s_SearchFrom);
+                foreach (var tag in list.Skip(1)) e = e.Or(s_TagTable[tag].gameObjects, s_SearchFrom);
                 return e;
             }
         }
@@ -335,16 +325,14 @@ namespace MoreTags
             var less = a.Count < b.Count ? a : b;
             var more = a.Count >= b.Count ? a : b;
             var result = new HashSet<T>(more);
-            foreach (var item in less)
-                result.Add(item);
+            foreach (var item in less) result.Add(item);
             return result;
         }
 
         private static HashSet<T> Exclude<T>(this HashSet<T> a, HashSet<T> b)
         {
             var result = new HashSet<T>(a);
-            foreach (var item in b)
-                result.Remove(item);
+            foreach (var item in b) result.Remove(item);
             return result;
         }
 

@@ -19,7 +19,6 @@ namespace NodeCanvas.Framework
 {
     partial class Node
     {
-
         public string MakeFile()
         {
             // if (string.IsNullOrWhiteSpace(customName)) {
@@ -47,7 +46,8 @@ namespace NodeCanvas.Framework
             }
             Debug.Log(
                 $"path: {nodeFilePath} dir: {Path.GetDirectoryName(nodeFilePath)} exists: {Directory.Exists(Path.GetDirectoryName(nodeFilePath))}");
-            if (!Directory.Exists(Path.GetDirectoryName(nodeFilePath))) Directory.CreateDirectory(Path.GetDirectoryName(nodeFilePath)!);
+            if (!Directory.Exists(Path.GetDirectoryName(nodeFilePath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(nodeFilePath)!);
 
             if (!File.Exists(nodeFilePath)) {
                 var content = @$"import {{ {graph.FsmName} }} from ""{graph.FsmPath}"";
@@ -75,12 +75,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 if (bindComponent && !extends.GetText().Contains(bindComponent.GetType().Name)) {
                     ch = true;
                     changeAst.ChangeNode(extends, $" extends {bindComponent.GetType().Name}");
-
                     if (root.OfKind(SyntaxKind.ImportEqualsDeclaration).All(x =>
-                            !x.GetText().Contains($"CS.{bindComponent.GetType().FullName}"))) {
-                        changeAst.InsertBefore(root.RootNode,
-                            $"import {bindComponent.GetType().Name} = CS.{bindComponent.GetType().FullName};\n");
-                    }
+                        !x.GetText().Contains($"CS.{bindComponent.GetType().FullName}")))
+                        changeAst.InsertBefore(root.RootNode
+                            , $"import {bindComponent.GetType().Name} = CS.{bindComponent.GetType().FullName};\n");
                 }
                 else if (!bindComponent) {
                     if (!extends.GetText().Contains($"StateNode<{FsmName}>")) {
@@ -94,14 +92,9 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                         changeAst.InsertBefore(root.RootNode, $"import {{ {FsmName} }} from \"{graph.FsmPath}\";\n");
                     }
                 }
-
-                if (ch) {
-                    File.WriteAllText(nodeFilePath, changeAst.GetChangedSource(root.SourceStr));
-                }
+                if (ch) File.WriteAllText(nodeFilePath, changeAst.GetChangedSource(root.SourceStr));
             }
-
             var fsmFilePath = $"{src}/{graph.FsmPath.Replace(".mjs", ".mts")}";
-
             var source = File.ReadAllText(fsmFilePath);
             var ast = new TypeScriptAST(source, fsmFilePath);
             var change = new ChangeAST();
@@ -141,8 +134,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     init.OfKind(SyntaxKind.Block).First().Children.ForEach(x => {
                         Debug.Log($"{x.IdentifierStr} => {x.Kind} => {x.GetText()}");
                     });
-                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First(),
-                        $"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
+                    change.ChangeNode(init.OfKind(SyntaxKind.Block).First()
+                        , $"{{\n         this.{NodeName} = new {NodeName}(this);\n    }}\n");
                 }
             }
 
@@ -152,7 +145,6 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             }
             return nodeFilePath.Replace(Directory.GetCurrentDirectory() + "/", "");
         }
-
 
         //Class for the nodeports GUI
         private class GUIPort
@@ -346,16 +338,11 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         protected Vector2 GetRelativeNodePosition(Alignment2x2 alignment, float margin = 0)
         {
             switch (alignment) {
-                case Alignment2x2.Default:
-                    return rect.center;
-                case Alignment2x2.Left:
-                    return new Vector2(rect.xMin - margin, rect.center.y);
-                case Alignment2x2.Right:
-                    return new Vector2(rect.xMax + margin, rect.center.y);
-                case Alignment2x2.Top:
-                    return new Vector2(rect.center.x, rect.yMin - margin);
-                case Alignment2x2.Bottom:
-                    return new Vector2(rect.center.x, rect.yMax + margin);
+                case Alignment2x2.Default: return rect.center;
+                case Alignment2x2.Left:    return new Vector2(rect.xMin - margin, rect.center.y);
+                case Alignment2x2.Right:   return new Vector2(rect.xMax + margin, rect.center.y);
+                case Alignment2x2.Top:     return new Vector2(rect.center.x, rect.yMin - margin);
+                case Alignment2x2.Bottom:  return new Vector2(rect.center.x, rect.yMax + margin);
             }
             return rect.center;
         }
@@ -363,8 +350,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///----------------------------------------------------------------------------------------------
 
         //The main function for drawing a node's gui.Fires off others.
-        public static void ShowNodeGUI(Node node, Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos,
-            float zoomFactor)
+        public static void ShowNodeGUI(Node node, Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
+            , float zoomFactor)
         {
             if (node.isHidden) return;
 
@@ -412,8 +399,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             GUI.color = Color.white;
             if (GraphEditorUtility.allowClick)
                 if (zoomFactor == 1f)
-                    EditorGUIUtility.AddCursorRect(
-                        new Rect(node.rect.x, node.rect.y, node.rect.width, node.rect.height), MouseCursor.Link);
+                    EditorGUIUtility.AddCursorRect(new Rect(node.rect.x, node.rect.y, node.rect.width, node.rect.height)
+                        , MouseCursor.Link);
         }
 
         //This is the callback function of the GUILayout.window. Everything here is called INSIDE the node Window callback.
@@ -439,8 +426,9 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     EditorGUIUtility.SetIconSize(new Vector2(16, 16));
                     //Remark: CalcHeight does not take into account SetIconSize. CalcSize does.
                     var headerHeight = StyleSheet.windowTitle.CalcSize(node.cachedHeaderContent).y;
-                   // node.nodeColor todo
-                    var nodeColor = node.bindComponent ? "#2A77FF".ToColor() : node.nodeColor;// "#FF6B52".ToColor();
+                    // node.nodeColor todo
+                    var nodeColor = node.bindComponent ? "#2A77FF".ToColor() : node.nodeColor; // "#FF6B52".ToColor();
+
                     if (nodeColor != default) {
                         GUI.color = nodeColor;
                         if (node.rect.height <= 35) headerHeight = 35;
@@ -449,8 +437,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     }
                     else {
                         Handles.color = Color.black.WithAlpha(0.5f);
-                        Handles.DrawPolyLine(new Vector3(5, headerHeight, 0),
-                            new Vector3(node.rect.width - 5, headerHeight, 0));
+                        Handles.DrawPolyLine(new Vector3(5, headerHeight, 0)
+                            , new Vector3(node.rect.width - 5, headerHeight, 0));
                         Handles.color = Color.white;
                     }
                     GUILayout.Label(node.cachedHeaderContent, StyleSheet.windowTitle);
@@ -468,8 +456,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                     IconAttribute att = null;
                     if (assignable != null && assignable.task != null)
                         att = assignable.task.GetType().RTGetAttribute<IconAttribute>(true);
-                    if (att == null)
-                        att = node.GetType().RTGetAttribute<IconAttribute>(true);
+                    if (att == null) att = node.GetType().RTGetAttribute<IconAttribute>(true);
                     if (att != null && att.fixedColor == false) GUI.color = Color.black.WithAlpha(0.7f);
                 }
                 GUI.backgroundColor = Color.clear;
@@ -609,8 +596,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                 if (assignable.subGraphParameter != null) {
                     GUILayout.BeginVertical(Styles.roundedBox);
-                    GUILayout.Label(string.Format("Sub{0}\n{1}", assignable.subGraphParameter.varType.Name,
-                        assignable.subGraphParameter.ToString()));
+                    GUILayout.Label(string.Format("Sub{0}\n{1}", assignable.subGraphParameter.varType.Name
+                        , assignable.subGraphParameter.ToString()));
 
                     if (assignable.subGraph == null)
                         if (!Application.isPlaying && GUILayout.Button("CREATE NEW #2")) {
@@ -712,18 +699,18 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 if (CopyBuffer.TryGetCache<Task>(out var copy))
                     menu.AddItem(new GUIContent("Paste Assigned Task"), false, () => {
                         if (assignable.task != null)
-                            if (!EditorUtility.DisplayDialog("Paste Task",
-                                    string.Format(
-                                        "Node already has a Task assigned '{0}'. Replace assigned task with pasted task '{1}'?",
-                                        assignable.task.name, copy.name), "YES", "NO"))
+                            if (!EditorUtility.DisplayDialog("Paste Task"
+                                , string.Format(
+                                    "Node already has a Task assigned '{0}'. Replace assigned task with pasted task '{1}'?"
+                                    , assignable.task.name, copy.name), "YES", "NO"))
                                 return;
 
                         try {
                             assignable.task = copy.Duplicate(node.graph);
                         }
                         catch {
-                            ParadoxNotion.Services.Logger.LogWarning("Can't paste Task here. Incombatible Types",
-                                LogTag.EDITOR, node);
+                            ParadoxNotion.Services.Logger.LogWarning("Can't paste Task here. Incombatible Types"
+                                , LogTag.EDITOR, node);
                         }
                     });
                 else
@@ -767,8 +754,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
 
                     //snap to grid
                     if (!hierarchicalMove && Prefs.snapToGrid && GraphEditorUtility.activeElements.Count == 0)
-                        node.position = new Vector2(Mathf.Round(node.position.x / 20) * 20,
-                            Mathf.Round(node.position.y / 20) * 20);
+                        node.position = new Vector2(Mathf.Round(node.position.x / 20) * 20
+                            , Mathf.Round(node.position.y / 20) * 20);
 
                     //recursive drag
                     if (node.graph.isTree && e.type == EventType.MouseDrag)
@@ -804,8 +791,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 commentsRect = new Rect(node.rect.xMin - width, node.rect.yMin, width, node.rect.height);
             }
             if (node.commentsAlignment == Alignment2x2.Right)
-                commentsRect = new Rect(node.rect.xMax + 5, node.rect.yMin, Mathf.Min(size.x, node.rect.width * 2),
-                    node.rect.height);
+                commentsRect = new Rect(node.rect.xMax + 5, node.rect.yMin, Mathf.Min(size.x, node.rect.width * 2)
+                    , node.rect.height);
             GUI.color = new Color(1, 1, 1, 0.6f);
             GUI.backgroundColor = new Color(1f, 1f, 1f, 0.2f);
             GUI.Box(commentsRect, node.comments, StyleSheet.commentsBox);
@@ -835,8 +822,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var rect = new Rect(node.rect.x, node.rect.y - 18, node.rect.width, 18);
                 if (node.graph.primeNode == node) rect.y -= 20f;
                 GUI.color = Color.grey;
-                GUI.Label(rect, string.Format("<size=9>{0}</size>", node.elapsedTime.ToString("0.00")),
-                    StyleSheet.labelOnCanvas);
+                GUI.Label(rect, string.Format("<size=9>{0}</size>", node.elapsedTime.ToString("0.00"))
+                    , StyleSheet.labelOnCanvas);
                 GUI.color = Color.white;
             }
         }
@@ -910,10 +897,7 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                 var file = node.MakeFile();
                 UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(file, 1);
                 AssetDatabase.ImportAsset(file);
-
-                if (AssetDatabase.LoadAssetAtPath<MtsFile>(file) is { } f) {
-                    node.mtsFile = f;
-                }
+                if (AssetDatabase.LoadAssetAtPath<MtsFile>(file) is { } f) node.mtsFile = f;
                 node.graph.CheckVarsFromTs(file, node.blackboard);
             }
             //GUI.contentColor = originalFontColor;
@@ -930,8 +914,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             {
-                node.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, node.mtsFile, typeof(MtsFile),
-                    GUILayout.Width(150));
+                node.mtsFile = (MtsFile)EditorGUILayout.ObjectField(GUIContent.none, node.mtsFile, typeof(MtsFile)
+                    , GUILayout.Width(150));
                 node.comments = EditorGUILayout.TextArea(node.comments);
                 EditorUtils.CommentLastTextField(node.comments, "Comments...");
                 GUILayout.EndHorizontal();
@@ -960,8 +944,6 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             node.postTags.TagGUI("Set: ");
             BlackboardEditor.ShowVariables(node.blackboard, node.graph);
         }
-
-    
 
         //If the node implements ITaskAssignable...
         private static void TaskAssignableInspectorGUI(Node node)
@@ -1081,8 +1063,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
         ///     Editor. Draw the connections line from this node, to all of its children. This is the default hierarchical
         ///     tree style. Override in each system's base node class.
         /// </summary>
-        protected virtual void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos,
-            float zoomFactor)
+        protected virtual void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
+            , float zoomFactor)
         {
             var e = Event.current;
 
@@ -1135,8 +1117,8 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
                         portRect.center = new Vector2(rect.center.x, rect.yMax + portOffset);
                     if (graph.flowDirection == PlanarDirection.Horizontal)
                         portRect.center = new Vector2(rect.xMax + portOffset, rect.center.y);
-                    Styles.Draw(portRect,
-                        outConnections.Count > 0 ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
+                    Styles.Draw(portRect
+                        , outConnections.Count > 0 ? StyleSheet.nodePortConnected : StyleSheet.nodePortEmpty);
 
                     if (GraphEditorUtility.allowClick && canHaveMoreOutConnection) {
                         EditorGUIUtility.AddCursorRect(nodeOutputBox, MouseCursor.ArrowPlus);
@@ -1155,10 +1137,10 @@ export class {NodeName} extends StateNode<{graph.FsmName}> {{
             if (clickedPort != null && clickedPort.parent == this) {
                 var tangA = default(Vector2);
                 var tangB = default(Vector2);
-                CurveUtils.ResolveTangents(clickedPort.pos, e.mousePosition, Prefs.connectionsMLT, graph.flowDirection,
-                    out tangA, out tangB);
-                Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos + tangA, e.mousePosition + tangB,
-                    StyleSheet.GetStatusColor(Status.Resting).WithAlpha(0.8f), StyleSheet.bezierTexture, 3);
+                CurveUtils.ResolveTangents(clickedPort.pos, e.mousePosition, Prefs.connectionsMLT, graph.flowDirection
+                    , out tangA, out tangB);
+                Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos + tangA, e.mousePosition + tangB
+                    , StyleSheet.GetStatusColor(Status.Resting).WithAlpha(0.8f), StyleSheet.bezierTexture, 3);
             }
 
             //draw all connected lines

@@ -17,12 +17,9 @@ namespace NodeCanvas.Tasks.Conditions
 
         protected override bool OnCheck()
         {
-            if (pressType == PressTypes.Down)
-                return Input.GetButtonDown(buttonName.value);
-            if (pressType == PressTypes.Up)
-                return Input.GetButtonUp(buttonName.value);
-            if (pressType == PressTypes.Pressed)
-                return Input.GetButton(buttonName.value);
+            if (pressType == PressTypes.Down) return Input.GetButtonDown(buttonName.value);
+            if (pressType == PressTypes.Up) return Input.GetButtonUp(buttonName.value);
+            if (pressType == PressTypes.Pressed) return Input.GetButton(buttonName.value);
             return false;
         }
     }

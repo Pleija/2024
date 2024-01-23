@@ -1,5 +1,4 @@
 ﻿namespace FlowCanvas
 {
-
-    abstract public class FlowScriptBase : FlowGraph { }
+    public abstract class FlowScriptBase : FlowGraph { }
 }

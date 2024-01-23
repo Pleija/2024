@@ -24,9 +24,9 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Name("Check Field", 8), Category("✫ Reflected"),
-     Description("Check a field on a script and return if it's equal or not to a value"),
-     fsMigrateVersions(typeof(CheckField_0))]
+    [Name("Check Field", 8), Category("✫ Reflected")
+     , Description("Check a field on a script and return if it's equal or not to a value")
+     , fsMigrateVersions(typeof(CheckField_0))]
     public class CheckField : ConditionTask, IReflectedWrapper, IMigratable<CheckField_0>
     {
         ///----------------------------------------------------------------------------------------------
@@ -64,8 +64,8 @@ namespace NodeCanvas.Tasks.Conditions
                 if (field == null) return "No Field Selected";
                 if (targetField == null) return field.AsString().FormatError();
                 var mInfo = targetField.IsStatic ? targetField.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1}{2}{3}", mInfo, targetField.Name,
-                    OperationTools.GetCompareString(comparison), checkValue);
+                return string.Format("{0}.{1}{2}{3}", mInfo, targetField.Name
+                    , OperationTools.GetCompareString(comparison), checkValue);
             }
         }
 
@@ -83,8 +83,8 @@ namespace NodeCanvas.Tasks.Conditions
         protected override bool OnCheck()
         {
             if (checkValue.varType == typeof(float))
-                return OperationTools.Compare((float)targetField.GetValue(agent), (float)checkValue.value, comparison,
-                    0.05f);
+                return OperationTools.Compare((float)targetField.GetValue(agent), (float)checkValue.value, comparison
+                    , 0.05f);
             if (checkValue.varType == typeof(int))
                 return OperationTools.Compare((int)targetField.GetValue(agent), (int)checkValue.value, comparison);
             return ObjectUtils.AnyEquals(targetField.GetValue(agent), checkValue.value);
@@ -110,9 +110,9 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object), SetTargetField,
-                            menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object), SetTargetField
+                            , menu);
                     menu.AddSeparator("/");
                 }
 
@@ -130,8 +130,8 @@ namespace NodeCanvas.Tasks.Conditions
                 UnityEditor.EditorGUILayout.LabelField("Type", targetField.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Field", targetField.Name);
                 UnityEditor.EditorGUILayout.LabelField("Field Type", targetField.FieldType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetField),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetField)
+                    , UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 GUI.enabled = checkValue.varType == typeof(float) || checkValue.varType == typeof(int);
                 comparison = (CompareMethod)UnityEditor.EditorGUILayout.EnumPopup("Comparison", comparison);

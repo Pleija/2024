@@ -14,8 +14,7 @@ namespace Runner.Consumable.Types
 
         public override bool CanBeUsed(CharacterInputController c)
         {
-            if (c.currentLife == c.maxLife)
-                return false;
+            if (c.currentLife == c.maxLife) return false;
             return true;
         }
 

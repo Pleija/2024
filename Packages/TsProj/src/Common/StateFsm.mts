@@ -2,8 +2,8 @@ import ActionState = CS.NodeCanvas.StateMachines.ActionState;
 import FSM = CS.NodeCanvas.StateMachines.FSM;
 import Blackboard = CS.NodeCanvas.Framework.Blackboard;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
-import {iterator} from "Common/Iterator.mjs";
-import {StateNode} from "Common/StateNode.mjs";
+import { iterator } from "Common/Iterator.mjs";
+import { StateNode } from "Common/StateNode.mjs";
 import MonoBehaviour = CS.UnityEngine.MonoBehaviour;
 import GameObject = CS.UnityEngine.GameObject;
 import Transform = CS.UnityEngine.Transform;
@@ -12,7 +12,7 @@ import Component = CS.UnityEngine.Component;
 import $typeof = puer.$typeof;
 import Debug = CS.UnityEngine.Debug;
 import Type = CS.System.Type;
-import {bindClass} from "Common/Helpers.mjs";
+import { bindClass } from "Common/Helpers.mjs";
 
 // const isParent = (type: any, parentType: any) => {
 //     let _type = type;
@@ -56,7 +56,7 @@ export class StateFsm {
     sayHello() {
         console.log(...arguments)
     }
-    
+
 
     bindFsm(f: FSM, bb: Blackboard) {
         this.fsm = f;
@@ -90,7 +90,7 @@ export class StateFsm {
                     this[key][k] = v.value;
                 });
             }
-            
+
             if (typeof this[key]['init'] == 'function') {
                 //console.log("Init Node:", key);
                 this[key].init();

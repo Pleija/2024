@@ -81,11 +81,11 @@ namespace ParadoxNotion.Design
                 for (var i = 0; i < parameters.Length; i++)
                     parametersString += parameters[i].ParameterType.FullName +
                         (i < parameters.Length - 1 ? "," : string.Empty);
-                return GetDoc(methodInfo.DeclaringType,
-                    $"M:{methodInfo.DeclaringType.FullName}.{methodInfo.Name}({parametersString})");
+                return GetDoc(methodInfo.DeclaringType
+                    , $"M:{methodInfo.DeclaringType.FullName}.{methodInfo.Name}({parametersString})");
             }
-            return GetDoc(memberInfo.DeclaringType,
-                $"{memberInfo.MemberType.ToString()[0]}:{memberInfo.DeclaringType.FullName}.{memberInfo.Name}");
+            return GetDoc(memberInfo.DeclaringType
+                , $"{memberInfo.MemberType.ToString()[0]}:{memberInfo.DeclaringType.FullName}.{memberInfo.Name}");
         }
 
         private static XmlElement GetDoc(Type type, string pathName)

@@ -5,7 +5,9 @@
  * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
  */
 
-var global = global || globalThis || (function () { return this; }());
+var global = global || globalThis || (function () {
+    return this;
+}());
 // polyfill old code after use esm module.
 global.global = global;
 
@@ -32,8 +34,9 @@ delete global.__tgjsGetLoader;
 function loadFile(path) {
     let debugPath = [];
     var content = loader.ReadFile(path, debugPath);
-    return { content: content, debugPath: debugPath[0] };
+    return {content: content, debugPath: debugPath[0]};
 }
+
 puer.loadFile = loadFile;
 
 puer.fileExists = loader.FileExists.bind(loader);

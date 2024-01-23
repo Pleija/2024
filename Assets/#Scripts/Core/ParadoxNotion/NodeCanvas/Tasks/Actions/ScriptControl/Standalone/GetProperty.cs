@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Get Property (Desktop Only)", 8), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
-     Description(
+    [Name("Get Property (Desktop Only)", 8), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
+     , Description(
          "This version works in destop/JIT platform only.\n\nGet a property of a script and save it to the blackboard")]
     public class GetProperty : ActionTask, IReflectedWrapper
     {
@@ -84,18 +84,18 @@ namespace NodeCanvas.Tasks.Actions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object),
-                            typeof(object), SetMethod, 0, true, true, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
+                            , SetMethod, 0, true, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0,
-                        true, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0
+                        , true, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod,
-                            0, true, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
+                            , 0, true, true, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();
@@ -106,8 +106,8 @@ namespace NodeCanvas.Tasks.Actions
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Property", targetMethod.Name);
                 UnityEditor.EditorGUILayout.LabelField("Property Type", targetMethod.ReturnType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
+                    , UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Save As", functionWrapper.GetVariables()[0], true);
             }

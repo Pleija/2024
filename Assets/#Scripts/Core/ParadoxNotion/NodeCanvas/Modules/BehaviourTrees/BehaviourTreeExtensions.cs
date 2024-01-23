@@ -34,8 +34,9 @@ namespace NodeCanvas.BehaviourTrees
         ///<summary>Create a new SubTree out of the branch of the provided root node</summary>
         public static BehaviourTree ConvertToSubTree(this BTNode root)
         {
-            if (!UnityEditor.EditorUtility.DisplayDialog("Convert to SubTree",
-                    "This will create a new SubTree out of this branch.\nAre you sure?", "Yes", "No!")) return null;
+            if (!UnityEditor.EditorUtility.DisplayDialog("Convert to SubTree"
+                , "This will create a new SubTree out of this branch.\nAre you sure?", "Yes", "No!"))
+                return null;
             var newBT = EditorUtils.CreateAsset<BehaviourTree>();
             if (newBT == null) return null;
             var subTreeNode = root.graph.AddNode<SubTree>(root.position);
@@ -62,8 +63,8 @@ namespace NodeCanvas.BehaviourTrees
             var newNode = root.Duplicate(targetGraph);
             var dupConnections = new List<Connection>();
             for (var i = 0; i < root.outConnections.Count; i++)
-                dupConnections.Add(root.outConnections[i].Duplicate(newNode,
-                    DuplicateBranch((BTNode)root.outConnections[i].targetNode, targetGraph)));
+                dupConnections.Add(root.outConnections[i].Duplicate(newNode
+                    , DuplicateBranch((BTNode)root.outConnections[i].targetNode, targetGraph)));
             newNode.outConnections.Clear();
             foreach (var c in dupConnections) newNode.outConnections.Add(c);
             return newNode;
@@ -106,14 +107,14 @@ namespace NodeCanvas.BehaviourTrees
         ///     Fetch all child nodes of this node with their depth in regards to this node. So, first level children will
         ///     have a depth of 1 while second level a depth of 2
         /// </summary>
-        public static Dictionary<BTNode, int> GetAllChildNodesWithDepthRecursively(this BTNode root, bool includeThis,
-            int startIndex)
+        public static Dictionary<BTNode, int> GetAllChildNodesWithDepthRecursively(this BTNode root, bool includeThis
+            , int startIndex)
         {
             var childList = new Dictionary<BTNode, int>();
             if (includeThis) childList[root] = startIndex;
             foreach (BTNode child in root.outConnections.Select(c => c.targetNode))
-            foreach (var pair in child.GetAllChildNodesWithDepthRecursively(true, startIndex + 1))
-                childList[pair.Key] = pair.Value;
+                foreach (var pair in child.GetAllChildNodesWithDepthRecursively(true, startIndex + 1))
+                    childList[pair.Key] = pair.Value;
             return childList;
         }
     }

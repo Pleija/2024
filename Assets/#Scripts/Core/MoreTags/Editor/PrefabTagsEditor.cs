@@ -16,8 +16,8 @@ namespace MoreTags
 
             if (go.scene.isLoaded) {
                 EditorGUILayout.HelpBox(
-                    "Prefab Tags should not be attached to on scene GameObject. Please use Tags for on scene GameObject.",
-                    MessageType.Warning);
+                    "Prefab Tags should not be attached to on scene GameObject. Please use Tags for on scene GameObject."
+                    , MessageType.Warning);
                 return;
             }
             var tags = (target as PrefabTags).Tags;
@@ -49,8 +49,7 @@ namespace MoreTags
 
         private void AddTag(PrefabTags tags, string tag)
         {
-            if (!tags.Tags.Contains(tag))
-                tags.Tags.Add(tag);
+            if (!tags.Tags.Contains(tag)) tags.Tags.Add(tag);
         }
     }
 }

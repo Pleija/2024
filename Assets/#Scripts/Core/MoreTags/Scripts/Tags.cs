@@ -43,9 +43,8 @@ namespace MoreTags
         private void CheckSingle()
         {
             foreach (var comp in GetComponents<Tags>())
-                if (comp != this) {
+                if (comp != this)
                     DestroyImmediate(this);
-                }
         }
 
         private void Reset()

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Interrupt"), Category("Decorators"),
-     Description(
-         "Executes and returns the child status. If the condition is or becomes true, the child is interrupted and returns Failure."),
-     Icon("Interruptor")]
+    [Name("Interrupt"), Category("Decorators")
+     , Description(
+         "Executes and returns the child status. If the condition is or becomes true, the child is interrupted and returns Failure.")
+     , Icon("Interruptor")]
     public class Interruptor : BTDecorator, ITaskAssignable<ConditionTask>
     {
         [SerializeField]

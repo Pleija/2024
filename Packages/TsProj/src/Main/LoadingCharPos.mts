@@ -1,4 +1,4 @@
-import {StateFsm} from "Common/StateFsm.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
 import GameObject = CS.UnityEngine.GameObject;
 
 export class LoadingCharPos extends StateFsm {
@@ -7,7 +7,7 @@ export class LoadingCharPos extends StateFsm {
 
     init() {
         console.log("init LoadingCharPos");
-        
+
     }
 }
 

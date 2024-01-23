@@ -29,12 +29,10 @@ namespace NodeCanvas.StateMachines
         protected override void OnDisable()
         {
             base.OnDisable();
-
-            if (Js.isAlive) {
+            if (Js.isAlive)
                 graph.allNodes.OfType<FSMNode>().ForEach(node => {
                     (graph as FSM)?.Invoke("disableNode", node);
                 });
-            }
         }
 
         protected override void Start()

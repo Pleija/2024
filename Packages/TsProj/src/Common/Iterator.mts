@@ -128,7 +128,7 @@ function defineDictionaryIterator(prototype: object) {
         let iterator = this.Keys.GetEnumerator();
         while (iterator.MoveNext()) {
             let key = iterator.Current;
-            yield ({ key: key, value: this.get_Item(key) });
+            yield ({key: key, value: this.get_Item(key)});
         }
     }
 }

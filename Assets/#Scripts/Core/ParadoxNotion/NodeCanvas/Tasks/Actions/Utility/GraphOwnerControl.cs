@@ -4,8 +4,8 @@ using System.Collections;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Control Graph Owner"), Category("✫ Utility"),
-     Description("Start, Resume, Pause, Stop a GraphOwner's behaviour")]
+    [Name("Control Graph Owner"), Category("✫ Utility")
+     , Description("Start, Resume, Pause, Stop a GraphOwner's behaviour")]
     public class GraphOwnerControl : ActionTask<GraphOwner>
     {
         public enum Control { StartBehaviour, StopBehaviour, PauseBehaviour }

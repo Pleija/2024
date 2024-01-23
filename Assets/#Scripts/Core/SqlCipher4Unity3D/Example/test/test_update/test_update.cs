@@ -30,9 +30,9 @@ namespace SqlCipher4Unity3D.Example.test.test_update
             _dbconn1.DropTable<player_profile>();
             _dbconn1.CreateTable<player_profile>();
             _dbconn1.InsertAll(new[] {
-                new player_profile { save_name = "p1", active_player = 1 },
-                new player_profile { save_name = "p2", active_player = 1 },
-                new player_profile { save_name = "p3", active_player = 1 },
+                new player_profile { save_name = "p1", active_player = 1 }
+                , new player_profile { save_name = "p2", active_player = 1 }
+                , new player_profile { save_name = "p3", active_player = 1 },
             });
             foreach (var x in _dbconn1.Table<player_profile>().ToList()) Debug.Log($"before : {x}");
             wannabe_set_active_player("p2");

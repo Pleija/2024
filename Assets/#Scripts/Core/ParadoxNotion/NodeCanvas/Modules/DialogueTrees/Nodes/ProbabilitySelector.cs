@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Category("Branch"),
-     Description(
-         "Select a child to execute based on it's chance to be selected. An optional pre-Condition Task can be assigned to filter the child in or out of the selection probability.\nThe actor selected will be used for the condition checks."),
-     Icon("ProbabilitySelector"), Color("b3ff7f")]
+    [Category("Branch")
+     , Description(
+         "Select a child to execute based on it's chance to be selected. An optional pre-Condition Task can be assigned to filter the child in or out of the selection probability.\nThe actor selected will be used for the condition checks.")
+     , Icon("ProbabilitySelector"), Color("b3ff7f")]
     public class ProbabilitySelector : DTNode
     {
         public class Option

@@ -5,8 +5,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Utility"),
-     Description("Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
+    [Category("✫ Utility")
+     , Description("Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
     public class SendEventToObjects : ActionTask
     {
         [RequiredField]
@@ -29,8 +29,8 @@ namespace NodeCanvas.Tasks.Actions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Utility"),
-     Description("Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
+    [Category("✫ Utility")
+     , Description("Send a Graph Event to multiple gameobjects which should have a GraphOwner component attached.")]
     public class SendEventToObjects<T> : ActionTask
     {
         [RequiredField]

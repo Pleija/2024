@@ -18,7 +18,8 @@ public class Singleton<T> : View<T> where T : Singleton<T>
             m_Instance ??= FindObjectOfType<T>(true);
             if (m_Instance) return m_Instance;
             if (!typeof(T).IsDefined(typeof(AutoCreateAttribute), true) &&
-                !typeof(IAutoCreate).IsAssignableFrom(typeof(T))) return m_Instance;
+                !typeof(IAutoCreate).IsAssignableFrom(typeof(T)))
+                return m_Instance;
             var go = new GameObject(typeof(T).Name);
             m_Instance = go.AddComponent<T>();
 
@@ -42,8 +43,8 @@ public class Singleton<T> : View<T> where T : Singleton<T>
     public static void EditorUpdate()
     {
         if (m_Instance) {
-            UpdateMethodInfo ??= m_Instance.GetType().GetMethod("Update",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            UpdateMethodInfo ??= m_Instance.GetType().GetMethod("Update"
+                , BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             if (UpdateMethodInfo != null) {
                 UpdateMethodInfo.Invoke(m_Instance, null);
@@ -79,5 +80,4 @@ public class Singleton<T> : View<T> where T : Singleton<T>
             DontDestroyOnLoad(gameObject);
         }
     }
-
 }

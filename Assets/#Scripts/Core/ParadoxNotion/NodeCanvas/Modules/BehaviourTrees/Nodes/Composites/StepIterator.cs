@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Step Sequencer"), Category("Composites"),
-     Description(
-         "In comparison to a normal Sequencer which executes all its children until one fails, Step Sequencer executes its children one-by-one per Step Sequencer execution. The executed child status is returned regardless of Success or Failure."),
-     Icon("StepIterator"), Color("bf7fff")]
+    [Name("Step Sequencer"), Category("Composites")
+     , Description(
+         "In comparison to a normal Sequencer which executes all its children until one fails, Step Sequencer executes its children one-by-one per Step Sequencer execution. The executed child status is returned regardless of Success or Failure.")
+     , Icon("StepIterator"), Color("bf7fff")]
     public class StepIterator : BTComposite
     {
         private int current;

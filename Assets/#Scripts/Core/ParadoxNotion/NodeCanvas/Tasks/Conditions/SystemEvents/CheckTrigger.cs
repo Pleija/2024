@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("System Events"),
-     Description(
-         "The agent is type of Transform so that Triggers can either work with a Collider or a Rigidbody attached."),
-     Name("Check Trigger")]
+    [Category("System Events")
+     , Description(
+         "The agent is type of Transform so that Triggers can either work with a Collider or a Rigidbody attached.")
+     , Name("Check Trigger")]
     public class CheckTrigger_Transform : ConditionTask<Transform>
     {
         public TriggerTypes checkType = TriggerTypes.TriggerEnter;

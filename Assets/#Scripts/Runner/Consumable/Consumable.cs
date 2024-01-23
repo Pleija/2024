@@ -70,7 +70,8 @@ namespace Runner.Consumable
         private IEnumerator TimedRelease(GameObject obj, float time)
         {
             yield return new WaitForSeconds(time);
-            /*Addressables.ReleaseInstance*/Destroy(obj);
+            /*Addressables.ReleaseInstance*/
+            Destroy(obj);
         }
 
         public virtual void Tick(CharacterInputController c)
@@ -88,7 +89,8 @@ namespace Runner.Consumable
         {
             if (m_ParticleSpawned != null)
                 if (m_ParticleSpawned.main.loop)
-                    /*Addressables.ReleaseInstance*/Destroy(m_ParticleSpawned.gameObject);
+                    /*Addressables.ReleaseInstance*/
+                    Destroy(m_ParticleSpawned.gameObject);
             if (activatedSound != null && c.powerupSource.clip == activatedSound)
                 c.powerupSource.Stop(); //if this one the one using the audio source stop it
 

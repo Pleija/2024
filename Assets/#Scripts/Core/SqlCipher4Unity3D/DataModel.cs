@@ -52,57 +52,52 @@ namespace SqlCipher4Unity3D
 
         public static void InnerResetSelf()
         {
-            Connection.Table<T>()
-                .FirstOrInsert(table => {
-                    //value ??= CreateInstance<T>();
-                    if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
+            Connection.Table<T>().FirstOrInsert(table => {
+                //value ??= CreateInstance<T>();
+                if (!Defaults.TryGetValue(typeof(T), out var result) || result == null) {
 #if UNITY_EDITOR
-                        //if (!Application.isPlaying) {
-                        result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}")
-                            .Select(x =>
-                                AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x)))
-                            .FirstOrDefault();
-                        // }
+                    //if (!Application.isPlaying) {
+                    result = AssetDatabase.FindAssets($"t:{typeof(T).FullName}")
+                        .Select(x => AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(x)))
+                        .FirstOrDefault();
+                    // }
 #endif
-                        if (Application.isPlaying && !Application.isEditor)
-                            if (result == null && Res.Exists<T>() is { } locations) {
-                                result = Addressables.LoadAssetAsync<T>(locations.PrimaryKey).WaitForCompletion();
-                                Debug.Log($"Load: {typeof(T).Name} => {locations.PrimaryKey}");
-                            }
-
-                        if (result == null) {
-                            Debug.Log($"{typeof(T).Name} asset not found");
+                    if (Application.isPlaying && !Application.isEditor)
+                        if (result == null && Res.Exists<T>() is { } locations) {
+                            result = Addressables.LoadAssetAsync<T>(locations.PrimaryKey).WaitForCompletion();
+                            Debug.Log($"Load: {typeof(T).Name} => {locations.PrimaryKey}");
                         }
-                    }
+                    if (result == null) Debug.Log($"{typeof(T).Name} asset not found");
+                }
 #if UNITY_EDITOR
-                    // if(!Application.isEditor) return;
+                // if(!Application.isEditor) return;
 
-                    if (result == null || AssetDatabase.GetAssetPath(result) == null) {
-                        var settings = AddressableAssetSettingsDefaultObject.Settings;
-                        //var entries = settings.groups.SelectMany(x => x.entries);
-                        result = Defaults[typeof(T)] = table; //CreateInstance<T>();
-                        var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
-                        if (!Directory.Exists(Path.GetDirectoryName(path)))
-                            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                        AssetDatabase.CreateAsset(table, path);
-                        AssetDatabase.Refresh();
-                        //AssetDatabase.SaveAssets();
-                        result = AssetDatabase.LoadAssetAtPath<T>(path);
-                        // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
-                        //     settings.DefaultGroup);
-                        // entry.address = typeof(T).FullName;
-                    }
+                if (result == null || AssetDatabase.GetAssetPath(result) == null) {
+                    var settings = AddressableAssetSettingsDefaultObject.Settings;
+                    //var entries = settings.groups.SelectMany(x => x.entries);
+                    result = Defaults[typeof(T)] = table; //CreateInstance<T>();
+                    var path = $"Assets/Res/Config/{typeof(T).Name}.asset";
+                    if (!Directory.Exists(Path.GetDirectoryName(path)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                    AssetDatabase.CreateAsset(table, path);
+                    AssetDatabase.Refresh();
+                    //AssetDatabase.SaveAssets();
+                    result = AssetDatabase.LoadAssetAtPath<T>(path);
+                    // var entry = settings.CreateOrMoveEntry(AssetDatabase.AssetPathToGUID(path),
+                    //     settings.DefaultGroup);
+                    // entry.address = typeof(T).FullName;
+                }
 #endif
 
-                    //if (result) {
-                    Defaults[typeof(T)] = m_Instance = result as T;
-                    Setup(result, table);
-                    if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying) result.SetupFromRedis();
-                    // }
-                    // else {
-                    //     Debug.Log($"{typeof(T).FullName} asset not found");
-                    // }
-                });
+                //if (result) {
+                Defaults[typeof(T)] = m_Instance = result as T;
+                Setup(result, table);
+                if ((Application.isEditor || Debug.isDebugBuild) && Application.isPlaying) result.SetupFromRedis();
+                // }
+                // else {
+                //     Debug.Log($"{typeof(T).FullName} asset not found");
+                // }
+            });
         }
 
         public override void SetupFromRedis()
@@ -110,10 +105,8 @@ namespace SqlCipher4Unity3D
             var json = Redis.Database.StringGet(GetType().FullName);
             var value = CreateInstance<T>();
             JsonUtility.FromJsonOverwrite(json, value);
-            value.GetType()
-                .GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => Regex.IsMatch(x.Name, @"^[A-Z]"))
-                .ForEach(mi => {
+            value.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(x => Regex.IsMatch(x.Name, @"^[A-Z]")).ForEach(mi => {
                     if (mi is PropertyInfo { CanRead: true, CanWrite: true } propertyInfo) {
                         var newValue = propertyInfo.GetValue(value, null);
                         var oldValue = propertyInfo.GetValue(this, null);
@@ -162,8 +155,7 @@ namespace SqlCipher4Unity3D
         {
             asset.isSetup = true;
             typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-                .Where(x => !x.IsDefined(typeof(IgnoreAttribute), true))
-                .ForEach(x => {
+                .Where(x => !x.IsDefined(typeof(IgnoreAttribute), true)).ForEach(x => {
                     object value = null;
 
                     if (!Regex.IsMatch(x.Name, @"^[A-Z]"))

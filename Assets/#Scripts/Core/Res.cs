@@ -48,8 +48,8 @@ public static class Res
         new List<string>().ForEach((v, i) => { });
         var result = new List<IResourceLocator>();
         foreach (var locator in ResourceLocators)
-            if (locator.Locate(key is AssetReference reference ? reference.RuntimeKey : $"{key}", type,
-                    out var resourceLocations))
+            if (locator.Locate(key is AssetReference reference ? reference.RuntimeKey : $"{key}", type
+                , out var resourceLocations))
                 return resourceLocations.First();
         return null;
     }
@@ -57,59 +57,55 @@ public static class Res
     public static List<IResourceLocation> ExistsAll<T>() => ExistsAll(typeof(T));
     public static IResourceLocation Exists(Type type) => ExistsAll(type).FirstOrDefault();
     public static IResourceLocation Exists<T>() => ExistsAll(typeof(T)).FirstOrDefault();
+
     public static List<IResourceLocation> ExistsAll(Type type)
     {
         var result = new List<IResourceLocation>();
         foreach (var locator in ResourceLocators)
-        foreach (var key in locator.Keys)
-            if (locator.Locate(key, type, out var resourceLocations))
-                if (resourceLocations.FirstOrDefault(x => !Guid.TryParse(x.PrimaryKey, out _)) is { } loc)
-                    result.Add(loc);
+            foreach (var key in locator.Keys)
+                if (locator.Locate(key, type, out var resourceLocations))
+                    if (resourceLocations.FirstOrDefault(x => !Guid.TryParse(x.PrimaryKey, out _)) is { } loc)
+                        result.Add(loc);
         return result.Any() ? result : null;
     }
 
 #if UNITY_EDITOR
-    public static UnityEngine.Object[] FindAssets(string filter, Func<string, bool> fn = null, Type type = null)
+    public static Object[] FindAssets(string filter, Func<string, bool> fn = null, Type type = null)
     {
         return AssetDatabase.FindAssets(filter).Select(AssetDatabase.GUIDToAssetPath).Where(fn ?? (t => true))
-            .Select(x => AssetDatabase.LoadAssetAtPath(x, type ?? typeof(UnityEngine.Object))).ToArray();
+            .Select(x => AssetDatabase.LoadAssetAtPath(x, type ?? typeof(Object))).ToArray();
     }
 
-    public static T[] FindAssets<T>(string filter, Func<string, bool> fn = null) where T : UnityEngine.Object =>
+    public static T[] FindAssets<T>(string filter, Func<string, bool> fn = null) where T : Object =>
         FindAssets(filter, fn, typeof(T)).OfType<T>().ToArray();
 
-    public static UnityEngine.Object FindAsset(string filter, Func<string, bool> fn = null, Type type = null)
+    public static Object FindAsset(string filter, Func<string, bool> fn = null, Type type = null)
     {
         var ret = AssetDatabase.FindAssets(filter).Select(AssetDatabase.GUIDToAssetPath)
             .FirstOrDefault(fn ?? (t => true));
-        return ret != null ? AssetDatabase.LoadAssetAtPath(ret, type ?? typeof(UnityEngine.Object)) : null;
+        return ret != null ? AssetDatabase.LoadAssetAtPath(ret, type ?? typeof(Object)) : null;
     }
 
-    public static T FindAsset<T>(string filter, Func<string, bool> fn = null) where T : UnityEngine.Object =>
+    public static T FindAsset<T>(string filter, Func<string, bool> fn = null) where T : Object =>
         FindAsset(filter, fn, typeof(T)) as T;
 
-    public static UnityEngine.Object[] FindAssets(string filter, Func<UnityEngine.Object, bool> fn = null,
-        Type type = null)
+    public static Object[] FindAssets(string filter, Func<Object, bool> fn = null, Type type = null)
     {
         return AssetDatabase.FindAssets(filter).Select(AssetDatabase.GUIDToAssetPath)
-            .Select(x => AssetDatabase.LoadAssetAtPath(x, type ?? typeof(UnityEngine.Object))).Where(fn ?? (t => true))
-            .ToArray();
+            .Select(x => AssetDatabase.LoadAssetAtPath(x, type ?? typeof(Object))).Where(fn ?? (t => true)).ToArray();
     }
 
-    public static T[] FindAssets<T>(string filter, Func<UnityEngine.Object, bool> fn = null)
-        where T : UnityEngine.Object => FindAssets(filter, fn, typeof(T)).OfType<T>().ToArray();
+    public static T[] FindAssets<T>(string filter, Func<Object, bool> fn = null) where T : Object =>
+        FindAssets(filter, fn, typeof(T)).OfType<T>().ToArray();
 
-    public static UnityEngine.Object FindAsset(string filter, Func<UnityEngine.Object, bool> fn = null,
-        Type type = null)
+    public static Object FindAsset(string filter, Func<Object, bool> fn = null, Type type = null)
     {
         return AssetDatabase.FindAssets(filter).Select(AssetDatabase.GUIDToAssetPath)
-            .Select(x => AssetDatabase.LoadAssetAtPath(x, type ?? typeof(UnityEngine.Object)))
-            .FirstOrDefault(fn ?? (x => true));
+            .Select(x => AssetDatabase.LoadAssetAtPath(x, type ?? typeof(Object))).FirstOrDefault(fn ?? (x => true));
     }
 
     // public static T FindAsset<T>(string filter, Func<T, bool> fn = null)
     //     where T : UnityEngine.Object => FindAsset(filter, (Func<Object, bool>)fn, typeof(T)) as T;
-
 #endif
 
     public static async UniTask LoadScene(string aName, LoadSceneMode mode = LoadSceneMode.Single)
@@ -117,13 +113,11 @@ public static class Res
         //SceneManager.LoadScene(aName);
         if (Application.isEditor) {
 #if UNITY_EDITOR
-            if (File.Exists($"Assets/Scenes/{aName}.unity")) {
-                UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode($"Assets/Scenes/{aName}.unity",
-                    new LoadSceneParameters() { loadSceneMode = mode });
-            }
-            else {
+            if (File.Exists($"Assets/Scenes/{aName}.unity"))
+                UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode($"Assets/Scenes/{aName}.unity"
+                    , new LoadSceneParameters() { loadSceneMode = mode });
+            else
                 Debug.Log($"not found: Assets/Scenes/{aName}.unity");
-            }
 #endif
             return;
         }
@@ -160,16 +154,16 @@ public static class Res
         return LoadAs(asset, typeof(GameObject), t => callback.Invoke(t as GameObject));
     }
 
-    public static UniTask LoadAs(this object asset, Type type = null, Action<UnityEngine.Object> callback = null)
+    public static UniTask LoadAs(this object asset, Type type = null, Action<Object> callback = null)
     {
         var key = asset is IResourceLocation location ? location.PrimaryKey : asset;
 
-        if ((asset is AssetReference assetReference) && !assetReference.RuntimeKeyIsValid() ||
-            (asset is IResourceLocation { PrimaryKey: "" })) {
+        if ((asset is AssetReference assetReference && !assetReference.RuntimeKeyIsValid()) ||
+            asset is IResourceLocation { PrimaryKey: "" }) {
             Debug.LogException(new Exception("key error"));
             return UniTask.WaitUntil(() => true);
         }
-        var h = Addressables.LoadAssetAsync<UnityEngine.Object>(key);
+        var h = Addressables.LoadAssetAsync<Object>(key);
         h.Completed += handle => {
             if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result.GetType() == type) {
                 callback?.Invoke(handle.Result);
@@ -182,13 +176,13 @@ public static class Res
         return UniTask.WaitUntil(() => h.IsDone);
     }
 
-    public static UniTask Inst(this object asset, Transform parent, Vector3 position, Quaternion rotation,
-        Action<GameObject> callback)
+    public static UniTask Inst(this object asset, Transform parent, Vector3 position, Quaternion rotation
+        , Action<GameObject> callback)
     {
         var key = asset is IResourceLocation location ? location.PrimaryKey : asset;
 
-        if ((asset is AssetReference assetReference) && !assetReference.RuntimeKeyIsValid() ||
-            (asset is IResourceLocation { PrimaryKey: "" })) {
+        if ((asset is AssetReference assetReference && !assetReference.RuntimeKeyIsValid()) ||
+            asset is IResourceLocation { PrimaryKey: "" }) {
             Debug.LogException(new Exception("key error"));
             return UniTask.WaitUntil(() => true);
         }
@@ -196,7 +190,7 @@ public static class Res
         //Addressables.InstantiateAsync(asset, position, rotation, parent);
         h.Completed += handle => {
             if (handle.Status == AsyncOperationStatus.Succeeded) {
-                var go = UnityEngine.Object.Instantiate(handle.Result, position, rotation, parent);
+                var go = Object.Instantiate(handle.Result, position, rotation, parent);
                 go.OnDestroyAsObservable().Subscribe(t => {
                     if (handle.IsValid()) Addressables.Release(handle);
                 });

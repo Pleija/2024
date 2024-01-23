@@ -17,7 +17,7 @@ namespace NodeCanvas.Tasks.Conditions
         protected override string info =>
             "Mec.Float " + parameter.ToString() + OperationTools.GetCompareString(comparison) + value;
 
-        protected override bool OnCheck() => OperationTools.Compare((float)agent.GetFloat(parameter.value),
-            (float)value.value, comparison, 0.1f);
+        protected override bool OnCheck() => OperationTools.Compare((float)agent.GetFloat(parameter.value)
+            , (float)value.value, comparison, 0.1f);
     }
 }

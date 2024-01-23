@@ -1,6 +1,6 @@
-import {Condition, ConditionFunction} from '../../condition.mjs'
-import {KeyVal, ResultSet, TableInfo} from '../../types.mjs'
-import {Utils} from '../../utils.mjs'
+import { Condition, ConditionFunction } from '../../condition.mjs'
+import { KeyVal, ResultSet, TableInfo } from '../../types.mjs'
+import { Utils } from '../../utils.mjs'
 
 export enum DialectKind {
     READ = 0,

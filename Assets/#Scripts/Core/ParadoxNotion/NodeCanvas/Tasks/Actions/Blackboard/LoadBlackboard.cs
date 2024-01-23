@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard"),
-     Description(
+    [Category("✫ Blackboard")
+     , Description(
          "Loads the blackboard variables previously saved in the provided PlayerPrefs key if at all. Returns false if no saves found or load was failed")]
     public class LoadBlackboard : ActionTask<Blackboard>
     {

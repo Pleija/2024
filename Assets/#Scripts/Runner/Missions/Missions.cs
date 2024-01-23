@@ -44,16 +44,11 @@ namespace Runner.Missions
         public static MissionBase GetNewMissionFromType(MissionType type)
         {
             switch (type) {
-                case MissionType.SINGLE_RUN:
-                    return new SingleRunMission();
-                case MissionType.PICKUP:
-                    return new PickupMission();
-                case MissionType.OBSTACLE_JUMP:
-                    return new BarrierJumpMission();
-                case MissionType.SLIDING:
-                    return new SlidingMission();
-                case MissionType.MULTIPLIER:
-                    return new MultiplierMission();
+                case MissionType.SINGLE_RUN:    return new SingleRunMission();
+                case MissionType.PICKUP:        return new PickupMission();
+                case MissionType.OBSTACLE_JUMP: return new BarrierJumpMission();
+                case MissionType.SLIDING:       return new SlidingMission();
+                case MissionType.MULTIPLIER:    return new MultiplierMission();
             }
             return null;
         }
@@ -213,8 +208,7 @@ namespace Runner.Missions
 
         public override void Update(TrackManager manager)
         {
-            if (manager.multiplier > progress)
-                progress = manager.multiplier;
+            if (manager.multiplier > progress) progress = manager.multiplier;
         }
     }
 }

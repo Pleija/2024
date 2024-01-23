@@ -4,24 +4,23 @@ using System.Linq;
 
 namespace Slate.ActionClips
 {
-
-    [Category("Character")]
-    [Description("Sets a collection of BlendShapes (an expression), which you can create in the Character Component Inspector of the actor.")]
+    [Category("Character")
+     , Description(
+         "Sets a collection of BlendShapes (an expression), which you can create in the Character Component Inspector of the actor.")]
     public class CharacterExpression : ActorActionClip<Character>
     {
-
-        [SerializeField]
-        [HideInInspector]
+        [SerializeField, HideInInspector]
         private float _length = 1f;
-        [SerializeField]
-        [HideInInspector]
+
+        [SerializeField, HideInInspector]
         private float _blendIn = 0.25f;
-        [SerializeField]
-        [HideInInspector]
+
+        [SerializeField, HideInInspector]
         private float _blendOut = 0.25f;
 
         [HideInInspector]
         public string expressionName;
+
         [HideInInspector]
         public string expressionUID;
 
@@ -32,56 +31,56 @@ namespace Slate.ActionClips
         private BlendShapeGroup expression;
 
         public override string info {
-            get
-            {
+            get {
                 var exp = actor != null ? ResolveExpression() : null;
                 return string.Format("Expression '{0}'", exp != null ? exp.name : "NONE");
             }
         }
 
-        public override bool isValid {
-            get { return actor != null; }
-        }
+        public override bool isValid => actor != null;
 
         public override float length {
-            get { return _length; }
-            set { _length = value; }
+            get => _length;
+            set => _length = value;
         }
 
         public override float blendIn {
-            get { return _blendIn; }
-            set { _blendIn = value; }
+            get => _blendIn;
+            set => _blendIn = value;
         }
 
         public override float blendOut {
-            get { return _blendOut; }
-            set { _blendOut = value; }
+            get => _blendOut;
+            set => _blendOut = value;
         }
 
-        public override bool canCrossBlend {
-            get { return true; }
+        public override bool canCrossBlend => true;
+
+        private BlendShapeGroup ResolveExpression()
+        {
+            if (!string.IsNullOrEmpty(expressionUID))
+                return actor.FindExpressionByUID(expressionUID);
+            else
+                return actor.FindExpressionByName(expressionName);
         }
 
-        BlendShapeGroup ResolveExpression() {
-            if ( !string.IsNullOrEmpty(expressionUID) ) { return actor.FindExpressionByUID(expressionUID); } else { return actor.FindExpressionByName(expressionName); }
-        }
-
-        protected override void OnEnter() {
+        protected override void OnEnter()
+        {
             expression = ResolveExpression();
-            if ( expression != null ) {
-                originalWeight = expression.weight;
-            }
+            if (expression != null) originalWeight = expression.weight;
         }
 
-        protected override void OnUpdate(float deltaTime) {
-            if ( expression != null ) {
+        protected override void OnUpdate(float deltaTime)
+        {
+            if (expression != null) {
                 var value = Easing.Ease(EaseType.QuadraticInOut, originalWeight, weight, GetClipWeight(deltaTime));
                 expression.weight = value;
             }
         }
 
-        protected override void OnReverse() {
-            if ( expression != null ) {
+        protected override void OnReverse()
+        {
+            if (expression != null) {
                 expression.weight = originalWeight;
                 expression = null;
             }

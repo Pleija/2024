@@ -4,14 +4,10 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-
     [Obsolete]
     public class SwitchValue<T> : PureFunctionNode<T, bool, T, T>
     {
-        public override T Invoke(bool condition, T isTrue, T isFalse)
-        {
-            return condition ? isTrue : isFalse;
-        }
+        public override T Invoke(bool condition, T isTrue, T isFalse) => condition ? isTrue : isFalse;
     }
 
     [Obsolete]
@@ -19,8 +15,12 @@ namespace FlowCanvas.Nodes
     {
         public override T Invoke(int index, IList<T> values)
         {
-            try { return values[index]; }
-            catch { return default(T); }
+            try {
+                return values[index];
+            }
+            catch {
+                return default;
+            }
         }
     }
 }

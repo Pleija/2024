@@ -50,10 +50,8 @@ namespace ParadoxNotion.Design
             //         }
             //     }
             // }
-            if (!typeof(ScriptableObject).IsAssignableFrom(objectType)) {
+            if (!typeof(ScriptableObject).IsAssignableFrom(objectType))
                 Debug.Log($"type: {objectType.FullName} not support");
-
-            }
             return objectDrawers[objectType] = new DefaultObjectDrawer(objectType);
         }
 
@@ -86,8 +84,8 @@ namespace ParadoxNotion.Design
 
     public interface IAttributeDrawer
     {
-        object DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance, DrawerAttribute attribute,
-            InspectedFieldInfo info);
+        object DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance, DrawerAttribute attribute
+            , InspectedFieldInfo info);
     }
 
     ///----------------------------------------------------------------------------------------------
@@ -193,8 +191,8 @@ namespace ParadoxNotion.Design
         protected UnityEngine.Object contextUnityObject => info.unityObjectContext;
 
         ///<summary>Begin GUI</summary>
-        object IAttributeDrawer.DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance,
-            DrawerAttribute attribute, InspectedFieldInfo info)
+        object IAttributeDrawer.DrawGUI(IObjectDrawer objectDrawer, GUIContent content, object instance
+            , DrawerAttribute attribute, InspectedFieldInfo info)
         {
             this.objectDrawer = objectDrawer;
             this.content = content;

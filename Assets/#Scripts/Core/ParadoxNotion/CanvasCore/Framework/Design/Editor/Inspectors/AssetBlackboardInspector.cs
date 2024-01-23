@@ -11,7 +11,7 @@ namespace NodeCanvas.Editor
     public class AssetBlackboardInspector : OdinEditor
     {
         private AssetBlackboard bb => (AssetBlackboard)target;
-        UnityEditor.Editor editor { get; set; }
+        private UnityEditor.Editor editor { get; set; }
 
         protected override void OnEnable()
         {

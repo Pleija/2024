@@ -1,12 +1,11 @@
 ﻿/*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
+ * Tencent is pleased to support the open source community by making Puerts available.
+ * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
+ * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
+ * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
+ */
 
 #if !EXPERIMENTAL_IL2CPP_PUERTS || !ENABLE_IL2CPP
-
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,31 +13,24 @@ using System.Text;
 namespace Puerts
 {
 #pragma warning disable 414
-    public class MonoPInvokeCallbackAttribute : System.Attribute
+    public class MonoPInvokeCallbackAttribute : Attribute
     {
         private Type type;
-        public MonoPInvokeCallbackAttribute(Type t)
-        {
-            type = t;
-        }
+        public MonoPInvokeCallbackAttribute(Type t) => type = t;
     }
 #pragma warning restore 414
-
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
     public delegate void V8FunctionCallback(IntPtr isolate, IntPtr info, IntPtr self, int paramLen, long data);
-
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
     public delegate IntPtr V8ConstructorCallback(IntPtr isolate, IntPtr info, int paramLen, long data);
-
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
     public delegate void V8DestructorCallback(IntPtr self, long data);
-
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 #endif
@@ -47,20 +39,23 @@ namespace Puerts
     [Flags]
     public enum JsValueType
     {
-        Invalid = 0,
-        NullOrUndefined = 1,
-        BigInt = 2,
-        Number = 4,
-        String = 8,
-        Boolean = 16,
-        NativeObject = 32,
-        JsObject = 64,
-        Array = 128,
-        Function = 256,
-        Date = 512,
-        ArrayBuffer = 1024,
-        Unknow = 2048,
-        Any = NullOrUndefined | BigInt | Number | String | Boolean | NativeObject | JsObject | Array | Function | Date | ArrayBuffer,
+        Invalid = 0
+        , NullOrUndefined = 1
+        , BigInt = 2
+        , Number = 4
+        , String = 8
+        , Boolean = 16
+        , NativeObject = 32
+        , JsObject = 64
+        , Array = 128
+        , Function = 256
+        , Date = 512
+        , ArrayBuffer = 1024
+        , Unknow = 2048
+        , Any = NullOrUndefined | BigInt | Number | String | Boolean | NativeObject | JsObject | Array | Function |
+            Date | ArrayBuffer
+
+        ,
     };
 
     public class PuertsDLL
@@ -68,7 +63,7 @@ namespace Puerts
 #if (UNITY_IPHONE || UNITY_TVOS || UNITY_WEBGL || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLLNAME = "__Internal";
 #else
-        const string DLLNAME = "puerts";
+        private const string DLLNAME = "puerts";
 #endif
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetApiLevel")]
@@ -77,20 +72,19 @@ namespace Puerts
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern int GetLibVersion();
 
-        public static int GetApiLevel() {
-            try
-            {
+        public static int GetApiLevel()
+        {
+            try {
                 return _GetApiLevel();
             }
-            catch (DllNotFoundException)
-            {
+            catch (DllNotFoundException) {
 #if !PUERTS_GENERAL
-                UnityEngine.Debug.LogError("[Puer001] DllNotFoundException detected. You can solve this problem following the FAQ.");
+                UnityEngine.Debug.LogError(
+                    "[Puer001] DllNotFoundException detected. You can solve this problem following the FAQ.");
 #endif
                 throw;
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 return GetLibVersion();
             }
         }
@@ -110,17 +104,18 @@ namespace Puerts
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetGlobalFunction(IntPtr isolate, string name, IntPtr v8FunctionCallback, long data);
 
-        public static void SetGlobalFunction(IntPtr isolate, string name, V8FunctionCallback v8FunctionCallback, long data)
+        public static void SetGlobalFunction(IntPtr isolate, string name, V8FunctionCallback v8FunctionCallback
+            , long data)
         {
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(v8FunctionCallback);
 #endif
-            IntPtr fn = v8FunctionCallback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(v8FunctionCallback);
+            var fn = v8FunctionCallback == null ? IntPtr.Zero
+                : Marshal.GetFunctionPointerForDelegate(v8FunctionCallback);
             SetGlobalFunction(isolate, name, fn, data);
         }
 
         private const int TEMP_STRING_BUFFER_SIZE = 1024;
-
 #if UNITY_2017_1_OR_NEWER
         [ThreadStatic]
 #endif
@@ -128,32 +123,25 @@ namespace Puerts
 
         private static byte[] GetTempNativeStringBuff(int strlen)
         {
-            byte[] buf = s_tempNativeStringBuffer ?? (s_tempNativeStringBuffer = new byte[TEMP_STRING_BUFFER_SIZE]);
-            if (buf.Length < strlen)
-            {
-                return new byte[strlen];
-            }
+            var buf = s_tempNativeStringBuffer ?? (s_tempNativeStringBuffer = new byte[TEMP_STRING_BUFFER_SIZE]);
+            if (buf.Length < strlen) return new byte[strlen];
             return buf;
         }
 
-
         private static string GetStringFromNative(IntPtr str, int strlen)
         {
-            if (str != IntPtr.Zero)
-            {
+            if (str != IntPtr.Zero) {
 #if PUERTS_UNSAFE
-                unsafe
-                {
+                unsafe {
                     return Encoding.UTF8.GetString((byte*)str, strlen);
                 }
 #else
-                byte[] buffer = GetTempNativeStringBuff(strlen);
+                var buffer = GetTempNativeStringBuff(strlen);
                 Marshal.Copy(str, buffer, 0, strlen);
                 return Encoding.UTF8.GetString(buffer, 0, strlen);
 #endif
             }
-            else
-            {
+            else {
                 return null;
             }
         }
@@ -164,7 +152,7 @@ namespace Puerts
         public static string GetLastExceptionInfo(IntPtr isolate)
         {
             int strlen;
-            IntPtr str = GetLastExceptionInfo(isolate, out strlen);
+            var str = GetLastExceptionInfo(isolate, out strlen);
             return GetStringFromNative(str, strlen);
         }
 
@@ -188,7 +176,7 @@ namespace Puerts
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(generalDestructor);
 #endif
-            IntPtr fn = generalDestructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(generalDestructor);
+            var fn = generalDestructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(generalDestructor);
             SetGeneralDestructor(isolate, fn);
         }
 
@@ -201,8 +189,7 @@ namespace Puerts
 
         public static IntPtr EvalChecked(IntPtr isolate, string code, string path)
         {
-            if (code == null)
-            {
+            if (code == null) {
                 throw new InvalidProgramException("eval null string");
             }
             return Eval(isolate, Encoding.UTF8.GetBytes(code), path);
@@ -213,71 +200,72 @@ namespace Puerts
 
         public static IntPtr EvalChecked(IntPtr isolate, string code, string path)
         {
-            if (code == null)
-            {
-                throw new InvalidProgramException("eval null string");
-            }
+            if (code == null) throw new InvalidProgramException("eval null string");
             return Eval(isolate, code, path);
         }
 #endif
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         // in WebGL, the prefix '_' is necessary. (Dont know why)
-        public static extern int _RegisterClass(IntPtr isolate, int BaseTypeId, string fullName, IntPtr constructor, IntPtr destructor, long data);
+        public static extern int _RegisterClass(IntPtr isolate, int BaseTypeId, string fullName, IntPtr constructor
+            , IntPtr destructor, long data);
 
-        public static int RegisterClass(IntPtr isolate, int BaseTypeId, string fullName, V8ConstructorCallback constructor, V8DestructorCallback destructor, long data)
+        public static int RegisterClass(IntPtr isolate, int BaseTypeId, string fullName
+            , V8ConstructorCallback constructor, V8DestructorCallback destructor, long data)
         {
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(constructor);
             GCHandle.Alloc(destructor);
 #endif
-            IntPtr fn1 = constructor == null ? IntPtr.Zero: Marshal.GetFunctionPointerForDelegate(constructor);
-            IntPtr fn2 = destructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(destructor);
-
+            var fn1 = constructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(constructor);
+            var fn2 = destructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(destructor);
             return _RegisterClass(isolate, BaseTypeId, fullName, fn1, fn2, data);
         }
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int RegisterStruct(IntPtr isolate, int BaseTypeId, string fullName, IntPtr constructor, IntPtr destructor, long data, int size);
+        public static extern int RegisterStruct(IntPtr isolate, int BaseTypeId, string fullName, IntPtr constructor
+            , IntPtr destructor, long data, int size);
 
-        public static int RegisterStruct(IntPtr isolate, int BaseTypeId, string fullName, V8ConstructorCallback constructor, V8DestructorCallback destructor, long data, int size)
+        public static int RegisterStruct(IntPtr isolate, int BaseTypeId, string fullName
+            , V8ConstructorCallback constructor, V8DestructorCallback destructor, long data, int size)
         {
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(constructor);
             GCHandle.Alloc(destructor);
 #endif
-            IntPtr fn1 = constructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(constructor);
-            IntPtr fn2 = destructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(destructor);
-
+            var fn1 = constructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(constructor);
+            var fn2 = destructor == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(destructor);
             return RegisterStruct(isolate, BaseTypeId, fullName, fn1, fn2, data, size);
         }
 
         //切记注册的回调不能抛C#异常，必须先catch，然后转js异常
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool RegisterFunction(IntPtr isolate, int classID, string name, bool isStatic, IntPtr callback, long data);
+        public static extern bool RegisterFunction(IntPtr isolate, int classID, string name, bool isStatic
+            , IntPtr callback, long data);
 
-        public static bool RegisterFunction(IntPtr isolate, int classID, string name, bool isStatic, V8FunctionCallback callback, long data)
+        public static bool RegisterFunction(IntPtr isolate, int classID, string name, bool isStatic
+            , V8FunctionCallback callback, long data)
         {
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(callback);
 #endif
-            IntPtr fn = callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback);
-
+            var fn = callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback);
             return RegisterFunction(isolate, classID, name, isStatic, fn, data);
         }
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool RegisterProperty(IntPtr isolate, int classID, string name, bool isStatic, IntPtr getter, long getterData, IntPtr setter, long setterData, bool dontDelete);
+        public static extern bool RegisterProperty(IntPtr isolate, int classID, string name, bool isStatic
+            , IntPtr getter, long getterData, IntPtr setter, long setterData, bool dontDelete);
 
-        public static bool RegisterProperty(IntPtr isolate, int classID, string name, bool isStatic, V8FunctionCallback getter, long getterData, V8FunctionCallback setter, long setterData, bool dontDelete)
+        public static bool RegisterProperty(IntPtr isolate, int classID, string name, bool isStatic
+            , V8FunctionCallback getter, long getterData, V8FunctionCallback setter, long setterData, bool dontDelete)
         {
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(getter);
             GCHandle.Alloc(setter);
 #endif
-            IntPtr fn1 = getter == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(getter);
-            IntPtr fn2 = setter == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(setter);
-
+            var fn1 = getter == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(getter);
+            var fn2 = setter == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(setter);
             return RegisterProperty(isolate, classID, name, isStatic, fn1, getterData, fn2, setterData, dontDelete);
         }
 
@@ -306,12 +294,10 @@ namespace Puerts
 
         public static void ReturnString(IntPtr isolate, IntPtr info, string str)
         {
-            if (str == null)
-            {
+            if (str == null) {
                 ReturnNull(isolate, info);
             }
-            else
-            {
+            else {
 #if PUERTS_GENERAL && !PUERTS_GENERAL_OSX
                 __ReturnString(isolate, info, Encoding.UTF8.GetBytes(str));
 #else
@@ -336,14 +322,17 @@ namespace Puerts
         public static extern void ReturnFunction(IntPtr isolate, IntPtr info, IntPtr JSFunction);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ReturnCSharpFunctionCallback(IntPtr isolate, IntPtr info, IntPtr v8FunctionCallback, long data);
+        private static extern void ReturnCSharpFunctionCallback(IntPtr isolate, IntPtr info, IntPtr v8FunctionCallback
+            , long data);
 
-        public static void ReturnCSharpFunctionCallback(IntPtr isolate, IntPtr info, V8FunctionCallback v8FunctionCallback, long data)
+        public static void ReturnCSharpFunctionCallback(IntPtr isolate, IntPtr info
+            , V8FunctionCallback v8FunctionCallback, long data)
         {
 #if PUERTS_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
             GCHandle.Alloc(v8FunctionCallback);
 #endif
-            IntPtr fn = v8FunctionCallback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(v8FunctionCallback);
+            var fn = v8FunctionCallback == null ? IntPtr.Zero
+                : Marshal.GetFunctionPointerForDelegate(v8FunctionCallback);
             ReturnCSharpFunctionCallback(isolate, info, fn, data);
         }
 
@@ -371,7 +360,7 @@ namespace Puerts
         public static string GetStringFromValue(IntPtr isolate, IntPtr value, bool isByRef)
         {
             int strlen;
-            IntPtr str = GetStringFromValue(isolate, value, out strlen, isByRef);
+            var str = GetStringFromValue(isolate, value, out strlen, isByRef);
             return GetStringFromNative(str, strlen);
         }
 
@@ -386,12 +375,10 @@ namespace Puerts
 
         public static long GetBigIntFromValueChecked(IntPtr isolate, IntPtr value, bool isByRef)
         {
-            if (!ValueIsBigInt(isolate, value, isByRef))
-            {
-                return 0;
-            }
+            if (!ValueIsBigInt(isolate, value, isByRef)) return 0;
             return GetBigIntFromValue(isolate, value, isByRef);
         }
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetObjectFromValue(IntPtr isolate, IntPtr value, bool isByRef);
 
@@ -416,28 +403,23 @@ namespace Puerts
 
         public static void SetStringToOutValue(IntPtr isolate, IntPtr value, string str)
         {
-            if (str == null)
-            {
+            if (str == null) {
                 SetNullToOutValue(isolate, value);
             }
-            else
-            {
+            else {
                 SetStringToOutValue(isolate, value, Encoding.UTF8.GetBytes(str));
             }
         }
 #else
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SetStringToOutValue")]
         protected static extern void __SetStringToOutValue(IntPtr isolate, IntPtr value, string str);
+
         public static void SetStringToOutValue(IntPtr isolate, IntPtr value, string str)
         {
             if (str == null)
-            {
                 SetNullToOutValue(isolate, value);
-            }
             else
-            {
                 __SetStringToOutValue(isolate, value, str);
-            }
         }
 #endif
 
@@ -486,13 +468,9 @@ namespace Puerts
         public static void PushStringForJSFunction(IntPtr function, string str)
         {
             if (str == null)
-            {
                 PushNullForJSFunction(function);
-            }
             else
-            {
                 __PushStringForJSFunction(function, str);
-            }
         }
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -522,7 +500,7 @@ namespace Puerts
         public static string GetFunctionLastExceptionInfo(IntPtr function)
         {
             int strlen;
-            IntPtr str = GetFunctionLastExceptionInfo(function, out strlen);
+            var str = GetFunctionLastExceptionInfo(function, out strlen);
             return GetStringFromNative(str, strlen);
         }
 
@@ -542,7 +520,7 @@ namespace Puerts
         public static string GetStringFromResult(IntPtr resultInfo)
         {
             int strlen;
-            IntPtr str = GetStringFromResult(resultInfo, out strlen);
+            var str = GetStringFromResult(resultInfo, out strlen);
             return GetStringFromNative(str, strlen);
         }
 
@@ -561,10 +539,7 @@ namespace Puerts
 
         public static long GetBigIntFromResultCheck(IntPtr resultInfo)
         {
-            if (!ResultIsBigInt(resultInfo))
-            {
-                return 0;
-            }
+            if (!ResultIsBigInt(resultInfo)) return 0;
 #if UNITY_WEBGL && !UNITY_EDITOR
             return Marshal.ReadInt64(GetBigIntFromResult(resultInfo));
 #else
@@ -610,21 +585,24 @@ namespace Puerts
             GCHandle.Alloc(logWarning);
             GCHandle.Alloc(logError);
 #endif
-            IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
-            IntPtr fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
-            IntPtr fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
-
+            var fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
+            var fn2 = logWarning == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logWarning);
+            var fn3 = logError == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(logError);
             SetLogCallback(fn1, fn2, fn3);
         }
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void ReturnArrayBuffer(IntPtr isolate, IntPtr info, byte[] bytes, int Length);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetArrayBufferToOutValue(IntPtr isolate, IntPtr value, Byte[] bytes, int length);
+        public static extern void SetArrayBufferToOutValue(IntPtr isolate, IntPtr value, byte[] bytes, int length);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void PushArrayBufferForJSFunction(IntPtr function, byte[] bytes, int length);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetArrayBufferFromValue(IntPtr isolate, IntPtr value, out int length, bool isOut);
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetArrayBufferFromResult(IntPtr function, out int length);
     }

@@ -2,8 +2,8 @@
 
 namespace FlowCanvas.Nodes
 {
-    abstract public class ParameterVariableNode : FlowNode
+    public abstract class ParameterVariableNode : FlowNode
     {
-        abstract public BBParameter parameter { get; }
+        public abstract BBParameter parameter { get; }
     }
 }

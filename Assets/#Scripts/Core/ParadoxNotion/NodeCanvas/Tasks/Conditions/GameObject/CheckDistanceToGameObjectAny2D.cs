@@ -34,8 +34,8 @@ namespace NodeCanvas.Tasks.Conditions
             foreach (var o in targetObjects.value) {
                 if (o == agent.gameObject) continue;
 
-                if (OperationTools.Compare(Vector2.Distance(agent.position, o.transform.position), distance.value,
-                        checkType, floatingPoint)) {
+                if (OperationTools.Compare(Vector2.Distance(agent.position, o.transform.position), distance.value
+                    , checkType, floatingPoint)) {
                     temp.Add(o);
                     r = true;
                 }

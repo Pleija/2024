@@ -15,8 +15,7 @@ namespace Runner.Themes
         public static ThemeData GetThemeData(string type)
         {
             ThemeData list;
-            if (themeDataList == null || !themeDataList.TryGetValue(type, out list))
-                return null;
+            if (themeDataList == null || !themeDataList.TryGetValue(type, out list)) return null;
             return list;
         }
 

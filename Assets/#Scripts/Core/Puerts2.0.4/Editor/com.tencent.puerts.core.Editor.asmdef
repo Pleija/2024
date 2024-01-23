@@ -1,21 +1,21 @@
 {
-    "name": "com.tencent.puerts.core.Editor",
-    "rootNamespace": "",
-    "references": [
-        "Core",
-        "Unity.ResourceManager",
-        "Unity.Addressables",
-        "com.tencent.puerts.core"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "com.tencent.puerts.core.Editor",
+  "rootNamespace": "",
+  "references": [
+    "Core",
+    "Unity.ResourceManager",
+    "Unity.Addressables",
+    "com.tencent.puerts.core"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

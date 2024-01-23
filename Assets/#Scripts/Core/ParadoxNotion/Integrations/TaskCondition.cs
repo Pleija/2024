@@ -4,40 +4,40 @@ using UnityEngine;
 
 namespace FlowCanvas.Nodes
 {
-
     ///<summary>Task Action is used to check ConditionTasks within the flowgraph in a simplified manner without exposing ports</summary>
-    [Description("Returns an encapsulated condition check without exposing any value ports other than the boolean check")]
+    [Description(
+        "Returns an encapsulated condition check without exposing any value ports other than the boolean check")]
     public class TaskCondition : FlowNode, ITaskAssignable<ConditionTask>
     {
-
-        [SerializeField] private ConditionTask _condition;
+        [SerializeField]
+        private ConditionTask _condition;
 
         public override string name => condition != null ? condition.name : "Condition";
 
         public ConditionTask condition {
-            get { return _condition; }
-            set { _condition = value; }
+            get => _condition;
+            set => _condition = value;
         }
 
         Task ITaskAssignable.task {
-            get { return condition; }
-            set { condition = (ConditionTask)value; }
+            get => condition;
+            set => condition = (ConditionTask)value;
         }
 
-        public override void OnGraphStarted() {
-            if ( condition != null ) { condition.Enable(graphAgent, graphBlackboard); }
+        public override void OnGraphStarted()
+        {
+            if (condition != null) condition.Enable(graphAgent, graphBlackboard);
         }
 
-        public override void OnGraphStoped() {
-            if ( condition != null ) { condition.Disable(); }
+        public override void OnGraphStoped()
+        {
+            if (condition != null) condition.Disable();
         }
 
-        protected override void RegisterPorts() {
-            AddValueOutput<bool>("Condition", () =>
-            {
-                if ( condition != null ) {
-                    return condition.Check(graphAgent, graphBlackboard);
-                }
+        protected override void RegisterPorts()
+        {
+            AddValueOutput<bool>("Condition", () => {
+                if (condition != null) return condition.Check(graphAgent, graphBlackboard);
                 return false;
             });
         }

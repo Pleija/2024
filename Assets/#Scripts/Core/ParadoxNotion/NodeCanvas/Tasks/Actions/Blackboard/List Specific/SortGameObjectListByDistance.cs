@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Category("✫ Blackboard/Lists"),
-     Description(
+    [Category("✫ Blackboard/Lists")
+     , Description(
          "Will sort the gameobjects in the target list by their distance to the agent (closer first) and save that list to the blackboard")]
     public class SortGameObjectListByDistance : ActionTask<Transform>
     {
@@ -24,8 +24,7 @@ namespace NodeCanvas.Tasks.Actions
         {
             saveAs.value = targetList.value.OrderBy(go => Vector3.Distance(go.transform.position, agent.position))
                 .ToList();
-            if (reverse)
-                saveAs.value.Reverse();
+            if (reverse) saveAs.value.Reverse();
             EndAction();
         }
     }

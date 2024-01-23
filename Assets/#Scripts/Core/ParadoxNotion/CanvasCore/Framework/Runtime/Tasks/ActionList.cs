@@ -26,8 +26,8 @@ namespace NodeCanvas.Framework
         protected override string info {
             get {
                 if (actions.Count == 0) return "No Actions";
-                var finalText = actions.Count > 1 ? string.Format("<b>({0})</b>\n",
-                        executionMode == ActionsExecutionMode.ActionsRunInSequence ? "In Sequence" : "In Parallel")
+                var finalText = actions.Count > 1 ? string.Format("<b>({0})</b>\n"
+                        , executionMode == ActionsExecutionMode.ActionsRunInSequence ? "In Sequence" : "In Parallel")
                     : string.Empty;
 
                 for (var i = 0; i < actions.Count; i++) {
@@ -198,8 +198,8 @@ namespace NodeCanvas.Framework
                 GUI.enabled = !Application.isPlaying;
                 action.isUserEnabled = EditorGUILayout.Toggle(action.isUserEnabled, GUILayout.Width(18));
                 GUI.enabled = true;
-                GUILayout.Label((action.isPaused ? "<b>||</b> " : action.isRunning ? "► " : "") + action.summaryInfo,
-                    GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
+                GUILayout.Label((action.isPaused ? "<b>||</b> " : action.isRunning ? "► " : "") + action.summaryInfo
+                    , GUILayout.MinWidth(0), GUILayout.ExpandWidth(true));
 
                 if (!Application.isPlaying && GUILayout.Button("X", GUILayout.Width(20))) {
                     UndoUtility.RecordObject(ownerSystem.contextObject, "List Remove Task");
@@ -251,8 +251,8 @@ namespace NodeCanvas.Framework
             var path = EditorUtility.SaveFilePanelInProject("Save Preset", "", "actionList", "");
 
             if (!string.IsNullOrEmpty(path)) {
-                System.IO.File.WriteAllText(path,
-                    JSONSerializer.Serialize(typeof(ActionList), this, null, true)); //true for pretyJson
+                System.IO.File.WriteAllText(path
+                    , JSONSerializer.Serialize(typeof(ActionList), this, null, true)); //true for pretyJson
                 AssetDatabase.Refresh();
             }
         }

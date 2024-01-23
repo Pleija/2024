@@ -45,8 +45,8 @@ namespace App
             Assert.IsNotNull(type, "type != null");
             if (model) model = model.GetSelf();
             if (!model)
-                model = type.GetProperty("self",
-                        BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
+                model = type
+                    .GetProperty("self", BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
                     ?.GetValue(null, null) as ModelBase;
             Assert.IsNotNull(model, $"model: {type.FullName}.self == null");
         }
@@ -60,8 +60,7 @@ namespace App
             var member = type.GetMember(fieldName, BindingFlags.Instance | BindingFlags.Public).FirstOrDefault();
             if (member is PropertyInfo propertyInfo)
                 Value = propertyInfo.GetValue(model) as ReactiveProperty<T>;
-            else if (member is FieldInfo fieldInfo)
-                Value = fieldInfo.GetValue(model) as ReactiveProperty<T>;
+            else if (member is FieldInfo fieldInfo) Value = fieldInfo.GetValue(model) as ReactiveProperty<T>;
             // }
             if (Value == null) return;
             //Set(Value.Value);

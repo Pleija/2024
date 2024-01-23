@@ -148,16 +148,12 @@ namespace ParadoxNotion.Serialization.FullSerializer
             if (other == null || Type != other.Type) return false;
 
             switch (Type) {
-                case fsDataType.Null:
-                    return true;
+                case fsDataType.Null: return true;
                 case fsDataType.Double:
                     return AsDouble == other.AsDouble || Math.Abs(AsDouble - other.AsDouble) < double.Epsilon;
-                case fsDataType.Int64:
-                    return AsInt64 == other.AsInt64;
-                case fsDataType.Boolean:
-                    return AsBool == other.AsBool;
-                case fsDataType.String:
-                    return AsString == other.AsString;
+                case fsDataType.Int64:   return AsInt64 == other.AsInt64;
+                case fsDataType.Boolean: return AsBool == other.AsBool;
+                case fsDataType.String:  return AsString == other.AsString;
                 case fsDataType.Array:
                     var thisList = AsList;
                     var otherList = other.AsList;

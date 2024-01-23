@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Sub Tree"),
-     Description("Executes a sub Behaviour Tree. The status of the root node in the SubTree will be returned."),
-     Icon("BT"), DropReferenceType(typeof(BehaviourTree))]
+    [Name("Sub Tree")
+     , Description("Executes a sub Behaviour Tree. The status of the root node in the SubTree will be returned.")
+     , Icon("BT"), DropReferenceType(typeof(BehaviourTree))]
     public class SubTree : BTNodeNested<BehaviourTree>
     {
         [SerializeField, ExposeField]

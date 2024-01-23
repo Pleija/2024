@@ -12,6 +12,7 @@ namespace NodeCanvas.Framework
     public abstract class GraphOwner : MonoBehaviour, ISerializationCallbackReceiver
     {
         public MtsFile mtsFile;
+
         ///----------------------------------------------------------------------------------------------
         public enum EnableAction { EnableBehaviour, DoNothing }
 
@@ -36,8 +37,8 @@ namespace NodeCanvas.Framework
 
             for (var i = 0; i < _serializedExposedParameters.Length; i++) {
                 var serializedParam = new SerializationPair();
-                serializedParam._json = JSONSerializer.Serialize(typeof(ExposedParameter), exposedParameters[i],
-                    serializedParam._references);
+                serializedParam._json = JSONSerializer.Serialize(typeof(ExposedParameter), exposedParameters[i]
+                    , serializedParam._references);
                 _serializedExposedParameters[i] = serializedParam;
             }
         }
@@ -57,8 +58,6 @@ namespace NodeCanvas.Framework
                     exposedParameters.Add(exposedParam);
                 }
             }
-
-          
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -77,29 +76,29 @@ namespace NodeCanvas.Framework
         [SerializeField]
         private GraphSource _boundGraphSource = new GraphSource();
 
-        [SerializeField, FormerlySerializedAs("firstActivation"),
-         Tooltip(
+        [SerializeField, FormerlySerializedAs("firstActivation")
+         , Tooltip(
              "When the graph will first activate. Async mode will load the graph on a separate thread (thus no spikes), but the graph will activate a few frames later.")]
         private FirstActivation _firstActivation = FirstActivation.OnStart;
 
-        [SerializeField, FormerlySerializedAs("enableAction"),
-         Tooltip("What will happen when the GraphOwner is enabled")]
+        [SerializeField, FormerlySerializedAs("enableAction")
+         , Tooltip("What will happen when the GraphOwner is enabled")]
         private EnableAction _enableAction = EnableAction.EnableBehaviour;
 
-        [SerializeField, FormerlySerializedAs("disableAction"),
-         Tooltip("What will happen when the GraphOwner is disabled")]
+        [SerializeField, FormerlySerializedAs("disableAction")
+         , Tooltip("What will happen when the GraphOwner is disabled")]
         private DisableAction _disableAction = DisableAction.DisableBehaviour;
 
         [SerializeField, Tooltip("If enabled, bound graph prefab overrides in instances will not be possible")]
         private bool _lockBoundGraphPrefabOverrides = true;
 
-        [SerializeField,
-         Tooltip(
+        [SerializeField
+         , Tooltip(
              "If enabled, all subgraphs will be pre-initialized in Awake along with the root graph, but this may have a loading performance cost")]
         private bool _preInitializeSubGraphs;
 
-        [SerializeField,
-         Tooltip(
+        [SerializeField
+         , Tooltip(
              "Specify when (if) the behaviour is updated. Changes to this only work when the behaviour starts, or re-starts")]
         private Graph.UpdateMode _updateMode = Graph.UpdateMode.NormalUpdate;
 
@@ -204,12 +203,9 @@ namespace NodeCanvas.Framework
                 instance = Graph.Clone<Graph>(originalGraph, null);
                 instances[originalGraph] = instance;
             }
-
-            if (instance) {
-                if ( instance.mtsFile == null && mtsFile) {
+            if (instance)
+                if (instance.mtsFile == null && mtsFile)
                     instance.mtsFile = mtsFile;
-                }
-            }
             return instance;
         }
 
@@ -323,8 +319,8 @@ namespace NodeCanvas.Framework
                 exposedParameters.Add(exposedParam);
                 return exposedParam;
             }
-            ParadoxNotion.Services.Logger.LogWarning(string.Format("Exposed Graph Variable named '{0}' was not found",
-                name));
+            ParadoxNotion.Services.Logger.LogWarning(string.Format("Exposed Graph Variable named '{0}' was not found"
+                , name));
             return null;
         }
 
@@ -478,19 +474,19 @@ namespace NodeCanvas.Framework
                         boundGraphSerialization != serializedGraph.GetSerializedJsonData()) {
                         if (lockBoundGraphPrefabOverrides) {
                             ParadoxNotion.Services.Logger.LogWarning(
-                                "The Bound Graph is Prefab Locked!\nChanges you make are not saved!\nUnlock the Prefab Instance, or Edit the Prefab Asset.",
-                                LogTag.EDITOR, this);
+                                "The Bound Graph is Prefab Locked!\nChanges you make are not saved!\nUnlock the Prefab Instance, or Edit the Prefab Asset."
+                                , LogTag.EDITOR, this);
                             return;
                         }
                         else {
-                            ParadoxNotion.Services.Logger.LogWarning("Prefab Bound Graph just got overridden!",
-                                LogTag.EDITOR, this);
+                            ParadoxNotion.Services.Logger.LogWarning("Prefab Bound Graph just got overridden!"
+                                , LogTag.EDITOR, this);
                         }
                     }
                 }
                 //---
-                ParadoxNotion.Design.UndoUtility.RecordObject(this,
-                    ParadoxNotion.Design.UndoUtility.GetLastOperationNameOr("Bound Graph Change"));
+                ParadoxNotion.Design.UndoUtility.RecordObject(this
+                    , ParadoxNotion.Design.UndoUtility.GetLastOperationNameOr("Bound Graph Change"));
                 boundGraphSource = serializedGraph.GetGraphSource();
                 boundGraphSerialization = serializedGraph.GetSerializedJsonData();
                 boundGraphObjectReferences = serializedGraph.GetSerializedReferencesData();

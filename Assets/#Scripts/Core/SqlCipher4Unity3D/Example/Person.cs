@@ -5,7 +5,7 @@ namespace SqlCipher4Unity3D.Example
     [UnityEngine.Scripting.Preserve]
     public class Person
     {
-        [PrimaryKey, AutoIncrement] 
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
         public string Name { get; set; }

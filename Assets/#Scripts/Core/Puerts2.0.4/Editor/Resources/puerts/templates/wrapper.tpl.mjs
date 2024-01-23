@@ -4,7 +4,7 @@
 * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
-import { default as $, IF, ELSE, ELSEIF, ENDIF, FOR } from './tte.mjs'
+import {default as $, IF, ELSE, ELSEIF, ENDIF, FOR} from './tte.mjs'
 
 class ArgumentCodeGenerator {
     constructor(i) {
@@ -151,11 +151,12 @@ let csharpKeywords = {};
 
 /**
  * this template is for generating the c# wrapper class
- * @param {GenClass.TypeGenInfo} data 
- * @returns 
+ * @param {GenClass.TypeGenInfo} data
+ * @returns
  */
 export default function TypingTemplate(data) {
     let ret = '';
+
     function getSelf(type) {
         if (data.BlittableCopy) {
             return `(${type.Name}*)self`;
@@ -165,6 +166,7 @@ export default function TypingTemplate(data) {
             return `Puerts.Utils.GetSelf((int)data, self) as ${type.Name}`;
         }
     }
+
     function refSelf() {
         return data.BlittableCopy ? "(*obj)" : "obj";
     }
@@ -204,11 +206,11 @@ ${IF(data.Constructor, () => $`
                     ${data.Constructor.HasOverloads ? acg.declareArgJSValueType() : ""};
                 `)}
                 ${FOR(toJsArray(overloadGroup), overload =>
-                    $`
+                $`
                     ${IF(data.Constructor.HasOverloads && overload.ParameterInfos.Length > 0)}
                     if (${argumentCodeGenerators.map((acg, idx) => {
-                        return acg.invokeIsMatch(overload.ParameterInfos.get_Item(idx))
-                    }).join(' && ')})
+                    return acg.invokeIsMatch(overload.ParameterInfos.get_Item(idx))
+                }).join(' && ')})
                     ${ENDIF()}
 
                     {
@@ -216,15 +218,15 @@ ${IF(data.Constructor, () => $`
                         ${acg.getArg(overload.ParameterInfos.get_Item(index))};
                     `)}
                         ${data.BlittableCopy ? "HeapValue" : "var result"} = new ${data.Name}(${argumentCodeGenerators.map((acg, idx) => {
-                        var paramInfo = overload.ParameterInfos.get_Item(idx);
-                        return `${paramInfo.IsOut ? "out " : (paramInfo.IsByRef ? (paramInfo.IsIn ? "in " : "ref ") : "")}${acg.arg()}`
-                    }).join(', ')});
+                    var paramInfo = overload.ParameterInfos.get_Item(idx);
+                    return `${paramInfo.IsOut ? "out " : (paramInfo.IsByRef ? (paramInfo.IsIn ? "in " : "ref ") : "")}${acg.arg()}`
+                }).join(', ')});
 
                     ${FOR(argumentCodeGenerators, (acg, idx) => {
-                        var paramInfo = overload.ParameterInfos.get_Item(idx)
-                        paramInfo.IsByRef && $`
+                    var paramInfo = overload.ParameterInfos.get_Item(idx)
+                    paramInfo.IsByRef && $`
                         StaticTranslate<${paramInfo.TypeName}>.Set((int)data, isolate, Puerts.NativeValueApi.SetValueToByRefArgument, ${acg.v8Value()}, ${acg.arg()});`
-                    })}
+                })}
 
                     ${IF(data.BlittableCopy)}
                         fixed (${data.Name}* result = &HeapValue)
@@ -264,7 +266,7 @@ ${FOR(toJsArray(data.Methods).filter(item => !item.IsLazyMember), method => $`
                 // 这里取0可能是因为第一个重载参数肯定是最全的？
                 .map((item, i) => new ArgumentCodeGenerator(i));
             $
-            `${IF(method.HasOverloads)}
+                `${IF(method.HasOverloads)}
                 if (${paramLenCheck(overloadGroup)})
             ${ENDIF()}
                 {
@@ -277,8 +279,8 @@ ${FOR(toJsArray(data.Methods).filter(item => !item.IsLazyMember), method => $`
                 ${FOR(toJsArray(overloadGroup), overload => $`
                     ${IF(method.HasOverloads && overload.ParameterInfos.Length > 0)}
                     if (${argumentCodeGenerators.map((acg, idx) => {
-                        return acg.invokeIsMatch(overload.ParameterInfos.get_Item(idx))
-                    }).join(' && ')})
+                    return acg.invokeIsMatch(overload.ParameterInfos.get_Item(idx))
+                }).join(' && ')})
                     ${ENDIF()}
                     {
                     ${FOR(argumentCodeGenerators, (acg, idx) => $`
@@ -286,10 +288,10 @@ ${FOR(toJsArray(data.Methods).filter(item => !item.IsLazyMember), method => $`
                     `)}
 
                         ${overload.IsVoid ? "" : "var result = "}${method.IsStatic ? data.Name : refSelf()}.${UnK(method.Name)} (${argumentCodeGenerators.map((acg, idx) => {
-                            var paramInfo = overload.ParameterInfos.get_Item(idx);
-                return `${paramInfo.IsOut ? "out " : (paramInfo.IsByRef ? (paramInfo.IsIn ? "in " : "ref ") : "")}${acg.arg()}`
-                            }).concat(overload.EllipsisedParameterInfos.Length == 0 ? [] : toJsArray(overload.EllipsisedParameterInfos).map(info=> info.DefaultValue)).join(', ')
-                        });
+                    var paramInfo = overload.ParameterInfos.get_Item(idx);
+                    return `${paramInfo.IsOut ? "out " : (paramInfo.IsByRef ? (paramInfo.IsIn ? "in " : "ref ") : "")}${acg.arg()}`
+                }).concat(overload.EllipsisedParameterInfos.Length == 0 ? [] : toJsArray(overload.EllipsisedParameterInfos).map(info => info.DefaultValue)).join(', ')
+                });
 
                     ${FOR(argumentCodeGenerators, (acg, idx) => $`
                         ${IF(overload.ParameterInfos.get_Item(idx).IsByRef)}
@@ -569,6 +571,7 @@ function toJsArray(csArr) {
     }
     return arr;
 }
+
 function UnK(identifier) {
     return csharpKeywords.hasOwnProperty(identifier) ? csharpKeywords[identifier] : identifier;
 }
@@ -583,6 +586,7 @@ function setReturn(typeInfo) {
         return `Puerts.ResultHelper.Set((int)data, isolate, info, result)`;
     }
 }
+
 function operatorCall(methodName, acgList, typeInfo) {
     if (methodName == 'op_Implicit') {
         return `(${typeInfo.TypeName})${acgList[0].arg()}`;

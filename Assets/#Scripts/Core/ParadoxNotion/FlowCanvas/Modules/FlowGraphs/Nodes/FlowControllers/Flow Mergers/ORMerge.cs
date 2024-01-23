@@ -3,31 +3,32 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-
-    [Name("OR")]
-    [Category("Flow Controllers/Flow Merge")]
-    [Description("Calls Out when either input is called, but only once per frame regardless of how many inputs are called.")]
+    [Name("OR"), Category("Flow Controllers/Flow Merge")
+     , Description(
+         "Calls Out when either input is called, but only once per frame regardless of how many inputs are called.")]
     public class ORMerge : FlowControlNode
     {
-
-        [SerializeField, ExposeField]
-        [MinValue(2), DelayedField]
-        [GatherPortsCallback]
+        [SerializeField, ExposeField, MinValue(2), DelayedField, GatherPortsCallback]
         private int _portCount = 2;
 
         private FlowOutput fOut;
         private int lastFrameCall;
 
-        protected override void RegisterPorts() {
+        protected override void RegisterPorts()
+        {
             fOut = AddFlowOutput("Out");
-            for ( var _i = 0; _i < _portCount; _i++ ) {
+
+            for (var _i = 0; _i < _portCount; _i++) {
                 var i = _i;
-                AddFlowInput(i.ToString(), (f) => { Check(i, f); });
+                AddFlowInput(i.ToString(), (f) => {
+                    Check(i, f);
+                });
             }
         }
 
-        void Check(int index, Flow f) {
-            if ( Time.frameCount != lastFrameCall ) {
+        private void Check(int index, Flow f)
+        {
+            if (Time.frameCount != lastFrameCall) {
                 lastFrameCall = Time.frameCount;
                 fOut.Call(f);
             }

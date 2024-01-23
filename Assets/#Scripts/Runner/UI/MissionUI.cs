@@ -16,7 +16,8 @@ namespace Runner.UI
         {
             gameObject.SetActive(true);
             foreach (Transform t in missionPlace)
-                /*Addressables.ReleaseInstance*/Destroy(t.gameObject);
+                /*Addressables.ReleaseInstance*/
+                Destroy(t.gameObject);
 
             for (var i = 0; i < 3; ++i)
                 if (PlayerData.instance.missions.Count > i) {
@@ -24,8 +25,8 @@ namespace Runner.UI
                     yield return op;
 
                     if (op.Result == null) {
-                        Debug.LogWarning(string.Format("Unable to load mission entry {0}.",
-                            missionEntryPrefab.Asset.name));
+                        Debug.LogWarning(string.Format("Unable to load mission entry {0}."
+                            , missionEntryPrefab.Asset.name));
                         yield break;
                     }
                     var entry = op.Result.Instantiate().OnDestroyRelease(op).GetComponent<MissionEntry>();
@@ -37,8 +38,8 @@ namespace Runner.UI
                     yield return op;
 
                     if (op.Result == null) {
-                        Debug.LogWarning(string.Format("Unable to load button {0}.",
-                            addMissionButtonPrefab.Asset.name));
+                        Debug.LogWarning(string.Format("Unable to load button {0}."
+                            , addMissionButtonPrefab.Asset.name));
                         yield break;
                     }
                     var obj = op.Result.Instantiate().OnDestroyRelease(op).GetComponent<AdsForMission>();

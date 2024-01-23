@@ -48,8 +48,10 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                 var itemResult = Serializer.TryDeserialize(serializedItem, elementType, ref deserialized);
                 result.AddMessages(itemResult);
                 if (itemResult.Failed) continue;
-                if (i < existingCount) list[i] = deserialized;
-                else list.Add(deserialized);
+                if (i < existingCount)
+                    list[i] = deserialized;
+                else
+                    list.Add(deserialized);
             }
             instance = list.ToArray(elementType);
             return result;

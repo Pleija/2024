@@ -1,7 +1,7 @@
 import Component = CS.UnityEngine.Component;
 import $typeof = puer.$typeof;
 import GameObject = CS.UnityEngine.GameObject;
-import {iterator} from "Common/Iterator.mjs";
+import { iterator } from "Common/Iterator.mjs";
 import Array$1 = CS.System.Array$1;
 
 Component.prototype.Get = function <T>(c: new(...args: any[]) => T): T {

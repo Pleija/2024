@@ -34,8 +34,8 @@ namespace ParadoxNotion.Design
         ///     A simple reorderable list. Pass the list and a function to call for GUI. The callback comes with the current
         ///     iterated element index in the list
         /// </summary>
-        public static IList ReorderableList(IList list, ReorderableListOptions options,
-            ReorderableListCallback GUICallback)
+        public static IList ReorderableList(IList list, ReorderableListOptions options
+            , ReorderableListCallback GUICallback)
         {
             if (list == null) return null;
             var listType = list.GetType();
@@ -49,8 +49,8 @@ namespace ParadoxNotion.Design
                 //Drag And Drop.
                 if (dropRefs.Length > 0)
                     if (dropRefs.Any(r =>
-                            argType.IsAssignableFrom(r.GetType()) || (r.GetType() == typeof(GameObject) &&
-                                typeof(Component).IsAssignableFrom(argType)))) {
+                        argType.IsAssignableFrom(r.GetType()) || (r.GetType() == typeof(GameObject) &&
+                            typeof(Component).IsAssignableFrom(argType)))) {
                         var dropRect = GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true));
                         dropRect.xMin += 5;
                         dropRect.xMax -= 5;
@@ -119,15 +119,15 @@ namespace ParadoxNotion.Design
                 var lastRect = GUILayoutUtility.GetLastRect();
                 var pickRect = Rect.MinMaxRect(lastRect.xMin - 16, lastRect.yMin, lastRect.xMin, lastRect.yMax);
                 GUI.color = new Color(1, 1, 1, 0.5f);
-                GUI.Label(pickRect,
-                    options.blockReorder ? GetTempContent("■", null, "Re-Ordering Is Disabled") : GetTempContent("☰"),
-                    Styles.centerLabel);
+                GUI.Label(pickRect
+                    , options.blockReorder ? GetTempContent("■", null, "Re-Ordering Is Disabled") : GetTempContent("☰")
+                    , Styles.centerLabel);
                 GUI.color = Color.white;
 
                 if (options.customItemMenu != null) {
                     GUILayout.Space(18);
-                    var buttonRect = Rect.MinMaxRect(lastRect.xMax, lastRect.yMin, lastRect.xMax + 22,
-                        lastRect.yMax + 1);
+                    var buttonRect = Rect.MinMaxRect(lastRect.xMax, lastRect.yMin, lastRect.xMax + 22
+                        , lastRect.yMax + 1);
                     EditorGUIUtility.AddCursorRect(buttonRect, MouseCursor.Link);
                     GUI.color = EditorGUIUtility.isProSkin ? Color.white : Color.grey;
 
@@ -144,8 +144,8 @@ namespace ParadoxNotion.Design
 
                 if (options.allowRemove) {
                     GUILayout.Space(20);
-                    var buttonRect = Rect.MinMaxRect(lastRect.xMax + 2, lastRect.yMin, lastRect.xMax + 20,
-                        lastRect.yMax);
+                    var buttonRect = Rect.MinMaxRect(lastRect.xMax + 2, lastRect.yMin, lastRect.xMax + 20
+                        , lastRect.yMax);
 
                     if (GUI.Button(buttonRect, "X")) {
                         UndoUtility.RecordObject(options.unityObjectContext, "Remove Item");

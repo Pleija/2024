@@ -25,8 +25,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
     {
         public string Serialize(object element)
         {
-            TypeDescriptor.AddAttributes(typeof((int, int)),
-                new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
+            TypeDescriptor.AddAttributes(typeof((int, int))
+                , new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
             return JsonConvert.SerializeObject(element);
         }
 
@@ -36,8 +36,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
 
             //Debug.Log(type.Name);
             try {
-                TypeDescriptor.AddAttributes(typeof((int, int)),
-                    new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
+                TypeDescriptor.AddAttributes(typeof((int, int))
+                    , new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
 
                 //var json = JsonConvert.SerializeObject(dictionary);
                 return JsonConvert.DeserializeObject<Dictionary<(int, int), string>>(text);

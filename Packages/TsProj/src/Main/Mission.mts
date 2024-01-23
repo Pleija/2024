@@ -1,5 +1,5 @@
-import {StateFsm} from "Common/StateFsm.mjs";
-import {MissionState} from "Main/Mission/MissionState.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
+import { MissionState } from "Main/Mission/MissionState.mjs";
 
 export class Mission extends StateFsm {
     MissionState: MissionState;

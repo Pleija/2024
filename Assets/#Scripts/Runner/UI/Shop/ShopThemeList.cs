@@ -87,8 +87,8 @@ namespace Runner.UI.Shop
             var itemId = t.themeName;
             var itemType = "non_consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level,
-                transactionId);
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level
+                , transactionId);
             if (t.cost > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                     // Currency type
                     transactionContext, t.cost, itemId, PlayerData.instance.coins, // Balance

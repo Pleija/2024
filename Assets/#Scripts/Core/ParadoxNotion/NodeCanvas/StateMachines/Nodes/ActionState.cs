@@ -14,8 +14,8 @@ using Zu.TypeScript.TsTypes;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Action State", 100),
-     Description(
+    [Name("Action State", 100)
+     , Description(
          "Execute a number of Action Tasks OnEnter. All actions will be stoped OnExit. This state is Finished when all Actions are finished as well")]
     public class ActionState : FSMState, ITaskAssignable, IUpdatable
     {

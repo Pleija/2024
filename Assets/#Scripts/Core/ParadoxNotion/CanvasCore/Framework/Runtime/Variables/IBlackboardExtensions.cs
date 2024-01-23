@@ -56,8 +56,8 @@ namespace NodeCanvas.Framework
         {
             if (value == null) {
                 Logger.LogError(
-                    "You can't use AddVariable with a null value. Use AddVariable(string, Type) to add the new variable first",
-                    LogTag.BLACKBOARD, blackboard);
+                    "You can't use AddVariable with a null value. Use AddVariable(string, Type) to add the new variable first"
+                    , LogTag.BLACKBOARD, blackboard);
                 return null;
             }
             var newVariable = blackboard.AddVariable(varName, value.GetType());
@@ -72,15 +72,15 @@ namespace NodeCanvas.Framework
                 if (result.CanConvertTo(type)) {
                     Logger.Log(
                         string.Format(
-                            "Variable with name '{0}' already exists in blackboard '{1}'. Returning existing instead of new.",
-                            varName, blackboard), LogTag.BLACKBOARD, blackboard);
+                            "Variable with name '{0}' already exists in blackboard '{1}'. Returning existing instead of new."
+                            , varName, blackboard), LogTag.BLACKBOARD, blackboard);
                     return result;
                 }
                 else {
                     Logger.LogError(
                         string.Format(
-                            "Variable with name '{0}' already exists in blackboard '{1}', but is of a different type! Returning null instead of new.",
-                            varName, blackboard), LogTag.BLACKBOARD, blackboard);
+                            "Variable with name '{0}' already exists in blackboard '{1}', but is of a different type! Returning null instead of new."
+                            , varName, blackboard), LogTag.BLACKBOARD, blackboard);
                     return null;
                 }
             }
@@ -114,8 +114,8 @@ namespace NodeCanvas.Framework
             if (variable == null) {
                 Logger.LogError(
                     string.Format(
-                        "No Variable of name '{0}' and type '{1}' exists on Blackboard '{2}'. Returning default T...",
-                        varName, typeof(T).FriendlyName(), blackboard), LogTag.BLACKBOARD, blackboard);
+                        "No Variable of name '{0}' and type '{1}' exists on Blackboard '{2}'. Returning default T..."
+                        , varName, typeof(T).FriendlyName(), blackboard), LogTag.BLACKBOARD, blackboard);
                 return default;
             }
             if (variable is Variable<T>) return (variable as Variable<T>).value;
@@ -125,8 +125,8 @@ namespace NodeCanvas.Framework
             }
             catch {
                 Logger.LogError(
-                    string.Format("Can't cast value of variable with name '{0}' to type '{1}'", varName,
-                        typeof(T).FriendlyName()), LogTag.BLACKBOARD, blackboard);
+                    string.Format("Can't cast value of variable with name '{0}' to type '{1}'", varName
+                        , typeof(T).FriendlyName()), LogTag.BLACKBOARD, blackboard);
             }
             return default;
         }
@@ -142,9 +142,9 @@ namespace NodeCanvas.Framework
             if (!blackboard.variables.TryGetValue(varName, out variable)) {
                 Logger.Log(
                     string.Format(
-                        "No Variable of name '{0}' and type '{1}' exists on Blackboard '{2}'. Adding new instead...",
-                        varName, value != null ? value.GetType().FriendlyName() : "null", blackboard),
-                    LogTag.BLACKBOARD, blackboard);
+                        "No Variable of name '{0}' and type '{1}' exists on Blackboard '{2}'. Adding new instead..."
+                        , varName, value != null ? value.GetType().FriendlyName() : "null", blackboard)
+                    , LogTag.BLACKBOARD, blackboard);
                 variable = blackboard.AddVariable(varName, value);
                 return variable;
             }
@@ -154,9 +154,9 @@ namespace NodeCanvas.Framework
             }
             catch {
                 Logger.LogError(
-                    string.Format("Can't cast value '{0}' to blackboard variable of name '{1}' and type '{2}'",
-                        value != null ? value.ToString() : "null", varName, variable.varType.FriendlyName()),
-                    LogTag.BLACKBOARD, blackboard);
+                    string.Format("Can't cast value '{0}' to blackboard variable of name '{1}' and type '{2}'"
+                        , value != null ? value.ToString() : "null", varName, variable.varType.FriendlyName())
+                    , LogTag.BLACKBOARD, blackboard);
                 return null;
             }
             return variable;
@@ -239,8 +239,8 @@ namespace NodeCanvas.Framework
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Overwrite variables from source blackboard into this blackboard</summary>
-        public static void OverwriteFrom(this IBlackboard blackboard, IBlackboard sourceBlackboard,
-            bool removeMissingVariables = true)
+        public static void OverwriteFrom(this IBlackboard blackboard, IBlackboard sourceBlackboard
+            , bool removeMissingVariables = true)
         {
             foreach (var pair in sourceBlackboard.variables)
                 if (blackboard.variables.ContainsKey(pair.Key))

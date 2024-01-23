@@ -87,8 +87,7 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 p1 = (uint)(c1 - '0') * multipliyer;
             else if (c1 >= 'A' && c1 <= 'F')
                 p1 = (uint)(c1 - 'A' + 10) * multipliyer;
-            else if (c1 >= 'a' && c1 <= 'f')
-                p1 = (uint)(c1 - 'a' + 10) * multipliyer;
+            else if (c1 >= 'a' && c1 <= 'f') p1 = (uint)(c1 - 'a' + 10) * multipliyer;
             return p1;
         }
 
@@ -167,8 +166,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
 
                     // invalid escape sequence
                     escaped = (char)0;
-                    return MakeFailure(string.Format("invalid escape sequence '\\u{0}{1}{2}{3}'\n", Character(0),
-                        Character(1), Character(2), Character(3)));
+                    return MakeFailure(string.Format("invalid escape sequence '\\u{0}{1}{2}{3}'\n", Character(0)
+                        , Character(1), Character(2), Character(3)));
                 default:
                     escaped = (char)0;
                     return MakeFailure(string.Format("Invalid escape sequence \\{0}", Character()));

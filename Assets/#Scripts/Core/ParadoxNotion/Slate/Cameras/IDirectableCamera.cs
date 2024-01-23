@@ -3,7 +3,6 @@ using System.Collections;
 
 namespace Slate
 {
-
     ///<summary>An interface for all cameras handled by slate</summary>
     public interface IDirectableCamera
     {

@@ -8,8 +8,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Check Function (Desktop Only)"), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
-     Description(
+    [Name("Check Function (Desktop Only)"), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
+     , Description(
          "This version works in destop/JIT platform only.\n\nCall a function with none or up to 6 parameters on a component and return whether or not the return value is equal to the check value")]
     public class CheckFunction : ConditionTask
     {
@@ -39,8 +39,8 @@ namespace NodeCanvas.Tasks.Conditions
                 var paramInfo = "";
                 for (var i = 1; i < variables.Length; i++) paramInfo += (i != 1 ? ", " : "") + variables[i].ToString();
                 var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1}({2}){3}", mInfo, targetMethod.Name, paramInfo,
-                    OperationTools.GetCompareString(comparison) + checkValue);
+                return string.Format("{0}.{1}({2}){3}", mInfo, targetMethod.Name, paramInfo
+                    , OperationTools.GetCompareString(comparison) + checkValue);
             }
         }
 
@@ -68,8 +68,8 @@ namespace NodeCanvas.Tasks.Conditions
         {
             if (functionWrapper == null) return true;
             if (checkValue.varType == typeof(float))
-                return OperationTools.Compare((float)functionWrapper.Call(), (float)checkValue.value, comparison,
-                    0.05f);
+                return OperationTools.Compare((float)functionWrapper.Call(), (float)checkValue.value, comparison
+                    , 0.05f);
             if (checkValue.varType == typeof(int))
                 return OperationTools.Compare((int)functionWrapper.Call(), (int)checkValue.value, comparison);
             return ObjectUtils.AnyEquals(functionWrapper.Call(), checkValue.value);
@@ -95,18 +95,18 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object),
-                            typeof(object), SetMethod, 6, false, true, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
+                            , SetMethod, 6, false, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 6,
-                        false, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 6
+                        , false, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod,
-                            6, false, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
+                            , 6, false, true, menu);
                 }
                 menu.ShowAsBrowser("Select Method", GetType());
                 Event.current.Use();

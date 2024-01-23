@@ -126,8 +126,8 @@ namespace NodeCanvas.Editor
         public static void ScanForStructTypesAndAppendThem(Graph graph)
         {
             var serializedTypes = new List<Type>();
-            JSONSerializer.SerializeAndExecuteNoCycles(typeof(NodeCanvas.Framework.Internal.GraphSource),
-                graph.GetGraphSource(), (o, d) => {
+            JSONSerializer.SerializeAndExecuteNoCycles(typeof(NodeCanvas.Framework.Internal.GraphSource)
+                , graph.GetGraphSource(), (o, d) => {
                     if (o != null) serializedTypes.Add(o.GetType());
                 });
             serializedTypes = serializedTypes
@@ -144,12 +144,12 @@ namespace NodeCanvas.Editor
             }
 
             if (resultTypes.Count == 0) {
-                EditorUtility.DisplayDialog("Scan Results:",
-                    "All found struct types serialized in the graph are already in your Preferred Types list.", "OK");
+                EditorUtility.DisplayDialog("Scan Results:"
+                    , "All found struct types serialized in the graph are already in your Preferred Types list.", "OK");
                 return;
             }
-            var userInfo = string.Join("\n",
-                resultTypes.OrderBy(t => t.Namespace).ThenBy(t => t.Name).Select(t => t.FriendlyName()));
+            var userInfo = string.Join("\n"
+                , resultTypes.OrderBy(t => t.Namespace).ThenBy(t => t.Name).Select(t => t.FriendlyName()));
             userInfo =
                 "The following struct types serialized in the graph were found that are not already in your Preferred Types List\n\n\n----\n" +
                 userInfo + "\n----\n\n\nAdd them in your Preferred Types List?";
@@ -161,8 +161,8 @@ namespace NodeCanvas.Editor
         public static Graph DeepCopy(Graph root)
         {
             if (root == null) return null;
-            var path = EditorUtility.SaveFilePanelInProject("Copy of " + root.name, root.name + "_duplicate.asset",
-                "asset", string.Empty);
+            var path = EditorUtility.SaveFilePanelInProject("Copy of " + root.name, root.name + "_duplicate.asset"
+                , "asset", string.Empty);
             if (string.IsNullOrEmpty(path)) return null;
             var copy = (Graph)ScriptableObject.CreateInstance(root.GetType());
             AssetDatabase.CreateAsset(copy, path);

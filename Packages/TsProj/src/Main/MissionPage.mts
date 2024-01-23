@@ -1,11 +1,10 @@
-
 import { StateFsm } from "Common/StateFsm.mjs";
 
 export class MissionPage extends StateFsm {
 
-      init(){
-          //
-      }
+    init() {
+        //
+    }
 }
 
-export const self:MissionPage = global.$MissionPage ??= new MissionPage();
+export const self: MissionPage = global.$MissionPage ??= new MissionPage();

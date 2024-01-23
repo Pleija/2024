@@ -7,16 +7,17 @@
 
 /**
  * this template file is write for generating the typescript declartion file
- * 
+ *
  * TODO 待node.js版本成熟之后直接接入typescript formatter，现在先用手动指定indent的方式
- * @param {DTS.TypingGenInfo} data 
- * @returns 
+ * @param {DTS.TypingGenInfo} data
+ * @returns
  */
- export default function TypingTemplate(data, csharpModuleWillGen) {
-    
+export default function TypingTemplate(data, csharpModuleWillGen) {
+
     let ret = '';
+
     function _es6tplJoin(str, ...values) {
-        return str.map((strFrag, index)=> {
+        return str.map((strFrag, index) => {
             if (index == str.length - 1) {
                 return strFrag;
 
@@ -25,12 +26,14 @@
             }
         }).join('');
     }
+
     function tt(str, ...values) {
         // just append all estemplate values.
         const appendtext = _es6tplJoin(str, ...values)
 
         ret += appendtext;
     }
+
     function t(str, ...values) {
         // just append all estemplate values. and indent them;
         const appendtext = _es6tplJoin(str, ...values)
@@ -39,12 +42,13 @@
         let lines = appendtext.split(/[\n\r]/);
         let newLines = [lines[0]];
         let append = " ".repeat(t.indent);
-        for(var i = 1; i < lines.length; i++) {
+        for (var i = 1; i < lines.length; i++) {
             if (lines[i]) newLines.push(append + lines[i].replace(/^[\t\s]*/, ''));
         }
 
         ret += newLines.join('\n');
     }
+
     const baseIndent = 0;
 
     tt`
@@ -65,20 +69,20 @@
     ${data.TaskDef}
     `
 
-    toJsArray(data.NamespaceInfos).forEach(ns=> {
+    toJsArray(data.NamespaceInfos).forEach(ns => {
         // namespace start;
         if (ns.Name) {
             t`namespace ${ns.Name} {`
         }
 
-        toJsArray(ns.Types).forEach(type=> {
+        toJsArray(ns.Types).forEach(type => {
             // type start
             t.indent = 8 + baseIndent;
             // the comment of the type
             t`
             ${type.Document}
             `
-            
+
             if (!(type.Name == 'JSObject' && ns.Name == 'Puerts')) {
                 // type declaration
                 t`${typeKeyword(type)} ${typeDeclaration(type, true)}
@@ -93,15 +97,11 @@
                     }
                     ${(!type.IsGenericTypeDefinition ? `var ${type.Name}: { new (func: ${type.DelegateDef}): ${type.Name}; }` : '')}
                     `;
-                }
-
-                else if (type.IsEnum) {
+                } else if (type.IsEnum) {
                     // enum 
                     t`{ ${type.EnumKeyValues} }
                     `;
-                }
-
-                else {
+                } else {
                     // class or interface.
                     t`{
                     `;
@@ -113,15 +113,15 @@
                         protected [__keep_incompatibility]: never;
                         `
                     }
-                    
+
                     // properties start
-                    distinctByName(type.Properties).forEach(property=> {
+                    distinctByName(type.Properties).forEach(property => {
                         t`
                         ${property.Document}
                         `
 
-                        var allowProperty = !type.IsInterface && (property.HasSetter || property.HasGetter); 
-                        if (!allowProperty) { 
+                        var allowProperty = !type.IsInterface && (property.HasSetter || property.HasGetter);
+                        if (!allowProperty) {
                             if (!type.IsInterface) t`public `
                             if (property.IsStatic) t`static `
                             t`${formatPropertyOrMethodName(property.Name) + ' : ' + (property.IsStatic ? typeNameWithOutGenericType(type, property.TypeName) : property.TypeName)}`;
@@ -137,20 +137,19 @@
                     // properties end
 
                     // methods start
-                    toJsArray(type.Methods).forEach(method=> {
+                    toJsArray(type.Methods).forEach(method => {
                         t`
                         ${method.Document}
                         `
                         !type.IsInterface && t`public `;
                         method.IsStatic && t`static `;
                         t`${formatPropertyOrMethodName(method.Name)}` // method name
-                        t` (${toJsArray(method.ParameterInfos).map((pinfo, idx)=> parameterDef(pinfo, method.IsStatic, type)).join(', ')})` // method param
+                        t` (${toJsArray(method.ParameterInfos).map((pinfo, idx) => parameterDef(pinfo, method.IsStatic, type)).join(', ')})` // method param
                         !method.IsConstructor && t` : ${method.IsStatic ? typeNameWithOutGenericType(type, method.TypeName) : method.TypeName}` // method return
                         t`
                         `
                     });
-                    if (type.IteratorReturnName?.length > 0)
-                    {
+                    if (type.IteratorReturnName?.length > 0) {
                         !type.IsInterface && t`public `;
                         t`[Symbol.iterator]() : IterableIterator<${type.IteratorReturnName}>
                          `
@@ -169,14 +168,14 @@
                     ${type.Document}
                     interface ${type.Name} {
                     `
-                    
-                    toJsArray(type.ExtensionMethods).forEach(method=>{
+
+                    toJsArray(type.ExtensionMethods).forEach(method => {
                         t.indent = 12 + baseIndent;
-                        
+
                         t`
                         ${method.Document}
                         ${formatPropertyOrMethodName(method.Name)} (${
-                            toJsArray(method.ParameterInfos).map((pinfo, idx)=> parameterDef(pinfo)).join(', ')
+                            toJsArray(method.ParameterInfos).map((pinfo, idx) => parameterDef(pinfo)).join(', ')
                         }) : ${method.TypeName};
                         `
                     });
@@ -187,8 +186,8 @@
                     `;
                 }
                 // extension methods end 
-                
-                
+
+
             } else {
                 // if the type is Puerts.JSObject, declare an alias for any;
                 t.indent = 8 + baseIndent;
@@ -206,7 +205,7 @@
         }
 
     })
-    
+
     t.indent = 0;
     if (csharpModuleWillGen) {
         t`
@@ -223,9 +222,11 @@
 
     return ret.replace(/\n(\s*)\n/g, '\n');
 };
+
 function parameterDef(pinfo, isStatic, type) {
-    return (pinfo.IsParams ? ("..." + pinfo.Name) : "$" + pinfo.Name) + (pinfo.IsOptional?"?":"") + ": " + (isStatic ? typeNameWithOutGenericType(type, pinfo.TypeName) : pinfo.TypeName);
+    return (pinfo.IsParams ? ("..." + pinfo.Name) : "$" + pinfo.Name) + (pinfo.IsOptional ? "?" : "") + ": " + (isStatic ? typeNameWithOutGenericType(type, pinfo.TypeName) : pinfo.TypeName);
 }
+
 function typeKeyword(type) {
     if (type.IsDelegate) {
         return 'interface';
@@ -240,11 +241,12 @@ function typeKeyword(type) {
 
 function toJsArray(csArr) {
     let arr = [];
-    for(var i = 0; i < csArr.Length; i++) {
+    for (var i = 0; i < csArr.Length; i++) {
         arr.push(csArr.get_Item(i));
     }
     return arr;
 }
+
 function formatPropertyOrMethodName(name) {
     /*处理explicit interface implementation*/
     if (name.indexOf(".") != -1) {
@@ -253,15 +255,17 @@ function formatPropertyOrMethodName(name) {
         return name;
     }
 }
+
 function distinctByName(arr) {
     const exist = {};
-    return toJsArray(arr).filter(item=> {
+    return toJsArray(arr).filter(item => {
         const itemExist = exist[item.Name];
         exist[item.Name] = true;
         return !itemExist;
     });
 
 }
+
 function typeDeclaration(type, level1) {
     var result = type.Name;
     if (type.IsGenericTypeDefinition) {
@@ -272,13 +276,14 @@ function typeDeclaration(type, level1) {
     }
     var interfaces = type.interfaces ? toJsArray(type.interfaces) : [];
     if (level1 && !type.IsDelegate && !type.IsEnum && interfaces.length) {
-        result += ((type.IsInterface ? " extends " : " implements ") + interfaces.map(itf=> typeDeclaration(itf)).join(', '))
+        result += ((type.IsInterface ? " extends " : " implements ") + interfaces.map(itf => typeDeclaration(itf)).join(', '))
     }
     if (!level1 && type.Namespace) {
         result = type.Namespace + "." + result;
     }
     return result;
 }
+
 function typeNameWithOutGenericType(type, name) {
     if (type.IsGenericTypeDefinition) {
         const gParameters = toJsArray(type.GenericParameters);

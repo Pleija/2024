@@ -69,11 +69,11 @@ namespace NodeCanvas.StateMachines
         protected override void OnConnectionInspectorGUI()
         {
             UnityEditor.EditorGUILayout.HelpBox(
-                "Stacked Call Mode will push the current state to the stack and pop return to it later when another finished state without outgoing transitions has been encountered within the FSM. If you decide to use this feature make sure that you are not cycle stacking states.\nA Clean transition will clear the FSM stack.",
-                UnityEditor.MessageType.None);
+                "Stacked Call Mode will push the current state to the stack and pop return to it later when another finished state without outgoing transitions has been encountered within the FSM. If you decide to use this feature make sure that you are not cycle stacking states.\nA Clean transition will clear the FSM stack."
+                , UnityEditor.MessageType.None);
             transitionCallMode =
-                (FSM.TransitionCallMode)UnityEditor.EditorGUILayout.EnumPopup("Call Mode (Experimental)",
-                    transitionCallMode);
+                (FSM.TransitionCallMode)UnityEditor.EditorGUILayout.EnumPopup("Call Mode (Experimental)"
+                    , transitionCallMode);
             ParadoxNotion.Design.EditorUtils.Separator();
             Editor.TaskEditor.TaskFieldMulti<ConditionTask>(condition, graph, (c) => {
                 condition = c;

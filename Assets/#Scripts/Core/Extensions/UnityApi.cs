@@ -37,7 +37,10 @@ public static partial class UnityApi
     public static JSObject ToArray(this Dictionary<object, object> dictionary) => null;
 #if UNITY_EDITOR
     public static string GuidToAssetPath(this string guid) => AssetDatabase.GUIDToAssetPath(guid);
-    public static T LoadAssetFromGuid<T>(this string guid) where T : Object => guid.GuidToAssetPath().LoadAssetAtPath<T>();
+
+    public static T LoadAssetFromGuid<T>(this string guid) where T : Object =>
+        guid.GuidToAssetPath().LoadAssetAtPath<T>();
+
     public static T LoadAssetAtPath<T>(this string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(path);
 
     public static string FullPathToAssetPath(this string path) =>
@@ -67,7 +70,7 @@ public static partial class UnityApi
 
     public static IDictionary CreateDictionary(this Type keyType, Type valueType, Action<IDictionary> callback = null)
     {
-        Type dictToCreate = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+        var dictToCreate = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
         var ret = (IDictionary)Activator.CreateInstance(dictToCreate);
         callback?.Invoke(ret);
         return ret;
@@ -107,19 +110,13 @@ public static partial class UnityApi
     {
         //transform.name
         if (!transform || action == null) return;
-
-        foreach (Transform child in transform) {
-            action.Invoke(child);
-        }
+        foreach (Transform child in transform) action.Invoke(child);
     }
 
     public static void ForEach(this Transform transform, Action<Transform, int> action)
     {
         if (!transform || action == null) return;
-
-        for (int i = 0; i < transform.childCount; i++) {
-            action.Invoke(transform.GetChild(i), i);
-        }
+        for (var i = 0; i < transform.childCount; i++) action.Invoke(transform.GetChild(i), i);
     }
 
     public static IEnumerable<Transform> Children(this Component component, Func<Transform, bool> filter = null) =>
@@ -134,10 +131,8 @@ public static partial class UnityApi
     public static T RequireComponent<T>(this Component component) where T : Component =>
         component.RequireComponent(typeof(T)) as T;
 
-    public static Component RequireComponent(this GameObject gameObject, Type type)
-    {
-        return gameObject.TryGetComponent(type, out var ret) ? ret : gameObject.gameObject.AddComponent(type);
-    }
+    public static Component RequireComponent(this GameObject gameObject, Type type) =>
+        gameObject.TryGetComponent(type, out var ret) ? ret : gameObject.gameObject.AddComponent(type);
 
     public static T RequireComponent<T>(this GameObject gameObject) where T : Component =>
         gameObject.RequireComponent(typeof(T)) as T;
@@ -170,8 +165,8 @@ public static partial class UnityApi
     public static bool DestroySelf(this Object value)
     {
         if (!value) return false;
-        var scene = value is Component component ? component.gameObject.scene
-            : (value is GameObject gameObject ? gameObject.scene : default);
+        var scene = value is Component component ? component.gameObject.scene :
+            value is GameObject gameObject ? gameObject.scene : default;
         if (Application.isPlaying)
             Object.Destroy(value);
         else
@@ -182,10 +177,8 @@ public static partial class UnityApi
         return true;
     }
 
-    public static Color ToColor(this string hexString)
-    {
-        return ColorUtility.TryParseHtmlString(hexString, out var color) ? color : Color.white;
-    }
+    public static Color ToColor(this string hexString) =>
+        ColorUtility.TryParseHtmlString(hexString, out var color) ? color : Color.white;
 
     public static void LogDetail(this Node node)
     {
@@ -202,15 +195,13 @@ public static partial class UnityApi
         return string.Join(".", version);
     }
 
-    public static int CompareVersion(this string current, string old)
-    {
-        return new Version(current).CompareTo(new Version(old));
-    }
+    public static int CompareVersion(this string current, string old) =>
+        new Version(current).CompareTo(new Version(old));
 
     public static string JoinStr<T>(this IEnumerable<T> target, string s = ", ") => string.Join(s, target);
     public static string RegexReplace(this string input, string rule, string to) => Regex.Replace(input, rule, to);
-    public static T Null<T>(this T o) where T : UnityEngine.Object => o == null ? null : o;
-    public static bool IsNull<T>(this T o) where T : UnityEngine.Object => o == null;
+    public static T Null<T>(this T o) where T : Object => o == null ? null : o;
+    public static bool IsNull<T>(this T o) where T : Object => o == null;
     public static GameObject Null(this GameObject o) => o == null ? null : o;
     public static bool IsNull(this Component o) => o == null;
     public static ScriptableObject Null(this ScriptableObject o) => o == null ? null : o;
@@ -218,8 +209,8 @@ public static partial class UnityApi
     public static AssetReference Null(this AssetReference o) => o == null ? null : o;
     public static bool IsNull(this AssetReference o) => o == null;
 
-    public static string GetPath(this GameObject gameObject) => string.Join("/",
-        gameObject.GetComponentsInParent<Transform>(true).Select(t => t.name).Reverse().ToArray());
+    public static string GetPath(this GameObject gameObject) => string.Join("/"
+        , gameObject.GetComponentsInParent<Transform>(true).Select(t => t.name).Reverse().ToArray());
 
     public static string GetPath(this Component component) => component.gameObject.GetPath();
 
@@ -237,5 +228,5 @@ public static partial class UnityApi
         return go;
     }
 
-    public static GameObject Instantiate(this GameObject go) => UnityEngine.Object.Instantiate(go);
+    public static GameObject Instantiate(this GameObject go) => Object.Instantiate(go);
 }

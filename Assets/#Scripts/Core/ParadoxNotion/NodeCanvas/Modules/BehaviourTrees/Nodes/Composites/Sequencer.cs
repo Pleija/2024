@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Sequencer", 10), Category("Composites"),
-     Description(
-         "Executes its children in order and returns Success if all children return Success. As soon as a child returns Failure, the Sequencer will stop and return Failure as well."),
-     Icon("Sequencer"), Color("bf7fff")]
+    [Name("Sequencer", 10), Category("Composites")
+     , Description(
+         "Executes its children in order and returns Success if all children return Success. As soon as a child returns Failure, the Sequencer will stop and return Failure as well.")
+     , Icon("Sequencer"), Color("bf7fff")]
     public class Sequencer : BTComposite
     {
         [Tooltip(

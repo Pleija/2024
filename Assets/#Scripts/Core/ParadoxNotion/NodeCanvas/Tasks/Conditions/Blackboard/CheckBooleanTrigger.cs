@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Blackboard"),
-     Description("Check if a boolean variable is true and if so, it is immediately reset to false.")]
+    [Category("✫ Blackboard")
+     , Description("Check if a boolean variable is true and if so, it is immediately reset to false.")]
     public class CheckBooleanTrigger : ConditionTask
     {
         [BlackboardOnly]

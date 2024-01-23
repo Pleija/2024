@@ -90,8 +90,8 @@ namespace NodeCanvas.Editor
                 RemoveNotification();
             }
             EditorGUILayout.HelpBox(
-                "A flat meta graph structure including nodes, connections, tasks and parameters. Use this utility window to quickly search, find and jump focus to the related element. Please note that keeping this utility window open, will slow down the graph editor.",
-                MessageType.Info);
+                "A flat meta graph structure including nodes, connections, tasks and parameters. Use this utility window to quickly search, find and jump focus to the related element. Please note that keeping this utility window open, will slow down the graph editor."
+                , MessageType.Info);
             GUILayout.BeginHorizontal();
             GUILayout.Space(5);
             GUI.SetNextControlName("SearchToolbar");
@@ -144,8 +144,8 @@ namespace NodeCanvas.Editor
                     GUILayout.BeginHorizontal("box");
                     GUI.color = Color.white;
                     GUILayout.Space(indent * INDENT_WIDTH);
-                    var displayText = string.Format("<b>{0}</b>{1}", toString,
-                        Prefs.explorerShowTypeNames ? " (" + typeName + ")" : string.Empty);
+                    var displayText = string.Format("<b>{0}</b>{1}", toString
+                        , Prefs.explorerShowTypeNames ? " (" + typeName + ")" : string.Empty);
                     GUILayout.Label(string.Format("<size=9>{0}</size>", displayText));
                     GUILayout.EndHorizontal();
                     elementRect = GUILayoutUtility.GetLastRect();

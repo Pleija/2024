@@ -151,8 +151,7 @@ namespace MoreTags
             if (string.IsNullOrEmpty(name)) return string.Empty;
             name = name.Trim();
             var sb = new StringBuilder();
-            if (!char.IsLetter(name.FirstOrDefault()))
-                sb.Append("_");
+            if (!char.IsLetter(name.FirstOrDefault())) sb.Append("_");
             foreach (var ch in name)
                 if (char.IsLetterOrDigit(ch))
                     sb.Append(ch);
@@ -205,8 +204,7 @@ namespace MoreTags
             foreach (var tag in allname)
                 code.AppendFormat("        public static TagName {0} = new TagName(\"{0}\");", tag).AppendLine();
             code.AppendLine("    }").AppendLine();
-            foreach (var tag in allgroup)
-                AutoClassGroup(tag, ref code);
+            foreach (var tag in allgroup) AutoClassGroup(tag, ref code);
             code.AppendLine("    public class AllTags : TagNames");
             code.AppendLine("    {");
             code.AppendLine("        public AllTags() : base(TagSystem.AllTags()) { }");

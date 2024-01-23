@@ -3,15 +3,12 @@ using System;
 
 namespace Slate
 {
-
     [AttributeUsage(AttributeTargets.Class)]
     ///<summary>Use to override the naming of a type</summary>
     public class NameAttribute : Attribute
     {
         public readonly string name;
-        public NameAttribute(string name) {
-            this.name = name;
-        }
+        public NameAttribute(string name) => this.name = name;
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -19,9 +16,7 @@ namespace Slate
     public class CategoryAttribute : Attribute
     {
         public readonly string category;
-        public CategoryAttribute(string category) {
-            this.category = category;
-        }
+        public CategoryAttribute(string category) => this.category = category;
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -29,9 +24,7 @@ namespace Slate
     public class DescriptionAttribute : Attribute
     {
         public readonly string description;
-        public DescriptionAttribute(string description) {
-            this.description = description;
-        }
+        public DescriptionAttribute(string description) => this.description = description;
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -39,13 +32,9 @@ namespace Slate
     public class IconAttribute : Attribute
     {
         public readonly string iconName;
-        public readonly System.Type fromType;
-        public IconAttribute(string iconName) {
-            this.iconName = iconName;
-        }
-        public IconAttribute(System.Type fromType) {
-            this.fromType = fromType; ;
-        }
+        public readonly Type fromType;
+        public IconAttribute(string iconName) => this.iconName = iconName;
+        public IconAttribute(Type fromType) => this.fromType = fromType;
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -53,15 +42,12 @@ namespace Slate
     public class AttachableAttribute : Attribute
     {
         public readonly Type[] types;
-        public AttachableAttribute(params Type[] types) {
-            this.types = types;
-        }
+        public AttachableAttribute(params Type[] types) => this.types = types;
     }
 
     [AttributeUsage(AttributeTargets.Class)]
     ///<summary>Use to define that this Type should be unique within it's IDirectable parent</summary>
     public class UniqueElementAttribute : Attribute { }
-
 
     ///<summary>Attribute used along with a Vector3 to show it's trajectory in the scene</summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
@@ -73,9 +59,7 @@ namespace Slate
     {
         public readonly string rotationPropertyName;
         public PositionHandleAttribute() { }
-        public PositionHandleAttribute(string rotationPropertyName) {
-            this.rotationPropertyName = rotationPropertyName;
-        }
+        public PositionHandleAttribute(string rotationPropertyName) => this.rotationPropertyName = rotationPropertyName;
     }
 
     ///<summary>Attribute used along with a Vector3 to control it with a rotation handle in the scene</summary>
@@ -83,8 +67,6 @@ namespace Slate
     public class RotationHandleAttribute : Attribute
     {
         public readonly string positionPropertyName;
-        public RotationHandleAttribute(string positionPropertyName) {
-            this.positionPropertyName = positionPropertyName;
-        }
+        public RotationHandleAttribute(string positionPropertyName) => this.positionPropertyName = positionPropertyName;
     }
 }

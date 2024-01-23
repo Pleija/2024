@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Composites"),
-     Description(
-         "Selects a child to execute based on its chance to be selected and returns Success if the child returns Success, otherwise picks another child.\nReturns Failure if all children return Failure, or a direct 'Failure Chance' is introduced."),
-     Icon("ProbabilitySelector"), Color("b3ff7f")]
+    [Category("Composites")
+     , Description(
+         "Selects a child to execute based on its chance to be selected and returns Success if the child returns Success, otherwise picks another child.\nReturns Failure if all children return Failure, or a direct 'Failure Chance' is introduced.")
+     , Icon("ProbabilitySelector"), Color("b3ff7f")]
     public class ProbabilitySelector : BTComposite
     {
         [AutoSortWithChildrenConnections, Tooltip("The weights of the children.")]

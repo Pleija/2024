@@ -155,8 +155,8 @@ namespace NodeCanvas.Editor
             if (task.agentIsOverride && agentParameterProp.value == null)
                 agentParameterProp.value = new TaskAgentParameter();
             if (task.obsolete != string.Empty)
-                EditorGUILayout.HelpBox(string.Format("This is an obsolete Task:\n\"{0}\"", task.obsolete),
-                    MessageType.Warning);
+                EditorGUILayout.HelpBox(string.Format("This is an obsolete Task:\n\"{0}\"", task.obsolete)
+                    , MessageType.Warning);
 
             if (!showTitlebar || ShowTitlebar(callback) == true) {
                 if (!string.IsNullOrEmpty(task.description))
@@ -204,8 +204,8 @@ namespace NodeCanvas.Editor
                     var isBase = taskType.GetFirstGenericParameterConstraintType() ==
                         taskType.GetSingleGenericArgument();
 
-                    if (isBase && GUILayout.Button(StyleSheet.genericType, GUI.skin.label, GUILayout.Width(20),
-                            GUILayout.Height(20))) {
+                    if (isBase && GUILayout.Button(StyleSheet.genericType, GUI.skin.label, GUILayout.Width(20)
+                        , GUILayout.Height(20))) {
                         var menu = new GenericMenu();
                         menu = EditorUtils.GetPreferedTypesSelectionMenu(taskType.GetGenericTypeDefinition(), (t) => {
                             callback(Task.Create(t, task.ownerSystem));
@@ -216,8 +216,9 @@ namespace NodeCanvas.Editor
                 if (GUILayout.Button(Icons.csIcon, GUI.skin.label, GUILayout.Width(20), GUILayout.Height(20)))
                     EditorUtils.OpenScriptOfType(task.GetType());
                 GUI.color = EditorGUIUtility.isProSkin ? Color.white : Color.grey;
-                if (GUILayout.Button(Icons.gearPopupIcon, Styles.centerLabel, GUILayout.Width(20),
-                        GUILayout.Height(20))) GetMenu(callback).ShowAsContext();
+                if (GUILayout.Button(Icons.gearPopupIcon, Styles.centerLabel, GUILayout.Width(20)
+                    , GUILayout.Height(20)))
+                    GetMenu(callback).ShowAsContext();
                 GUI.color = Color.white;
             }
             GUILayout.EndHorizontal();

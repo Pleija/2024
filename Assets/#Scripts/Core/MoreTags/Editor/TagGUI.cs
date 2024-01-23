@@ -22,15 +22,14 @@ namespace MoreTags
 
         public static void SetTags(Action<TagGUI> onCreate, TagDataList data, string header = null)
         {
-            TagGUI tagGUI = data.tagGUI ??= new TagGUI();
+            var tagGUI = data.tagGUI ??= new TagGUI();
             // var tags = (target as PrefabTags);
             //var tags = data.Select(x => x.name).ToList();
 
             void AddTag( /*List<string> tags,*/ string tag)
             {
                 TagSystem.AddTag(tag);
-                if (!data.data.Select(x => x.name).ToList().Contains(tag))
-                    data.data.Add(new TagData() { name = tag });
+                if (!data.data.Select(x => x.name).ToList().Contains(tag)) data.data.Add(new TagData() { name = tag });
             }
 
             /*var*/
@@ -55,8 +54,8 @@ namespace MoreTags
                     else {
                         var menu = new GenericMenu();
                         foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags())
-                                     .Except(data.data.Select(x => x.name).ToList()).OrderBy(t => t.Contains(".") ? 0 : 1)
-                                     .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
+                            .Except(data.data.Select(x => x.name).ToList()).OrderBy(t => t.Contains(".") ? 0 : 1)
+                            .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
                             menu.AddItem(new GUIContent(tag.Replace(".", "/")), false, () => AddTag(tag));
                         menu.ShowAsContext();
                     }
@@ -79,8 +78,7 @@ namespace MoreTags
                             //AddTag(tag);
                         });
                         foreach (var tag in TagPreset.GetPresets().Union(TagSystem.GetAllTags()).Except(new[] { item })
-                                     .OrderBy(t => t.Contains(".") ? 0 : 1)
-                                     .ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
+                            .OrderBy(t => t.Contains(".") ? 0 : 1).ThenBy(tag => tag /*TagPreset.GetTagOrder(tag)*/))
                             menu.AddItem(new GUIContent(tag.Replace(".", "/")), t.value == tag, () => {
                                 //var t = data.First(x => x.name == item);
                                 t.value = tag;
@@ -164,10 +162,8 @@ namespace MoreTags
                 tagstyle.hover.textColor = Color.yellow;
 
                 if (GUI.Button(rect, gc, tagstyle)) {
-                    if (Event.current.button == 0 && OnClickItem != null)
-                        OnClickItem(item);
-                    if (Event.current.button == 1 && OnRightClickItem != null)
-                        OnRightClickItem(rect, item);
+                    if (Event.current.button == 0 && OnClickItem != null) OnClickItem(item);
+                    if (Event.current.button == 1 && OnRightClickItem != null) OnRightClickItem(rect, item);
                 }
                 bgrect.xMin = bgrect.xMax;
                 GUI.color = guicolor;

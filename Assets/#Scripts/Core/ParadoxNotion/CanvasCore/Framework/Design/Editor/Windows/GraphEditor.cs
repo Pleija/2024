@@ -435,11 +435,11 @@ namespace NodeCanvas.Editor
             GraphEditorUtility.realMousePosition = e.mousePosition;
 
             //canvas an minimap rects
-            canvasRect = Rect.MinMaxRect(SIDE_MARGIN, TOP_MARGIN, position.width - SIDE_MARGIN,
-                position.height - BOTTOM_MARGIN);
+            canvasRect = Rect.MinMaxRect(SIDE_MARGIN, TOP_MARGIN, position.width - SIDE_MARGIN
+                , position.height - BOTTOM_MARGIN);
             var aspect = canvasRect.width / canvasRect.height;
-            minimapRect = Rect.MinMaxRect(canvasRect.xMax - Prefs.minimapSize * aspect,
-                canvasRect.yMax - Prefs.minimapSize, canvasRect.xMax - 2, canvasRect.yMax - 2);
+            minimapRect = Rect.MinMaxRect(canvasRect.xMax - Prefs.minimapSize * aspect
+                , canvasRect.yMax - Prefs.minimapSize, canvasRect.xMax - 2, canvasRect.yMax - 2);
             //canvas bg
             Styles.Draw(canvasRect, StyleSheet.canvasBG);
             if (!CheckSumOK()) return;
@@ -452,8 +452,8 @@ namespace NodeCanvas.Editor
                 //willRepaint = true;
             }
             ///<summary>should we set dirty? Put in practise at the end</summary>
-              //todo 防止过于频繁的dirty
-            var willDirty = false;// e.rawType == EventType.MouseUp;
+            //todo 防止过于频繁的dirty
+            var willDirty = false; // e.rawType == EventType.MouseUp;
 
             //background grid
             DrawGrid(canvasRect, pan, zoomFactor);
@@ -507,12 +507,9 @@ namespace NodeCanvas.Editor
                 willRepaint = true;
                 currentGraph.SelfSerialize();
                 UndoUtility.SetDirty(currentGraph);
-
-                if (targetOwner != null && targetOwner.graphIsBound) {
-                    UndoUtility.SetDirty(targetOwner);
-                    //todo 自动保存场景
-                    //EditorSceneManager.SaveScene(targetOwner.gameObject.scene);
-                }
+                if (targetOwner != null && targetOwner.graphIsBound) UndoUtility.SetDirty(targetOwner);
+                //todo 自动保存场景
+                //EditorSceneManager.SaveScene(targetOwner.gameObject.scene);
             }
 
             //repaint?
@@ -615,8 +612,8 @@ namespace NodeCanvas.Editor
         }
 
         //This is called while within Begin/End windows
-        private static void ShowNodesGUI(Graph graph, Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos,
-            float zoomFactor)
+        private static void ShowNodesGUI(Graph graph, Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
+            , float zoomFactor)
         {
             //ensure IDs are updated. Must do on seperate iteration before gui
             //FIXME: while it's not expensive, it's still an extra iteration -> move elsewhere?
@@ -629,8 +626,8 @@ namespace NodeCanvas.Editor
             for (var i = 0; i < graph.allNodes.Count; i++)
                 Node.ShowNodeGUI(graph.allNodes[i], drawCanvas, fullDrawPass, canvasMousePos, zoomFactor);
             if (graph.primeNode != null)
-                GUI.Box(new Rect(graph.primeNode.rect.x, graph.primeNode.rect.y - 20, graph.primeNode.rect.width, 20),
-                    "<b>START</b>", StyleSheet.box);
+                GUI.Box(new Rect(graph.primeNode.rect.x, graph.primeNode.rect.y - 20, graph.primeNode.rect.width, 20)
+                    , "<b>START</b>", StyleSheet.box);
         }
 
         ///<summary>Translate the graph to focus selection</summary>
@@ -805,8 +802,8 @@ namespace NodeCanvas.Editor
 
                     if (rect.width > 50 && rect.height > 50) {
                         GUI.color = new Color(1, 1, 1, e.control ? 0.6f : 0.15f);
-                        GUI.Label(new Rect(e.mousePosition.x + 16, e.mousePosition.y, 120, 22),
-                            "<i>+ control for group</i>", StyleSheet.labelOnCanvas);
+                        GUI.Label(new Rect(e.mousePosition.x + 16, e.mousePosition.y, 120, 22)
+                            , "<i>+ control for group</i>", StyleSheet.labelOnCanvas);
                     }
                 }
             }
@@ -839,8 +836,8 @@ namespace NodeCanvas.Editor
         //This is the hierarchy shown at top left. Recusrsively show the nested path
         private static void StartBreadCrumbNavigation(Graph root)
         {
-            GUILayout.BeginArea(Rect.MinMaxRect(canvasRect.xMin + 15, canvasRect.yMin + 5, canvasRect.xMax,
-                canvasRect.yMax));
+            GUILayout.BeginArea(Rect.MinMaxRect(canvasRect.xMin + 15, canvasRect.yMin + 5, canvasRect.xMax
+                , canvasRect.yMax));
             DoBreadCrumbNavigationStep(root);
             GUILayout.EndArea();
         }
@@ -861,14 +858,14 @@ namespace NodeCanvas.Editor
 
             if (childGraph == null) {
                 if (root.agent == null && root.blackboard == null) {
-                    GUILayout.Label(string.Format("<b><size=22>{0} {1}</size></b>", root.name, graphInfo),
-                        StyleSheet.labelOnCanvas);
+                    GUILayout.Label(string.Format("<b><size=22>{0} {1}</size></b>", root.name, graphInfo)
+                        , StyleSheet.labelOnCanvas);
                 }
                 else {
                     var agentInfo = root.agent != null ? "@" + root.agent.gameObject.name : "No Agent";
                     GUILayout.Label(
-                        string.Format("<b><size=22>{0} {1}</size></b>\n<size=10>{2}</size>", root.name, graphInfo,
-                            agentInfo), StyleSheet.labelOnCanvas);
+                        string.Format("<b><size=22>{0} {1}</size></b>\n<size=10>{2}</size>", root.name, graphInfo
+                            , agentInfo), StyleSheet.labelOnCanvas);
                 }
             }
             else {
@@ -911,8 +908,8 @@ namespace NodeCanvas.Editor
                     var size = StyleSheet.canvasGroupHeader.fontSize / zoomFactor;
                     var name = string.Format("<size={0}><b>{1}</b></size>", size, group.name);
                     GUI.Label(headerRect, name, StyleSheet.canvasGroupHeader);
-                    EditorGUIUtility.AddCursorRect(headerRect,
-                        group.editState == CanvasGroup.EditState.RenamingTitle ? MouseCursor.Text : MouseCursor.Link);
+                    EditorGUIUtility.AddCursorRect(headerRect
+                        , group.editState == CanvasGroup.EditState.RenamingTitle ? MouseCursor.Text : MouseCursor.Link);
                     EditorGUIUtility.AddCursorRect(scaleRectBR, MouseCursor.ResizeUpLeft);
                     GUI.color = GUI.color.WithAlpha(0.25f);
                     var newAutoValue = GUI.Toggle(autoRect, group.autoGroup, "Autosize");
@@ -931,8 +928,8 @@ namespace NodeCanvas.Editor
 
                     if (group.editState == CanvasGroup.EditState.EditingComments) {
                         GUI.SetNextControlName("GroupComments" + i);
-                        group.notes = GUI.TextArea(group.rect.ExpandBy(-5, -35, -5, -5), group.notes,
-                            Styles.topLeftLabel);
+                        group.notes = GUI.TextArea(group.rect.ExpandBy(-5, -35, -5, -5), group.notes
+                            , Styles.topLeftLabel);
                         GUI.FocusControl("GroupComments" + i);
                     }
                     else {
@@ -954,7 +951,8 @@ namespace NodeCanvas.Editor
                     }
                 }
                 if (group.editState == CanvasGroup.EditState.EditingComments && e.type == EventType.MouseDown &&
-                    !group.rect.Contains(e.mousePosition)) group.editState = CanvasGroup.EditState.None;
+                    !group.rect.Contains(e.mousePosition))
+                    group.editState = CanvasGroup.EditState.None;
 
                 if (e.type == EventType.MouseDown && GraphEditorUtility.allowClick) {
                     if (headerRect.Contains(e.mousePosition)) {
@@ -1119,8 +1117,8 @@ namespace NodeCanvas.Editor
                         for (var i = 0; i < currentGraph.canvasGroups.Count; i++) {
                             var group = currentGraph.canvasGroups[i];
                             var blipRect = group.rect.TransformSpace(finalBound, container);
-                            var blipHeaderRect = Rect.MinMaxRect(blipRect.xMin, blipRect.yMin, blipRect.xMax,
-                                blipRect.yMin + 2);
+                            var blipHeaderRect = Rect.MinMaxRect(blipRect.xMin, blipRect.yMin, blipRect.xMax
+                                , blipRect.yMin + 2);
                             var color = group.color != default ? group.color : Color.gray;
                             color.a = 0.5f;
                             GUI.color = color;
@@ -1140,18 +1138,18 @@ namespace NodeCanvas.Editor
                     if (currentGraph.allNodes != null) {
                         //connections
                         for (var i = 0; i < currentGraph.allNodes.Count; i++)
-                        for (var j = 0; j < currentGraph.allNodes[i].outConnections.Count; j++) {
-                            var connection = currentGraph.allNodes[i].outConnections[j];
-                            if (connection.targetNode.isHidden) continue;
-                            var snp = connection.sourceNode.rect.center.TransformSpace(finalBound, container);
-                            var tnp = connection.targetNode.rect.center.TransformSpace(finalBound, container);
-                            var sp = connection.startRect.center.TransformSpace(finalBound, container);
-                            var tp = connection.endRect.center.TransformSpace(finalBound, container);
-                            Handles.color = Application.isPlaying ? StyleSheet.GetStatusColor(connection.status)
-                                : Colors.Grey(0.35f);
-                            Handles.DrawAAPolyLine(snp, sp, tp, tnp);
-                            Handles.color = Color.white;
-                        }
+                            for (var j = 0; j < currentGraph.allNodes[i].outConnections.Count; j++) {
+                                var connection = currentGraph.allNodes[i].outConnections[j];
+                                if (connection.targetNode.isHidden) continue;
+                                var snp = connection.sourceNode.rect.center.TransformSpace(finalBound, container);
+                                var tnp = connection.targetNode.rect.center.TransformSpace(finalBound, container);
+                                var sp = connection.startRect.center.TransformSpace(finalBound, container);
+                                var tp = connection.endRect.center.TransformSpace(finalBound, container);
+                                Handles.color = Application.isPlaying ? StyleSheet.GetStatusColor(connection.status)
+                                    : Colors.Grey(0.35f);
+                                Handles.DrawAAPolyLine(snp, sp, tp, tnp);
+                                Handles.color = Color.white;
+                            }
 
                         //nodes
                         for (var i = 0; i < currentGraph.allNodes.Count; i++) {
@@ -1228,22 +1226,22 @@ namespace NodeCanvas.Editor
             GraphEditorUtility.allowClick &= !buttonsRect.Contains(Event.current.mousePosition);
             GUI.color = Colors.Grey(0.2f);
             GUI.DrawTexture(buttonsRect.ExpandBy(5), Texture2D.whiteTexture);
-            var labelRect = Rect.MinMaxRect(buttonsRect.xMin - 20, buttonsRect.yMin - 40, buttonsRect.xMax + 20,
-                buttonsRect.yMin - 6);
-            var runLabelRoot = string.Format("<color=#FFEB04><b>Runtime: {0}</b></color>",
-                targetOwner.elapsedTime.ToString("0.00"));
-            var runLabelCurrent = string.Format("<color=#FFEB04><b>({0})</b></color>",
-                currentGraph.elapsedTime.ToString("0.00"));
+            var labelRect = Rect.MinMaxRect(buttonsRect.xMin - 20, buttonsRect.yMin - 40, buttonsRect.xMax + 20
+                , buttonsRect.yMin - 6);
+            var runLabelRoot = string.Format("<color=#FFEB04><b>Runtime: {0}</b></color>"
+                , targetOwner.elapsedTime.ToString("0.00"));
+            var runLabelCurrent = string.Format("<color=#FFEB04><b>({0})</b></color>"
+                , currentGraph.elapsedTime.ToString("0.00"));
             var runLabelFinal = rootGraph != currentGraph ? runLabelCurrent + '\n' + runLabelRoot : runLabelRoot;
             GUI.Label(labelRect, runLabelFinal, Styles.bottomCenterLabel);
             GUI.color = Color.white;
             var buttonWidth = buttonsRect.width / 3f;
-            var playRect = Rect.MinMaxRect(buttonsRect.xMin, buttonsRect.yMin, buttonsRect.xMin + buttonWidth,
-                buttonsRect.yMax);
-            var pauseRect = Rect.MinMaxRect(playRect.xMax, buttonsRect.yMin, playRect.xMax + buttonWidth,
-                buttonsRect.yMax);
-            var stepRect = Rect.MinMaxRect(pauseRect.xMax, buttonsRect.yMin, pauseRect.xMax + buttonWidth,
-                buttonsRect.yMax);
+            var playRect = Rect.MinMaxRect(buttonsRect.xMin, buttonsRect.yMin, buttonsRect.xMin + buttonWidth
+                , buttonsRect.yMax);
+            var pauseRect = Rect.MinMaxRect(playRect.xMax, buttonsRect.yMin, playRect.xMax + buttonWidth
+                , buttonsRect.yMax);
+            var stepRect = Rect.MinMaxRect(pauseRect.xMax, buttonsRect.yMin, pauseRect.xMax + buttonWidth
+                , buttonsRect.yMax);
             GUI.contentColor = EditorGUIUtility.isProSkin ? Color.white : Colors.Grey(0.3f);
             GUI.color = Colors.Grey(targetOwner.isRunning ? 1f : 0.7f);
 
@@ -1293,8 +1291,8 @@ namespace NodeCanvas.Editor
         {
             if (targetOwner != null) {
                 var text = string.Format(
-                    "The selected {0} does not have a {1} assigned.\n Please create or assign a new one in its inspector.",
-                    targetOwner.GetType().Name, targetOwner.graphType.Name);
+                    "The selected {0} does not have a {1} assigned.\n Please create or assign a new one in its inspector."
+                    , targetOwner.GetType().Name, targetOwner.graphType.Name);
                 ShowNotification(new GUIContent(text));
                 return;
             }

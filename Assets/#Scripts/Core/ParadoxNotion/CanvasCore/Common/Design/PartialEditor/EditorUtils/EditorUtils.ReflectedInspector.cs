@@ -105,8 +105,8 @@ namespace ParadoxNotion.Design
             ///----------------------------------------------------------------------------------------------
             bool handled;
             EditorGUI.BeginChangeCheck();
-            var newValue = DirectFieldControl(content, value, t, info.unityObjectContext, info.attributes, out handled,
-                info);
+            var newValue = DirectFieldControl(content, value, t, info.unityObjectContext, info.attributes, out handled
+                , info);
             var changed = !Equals(newValue, value) || EditorGUI.EndChangeCheck();
             if (changed) UndoUtility.RecordObjectComplete(info.unityObjectContext, content.text + "Field Change");
             value = newValue;
@@ -126,8 +126,8 @@ namespace ParadoxNotion.Design
                 }
             }
             else {
-                EditorGUILayout.LabelField(content,
-                    new GUIContent(string.Format("NonInspectable ({0})", t.FriendlyName())));
+                EditorGUILayout.LabelField(content
+                    , new GUIContent(string.Format("NonInspectable ({0})", t.FriendlyName())));
             }
             return value;
         }
@@ -135,9 +135,9 @@ namespace ParadoxNotion.Design
         private static Dictionary<object, AssetObject> caches = new Dictionary<object, AssetObject>();
 
         //...
-        public static object DirectFieldControl(GUIContent content, object value, Type t,
-            UnityEngine.Object unityObjectContext, object[] attributes, out bool handled, object context,
-            params GUILayoutOption[] options)
+        public static object DirectFieldControl(GUIContent content, object value, Type t
+            , UnityEngine.Object unityObjectContext, object[] attributes, out bool handled, object context
+            , params GUILayoutOption[] options)
         {
             handled = true;
 
@@ -184,8 +184,8 @@ namespace ParadoxNotion.Design
                     if (unityObjectContext != null && newValue != null)
                         if (!Application.isPlaying && EditorUtility.IsPersistent(unityObjectContext) &&
                             !EditorUtility.IsPersistent(newValue as UnityEngine.Object)) {
-                            Services.Logger.LogWarning("Assets can not have scene object references", "Editor",
-                                unityObjectContext);
+                            Services.Logger.LogWarning("Assets can not have scene object references", "Editor"
+                                , unityObjectContext);
                             newValue = value as UnityObject;
                         }
                     return newValue;

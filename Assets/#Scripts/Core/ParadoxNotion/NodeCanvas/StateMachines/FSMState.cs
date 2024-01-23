@@ -72,8 +72,8 @@ namespace NodeCanvas.StateMachines
         {
             if (IsChildOf(sourceNode)) {
                 Logger.LogWarning(
-                    "States are already connected together. Consider using multiple conditions on an existing transition instead",
-                    LogTag.EDITOR, this);
+                    "States are already connected together. Consider using multiple conditions on an existing transition instead"
+                    , LogTag.EDITOR, this);
                 return false;
             }
             return true;
@@ -84,8 +84,8 @@ namespace NodeCanvas.StateMachines
         {
             if (IsParentOf(targetNode)) {
                 Logger.LogWarning(
-                    "States are already connected together. Consider using multiple conditions on an existing transition instead",
-                    LogTag.EDITOR, this);
+                    "States are already connected together. Consider using multiple conditions on an existing transition instead"
+                    , LogTag.EDITOR, this);
                 return false;
             }
             return true;
@@ -213,12 +213,12 @@ namespace NodeCanvas.StateMachines
                 GUILayout.BeginHorizontal("box");
 
                 if (connection.condition != null) {
-                    GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0),
-                        GUILayout.ExpandWidth(true));
+                    GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0)
+                        , GUILayout.ExpandWidth(true));
                 }
                 else {
-                    GUILayout.Label("OnFinish" + (onFinishExists ? " (exists)" : string.Empty), GUILayout.MinWidth(0),
-                        GUILayout.ExpandWidth(true));
+                    GUILayout.Label("OnFinish" + (onFinishExists ? " (exists)" : string.Empty), GUILayout.MinWidth(0)
+                        , GUILayout.ExpandWidth(true));
                     onFinishExists = true;
                 }
                 GUILayout.FlexibleSpace();

@@ -21,9 +21,9 @@ namespace NodeCanvas.Editor
         public override void OnInspectorGUI()
         {
             GUI.color = GUI.color.WithAlpha(parentBlackboardProp.objectReferenceValue ? 1 : 0.6f);
-            EditorGUILayout.PropertyField(parentBlackboardProp,
-                EditorUtils.GetTempContent("Parent Asset Blackboard", null,
-                    "Optional Parent Asset Blackboard to 'inherit' variables from."));
+            EditorGUILayout.PropertyField(parentBlackboardProp
+                , EditorUtils.GetTempContent("Parent Asset Blackboard", null
+                    , "Optional Parent Asset Blackboard to 'inherit' variables from."));
             serializedObject.ApplyModifiedProperties();
             GUI.color = Color.white;
             BlackboardEditor.ShowVariables(bb);

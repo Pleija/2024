@@ -2,32 +2,22 @@
 
 namespace Slate
 {
-
     //CameraShot clip wraps a ShotCamera
-    [Attachable(typeof(CameraTrack))]
-    [Description("Camera Shots can be animated directly within this clip. You don't need to create an Actor Group to animate the shot (even though you can if desired).")]
-    [Name("Camera Shot Clip")]
+    [Attachable(typeof(CameraTrack))
+     , Description(
+         "Camera Shots can be animated directly within this clip. You don't need to create an Actor Group to animate the shot (even though you can if desired).")
+     , Name("Camera Shot Clip")]
     public class CameraShot : DirectorActionClip
     {
-
-        public enum BlendInEffectType
-        {
-            None,
-            FadeFromColor,
-            CrossDissolve,
-            EaseIn
-        }
-
-        public enum BlendOutEffectType
-        {
-            None,
-            FadeToColor
-        }
+        public enum BlendInEffectType { None, FadeFromColor, CrossDissolve, EaseIn }
+        public enum BlendOutEffectType { None, FadeToColor }
 
         [SerializeField, HideInInspector]
         private float _length = 5;
+
         [SerializeField, HideInInspector]
         private float _blendIn;
+
         [SerializeField, HideInInspector]
         private float _blendOut;
 
@@ -37,8 +27,10 @@ namespace Slate
         //shown in custom inspector
         [HideInInspector]
         public BlendInEffectType blendInEffect;
+
         [HideInInspector]
         public BlendOutEffectType blendOutEffect;
+
         [HideInInspector, Range(0, 1)]
         public float steadyCamEffect;
         //
@@ -46,6 +38,7 @@ namespace Slate
         //blend effects
         [HideInInspector]
         public Color fadeToColor = Color.black;
+
         [HideInInspector]
         public Color fadeFromColor = Color.black;
         //
@@ -54,114 +47,113 @@ namespace Slate
         [HideInInspector, ActorGroupPopup]
         public ActorGroup overrideShotTargetActorGroup;
 
-
         private Color lastFadeColor;
 
         ///----------------------------------------------------------------------------------------------
-
-
         public override string info {
-            get
-            {
+            get {
 #if UNITY_EDITOR
-                return targetShot != null ? ( Prefs.showShotThumbnails && length > 0 ? null : targetShot.name ) : "No Shot Camera Selected";
+                return targetShot != null ? Prefs.showShotThumbnails && length > 0 ? null : targetShot.name
+                    : "No Shot Camera Selected";
 #else
-				return targetShot != null? targetShot.name : "No Shot Camera Selected";
+                return targetShot != null ? targetShot.name : "No Shot Camera Selected";
 #endif
             }
         }
 
-        public override bool isValid {
-            get { return targetShot != null; }
-        }
+        public override bool isValid => targetShot != null;
 
         public override float length {
-            get { return _length; }
-            set { _length = value; }
+            get => _length;
+            set => _length = value;
         }
 
         public override float blendIn {
-            get { return _blendIn; }
-            set { _blendIn = value; }
+            get => _blendIn;
+            set => _blendIn = value;
         }
 
         public override float blendOut {
-            get { return _blendOut; }
-            set { _blendOut = value; }
+            get => _blendOut;
+            set => _blendOut = value;
         }
 
-        public override bool canCrossBlend {
-            get { return blendInEffect != BlendInEffectType.None; }
-        }
+        public override bool canCrossBlend => blendInEffect != BlendInEffectType.None;
 
-        new public GameObject actor { //not REALY needed but makes it that double click the clip selects the camera. Special case.
-            get { return targetShot ? targetShot.gameObject : base.actor; }
-        }
+        public new GameObject
+            actor => //not REALY needed but makes it that double click the clip selects the camera. Special case.
+            targetShot ? targetShot.gameObject : base.actor;
 
         public CameraShot previousShot { get; private set; }
 
         public ShotCamera targetShot {
-            get { return _targetShot; }
-            set
-            {
-                if ( _targetShot != value ) {
+            get => _targetShot;
+            set {
+                if (_targetShot != value) {
                     _targetShot = value;
-                    base.ResetAnimatedParameters();
+                    ResetAnimatedParameters();
                 }
             }
         }
 
-        private CameraTrack track {
-            get { return (CameraTrack)parent; }
-        }
-
+        private CameraTrack track => (CameraTrack)parent;
 
         [AnimatableParameter]
         public Vector3 position {
-            get { return targetShot ? targetShot.localPosition : Vector3.zero; }
-            set { if ( targetShot != null ) targetShot.localPosition = value; }
+            get => targetShot ? targetShot.localPosition : Vector3.zero;
+            set {
+                if (targetShot != null) targetShot.localPosition = value;
+            }
         }
 
         [AnimatableParameter]
         public Vector3 rotation {
-            get { return targetShot ? targetShot.localEulerAngles : Vector3.zero; }
-            set { if ( targetShot != null ) targetShot.localEulerAngles = value; }
+            get => targetShot ? targetShot.localEulerAngles : Vector3.zero;
+            set {
+                if (targetShot != null) targetShot.localEulerAngles = value;
+            }
         }
 
         [AnimatableParameter(0.01f, 170f)]
         public float fieldOfView {
-            get { return targetShot ? targetShot.fieldOfView : 60f; }
-            set { if ( targetShot != null ) targetShot.fieldOfView = Mathf.Clamp(value, 0.01f, 170); }
+            get => targetShot ? targetShot.fieldOfView : 60f;
+            set {
+                if (targetShot != null) targetShot.fieldOfView = Mathf.Clamp(value, 0.01f, 170);
+            }
         }
 
         [AnimatableParameter("Focal Distance")]
         public float focalPoint {
-            get { return targetShot ? targetShot.focalDistance : DirectorCamera.DEFAULT_FOCAL_DISTANCE; }
-            set { if ( targetShot != null ) targetShot.focalDistance = value; }
+            get => targetShot ? targetShot.focalDistance : DirectorCamera.DEFAULT_FOCAL_DISTANCE;
+            set {
+                if (targetShot != null) targetShot.focalDistance = value;
+            }
         }
 
         [AnimatableParameter("Focal Length", 0f, 1000f)]
         public float focalRange {
-            get { return targetShot ? targetShot.focalLength : DirectorCamera.DEFAULT_FOCAL_LENGTH; }
-            set { if ( targetShot != null ) targetShot.focalLength = value; }
+            get => targetShot ? targetShot.focalLength : DirectorCamera.DEFAULT_FOCAL_LENGTH;
+            set {
+                if (targetShot != null) targetShot.focalLength = value;
+            }
         }
 
         [AnimatableParameter(0.1f, 32f)]
         public float focalAperture {
-            get { return targetShot ? targetShot.focalAperture : DirectorCamera.DEFAULT_FOCAL_APERTURE; }
-            set { if ( targetShot != null ) targetShot.focalAperture = value; }
+            get => targetShot ? targetShot.focalAperture : DirectorCamera.DEFAULT_FOCAL_APERTURE;
+            set {
+                if (targetShot != null) targetShot.focalAperture = value;
+            }
         }
 
-        protected override void OnAfterValidate() {
-
+        protected override void OnAfterValidate()
+        {
             var positionOverride = targetShot != null && targetShot.dynamicControlledPosition ? true : false;
             var rotationOverride = targetShot != null && targetShot.dynamicControlledRotation ? true : false;
             var fieldOfViewOverride = targetShot != null && targetShot.dynamicControlledFieldOfView ? true : false;
-
             SetParameterEnabled(nameof(position), !positionOverride);
             SetParameterEnabled(nameof(rotation), !rotationOverride);
             SetParameterEnabled(nameof(fieldOfView), !fieldOfViewOverride);
-
             var enableDof = false;
 #if SLATE_USE_POSTSTACK || SLATE_USE_HDRP || SLATE_USE_URP
             enableDof = true;
@@ -172,64 +164,76 @@ namespace Slate
         }
 
         //dynamic controller should update across the whole cutscene length regardless of whether or not this clip is in range
-        protected override void OnRootEnabled() { if ( targetShot != null && !root.isReSampleFrame ) { targetShot.UpdateDynamicControllerHard(this); } }
-        protected override void OnRootDisabled() { if ( targetShot != null && !root.isReSampleFrame ) { targetShot.UpdateDynamicControllerHard(this); } }
-        protected override void OnRootUpdated(float time, float previousTime) { if ( targetShot != null && !root.isReSampleFrame ) { targetShot.UpdateDynamicControllerSoft(this); } }
+        protected override void OnRootEnabled()
+        {
+            if (targetShot != null && !root.isReSampleFrame) targetShot.UpdateDynamicControllerHard(this);
+        }
+
+        protected override void OnRootDisabled()
+        {
+            if (targetShot != null && !root.isReSampleFrame) targetShot.UpdateDynamicControllerHard(this);
+        }
+
+        protected override void OnRootUpdated(float time, float previousTime)
+        {
+            if (targetShot != null && !root.isReSampleFrame) targetShot.UpdateDynamicControllerSoft(this);
+        }
         //
 
         //Update DCS targets if we have an override
-        public void TryUpdateShotTargetOverride() {
-            if ( overrideShotTargetActorGroup != null && overrideShotTargetActorGroup.actor != null ) {
+        public void TryUpdateShotTargetOverride()
+        {
+            if (overrideShotTargetActorGroup != null && overrideShotTargetActorGroup.actor != null)
                 targetShot.SetDynamicControllerTargets(overrideShotTargetActorGroup.actor.transform);
-            }
         }
 
-        protected override bool OnInitialize() {
+        protected override bool OnInitialize()
+        {
             TryUpdateShotTargetOverride();
             return true;
         }
 
-        protected override void OnEnter() {
-
+        protected override void OnEnter()
+        {
             //we do this again OnEnter for in case the same shot is used by multiple clips
             TryUpdateShotTargetOverride();
-
             targetShot.cam.cullingMask = DirectorCamera.renderCamera.cullingMask;
             previousShot = track.currentShot;
             track.currentShot = this;
-
             lastFadeColor = DirectorGUI.lastFadeColor;
             DirectorGUI.UpdateFade(Color.clear);
         }
 
-        protected override void OnUpdate(float time, float previousTime) {
-
-            if ( steadyCamEffect > 0 && time != previousTime ) {
+        protected override void OnUpdate(float time, float previousTime)
+        {
+            if (steadyCamEffect > 0 && time != previousTime)
                 DirectorCamera.ApplyNoise(steadyCamEffect, GetClipWeight(time, 1f));
-            }
 
-            if ( blendInEffect == BlendInEffectType.FadeFromColor ) {
-                if ( time <= blendIn ) {
+            if (blendInEffect == BlendInEffectType.FadeFromColor) {
+                if (time <= blendIn) {
                     var color = fadeFromColor;
                     color.a = Easing.Ease(EaseType.QuadraticInOut, 1, 0, GetClipWeight(time));
                     DirectorGUI.UpdateFade(color);
-                } else if ( time < length - blendOut ) {
+                }
+                else if (time < length - blendOut) {
                     DirectorGUI.UpdateFade(Color.clear);
                 }
             }
 
-            if ( blendOutEffect == BlendOutEffectType.FadeToColor ) {
-                if ( time >= length - blendOut ) {
+            if (blendOutEffect == BlendOutEffectType.FadeToColor) {
+                if (time >= length - blendOut) {
                     var color = fadeToColor;
                     color.a = Easing.Ease(EaseType.QuadraticInOut, 1, 0, GetClipWeight(time));
                     DirectorGUI.UpdateFade(color);
-                } else if ( time > blendIn ) {
+                }
+                else if (time > blendIn) {
                     DirectorGUI.UpdateFade(Color.clear);
                 }
             }
 
-            if ( blendInEffect == BlendInEffectType.CrossDissolve && previousShot != null && previousShot.targetShot != null ) {
-                if ( time <= blendIn ) {
+            if (blendInEffect == BlendInEffectType.CrossDissolve && previousShot != null &&
+                previousShot.targetShot != null) {
+                if (time <= blendIn) {
                     var res = new Vector2(Screen.width, Screen.height);
 #if UNITY_EDITOR
                     res = EditorTools.GetGameViewSize();
@@ -237,40 +241,44 @@ namespace Slate
                     var dissolver = previousShot.targetShot.GetRenderTexture((int)res.x, (int)res.y, CameraType.Game);
                     var ease = Easing.Ease(EaseType.QuadraticInOut, 0, 1, GetClipWeight(time));
                     DirectorGUI.UpdateDissolve(dissolver, ease);
-                } else {
+                }
+                else {
                     DirectorGUI.UpdateDissolve(null, 0);
                 }
             }
         }
 
-
-        protected override void OnReverse() {
+        protected override void OnReverse()
+        {
             DirectorGUI.UpdateFade(lastFadeColor);
             DirectorGUI.UpdateDissolve(null, 0);
             track.currentShot = previousShot;
         }
 
-
-
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-
         [System.NonSerialized]
         private int thumbRefresher;
+
         [System.NonSerialized]
         private Texture thumbnail;
+
         [System.NonSerialized]
         private float lastSampleTime;
+
         [System.NonSerialized]
         private Vector3 lastPos;
+
         [System.NonSerialized]
         private Quaternion lastRot;
 
         [System.NonSerialized]
         private Quaternion scWasRotation;
+
         [System.NonSerialized]
         private Vector3 scWasPivot;
+
         [System.NonSerialized]
         private float scWasSize;
 
@@ -278,30 +286,31 @@ namespace Slate
         private bool _lookThrough;
 
         public bool lookThrough {
-            get { return _lookThrough; }
-            set
-            {
-                if ( _lookThrough != value ) {
+            get => _lookThrough;
+            set {
+                if (_lookThrough != value) {
                     _lookThrough = value;
-                    if ( value == true ) {
-                        var sc = UnityEditor.SceneView.lastActiveSceneView;
-                        if ( sc != null && targetShot != null ) {
-                            targetShot.cam.orthographic = sc.in2DMode;
 
+                    if (value == true) {
+                        var sc = UnityEditor.SceneView.lastActiveSceneView;
+
+                        if (sc != null && targetShot != null) {
+                            targetShot.cam.orthographic = sc.in2DMode;
                             scWasRotation = sc.rotation;
                             scWasPivot = sc.pivot;
                             scWasSize = sc.size;
-
                             sc.rotation = targetShot.rotation;
-                            sc.pivot = targetShot.position + ( targetShot.transform.forward * 5 );
+                            sc.pivot = targetShot.position + targetShot.transform.forward * 5;
                             sc.size = 5;
                             lastPos = sc.camera.transform.position;
                             lastRot = sc.camera.transform.rotation;
                         }
                     }
-                    if ( value == false ) {
+
+                    if (value == false) {
                         var sc = UnityEditor.SceneView.lastActiveSceneView;
-                        if ( sc != null ) {
+
+                        if (sc != null) {
                             sc.rotation = scWasRotation;
                             sc.pivot = scWasPivot;
                             sc.size = scWasSize;
@@ -311,56 +320,46 @@ namespace Slate
             }
         }
 
-
-        protected override void OnSceneGUI() {
-
-            if ( targetShot == null ) {
-                return;
-            }
-
+        protected override void OnSceneGUI()
+        {
+            if (targetShot == null) return;
             UnityEditor.Handles.BeginGUI();
             GUI.backgroundColor = lookThrough ? Color.red : Color.white;
-            if ( targetShot != null && GUI.Button(new Rect(5, 5, 200, 20), lookThrough ? "Exit Look Through Camera" : "Look Through Camera") ) {
+            if (targetShot != null && GUI.Button(new Rect(5, 5, 200, 20)
+                , lookThrough ? "Exit Look Through Camera" : "Look Through Camera"))
                 lookThrough = !lookThrough;
-            }
             GUI.backgroundColor = Color.white;
             UnityEditor.Handles.EndGUI();
-
             var sc = UnityEditor.SceneView.lastActiveSceneView;
-            if ( lookThrough && sc != null ) {
-                if ( root.currentTime == lastSampleTime ) {
 
-                    if ( sc.camera.transform.position != lastPos || sc.camera.transform.rotation != lastRot ) {
+            if (lookThrough && sc != null) {
+                if (root.currentTime == lastSampleTime) {
+                    if (sc.camera.transform.position != lastPos || sc.camera.transform.rotation != lastRot) {
                         UnityEditor.Undo.RecordObject(targetShot.transform, "Shot Change");
                         targetShot.position = sc.camera.transform.position;
                         targetShot.rotation = sc.camera.transform.rotation;
                         UnityEditor.EditorUtility.SetDirty(targetShot.gameObject);
                     }
-
                     lastPos = sc.camera.transform.position;
                     lastRot = sc.camera.transform.rotation;
-
-                } else {
-
-                    if ( sc.camera.transform.position != targetShot.position || sc.camera.transform.rotation != targetShot.rotation ) {
+                }
+                else {
+                    if (sc.camera.transform.position != targetShot.position ||
+                        sc.camera.transform.rotation != targetShot.rotation) {
                         sc.rotation = targetShot.rotation;
-                        sc.pivot = targetShot.position + ( targetShot.transform.forward * 5 );
+                        sc.pivot = targetShot.position + targetShot.transform.forward * 5;
                         sc.size = 5;
                     }
                 }
-
                 lastSampleTime = root.currentTime;
             }
 
             //show other handles only if not in look through mode
-            if ( !lookThrough ) {
+            if (!lookThrough) {
                 var posParam = GetParameter((CameraShot x) => x.position);
-                if ( posParam.enabled ) {
+                if (posParam.enabled)
                     CurveEditor3D.Draw3DCurve(posParam, this, targetShot.transform.parent, length / 2, length);
-                }
-
                 targetShot.OnSceneGUI();
-
                 /*
                                 //controls for focal point and focal range.
                                 UnityEditor.EditorGUI.BeginChangeCheck();
@@ -389,50 +388,42 @@ namespace Slate
             }
         }
 
-
         //override to show shot previews
-        protected override void OnClipGUI(Rect rect) {
+        protected override void OnClipGUI(Rect rect)
+        {
+            if (targetShot == null || rect.width < 40) return;
 
-            if ( targetShot == null || rect.width < 40 ) {
-                return;
-            }
-
-            if ( Prefs.showShotThumbnails ) {
-
-                if ( thumbRefresher == 0 || thumbRefresher % Prefs.thumbnailsRefreshInterval == 0 ) {
+            if (Prefs.showShotThumbnails) {
+                if (thumbRefresher == 0 || thumbRefresher % Prefs.thumbnailsRefreshInterval == 0) {
                     var res = EditorTools.GetGameViewSize();
                     var width = (int)res.x;
                     var height = (int)res.y;
                     thumbnail = targetShot.GetRenderTexture(width, height);
                 }
-
                 thumbRefresher++;
 
-                if ( thumbnail != null ) {
+                if (thumbnail != null) {
                     GUI.backgroundColor = Color.clear;
                     var style = new GUIStyle("Box");
                     style.alignment = TextAnchor.MiddleCenter;
                     var thumbRect = new Rect(0, 0, 100, rect.height);
 
-                    if ( blendIn > 0 ) {
+                    if (blendIn > 0) {
                         var previousClip = GetPreviousClip();
-                        if ( previousClip != null && previousClip.endTime > this.startTime ) {
-                            thumbRect.x += ( blendIn / length ) * rect.width;
-                        }
+                        if (previousClip != null && previousClip.endTime > startTime)
+                            thumbRect.x += blendIn / length * rect.width;
                     }
 
-                    if ( blendOut > 0 ) {
+                    if (blendOut > 0) {
                         var nextClip = GetNextClip();
-                        if ( nextClip != null && nextClip.startTime < this.endTime ) {
-                            thumbRect.width = Mathf.Min(thumbRect.width, rect.width - ( ( blendOut / length ) * rect.width ));
-                        }
+                        if (nextClip != null && nextClip.startTime < endTime)
+                            thumbRect.width = Mathf.Min(thumbRect.width, rect.width - blendOut / length * rect.width);
                     }
-
                     GUI.Box(thumbRect, thumbnail, style);
                     GUI.backgroundColor = Color.white;
                 }
 
-                if ( targetShot.name != ShotCamera.DEFAULT_NAME ) {
+                if (targetShot.name != ShotCamera.DEFAULT_NAME) {
                     var bevelRect = rect;
                     bevelRect.center += new Vector2(1, 1);
                     GUI.color = Color.white;
@@ -441,7 +432,6 @@ namespace Slate
                     GUI.Label(rect, targetShot.name, Styles.centerLabel);
                     GUI.color = Color.white;
                 }
-
             }
         }
 

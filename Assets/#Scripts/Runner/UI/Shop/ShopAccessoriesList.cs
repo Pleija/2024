@@ -22,8 +22,7 @@ namespace Runner.UI.Shop
 
             foreach (var pair in CharacterDatabase.dictionary) {
                 var c = pair.Value;
-                if (c.accessories != null && c.accessories.Length > 0)
-                    m_CharacterList.Add(c);
+                if (c.accessories != null && c.accessories.Length > 0) m_CharacterList.Add(c);
             }
             Addressables.LoadAssetAsync<GameObject>(headerPrefab).Completed += (op) => {
                 LoadedCharacter(op, 0);
@@ -135,8 +134,8 @@ namespace Runner.UI.Shop
             var itemId = name;
             var itemType = "non_consumable";
             var itemQty = 1;
-            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level,
-                transactionId);
+            AnalyticsEvent.ItemAcquired(AcquisitionType.Soft, transactionContext, itemQty, itemId, itemType, level
+                , transactionId);
             if (cost > 0)
                 AnalyticsEvent.ItemSpent(AcquisitionType.Soft,                   // Currency type
                     transactionContext, cost, itemId, PlayerData.instance.coins, // Balance

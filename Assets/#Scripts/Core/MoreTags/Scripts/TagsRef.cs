@@ -13,6 +13,7 @@ namespace MoreTags
         {
             //Debug.Log($"Saving: {gameObject.scene.name}:{gameObject.GetPath()}");
         }
+
         public void OnAfterDeserialize() { }
     }
 }

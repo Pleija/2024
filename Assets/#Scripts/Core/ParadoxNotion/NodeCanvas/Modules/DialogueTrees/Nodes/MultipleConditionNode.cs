@@ -5,10 +5,10 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Icon("Selector"), Name("Multiple Task Condition"), Category("Branch"),
-     Description(
-         "Will continue with the first child node which condition returns true. The Dialogue Actor selected will be used for the checks"),
-     Color("b3ff7f")]
+    [Icon("Selector"), Name("Multiple Task Condition"), Category("Branch")
+     , Description(
+         "Will continue with the first child node which condition returns true. The Dialogue Actor selected will be used for the checks")
+     , Color("b3ff7f")]
     public class MultipleConditionNode : DTNode
     {
         [SerializeField, AutoSortWithChildrenConnections]

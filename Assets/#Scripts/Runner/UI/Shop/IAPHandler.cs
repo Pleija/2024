@@ -43,8 +43,8 @@ namespace Runner.UI.Shop
                 var itemId = product.definition.id;
                 var itemType = "consumable";
                 var level = PlayerData.instance.rank.ToString();
-                AnalyticsEvent.IAPTransaction(transactionContext, (float)product.metadata.localizedPrice, itemId,
-                    itemType, level, transactionId);
+                AnalyticsEvent.IAPTransaction(transactionContext, (float)product.metadata.localizedPrice, itemId
+                    , itemType, level, transactionId);
                 AnalyticsEvent.ItemAcquired(AcquisitionType.Premium,                 // Currency type
                     transactionContext, amount, itemId, PlayerData.instance.premium, // Item balance
                     itemType, level, transactionId);

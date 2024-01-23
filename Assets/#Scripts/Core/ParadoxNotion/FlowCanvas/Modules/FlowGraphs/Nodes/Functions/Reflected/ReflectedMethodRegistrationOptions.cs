@@ -1,6 +1,5 @@
 ﻿namespace FlowCanvas.Nodes
 {
-
     public struct ReflectedMethodRegistrationOptions
     {
         public bool callable;

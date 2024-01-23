@@ -68,8 +68,8 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                     if (fsGlobalConfig.SerializeDefaultValues)
                         if (metaType.DeserializeOverwriteRequest || typeof(ICollection).IsAssignableFrom(storageType))
                             deserializedValue = property.Read(instance);
-                    var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType,
-                        ref deserializedValue, null);
+                    var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType, ref deserializedValue
+                        , null);
                     result.AddMessages(itemResult);
                     if (itemResult.Failed) continue;
                     property.Write(instance, deserializedValue);

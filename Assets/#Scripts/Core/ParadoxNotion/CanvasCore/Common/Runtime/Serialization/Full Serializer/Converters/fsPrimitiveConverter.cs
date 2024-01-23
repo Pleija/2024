@@ -85,7 +85,7 @@ namespace ParadoxNotion.Serialization.FullSerializer.Internal
                         instance = Convert.ChangeType(storage.AsInt64, storageType);
                 }
                 else if (fsGlobalConfig.Serialize64BitIntegerAsString && storage.IsString &&
-                         (storageType == typeof(long) || storageType == typeof(ulong))) {
+                    (storageType == typeof(long) || storageType == typeof(ulong))) {
                     instance = Convert.ChangeType(storage.AsString, storageType);
                 }
                 else {

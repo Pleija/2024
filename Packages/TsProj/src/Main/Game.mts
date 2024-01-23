@@ -1,5 +1,5 @@
-import {StateFsm} from "Common/StateFsm.mjs";
-import {GameStart} from "Main/Game/GameStart.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
+import { GameStart } from "Main/Game/GameStart.mjs";
 import LoadoutState = CS.Runner.Game.LoadoutState;
 import GameManager = CS.Runner.Game.GameManager;
 import Debug = CS.UnityEngine.Debug;
@@ -21,18 +21,18 @@ export class Game extends StateFsm {
             //$LoadingCharPos.unityChan.gameObject.SetActive(true);
         });
         LoadoutState.self.OnEnter.AddListener(async () => {
-            
+
             if (Debug.isDebugBuild || Application.isEditor) {
                 const handle = Addressables.CheckForCatalogUpdates(false);
                 await $promise(handle.Task);
 
                 if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result?.Count > 0) {
-                    console.log("restart app"); 
+                    console.log("restart app");
                     Loading.Restart();
                 }
             }
         });
-        RedisAdapter.self.OnUpdate.AddListener(()=> {
+        RedisAdapter.self.OnUpdate.AddListener(() => {
             console.log("restart app");
             Loading.Restart();
         });

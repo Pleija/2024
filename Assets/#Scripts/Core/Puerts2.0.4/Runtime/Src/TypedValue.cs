@@ -1,9 +1,9 @@
 /*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
+ * Tencent is pleased to support the open source community by making Puerts available.
+ * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
+ * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
+ * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
+ */
 
 using System;
 using System.Collections.Generic;
@@ -18,31 +18,19 @@ namespace Puerts
         object Target { get; }
     }
 
-
     public class Any<T> : TypedValue
     {
-        T mTarget;
-
+        private T mTarget;
 #if ENABLE_IL2CPP
         [UnityEngine.Scripting.Preserve]
 #endif
-        public Any(T i)
-        {
-            mTarget = i;
-        }
-
+        public Any(T i) => mTarget = i;
 #if ENABLE_IL2CPP
         [UnityEngine.Scripting.Preserve]
 #endif
-        public object Target
-        {
-            get
-            {
-                return mTarget;
-            }
-        }
+        public object Target => mTarget;
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -53,7 +41,7 @@ namespace Puerts
 #endif
         public ByteValue(byte i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -64,7 +52,7 @@ namespace Puerts
 #endif
         public SByteValue(sbyte i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -75,7 +63,7 @@ namespace Puerts
 #endif
         public CharValue(char i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -86,7 +74,7 @@ namespace Puerts
 #endif
         public Int16Value(short i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -97,7 +85,7 @@ namespace Puerts
 #endif
         public UInt16Value(ushort i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -108,7 +96,7 @@ namespace Puerts
 #endif
         public Int32Value(int i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -119,7 +107,7 @@ namespace Puerts
 #endif
         public UInt32Value(uint i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -129,13 +117,12 @@ namespace Puerts
         [UnityEngine.Scripting.Preserve]
 #endif
         public Int64Value(long i) : base(i) { }
-
 #if ENABLE_IL2CPP
         [UnityEngine.Scripting.Preserve]
 #endif
         public Int64Value(string str) : base(long.Parse(str)) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -145,13 +132,12 @@ namespace Puerts
         [UnityEngine.Scripting.Preserve]
 #endif
         public UInt64Value(ulong i) : base(i) { }
-
 #if ENABLE_IL2CPP
         [UnityEngine.Scripting.Preserve]
 #endif
         public UInt64Value(string str) : base(ulong.Parse(str)) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif
@@ -162,7 +148,7 @@ namespace Puerts
 #endif
         public FloatValue(float i) : base(i) { }
     }
-    
+
 #if ENABLE_IL2CPP
     [UnityEngine.Scripting.Preserve]
 #endif

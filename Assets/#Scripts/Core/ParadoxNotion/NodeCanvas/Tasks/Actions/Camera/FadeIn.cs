@@ -15,8 +15,7 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnUpdate()
         {
-            if (elapsedTime >= fadeTime)
-                EndAction();
+            if (elapsedTime >= fadeTime) EndAction();
         }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Slate
 {
-
     public interface ITransformRefParameter
     {
         Transform transform { get; }

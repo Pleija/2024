@@ -24,12 +24,12 @@ namespace ParadoxNotion.Serialization.FullSerializer
         public static fsResult Success = new fsResult { _success = true };
 
         ///<summary> Create a result that is successful but contains the given warning message.</summary>
-        public static fsResult Warn(string warning) =>
-            new fsResult { _success = true, _messages = new List<string> { warning } };
+        public static fsResult Warn(string warning) => new fsResult
+            { _success = true, _messages = new List<string> { warning } };
 
         ///<summary> Create a result that failed.</summary>
-        public static fsResult Fail(string warning) =>
-            new fsResult { _success = false, _messages = new List<string> { warning } };
+        public static fsResult Fail(string warning) => new fsResult
+            { _success = false, _messages = new List<string> { warning } };
 
         ///<summary> Adds a new message to this result.</summary>
         public void AddMessage(string message)
@@ -56,8 +56,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
             _success = _success && other._success;
 
             if (other._messages != null) {
-                if (_messages == null) _messages = new List<string>(other._messages);
-                else _messages.AddRange(other._messages);
+                if (_messages == null)
+                    _messages = new List<string>(other._messages);
+                else
+                    _messages.AddRange(other._messages);
             }
             return this;
         }

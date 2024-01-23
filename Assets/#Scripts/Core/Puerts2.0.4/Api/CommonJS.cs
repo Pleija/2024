@@ -4,5 +4,5 @@ public class CommonJS
     {
         env.ExecuteModule("puer-commonjs/load.mjs");
         env.ExecuteModule("puer-commonjs/modular.mjs");
-    }        
+    }
 }

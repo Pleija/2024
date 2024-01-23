@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Icon("List"), Name("Multiple Choice"), Category("Branch"),
-     Description(
-         "Prompt a Dialogue Multiple Choice. A choice will be available if the choice condition(s) are true or there is no choice conditions. The Actor selected is used for the condition checks and will also Say the selection if the option is checked."),
-     Color("b3ff7f")]
+    [Icon("List"), Name("Multiple Choice"), Category("Branch")
+     , Description(
+         "Prompt a Dialogue Multiple Choice. A choice will be available if the choice condition(s) are true or there is no choice conditions. The Actor selected is used for the condition checks and will also Say the selection if the option is checked.")
+     , Color("b3ff7f")]
     public class MultipleChoiceNode : DTNode
     {
         [System.Serializable]
@@ -49,8 +49,8 @@ namespace NodeCanvas.DialogueTrees
             }
 
             if (finalOptions.Count == 0) {
-                ParadoxNotion.Services.Logger.Log("Multiple Choice Node has no available options. Dialogue Ends.",
-                    LogTag.EXECUTION, this);
+                ParadoxNotion.Services.Logger.Log("Multiple Choice Node has no available options. Dialogue Ends."
+                    , LogTag.EXECUTION, this);
                 DLGTree.Stop(false);
                 return Status.Failure;
             }
@@ -105,8 +105,8 @@ namespace NodeCanvas.DialogueTrees
                 var connection = i < outConnections.Count ? outConnections[i] : null;
                 GUILayout.BeginHorizontal(Styles.roundedBox);
                 GUILayout.Label(
-                    string.Format("{0} {1}", connection != null ? "■" : "□", choice.statement.text.CapLength(30)),
-                    Styles.leftLabel);
+                    string.Format("{0} {1}", connection != null ? "■" : "□", choice.statement.text.CapLength(30))
+                    , Styles.leftLabel);
                 GUILayout.EndHorizontal();
             }
             GUILayout.BeginHorizontal();

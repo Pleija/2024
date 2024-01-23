@@ -3,7 +3,6 @@ using System;
 
 namespace Slate
 {
-
     ///<summary>Attribute to mark a field or property as an animatable parameter</summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class AnimatableParameterAttribute : PropertyAttribute
@@ -13,15 +12,17 @@ namespace Slate
         public readonly float? max;
         public readonly string customName;
         public AnimatableParameterAttribute() { }
-        public AnimatableParameterAttribute(string customName) {
-            this.customName = customName;
-        }
-        public AnimatableParameterAttribute(string customName, float min, float max) {
+        public AnimatableParameterAttribute(string customName) => this.customName = customName;
+
+        public AnimatableParameterAttribute(string customName, float min, float max)
+        {
             this.customName = customName;
             this.min = min;
             this.max = max;
         }
-        public AnimatableParameterAttribute(float min, float max) {
+
+        public AnimatableParameterAttribute(float min, float max)
+        {
             this.min = min;
             this.max = max;
         }
@@ -38,9 +39,7 @@ namespace Slate
     {
         public readonly Type propertyType;
         public ShaderPropertyPopupAttribute() { }
-        public ShaderPropertyPopupAttribute(Type propertyType) {
-            this.propertyType = propertyType;
-        }
+        public ShaderPropertyPopupAttribute(Type propertyType) => this.propertyType = propertyType;
     }
 
     ///<summary>Attribute used to make a bool display as left toggle</summary>
@@ -52,9 +51,7 @@ namespace Slate
     public class MinAttribute : PropertyAttribute
     {
         public readonly float min;
-        public MinAttribute(float min) {
-            this.min = min;
-        }
+        public MinAttribute(float min) => this.min = min;
     }
 
     ///<summary>Show an example text in place of string field if string is null or empty</summary>
@@ -62,9 +59,7 @@ namespace Slate
     public class ExampleTextAttribute : PropertyAttribute
     {
         public readonly string text;
-        public ExampleTextAttribute(string text) {
-            this.text = text;
-        }
+        public ExampleTextAttribute(string text) => this.text = text;
     }
 
     ///<summary>Shows a HelpBox bellow field</summary>
@@ -72,30 +67,38 @@ namespace Slate
     public class HelpBoxAttribute : PropertyAttribute
     {
         public readonly string text;
-        public HelpBoxAttribute(string text) {
-            this.text = text;
-        }
+        public HelpBoxAttribute(string text) => this.text = text;
     }
 
-    ///<summary>Shows the property only if another property/field returns the specified value. The target value is int type, which means that can both be used for boolean as well as enum targets</summary>
+    /// <summary>
+    ///     Shows the property only if another property/field returns the specified value. The target value is int type,
+    ///     which means that can both be used for boolean as well as enum targets
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class ShowIfAttribute : PropertyAttribute
     {
         public readonly string propertyName;
         public readonly int value;
-        public ShowIfAttribute(string propertyName, int value) {
+
+        public ShowIfAttribute(string propertyName, int value)
+        {
             this.propertyName = propertyName;
             this.value = value;
         }
     }
 
-    ///<summary>Enabled the property only if another property/field returns the specified value. The target value is int type, which means that can both be used for boolean as well as enum targets</summary>
+    /// <summary>
+    ///     Enabled the property only if another property/field returns the specified value. The target value is int type,
+    ///     which means that can both be used for boolean as well as enum targets
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class EnabledIfAttribute : PropertyAttribute
     {
         public readonly string propertyName;
         public readonly int value;
-        public EnabledIfAttribute(string propertyName, int value) {
+
+        public EnabledIfAttribute(string propertyName, int value)
+        {
             this.propertyName = propertyName;
             this.value = value;
         }
@@ -106,9 +109,7 @@ namespace Slate
     public class CallbackAttribute : PropertyAttribute
     {
         public readonly string methodName;
-        public CallbackAttribute(string methodName) {
-            this.methodName = methodName;
-        }
+        public CallbackAttribute(string methodName) => this.methodName = methodName;
     }
 
     ///<summary>Attribute used on Object or string field to mark them as required (red) if not set</summary>

@@ -16,8 +16,10 @@ public class SetEnumFlag : ActionTask
     protected override void OnExecute()
     {
         var Value = (int)Variable.value;
-        if (Clear.value) Value &= ~(int)Flag.value;
-        else Value |= (int)Flag.value;
+        if (Clear.value)
+            Value &= ~(int)Flag.value;
+        else
+            Value |= (int)Flag.value;
         Variable.value = Enum.ToObject(Variable.varRef.varType, Value);
         EndAction();
     }

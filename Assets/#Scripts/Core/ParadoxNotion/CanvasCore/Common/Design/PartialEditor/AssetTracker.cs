@@ -40,8 +40,8 @@ namespace ParadoxNotion.Design
         }
 
         //unity callback
-        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets,
-            string[] movedAssets, string[] movedFromAssetPaths)
+        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets
+            , string[] movedFromAssetPaths)
         {
             AssetsImported(importedAssets);
             if (onAssetsImported != null) onAssetsImported(importedAssets);

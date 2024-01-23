@@ -6,8 +6,8 @@ using ParadoxNotion.Serialization;
 namespace NodeCanvas.Framework.Internal
 {
     ///<summary>Missing node types are deserialized into this on deserialization and can load back if type is found</summary>
-    [DoNotList,
-     Description(
+    [DoNotList
+     , Description(
          "Please resolve the MissingNode issue by either replacing the node, importing the missing node type, or refactoring the type in GraphRefactor.")]
     public sealed class MissingNode : Node, IMissingRecoverable
     {
@@ -39,15 +39,17 @@ namespace NodeCanvas.Framework.Internal
         ///----------------------------------------------------------------------------------------------
         ///---------------------------------------UNITY EDITOR-------------------------------------------
 #if UNITY_EDITOR
-        protected override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos,
-            float zoomFactor)
+        protected override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
+            , float zoomFactor)
         {
             foreach (var c in outConnections)
-                UnityEditor.Handles.DrawBezier(c.sourceNode.rect.center, c.targetNode.rect.center,
-                    c.sourceNode.rect.center, c.targetNode.rect.center, Color.red, Editor.StyleSheet.bezierTexture, 3);
+                UnityEditor.Handles.DrawBezier(c.sourceNode.rect.center, c.targetNode.rect.center
+                    , c.sourceNode.rect.center, c.targetNode.rect.center, Color.red, Editor.StyleSheet.bezierTexture
+                    , 3);
             foreach (var c in inConnections)
-                UnityEditor.Handles.DrawBezier(c.sourceNode.rect.center, c.targetNode.rect.center,
-                    c.sourceNode.rect.center, c.targetNode.rect.center, Color.red, Editor.StyleSheet.bezierTexture, 3);
+                UnityEditor.Handles.DrawBezier(c.sourceNode.rect.center, c.targetNode.rect.center
+                    , c.sourceNode.rect.center, c.targetNode.rect.center, Color.red, Editor.StyleSheet.bezierTexture
+                    , 3);
         }
 
         protected override void OnNodeGUI()

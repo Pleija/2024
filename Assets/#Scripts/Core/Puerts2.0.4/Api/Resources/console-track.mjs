@@ -1,4 +1,5 @@
 const ENABLE_HYPERLINK = true;
+
 function getTrack() {
     //捕获当前输出的堆栈信息(前三行为此处代码调用的堆栈, 去除后输出)
     let trackInfos = new Error().stack?.replace(/\r\n/g, "\n").split("\n").slice(3);

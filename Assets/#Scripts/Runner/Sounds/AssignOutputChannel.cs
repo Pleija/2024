@@ -18,8 +18,7 @@ namespace Runner.Sounds
                 return;
             }
             var groups = MusicPlayer.instance.mixer.FindMatchingGroups(mixerGroup);
-            if (groups.Length == 0)
-                Debug.LogErrorFormat(gameObject, "Could not find any group called {0}", mixerGroup);
+            if (groups.Length == 0) Debug.LogErrorFormat(gameObject, "Could not find any group called {0}", mixerGroup);
 
             for (var i = 0; i < groups.Length; ++i)
                 if (groups[i].name == mixerGroup) {

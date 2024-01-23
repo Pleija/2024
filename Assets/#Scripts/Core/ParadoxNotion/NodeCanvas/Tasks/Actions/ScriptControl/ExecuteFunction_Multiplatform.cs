@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Execute Function", 10), Category("✫ Reflected"),
-     Description(
+    [Name("Execute Function", 10), Category("✫ Reflected")
+     , Description(
          "Execute a function on a script and save the return if any.\nIf function is an IEnumerator it will execute as a coroutine.")]
     public class ExecuteFunction_Multiplatform : ActionTask, IReflectedWrapper
     {
@@ -118,8 +118,8 @@ namespace NodeCanvas.Tasks.Actions
             for (var i = 0; i < methodParameters.Length; i++) {
                 var p = methodParameters[i];
                 var pType = p.ParameterType;
-                var newParam =
-                    new BBObjectParameter(pType.IsByRef ? pType.GetElementType() : pType) { bb = blackboard };
+                var newParam = new BBObjectParameter(pType.IsByRef ? pType.GetElementType() : pType)
+                    { bb = blackboard };
                 if (p.IsOptional) newParam.value = p.DefaultValue;
                 parameters.Add(newParam);
             }
@@ -139,18 +139,18 @@ namespace NodeCanvas.Tasks.Actions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object),
-                            typeof(object), SetMethod, 10, false, false, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
+                            , SetMethod, 10, false, false, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 10,
-                        false, false, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 10
+                        , false, false, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod,
-                            10, false, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
+                            , 10, false, false, menu);
                 }
                 menu.ShowAsBrowser("Select Method", GetType());
                 Event.current.Use();
@@ -161,8 +161,8 @@ namespace NodeCanvas.Tasks.Actions
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Method", targetMethod.Name);
                 UnityEditor.EditorGUILayout.LabelField("Returns", targetMethod.ReturnType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
+                    , UnityEditor.MessageType.None);
                 if (targetMethod.ReturnType == typeof(IEnumerator))
                     GUILayout.Label("<b>This will execute as a Coroutine!</b>");
                 GUILayout.EndVertical();

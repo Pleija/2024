@@ -118,13 +118,13 @@ namespace NodeCanvas.Editor
             GUI.color = Color.white;
             GUI.Label(copyrightRect, copyrightText, Styles.topLeftLabel);
             GUILayout.Space(headerRect.height);
-            GUI.Label(new Rect(headerRect.x + 333, headerRect.yMax - 56, 150, 20),
-                $"<color=#d2d2d2><size=10><b>v{Framework.Internal.GraphSource.FRAMEWORK_VERSION}</b></size></color>");
+            GUI.Label(new Rect(headerRect.x + 333, headerRect.yMax - 56, 150, 20)
+                , $"<color=#d2d2d2><size=10><b>v{Framework.Internal.GraphSource.FRAMEWORK_VERSION}</b></size></color>");
             ///----------------------------------------------------------------------------------------------
 
             if (!string.IsNullOrEmpty(webMessage)) {
-                var messageRect = Rect.MinMaxRect(headerRect.xMax - 385, headerRect.yMin + 5, headerRect.xMax - 5,
-                    headerRect.yMax - 5);
+                var messageRect = Rect.MinMaxRect(headerRect.xMax - 385, headerRect.yMin + 5, headerRect.xMax - 5
+                    , headerRect.yMax - 5);
                 GUI.color = Color.white.WithAlpha(0.5f);
                 Styles.Draw(messageRect, Styles.roundedBox);
                 GUI.color = Color.white;
@@ -138,18 +138,19 @@ namespace NodeCanvas.Editor
             var titleRect = headerRect;
             titleRect.x += 30;
             GUILayout.Label(string.Format(
-                "Welcome and thank you for purchasing {0}! Following are a few important links to get you started:",
-                packageName));
+                "Welcome and thank you for purchasing {0}! Following are a few important links to get you started:"
+                , packageName));
             GUILayout.Space(10);
             ///----------------------------------------------------------------------------------------------
-            ShowEntry(docsIcon,
-                "<size=16><b>Documentation</b></size>\nRead thorough documentation and API reference online.", docsURL);
-            ShowEntry(resourcesIcon,
-                "<size=16><b>Resources</b></size>\nDownload samples, extensions and other resources.", resourcesURL);
-            ShowEntry(supportIcon,
-                "<size=16><b>Support</b></size>\nJoin the online forums, get support and give feedback.", forumsURL);
-            ShowEntry(communityIcon, "<size=16><b>Community</b></size>\nJoin the online Discord community.",
-                discordUrl);
+            ShowEntry(docsIcon
+                , "<size=16><b>Documentation</b></size>\nRead thorough documentation and API reference online."
+                , docsURL);
+            ShowEntry(resourcesIcon
+                , "<size=16><b>Resources</b></size>\nDownload samples, extensions and other resources.", resourcesURL);
+            ShowEntry(supportIcon
+                , "<size=16><b>Support</b></size>\nJoin the online forums, get support and give feedback.", forumsURL);
+            ShowEntry(communityIcon, "<size=16><b>Community</b></size>\nJoin the online Discord community."
+                , discordUrl);
             ///----------------------------------------------------------------------------------------------
             GUILayout.FlexibleSpace();
             Prefs.hideWelcomeWindow = EditorGUILayout.ToggleLeft("Don't show again.", Prefs.hideWelcomeWindow);

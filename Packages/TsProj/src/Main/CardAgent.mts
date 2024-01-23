@@ -1,11 +1,10 @@
-
 import { StateFsm } from "Common/StateFsm.mjs";
 
 export class CardAgent extends StateFsm {
 
-      init(){
-          //
-      }
+    init() {
+        //
+    }
 }
 
-export const self:CardAgent = global.$CardAgent ??= new CardAgent();
+export const self: CardAgent = global.$CardAgent ??= new CardAgent();

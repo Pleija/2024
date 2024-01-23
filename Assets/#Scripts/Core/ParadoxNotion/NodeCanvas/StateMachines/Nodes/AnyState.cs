@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Any State"),
-     Description(
-         "The transitions of this node will be constantly checked. If any becomes true, that transition will take place. This is not a state."),
-     Color("b3ff7f")]
+    [Name("Any State")
+     , Description(
+         "The transitions of this node will be constantly checked. If any becomes true, that transition will take place. This is not a state.")
+     , Color("b3ff7f")]
     public class AnyState : FSMNode, IUpdatable
     {
         [Tooltip("If enabled, a transition to an already running state will not happen.")]
@@ -80,12 +80,12 @@ namespace NodeCanvas.StateMachines
                 GUILayout.BeginHorizontal("box");
 
                 if (connection.condition != null) {
-                    GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0),
-                        GUILayout.ExpandWidth(true));
+                    GUILayout.Label(connection.condition.summaryInfo, GUILayout.MinWidth(0)
+                        , GUILayout.ExpandWidth(true));
                 }
                 else {
-                    GUILayout.Label("OnFinish (This is never triggered)", GUILayout.MinWidth(0),
-                        GUILayout.ExpandWidth(true));
+                    GUILayout.Label("OnFinish (This is never triggered)", GUILayout.MinWidth(0)
+                        , GUILayout.ExpandWidth(true));
                     anyNullCondition = true;
                 }
                 GUILayout.FlexibleSpace();
@@ -95,8 +95,8 @@ namespace NodeCanvas.StateMachines
             EditorUtils.BoldSeparator();
             if (anyNullCondition)
                 UnityEditor.EditorGUILayout.HelpBox(
-                    "This is not a state and as such it never finish, thus OnFinish transitions are never called.\nPlease add a condition in all transitions of this node.",
-                    UnityEditor.MessageType.Warning);
+                    "This is not a state and as such it never finish, thus OnFinish transitions are never called.\nPlease add a condition in all transitions of this node."
+                    , UnityEditor.MessageType.Warning);
             dontRetriggerStates =
                 UnityEditor.EditorGUILayout.ToggleLeft("Don't Retrigger Running States", dontRetriggerStates);
         }

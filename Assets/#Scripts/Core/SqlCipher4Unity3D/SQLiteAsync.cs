@@ -39,9 +39,9 @@ namespace SqlCipher4Unity3D
 
         // NOTE(pyoung): added for SqlCipher4Unity3D
         public SQLiteAsyncConnection(string databasePath, string password, bool storeDateTimeAsTicks = true) : this(
-            new SQLiteConnectionString(databasePath,
-                SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex, storeDateTimeAsTicks,
-                password)) { }
+            new SQLiteConnectionString(databasePath
+                , SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex, storeDateTimeAsTicks
+                , password)) { }
 
         /// <summary>
         ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database specified by databasePath.
@@ -58,9 +58,9 @@ namespace SqlCipher4Unity3D
         ///     the storeDateTimeAsTicks parameter.
         /// </param>
         public SQLiteAsyncConnection(string databasePath, bool storeDateTimeAsTicks = true) : this(
-            new SQLiteConnectionString(databasePath,
-                SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex,
-                storeDateTimeAsTicks)) { }
+            new SQLiteConnectionString(databasePath
+                , SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex
+                , storeDateTimeAsTicks)) { }
 
         /// <summary>
         ///     Constructs a new SQLiteAsyncConnection and opens a pooled SQLite database specified by databasePath.
@@ -347,8 +347,8 @@ namespace SqlCipher4Unity3D
         /// <returns>
         ///     Whether the table was created or migrated for each type.
         /// </returns>
-        public Task<CreateTablesResult> CreateTablesAsync(CreateFlags createFlags = CreateFlags.None,
-            params Type[] types)
+        public Task<CreateTablesResult> CreateTablesAsync(CreateFlags createFlags = CreateFlags.None
+            , params Type[] types)
         {
             return WriteAsync(conn => conn.CreateTables(createFlags, types));
         }
@@ -1346,8 +1346,8 @@ namespace SqlCipher4Unity3D
         public SQLiteConnectionWithLock GetConnection(SQLiteConnectionString connectionString) =>
             GetConnectionAndTransactionLock(connectionString, out var _);
 
-        public SQLiteConnectionWithLock GetConnectionAndTransactionLock(SQLiteConnectionString connectionString,
-            out object transactionLock)
+        public SQLiteConnectionWithLock GetConnectionAndTransactionLock(SQLiteConnectionString connectionString
+            , out object transactionLock)
         {
             var key = connectionString.UniqueKey;
             Entry entry;

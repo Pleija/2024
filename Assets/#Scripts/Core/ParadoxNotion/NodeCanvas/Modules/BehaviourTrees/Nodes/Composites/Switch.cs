@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Composites"),
-     Description("Executes one child based on the provided int or enum case and returns its status."),
-     Icon("IndexSwitcher"), Color("b3ff7f")]
+    [Category("Composites")
+     , Description("Executes one child based on the provided int or enum case and returns its status.")
+     , Icon("IndexSwitcher"), Color("b3ff7f")]
     public class Switch : BTComposite
     {
         public enum CaseSelectionMode { IndexBased = 0, EnumBased = 1 }

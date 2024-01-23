@@ -89,8 +89,7 @@ namespace Runner.Obstacles
 
         private void Update()
         {
-            if (!m_isMoving)
-                return;
+            if (!m_isMoving) return;
             m_CurrentPos += Time.deltaTime * m_MaxSpeed;
             transform.localPosition = m_OriginalPosition - transform.right *
                 Mathf.PingPong(m_CurrentPos, m_Segement.manager.laneOffset * k_LaneOffsetToFullWidth);

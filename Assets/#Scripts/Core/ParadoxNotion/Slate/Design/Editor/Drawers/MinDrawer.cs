@@ -1,24 +1,26 @@
 ﻿#if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 
 namespace Slate
 {
-
     [CustomPropertyDrawer(typeof(MinAttribute))]
     public class MinDrawer : PropertyDrawer
     {
         //taken from Unity Standard Assets
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-            MinAttribute attribute = (MinAttribute)base.attribute;
-            if ( property.propertyType == SerializedPropertyType.Integer ) {
-                int v = EditorGUI.IntField(position, label, property.intValue);
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            var attribute = (MinAttribute)this.attribute;
+
+            if (property.propertyType == SerializedPropertyType.Integer) {
+                var v = EditorGUI.IntField(position, label, property.intValue);
                 property.intValue = (int)Mathf.Max(v, attribute.min);
-            } else if ( property.propertyType == SerializedPropertyType.Float ) {
-                float v = EditorGUI.FloatField(position, label, property.floatValue);
+            }
+            else if (property.propertyType == SerializedPropertyType.Float) {
+                var v = EditorGUI.FloatField(position, label, property.floatValue);
                 property.floatValue = Mathf.Max(v, attribute.min);
-            } else {
+            }
+            else {
                 EditorGUI.LabelField(position, label.text, "Use Min with float or int.");
             }
         }

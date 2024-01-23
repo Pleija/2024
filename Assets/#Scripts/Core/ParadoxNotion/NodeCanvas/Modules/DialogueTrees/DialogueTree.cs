@@ -9,10 +9,10 @@ using Logger = ParadoxNotion.Services.Logger;
 namespace NodeCanvas.DialogueTrees
 {
     ///<summary> Use DialogueTrees to create Dialogues between Actors</summary>
-    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/",
-         resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/",
-         forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/"),
-     CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Dialogue Tree Asset")]
+    [GraphInfo(packageName = "NodeCanvas", docsURL = "https://nodecanvas.paradoxnotion.com/documentation/"
+         , resourcesURL = "https://nodecanvas.paradoxnotion.com/downloads/"
+         , forumsURL = "https://nodecanvas.paradoxnotion.com/forums-page/")
+     , CreateAssetMenu(menuName = "ParadoxNotion/NodeCanvas/Dialogue Tree Asset")]
     public class DialogueTree : Graph
     {
         ///----------------------------------------------------------------------------------------------
@@ -167,8 +167,8 @@ namespace NodeCanvas.DialogueTrees
             //Otherwise use the default actor and set the name to the key and null transform
             Logger.Log(
                 string.Format(
-                    "An actor entry '{0}' on DialogueTree has no reference. A dummy Actor will be used with the entry Key for name",
-                    paramName), "Dialogue Tree", this);
+                    "An actor entry '{0}' on DialogueTree has no reference. A dummy Actor will be used with the entry Key for name"
+                    , paramName), "Dialogue Tree", this);
             return new ProxyDialogueActor(paramName, null);
         }
 
@@ -178,8 +178,8 @@ namespace NodeCanvas.DialogueTrees
             var param = actorParameters.Find(p => p.name == paramName);
 
             if (param == null) {
-                Logger.LogError(string.Format("There is no defined Actor key name '{0}'", paramName), "Dialogue Tree",
-                    this);
+                Logger.LogError(string.Format("There is no defined Actor key name '{0}'", paramName), "Dialogue Tree"
+                    , this);
                 return;
             }
             param.actor = actor;
@@ -193,8 +193,8 @@ namespace NodeCanvas.DialogueTrees
 
                 if (param == null) {
                     Logger.LogWarning(
-                        string.Format("There is no defined Actor key name '{0}'. Seting actor skiped", pair.Key),
-                        "Dialogue Tree", this);
+                        string.Format("There is no defined Actor key name '{0}'. Seting actor skiped", pair.Key)
+                        , "Dialogue Tree", this);
                     continue;
                 }
                 param.actor = pair.Value;
@@ -227,8 +227,8 @@ namespace NodeCanvas.DialogueTrees
                 OnSubtitlesRequest(info);
             else
                 Logger.LogWarning(
-                    "Subtitle Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI.",
-                    "Dialogue Tree");
+                    "Subtitle Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI."
+                    , "Dialogue Tree");
         }
 
         ///<summary>Raise the OnMultipleChoiceRequest event</summary>
@@ -238,8 +238,8 @@ namespace NodeCanvas.DialogueTrees
                 OnMultipleChoiceRequest(info);
             else
                 Logger.LogWarning(
-                    "Multiple Choice Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI.",
-                    "Dialogue Tree");
+                    "Multiple Choice Request event has no subscribers. Make sure to add the default '@DialogueGUI' prefab or create your own GUI."
+                    , "Dialogue Tree");
         }
 
         protected override void OnGraphStarted()
@@ -249,8 +249,8 @@ namespace NodeCanvas.DialogueTrees
             Logger.Log(string.Format("Dialogue Started '{0}'", name), "Dialogue Tree", this);
             if (OnDialogueStarted != null) OnDialogueStarted(this);
             if (!(agent is IDialogueActor))
-                Logger.Log("Agent used in DialogueTree does not implement IDialogueActor. A dummy actor will be used.",
-                    "Dialogue Tree", this);
+                Logger.Log("Agent used in DialogueTree does not implement IDialogueActor. A dummy actor will be used."
+                    , "Dialogue Tree", this);
             enterStartNodeFlag = true;
         }
 

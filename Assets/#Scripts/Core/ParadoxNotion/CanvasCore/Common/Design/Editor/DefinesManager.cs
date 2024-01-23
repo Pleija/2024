@@ -37,7 +37,8 @@ namespace ParadoxNotion.Design
             foreach (BuildTargetGroup target in System.Enum.GetValues(typeof(BuildTargetGroup))) {
                 if (target == BuildTargetGroup.Unknown) continue;
                 if (typeof(BuildTargetGroup).GetField(target.ToString())
-                    .IsDefined(typeof(System.ObsoleteAttribute), true)) continue;
+                    .IsDefined(typeof(System.ObsoleteAttribute), true))
+                    continue;
                 SetDefineActiveForTargetGroup(target, define, enable);
             }
         }

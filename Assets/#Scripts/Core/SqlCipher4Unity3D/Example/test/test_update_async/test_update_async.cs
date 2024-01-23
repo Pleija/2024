@@ -30,9 +30,9 @@ namespace SqlCipher4Unity3D.Example.test.test_update_async
             await _dbconn1.DropTableAsync<player_profile>();
             await _dbconn1.CreateTableAsync<player_profile>();
             await _dbconn1.InsertAllAsync(new[] {
-                new player_profile { save_name = "p1", active_player = 1 },
-                new player_profile { save_name = "p2", active_player = 1 },
-                new player_profile { save_name = "p3", active_player = 1 },
+                new player_profile { save_name = "p1", active_player = 1 }
+                , new player_profile { save_name = "p2", active_player = 1 }
+                , new player_profile { save_name = "p3", active_player = 1 },
             });
             foreach (var x in await _dbconn1.Table<player_profile>().ToListAsync()) Debug.Log($"before : {x}");
             await wannabe_set_active_player("p2");

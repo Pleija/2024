@@ -3,14 +3,9 @@ using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEngine;
 
-
 namespace FlowCanvas.Macros
 {
-
-    [DoNotList]
-    [Color("ffe4e1")]
-    [HasRefreshButton]
-    [DropReferenceType(typeof(Macro))]
+    [DoNotList, Color("ffe4e1"), HasRefreshButton, DropReferenceType(typeof(Macro))]
     public class MacroNodeWrapper : FlowNode, IGraphAssignable, IUpdatable
     {
         //Remarks: Usually IGraphAssignables work differently and instances are created in extension method CheckInstance.
@@ -21,77 +16,88 @@ namespace FlowCanvas.Macros
         private Macro _macro = null;
 
         private Macro _currentInstance;
+        public override string name => macro != null ? macro.name : "No Macro";
 
-
-        public override string name { get { return macro != null ? macro.name : "No Macro"; } }
-        public override string description { get { return _macro != null && !string.IsNullOrEmpty(_macro.comments) ? _macro.comments : base.description; } }
+        public override string description => _macro != null && !string.IsNullOrEmpty(_macro.comments) ? _macro.comments
+            : base.description;
 
         public Macro macro {
-            get { return _macro; }
-            set
-            {
-                if ( _macro != value ) {
+            get => _macro;
+            set {
+                if (_macro != value) {
                     _macro = value;
-                    if ( value != null ) { GatherPorts(); }
+                    if (value != null) GatherPorts();
                 }
             }
         }
 
-        Graph IGraphAssignable.subGraph { get { return macro; } set { macro = (Macro)value; } }
-        Graph IGraphAssignable.currentInstance { get { return _currentInstance; } set { _currentInstance = (Macro)value; } }
-        List<NodeCanvas.Framework.Internal.BBMappingParameter> IGraphAssignable.variablesMap { get { return null; } set { /* ... */ } }
+        Graph IGraphAssignable.subGraph {
+            get => macro;
+            set => macro = (Macro)value;
+        }
+
+        Graph IGraphAssignable.currentInstance {
+            get => _currentInstance;
+            set => _currentInstance = (Macro)value;
+        }
+
+        List<NodeCanvas.Framework.Internal.BBMappingParameter> IGraphAssignable.variablesMap {
+            get => null;
+            set {
+                /* ... */
+            }
+        }
+
         BBParameter IGraphAssignable.subGraphParameter => null;
+
         Dictionary<Graph, Graph> IGraphAssignable.instances {
-            get
-            {
+            get {
                 //we only do this so that it gets cleaned up when owner is destroyed
                 var dict = new Dictionary<Graph, Graph>();
                 dict[_currentInstance] = _currentInstance;
                 return dict;
             }
-            set { throw new System.Exception("Should have not been called"); }
+            set => throw new System.Exception("Should have not been called");
         }
 
         ///----------------------------------------------------------------------------------------------
-
-        public void MakeInstance() {
-            if ( _currentInstance == null && macro != null ) {
-                _currentInstance = Graph.Clone<Macro>(macro, this.graph);
+        public void MakeInstance()
+        {
+            if (_currentInstance == null && macro != null) {
+                _currentInstance = Graph.Clone<Macro>(macro, graph);
                 _macro = _currentInstance;
                 GatherPorts();
             }
         }
 
-        void IUpdatable.Update() {
-            if ( _currentInstance != null ) {
-                _currentInstance.UpdateGraph(this.graph.deltaTime);
-            }
+        void IUpdatable.Update()
+        {
+            if (_currentInstance != null) _currentInstance.UpdateGraph(graph.deltaTime);
         }
 
-        protected override void RegisterPorts() {
-
+        protected override void RegisterPorts()
+        {
             var target = _currentInstance != null ? _currentInstance : macro;
+            if (target == null || target.entry == null || target.exit == null) return;
 
-            if ( target == null || target.entry == null || target.exit == null ) {
-                return;
-            }
-
-            for ( var i = 0; i < target.inputDefinitions.Count; i++ ) {
+            for (var i = 0; i < target.inputDefinitions.Count; i++) {
                 var defIn = target.inputDefinitions[i];
-                if ( defIn.type == typeof(Flow) ) {
-                    AddFlowInput(defIn.name, (f) => { target.entryActionMap[defIn.ID](f); }, defIn.ID);
-                } else {
+                if (defIn.type == typeof(Flow))
+                    AddFlowInput(defIn.name, (f) => {
+                        target.entryActionMap[defIn.ID](f);
+                    }, defIn.ID);
+                else
                     target.entryFunctionMap[defIn.ID] = AddValueInput(defIn.name, defIn.type, defIn.ID).GetObjectValue;
-                }
             }
 
-            for ( var i = 0; i < target.outputDefinitions.Count; i++ ) {
+            for (var i = 0; i < target.outputDefinitions.Count; i++) {
                 var defOut = target.outputDefinitions[i];
-                if ( defOut.type == typeof(Flow) ) {
+                if (defOut.type == typeof(Flow))
                     target.exitActionMap[defOut.ID] = AddFlowOutput(defOut.name, defOut.ID).Call;
-                } else {
-                    AddValueOutput(defOut.name, defOut.type, () => { return target.exitFunctionMap[defOut.ID](); }, defOut.ID);
-                }
+                else
+                    AddValueOutput(defOut.name, defOut.type, () => {
+                        return target.exitFunctionMap[defOut.ID]();
+                    }, defOut.ID);
             }
         }
     }

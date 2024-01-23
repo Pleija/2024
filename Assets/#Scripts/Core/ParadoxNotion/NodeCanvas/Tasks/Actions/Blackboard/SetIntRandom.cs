@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Integer Random"), Category("✫ Blackboard"),
-     Description("Set a blackboard integer variable at random between min and max value")]
+    [Name("Set Integer Random"), Category("✫ Blackboard")
+     , Description("Set a blackboard integer variable at random between min and max value")]
     public class SetIntRandom : ActionTask
     {
         public BBParameter<int> minValue;

@@ -1,5 +1,4 @@
 ﻿#if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
@@ -7,21 +6,17 @@ using Sirenix.OdinInspector.Editor;
 
 namespace Slate
 {
-
     [CustomEditor(typeof(ShotCamera))]
     public class ShotCameraInspector : OdinEditor
     {
-
         private SerializedProperty focalDistanceProp;
         private SerializedProperty focalLengthProp;
         private SerializedProperty focalApertureProp;
         private SerializedProperty controllerProp;
+        private ShotCamera shot => (ShotCamera)target;
 
-        private ShotCamera shot {
-            get { return (ShotCamera)target; }
-        }
-
-        protected override void OnEnable() {
+        protected override void OnEnable()
+        {
             base.OnEnable();
             focalDistanceProp = serializedObject.FindProperty("_focalDistance");
             focalLengthProp = serializedObject.FindProperty("_focalLength");
@@ -29,12 +24,16 @@ namespace Slate
             controllerProp = serializedObject.FindProperty("_dynamicController");
         }
 
-        void OnSceneGUI() {
+        private void OnSceneGUI()
+        {
             shot.OnSceneGUI();
         }
 
-        public override void OnInspectorGUI() {
-            EditorGUILayout.HelpBox("The Camera Component attached above is mostly used for editor previews and thus the reason why it's disabled and not editable.\n\nYou can instead change the 'Render Camera' settings if so required found under the 'Director Camera Root' GameObject, and which is the only Camera Cutscenes are rendered from within.\n\nFor more options and for animating this Shot, please select a Shot Clip that makes use of this Shot Camera in a Slate Editor Window Camera Track.", MessageType.Info);
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.HelpBox(
+                "The Camera Component attached above is mostly used for editor previews and thus the reason why it's disabled and not editable.\n\nYou can instead change the 'Render Camera' settings if so required found under the 'Director Camera Root' GameObject, and which is the only Camera Cutscenes are rendered from within.\n\nFor more options and for animating this Shot, please select a Shot Clip that makes use of this Shot Camera in a Slate Editor Window Camera Track."
+                , MessageType.Info);
             shot.fieldOfView = EditorGUILayout.Slider("Field Of View", shot.fieldOfView, 5, 170);
             serializedObject.Update();
             EditorGUILayout.PropertyField(focalDistanceProp);

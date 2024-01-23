@@ -27,7 +27,7 @@ public class JsMain : View<JsMain>
     // public static bool assetsReady;
     private static JsMain m_Instance;
 
-    static IEnumerator LoadDefault()
+    private static IEnumerator LoadDefault()
     {
         var handle = Resources.LoadAsync<GameObject>("DefaultLoading");
         yield return handle;
@@ -98,8 +98,9 @@ public class JsMain : View<JsMain>
                 m_Instance = Res.FindAsset<GameObject>("t:prefab JsMain")?.GetComponentInChildren<JsMain>();
 #endif
             }
-            else
+            else {
                 Instantiate(Resources.Load<GameObject>("DefaultLoading"));
+            }
 
             // var go = Instantiate(Addressables.LoadAssetAsync<GameObject>("JsMain").WaitForCompletion());
             // m_Instance ??= go.GetComponent<JsMain>();
@@ -129,7 +130,7 @@ public class JsMain : View<JsMain>
     //#if UNITY_EDITOR
 #if UNITY_EDITOR
     [InitializeOnEnterPlayMode]
-    static void Preset() => PressPreload();
+    private static void Preset() => PressPreload();
 
     public static bool PressPreload()
     {
@@ -156,9 +157,7 @@ public class JsMain : View<JsMain>
         models.RemoveAll(x => !x);
         AssetDatabase.FindAssets($"t:{typeof(ModelBase).FullName}").Select(x =>
             AssetDatabase.LoadAssetAtPath<ModelBase>(AssetDatabase.GUIDToAssetPath(x))).ForEach(asset => {
-            if (models.All(t => t != asset)) {
-                models.Add(asset);
-            }
+            if (models.All(t => t != asset)) models.Add(asset);
         });
         var files = Directory.GetFiles("Assets/Res/dist/", "*.*", SearchOption.AllDirectories);
         files.Where(x => !File.Exists(x.Replace("Assets/Res/dist/", "Packages/tsproj/src/").Replace(".mjs", ".mts")))
@@ -172,7 +171,7 @@ public class JsMain : View<JsMain>
             .Where(t => t.EndsWith(".mjs") || t.EndsWith(".proto")).ToArray();
         //Debug.Log(AssetDatabase.LoadAssetAtPath<Object>(all.FirstOrDefault()) ?.GetType().GetNiceName());
         scripts = assets.Where(x => x.StartsWith("Assets/Res/")).Select(x => new Item() {
-            path = x, file = AssetDatabase.LoadAssetAtPath<TextAsset>(x)
+            path = x, file = AssetDatabase.LoadAssetAtPath<TextAsset>(x),
         }).ToList();
         Debug.Log($"all: {assets.Count()} scripts: {scripts.Count}");
         //var t = AssetDatabase.LoadAssetAtPath<Object>("Assets/Res/dist/bootstrap.mjs");
@@ -237,8 +236,7 @@ public class JsMain : View<JsMain>
         Debug.Log("Start JsMain");
         if (transform.parent != null) transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
-        if (!Addressables.ResourceLocators.Any())
-            Addressables.InitializeAsync().WaitForCompletion();
+        if (!Addressables.ResourceLocators.Any()) Addressables.InitializeAsync().WaitForCompletion();
 
         if (updateCatalog) {
             var handle = Addressables.CheckForCatalogUpdates(false);
@@ -260,10 +258,9 @@ public class JsMain : View<JsMain>
 
     public static IEnumerable<Type> FindTypes(Func<string, bool> predicate)
     {
-        if (predicate == null)
-            throw new ArgumentNullException(nameof(predicate));
+        if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             if (!assembly.IsDynamic) {
                 Type[] exportedTypes = null;
 
@@ -273,15 +270,11 @@ public class JsMain : View<JsMain>
                 catch (ReflectionTypeLoadException e) {
                     exportedTypes = e.Types;
                 }
-
-                if (exportedTypes != null) {
-                    foreach (var type in exportedTypes) {
+                if (exportedTypes != null)
+                    foreach (var type in exportedTypes)
                         if (predicate(type.FullName))
                             yield return type;
-                    }
-                }
             }
-        }
     }
 
     public static void LoadAll()
@@ -309,18 +302,15 @@ public class JsMain : View<JsMain>
     public void Reload() => Js.Reload();
     private static HashSet<string> callers = new HashSet<string>();
 
-    public static void CallOnce(Action action, [CallerFilePath] string path = "", [CallerLineNumber] int number = 0,
-        [CallerMemberName] string method = "")
+    public static void CallOnce(Action action, [CallerFilePath] string path = "", [CallerLineNumber] int number = 0
+        , [CallerMemberName] string method = "")
     {
-        if (callers.Add($"{path}:{number}:{method}")) {
-            action?.Invoke();
-        }
+        if (callers.Add($"{path}:{number}:{method}")) action?.Invoke();
     }
 
     public void Update()
     {
-        if (Js.isAlive)
-            Js.self.Tick();
+        if (Js.isAlive) Js.self.Tick();
     }
 
     protected void OnDestroy()

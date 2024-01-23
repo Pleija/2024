@@ -4,8 +4,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Category("Decorators"), Icon("Eye"),
-     Description(
+    [Category("Decorators"), Icon("Eye")
+     , Description(
          "Monitors the decorated child for a returned Status and executes an Action when that is the case.\nThe final Status returned to the parent can either be the original decorated child Status, or the new decorator Action Status.")]
     public class Monitor : BTDecorator, ITaskAssignable<ActionTask>
     {

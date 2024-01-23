@@ -48,12 +48,12 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 enclosedType = EnclosedType.Array;
             }
             else if (typeInfo.IsGenericType && typeof(List<>).GetTypeInfo()
-                         .IsAssignableFrom(type.GetGenericTypeDefinition().GetTypeInfo())) {
+                .IsAssignableFrom(type.GetGenericTypeDefinition().GetTypeInfo())) {
                 type = typeInfo.GenericTypeArguments[0];
                 enclosedType = EnclosedType.List;
             }
             else if (typeInfo.IsGenericType && typeof(ObservableCollection<>).GetTypeInfo()
-                         .IsAssignableFrom(type.GetTypeInfo().GetGenericTypeDefinition().GetTypeInfo())) {
+                .IsAssignableFrom(type.GetTypeInfo().GetGenericTypeDefinition().GetTypeInfo())) {
                 type = typeInfo.GenericTypeArguments[0];
                 enclosedType = EnclosedType.ObservableCollection;
             }
@@ -63,11 +63,13 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
         public static object GetDefault(this Type type) =>
             type.GetTypeInfo().IsValueType ? Activator.CreateInstance(type) : null;
 
-        private static PropertyInfo GetExplicitForeignKeyProperty(this Type type, Type destinationType) =>
-            (from property in type.GetRuntimeProperties() where property.IsPublicInstance() let foreignKeyAttribute =
-                    property.GetAttribute<ForeignKeyAttribute>()
-                where foreignKeyAttribute != null && foreignKeyAttribute.ForeignType.GetTypeInfo()
-                    .IsAssignableFrom(destinationType.GetTypeInfo()) select property).FirstOrDefault();
+        private static PropertyInfo GetExplicitForeignKeyProperty(this Type type, Type destinationType) => (
+            from property in type.GetRuntimeProperties()
+            where property.IsPublicInstance()
+            let foreignKeyAttribute = property.GetAttribute<ForeignKeyAttribute>()
+            where foreignKeyAttribute != null && foreignKeyAttribute.ForeignType.GetTypeInfo()
+                .IsAssignableFrom(destinationType.GetTypeInfo())
+            select property).FirstOrDefault();
 
         private static PropertyInfo GetConventionForeignKeyProperty(this Type type, string destinationTypeName)
         {
@@ -76,13 +78,15 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 .Select(format => string.Format(format, destinationTypeName)).ToList();
 
             // No explicit declaration, search for convention names
-            return (from property in type.GetRuntimeProperties() where property.IsPublicInstance() &&
-                    conventionNames.Contains(property.Name, StringComparer.OrdinalIgnoreCase) select property)
-                .FirstOrDefault();
+            return (
+                from property in type.GetRuntimeProperties()
+                where property.IsPublicInstance() &&
+                    conventionNames.Contains(property.Name, StringComparer.OrdinalIgnoreCase)
+                select property).FirstOrDefault();
         }
 
-        public static PropertyInfo GetForeignKeyProperty(this Type type, PropertyInfo relationshipProperty,
-            Type intermediateType = null, bool inverse = false)
+        public static PropertyInfo GetForeignKeyProperty(this Type type, PropertyInfo relationshipProperty
+            , Type intermediateType = null, bool inverse = false)
         {
             PropertyInfo result;
             var attribute = relationshipProperty.GetAttribute<RelationshipAttribute>();
@@ -161,21 +165,21 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var destinationKeyProperty = type.GetForeignKeyProperty(relationship, intermediateType);
             var inverseKeyProperty = type.GetForeignKeyProperty(relationship, intermediateType, true);
             return new ManyToManyMetaInfo {
-                IntermediateType = intermediateType,
-                OriginProperty = inverseKeyProperty,
-                DestinationProperty = destinationKeyProperty,
+                IntermediateType = intermediateType, OriginProperty = inverseKeyProperty
+                , DestinationProperty = destinationKeyProperty,
             };
         }
 
-        public static List<PropertyInfo> GetRelationshipProperties(this Type type) =>
-            (from property in type.GetRuntimeProperties()
-                where property.IsPublicInstance() && property.GetAttribute<RelationshipAttribute>() != null
-                select property).ToList();
+        public static List<PropertyInfo> GetRelationshipProperties(this Type type) => (
+            from property in type.GetRuntimeProperties()
+            where property.IsPublicInstance() && property.GetAttribute<RelationshipAttribute>() != null
+            select property).ToList();
 
-        public static PropertyInfo GetPrimaryKey(this Type type) => (from property in type.GetRuntimeProperties()
-                where property.IsPublicInstance() && property.GetAttribute<PrimaryKeyAttribute>() != null
-                select property)
-            .FirstOrDefault();
+        public static PropertyInfo GetPrimaryKey(this Type type) =>
+        (
+            from property in type.GetRuntimeProperties()
+            where property.IsPublicInstance() && property.GetAttribute<PrimaryKeyAttribute>() != null
+            select property).FirstOrDefault();
 
         public static string GetTableName(this Type type)
         {

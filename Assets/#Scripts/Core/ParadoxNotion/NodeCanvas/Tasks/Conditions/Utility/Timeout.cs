@@ -3,8 +3,8 @@ using ParadoxNotion.Design;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("✫ Utility"),
-     Description("Will return true after a specific amount of time has passed and false while still counting down")]
+    [Category("✫ Utility")
+     , Description("Will return true after a specific amount of time has passed and false while still counting down")]
     public class Timeout : ConditionTask
     {
         public BBParameter<float> timeout = 1f;

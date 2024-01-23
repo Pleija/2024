@@ -19,7 +19,8 @@ namespace NodeCanvas.Editor
         private static void HandlePreNodesGraphEvents(Graph graph, Vector2 canvasMousePos)
         {
             if (e.button == 2 && e.type == EventType.MouseDown /*|| e.type == EventType.MouseUp*/
-               ) UndoUtility.RecordObjectComplete(graph, "Graph Pan");
+            )
+                UndoUtility.RecordObjectComplete(graph, "Graph Pan");
             if (e.type == EventType.MouseUp || e.type == EventType.KeyUp) SnapNodesToGrid(graph);
 
             if (e.type == EventType.KeyDown && e.keyCode == KeyCode.F && GUIUtility.keyboardControl == 0) {
@@ -43,7 +44,7 @@ namespace NodeCanvas.Editor
             }
 
             if ((e.button == 2 && e.type == EventType.MouseDrag && canvasRect.Contains(e.mousePosition)) ||
-                (( /*e.type == EventType.MouseDown ||*/ e.type == EventType.MouseDrag) /*&& e.alt*/ && e.isMouse &&
+                ( /*e.type == EventType.MouseDown ||*/e.type == EventType.MouseDrag /*&& e.alt*/ && e.isMouse &&
                     GraphEditorUtility.activeElement == null)) {
                 //Debug.Log($"Test: {GraphEditorUtility.activeElement?.GetType().FullName}");
                 pan += e.delta;
@@ -89,16 +90,16 @@ namespace NodeCanvas.Editor
                     //PASTE
                     if (e.commandName == "Paste") {
                         if (CopyBuffer.HasCache<Node[]>())
-                            TryPasteNodesInGraph(graph, CopyBuffer.GetCache<Node[]>(),
-                                canvasMousePos + new Vector2(500, 500) / graph.zoomFactor);
+                            TryPasteNodesInGraph(graph, CopyBuffer.GetCache<Node[]>()
+                                , canvasMousePos + new Vector2(500, 500) / graph.zoomFactor);
                         e.Use();
                     }
 
                     //DUPLICATE
                     if (e.commandName == "Duplicate") {
                         if (GraphEditorUtility.activeElements != null && GraphEditorUtility.activeElements.Count > 0)
-                            TryPasteNodesInGraph(graph, GraphEditorUtility.activeElements.OfType<Node>().ToArray(),
-                                default);
+                            TryPasteNodesInGraph(graph, GraphEditorUtility.activeElements.OfType<Node>().ToArray()
+                                , default);
                         if (GraphEditorUtility.activeNode != null)
                             GraphEditorUtility.activeElement = GraphEditorUtility.activeNode.Duplicate(graph);
                         //Connections can't be duplicated by themselves. They do so as part of multiple node duplication (at least 2).
@@ -162,7 +163,7 @@ namespace NodeCanvas.Editor
         ///<summary>The final generic menu used for adding nodes in the canvas</summary>
         private static GenericMenu GetAddNodeMenu(Graph graph, Vector2 canvasMousePos)
         {
-            System.Action<System.Type> Selected = (type) => {
+            Action<Type> Selected = (type) => {
                 GraphEditorUtility.activeElement = graph.AddNode(type, canvasMousePos);
             };
             var menu = EditorUtils.GetTypeSelectionMenu(graph.baseNodeType, Selected);

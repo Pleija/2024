@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.StateMachines
 {
-    [Name("Sub Dialogue"),
-     Description(
-         "Execute the assigned Dialogue Tree OnEnter and stop it OnExit. Optionaly an event can be sent for whether the dialogue ended in Success or Failure. This can be controled by using the 'Finish' Dialogue Node inside the Dialogue Tree. Use a 'CheckEvent' condition to make use of those events. The 'Instigator' Actor of the Dialogue Tree will be set to this graph agent."),
-     DropReferenceType(typeof(DialogueTree)), Icon("Dialogue")]
+    [Name("Sub Dialogue")
+     , Description(
+         "Execute the assigned Dialogue Tree OnEnter and stop it OnExit. Optionaly an event can be sent for whether the dialogue ended in Success or Failure. This can be controled by using the 'Finish' Dialogue Node inside the Dialogue Tree. Use a 'CheckEvent' condition to make use of those events. The 'Instigator' Actor of the Dialogue Tree will be set to this graph agent.")
+     , DropReferenceType(typeof(DialogueTree)), Icon("Dialogue")]
     public class NestedDTState : FSMStateNested<DialogueTree>
     {
         [SerializeField, ExposeField, Name("Sub Tree")]

@@ -51,8 +51,8 @@ namespace NodeCanvas.StateMachines
         }
 
         //Draw the ports and connections
-        protected sealed override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos,
-            float zoomFactor)
+        protected sealed override void DrawNodeConnections(Rect drawCanvas, bool fullDrawPass, Vector2 canvasMousePos
+            , float zoomFactor)
         {
             var e = Event.current;
 
@@ -126,8 +126,8 @@ namespace NodeCanvas.StateMachines
 
             //draw new linking
             if (clickedPort != null && clickedPort.parent == this)
-                UnityEditor.Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos, e.mousePosition,
-                    new Color(0.5f, 0.5f, 0.8f, 0.8f), Editor.StyleSheet.bezierTexture, 2);
+                UnityEditor.Handles.DrawBezier(clickedPort.pos, e.mousePosition, clickedPort.pos, e.mousePosition
+                    , new Color(0.5f, 0.5f, 0.8f, 0.8f), Editor.StyleSheet.bezierTexture, 2);
 
             //draw out connections
             for (var i = 0; i < outConnections.Count; i++) {

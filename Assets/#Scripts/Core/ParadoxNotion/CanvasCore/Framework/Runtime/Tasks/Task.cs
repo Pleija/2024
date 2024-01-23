@@ -278,8 +278,8 @@ namespace NodeCanvas.Framework
                     if (field.FieldType == typeof(string) && string.IsNullOrEmpty((string)value))
                         return Error(string.Format("A required string field named '{0}' is not set.", field.Name));
                     if (typeof(BBParameter).RTIsAssignableFrom(field.FieldType) && (value as BBParameter).isNull)
-                        return Error(string.Format("A required BBParameter field value named '{0}' is not set.",
-                            field.Name));
+                        return Error(string.Format("A required BBParameter field value named '{0}' is not set."
+                            , field.Name));
                 }
 #endif
 
@@ -290,8 +290,8 @@ namespace NodeCanvas.Framework
                         field.SetValue(this, o);
                         if (ReferenceEquals(o, null))
                             return Error(string.Format(
-                                "GetFromAgent Attribute failed to get the required Component of type '{0}' from '{1}'. Does it exist?",
-                                field.FieldType.Name, agent.gameObject.name));
+                                "GetFromAgent Attribute failed to get the required Component of type '{0}' from '{1}'. Does it exist?"
+                                , field.FieldType.Name, agent.gameObject.name));
                     }
             }
 #endif
@@ -352,8 +352,8 @@ namespace NodeCanvas.Framework
                     if (value == null || value.Equals(null))
                         return string.Format("* Required field '{0}' is null", field.Name.SplitCamelCase());
                     if (field.FieldType == typeof(string) && string.IsNullOrEmpty((string)value))
-                        return string.Format("* Required string field '{0}' is null or empty",
-                            field.Name.SplitCamelCase());
+                        return string.Format("* Required string field '{0}' is null or empty"
+                            , field.Name.SplitCamelCase());
 
                     if (typeof(BBParameter).RTIsAssignableFrom(field.FieldType)) {
                         var bbParam = value as BBParameter;

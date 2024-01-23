@@ -39,8 +39,8 @@ namespace ParadoxNotion.Serialization
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Serialize to json</summary>
-        public static string Serialize(Type type, object instance, List<UnityEngine.Object> references = null,
-            bool pretyJson = false)
+        public static string Serialize(Type type, object instance, List<UnityEngine.Object> references = null
+            , bool pretyJson = false)
         {
             lock (serializerLock) {
                 serializer.PurgeTemporaryData();
@@ -73,13 +73,13 @@ namespace ParadoxNotion.Serialization
             where T : class => (T)Internal_Deserialize(typeof(T), json, references, instance);
 
         ///<summary>Deserialize overwrite from json</summary>
-        public static object TryDeserializeOverwrite(object instance, string json,
-            List<UnityEngine.Object> references = null) =>
+        public static object TryDeserializeOverwrite(object instance, string json
+            , List<UnityEngine.Object> references = null) =>
             Internal_Deserialize(instance.GetType(), json, references, instance);
 
         ///<summary>Deserialize from json</summary>
-        private static object Internal_Deserialize(Type type, string json, List<UnityEngine.Object> references,
-            object instance)
+        private static object Internal_Deserialize(Type type, string json, List<UnityEngine.Object> references
+            , object instance)
         {
             lock (serializerLock) {
                 serializer.PurgeTemporaryData();
@@ -128,8 +128,8 @@ namespace ParadoxNotion.Serialization
         ///     Serialize instance without cycle refs support and execute before/after call per object serialized within along
         ///     with it's serialization data
         /// </summary>
-        public static void SerializeAndExecuteNoCycles(Type type, object instance, Action<object> beforeCall,
-            Action<object, fsData> afterCall)
+        public static void SerializeAndExecuteNoCycles(Type type, object instance, Action<object> beforeCall
+            , Action<object, fsData> afterCall)
         {
             lock (serializerLock) {
                 serializer.IgnoreSerializeCycleReferences = true;

@@ -25,16 +25,16 @@ namespace NodeCanvas.Framework
         }
 
         ///<summary>Utility to start sub graph (makes instance, writes mapping, starts graph and on stop reads mapping)</summary>
-        public static bool TryStartSubGraph(this IGraphAssignable assignable, Component agent,
-            System.Action<bool> callback = null)
+        public static bool TryStartSubGraph(this IGraphAssignable assignable, Component agent
+            , System.Action<bool> callback = null)
         {
             assignable.currentInstance = assignable.CheckInstance();
 
             if (assignable.currentInstance != null) {
                 assignable.TryWriteAndBindMappedVariables();
                 //we always start with the current graphs blackboard parent bb as the subgraphs parent bb
-                assignable.currentInstance.StartGraph(agent, assignable.graph.blackboard.parent,
-                    Graph.UpdateMode.Manual, (result) => {
+                assignable.currentInstance.StartGraph(agent, assignable.graph.blackboard.parent, Graph.UpdateMode.Manual
+                    , (result) => {
                         if (assignable.status == Status.Running) assignable.TryReadAndUnbindMappedVariables();
                         if (callback != null) callback(result);
                     });
@@ -166,14 +166,14 @@ namespace NodeCanvas.Framework
 
             if (subTreeVariables.Count == 0 || !subTreeVariables.Any(v => v.isExposedPublic)) {
                 UnityEditor.EditorGUILayout.HelpBox(
-                    "SubGraph has no exposed public variables. You can make variables exposed public through the 'gear' menu of a variable.",
-                    UnityEditor.MessageType.Info);
+                    "SubGraph has no exposed public variables. You can make variables exposed public through the 'gear' menu of a variable."
+                    , UnityEditor.MessageType.Info);
                 assignable.variablesMap = null;
                 return;
             }
             UnityEditor.EditorGUILayout.HelpBox(
-                "Map SubGraph exposed variables to this graph variables.\nUse the arrow buttons on the right of each parameter to enable WriteIn and/or ReadOut. WriteIn takes place when the SubGraph starts. ReadOut takes place continously while the SubGraph is running.",
-                UnityEditor.MessageType.Info);
+                "Map SubGraph exposed variables to this graph variables.\nUse the arrow buttons on the right of each parameter to enable WriteIn and/or ReadOut. WriteIn takes place when the SubGraph starts. ReadOut takes place continously while the SubGraph is running."
+                , UnityEditor.MessageType.Info);
 
             foreach (var variable in subTreeVariables) {
                 if (variable is Variable<VariableSeperator>) continue;
@@ -185,16 +185,18 @@ namespace NodeCanvas.Framework
                 if (bbParam == null) {
                     GUILayout.BeginHorizontal();
                     GUI.enabled = false;
-                    EditorUtils.DrawEditorFieldDirect(new GUIContent(variable.name), variable.value, variable.varType,
-                        default);
+                    EditorUtils.DrawEditorFieldDirect(new GUIContent(variable.name), variable.value, variable.varType
+                        , default);
                     GUI.enabled = true;
                     var tmp = 0;
-                    if (GUILayout.Button(EditorUtils.GetTempContent("▽", null, "Write (In)"), Styles.centerLabel,
-                            GUILayout.Width(13))) tmp = 1;
-                    UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(),
-                        UnityEditor.MouseCursor.Link);
-                    if (GUILayout.Button(EditorUtils.GetTempContent("△", null, "Read (Out)"), Styles.centerLabel,
-                            GUILayout.Width(13))) tmp = -1;
+                    if (GUILayout.Button(EditorUtils.GetTempContent("▽", null, "Write (In)"), Styles.centerLabel
+                        , GUILayout.Width(13)))
+                        tmp = 1;
+                    UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect()
+                        , UnityEditor.MouseCursor.Link);
+                    if (GUILayout.Button(EditorUtils.GetTempContent("△", null, "Read (Out)"), Styles.centerLabel
+                        , GUILayout.Width(13)))
+                        tmp = -1;
 
                     if (tmp != 0) {
                         UndoUtility.RecordObject(assignable.graph, "Override Variable");
@@ -207,8 +209,8 @@ namespace NodeCanvas.Framework
                         assignable.variablesMap.Add(bbParam);
                         UndoUtility.SetDirty(assignable.graph);
                     }
-                    UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(),
-                        UnityEditor.MouseCursor.Link);
+                    UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect()
+                        , UnityEditor.MouseCursor.Link);
                     GUILayout.EndHorizontal();
                     continue;
                 }
@@ -222,23 +224,23 @@ namespace NodeCanvas.Framework
                         "The parameter is set to Read Out, but is not linked to any Variable.");
                 GUI.enabled = true;
 
-                if (GUILayout.Button(EditorUtils.GetTempContent(bbParam.canWrite ? "▼" : "▽", null, "Write (In)"),
-                        Styles.centerLabel, GUILayout.Width(13))) {
+                if (GUILayout.Button(EditorUtils.GetTempContent(bbParam.canWrite ? "▼" : "▽", null, "Write (In)")
+                    , Styles.centerLabel, GUILayout.Width(13))) {
                     UndoUtility.RecordObject(assignable.graph, "Set Write In");
                     bbParam.canWrite = !bbParam.canWrite;
                     UndoUtility.SetDirty(assignable.graph);
                 }
-                UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(),
-                    UnityEditor.MouseCursor.Link);
+                UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect()
+                    , UnityEditor.MouseCursor.Link);
 
-                if (GUILayout.Button(EditorUtils.GetTempContent(bbParam.canRead ? "▲" : "△", null, "Read (Out)"),
-                        Styles.centerLabel, GUILayout.Width(13))) {
+                if (GUILayout.Button(EditorUtils.GetTempContent(bbParam.canRead ? "▲" : "△", null, "Read (Out)")
+                    , Styles.centerLabel, GUILayout.Width(13))) {
                     UndoUtility.RecordObject(assignable.graph, "Set Read Out");
                     bbParam.canRead = !bbParam.canRead;
                     UndoUtility.SetDirty(assignable.graph);
                 }
-                UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(),
-                    UnityEditor.MouseCursor.Link);
+                UnityEditor.EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect()
+                    , UnityEditor.MouseCursor.Link);
 
                 if (!bbParam.canRead && !bbParam.canWrite) {
                     UndoUtility.RecordObject(assignable.graph, "Remove Override");

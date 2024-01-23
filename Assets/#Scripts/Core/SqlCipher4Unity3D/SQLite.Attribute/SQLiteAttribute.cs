@@ -10,11 +10,11 @@ namespace SqlCipher4Unity3D.SQLite.Attribute
     {
         public string Name { get; set; }
 
-	    /// <summary>
-	    ///     Flag whether to create the table without rowid (see https://sqlite.org/withoutrowid.html)
-	    ///     The default is <c>false</c> so that sqlite adds an implicit <c>rowid</c> to every table created.
-	    /// </summary>
-	    public bool WithoutRowId { get; set; }
+        /// <summary>
+        ///     Flag whether to create the table without rowid (see https://sqlite.org/withoutrowid.html)
+        ///     The default is <c>false</c> so that sqlite adds an implicit <c>rowid</c> to every table created.
+        /// </summary>
+        public bool WithoutRowId { get; set; }
 
         public TableAttribute(string name) => Name = name;
     }
@@ -74,12 +74,12 @@ namespace SqlCipher4Unity3D.SQLite.Attribute
         public bool Conditional;
     }
 
-	/// <summary>
-	///     Select the collating sequence to use on a column.
-	///     "BINARY", "NOCASE", and "RTRIM" are supported.
-	///     "BINARY" is the default.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    /// <summary>
+    ///     Select the collating sequence to use on a column.
+    ///     "BINARY", "NOCASE", and "RTRIM" are supported.
+    ///     "BINARY" is the default.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class CollationAttribute : System.Attribute
     {
         public string Value { get; private set; }

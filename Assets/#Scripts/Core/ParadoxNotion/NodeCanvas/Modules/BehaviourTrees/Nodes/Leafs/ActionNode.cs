@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Action"),
-     Description(
-         "Executes an action and returns Success or Failure when the action is finished.\nReturns Running until the action is finished."),
-     Icon("Action")]
+    [Name("Action")
+     , Description(
+         "Executes an action and returns Success or Failure when the action is finished.\nReturns Running until the action is finished.")
+     , Icon("Action")]
     // [Color("ff6d53")]
     public class ActionNode : BTNode, ITaskAssignable<ActionTask>
     {

@@ -80,14 +80,14 @@ namespace Runner.Tracks
                 t.SetParent(null);
                 Coin.coinPool.Free(t.gameObject);
             }
-            /*Addressables.ReleaseInstance*/Destroy(gameObject);
+            /*Addressables.ReleaseInstance*/
+            Destroy(gameObject);
         }
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
-            if (pathParent == null)
-                return;
+            if (pathParent == null) return;
             var c = Gizmos.color;
             Gizmos.color = Color.red;
 
@@ -123,8 +123,7 @@ namespace Runner.Tracks
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (GUILayout.Button("Add obstacles"))
-                ArrayUtility.Add(ref m_Segment.obstaclePositions, 0.0f);
+            if (GUILayout.Button("Add obstacles")) ArrayUtility.Add(ref m_Segment.obstaclePositions, 0.0f);
 
             if (m_Segment.obstaclePositions != null) {
                 var toremove = -1;
@@ -132,12 +131,10 @@ namespace Runner.Tracks
                 for (var i = 0; i < m_Segment.obstaclePositions.Length; ++i) {
                     GUILayout.BeginHorizontal();
                     m_Segment.obstaclePositions[i] = EditorGUILayout.Slider(m_Segment.obstaclePositions[i], 0.0f, 1.0f);
-                    if (GUILayout.Button("-", GUILayout.MaxWidth(32)))
-                        toremove = i;
+                    if (GUILayout.Button("-", GUILayout.MaxWidth(32))) toremove = i;
                     GUILayout.EndHorizontal();
                 }
-                if (toremove != -1)
-                    ArrayUtility.RemoveAt(ref m_Segment.obstaclePositions, toremove);
+                if (toremove != -1) ArrayUtility.RemoveAt(ref m_Segment.obstaclePositions, toremove);
             }
         }
     }

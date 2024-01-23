@@ -19,8 +19,8 @@ namespace ParadoxNotion.Design
         public static ScriptableObject CreateAsset(System.Type type)
         {
             ScriptableObject asset = null;
-            var path = EditorUtility.SaveFilePanelInProject("Create Asset of type " + type.ToString(),
-                type.Name + ".asset", "asset", "");
+            var path = EditorUtility.SaveFilePanelInProject("Create Asset of type " + type.ToString()
+                , type.Name + ".asset", "asset", "");
             asset = CreateAsset(type, path);
             return asset;
         }
@@ -72,8 +72,8 @@ namespace ParadoxNotion.Design
                 return true;
             }
             Services.Logger.Log(string.Format(
-                "Can't open script of type '{0}', because a script with the same name does not exist.",
-                type.FriendlyName()));
+                "Can't open script of type '{0}', because a script with the same name does not exist."
+                , type.FriendlyName()));
             return false;
         }
 

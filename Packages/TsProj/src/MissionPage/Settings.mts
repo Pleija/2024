@@ -1,8 +1,8 @@
-import {StateFsm} from "Common/StateFsm.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
 import GameObject = CS.UnityEngine.GameObject;
 import Button = CS.UnityEngine.UI.Button;
 import $typeof = puer.$typeof;
-import {iterator} from "Common/Iterator.mjs";
+import { iterator } from "Common/Iterator.mjs";
 import Array$1 = CS.System.Array$1;
 import PlayerData = CS.Runner.PlayerData;
 import EventSystem = CS.UnityEngine.EventSystems.EventSystem;

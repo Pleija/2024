@@ -74,8 +74,8 @@ namespace NodeCanvas.Editor
             reflectedMap = new Dictionary<string, List<ISerializedReflectedInfo>>();
             reflectedChangesMap = new Dictionary<string, fsData>();
             var graph = GraphEditor.currentGraph;
-            JSONSerializer.SerializeAndExecuteNoCycles(typeof(NodeCanvas.Framework.Internal.GraphSource),
-                graph.GetGraphSource(), DoCollect);
+            JSONSerializer.SerializeAndExecuteNoCycles(typeof(NodeCanvas.Framework.Internal.GraphSource)
+                , graph.GetGraphSource(), DoCollect);
         }
 
         //...
@@ -105,7 +105,7 @@ namespace NodeCanvas.Editor
             var graph = GraphEditor.currentGraph;
 
             foreach (var missingParameter in graph.GetDefinedParameters()
-                         .Where(p => p.varRef == null && !p.isPresumedDynamic)) {
+                .Where(p => p.varRef == null && !p.isPresumedDynamic)) {
                 var key = string.Format("{0}({1})", missingParameter.name, missingParameter.varType.Name);
                 List<BBParameter> collection;
 
@@ -146,18 +146,18 @@ namespace NodeCanvas.Editor
         private void SaveRecoverables()
         {
             foreach (var pair in recoverablesMap)
-            foreach (var recoverable in pair.Value)
-                recoverable.missingType = recoverableChangesMap[pair.Key];
+                foreach (var recoverable in pair.Value)
+                    recoverable.missingType = recoverableChangesMap[pair.Key];
         }
 
         //...
         private void SaveReflected()
         {
             foreach (var pair in reflectedMap)
-            foreach (var reflect in pair.Value) {
-                var data = reflectedChangesMap[pair.Key];
-                JSONSerializer.TryDeserializeOverwrite(reflect, data.ToString(), null);
-            }
+                foreach (var reflect in pair.Value) {
+                    var data = reflectedChangesMap[pair.Key];
+                    JSONSerializer.TryDeserializeOverwrite(reflect, data.ToString(), null);
+                }
         }
 
         //...
@@ -215,8 +215,8 @@ namespace NodeCanvas.Editor
             }
             RemoveNotification();
             EditorGUILayout.HelpBox(
-                "Batch refactor missing nodes, tasks, parameters, types as well as missing reflection based methods, properties, fields and so on references. Note that changes made here are irreversible. Please proceed with caution.\n\n1) Hit Gather to fetch missing elements from the currently viewing graph in the editor.\n2) Rename elements serialization data to their new name (keep the same format).\n3) Hit Save to commit your changes.",
-                MessageType.Info);
+                "Batch refactor missing nodes, tasks, parameters, types as well as missing reflection based methods, properties, fields and so on references. Note that changes made here are irreversible. Please proceed with caution.\n\n1) Hit Gather to fetch missing elements from the currently viewing graph in the editor.\n2) Rename elements serialization data to their new name (keep the same format).\n3) Hit Save to commit your changes."
+                , MessageType.Info);
             if (GUILayout.Button("Gather", GUILayout.Height(30))) Gather();
             EditorUtils.Separator();
             if (recoverablesMap == null || reflectedMap == null || missingParametersMap == null) return;

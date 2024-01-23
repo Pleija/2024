@@ -30,8 +30,8 @@ namespace NodeCanvas.BehaviourTrees
         public Status Tick()
         {
             if (behaviour == null) {
-                ParadoxNotion.Services.Logger.LogWarning("There is no Behaviour Tree assigned", LogTag.EXECUTION,
-                    gameObject);
+                ParadoxNotion.Services.Logger.LogWarning("There is no Behaviour Tree assigned", LogTag.EXECUTION
+                    , gameObject);
                 return Status.Resting;
             }
             UpdateBehaviour();

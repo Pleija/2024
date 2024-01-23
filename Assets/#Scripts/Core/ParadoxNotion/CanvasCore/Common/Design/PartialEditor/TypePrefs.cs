@@ -28,69 +28,37 @@ namespace ParadoxNotion.Design
         private static List<Type> _preferedTypesFiltered;
 
         private static readonly List<Type> defaultTypesList = new List<Type> {
-            typeof(object),
-            typeof(Type),
+            typeof(object), typeof(Type),
 
             //Primitives
-            typeof(string),
-            typeof(float),
-            typeof(int),
-            typeof(bool),
+            typeof(string)
+            , typeof(float), typeof(int), typeof(bool),
 
             //Unity basics
-            typeof(Vector2),
-            typeof(Vector3),
-            typeof(Vector4),
-            typeof(Quaternion),
-            typeof(Color),
-            typeof(LayerMask),
-            typeof(AnimationCurve),
-            typeof(RaycastHit),
-            typeof(RaycastHit2D),
+            typeof(Vector2)
+            , typeof(Vector3), typeof(Vector4), typeof(Quaternion), typeof(Color), typeof(LayerMask)
+            , typeof(AnimationCurve), typeof(RaycastHit), typeof(RaycastHit2D),
 
             //Unity functional classes
-            typeof(Debug),
-            typeof(Application),
-            typeof(Mathf),
-            typeof(Physics),
-            typeof(Physics2D),
-            typeof(Input),
-            typeof(NavMesh),
-            typeof(PlayerPrefs),
-            typeof(UnityEngine.Random),
-            typeof(Time),
-            typeof(UnityEngine.SceneManagement.SceneManager),
+            typeof(Debug)
+            , typeof(Application), typeof(Mathf), typeof(Physics), typeof(Physics2D), typeof(Input), typeof(NavMesh)
+            , typeof(PlayerPrefs), typeof(UnityEngine.Random), typeof(Time)
+            , typeof(UnityEngine.SceneManagement.SceneManager),
 
             //Unity Objects
-            typeof(UnityEngine.Object),
-            typeof(MonoBehaviour),
-            typeof(ScriptableObject),
-            typeof(GameObject),
-            typeof(Transform),
-            typeof(Animator),
-            typeof(Rigidbody),
-            typeof(Rigidbody2D),
-            typeof(Collider),
-            typeof(Collider2D),
-            typeof(NavMeshAgent),
-            typeof(CharacterController),
-            typeof(AudioSource),
-            typeof(Camera),
-            typeof(Light),
-            typeof(Renderer),
+            typeof(UnityEngine.Object)
+            , typeof(MonoBehaviour), typeof(ScriptableObject), typeof(GameObject), typeof(Transform), typeof(Animator)
+            , typeof(Rigidbody), typeof(Rigidbody2D), typeof(Collider), typeof(Collider2D), typeof(NavMeshAgent)
+            , typeof(CharacterController), typeof(AudioSource), typeof(Camera), typeof(Light), typeof(Renderer),
 
             //UGUI
-            typeof(UnityEngine.UI.Button),
-            typeof(UnityEngine.UI.Slider),
+            typeof(UnityEngine.UI.Button)
+            , typeof(UnityEngine.UI.Slider),
 
             //Unity Asset Objects
-            typeof(Texture2D),
-            typeof(Sprite),
-            typeof(Material),
-            typeof(AudioClip),
-            typeof(AnimationClip),
-            typeof(UnityEngine.Audio.AudioMixer),
-            typeof(TextAsset),
+            typeof(Texture2D)
+            , typeof(Sprite), typeof(Material), typeof(AudioClip), typeof(AnimationClip)
+            , typeof(UnityEngine.Audio.AudioMixer), typeof(TextAsset),
         };
 
         //These types will be filtered out when requesting types with 'filterOutFunctionalOnlyTypes' true.
@@ -98,24 +66,16 @@ namespace ParadoxNotion.Design
         //Most of them are also probably singletons.
         //Hopefully this made sense :)
         public static readonly List<Type> functionalTypesBlacklist = new List<Type> {
-            typeof(Debug),
-            typeof(Application),
-            typeof(Mathf),
-            typeof(Physics),
-            typeof(Physics2D),
-            typeof(Input),
-            typeof(NavMesh),
-            typeof(PlayerPrefs),
-            typeof(UnityEngine.Random),
-            typeof(Time),
-            typeof(UnityEngine.SceneManagement.SceneManager),
+            typeof(Debug), typeof(Application), typeof(Mathf), typeof(Physics), typeof(Physics2D), typeof(Input)
+            , typeof(NavMesh), typeof(PlayerPrefs), typeof(UnityEngine.Random), typeof(Time)
+            , typeof(UnityEngine.SceneManagement.SceneManager),
         };
 
         //The default prefered types list
         private static string defaultTypesListString {
             get {
-                return string.Join("|",
-                    defaultTypesList.OrderBy(t => t.Namespace).ThenBy(t => t.Name).Select(t => t.FullName).ToArray());
+                return string.Join("|"
+                    , defaultTypesList.OrderBy(t => t.Namespace).ThenBy(t => t.Name).Select(t => t.FullName).ToArray());
             }
         }
 
@@ -227,17 +187,12 @@ namespace ParadoxNotion.Design
 
         ///<summary>A Type to color lookup initialized with some types already</summary>
         private static Dictionary<Type, Color> typeColors = new Dictionary<Type, Color>() {
-            { typeof(Delegate), new Color(1, 0.4f, 0.4f) },
-            { typeof(bool?), new Color(1, 0.4f, 0.4f) },
-            { typeof(float?), new Color(0.6f, 0.6f, 1) },
-            { typeof(int?), new Color(0.5f, 1, 0.5f) },
-            { typeof(string), new Color(0.55f, 0.55f, 0.55f) },
-            { typeof(Vector2?), new Color(1f, 0.7f, 0.2f) },
-            { typeof(Vector3?), new Color(1f, 0.7f, 0.2f) },
-            { typeof(Vector4?), new Color(1f, 0.7f, 0.2f) },
-            { typeof(Quaternion?), new Color(1f, 0.7f, 0.2f) },
-            { typeof(GameObject), new Color(0.537f, 0.415f, 0.541f) },
-            { typeof(UnityEngine.Object), Color.grey },
+            { typeof(Delegate), new Color(1, 0.4f, 0.4f) }, { typeof(bool?), new Color(1, 0.4f, 0.4f) }
+            , { typeof(float?), new Color(0.6f, 0.6f, 1) }, { typeof(int?), new Color(0.5f, 1, 0.5f) }
+            , { typeof(string), new Color(0.55f, 0.55f, 0.55f) }, { typeof(Vector2?), new Color(1f, 0.7f, 0.2f) }
+            , { typeof(Vector3?), new Color(1f, 0.7f, 0.2f) }, { typeof(Vector4?), new Color(1f, 0.7f, 0.2f) }
+            , { typeof(Quaternion?), new Color(1f, 0.7f, 0.2f) }
+            , { typeof(GameObject), new Color(0.537f, 0.415f, 0.541f) }, { typeof(UnityEngine.Object), Color.grey },
         };
 
         ///<summary>Get color for type</summary>
@@ -302,7 +257,7 @@ namespace ParadoxNotion.Design
                 texture = AssetPreview.GetMiniTypeThumbnail(type);
 
                 if (texture == null && (typeof(MonoBehaviour).IsAssignableFrom(type) ||
-                        typeof(ScriptableObject).IsAssignableFrom(type))) {
+                    typeof(ScriptableObject).IsAssignableFrom(type))) {
                     texture = EditorGUIUtility.ObjectContent(EditorUtils.MonoScriptFromType(type), null).image;
                     if (texture == null) texture = Icons.csIcon;
                 }

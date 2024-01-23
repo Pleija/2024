@@ -37,9 +37,8 @@ import "Game/CardAgent.mjs";
 import "Main/Main.mjs";
 
 
+export const setup = function () {
 
-export const setup =  function () {
-    
     console.log("Js Start");
 
 

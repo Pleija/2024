@@ -1,9 +1,9 @@
 /*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
+ * Tencent is pleased to support the open source community by making Puerts available.
+ * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
+ * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
+ * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
+ */
 
 #if UNITY_EDITOR && UNITY_2019_1_OR_NEWER
 using UnityEditor;
@@ -17,7 +17,7 @@ using System.IO;
 namespace Puerts.Editor
 {
     [InitializeOnLoad]
-    class FAQHelper : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+    internal class FAQHelper : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         public int callbackOrder => 0;
 
@@ -33,25 +33,16 @@ namespace Puerts.Editor
 
         private static void OnLog(string condition, string stacktrace, LogType type)
         {
-            string genPath = "Assets/Gen/"; //Puerts.Configure.GetCodeOutputDirectory();
+            var genPath = "Assets/Gen/"; //Puerts.Configure.GetCodeOutputDirectory();
             genPath = genPath.Substring(genPath.IndexOf("Assets"));
 
-            if (type == LogType.Error)
-            {
-                if (condition.Contains(genPath))
-                {
-                    if (condition.Contains("Wrap.cs"))
-                    {
-                        print010StaticWrapperError = true;
-                    }
-                    if (condition.Contains("RegisterInfo_Gen.cs"))
-                    {
-                        print011RegisterInfoError = true;
-                    }
+            if (type == LogType.Error) {
+                if (condition.Contains(genPath)) {
+                    if (condition.Contains("Wrap.cs")) print010StaticWrapperError = true;
+                    if (condition.Contains("RegisterInfo_Gen.cs")) print011RegisterInfoError = true;
                 }
 
-                if (condition.Contains("'unityenv_for_puerts.h' file not found")) 
-                {
+                if (condition.Contains("'unityenv_for_puerts.h' file not found")) {
                     print012MacroHeader = true;
                     Application.logMessageReceived -= OnLog;
                 }
@@ -67,21 +58,20 @@ namespace Puerts.Editor
         private static void ProcessBatchModeCompileFinish(string s, CompilerMessage[] compilerMessages)
         {
             foreach (var message in compilerMessages)
-            {
                 if (message.type == CompilerMessageType.Error)
-                {
                     OnLog(message.file, message.message, LogType.Error);
-                }
-            };
+            ;
         }
 
         private static bool enabled = false;
+
         public static void Enable()
         {
             if (enabled) return;
             enabled = true;
             Application.logMessageReceived += OnLog;
         }
+
         public static void Disable()
         {
             if (!enabled) return;
@@ -95,19 +85,20 @@ namespace Puerts.Editor
 
         private static void EditorUpdate()
         {
-            if (print010StaticWrapperError)
-            {
-                UnityEngine.Debug.Log("[Puer010] StaticWrapper error detected, maybe you should use filter to exclude some member.");
+            if (print010StaticWrapperError) {
+                Debug.Log(
+                    "[Puer010] StaticWrapper error detected, maybe you should use filter to exclude some member.");
                 print010StaticWrapperError = false;
             }
-            if (print011RegisterInfoError)
-            {
-                UnityEngine.Debug.Log("[Puer011] RegisterInfo error detected. maybe you should clean the generated code and regenerate.");
+
+            if (print011RegisterInfoError) {
+                Debug.Log(
+                    "[Puer011] RegisterInfo error detected. maybe you should clean the generated code and regenerate.");
                 print011RegisterInfoError = false;
             }
-            if (print012MacroHeader)
-            {
-                UnityEngine.Debug.Log("[Puer012] Build error detected, please use 'PuerTS->Generate->il2cpp macro.h'.");
+
+            if (print012MacroHeader) {
+                Debug.Log("[Puer012] Build error detected, please use 'PuerTS->Generate->il2cpp macro.h'.");
                 print012MacroHeader = false;
             }
         }

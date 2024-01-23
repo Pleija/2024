@@ -27,8 +27,8 @@ namespace NodeCanvas.Editor
             EditorUtils.ReorderableList(def.parameters, options, (i, picked) => {
                 var parameter = def.parameters[i];
                 GUILayout.BeginHorizontal();
-                parameter.name = EditorGUILayout.DelayedTextField(parameter.name, GUILayout.Width(150),
-                    GUILayout.ExpandWidth(true));
+                parameter.name = EditorGUILayout.DelayedTextField(parameter.name, GUILayout.Width(150)
+                    , GUILayout.ExpandWidth(true));
                 EditorUtils.ButtonTypePopup("", parameter.type, (t) => {
                     parameter.type = t;
                 });

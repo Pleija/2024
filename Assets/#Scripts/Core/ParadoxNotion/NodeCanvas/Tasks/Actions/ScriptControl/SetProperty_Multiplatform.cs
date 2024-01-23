@@ -52,8 +52,8 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnExecute()
         {
-            targetMethod.Invoke(targetMethod.IsStatic ? null : agent,
-                ReflectionTools.SingleTempArgsArray(parameter.value));
+            targetMethod.Invoke(targetMethod.IsStatic ? null : agent
+                , ReflectionTools.SingleTempArgsArray(parameter.value));
             EndAction();
         }
 
@@ -76,18 +76,18 @@ namespace NodeCanvas.Tasks.Actions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(void), typeof(object),
-                            SetMethod, 1, true, false, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(void), typeof(object)
+                            , SetMethod, 1, true, false, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1, true,
-                        false, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1, true
+                        , false, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1,
-                            true, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1
+                            , true, false, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();
@@ -98,8 +98,8 @@ namespace NodeCanvas.Tasks.Actions
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Property", targetMethod.Name);
                 UnityEditor.EditorGUILayout.LabelField("Set Type", parameter.varType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
+                    , UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Set Value", parameter);
             }

@@ -86,8 +86,8 @@ namespace ParadoxNotion
         public static Type GetType(string typeFullName, Type fallbackAssignable) =>
             GetType(typeFullName, true, fallbackAssignable);
 
-        public static Type GetType(string typeFullName, bool fallbackNoNamespace = false,
-            Type fallbackAssignable = null)
+        public static Type GetType(string typeFullName, bool fallbackNoNamespace = false
+            , Type fallbackAssignable = null)
         {
             if (string.IsNullOrEmpty(typeFullName)) return null;
             Type type = null;
@@ -142,8 +142,8 @@ namespace ParadoxNotion
 
         //Resolve generic types by their .FullName or .ToString
         //Remark: a generic's type .FullName returns a string where it's arguments only are instead printed as AssemblyQualifiedName.
-        private static Type TryResolveGenericType(string typeFullName, bool fallbackNoNamespace = false,
-            Type fallbackAssignable = null)
+        private static Type TryResolveGenericType(string typeFullName, bool fallbackNoNamespace = false
+            , Type fallbackAssignable = null)
         {
             //ensure that it is a generic type implementation, not a definition
             if (typeFullName.Contains('`') == false || typeFullName.Contains('[') == false) return null;
@@ -227,8 +227,8 @@ namespace ParadoxNotion
 
             for (var i = 0; i < allTypes.Length; i++) {
                 var t = allTypes[i];
-                if (t.Name == typeName &&
-                    (fallbackAssignable == null || fallbackAssignable.RTIsAssignableFrom(t))) return t;
+                if (t.Name == typeName && (fallbackAssignable == null || fallbackAssignable.RTIsAssignableFrom(t)))
+                    return t;
             }
             return null;
         }
@@ -282,63 +282,28 @@ namespace ParadoxNotion
         //Method operator special name to friendly name map
         public static readonly Dictionary<string, string> op_FriendlyNamesLong =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-                { "op_Equality", "Equal" },
-                { "op_Inequality", "Not Equal" },
-                { "op_GreaterThan", "Greater" },
-                { "op_LessThan", "Less" },
-                { "op_GreaterThanOrEqual", "Greater Or Equal" },
-                { "op_LessThanOrEqual", "Less Or Equal" },
-                { "op_Addition", "Add" },
-                { "op_Subtraction", "Subtract" },
-                { "op_Division", "Divide" },
-                { "op_Multiply", "Multiply" },
-                { "op_UnaryNegation", "Negate" },
-                { "op_UnaryPlus", "Positive" },
-                { "op_Increment", "Increment" },
-                { "op_Decrement", "Decrement" },
-                { "op_LogicalNot", "NOT" },
-                { "op_OnesComplement", "Complements" },
-                { "op_False", "FALSE" },
-                { "op_True", "TRUE" },
-                { "op_Modulus", "MOD" },
-                { "op_BitwiseAnd", "AND" },
-                { "op_BitwiseOR", "OR" },
-                { "op_LeftShift", "Shift Left" },
-                { "op_RightShift", "Shift Right" },
-                { "op_ExclusiveOr", "XOR" },
-                { "op_Implicit", "Convert" },
-                { "op_Explicit", "Convert" },
+                { "op_Equality", "Equal" }, { "op_Inequality", "Not Equal" }, { "op_GreaterThan", "Greater" }
+                , { "op_LessThan", "Less" }, { "op_GreaterThanOrEqual", "Greater Or Equal" }
+                , { "op_LessThanOrEqual", "Less Or Equal" }, { "op_Addition", "Add" }, { "op_Subtraction", "Subtract" }
+                , { "op_Division", "Divide" }, { "op_Multiply", "Multiply" }, { "op_UnaryNegation", "Negate" }
+                , { "op_UnaryPlus", "Positive" }, { "op_Increment", "Increment" }, { "op_Decrement", "Decrement" }
+                , { "op_LogicalNot", "NOT" }, { "op_OnesComplement", "Complements" }, { "op_False", "FALSE" }
+                , { "op_True", "TRUE" }, { "op_Modulus", "MOD" }, { "op_BitwiseAnd", "AND" }, { "op_BitwiseOR", "OR" }
+                , { "op_LeftShift", "Shift Left" }, { "op_RightShift", "Shift Right" }, { "op_ExclusiveOr", "XOR" }
+                , { "op_Implicit", "Convert" }, { "op_Explicit", "Convert" },
             };
 
         //Method operator special name to friendly name map
         public static readonly Dictionary<string, string> op_FriendlyNamesShort =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-                { "op_Equality", "=" },
-                { "op_Inequality", "≠" },
-                { "op_GreaterThan", ">" },
-                { "op_LessThan", "<" },
-                { "op_GreaterThanOrEqual", "≥" },
-                { "op_LessThanOrEqual", "≤" },
-                { "op_Addition", "+" },
-                { "op_Subtraction", "-" },
-                { "op_Division", "÷" },
-                { "op_Multiply", "×" },
-                { "op_UnaryNegation", "Negate" },
-                { "op_UnaryPlus", "Positive" },
-                { "op_Increment", "++" },
-                { "op_Decrement", "--" },
-                { "op_LogicalNot", "NOT" },
-                { "op_OnesComplement", "~" },
-                { "op_False", "FALSE" },
-                { "op_True", "TRUE" },
-                { "op_Modulus", "MOD" },
-                { "op_BitwiseAnd", "AND" },
-                { "op_BitwiseOR", "OR" },
-                { "op_LeftShift", "<<" },
-                { "op_RightShift", ">>" },
-                { "op_ExclusiveOr", "XOR" },
-                { "op_Implicit", "Convert" },
-                { "op_Explicit", "Convert" },
+                { "op_Equality", "=" }, { "op_Inequality", "≠" }, { "op_GreaterThan", ">" }, { "op_LessThan", "<" }
+                , { "op_GreaterThanOrEqual", "≥" }, { "op_LessThanOrEqual", "≤" }, { "op_Addition", "+" }
+                , { "op_Subtraction", "-" }, { "op_Division", "÷" }, { "op_Multiply", "×" }
+                , { "op_UnaryNegation", "Negate" }, { "op_UnaryPlus", "Positive" }, { "op_Increment", "++" }
+                , { "op_Decrement", "--" }, { "op_LogicalNot", "NOT" }, { "op_OnesComplement", "~" }
+                , { "op_False", "FALSE" }, { "op_True", "TRUE" }, { "op_Modulus", "MOD" }, { "op_BitwiseAnd", "AND" }
+                , { "op_BitwiseOR", "OR" }, { "op_LeftShift", "<<" }, { "op_RightShift", ">>" }
+                , { "op_ExclusiveOr", "XOR" }, { "op_Implicit", "Convert" }, { "op_Explicit", "Convert" },
             };
 
         ///<summary>Operator C# to friendly aliases</summary>
@@ -471,8 +436,8 @@ namespace ParadoxNotion
             if (method is ConstructorInfo)
                 sig = string.Format("new {0} (", method.DeclaringType.FriendlyName());
             else
-                sig = string.Format("{0}{1} (", method.IsStatic && specialType != MethodType.Operator ? "static " : "",
-                    methodName);
+                sig = string.Format("{0}{1} (", method.IsStatic && specialType != MethodType.Operator ? "static " : ""
+                    , methodName);
 
             for (var i = 0; i < parameters.Length; i++) {
                 var p = parameters[i];
@@ -612,13 +577,13 @@ namespace ParadoxNotion
                 if (m.Name == name || MemberResolvedFromDeserializeAttribute(m, name)) return m;
             }
             Logger.LogError(
-                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name,
-                    type.FriendlyName()), "Method Request");
+                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
+                , "Method Request");
             return null;
         }
 
-        public static MethodInfo RTGetMethod(this Type type, string name, Type[] paramTypes, Type returnType = null,
-            Type[] genericArgumentTypes = null)
+        public static MethodInfo RTGetMethod(this Type type, string name, Type[] paramTypes, Type returnType = null
+            , Type[] genericArgumentTypes = null)
         {
             var methods = type.RTGetMethods();
 
@@ -646,8 +611,8 @@ namespace ParadoxNotion
                 }
             }
             Logger.LogError(
-                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name,
-                    type.FriendlyName()), "Method Request");
+                string.Format("Method with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
+                , "Method Request");
             return null;
         }
 
@@ -666,8 +631,8 @@ namespace ParadoxNotion
                 current = current.BaseType;
             }
             Logger.LogError(
-                string.Format("Field with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName()),
-                "Field Request");
+                string.Format("Field with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
+                , "Field Request");
             return null;
         }
 
@@ -680,8 +645,8 @@ namespace ParadoxNotion
                 if (p.Name == name || MemberResolvedFromDeserializeAttribute(p, name)) return p;
             }
             Logger.LogError(
-                string.Format("Property with name '{0}' on type '{1}', could not be resolved.", name,
-                    type.FriendlyName()), "Property Request");
+                string.Format("Property with name '{0}' on type '{1}', could not be resolved.", name
+                    , type.FriendlyName()), "Property Request");
             return null;
         }
 
@@ -701,8 +666,8 @@ namespace ParadoxNotion
                 if (p.Name == name || MemberResolvedFromDeserializeAttribute(p, name)) return p;
             }
             Logger.LogError(
-                string.Format("Field Or Property with name '{0}' on type '{1}', could not be resolved.", name,
-                    type.FriendlyName()), "Field/Property Request");
+                string.Format("Field Or Property with name '{0}' on type '{1}', could not be resolved.", name
+                    , type.FriendlyName()), "Field/Property Request");
             return null;
         }
 
@@ -715,8 +680,8 @@ namespace ParadoxNotion
                 if (e.Name == name || MemberResolvedFromDeserializeAttribute(e, name)) return e;
             }
             Logger.LogError(
-                string.Format("Event with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName()),
-                "Event Request");
+                string.Format("Event with name '{0}' on type '{1}', could not be resolved.", name, type.FriendlyName())
+                , "Event Request");
             return null;
         }
 
@@ -904,8 +869,8 @@ namespace ParadoxNotion
             if (instance != null) {
                 var instanceType = instance.GetType();
                 if (method.DeclaringType != instanceType)
-                    method = instanceType.RTGetMethod(method.Name,
-                        method.GetParameters().Select(p => p.ParameterType).ToArray());
+                    method = instanceType.RTGetMethod(method.Name
+                        , method.GetParameters().Select(p => p.ParameterType).ToArray());
             }
             return Delegate.CreateDelegate(type, instance, method);
         }
@@ -963,8 +928,8 @@ namespace ParadoxNotion
             var baseMethod = method.GetBaseDefinition();
             if (baseMethod == method) return propertyInfo;
             var arguments = propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray();
-            return baseMethod.DeclaringType.GetProperty(propertyInfo.Name, FLAGS_ALL, null, propertyInfo.PropertyType,
-                arguments, null);
+            return baseMethod.DeclaringType.GetProperty(propertyInfo.Name, FLAGS_ALL, null, propertyInfo.PropertyType
+                , arguments, null);
         }
 
         ///<summary>BaseDefinition for FieldInfo. Not exactly correct but here for consistency.</summary>
@@ -982,7 +947,8 @@ namespace ParadoxNotion
             for (var i = 0; i < allTypes.Length; i++) {
                 var t = allTypes[i];
                 if (!t.IsSealed || t.IsGenericType ||
-                    !t.RTIsDefined<System.Runtime.CompilerServices.ExtensionAttribute>(true)) continue;
+                    !t.RTIsDefined<System.Runtime.CompilerServices.ExtensionAttribute>(true))
+                    continue;
                 var typeMethods = t.RTGetMethods();
 
                 for (var j = 0; j < typeMethods.Length; j++) {

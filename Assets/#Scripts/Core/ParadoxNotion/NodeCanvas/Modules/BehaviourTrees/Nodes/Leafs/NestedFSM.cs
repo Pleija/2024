@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Sub FSM"),
-     Description(
-         "Executes a sub FSM. Returns Running while the sub FSM is active. If a Success or Failure State is selected, then it will return Success or Failure as soon as the Nested FSM enters that state at which point the sub FSM will also be stoped. If the sub FSM ends otherwise, this node will return Success."),
-     Icon("FSM"), DropReferenceType(typeof(FSM))]
+    [Name("Sub FSM")
+     , Description(
+         "Executes a sub FSM. Returns Running while the sub FSM is active. If a Success or Failure State is selected, then it will return Success or Failure as soon as the Nested FSM enters that state at which point the sub FSM will also be stoped. If the sub FSM ends otherwise, this node will return Success.")
+     , Icon("FSM"), DropReferenceType(typeof(FSM))]
     public class NestedFSM : BTNodeNested<FSM>
     {
         [SerializeField, ExposeField, Name("Sub FSM")]

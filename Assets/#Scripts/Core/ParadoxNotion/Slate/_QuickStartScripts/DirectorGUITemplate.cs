@@ -3,57 +3,46 @@ using UnityEngine.UI;
 
 namespace Slate
 {
-
     [ExecuteInEditMode]
     ///<summary>A GUI implementation for subs, fades, dissolves etc. You can modify it, expand it or base your own on this.</summary>
     public class DirectorGUITemplate : MonoBehaviour
     {
         public bool dontDestroyOnLoad = true;
-
         public CanvasScaler absScaler;
         public CanvasScaler refScaler;
-
         public CanvasGroup cameraDissolveGroup;
         public RawImage dissolverImage;
-
         public CanvasGroup letterboxGroup;
         public RawImage letterboxTop;
         public RawImage letterboxBottom;
-
         public CanvasGroup screenFadeGroup;
         public RawImage screenFadeImage;
-
         public CanvasGroup overlayImageGroup;
         public RawImage overlayImage;
-
         public CanvasGroup overlayTextGroup;
         public Text overlayText;
-
         public CanvasGroup subtitlesGroup;
         public Text subtitlesText;
-
         private static DirectorGUITemplate _current;
 
         ///----------------------------------------------------------------------------------------------
 
         //...
-        void Awake() {
+        private void Awake()
+        {
+            if (!Application.isPlaying) return;
 
-            if ( !Application.isPlaying ) { return; }
-
-            if ( _current != null && _current != this ) {
-                DestroyImmediate(this.gameObject);
+            if (_current != null && _current != this) {
+                DestroyImmediate(gameObject);
                 return;
             }
-
             _current = this;
-            if ( dontDestroyOnLoad ) {
-                DontDestroyOnLoad(this.gameObject);
-            }
+            if (dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
         }
 
         [ContextMenu("Show All")]
-        void ShowAll() {
+        private void ShowAll()
+        {
             subtitlesGroup.alpha = 1;
             overlayImageGroup.alpha = 1;
             overlayImageGroup.alpha = 1;
@@ -63,7 +52,8 @@ namespace Slate
         }
 
         [ContextMenu("Hide All")]
-        void HideAll() {
+        private void HideAll()
+        {
             subtitlesGroup.alpha = 0;
             overlayImageGroup.alpha = 0;
             overlayImageGroup.alpha = 0;
@@ -73,41 +63,37 @@ namespace Slate
         }
 
         ///----------------------------------------------------------------------------------------------
-
-        void OnEnable() {
+        private void OnEnable()
+        {
             DirectorGUI.OnSubtitlesGUI += OnSubtitlesGUI;
             DirectorGUI.OnTextOverlayGUI += OnTextOverlayGUI;
             DirectorGUI.OnImageOverlayGUI += OnImageOverlayGUI;
             DirectorGUI.OnScreenFadeGUI += OnScreenFadeGUI;
             DirectorGUI.OnLetterboxGUI += OnLetterboxGUI;
             DirectorGUI.OnCameraDissolve += OnCameraDissolve;
-
-            if ( Application.isPlaying ) {
-                HideAll();
-            }
+            if (Application.isPlaying) HideAll();
         }
 
-        void OnDisable() {
+        private void OnDisable()
+        {
             DirectorGUI.OnSubtitlesGUI -= OnSubtitlesGUI;
             DirectorGUI.OnTextOverlayGUI -= OnTextOverlayGUI;
             DirectorGUI.OnImageOverlayGUI -= OnImageOverlayGUI;
             DirectorGUI.OnScreenFadeGUI -= OnScreenFadeGUI;
             DirectorGUI.OnLetterboxGUI -= OnLetterboxGUI;
             DirectorGUI.OnCameraDissolve -= OnCameraDissolve;
-
-            if ( Application.isPlaying ) {
-                HideAll();
-            }
+            if (Application.isPlaying) HideAll();
         }
 
         ///----------------------------------------------------------------------------------------------
-
-        void Update() {
+        private void Update()
+        {
             absScaler.referenceResolution = new Vector2(Screen.width, Screen.height);
         }
 
-        void OnCameraDissolve(Texture texture, float completion) {
-            if ( texture == null ) {
+        private void OnCameraDissolve(Texture texture, float completion)
+        {
+            if (texture == null) {
                 cameraDissolveGroup.alpha = 0;
                 return;
             }
@@ -117,8 +103,9 @@ namespace Slate
             dissolverImage.SetNativeSize();
         }
 
-        void OnImageOverlayGUI(Texture texture, Color color, Vector2 scale, Vector2 position) {
-            if ( texture == null ) {
+        private void OnImageOverlayGUI(Texture texture, Color color, Vector2 scale, Vector2 position)
+        {
+            if (texture == null) {
                 overlayTextGroup.alpha = 0;
                 return;
             }
@@ -130,7 +117,8 @@ namespace Slate
             overlayImage.SetNativeSize();
         }
 
-        void OnLetterboxGUI(float completion) {
+        private void OnLetterboxGUI(float completion)
+        {
             letterboxGroup.alpha = completion;
             var scaleTop = letterboxTop.rectTransform.localScale;
             var scaleBottom = letterboxBottom.rectTransform.localScale;
@@ -140,12 +128,14 @@ namespace Slate
             letterboxBottom.rectTransform.localScale = scaleBottom;
         }
 
-        void OnScreenFadeGUI(Color color) {
+        private void OnScreenFadeGUI(Color color)
+        {
             screenFadeGroup.alpha = color.a;
             screenFadeImage.color = color;
         }
 
-        void OnTextOverlayGUI(string text, Color color, float size, TextAnchor anchor, Vector2 position) {
+        private void OnTextOverlayGUI(string text, Color color, float size, TextAnchor anchor, Vector2 position)
+        {
             overlayTextGroup.alpha = color.a;
             overlayText.color = color;
             overlayText.text = text;
@@ -154,7 +144,8 @@ namespace Slate
             overlayText.rectTransform.anchoredPosition = position;
         }
 
-        void OnSubtitlesGUI(string text, Color color) {
+        private void OnSubtitlesGUI(string text, Color color)
+        {
             subtitlesGroup.alpha = color.a;
             subtitlesText.color = color;
             subtitlesText.text = text;

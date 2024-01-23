@@ -5,8 +5,8 @@ using UnityEngine;
 namespace NodeCanvas.StateMachines
 {
     [Description(
-         "Execute a number of Actions repeatedly and in parallel to any other FSM state while the FSM is running. Conditions are optional. This is not a state."),
-     Color("ff64cb"), Icon("Repeat"), Name("On FSM Update")]
+         "Execute a number of Actions repeatedly and in parallel to any other FSM state while the FSM is running. Conditions are optional. This is not a state.")
+     , Color("ff64cb"), Icon("Repeat"), Name("On FSM Update")]
     public class OnFSMUpdate : FSMNode, IUpdatable
     {
         [SerializeField]

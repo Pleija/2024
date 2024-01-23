@@ -39,12 +39,9 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override void OnExecute()
         {
-            if (playDirection == PlayDirections.Toggle)
-                dir = -dir;
-            if (playDirection == PlayDirections.Backward)
-                dir = -1;
-            if (playDirection == PlayDirections.Forward)
-                dir = 1;
+            if (playDirection == PlayDirections.Toggle) dir = -dir;
+            if (playDirection == PlayDirections.Backward) dir = -1;
+            if (playDirection == PlayDirections.Forward) dir = 1;
             agent.AddClip(animationClip.value, animationClip.value.name);
             animationToPlay = animationClip.value.name;
 
@@ -52,8 +49,8 @@ namespace NodeCanvas.Tasks.Actions
                 mixTransform = FindTransform(agent.transform, mixTransformName.value);
                 if (!mixTransform)
                     ParadoxNotion.Services.Logger.LogWarning(
-                        "Cant find transform with name '" + mixTransformName.value + "' for PlayAnimation Action",
-                        LogTag.EXECUTION, this);
+                        "Cant find transform with name '" + mixTransformName.value + "' for PlayAnimation Action"
+                        , LogTag.EXECUTION, this);
             }
             else {
                 mixTransform = null;
@@ -79,8 +76,7 @@ namespace NodeCanvas.Tasks.Actions
 
         private Transform FindTransform(Transform parent, string name)
         {
-            if (parent.name == name)
-                return parent;
+            if (parent.name == name) return parent;
             var transforms = parent.GetComponentsInChildren<Transform>();
             foreach (var t in transforms)
                 if (t.name == name)

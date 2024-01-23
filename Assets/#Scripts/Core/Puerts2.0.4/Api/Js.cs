@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 public partial class Js
 {
-    static JsEnv _env;
+    private static JsEnv _env;
     public static JsEnv self => isAlive ? _env : Init();
     public static bool isAlive => _env is { disposed: false };
     public static void Dispose() => _env?.Dispose();
@@ -74,7 +74,7 @@ public partial class Js
         if (isAlive) _env.Tick();
     }
 
-    static JsEnv Init()
+    private static JsEnv Init()
     {
         _env = new JsEnv(new ResLoader());
         CommonJS.InjectSupportForCJS(_env);
@@ -117,6 +117,6 @@ public partial class Js
 #if UNITY_EDITOR
     public static void EditorUpdate() => Tick();
     [InitializeOnEnterPlayMode]
-    static void OnRun() => Dispose();
+    private static void OnRun() => Dispose();
 #endif
 }

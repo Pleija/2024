@@ -60,12 +60,12 @@ namespace NodeCanvas.Tasks.Conditions
 
     //previous versions
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events"),
-     Description(
-         "Will subscribe to a public event of Action type and return true when the event is raised.\n(eg public event System.Action [name])"),
-     fsMigrateVersions(typeof(CheckCSharpEvent_0))]
-    public class CheckCSharpEvent : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEvent_0>,
-        IMigratable<CheckStaticCSharpEvent>
+    [Category("✫ Reflected/Events")
+     , Description(
+         "Will subscribe to a public event of Action type and return true when the event is raised.\n(eg public event System.Action [name])")
+     , fsMigrateVersions(typeof(CheckCSharpEvent_0))]
+    public class CheckCSharpEvent : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEvent_0>
+        , IMigratable<CheckStaticCSharpEvent>
     {
         ///----------------------------------------------------------------------------------------------
         void IMigratable<CheckCSharpEvent_0>.Migrate(CheckCSharpEvent_0 model)
@@ -148,7 +148,7 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
                         menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), null, SetTargetEvent, menu);
                     menu.AddSeparator("/");
                 }
@@ -173,12 +173,12 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events"),
-     Description(
-         "Will subscribe to a public event of Action<T> type and return true when the event is raised.\n(eg public event System.Action<T> [name])"),
-     fsMigrateVersions(typeof(CheckCSharpEvent_0<>))]
-    public class CheckCSharpEvent<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEvent_0<T>>,
-        IMigratable<CheckStaticCSharpEvent<T>>
+    [Category("✫ Reflected/Events")
+     , Description(
+         "Will subscribe to a public event of Action<T> type and return true when the event is raised.\n(eg public event System.Action<T> [name])")
+     , fsMigrateVersions(typeof(CheckCSharpEvent_0<>))]
+    public class CheckCSharpEvent<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEvent_0<T>>
+        , IMigratable<CheckStaticCSharpEvent<T>>
     {
         ///----------------------------------------------------------------------------------------------
         void IMigratable<CheckCSharpEvent_0<T>>.Migrate(CheckCSharpEvent_0<T> model)
@@ -260,8 +260,8 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T), SetTargetEvent,
-                            menu);
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T), SetTargetEvent
+                            , menu);
                     menu.AddSeparator("/");
                 }
 
@@ -286,10 +286,10 @@ namespace NodeCanvas.Tasks.Conditions
     }
 
     ///----------------------------------------------------------------------------------------------
-    [Category("✫ Reflected/Events"),
-     Description(
-         "Will subscribe to a public event of Action<T> type and return true when the event is raised and it's value is equal to provided value as well.\n(eg public event System.Action<T> [name])"),
-     fsMigrateVersions(typeof(CheckCSharpEventValue_0<>))]
+    [Category("✫ Reflected/Events")
+     , Description(
+         "Will subscribe to a public event of Action<T> type and return true when the event is raised and it's value is equal to provided value as well.\n(eg public event System.Action<T> [name])")
+     , fsMigrateVersions(typeof(CheckCSharpEventValue_0<>))]
     public class CheckCSharpEventValue<T> : ConditionTask, IReflectedWrapper, IMigratable<CheckCSharpEventValue_0<T>>
     {
         ///----------------------------------------------------------------------------------------------
@@ -366,8 +366,8 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component)).Where(c => c.hideFlags == 0))
-                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T), SetTargetEvent,
-                            menu);
+                        menu = EditorUtils.GetInstanceEventSelectionMenu(comp.GetType(), typeof(T), SetTargetEvent
+                            , menu);
                     menu.AddSeparator("/");
                 }
 

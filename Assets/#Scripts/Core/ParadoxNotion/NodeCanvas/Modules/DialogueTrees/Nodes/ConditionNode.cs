@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Icon("Condition"), Name("Task Condition"), Category("Branch"),
-     Description(
-         "Execute the first child node if a Condition is true, or the second one if that Condition is false. The Actor selected is used for the Condition check"),
-     Color("b3ff7f")]
+    [Icon("Condition"), Name("Task Condition"), Category("Branch")
+     , Description(
+         "Execute the first child node if a Condition is true, or the second one if that Condition is false. The Actor selected is used for the Condition check")
+     , Color("b3ff7f")]
     public class ConditionNode : DTNode, ITaskAssignable<ConditionTask>
     {
         [SerializeField]

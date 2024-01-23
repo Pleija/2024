@@ -15,14 +15,13 @@ namespace MoreTags
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-
             return;
             var go = (target as Tags).gameObject;
 
             if (!go.scene.isLoaded) {
                 EditorGUILayout.HelpBox(
-                    "Tags should be attached to on scene GameObject. Please use Prefab Tags for off scene GameObject.",
-                    MessageType.Warning);
+                    "Tags should be attached to on scene GameObject. Please use Prefab Tags for off scene GameObject."
+                    , MessageType.Warning);
                 return;
             }
             TagSystem.CheckTagManager(go.scene);
@@ -36,7 +35,6 @@ namespace MoreTags
         protected override void OnEnable()
         {
             base.OnEnable();
-
             return;
             var go = (target as Tags).gameObject;
             m_GameObjectTag = new TagGUI();

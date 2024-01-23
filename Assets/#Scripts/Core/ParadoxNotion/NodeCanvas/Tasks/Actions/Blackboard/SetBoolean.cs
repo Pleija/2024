@@ -15,8 +15,7 @@ namespace NodeCanvas.Tasks.Actions
 
         protected override string info {
             get {
-                if (setTo == BoolSetModes.Toggle)
-                    return "Toggle " + boolVariable.ToString();
+                if (setTo == BoolSetModes.Toggle) return "Toggle " + boolVariable.ToString();
                 return "Set " + boolVariable.ToString() + " to " + setTo.ToString();
             }
         }

@@ -12,8 +12,8 @@ using UndoUtility = ParadoxNotion.Design.UndoUtility;
 namespace NodeCanvas.Framework
 {
 #if UNITY_EDITOR //handles missing types
-    [fsObject(Processor = typeof(fsRecoveryProcessor<Connection, MissingConnection>)), ParadoxNotion.Design.SpoofAOT,
-     System.Serializable, fsDeserializeOverwrite]
+    [fsObject(Processor = typeof(fsRecoveryProcessor<Connection, MissingConnection>)), ParadoxNotion.Design.SpoofAOT
+     , System.Serializable, fsDeserializeOverwrite]
 #endif
     ///<summary>Base class for connections between nodes in a graph</summary>
     public abstract partial class Connection : IGraphElement, ISerializationCollectable

@@ -30,8 +30,8 @@ namespace ParadoxNotion.Serialization
             _hasChanged = false;
 
             if (_method != null) {
-                _baseInfo = string.Format("{0}|{1}|{2}", _method.RTReflectedOrDeclaredType().FullName, _method.Name,
-                    _method.ReturnType.FullName);
+                _baseInfo = string.Format("{0}|{1}|{2}", _method.RTReflectedOrDeclaredType().FullName, _method.Name
+                    , _method.ReturnType.FullName);
                 _paramsInfo = string.Join("|", _method.GetParameters().Select(p => p.ParameterType.FullName).ToArray());
                 _genericArgumentsInfo = _method.IsGenericMethod
                     ? string.Join("|", _method.RTGetGenericArguments().Select(a => a.FullName).ToArray()) : null;

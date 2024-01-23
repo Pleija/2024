@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace Slate
 {
-
-    ///<summary>Interface for an IDirectable player. e.g. the Cutscene component. This is used for IDirectables to interface with their root.</summary>
+    /// <summary>
+    ///     Interface for an IDirectable player. e.g. the Cutscene component. This is used for IDirectables to interface
+    ///     with their root.
+    /// </summary>
     public interface IDirector
     {
         IEnumerable<IDirectable> children { get; }

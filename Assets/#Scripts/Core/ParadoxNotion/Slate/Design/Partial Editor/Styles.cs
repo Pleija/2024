@@ -1,17 +1,14 @@
 ﻿#if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
 
 namespace Slate
 {
-
     ///<summary>Images and GUIStyles for the editor</summary>
     [InitializeOnLoad]
     public static class Styles
     {
-
         public static Texture2D expressionIcon;
         public static Texture2D stripes;
         public static Texture2D magnetIcon;
@@ -24,7 +21,6 @@ namespace Slate
         public static Texture2D nextKeyIcon;
         public static Texture2D previousKeyIcon;
         public static Texture2D recordIcon;
-
         public static Texture2D playIcon;
         public static Texture2D playReverseIcon;
         public static Texture2D stepIcon;
@@ -33,54 +29,44 @@ namespace Slate
         public static Texture2D pauseIcon;
         public static Texture2D loopIcon;
         public static Texture2D pingPongIcon;
-
         public static Texture2D carretIcon;
         public static Texture2D carretInIcon;
         public static Texture2D carretOutIcon;
         public static Texture2D cutsceneIconOpen;
         public static Texture2D cutsceneIconClose;
-
         public static Texture2D cutsceneIcon;
         public static Texture2D slateIcon;
-
         public static Texture2D borderShadowsImage;
-
         public static Texture2D gearIcon;
         public static Texture2D plusIcon;
         public static Texture2D trashIcon;
         public static Texture2D curveIcon;
-
         public static Texture2D alembicIcon;
-
         public static Texture2D dopeKey;
         public static Texture2D dopeKeySmooth;
         public static Texture2D dopeKeyLinear;
         public static Texture2D dopeKeyConstant;
-
         public static Texture2D cameraIcon = AssetPreview.GetMiniTypeThumbnail(typeof(Camera));
         public static Texture2D sceneIcon = AssetPreview.GetMiniTypeThumbnail(typeof(SceneAsset));
         public static Texture2D helpIcon = EditorGUIUtility.FindTexture("d__Help");
-
-
         public static Color recordingColor = new Color(1, 0.5f, 0.5f);
-
         private static GUISkin styleSheet;
 
-        static Styles() {
+        static Styles()
+        {
             Load();
         }
 
         [InitializeOnLoadMethod]
-        public static void Load() {
+        public static void Load()
+        {
             dopeKey = (Texture2D)Resources.Load("DopeKey");
             dopeKeySmooth = (Texture2D)Resources.Load("DopeKeySmooth");
             dopeKeyLinear = (Texture2D)Resources.Load("DopeKeyLinear");
             dopeKeyConstant = (Texture2D)Resources.Load("DopeKeyConstant");
-
             keyIcon = (Texture2D)Resources.Load("KeyIcon");
             nextKeyIcon = (Texture2D)Resources.Load("NextKeyIcon");
             previousKeyIcon = (Texture2D)Resources.Load("PreviousKeyIcon");
-
             expressionIcon = (Texture2D)Resources.Load("ExpressionIcon");
             stripes = (Texture2D)Resources.Load("Stripes");
             magnetIcon = (Texture2D)Resources.Load("MagnetIcon");
@@ -111,62 +97,57 @@ namespace Slate
             trashIcon = (Texture2D)Resources.Load("TrashIcon");
             curveIcon = (Texture2D)Resources.Load("CurveIcon");
             alembicIcon = (Texture2D)Resources.Load("AlembicIcon");
-
             styleSheet = (GUISkin)Resources.Load("StyleSheet");
         }
 
         ///<summary>Get a white 1x1 texture</summary>
-        public static Texture2D whiteTexture {
-            get { return EditorGUIUtility.whiteTexture; }
-        }
+        public static Texture2D whiteTexture => EditorGUIUtility.whiteTexture;
 
         private static GUIStyle _shadowBorderStyle;
-        public static GUIStyle shadowBorderStyle {
-            get { return _shadowBorderStyle != null ? _shadowBorderStyle : _shadowBorderStyle = styleSheet.GetStyle("ShadowBorder"); }
-        }
+
+        public static GUIStyle shadowBorderStyle => _shadowBorderStyle != null ? _shadowBorderStyle
+            : _shadowBorderStyle = styleSheet.GetStyle("ShadowBorder");
 
         private static GUIStyle _clipBoxStyle;
-        public static GUIStyle clipBoxStyle {
-            get { return _clipBoxStyle != null ? _clipBoxStyle : _clipBoxStyle = styleSheet.GetStyle("ClipBox"); }
-        }
+
+        public static GUIStyle clipBoxStyle =>
+            _clipBoxStyle != null ? _clipBoxStyle : _clipBoxStyle = styleSheet.GetStyle("ClipBox");
 
         private static GUIStyle _clipBoxFooterStyle;
-        public static GUIStyle clipBoxFooterStyle {
-            get { return _clipBoxFooterStyle != null ? _clipBoxFooterStyle : _clipBoxFooterStyle = styleSheet.GetStyle("ClipBoxFooter"); }
-        }
+
+        public static GUIStyle clipBoxFooterStyle => _clipBoxFooterStyle != null ? _clipBoxFooterStyle
+            : _clipBoxFooterStyle = styleSheet.GetStyle("ClipBoxFooter");
 
         private static GUIStyle _clipBoxHorizontalStyle;
-        public static GUIStyle clipBoxHorizontalStyle {
-            get { return _clipBoxHorizontalStyle != null ? _clipBoxHorizontalStyle : _clipBoxHorizontalStyle = styleSheet.GetStyle("ClipBoxHorizontal"); }
-        }
+
+        public static GUIStyle clipBoxHorizontalStyle => _clipBoxHorizontalStyle != null ? _clipBoxHorizontalStyle
+            : _clipBoxHorizontalStyle = styleSheet.GetStyle("ClipBoxHorizontal");
 
         private static GUIStyle _timeBoxStyle;
-        public static GUIStyle timeBoxStyle {
-            get { return _timeBoxStyle != null ? _timeBoxStyle : _timeBoxStyle = styleSheet.GetStyle("TimeBox"); }
-        }
+
+        public static GUIStyle timeBoxStyle =>
+            _timeBoxStyle != null ? _timeBoxStyle : _timeBoxStyle = styleSheet.GetStyle("TimeBox");
 
         private static GUIStyle _headerBoxStyle;
-        public static GUIStyle headerBoxStyle {
-            get { return _headerBoxStyle != null ? _headerBoxStyle : _headerBoxStyle = styleSheet.GetStyle("HeaderBox"); }
-        }
+
+        public static GUIStyle headerBoxStyle => _headerBoxStyle != null ? _headerBoxStyle
+            : _headerBoxStyle = styleSheet.GetStyle("HeaderBox");
 
         private static GUIStyle _hollowFrameStyle;
-        public static GUIStyle hollowFrameStyle {
-            get { return _hollowFrameStyle != null ? _hollowFrameStyle : _hollowFrameStyle = styleSheet.GetStyle("HollowFrame"); }
-        }
+
+        public static GUIStyle hollowFrameStyle => _hollowFrameStyle != null ? _hollowFrameStyle
+            : _hollowFrameStyle = styleSheet.GetStyle("HollowFrame");
 
         private static GUIStyle _hollowFrameHorizontalStyle;
-        public static GUIStyle hollowFrameHorizontalStyle {
-            get { return _hollowFrameHorizontalStyle != null ? _hollowFrameHorizontalStyle : _hollowFrameHorizontalStyle = styleSheet.GetStyle("HollowFrameHorizontal"); }
-        }
+
+        public static GUIStyle hollowFrameHorizontalStyle => _hollowFrameHorizontalStyle != null
+            ? _hollowFrameHorizontalStyle : _hollowFrameHorizontalStyle = styleSheet.GetStyle("HollowFrameHorizontal");
 
         private static GUIStyle _leftLabel;
+
         public static GUIStyle leftLabel {
-            get
-            {
-                if ( _leftLabel != null ) {
-                    return _leftLabel;
-                }
+            get {
+                if (_leftLabel != null) return _leftLabel;
                 _leftLabel = new GUIStyle("label");
                 _leftLabel.alignment = TextAnchor.MiddleLeft;
                 return _leftLabel;
@@ -174,12 +155,10 @@ namespace Slate
         }
 
         private static GUIStyle _rightLabel;
+
         public static GUIStyle rightLabel {
-            get
-            {
-                if ( _rightLabel != null ) {
-                    return _rightLabel;
-                }
+            get {
+                if (_rightLabel != null) return _rightLabel;
                 _rightLabel = new GUIStyle("label");
                 _rightLabel.alignment = TextAnchor.MiddleRight;
                 return _rightLabel;
@@ -187,12 +166,10 @@ namespace Slate
         }
 
         private static GUIStyle _centerLabel;
+
         public static GUIStyle centerLabel {
-            get
-            {
-                if ( _centerLabel != null ) {
-                    return _centerLabel;
-                }
+            get {
+                if (_centerLabel != null) return _centerLabel;
                 _centerLabel = new GUIStyle("label");
                 _centerLabel.alignment = TextAnchor.MiddleCenter;
                 return _centerLabel;

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace MoreTags
 {
     [Serializable]
-    public class TagDataList 
+    public class TagDataList
     {
         public List<TagData> data = new List<TagData>();
 #if UNITY_EDITOR

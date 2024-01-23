@@ -72,10 +72,10 @@ namespace SqlCipher4Unity3D.Example.async
             await _connection.DropTableAsync<Person>();
             await _connection.CreateTableAsync<Person>();
             await _connection.InsertAllAsync(new[] {
-                new Person { Id = 1, Name = "Tom", Surname = "Perez", Age = 56 },
-                new Person { Id = 2, Name = "Fred", Surname = "Arthurson", Age = 16 },
-                new Person { Id = 3, Name = "John", Surname = "Doe", Age = 25 },
-                new Person { Id = 4, Name = "Roberto", Surname = "Huertas", Age = 37 },
+                new Person { Id = 1, Name = "Tom", Surname = "Perez", Age = 56 }
+                , new Person { Id = 2, Name = "Fred", Surname = "Arthurson", Age = 16 }
+                , new Person { Id = 3, Name = "John", Surname = "Doe", Age = 25 }
+                , new Person { Id = 4, Name = "Roberto", Surname = "Huertas", Age = 37 },
             });
         }
 

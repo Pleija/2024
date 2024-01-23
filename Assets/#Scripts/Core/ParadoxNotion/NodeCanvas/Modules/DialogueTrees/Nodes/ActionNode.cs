@@ -57,14 +57,12 @@ namespace NodeCanvas.DialogueTrees
 
         protected override void OnReset()
         {
-            if (action != null)
-                action.EndAction(null);
+            if (action != null) action.EndAction(null);
         }
 
         public override void OnGraphPaused()
         {
-            if (action != null)
-                action.Pause();
+            if (action != null) action.Pause();
         }
     }
 }

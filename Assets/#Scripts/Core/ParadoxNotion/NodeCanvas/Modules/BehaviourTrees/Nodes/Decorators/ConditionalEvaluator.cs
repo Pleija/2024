@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Conditional"), Category("Decorators"),
-     Description(
-         "Executes and returns the child status only if the condition is true. Returns Failure if the condition is false."),
-     Icon("Accessor")]
+    [Name("Conditional"), Category("Decorators")
+     , Description(
+         "Executes and returns the child status only if the condition is true. Returns Failure if the condition is false.")
+     , Icon("Accessor")]
     public class ConditionalEvaluator : BTDecorator, ITaskAssignable<ConditionTask>
     {
-        [Name("Dynamic"),
-         Tooltip(
+        [Name("Dynamic")
+         , Tooltip(
              "If enabled, the condition is re-evaluated per frame and the child is aborted if the condition becomes false.")]
         public bool isDynamic;
 

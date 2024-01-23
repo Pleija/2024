@@ -64,7 +64,8 @@ namespace ParadoxNotion.Design
 
             foreach (var subType in subTypes) {
                 if (subType.IsAbstract || subType.RTIsDefined(typeof(DoNotListAttribute), true) ||
-                    subType.RTIsDefined(typeof(ObsoleteAttribute), true)) continue;
+                    subType.RTIsDefined(typeof(ObsoleteAttribute), true))
+                    continue;
                 var isGeneric = subType.IsGenericTypeDefinition && subType.RTGetGenericArguments().Length == 1;
                 var scriptName = subType.FriendlyName().SplitCamelCase();
                 var scriptCategory = string.Empty;
@@ -89,22 +90,21 @@ namespace ParadoxNotion.Design
                         var typesToWrap = TypePrefs.GetPreferedTypesList(true);
 
                         foreach (var t in typesToWrap) {
-                            infosResult.Add(info.MakeGenericInfo(t,
-                                string.Format("/{0}/{1}", info.name, t.NamespaceToPath())));
-                            infosResult.Add(info.MakeGenericInfo(typeof(List<>).MakeGenericType(t),
-                                string.Format("/{0}/{1}{2}", info.name, TypePrefs.LIST_MENU_STRING,
-                                    t.NamespaceToPath()), -1));
+                            infosResult.Add(info.MakeGenericInfo(t
+                                , string.Format("/{0}/{1}", info.name, t.NamespaceToPath())));
+                            infosResult.Add(info.MakeGenericInfo(typeof(List<>).MakeGenericType(t)
+                                , string.Format("/{0}/{1}{2}", info.name, TypePrefs.LIST_MENU_STRING
+                                    , t.NamespaceToPath()), -1));
                             infosResult.Add(info.MakeGenericInfo(
-                                typeof(Dictionary<,>).MakeGenericType(typeof(string), t),
-                                string.Format("/{0}/{1}{2}", info.name, TypePrefs.DICT_MENU_STRING,
-                                    t.NamespaceToPath()), -2));
+                                typeof(Dictionary<,>).MakeGenericType(typeof(string), t)
+                                , string.Format("/{0}/{1}{2}", info.name, TypePrefs.DICT_MENU_STRING
+                                    , t.NamespaceToPath()), -2));
 
                             //by request extra append dictionary <string, List<T>>
                             infosResult.Add(info.MakeGenericInfo(
-                                typeof(Dictionary<,>).MakeGenericType(typeof(string),
-                                    typeof(List<>).MakeGenericType(t)),
-                                string.Format("/{0}/{1}{2}", info.name, TypePrefs.DICT_MENU_STRING,
-                                    t.NamespaceToPath()), -2));
+                                typeof(Dictionary<,>).MakeGenericType(typeof(string), typeof(List<>).MakeGenericType(t))
+                                , string.Format("/{0}/{1}{2}", info.name, TypePrefs.DICT_MENU_STRING
+                                    , t.NamespaceToPath()), -2));
                         }
                         continue;
                     }
@@ -118,8 +118,8 @@ namespace ParadoxNotion.Design
         }
 
         ///<summary>Makes and returns a closed generic ScriptInfo for targetType out of an existing ScriptInfo</summary>
-        public static ScriptInfo MakeGenericInfo(this ScriptInfo info, Type targetType, string subCategory = null,
-            int priorityShift = 0)
+        public static ScriptInfo MakeGenericInfo(this ScriptInfo info, Type targetType, string subCategory = null
+            , int priorityShift = 0)
         {
             if (!info.isValid || !info.originalType.IsGenericTypeDefinition) return default;
 

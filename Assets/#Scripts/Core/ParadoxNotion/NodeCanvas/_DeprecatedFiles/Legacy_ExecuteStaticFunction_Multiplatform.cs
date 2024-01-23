@@ -30,8 +30,8 @@ namespace NodeCanvas.Tasks.Actions
                 var returnInfo = targetMethod.ReturnType == typeof(void) ? "" : returnValue.ToString() + " = ";
                 var paramInfo = "";
                 for (var i = 0; i < parameters.Count; i++) paramInfo += (i != 0 ? ", " : "") + parameters[i].ToString();
-                return string.Format("{0}{1}.{2} ({3})", returnInfo, targetMethod.DeclaringType.FriendlyName(),
-                    targetMethod.Name, paramInfo);
+                return string.Format("{0}{1}.{2} ({3})", returnInfo, targetMethod.DeclaringType.FriendlyName()
+                    , targetMethod.Name, paramInfo);
             }
         }
 

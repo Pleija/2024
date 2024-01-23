@@ -101,8 +101,8 @@ namespace SqlCipher4Unity3D
 
         // NOTE(pyoung): added for SqlCipher4Unity3D
         public SQLiteConnection(string databasePath, string password = null, bool storeDateTimeAsTicks = true) : this(
-            new SQLiteConnectionString(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create,
-                storeDateTimeAsTicks, password)) { }
+            new SQLiteConnectionString(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create
+                , storeDateTimeAsTicks, password)) { }
 
         /// <summary>
         ///     Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
@@ -119,8 +119,8 @@ namespace SqlCipher4Unity3D
         ///     the storeDateTimeAsTicks parameter.
         /// </param>
         public SQLiteConnection(string databasePath, bool storeDateTimeAsTicks = true) : this(
-            new SQLiteConnectionString(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create,
-                storeDateTimeAsTicks)) { }
+            new SQLiteConnectionString(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create
+                , storeDateTimeAsTicks)) { }
 
         /// <summary>
         ///     Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
@@ -167,15 +167,14 @@ namespace SqlCipher4Unity3D
 #endif
             Sqlite3DatabaseHandle handle;
 #if SILVERLIGHT || USE_CSHARP_SQLITE || USE_SQLITEPCL_RAW
-            var r =
- SQLite3.Open(connectionString.DatabasePath, out handle, (int)connectionString.OpenFlags, connectionString.VfsName);
+            var r = SQLite3.Open(connectionString.DatabasePath, out handle, (int)connectionString.OpenFlags, connectionString.VfsName);
 #else
             // open using the byte[]
             // in the case where the path may include Unicode
             // force open to using UTF-8 using sqlite3_open_v2
             var databasePathAsBytes = GetNullTerminatedUtf8(connectionString.DatabasePath);
-            var r = SQLite3.Open(databasePathAsBytes, out handle, (int)connectionString.OpenFlags,
-                connectionString.VfsName);
+            var r = SQLite3.Open(databasePathAsBytes, out handle, (int)connectionString.OpenFlags
+                , connectionString.VfsName);
 #endif
             Handle = handle;
 
@@ -396,8 +395,8 @@ namespace SqlCipher4Unity3D
             return map;
         }
 
-        public TableMapping GetMapping(SortedDictionary<string, Type> type, string key,
-            CreateFlags createFlags = CreateFlags.None)
+        public TableMapping GetMapping(SortedDictionary<string, Type> type, string key
+            , CreateFlags createFlags = CreateFlags.None)
         {
             TableMapping map;
             //var key = type.FullName;
@@ -499,8 +498,8 @@ namespace SqlCipher4Unity3D
         public CreateTableResult CreateTable(Type ty, CreateFlags createFlags = CreateFlags.None) =>
             CreateTable(GetMapping(ty, createFlags), ty.FullName, createFlags);
 
-        public CreateTableResult CreateTable(SortedDictionary<string, Type> ty, string tableName,
-            CreateFlags createFlags = CreateFlags.None) =>
+        public CreateTableResult CreateTable(SortedDictionary<string, Type> ty, string tableName
+            , CreateFlags createFlags = CreateFlags.None) =>
             CreateTable(GetMapping(ty, tableName, createFlags), tableName, createFlags);
         /*
         {
@@ -573,8 +572,8 @@ namespace SqlCipher4Unity3D
         }
         */
 
-        public CreateTableResult CreateTable(TableMapping map, string fullName,
-            CreateFlags createFlags = CreateFlags.None)
+        public CreateTableResult CreateTable(TableMapping map, string fullName
+            , CreateFlags createFlags = CreateFlags.None)
         {
             //var map = GetMapping(ty, createFlags);
 
@@ -623,10 +622,8 @@ namespace SqlCipher4Unity3D
 
                     if (!indexes.TryGetValue(iname, out iinfo)) {
                         iinfo = new IndexInfo {
-                            IndexName = iname,
-                            TableName = map.TableName,
-                            Unique = i.Unique,
-                            Columns = new List<IndexedColumn>(),
+                            IndexName = iname, TableName = map.TableName, Unique = i.Unique
+                            , Columns = new List<IndexedColumn>(),
                         };
                         indexes.Add(iname, iinfo);
                     }
@@ -736,8 +733,8 @@ namespace SqlCipher4Unity3D
         public int CreateIndex(string indexName, string tableName, string[] columnNames, bool unique = false)
         {
             const string sqlFormat = "create {2} index if not exists \"{3}\" on \"{0}\"(\"{1}\")";
-            var sql = String.Format(sqlFormat, tableName, string.Join("\", \"", columnNames), unique ? "unique" : "",
-                indexName);
+            var sql = String.Format(sqlFormat, tableName, string.Join("\", \"", columnNames), unique ? "unique" : ""
+                , indexName);
             return Execute(sql);
         }
 
@@ -961,8 +958,8 @@ namespace SqlCipher4Unity3D
             if (TimeExecution) {
                 _sw.Stop();
                 _elapsedMilliseconds += _sw.ElapsedMilliseconds;
-                Tracer?.Invoke(string.Format("Finished in {0} ms ({1:0.0} s total)", _sw.ElapsedMilliseconds,
-                    _elapsedMilliseconds / 1000.0));
+                Tracer?.Invoke(string.Format("Finished in {0} ms ({1:0.0} s total)", _sw.ElapsedMilliseconds
+                    , _elapsedMilliseconds / 1000.0));
             }
             return r;
         }
@@ -999,8 +996,8 @@ namespace SqlCipher4Unity3D
             if (TimeExecution) {
                 _sw.Stop();
                 _elapsedMilliseconds += _sw.ElapsedMilliseconds;
-                Tracer?.Invoke(string.Format("Finished in {0} ms ({1:0.0} s total)", _sw.ElapsedMilliseconds,
-                    _elapsedMilliseconds / 1000.0));
+                Tracer?.Invoke(string.Format("Finished in {0} ms ({1:0.0} s total)", _sw.ElapsedMilliseconds
+                    , _elapsedMilliseconds / 1000.0));
             }
             return r;
         }
@@ -1866,9 +1863,9 @@ namespace SqlCipher4Unity3D
                 if (replacing) {
                     cols = map.InsertOrReplaceColumns;
                 }
-                insertSql = string.Format("insert {3} into \"{0}\"({1}) values ({2})", map.TableName,
-                    string.Join(",", (from c in cols select "\"" + c.Name + "\"").ToArray()),
-                    string.Join(",", (from c in cols select "?").ToArray()), extra);
+                insertSql = string.Format("insert {3} into \"{0}\"({1}) values ({2})", map.TableName
+                    , string.Join(",", (from c in cols select "\"" + c.Name + "\"").ToArray())
+                    , string.Join(",", (from c in cols select "?").ToArray()), extra);
             }
             var insertCommand = new PreparedSqlLiteInsertCommand(this, insertSql);
             return insertCommand;
@@ -1932,8 +1929,8 @@ namespace SqlCipher4Unity3D
                 ps = new List<object>(vals);
             }
             ps.Add(pk.GetValue(obj));
-            var q = string.Format("update \"{0}\" set {1} where {2} = ? ", map.TableName,
-                string.Join(",", (from c in cols select "\"" + c.Name + "\" = ? ").ToArray()), pk.Name);
+            var q = string.Format("update \"{0}\" set {1} where {2} = ? ", map.TableName
+                , string.Join(",", (from c in cols select "\"" + c.Name + "\" = ? ").ToArray()), pk.Name);
 
             try {
                 rowsAffected = Execute(q, ps.ToArray());
@@ -2237,8 +2234,8 @@ namespace SqlCipher4Unity3D
         ///     If you use DateTimeOffset properties, it will be always stored as ticks regardingless
         ///     the storeDateTimeAsTicks parameter.
         /// </param>
-        public SQLiteConnectionString(string databasePath, bool storeDateTimeAsTicks = true) : this(databasePath,
-            SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite, storeDateTimeAsTicks) { }
+        public SQLiteConnectionString(string databasePath, bool storeDateTimeAsTicks = true) : this(databasePath
+            , SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite, storeDateTimeAsTicks) { }
 
         /// <summary>
         ///     Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
@@ -2266,10 +2263,10 @@ namespace SqlCipher4Unity3D
         /// <param name="vfsName">
         ///     Specifies the Virtual File System to use on the database.
         /// </param>
-        public SQLiteConnectionString(string databasePath, bool storeDateTimeAsTicks, object key = null,
-            Action<SQLiteConnection> preKeyAction = null, Action<SQLiteConnection> postKeyAction = null,
-            string vfsName = null) : this(databasePath, SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite,
-            storeDateTimeAsTicks, key, preKeyAction, postKeyAction, vfsName) { }
+        public SQLiteConnectionString(string databasePath, bool storeDateTimeAsTicks, object key = null
+            , Action<SQLiteConnection> preKeyAction = null, Action<SQLiteConnection> postKeyAction = null
+            , string vfsName = null) : this(databasePath, SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite
+            , storeDateTimeAsTicks, key, preKeyAction, postKeyAction, vfsName) { }
 
         /// <summary>
         ///     Constructs a new SQLiteConnectionString with all the data needed to open an SQLiteConnection.
@@ -2309,10 +2306,10 @@ namespace SqlCipher4Unity3D
         ///     only here for backwards compatibility. There is a *significant* speed advantage, with no
         ///     down sides, when setting storeTimeSpanAsTicks = true.
         /// </param>
-        public SQLiteConnectionString(string databasePath, SQLiteOpenFlags openFlags, bool storeDateTimeAsTicks,
-            object key = null, Action<SQLiteConnection> preKeyAction = null,
-            Action<SQLiteConnection> postKeyAction = null, string vfsName = null,
-            string dateTimeStringFormat = DateTimeSqliteDefaultFormat, bool storeTimeSpanAsTicks = true)
+        public SQLiteConnectionString(string databasePath, SQLiteOpenFlags openFlags, bool storeDateTimeAsTicks
+            , object key = null, Action<SQLiteConnection> preKeyAction = null
+            , Action<SQLiteConnection> postKeyAction = null, string vfsName = null
+            , string dateTimeStringFormat = DateTimeSqliteDefaultFormat, bool storeTimeSpanAsTicks = true)
         {
             if (key != null && !((key is byte[]) || (key is string)))
                 throw new ArgumentException("Encryption keys must be strings or byte arrays", nameof(key));
@@ -2330,8 +2327,7 @@ namespace SqlCipher4Unity3D
             OpenFlags = openFlags;
             VfsName = vfsName;
 #if NETFX_CORE
-            DatabasePath =
- IsInMemoryPath(databasePath) ? databasePath : System.IO.Path.Combine(MetroStyleDataPath, databasePath);
+            DatabasePath = IsInMemoryPath(databasePath) ? databasePath : System.IO.Path.Combine(MetroStyleDataPath, databasePath);
 #else
             DatabasePath = databasePath;
 #endif
@@ -2365,8 +2361,8 @@ namespace SqlCipher4Unity3D
                 .ToDictionary(x => x.name.RegexReplace(@"\W+", ""), x => x.varType));
         }
 
-        public TableMapping(SortedDictionary<string, Type> type, string tableName,
-            CreateFlags createFlags = CreateFlags.None)
+        public TableMapping(SortedDictionary<string, Type> type, string tableName
+            , CreateFlags createFlags = CreateFlags.None)
         {
             OnCreateRow = () => {
                 var value = new SortedDictionary<string, object>();
@@ -2407,13 +2403,11 @@ namespace SqlCipher4Unity3D
                 : Activator.CreateInstance(type);
             CreateFlags = createFlags;
             var typeInfo = type.GetTypeInfo();
-            
 #if ENABLE_IL2CPP
             var tableAttr = typeInfo.GetCustomAttribute<TableAttribute>();
 #else
             var tableAttr = typeInfo.CustomAttributes.Where(x => x.AttributeType == typeof(TableAttribute))
-                .Select(x => (TableAttribute)Orm.InflateAttribute(x))
-                .FirstOrDefault();
+                .Select(x => (TableAttribute)Orm.InflateAttribute(x)).FirstOrDefault();
 #endif
             TableName = (tableAttr != null && !string.IsNullOrEmpty(tableAttr.Name)) ? tableAttr.Name : type.Name;
             WithoutRowId = tableAttr != null ? tableAttr.WithoutRowId : false;
@@ -2425,13 +2419,15 @@ namespace SqlCipher4Unity3D
 
             while (baseType != typeof(object)) {
                 var ti = baseType.GetTypeInfo();
-                var newProps = (from p in ti.DeclaredProperties
-                    where !propNames.Contains(p.Name) && p.CanRead &&
-                        p.CanWrite && (p.GetMethod != null) && (p.SetMethod != null) &&
-                        (p.GetMethod.IsPublic && p.SetMethod.IsPublic) && (!p.GetMethod.IsStatic) &&
-                        (!p.SetMethod.IsStatic) && !p.IsDefined(typeof(IgnoreAttribute), true)
+                var newProps = (
+                    from p in ti.DeclaredProperties
+                    where !propNames.Contains(p.Name) && p.CanRead && p.CanWrite && (p.GetMethod != null) &&
+                        (p.SetMethod != null) && (p.GetMethod.IsPublic && p.SetMethod.IsPublic) &&
+                        (!p.GetMethod.IsStatic) && (!p.SetMethod.IsStatic) &&
+                        !p.IsDefined(typeof(IgnoreAttribute), true)
                     select p).ToList();
-                var newFields = (from f in ti.DeclaredFields
+                var newFields = (
+                    from f in ti.DeclaredFields
                     where !fieldNames.Contains(f.Name) &&
                         (f.IsPublic || f.IsDefined(typeof(SerializeField), true) ||
                             f.IsDefined(typeof(OdinSerializeAttribute), true)) && !f.IsStatic &&
@@ -2580,7 +2576,6 @@ namespace SqlCipher4Unity3D
 
             public Column(MemberInfo prop, CreateFlags createFlags = CreateFlags.None)
             {
-                
                 var colAttr = prop.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(ColumnAttribute));
                 _prop = prop;
 #if ENABLE_IL2CPP
@@ -2609,8 +2604,7 @@ namespace SqlCipher4Unity3D
                 }
                 IsNullable = !(IsPK || Orm.IsMarkedNotNull(prop));
                 MaxStringLength = Orm.MaxStringLength(prop);
-                StoreAsText = FastColumnSetter.GetUnderlyingType(prop)
-                    .CustomAttributes
+                StoreAsText = FastColumnSetter.GetUnderlyingType(prop).CustomAttributes
                     .Any(x => x.AttributeType == typeof(StoreAsTextAttribute));
             }
 
@@ -2643,9 +2637,10 @@ namespace SqlCipher4Unity3D
                     return ((SortedDictionary<string, object>)obj)[Name];
                 }
                 return _prop switch {
-                    PropertyInfo propertyInfo => propertyInfo.GetValue(obj, null),
-                    FieldInfo fieldInfo       => fieldInfo.GetValue(obj),
-                    _                         => throw new Exception("Type Error"),
+                    PropertyInfo propertyInfo => propertyInfo.GetValue(obj, null)
+                    , FieldInfo fieldInfo     => fieldInfo.GetValue(obj)
+                    , _                       => throw new Exception("Type Error")
+                    ,
                 };
             }
         }
@@ -2790,12 +2785,10 @@ namespace SqlCipher4Unity3D
 #if ENABLE_IL2CPP
             return (p.GetCustomAttribute<CollationAttribute>()?.Value) ?? "";
 #else
-            return (p.CustomAttributes.Where(x => typeof(CollationAttribute) == x.AttributeType)
-                .Select(x => {
-                    var args = x.ConstructorArguments;
-                    return args.Count > 0 ? ((args[0].Value as string) ?? "") : "";
-                })
-                .FirstOrDefault()) ?? "";
+            return (p.CustomAttributes.Where(x => typeof(CollationAttribute) == x.AttributeType).Select(x => {
+                var args = x.ConstructorArguments;
+                return args.Count > 0 ? ((args[0].Value as string) ?? "") : "";
+            }).FirstOrDefault()) ?? "";
 #endif
         }
 
@@ -3056,7 +3049,7 @@ namespace SqlCipher4Unity3D
                         if (cols[i] == null) continue;
 
                         if (fastColumnSetters[i] != null) {
-                            Debug.Log($"setst: {obj.GetType().Name}");   
+                            Debug.Log($"setst: {obj.GetType().Name}");
                             fastColumnSetters[i].Invoke(obj, stmt, i);
                         }
                         else {
@@ -3183,15 +3176,15 @@ namespace SqlCipher4Unity3D
                 else {
                     b.Index = nextIdx++;
                 }
-                BindParameter(stmt, b.Index, b.Value, _conn.StoreDateTimeAsTicks, _conn.DateTimeStringFormat,
-                    _conn.StoreTimeSpanAsTicks);
+                BindParameter(stmt, b.Index, b.Value, _conn.StoreDateTimeAsTicks, _conn.DateTimeStringFormat
+                    , _conn.StoreTimeSpanAsTicks);
             }
         }
 
         public static IntPtr NegativePointer = new IntPtr(-1);
 
-        public static void BindParameter(Sqlite3Statement stmt, int index, object value, bool storeDateTimeAsTicks,
-            string dateTimeStringFormat, bool storeTimeSpanAsTicks)
+        public static void BindParameter(Sqlite3Statement stmt, int index, object value, bool storeDateTimeAsTicks
+            , string dateTimeStringFormat, bool storeTimeSpanAsTicks)
         {
             if (value == null) {
                 SQLite3.BindNull(stmt, index);
@@ -3228,9 +3221,9 @@ namespace SqlCipher4Unity3D
                         SQLite3.BindInt64(stmt, index, ((DateTime)value).Ticks);
                     }
                     else {
-                        SQLite3.BindText(stmt, index,
-                            ((DateTime)value).ToString(dateTimeStringFormat,
-                                System.Globalization.CultureInfo.InvariantCulture), -1, NegativePointer);
+                        SQLite3.BindText(stmt, index
+                            , ((DateTime)value).ToString(dateTimeStringFormat
+                                , System.Globalization.CultureInfo.InvariantCulture), -1, NegativePointer);
                     }
                 }
                 else if (value is DateTimeOffset) {
@@ -3268,8 +3261,8 @@ namespace SqlCipher4Unity3D
                     else {
                         if (useOdin) {
                             //throw new NotSupportedException("Cannot store type: " + Orm.GetType(value));
-                            var tBlob = SerializationUtility.SerializeValue(value,
-                                Sirenix.Serialization.DataFormat.Binary);
+                            var tBlob = SerializationUtility.SerializeValue(value
+                                , Sirenix.Serialization.DataFormat.Binary);
                             SQLite3.BindBlob(stmt, index, (byte[])tBlob, ((byte[])tBlob).Length, NegativePointer);
                         }
                         else {
@@ -3327,8 +3320,8 @@ namespace SqlCipher4Unity3D
                         var text = SQLite3.ColumnString(stmt, index);
                         TimeSpan resultTime;
 
-                        if (!TimeSpan.TryParseExact(text, "c", System.Globalization.CultureInfo.InvariantCulture,
-                            System.Globalization.TimeSpanStyles.None, out resultTime)) {
+                        if (!TimeSpan.TryParseExact(text, "c", System.Globalization.CultureInfo.InvariantCulture
+                            , System.Globalization.TimeSpanStyles.None, out resultTime)) {
                             resultTime = TimeSpan.Parse(text);
                         }
                         return resultTime;
@@ -3342,8 +3335,8 @@ namespace SqlCipher4Unity3D
                         var text = SQLite3.ColumnString(stmt, index);
                         DateTime resultDate;
 
-                        if (!DateTime.TryParseExact(text, _conn.DateTimeStringFormat,
-                            System.Globalization.CultureInfo.InvariantCulture, _conn.DateTimeStyle, out resultDate)) {
+                        if (!DateTime.TryParseExact(text, _conn.DateTimeStringFormat
+                            , System.Globalization.CultureInfo.InvariantCulture, _conn.DateTimeStyle, out resultDate)) {
                             resultDate = DateTime.Parse(text);
                         }
                         return resultDate;
@@ -3406,8 +3399,7 @@ namespace SqlCipher4Unity3D
 
                     if (serializeMethod == null) {
                         serializeMethod = typeof(SerializationUtility)
-                            .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                            .FirstOrDefault(x =>
+                            .GetMethods(BindingFlags.Public | BindingFlags.Static).FirstOrDefault(x =>
                                 x.Name == "DeserializeValue" && x.GetParameters().Length == 3 &&
                                 x.GetParameters()[0].ParameterType == typeof(byte[]) &&
                                 x.GetParameters()[2].ParameterType == typeof(DeserializationContext));
@@ -3419,8 +3411,8 @@ namespace SqlCipher4Unity3D
                     Assert.IsNotNull(tMethod, "serializeMethod != null");
 
                     try {
-                        return tMethod.Invoke(null,
-                                new object[] { bytes, Sirenix.Serialization.DataFormat.Binary, default }) ??
+                        return tMethod.Invoke(null
+                                , new object[] { bytes, Sirenix.Serialization.DataFormat.Binary, default }) ??
                             Activator.CreateInstance(clrType);
                         // }
                     }
@@ -3483,17 +3475,15 @@ namespace SqlCipher4Unity3D
         ///     If no fast setter is available for the requested column (enums in particular cause headache), then this function
         ///     returns null.
         /// </returns>
-        ///
-        ///
-        internal static Action<T, Sqlite3Statement, int> GetFastSetter<T>(SQLiteConnection conn,
-            TableMapping.Column column)
+        internal static Action<T, Sqlite3Statement, int> GetFastSetter<T>(SQLiteConnection conn
+            , TableMapping.Column column)
         {
             var ret = GetFastSetter(conn, typeof(T), column);
             return ((arg1, ptr, arg3) => ret.Invoke(arg1, ptr, arg3));
         }
 
-        internal static Action<object, Sqlite3Statement, int> GetFastSetter(SQLiteConnection conn, Type type,
-            TableMapping.Column column)
+        internal static Action<object, Sqlite3Statement, int> GetFastSetter(SQLiteConnection conn, Type type
+            , TableMapping.Column column)
         {
             Action<object, Sqlite3Statement, int> fastSetter = null;
             Type clrType = column.IsDictionary ?? GetUnderlyingType(column.PropertyInfo);
@@ -3542,8 +3532,8 @@ namespace SqlCipher4Unity3D
                         var text = SQLite3.ColumnString(stmt, index);
                         TimeSpan resultTime;
 
-                        if (!TimeSpan.TryParseExact(text, "c", System.Globalization.CultureInfo.InvariantCulture,
-                            System.Globalization.TimeSpanStyles.None, out resultTime)) {
+                        if (!TimeSpan.TryParseExact(text, "c", System.Globalization.CultureInfo.InvariantCulture
+                            , System.Globalization.TimeSpanStyles.None, out resultTime)) {
                             resultTime = TimeSpan.Parse(text);
                         }
                         return resultTime;
@@ -3561,8 +3551,8 @@ namespace SqlCipher4Unity3D
                         var text = SQLite3.ColumnString(stmt, index);
                         DateTime resultDate;
 
-                        if (!DateTime.TryParseExact(text, conn.DateTimeStringFormat,
-                            System.Globalization.CultureInfo.InvariantCulture, conn.DateTimeStyle, out resultDate)) {
+                        if (!DateTime.TryParseExact(text, conn.DateTimeStringFormat
+                            , System.Globalization.CultureInfo.InvariantCulture, conn.DateTimeStyle, out resultDate)) {
                             resultDate = DateTime.Parse(text);
                         }
                         return resultDate;
@@ -3662,17 +3652,17 @@ namespace SqlCipher4Unity3D
         /// <param name="getColumnValue">A lambda that can be used to retrieve the column value at query-time</param>
         /// <returns>A strongly-typed delegate</returns>
         private static Action<ObjectType, Sqlite3Statement, int>
-            CreateNullableTypedSetterDelegate<ObjectType, ColumnMemberType>(TableMapping.Column column,
-                Func<Sqlite3Statement, int, ColumnMemberType> getColumnValue) where ColumnMemberType : struct
+            CreateNullableTypedSetterDelegate<ObjectType, ColumnMemberType>(TableMapping.Column column
+                , Func<Sqlite3Statement, int, ColumnMemberType> getColumnValue) where ColumnMemberType : struct
         {
-            var ret = CreateNullableTypedSetterDelegate(column, typeof(ObjectType), typeof(ColumnMemberType),
-                ((ptr, i) => getColumnValue.Invoke(ptr, i)));
+            var ret = CreateNullableTypedSetterDelegate(column, typeof(ObjectType), typeof(ColumnMemberType)
+                , ((ptr, i) => getColumnValue.Invoke(ptr, i)));
             return (type, ptr, arg3) => ret.Invoke(type, ptr, arg3);
         }
 
         private static Action<object, Sqlite3Statement, int> CreateNullableTypedSetterDelegate(
-            TableMapping.Column column, Type objectType, Type columnMemberType,
-            Func<Sqlite3Statement, int, object> getColumnValue)
+            TableMapping.Column column, Type objectType, Type columnMemberType
+            , Func<Sqlite3Statement, int, object> getColumnValue)
         {
             var clrTypeInfo = (column.IsDictionary ?? GetUnderlyingType(column.PropertyInfo)).GetTypeInfo();
             bool isNullable = clrTypeInfo.IsGenericType && clrTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
@@ -3713,8 +3703,8 @@ namespace SqlCipher4Unity3D
                     };
                 }
             }
-            return CreateTypedSetterDelegate /*<ObjectType, ColumnMemberType>*/(column, objectType, columnMemberType,
-                getColumnValue);
+            return CreateTypedSetterDelegate /*<ObjectType, ColumnMemberType>*/(column, objectType, columnMemberType
+                , getColumnValue);
         }
 
         /// <summary>
@@ -3729,18 +3719,17 @@ namespace SqlCipher4Unity3D
         /// <param name="column">The column mapping that identifies the target member of the destination object</param>
         /// <param name="getColumnValue">A lambda that can be used to retrieve the column value at query-time</param>
         /// <returns>A strongly-typed delegate</returns>
-        ///
         private static Action<TObjectType, Sqlite3Statement, int>
-            CreateTypedSetterDelegate<TObjectType, TColumnMemberType>(TableMapping.Column column,
-                Func<Sqlite3Statement, int, TColumnMemberType> getColumnValue)
+            CreateTypedSetterDelegate<TObjectType, TColumnMemberType>(TableMapping.Column column
+                , Func<Sqlite3Statement, int, TColumnMemberType> getColumnValue)
         {
-            var ret = CreateTypedSetterDelegate(column, typeof(TObjectType), typeof(TColumnMemberType),
-                ((ptr, i) => getColumnValue.Invoke(ptr, i)));
+            var ret = CreateTypedSetterDelegate(column, typeof(TObjectType), typeof(TColumnMemberType)
+                , ((ptr, i) => getColumnValue.Invoke(ptr, i)));
             return (type, ptr, arg3) => ret.Invoke(type, ptr, arg3);
         }
 
-        private static Action<object, Sqlite3Statement, int> CreateTypedSetterDelegate(TableMapping.Column column,
-            Type objectType, Type columnMemberType, Func<Sqlite3Statement, int, object> getColumnValue)
+        private static Action<object, Sqlite3Statement, int> CreateTypedSetterDelegate(TableMapping.Column column
+            , Type objectType, Type columnMemberType, Func<Sqlite3Statement, int, object> getColumnValue)
         {
             if (column.IsDictionary != default) {
                 return (o, stmt, i) => {
@@ -3759,7 +3748,8 @@ namespace SqlCipher4Unity3D
 
                     if (colType != SQLite3.ColType.Null) {
                         var value = getColumnValue.Invoke(stmt, i);
-                        Debug.Log($"{o.GetType().Name} prop: {propertyInfo.DeclaringType?.Name}.{propertyInfo.Name} type: {value.GetType().Name} value: {value}");
+                        Debug.Log(
+                            $"{o.GetType().Name} prop: {propertyInfo.DeclaringType?.Name}.{propertyInfo.Name} type: {value.GetType().Name} value: {value}");
                         propertyInfo.SetValue /*setProperty.Invoke*/(o, value, null);
                     }
                 };
@@ -3814,8 +3804,8 @@ namespace SqlCipher4Unity3D
             //bind the values.
             if (source != null) {
                 for (int i = 0; i < source.Length; i++) {
-                    SQLiteCommand.BindParameter(Statement, i + 1, source[i], Connection.StoreDateTimeAsTicks,
-                        Connection.DateTimeStringFormat, Connection.StoreTimeSpanAsTicks);
+                    SQLiteCommand.BindParameter(Statement, i + 1, source[i], Connection.StoreDateTimeAsTicks
+                        , Connection.DateTimeStringFormat, Connection.StoreTimeSpanAsTicks);
                 }
             }
             r = SQLite3.Step(Statement);
@@ -4139,8 +4129,8 @@ namespace SqlCipher4Unity3D
                 }
 
                 if ((_orderBys != null) && (_orderBys.Count > 0)) {
-                    var t = string.Join(", ",
-                        _orderBys.Select(o => "\"" + o.ColumnName + "\"" + (o.Ascending ? "" : " desc")).ToArray());
+                    var t = string.Join(", "
+                        , _orderBys.Select(o => "\"" + o.ColumnName + "\"" + (o.Ascending ? "" : " desc")).ToArray());
                     cmdText += " order by " + t;
                 }
 

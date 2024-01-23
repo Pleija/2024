@@ -45,8 +45,8 @@ namespace NodeCanvas.DialogueTrees
         public void StartDialogue(IDialogueActor instigator, Action<bool> callback)
         {
             graph = GetInstance(graph);
-            graph.StartGraph(instigator is Component ? (Component)instigator : instigator.transform, blackboard,
-                updateMode, callback);
+            graph.StartGraph(instigator is Component ? (Component)instigator : instigator.transform, blackboard
+                , updateMode, callback);
         }
 
         ///<summary>Pause the DialogueTree</summary>

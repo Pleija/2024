@@ -75,8 +75,7 @@ namespace Runner
 
         public void Consume(Consumable.Consumable.ConsumableType type)
         {
-            if (!consumables.ContainsKey(type))
-                return;
+            if (!consumables.ContainsKey(type)) return;
             consumables[type] -= 1;
             if (consumables[type] == 0) consumables.Remove(type);
             Save();
@@ -109,8 +108,7 @@ namespace Runner
         // Will add missions until we reach 2 missions.
         public void CheckMissionsCount()
         {
-            while (missions.Count < 2)
-                AddMission();
+            while (missions.Count < 2) AddMission();
         }
 
         public void AddMission()
@@ -176,8 +174,7 @@ namespace Runner
             highscores.Insert(GetScorePlace(score), entry);
 
             // Keep only the 10 best scores.
-            while (highscores.Count > 10)
-                highscores.RemoveAt(highscores.Count - 1);
+            while (highscores.Count > 10) highscores.RemoveAt(highscores.Count - 1);
         }
 
         // File management

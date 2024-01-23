@@ -5,13 +5,15 @@
  * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
  */
 
-var global = global || globalThis || (function () { return this; }());
+var global = global || globalThis || (function () {
+    return this;
+}());
 // polyfill old code after use esm module.
 global.global = global;
 
 let puer = global.puer = global.puerts = global.puer || global.puerts || {};
 
-puer.loadType = function(nameOrCSType, ...genericArgs) {
+puer.loadType = function (nameOrCSType, ...genericArgs) {
     let csType = nameOrCSType
     if (typeof nameOrCSType == "string") { // convert string to csType
         csType = jsEnv.GetTypeByString(nameOrCSType)
@@ -31,7 +33,7 @@ puer.loadType = function(nameOrCSType, ...genericArgs) {
 
 let BindingFlags = puer.loadType("System.Reflection.BindingFlags")
 let GET_MEMBER_FLAGS = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
-puer.getNestedTypes = function(nameOrCSType) {
+puer.getNestedTypes = function (nameOrCSType) {
     let csType = nameOrCSType
     if (typeof nameOrCSType == "string") {
         csType = jsEnv.GetTypeByString(nameOrCSType)
@@ -55,7 +57,7 @@ let MemberTypes_Method = MemberTypes.Method
 let GENERIC_INVOKE_ERR_ARG_CHECK_FAILED = {}
 let ARG_FLAG_OUT = 0x01
 let ARG_FLAG_REF = 0x02
-puer.getGenericMethod = function(csType, methodName, ...genericArgs) {
+puer.getGenericMethod = function (csType, methodName, ...genericArgs) {
     if (!csType || (typeof csType.GetMember != 'function')) {
         throw new Error('the class must be a constructor');
     }
@@ -79,7 +81,7 @@ puer.getGenericMethod = function(csType, methodName, ...genericArgs) {
         console.error("puer.getGenericMethod not found", csType.Name, methodName, genericArgs.map(x => puer.$typeof(x).Name).join(","))
         return null
     }
-    let createOverloadFunctionWrap = function(method) {
+    let createOverloadFunctionWrap = function (method) {
         let typeof_System_Object = puer.$typeof(CS.System.Object)
         let paramDefs = method.GetParameters();
         let needArgCount = paramDefs.Length
@@ -104,9 +106,9 @@ puer.getGenericMethod = function(csType, methodName, ...genericArgs) {
             // set args to c# array
             for (let i = 0; i < needArgCount; i++) {
                 let val = (argFlags[i] & ARG_FLAG_REF)
-                    ? (argFlags[i] & ARG_FLAG_OUT 
-                        ? null 
-                        : puer.$unref(args[i])) 
+                    ? (argFlags[i] & ARG_FLAG_OUT
+                        ? null
+                        : puer.$unref(args[i]))
                     : args[i]
                 let jsValType = typeof val
                 if (jsValType === "number" || jsValType == 'bigint') {
@@ -137,7 +139,7 @@ puer.getGenericMethod = function(csType, methodName, ...genericArgs) {
     if (overloadCount == 1) {
         return invokes[0];
     } else {
-        return function(...args) {
+        return function (...args) {
             for (let i = 0; i < invokes.length; i++) {
                 let ret = invokes[i].call(this, ...args)
                 if (ret === GENERIC_INVOKE_ERR_ARG_CHECK_FAILED)
@@ -149,7 +151,7 @@ puer.getGenericMethod = function(csType, methodName, ...genericArgs) {
     }
 }
 
-puer.getLastException = function() {
+puer.getLastException = function () {
     // todo
 }
 puer.evalScript = eval
@@ -170,30 +172,43 @@ let loader = jsEnv.GetLoader();
 function loadFile(path) {
     let debugPath = {};
     var content = loader.ReadFile(path, debugPath);
-    return { content: content, debugPath: debugPath.value };
+    return {content: content, debugPath: debugPath.value};
 }
+
 puer.loadFile = loadFile;
 
 puer.fileExists = loader.FileExists.bind(loader);
 
-global.__tgjsRegisterTickHandler = function(fn) {
+global.__tgjsRegisterTickHandler = function (fn) {
     fn = new CS.System.Action(fn);
     jsEnv.TickHandler = CS.System.Delegate.Combine(jsEnv.TickHandler, fn)
 }
 
 function createTypedValueByTypeCode(value, typecode) {
     switch (typecode) {
-        case CS.System.TypeCode.Char: return new CS.Puerts.CharValue(value);
-        case CS.System.TypeCode.SByte: return new CS.Puerts.SByteValue(value);
-        case CS.System.TypeCode.Byte: return new CS.Puerts.ByteValue(value);
-        case CS.System.TypeCode.Int16: return new CS.Puerts.Int16Value(value);
-        case CS.System.TypeCode.UInt16: return new CS.Puerts.UInt16Value(value);
-        case CS.System.TypeCode.Int32: return new CS.Puerts.Int32Value(value);
-        case CS.System.TypeCode.UInt32: return new CS.Puerts.UInt32Value(value);
-        case CS.System.TypeCode.Int64: return new CS.Puerts.Int64Value(value);
-        case CS.System.TypeCode.UInt64: return new CS.Puerts.UInt64Value(value);
-        case CS.System.TypeCode.Single: return new CS.Puerts.FloatValue(value);
-        case CS.System.TypeCode.Double: return new CS.Puerts.DoubleValue(value);
-        default: return value;
+        case CS.System.TypeCode.Char:
+            return new CS.Puerts.CharValue(value);
+        case CS.System.TypeCode.SByte:
+            return new CS.Puerts.SByteValue(value);
+        case CS.System.TypeCode.Byte:
+            return new CS.Puerts.ByteValue(value);
+        case CS.System.TypeCode.Int16:
+            return new CS.Puerts.Int16Value(value);
+        case CS.System.TypeCode.UInt16:
+            return new CS.Puerts.UInt16Value(value);
+        case CS.System.TypeCode.Int32:
+            return new CS.Puerts.Int32Value(value);
+        case CS.System.TypeCode.UInt32:
+            return new CS.Puerts.UInt32Value(value);
+        case CS.System.TypeCode.Int64:
+            return new CS.Puerts.Int64Value(value);
+        case CS.System.TypeCode.UInt64:
+            return new CS.Puerts.UInt64Value(value);
+        case CS.System.TypeCode.Single:
+            return new CS.Puerts.FloatValue(value);
+        case CS.System.TypeCode.Double:
+            return new CS.Puerts.DoubleValue(value);
+        default:
+            return value;
     }
 }

@@ -76,14 +76,14 @@ namespace NodeCanvas
 
         void ITaskSystem.SendEvent(string name, object value, object sender)
         {
-            ParadoxNotion.Services.Logger.LogWarning("Sending events to standalone action lists has no effect",
-                LogTag.EXECUTION, this);
+            ParadoxNotion.Services.Logger.LogWarning("Sending events to standalone action lists has no effect"
+                , LogTag.EXECUTION, this);
         }
 
         void ITaskSystem.SendEvent<T>(string name, T value, object sender)
         {
-            ParadoxNotion.Services.Logger.LogWarning("Sending events to standalone action lists has no effect",
-                LogTag.EXECUTION, this);
+            ParadoxNotion.Services.Logger.LogWarning("Sending events to standalone action lists has no effect"
+                , LogTag.EXECUTION, this);
         }
 
         [ContextMenu("Play")]

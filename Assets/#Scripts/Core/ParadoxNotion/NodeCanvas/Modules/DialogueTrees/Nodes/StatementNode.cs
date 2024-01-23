@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Name("Say"),
-     Description(
+    [Name("Say")
+     , Description(
          "Make the selected Dialogue Actor talk. You can make the text more dynamic by using variable names in square brackets\ne.g. [myVarName] or [Global/myVarName]")]
     public class StatementNode : DTNode
     {

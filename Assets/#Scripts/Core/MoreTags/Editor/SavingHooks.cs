@@ -1,16 +1,12 @@
 #if UNITY_EDITOR
-
-
 using System.IO;
 using System.Linq;
 using ParadoxNotion;
 using Sirenix.Utilities;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,14 +17,13 @@ namespace MoreTags
         private static bool isApply;
 
         [InitializeOnLoadMethod]
-        static void StartInitializeOnLoadMethod()
+        private static void StartInitializeOnLoadMethod()
         {
             // 注册Apply时的回调
             PrefabUtility.prefabInstanceUpdated = delegate(GameObject instance) {
                 if (isApply) return;
                 isApply = true;
-                if (instance && !instance.TryGetComponent(typeof(TagsRef), out _))
-                    SavePrefab(instance);
+                if (instance && !instance.TryGetComponent(typeof(TagsRef), out _)) SavePrefab(instance);
                 isApply = false;
             };
         }
@@ -38,7 +33,7 @@ namespace MoreTags
             var comp = instance.GetAddComponent<TagsRef>();
         }
 
-        void OnPostprocessPrefab(GameObject g)
+        private void OnPostprocessPrefab(GameObject g)
         {
             Debug.Log(g.GetPath());
             //     var target = g.Children(x => x.TryGetComponent(typeof(TagsRef), out var v)).FirstOrDefault();
@@ -50,19 +45,17 @@ namespace MoreTags
             //Apply(g.transform);
         }
 
-        void Apply(Transform t)
+        private void Apply(Transform t)
         {
-            if (t.name.ToLower().Contains("collider"))
-                t.gameObject.AddComponent<MeshCollider>();
+            if (t.name.ToLower().Contains("collider")) t.gameObject.AddComponent<MeshCollider>();
 
             // Recurse
-            foreach (Transform child in t)
-                Apply(child);
+            foreach (Transform child in t) Apply(child);
         }
 
         private static bool isSaving;
 
-        static void OnWillSaveAssets(string[] paths)
+        private static void OnWillSaveAssets(string[] paths)
         {
             Debug.Log($"Save Assets: {paths.JoinStr("\n")}");
             if (isSaving) return;
@@ -74,10 +67,7 @@ namespace MoreTags
                 {
                     EditorApplication.delayCall -= OnDelayCall;
                     var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-
-                    if (prefab.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault() is { }) {
-                        return;
-                    }
+                    if (prefab.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault() is { }) return;
                     var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
                     var target = go.Children(x => x.gameObject.name == nameof(TagsRef)).FirstOrDefault()?.gameObject;
 
@@ -89,7 +79,7 @@ namespace MoreTags
                             x.transform.SetParent(go.transform);
                         });
                     target.hideFlags = HideFlags.HideInHierarchy;
-                    PrefabUtility.SaveAsPrefabAssetAndConnect(go, path, InteractionMode.AutomatedAction); 
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(go, path, InteractionMode.AutomatedAction);
                     // This save will affect all prefab in Scene!
                     Object.DestroyImmediate(go);
 
@@ -134,7 +124,7 @@ namespace MoreTags
         }
 
         [InitializeOnLoadMethod]
-        static void OnSaveScene()
+        private static void OnSaveScene()
         {
             EditorSceneManager.sceneSaving += (scene, path) => {
                 Debug.Log($"Saving: {path}");

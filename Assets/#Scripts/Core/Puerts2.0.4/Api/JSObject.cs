@@ -24,11 +24,9 @@ namespace Puerts
         public JSObject GetOrCreateJSObject(IntPtr ptr, JsEnv jsEnv)
         {
             WeakReference maybeOne;
-
-            if (nativePtrToJSObject.TryGetValue(ptr, out maybeOne) && maybeOne.IsAlive) {
+            if (nativePtrToJSObject.TryGetValue(ptr, out maybeOne) && maybeOne.IsAlive)
                 return maybeOne.Target as JSObject;
-            }
-            JSObject jsObject = new JSObject(ptr, jsEnv);
+            var jsObject = new JSObject(ptr, jsEnv);
             nativePtrToJSObject[ptr] = new WeakReference(jsObject);
             return jsObject;
         }
@@ -36,10 +34,8 @@ namespace Puerts
         public void RemoveJSObject(IntPtr ptr)
         {
             WeakReference maybeOne;
-
-            if (nativePtrToJSObject.TryGetValue(ptr, out maybeOne) && !maybeOne.IsAlive) {
+            if (nativePtrToJSObject.TryGetValue(ptr, out maybeOne) && !maybeOne.IsAlive)
                 nativePtrToJSObject.Remove(ptr);
-            }
         }
 
         internal bool IsJsObjectAlive(IntPtr ptr)
@@ -71,12 +67,12 @@ namespace Puerts
             }
         }
 
-        static JArray ParseArray(JSObject jsObject)
+        private static JArray ParseArray(JSObject jsObject)
         {
             var arr = new JArray();
             var count = jsObject.jsEnv.Eval<Func<JSObject, int>>("o => o.length").Invoke(jsObject);
 
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 var type = jsObject.jsEnv.Eval<Func<JSObject, int, string>>("(o,i)=>typeof o[i]").Invoke(jsObject, i);
 
                 if (type == "number") {
@@ -95,43 +91,36 @@ namespace Puerts
                 }
                 if (type == "function") continue;
                 var v = jsObject.jsEnv.Eval<Func<JSObject, int, JSObject>>("(o,i)=>o[i]").Invoke(jsObject, i);
-
-                if (v.IsArray()) {
+                if (v.IsArray())
                     arr.Add(ParseArray(v));
-                }
                 else
                     arr.Add(Parse(v));
             }
             return arr;
         }
 
-        static JObject Parse(JSObject jsObject)
+        private static JObject Parse(JSObject jsObject)
         {
-            JObject jo = new JObject();
+            var jo = new JObject();
 
-            foreach (var kvp in jsObject.Map()) {
+            foreach (var kvp in jsObject.Map())
                 if (kvp.Value is JSObject js) {
-                    if (js.IsArray()) {
+                    if (js.IsArray())
                         jo.Add(kvp.Key, ParseArray(js));
-                    }
-                    else {
+                    else
                         jo.Add(kvp.Key, Parse(js));
-                    }
                 }
                 else {
                     jo.Add(new JProperty(kvp.Key, kvp.Value));
                 }
-            }
             return jo;
         }
 
         [CanBeNull]
-        public override object ReadJson(JsonReader reader, Type objectType, [CanBeNull] object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, [CanBeNull] object existingValue
+            , JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null) {
-                return null;
-            }
+            if (reader.TokenType == JsonToken.Null) return null;
             return Js.Call<JSObject>("s => JSON.parse(s)", reader.Value);
         }
 
@@ -202,11 +191,7 @@ namespace Puerts
         }
 
         private IntPtr nativeJsObjectPtr;
-
-        public IntPtr getJsObjPtr()
-        {
-            return jsEnv is { disposed: false } ? nativeJsObjectPtr : IntPtr.Zero;
-        }
+        public IntPtr getJsObjPtr() => jsEnv is { disposed: false } ? nativeJsObjectPtr : IntPtr.Zero;
 
         internal JSObject(IntPtr nativeJsObjectPtr, JsEnv jsEnv)
         {
@@ -215,14 +200,9 @@ namespace Puerts
             jsEnv.IncJSObjRef(nativeJsObjectPtr);
         }
 
-        public T Get<T>(string key)
-        {
-            return jsEnv.JSObjectValueGetter.Func<JSObject, string, T>(this, key);
-        }
-
+        public T Get<T>(string key) => jsEnv.JSObjectValueGetter.Func<JSObject, string, T>(this, key);
         public bool IsAlive => jsEnv is { disposed: false };
         public JSObject Safe => IsAlive ? this : null;
-
         public T[] ToArray<T>() => ((object[])this).Cast<T>().ToArray();
 
         public static implicit operator object[](JSObject value)
@@ -233,12 +213,9 @@ namespace Puerts
                 .Invoke(value);
         }
 
-        public override string ToString()
-        {
-            return jsEnv.Eval<Func<JSObject, string>>("o => JSON.stringify(o)").Invoke(this);
-            //JsonConvert.SerializeObject(Safe, new JsObjectConverter());
-        }
+        public override string ToString() => jsEnv.Eval<Func<JSObject, string>>("o => JSON.stringify(o)").Invoke(this);
 
+        //JsonConvert.SerializeObject(Safe, new JsObjectConverter());
         public string[] Keys()
         {
             var keys = new List<string>();
@@ -254,16 +231,12 @@ namespace Puerts
             return Keys().ToDictionary(t => t, Get<T>) ?? new Dictionary<string, T>();
         }
 
-        public bool IsArray()
-        {
-            return jsEnv.Eval<Func<JSObject, bool>>("o => Array.isArray(o)").Invoke(this);
-        }
+        public bool IsArray() => jsEnv.Eval<Func<JSObject, bool>>("o => Array.isArray(o)").Invoke(this);
 
         ~JSObject()
         {
 #if THREAD_SAFE
-            lock(jsEnv) 
-            {
+            lock (jsEnv) {
 #endif
             jsEnv.DecJSObjRef(nativeJsObjectPtr);
 #if THREAD_SAFE

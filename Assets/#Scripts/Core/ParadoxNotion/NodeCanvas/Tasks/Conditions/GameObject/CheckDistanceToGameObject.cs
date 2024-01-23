@@ -21,8 +21,8 @@ namespace NodeCanvas.Tasks.Conditions
             "Distance" + OperationTools.GetCompareString(checkType) + distance + " to " + checkTarget;
 
         protected override bool OnCheck() => OperationTools.Compare(
-            Vector3.Distance(agent.position, checkTarget.value.transform.position), distance.value, checkType,
-            floatingPoint);
+            Vector3.Distance(agent.position, checkTarget.value.transform.position), distance.value, checkType
+            , floatingPoint);
 
         public override void OnDrawGizmosSelected()
         {

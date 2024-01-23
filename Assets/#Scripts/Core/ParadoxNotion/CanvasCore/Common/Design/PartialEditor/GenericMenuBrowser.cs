@@ -339,8 +339,8 @@ namespace ParadoxNotion.Design
             //HEADER
             GUILayout.Space(5);
             GUILayout.Label(
-                string.Format("<color=#{0}><size=14><b>{1}</b></size></color>",
-                    EditorGUIUtility.isProSkin ? "dddddd" : "222222", headerTitle), Styles.topCenterLabel);
+                string.Format("<color=#{0}><size=14><b>{1}</b></size></color>"
+                    , EditorGUIUtility.isProSkin ? "dddddd" : "222222", headerTitle), Styles.topCenterLabel);
 
             //SEARCH
             if (e.keyCode == KeyCode.DownArrow) GUIUtility.keyboardControl = 0;
@@ -359,8 +359,9 @@ namespace ParadoxNotion.Design
             if (currentNode.parent != null && string.IsNullOrEmpty(search)) {
                 GUILayout.BeginHorizontal("box");
                 if (GUILayout.Button(
-                        string.Format("<b><size=14>◄ {0}/{1}</size></b>", currentNode.parent.name, currentNode.name),
-                        Styles.leftLabel)) currentNode = currentNode.parent;
+                    string.Format("<b><size=14>◄ {0}/{1}</size></b>", currentNode.parent.name, currentNode.name)
+                    , Styles.leftLabel))
+                    currentNode = currentNode.parent;
                 GUILayout.EndHorizontal();
                 var lastRect = GUILayoutUtility.GetLastRect();
 
@@ -403,8 +404,8 @@ namespace ParadoxNotion.Design
 
             foreach (var childPair in currentNode.children) {
                 if (isSearch && i >= 200) {
-                    EditorGUILayout.HelpBox("There are more than 200 results. Please try refine your search input.",
-                        MessageType.Info);
+                    EditorGUILayout.HelpBox("There are more than 200 results. Please try refine your search input."
+                        , MessageType.Info);
                     break;
                 }
                 var node = childPair.Value;
@@ -462,8 +463,8 @@ namespace ParadoxNotion.Design
                 var label = node.name;
                 var hexColor = EditorGUIUtility.isProSkin ? "#B8B8B8" : "#262626";
                 hexColor = isDisabled ? "#666666" : hexColor;
-                var text = string.Format("<color={0}><size=11>{1}</size></color>", hexColor,
-                    !node.isLeaf ? string.Format("<b>{0}</b>", label) : label);
+                var text = string.Format("<color={0}><size=11>{1}</size></color>", hexColor
+                    , !node.isLeaf ? string.Format("<b>{0}</b>", label) : label);
                 GUILayout.Label(text, Styles.leftLabel, GUILayout.Width(0), GUILayout.ExpandWidth(true));
                 GUILayout.Label(node.isLeaf ? "●" : "►", Styles.leftLabel, GUILayout.Width(20));
                 GUILayout.EndHorizontal();

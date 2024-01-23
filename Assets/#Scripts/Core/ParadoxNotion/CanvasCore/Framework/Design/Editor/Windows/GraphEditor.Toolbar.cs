@@ -43,8 +43,9 @@ namespace NodeCanvas.Editor
                 GraphConsole.ShowWindow();
             if (GUILayout.Button(new GUIContent(StyleSheet.lens, "Open Graph Explorer"), EditorStyles.toolbarButton))
                 GraphExplorer.ShowWindow();
-            if (GUILayout.Button(new GUIContent(StyleSheet.refactor, "Open Graph Refactor"),
-                    EditorStyles.toolbarButton)) GraphRefactor.ShowWindow();
+            if (GUILayout.Button(new GUIContent(StyleSheet.refactor, "Open Graph Refactor")
+                , EditorStyles.toolbarButton))
+                GraphRefactor.ShowWindow();
             EditorGUIUtility.SetIconSize(Vector2.zero);
             GUILayout.Space(10);
             ///----------------------------------------------------------------------------------------------
@@ -68,9 +69,9 @@ namespace NodeCanvas.Editor
             GUI.backgroundColor = Color.clear;
             GUI.color = new Color(1, 1, 1, 0.4f);
             if (GUILayout.Button(
-                    string.Format("{0} @ {1} v{2}", graph.GetType().Name,
-                        graphInfoAtt != null ? graphInfoAtt.packageName : "NodeCanvas",
-                        Framework.Internal.GraphSource.FRAMEWORK_VERSION.ToString("0.00")), EditorStyles.toolbarButton))
+                string.Format("{0} @ {1} v{2}", graph.GetType().Name
+                    , graphInfoAtt != null ? graphInfoAtt.packageName : "NodeCanvas"
+                    , Framework.Internal.GraphSource.FRAMEWORK_VERSION.ToString("0.00")), EditorStyles.toolbarButton))
                 Help.BrowseURL("https://paradoxnotion.com");
             EditorGUIUtility.AddCursorRect(GUILayoutUtility.GetLastRect(), MouseCursor.Link);
             GUI.color = Color.white;
@@ -79,8 +80,8 @@ namespace NodeCanvas.Editor
 
             //GRAPHOWNER JUMP SELECTION
             if (owner != null)
-                if (GUILayout.Button(string.Format("[{0}]", owner.gameObject.name), EditorStyles.toolbarDropDown,
-                        GUILayout.Width(120))) {
+                if (GUILayout.Button(string.Format("[{0}]", owner.gameObject.name), EditorStyles.toolbarDropDown
+                    , GUILayout.Width(120))) {
                     var menu = new GenericMenu();
 
                     foreach (var _o in FindObjectsOfType<GraphOwner>().OrderBy(x => x.gameObject != owner.gameObject)) {
@@ -108,25 +109,26 @@ namespace NodeCanvas.Editor
         {
             var menu = new GenericMenu();
             menu.AddItem(new GUIContent("Clear"), false, () => {
-                if (EditorUtility.DisplayDialog("Clear Canvas",
-                        "This will delete all nodes of the currently viewing graph!\nAre you sure?", "YES", "NO!"))
+                if (EditorUtility.DisplayDialog("Clear Canvas"
+                    , "This will delete all nodes of the currently viewing graph!\nAre you sure?", "YES", "NO!"))
                     graph.ClearGraph();
             });
             menu.AddItem(new GUIContent("Import JSON"), false, () => {
-                if (graph.allNodes.Count > 0 && !EditorUtility.DisplayDialog("Import Graph",
-                        "All current graph information will be lost. Are you sure?", "YES", "NO")) return;
-                var path = EditorUtility.OpenFilePanel(string.Format("Import '{0}' Graph", graph.GetType().Name),
-                    "Assets", graph.GetGraphJSONFileExtension());
+                if (graph.allNodes.Count > 0 && !EditorUtility.DisplayDialog("Import Graph"
+                    , "All current graph information will be lost. Are you sure?", "YES", "NO"))
+                    return;
+                var path = EditorUtility.OpenFilePanel(string.Format("Import '{0}' Graph", graph.GetType().Name)
+                    , "Assets", graph.GetGraphJSONFileExtension());
                 if (!string.IsNullOrEmpty(path))
                     if (graph.Deserialize(System.IO.File.ReadAllText(path), null, true) ==
                         false) //true: validate, null: graph._objectReferences
-                        EditorUtility.DisplayDialog("Import Failure", "Please read the logs for more information", "OK",
-                            string.Empty);
+                        EditorUtility.DisplayDialog("Import Failure", "Please read the logs for more information", "OK"
+                            , string.Empty);
             });
             menu.AddItem(new GUIContent("Export JSON"), false, () => {
                 var path = EditorUtility.SaveFilePanelInProject(
-                    string.Format("Export '{0}' Graph", graph.GetType().Name), graph.name,
-                    graph.GetGraphJSONFileExtension(), string.Empty);
+                    string.Format("Export '{0}' Graph", graph.GetType().Name), graph.name
+                    , graph.GetGraphJSONFileExtension(), string.Empty);
 
                 if (!string.IsNullOrEmpty(path)) {
                     var json = graph.Serialize(null);
@@ -138,8 +140,8 @@ namespace NodeCanvas.Editor
             menu.AddItem(new GUIContent("Export JSON (Include SubGraphs)"), false, () => {
                 foreach (var subgraph in graph.GetAllNestedGraphs<Graph>(true).Prepend(graph)) {
                     var subpath = EditorUtility.SaveFilePanelInProject(
-                        string.Format("Export '{0}' Graph", subgraph.GetType().Name), subgraph.name,
-                        subgraph.GetGraphJSONFileExtension(), string.Empty);
+                        string.Format("Export '{0}' Graph", subgraph.GetType().Name), subgraph.name
+                        , subgraph.GetGraphJSONFileExtension(), string.Empty);
 
                     if (!string.IsNullOrEmpty(subpath)) {
                         var subjson = subgraph.Serialize(null);
@@ -165,15 +167,16 @@ namespace NodeCanvas.Editor
             //Bind
             if (!Application.isPlaying && owner != null && !owner.graphIsBound)
                 menu.AddItem(new GUIContent("Bind To Owner"), false, () => {
-                    if (EditorUtility.DisplayDialog("Bind Graph",
-                            "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?",
-                            "YES", "NO")) {
+                    if (EditorUtility.DisplayDialog("Bind Graph"
+                        , "This will make a local copy of the graph, bound to the owner.\n\nThis allows you to make local changes and assign scene object references directly.\n\nNote that you can also use scene object references through the use of Blackboard Variables.\n\nBind Graph?"
+                        , "YES", "NO")) {
                         UndoUtility.RecordObject(owner, "New Local Graph");
                         owner.SetBoundGraphReference(owner.graph);
                         UndoUtility.SetDirty(owner);
                     }
                 });
-            else menu.AddDisabledItem(new GUIContent("Bind To Owner"));
+            else
+                menu.AddDisabledItem(new GUIContent("Bind To Owner"));
 
             //Save to asset
             if (!EditorUtility.IsPersistent(graph))
@@ -186,16 +189,17 @@ namespace NodeCanvas.Editor
                         AssetDatabase.SaveAssets();
                     }
                 });
-            else menu.AddDisabledItem(new GUIContent("Save To Asset"));
+            else
+                menu.AddDisabledItem(new GUIContent("Save To Asset"));
 
             //Create defined vars
             if (graph.blackboard != null)
                 foreach (var bb in graph.blackboard.GetAllParents(true).Reverse()) {
                     var category = "Promote Missing Parameters To Variables/";
                     menu.AddItem(new GUIContent(category + $"In '{bb.identifier}' Blackboard"), false, () => {
-                        if (EditorUtility.DisplayDialog("Promote Missing Parameters",
-                                "This will fill the target Blackboard with a Variable for each defined missing Parameter in the graph.\nContinue?",
-                                "YES", "NO")) {
+                        if (EditorUtility.DisplayDialog("Promote Missing Parameters"
+                            , "This will fill the target Blackboard with a Variable for each defined missing Parameter in the graph.\nContinue?"
+                            , "YES", "NO")) {
                             UndoUtility.RecordObject(graph, "Promote Variables");
                             UndoUtility.RecordObject(bb.unityContextObject, "Promote Variables");
                             graph.PromoteMissingParametersToVariables(bb);
@@ -204,7 +208,8 @@ namespace NodeCanvas.Editor
                         }
                     });
                 }
-            else menu.AddDisabledItem(new GUIContent("Promote Defined Parameters To Variables"));
+            else
+                menu.AddDisabledItem(new GUIContent("Promote Defined Parameters To Variables"));
             menu.AddItem(new GUIContent("Scan Graph for Serialized Struct Types"), false, () => {
                 GraphEditorUtility.ScanForStructTypesAndAppendThem(graph);
             });
@@ -215,7 +220,8 @@ namespace NodeCanvas.Editor
                     GraphEditorUtility.activeElement = null;
                     FullDrawPass();
                 });
-            else menu.AddDisabledItem(new GUIContent("Re-Validate Graph"));
+            else
+                menu.AddDisabledItem(new GUIContent("Re-Validate Graph"));
             return menu;
         }
 

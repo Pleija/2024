@@ -108,19 +108,23 @@ namespace NodeCanvas.Framework
             return mtsFile;
         }
 
-        [SerializeField]  public MtsFile mtsFile;
+        [SerializeField]
+        public MtsFile mtsFile;
 
-        public static string ToFileName(string input) => Regex.Replace(input.Replace("(Clone)","").Split(' ').First(), @"\W+", "");
+        public static string ToFileName(string input) =>
+            Regex.Replace(input.Replace("(Clone)", "").Split(' ').First(), @"\W+", "");
+
         public Node Find(string aName) => allNodes.FirstOrDefault(x => x.NodeName == aName);
         public string FsmName => mtsFile ? Path.GetFileNameWithoutExtension(mtsFile.assetPath) : ToFileName(agent.name);
 
         public string FsmPath =>
-            mtsFile ? mtsFile.assetPath.Split(new [] {"src/"}, StringSplitOptions.None).Last().Replace(".mts",".mjs") : $"{ToFileName(agent.gameObject.scene.name)}/{FsmName}.mjs";
+            mtsFile ? mtsFile.assetPath.Split(new[] { "src/" }, StringSplitOptions.None).Last().Replace(".mts", ".mjs")
+                : $"{ToFileName(agent.gameObject.scene.name)}/{FsmName}.mjs";
 
         public string MakeFile()
         {
             var root = "Packages/tsproj/src";
-            var filePath =  FsmPath; // $"{ToFileName(agent.gameObject.scene.name)}/{FsmName}.mjs";
+            var filePath = FsmPath; // $"{ToFileName(agent.gameObject.scene.name)}/{FsmName}.mjs";
             var classPath = Path.GetFullPath($"{root}/{filePath.Replace(".mjs", ".mts")}");
             if (!Directory.Exists(Path.GetDirectoryName(classPath)))
                 Directory.CreateDirectory(Path.GetDirectoryName(classPath)!);
@@ -149,8 +153,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             //imports.ForEach(x => Debug.Log(x.GetText()));
 
             if (!imports.Any(x => x.GetText().Contains(filePath))) {
-                change.InsertAfter(imports.Last(),
-                    $"\n    import {{ {FsmName} }} from \"{filePath}\";\n    declare var ${FsmName}: {FsmName};");
+                change.InsertAfter(imports.Last()
+                    , $"\n    import {{ {FsmName} }} from \"{filePath}\";\n    declare var ${FsmName}: {FsmName};");
                 var newSource = change.GetChangedSource(ast.SourceStr);
                 File.WriteAllText(dtsPath, newSource);
             }
@@ -166,7 +170,7 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                 var newSource = change.GetChangedSource(ast.SourceStr);
                 File.WriteAllText(bootstrapPath, newSource);
             }
-            return classPath.Replace(Directory.GetCurrentDirectory()+"/","");
+            return classPath.Replace(Directory.GetCurrentDirectory() + "/", "");
         }
 
         ///<summary>Update mode of the graph (see 'StartGraph')</summary>
@@ -207,8 +211,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         [SerializeField]
         private bool _haltSerialization;
 
-        [SerializeField,
-         Tooltip("An external text asset file to serialize the graph on top of the internal serialization")]
+        [SerializeField
+         , Tooltip("An external text asset file to serialize the graph on top of the internal serialization")]
         private TextAsset _externalSerializationFile;
 
         public TextAsset externalSerializationFile {
@@ -354,8 +358,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
                 JSONSerializer.TryDeserializeOverwrite<GraphSource>(graphSource, serializedGraph, references);
 
                 if (graphSource.type != GetType().FullName) {
-                    Logger.LogError("Can't Load graph because of different Graph type serialized and required.",
-                        LogTag.SERIALIZATION, this);
+                    Logger.LogError("Can't Load graph because of different Graph type serialized and required."
+                        , LogTag.SERIALIZATION, this);
                     _haltSerialization = true;
                     return false;
                 }
@@ -766,16 +770,16 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         ///     Start the graph for the agent and blackboard provided with specified update mode. Optionally provide a
         ///     callback for when the graph stops/ends
         /// </summary>
-        public void StartGraph(Component newAgent, IBlackboard newParentBlackboard, UpdateMode newUpdateMode,
-            Action<bool> callback = null)
+        public void StartGraph(Component newAgent, IBlackboard newParentBlackboard, UpdateMode newUpdateMode
+            , Action<bool> callback = null)
         {
 #if UNITY_EDITOR
             Debug.Assert(Application.isPlaying, "StartGraph should have been called in play mode only.");
-            Debug.Assert(!UnityEditor.EditorUtility.IsPersistent(this),
-                "You have tried to start a graph which is an asset, not an instance! You should Instantiate the graph first.");
+            Debug.Assert(!UnityEditor.EditorUtility.IsPersistent(this)
+                , "You have tried to start a graph which is an asset, not an instance! You should Instantiate the graph first.");
 #endif
-            Debug.Assert(newParentBlackboard != blackboard,
-                "StartGraph called with blackboard parameter being the same as the graph blackboard");
+            Debug.Assert(newParentBlackboard != blackboard
+                , "StartGraph called with blackboard parameter being the same as the graph blackboard");
 
             if (newAgent == null && requiresAgent) {
                 Logger.LogError("You've tried to start a graph with null Agent.", LogTag.GRAPH, this);
@@ -783,8 +787,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             }
 
             if (primeNode == null && requiresPrimeNode && GetType().Name != "FSM") {
-                Logger.LogError($"{GetType().Name}: You've tried to start graph without a 'Start' node.", LogTag.GRAPH,
-                    this);
+                Logger.LogError($"{GetType().Name}: You've tried to start graph without a 'Start' node.", LogTag.GRAPH
+                    , this);
                 return;
             }
 
@@ -912,8 +916,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             }
             else {
                 Logger.LogWarning(
-                    "UpdateGraph called in a non-running, non-paused graph. StartGraph() or StartBehaviour() should be called first.",
-                    LogTag.EXECUTION, this);
+                    "UpdateGraph called in a non-running, non-paused graph. StartGraph() or StartBehaviour() should be called first."
+                    , LogTag.EXECUTION, this);
             }
             // UnityEngine.Profiling.Profiler.EndSample();
         }
@@ -1160,8 +1164,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
             for (var i = 0; i < currentGraph.allNodes.Count; i++) {
                 var assignable = currentGraph.allNodes[i] as IGraphAssignable;
                 if (assignable != null && assignable.subGraph != null)
-                    DigNestedGraphs(assignable.subGraph,
-                        currentElement.AddChild(new HierarchyTree.Element(assignable)));
+                    DigNestedGraphs(assignable.subGraph
+                        , currentElement.AddChild(new HierarchyTree.Element(assignable)));
             }
         }
 
@@ -1247,8 +1251,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         public Node AddNode(System.Type nodeType, Vector2 pos)
         {
             if (!nodeType.RTIsSubclassOf(baseNodeType)) {
-                Logger.LogWarning(nodeType + " can't be added to " + GetType().FriendlyName() + " graph.", LogTag.GRAPH,
-                    this);
+                Logger.LogWarning(nodeType + " can't be added to " + GetType().FriendlyName() + " graph.", LogTag.GRAPH
+                    , this);
                 return null;
             }
             var newNode = Node.Create(this, nodeType, pos);
@@ -1336,8 +1340,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         }
 
         ///<summary>Makes a copy of provided nodes and if targetGraph is provided, puts those new nodes in that graph.</summary>
-        public static List<Node> CloneNodes(List<Node> originalNodes, Graph targetGraph = null,
-            Vector2 originPosition = default)
+        public static List<Node> CloneNodes(List<Node> originalNodes, Graph targetGraph = null
+            , Vector2 originPosition = default)
         {
             if (targetGraph != null)
                 if (originalNodes.Any(n => n.GetType().IsSubclassOf(targetGraph.baseNodeType) == false))
@@ -1397,8 +1401,8 @@ export const self:{FsmName} = global.${FsmName} ??= new {FsmName}();
         }
 
         [Obsolete("Use 'Graph.StartGraph' with the 'Graph.UpdateMode' parameter.")]
-        public void StartGraph(Component newAgent, IBlackboard newBlackboard, bool autoUpdate,
-            Action<bool> callback = null)
+        public void StartGraph(Component newAgent, IBlackboard newBlackboard, bool autoUpdate
+            , Action<bool> callback = null)
         {
             StartGraph(newAgent, newBlackboard, autoUpdate ? UpdateMode.NormalUpdate : UpdateMode.Manual, callback);
         }

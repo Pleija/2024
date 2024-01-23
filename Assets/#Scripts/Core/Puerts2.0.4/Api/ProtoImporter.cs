@@ -6,8 +6,6 @@
  */
 
 #if UNITY_EDITOR
-
-
 #if UNITY_2018_1_OR_NEWER
 using System.IO;
 #if UNITY_2020_2_OR_NEWER
@@ -24,7 +22,7 @@ public class ProtoImporter : ScriptedImporter
     {
         //var content = XXTEA.EncryptToBase64String(File.ReadAllText(ctx.assetPath)) ;
         var content = File.ReadAllText(ctx.assetPath).ToBase64();
-        TextAsset subAsset = new TextAsset(content);
+        var subAsset = new TextAsset(content);
         ctx.AddObjectToAsset("text", subAsset);
         ctx.SetMainObject(subAsset);
     }

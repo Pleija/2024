@@ -5,41 +5,43 @@ using ParadoxNotion.Design;
 
 namespace FlowCanvas.Nodes
 {
-
-
-    [Description("Enumerate a value (usualy a list or array) for each of it's elements. Remember that you can also enumerate a Transform for it's children.")]
-    [Category("Flow Controllers/Iterators")]
-    [ContextDefinedInputs(typeof(IEnumerable))]
-    [ContextDefinedOutputs(typeof(object))]
+    [Description(
+         "Enumerate a value (usualy a list or array) for each of it's elements. Remember that you can also enumerate a Transform for it's children.")
+     , Category("Flow Controllers/Iterators"), ContextDefinedInputs(typeof(IEnumerable))
+     , ContextDefinedOutputs(typeof(object))]
     public class ForEach : FlowControlNode
     {
-
         private object currentObject;
         private int currentIndex;
         private bool broken;
         private ValueInput<IEnumerable> enumerableInput;
 
-        protected override void RegisterPorts() {
+        protected override void RegisterPorts()
+        {
             enumerableInput = AddValueInput<IEnumerable>("Value");
-            AddValueOutput<object>("Current", () => { return currentObject; });
-            AddValueOutput<int>("Index", () => { return currentIndex; });
+            AddValueOutput<object>("Current", () => {
+                return currentObject;
+            });
+            AddValueOutput<int>("Index", () => {
+                return currentIndex;
+            });
             var fCurrent = AddFlowOutput("Do");
             var fFinish = AddFlowOutput("Done");
-            AddFlowInput("In", (f) =>
-            {
+            AddFlowInput("In", (f) => {
                 currentIndex = -1;
                 var li = enumerableInput.value;
-                if ( li == null ) {
+
+                if (li == null) {
                     fFinish.Call(f);
                     return;
                 }
-
                 broken = false;
-                f.BeginBreakBlock(() => { broken = true; });
-                foreach ( var o in li ) {
-                    if ( broken ) {
-                        break;
-                    }
+                f.BeginBreakBlock(() => {
+                    broken = true;
+                });
+
+                foreach (var o in li) {
+                    if (broken) break;
                     currentObject = o;
                     currentIndex++;
                     fCurrent.Call(f);
@@ -47,59 +49,57 @@ namespace FlowCanvas.Nodes
                 f.EndBreakBlock();
                 fFinish.Call(f);
             });
-
-            AddFlowInput("Break", (f) => { broken = true; });
+            AddFlowInput("Break", (f) => {
+                broken = true;
+            });
         }
 
-        public override System.Type GetNodeWildDefinitionType() {
-            return typeof(IEnumerable);
-        }
+        public override System.Type GetNodeWildDefinitionType() => typeof(IEnumerable);
 
-        public override void OnPortConnected(Port port, Port otherPort) {
-            if ( port == enumerableInput ) {
+        public override void OnPortConnected(Port port, Port otherPort)
+        {
+            if (port == enumerableInput) {
                 var elementType = otherPort.type.GetEnumerableElementType();
-                if ( elementType != null ) {
-                    ReplaceWith(typeof(ForEach<>).RTMakeGenericType(elementType));
-                }
+                if (elementType != null) ReplaceWith(typeof(ForEach<>).RTMakeGenericType(elementType));
             }
         }
-
     }
 
     ///----------------------------------------------------------------------------------------------
-
-    [Description("Enumerate a value (usualy a list or array) for each of it's elements")]
-    [Category("Flow Controllers/Iterators")]
-    [ContextDefinedOutputs(typeof(Wild))]
-    [ExposeAsDefinition]
+    [Description("Enumerate a value (usualy a list or array) for each of it's elements")
+     , Category("Flow Controllers/Iterators"), ContextDefinedOutputs(typeof(Wild)), ExposeAsDefinition]
     public class ForEach<T> : FlowControlNode
     {
-
         private T currentObject;
         private int currentIndex;
         private bool broken;
 
-        protected override void RegisterPorts() {
+        protected override void RegisterPorts()
+        {
             var list = AddValueInput<IEnumerable<T>>("Value");
-            AddValueOutput<T>("Current", () => { return currentObject; });
-            AddValueOutput<int>("Index", () => { return currentIndex; });
+            AddValueOutput<T>("Current", () => {
+                return currentObject;
+            });
+            AddValueOutput<int>("Index", () => {
+                return currentIndex;
+            });
             var fCurrent = AddFlowOutput("Do");
             var fFinish = AddFlowOutput("Done");
-            AddFlowInput("In", (f) =>
-            {
+            AddFlowInput("In", (f) => {
                 currentIndex = -1;
                 var li = list.value;
-                if ( li == null ) {
+
+                if (li == null) {
                     fFinish.Call(f);
                     return;
                 }
-
                 broken = false;
-                f.BeginBreakBlock(() => { broken = true; });
-                foreach ( var o in li ) {
-                    if ( broken ) {
-                        break;
-                    }
+                f.BeginBreakBlock(() => {
+                    broken = true;
+                });
+
+                foreach (var o in li) {
+                    if (broken) break;
                     currentObject = o;
                     currentIndex++;
                     fCurrent.Call(f);
@@ -107,8 +107,9 @@ namespace FlowCanvas.Nodes
                 f.EndBreakBlock();
                 fFinish.Call(f);
             });
-
-            AddFlowInput("Break", (f) => { broken = true; });
+            AddFlowInput("Break", (f) => {
+                broken = true;
+            });
         }
     }
 }

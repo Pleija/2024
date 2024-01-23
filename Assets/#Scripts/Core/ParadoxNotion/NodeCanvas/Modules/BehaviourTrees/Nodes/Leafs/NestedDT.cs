@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Sub Dialogue"),
-     Description(
-         "Executes a sub Dialogue Tree. Returns Running while the sub Dialogue Tree is active. You can Finish the Dialogue Tree with the 'Finish' node and return Success or Failure."),
-     Icon("Dialogue"), DropReferenceType(typeof(DialogueTree))]
+    [Name("Sub Dialogue")
+     , Description(
+         "Executes a sub Dialogue Tree. Returns Running while the sub Dialogue Tree is active. You can Finish the Dialogue Tree with the 'Finish' node and return Success or Failure.")
+     , Icon("Dialogue"), DropReferenceType(typeof(DialogueTree))]
     public class NestedDT : BTNodeNested<DialogueTree>
     {
         [SerializeField, ExposeField, Name("Sub Tree")]

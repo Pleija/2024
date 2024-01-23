@@ -146,8 +146,8 @@ namespace NodeCanvas.Framework.Internal
             //connections are serialized seperately and not part of their parent node
             var structConnections = new List<Connection>();
             for (var i = 0; i < nodes.Count; i++)
-            for (var j = 0; j < nodes[i].outConnections.Count; j++)
-                structConnections.Add(nodes[i].outConnections[j]);
+                for (var j = 0; j < nodes[i].outConnections.Count; j++)
+                    structConnections.Add(nodes[i].outConnections[j]);
             connections = structConnections;
 
             //serialize derived data

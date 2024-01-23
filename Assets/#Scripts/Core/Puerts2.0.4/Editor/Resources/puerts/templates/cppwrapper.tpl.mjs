@@ -4,7 +4,7 @@
 * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
 * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
 */
-import { FOR, default as t, IF, ENDIF, ELSE } from "./tte.mjs"
+import {FOR, default as t, IF, ENDIF, ELSE} from "./tte.mjs"
 
 const sigs = CS.PuertsIl2cpp.TypeUtils.TypeSignatures;
 
@@ -36,6 +36,7 @@ const PrimitiveSignatureCppTypeMap = {
 function needThis(wrapperInfo) {
     return wrapperInfo.ThisSignature == 't' || wrapperInfo.ThisSignature == 'T'
 }
+
 function getSignatureWithoutRefAndPrefix(signature) {
     if (signature[0] == 'P' || signature[0] == 'D') {
         return signature.substring(1);
@@ -59,7 +60,7 @@ const CODE_SNIPPETS = {
         }
         return t;
     },
-    
+
     defineValueType(valueTypeInfo) {
         // TODO 会存在一个 IsEnum 且 IsGenericParameter 的类型，signature为空，先过滤处理，晚点彻查。
         if (!valueTypeInfo.Signature) return ''
@@ -76,7 +77,7 @@ struct ${valueTypeInfo.Signature}
 };
     `;
     },
-    
+
     getThis(signature) {
         if (signature == 't') {
             return 'auto self = puerts::DataTransfer::GetPointerFast<void>(info.Holder());'
@@ -86,7 +87,7 @@ struct ${valueTypeInfo.Signature}
             return '';
         }
     },
-    
+
     getArgValue(signature, JSName, isRef) {
         if (signature in PrimitiveSignatureCppTypeMap) {
             return isRef ? `converter::Converter<std::reference_wrapper<${PrimitiveSignatureCppTypeMap[signature]}>>::toCpp(context, ${JSName})`
@@ -101,16 +102,16 @@ struct ${valueTypeInfo.Signature}
                 if (signature == 'v') throw "void has no default";
                 return signature == 'b' ? 'false' : '0';
             }
-        
+
             if ((signature.startsWith(sigs.StructPrefix) || signature.startsWith(sigs.NullableStructPrefix)) && signature.endsWith('_')) {
                 return '{}'
             }
-        
+
             return 'nullptr';
         }
     },
 
-    declareTypeInfo(wrapperInfo) {   
+    declareTypeInfo(wrapperInfo) {
         const returnHasTypeInfo = wrapperInfo.ReturnSignature && !(getSignatureWithoutRefAndPrefix(wrapperInfo.ReturnSignature) in PrimitiveSignatureCppTypeMap)
         const ret = [];
         let i = 0;
@@ -124,7 +125,7 @@ struct ${valueTypeInfo.Signature}
         })
         return ret.join('\n    ')
     },
-    
+
     checkJSArg(signature, index) {
         let ret = ''
         let TypeInfoIndex = index;
@@ -160,7 +161,7 @@ struct ${valueTypeInfo.Signature}
         }
         return ret;
     },
-    
+
     refSetback(signature, index) {
         if (signature[0] == 'P' && signature != 'Pv') {
             const elementSignature = signature.substring(1);
@@ -174,14 +175,14 @@ struct ${valueTypeInfo.Signature}
     {
         auto _unused = op${index}->Set(context, 0, ${val});
     }
-            `;    
+            `;
                 } else if (elementSignature.startsWith(sigs.NullableStructPrefix) && elementSignature.endsWith('_')) {
                     return `if (!op${index}.IsEmpty() && p${index} == &up${index})
     {
         if (!p${index}->hasValue) auto _unused = op${index}->Set(context, 0, v8::Null(isolate));
         if (p${index} == &up${index}) auto _unused = op${index}->Set(context, 0, ${val});
     }
-            `;    
+            `;
 
                 } else {
                     return `if (!op${index}.IsEmpty())
@@ -192,12 +193,12 @@ struct ${valueTypeInfo.Signature}
                 }
             }
         }
-        
+
         return '';
     },
-    
+
     returnToJS(signature) {
-    
+
         if (signature == 'i8') {
             return 'info.GetReturnValue().Set(v8::BigInt::New(isolate, ret));';
         } else if (signature == 'u8') {
@@ -222,7 +223,7 @@ struct ${valueTypeInfo.Signature}
             return `// unknow ret signature: ${signature}`
         }
     },
-    
+
     returnToCS(signature) {
         return `
 ${CODE_SNIPPETS.JSValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret')}
@@ -300,7 +301,7 @@ ${CODE_SNIPPETS.JSValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret')}
         } else if (signature[0] == 'V') {
             const si = signature.substring(1);
             const start = parseInt(JSName.match(/info\[(\d+)\]/)[1]);
-            if (si in PrimitiveSignatureCppTypeMap) { 
+            if (si in PrimitiveSignatureCppTypeMap) {
                 return `    // JSValToCSVal primitive params
     void* ${CSName} = RestArguments<${PrimitiveSignatureCppTypeMap[si]}>::PackPrimitive(context, info, TI${CSName}, ${start});
                 `
@@ -312,7 +313,7 @@ ${CODE_SNIPPETS.JSValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret')}
                 return `    // JSValToCSVal ref params
     void* ${CSName} = RestArguments<void*>::PackRef(context, info, TI${CSName}, ${start});
                 `
-            } else if ((si.startsWith(sigs.StructPrefix) || si.startsWith(sigs.NullableStructPrefix)) && si.endsWith('_')) { 
+            } else if ((si.startsWith(sigs.StructPrefix) || si.startsWith(sigs.NullableStructPrefix)) && si.endsWith('_')) {
                 return `    // JSValToCSVal valuetype params
     void* ${CSName} = RestArguments<${si}>::PackValueType(context, info, TI${CSName}, ${start});
                 `
@@ -324,7 +325,7 @@ ${CODE_SNIPPETS.JSValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret')}
         } else if (signature[0] == 'D') {
             const si = signature.substring(1);
             const start = parseInt(JSName.match(/info\[(\d+)\]/)[1]);
-            if (si in PrimitiveSignatureCppTypeMap) { 
+            if (si in PrimitiveSignatureCppTypeMap) {
                 return `    // JSValToCSVal primitive with default
     ${PrimitiveSignatureCppTypeMap[si]} ${CSName} = OptionalParameter<${PrimitiveSignatureCppTypeMap[si]}>::GetPrimitive(context, info, method, wrapData, ${start});
                 `
@@ -336,7 +337,7 @@ ${CODE_SNIPPETS.JSValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret')}
                 return `    // JSValToCSVal ref  with default
     void* ${CSName} = OptionalParameter<void*>::GetRefType(context, info, method, wrapData, ${start}, TI${CSName});
                 `
-            } else if ((si.startsWith(sigs.StructPrefix) || si.startsWith(sigs.NullableStructPrefix)) && si.endsWith('_')) { 
+            } else if ((si.startsWith(sigs.StructPrefix) || si.startsWith(sigs.NullableStructPrefix)) && si.endsWith('_')) {
                 return `    // JSValToCSVal valuetype  with default
     ${si} ${CSName} = OptionalParameter<${si}>::GetValueType(context, info, method, wrapData, ${start});
                 `
@@ -368,7 +369,8 @@ ${CODE_SNIPPETS.JSValToCSVal(signature, 'MaybeRet.ToLocalChecked()', 'ret')}
 
 function genArgsLenCheck(parameterSignatures) {
     var requireNum = 0;
-    for (; requireNum < parameterSignatures.length && parameterSignatures[requireNum][0] != 'V' && parameterSignatures[requireNum][0] != 'D'; ++requireNum) { }
+    for (; requireNum < parameterSignatures.length && parameterSignatures[requireNum][0] != 'V' && parameterSignatures[requireNum][0] != 'D'; ++requireNum) {
+    }
     return requireNum != parameterSignatures.length ? `length < ${requireNum}` : `length != ${parameterSignatures.length}`;
 }
 
@@ -412,25 +414,25 @@ ${parameterSignatures.map((x, i) => CODE_SNIPPETS.JSValToCSVal(x, `info[${i}]`, 
 
 function genBridgeArgs(parameterSignatures) {
     if (parameterSignatures.length != 0) {
-        if (parameterSignatures[parameterSignatures.length -1][0] != 'V') {
+        if (parameterSignatures[parameterSignatures.length - 1][0] != 'V') {
             return `v8::Local<v8::Value> Argv[${parameterSignatures.length}]{
-        ${parameterSignatures.map((ps, i)=> CODE_SNIPPETS.CSValToJSVal(ps, `p${i}`) || 'v8::Undefined(isolate)').join(`,
+        ${parameterSignatures.map((ps, i) => CODE_SNIPPETS.CSValToJSVal(ps, `p${i}`) || 'v8::Undefined(isolate)').join(`,
         `)}
     };`
         } else {
-            const si = parameterSignatures[parameterSignatures.length -1].substring(1);
+            const si = parameterSignatures[parameterSignatures.length - 1].substring(1);
             let unpackMethod = 'RestArguments<void*>::UnPackRefOrBoxedValueType';
             if (si in PrimitiveSignatureCppTypeMap) {
                 unpackMethod = `RestArguments<${PrimitiveSignatureCppTypeMap[si]}>::UnPackPrimitive`;
             } else if ((si.startsWith(sigs.StructPrefix) || si.startsWith(sigs.NullableStructPrefix)) && si.endsWith('_')) {
                 unpackMethod = `RestArguments<${si}>::UnPackValueType`;
-            } 
+            }
             return `auto arrayLength = GetArrayLength(p${parameterSignatures.length - 1});
-    v8::Local<v8::Value> *Argv = (v8::Local<v8::Value> *)alloca(sizeof(v8::Local<v8::Value>) * (${parameterSignatures.length  - 1} + arrayLength));
-    memset(Argv, 0, sizeof(v8::Local<v8::Value>) * (${parameterSignatures.length  - 1} + arrayLength));
-    ${parameterSignatures.slice(0, -1).map((ps, i)=> `Argv[${i}] = ${(CODE_SNIPPETS.CSValToJSVal(ps, `p${i}`) || 'v8::Undefined(isolate)')};`).join(`
+    v8::Local<v8::Value> *Argv = (v8::Local<v8::Value> *)alloca(sizeof(v8::Local<v8::Value>) * (${parameterSignatures.length - 1} + arrayLength));
+    memset(Argv, 0, sizeof(v8::Local<v8::Value>) * (${parameterSignatures.length - 1} + arrayLength));
+    ${parameterSignatures.slice(0, -1).map((ps, i) => `Argv[${i}] = ${(CODE_SNIPPETS.CSValToJSVal(ps, `p${i}`) || 'v8::Undefined(isolate)')};`).join(`
     `)}
-    ${unpackMethod}(context, p${parameterSignatures.length-1}, arrayLength, TIp${parameterSignatures.length-1}, Argv + ${parameterSignatures.length  - 1});`;
+    ${unpackMethod}(context, p${parameterSignatures.length - 1}, arrayLength, TIp${parameterSignatures.length - 1}, Argv + ${parameterSignatures.length - 1});`;
         }
     } else {
         return 'v8::Local<v8::Value> *Argv = nullptr;';
@@ -439,7 +441,7 @@ function genBridgeArgs(parameterSignatures) {
 
 function genBridge(bridgeInfo) {
     var parameterSignatures = listToJsArray(bridgeInfo.ParameterSignatures);
-    let hasVarArgs = parameterSignatures.length > 0 && parameterSignatures[parameterSignatures.length -1][0] == 'V'
+    let hasVarArgs = parameterSignatures.length > 0 && parameterSignatures[parameterSignatures.length - 1][0] == 'V'
     return t`
 static ${CODE_SNIPPETS.SToCPPType(bridgeInfo.ReturnSignature)} b_${bridgeInfo.Signature}(void* target, ${parameterSignatures.map((S, i) => `${CODE_SNIPPETS.SToCPPType(S)} p${i}`).map(s => `${s}, `).join('')}void* method) {
     // PLog(LogLevel::Log, "Running b_${bridgeInfo.Signature}");
@@ -505,7 +507,7 @@ function genGetField(fieldWrapperInfo) {
     } else {
         return `${CODE_SNIPPETS.SToCPPType(fieldWrapperInfo.ReturnSignature)} ret;
 
-    FieldGet(${needThis(fieldWrapperInfo) ? 'self, ': 'nullptr, '}fieldInfo, offset, &ret);
+    FieldGet(${needThis(fieldWrapperInfo) ? 'self, ' : 'nullptr, '}fieldInfo, offset, &ret);
     
     ${CODE_SNIPPETS.returnToJS(fieldWrapperInfo.ReturnSignature)}`
     }
@@ -537,7 +539,7 @@ static void ifs_${fieldWrapperInfo.Signature}(const v8::FunctionCallbackInfo<v8:
 
     ${ENDIF()}    
     ${CODE_SNIPPETS.JSValToCSVal(fieldWrapperInfo.ReturnSignature, "info[0]", "p")}
-    FieldSet(${needThis(fieldWrapperInfo) ? 'self, ': 'nullptr, '}fieldInfo, offset, ${['o', 's', 'p', 'a'].indexOf(fieldWrapperInfo.Signature) != -1 ? 'p' : '&p'});
+    FieldSet(${needThis(fieldWrapperInfo) ? 'self, ' : 'nullptr, '}fieldInfo, offset, ${['o', 's', 'p', 'a'].indexOf(fieldWrapperInfo.Signature) != -1 ? 'p' : '&p'});
 }`;
 }
 

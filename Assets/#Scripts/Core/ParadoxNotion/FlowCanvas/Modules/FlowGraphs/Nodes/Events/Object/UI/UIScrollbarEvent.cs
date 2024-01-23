@@ -5,35 +5,37 @@ using System;
 
 namespace FlowCanvas.Nodes
 {
-
-    [Name("UI Scrollbar")]
-    [Category("Events/Object/UI")]
-    [Description("Called when the target UI Scrollbar value changed.")]
-    public class UIScrollbarEvent : EventNode<UnityEngine.UI.Scrollbar>
+    [Name("UI Scrollbar"), Category("Events/Object/UI")
+     , Description("Called when the target UI Scrollbar value changed.")]
+    public class UIScrollbarEvent : EventNode<Scrollbar>
     {
-
         private FlowOutput o;
         private float value;
 
-        public override void OnPostGraphStarted() {
+        public override void OnPostGraphStarted()
+        {
             ResolveSelf();
-            if ( !target.isNull ) {
-                target.value.onValueChanged.AddListener(OnValueChanged);
-            }
-        }
-        public override void OnGraphStoped() {
-            if ( !target.isNull ) {
-                target.value.onValueChanged.RemoveListener(OnValueChanged);
-            }
+            if (!target.isNull) target.value.onValueChanged.AddListener(OnValueChanged);
         }
 
-        protected override void RegisterPorts() {
+        public override void OnGraphStoped()
+        {
+            if (!target.isNull) target.value.onValueChanged.RemoveListener(OnValueChanged);
+        }
+
+        protected override void RegisterPorts()
+        {
             o = AddFlowOutput("Value Changed");
-            AddValueOutput<UnityEngine.UI.Scrollbar>("This", () => { return base.target.value; });
-            AddValueOutput<float>("Value", () => { return value; });
+            AddValueOutput<Scrollbar>("This", () => {
+                return target.value;
+            });
+            AddValueOutput<float>("Value", () => {
+                return value;
+            });
         }
 
-        void OnValueChanged(float value) {
+        private void OnValueChanged(float value)
+        {
             this.value = value;
             o.Call(new Flow());
         }

@@ -1,5 +1,4 @@
 ﻿#if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
@@ -9,18 +8,15 @@ using Sirenix.OdinInspector.Editor;
 
 namespace Slate
 {
-
     [CustomEditor(typeof(CutsceneTrack), true)]
     public class CutsceneTrackInspector : OdinEditor
     {
+        private CutsceneTrack track => (CutsceneTrack)target;
 
-        private CutsceneTrack track {
-            get { return (CutsceneTrack)target; }
-        }
-
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             base.OnInspectorGUI();
-            /*		
+            /*
                         if (track is IKeyable){
                             var keyable = track as IKeyable;
                             if (keyable.animationData != null && keyable.animationData.isValid){

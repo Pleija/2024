@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Category("System Events"), Name("Check Trigger 2D"),
-     Description(
+    [Category("System Events"), Name("Check Trigger 2D")
+     , Description(
          "The agent is type of Transform so that Triggers can either work with a Collider or a Rigidbody attached.")]
     public class CheckTrigger2D_Transform : ConditionTask<Transform>
     {

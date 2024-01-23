@@ -10,8 +10,10 @@ public static class StringExtensions
 
     public static bool IsMatch(this string s, string pattern)
     {
-        if (s == null) return false;
-        else return Regex.IsMatch(s, pattern);
+        if (s == null)
+            return false;
+        else
+            return Regex.IsMatch(s, pattern);
     }
 
     public static string Match(this string s, string pattern)
@@ -26,10 +28,7 @@ public static class StringExtensions
         return int.TryParse(s, out i);
     }
 
-    public static int ToInt(this string s)
-    {
-        return int.Parse(s);
-    }
+    public static int ToInt(this string s) => int.Parse(s);
 
     public static string ToCamel(this string s)
     {
@@ -43,8 +42,6 @@ public static class StringExtensions
         return s[0].ToString().ToUpper() + s.Substring(1);
     }
 
-
-
     public static string FormatWith(this string format, params object[] args)
     {
         args = args ?? new object[0];
@@ -54,22 +51,18 @@ public static class StringExtensions
 
         if (numberedTemplateCount != args.Length) {
             var argsDictionary = args[0].ToDictionary();
-
-            if (!argsDictionary.Any()) {
+            if (!argsDictionary.Any())
                 throw new InvalidOperationException(
                     "Please supply enough args for the numbered templates or use an anonymous object to identify the templates by name.");
-            }
-            result = argsDictionary.Aggregate(format,
-                (current, o) => current.Replace("{" + o.Key + "}", (o.Value ?? string.Empty).ToString()));
+            result = argsDictionary.Aggregate(format
+                , (current, o) => current.Replace("{" + o.Key + "}", (o.Value ?? string.Empty).ToString()));
         }
         else {
             result = string.Format(format, args);
         }
-
-        if (result == format) {
+        if (result == format)
             throw new InvalidOperationException(
                 "You cannot mix template types. Use numbered templates or named ones with an anonymous object.");
-        }
         return result;
     }
 }

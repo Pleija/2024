@@ -7,9 +7,9 @@ namespace ParadoxNotion.Services
     ///     Automaticaly added to a gameobject when needed. Handles forwarding Unity event messages to listeners that need
     ///     them as well as Custom event forwarding. Notice: this is a partial class. Add your own methods/events if you like.
     /// </summary>
-    public partial class EventRouter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler,
-        IPointerUpHandler, IPointerClickHandler, IDragHandler, IScrollHandler, IUpdateSelectedHandler, ISelectHandler,
-        IDeselectHandler, IMoveHandler, ISubmitHandler, IDropHandler
+    public partial class EventRouter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+        , IPointerUpHandler, IPointerClickHandler, IDragHandler, IScrollHandler, IUpdateSelectedHandler, ISelectHandler
+        , IDeselectHandler, IMoveHandler, ISubmitHandler, IDropHandler
     {
         //special router for OnAnimatorMove only
         private EventRouterAnimatorMove _routerAnimatorMove;

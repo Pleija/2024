@@ -10,8 +10,7 @@ namespace Runner.Characters
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             // We don't restart if we go toward the death state
-            if (animator.GetBool(s_DeadHash))
-                return;
+            if (animator.GetBool(s_DeadHash)) return;
             TrackManager.instance.StartMove();
         }
     }

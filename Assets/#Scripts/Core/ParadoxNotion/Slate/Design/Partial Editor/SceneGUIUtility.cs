@@ -1,26 +1,26 @@
 ﻿#if UNITY_EDITOR
-
 using UnityEngine;
 using UnityEditor;
 
 namespace Slate
 {
-
     public static class SceneGUIUtility
     {
-
         ///<summary>In SceneGUI, shows a position handle for target parameter of target keyable</summary>
-        public static bool DoParameterPositionHandle(IKeyable keyable, AnimatedParameter animParam, TransformSpace space, Vector3? euler) {
+        public static bool DoParameterPositionHandle(IKeyable keyable, AnimatedParameter animParam, TransformSpace space
+            , Vector3? euler)
+        {
             var originalPos = (Vector3)animParam.GetCurrentValueAsObject();
             var newPos = originalPos;
-            if ( DoVectorPositionHandle(keyable, space, euler, ref newPos) ) {
-                if ( keyable.IsRootTimeWithinClip() ) {
-                    if ( !Event.current.shift ) {
+
+            if (DoVectorPositionHandle(keyable, space, euler, ref newPos)) {
+                if (keyable.IsRootTimeWithinClip()) {
+                    if (!Event.current.shift)
                         animParam.SetCurrentValue(newPos);
-                    } else {
+                    else
                         animParam.OffsetValue(newPos - originalPos);
-                    }
-                } else {
+                }
+                else {
                     animParam.SetCurrentValue(newPos);
                     animParam.OffsetValue(newPos - originalPos);
                 }
@@ -31,10 +31,13 @@ namespace Slate
         }
 
         ///<summary>In SceneGUI, shows a rotation handle for target parameter of target keyable</summary>
-        public static bool DoParameterRotationHandle(IKeyable keyable, AnimatedParameter animParam, TransformSpace space, Vector3 position) {
+        public static bool DoParameterRotationHandle(IKeyable keyable, AnimatedParameter animParam, TransformSpace space
+            , Vector3 position)
+        {
             var originalRot = (Vector3)animParam.GetCurrentValueAsObject();
             var newRot = originalRot;
-            if ( DoVectorRotationHandle(keyable, space, position, ref newRot) ) {
+
+            if (DoVectorRotationHandle(keyable, space, position, ref newRot)) {
                 animParam.SetCurrentValue(newRot);
                 EditorUtility.SetDirty(keyable as Object);
                 return true;
@@ -42,19 +45,28 @@ namespace Slate
             return false;
         }
 
-        ///<summary>In SceneGUI, shows a position handle for target vector of target directable (pos handle in World Space rotation)</summary>
-        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space, ref Vector3 position) {
-            return DoVectorPositionHandle(directable, space, null, ref position);
-        }
+        /// <summary>
+        ///     In SceneGUI, shows a position handle for target vector of target directable (pos handle in World Space
+        ///     rotation)
+        /// </summary>
+        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space, ref Vector3 position) =>
+            DoVectorPositionHandle(directable, space, null, ref position);
 
-        ///<summary>In SceneGUI, shows a position handle for target vector of target directable (pos handle in provided euler rotation)</summary>
-        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space, Vector3? euler, ref Vector3 position) {
+        /// <summary>
+        ///     In SceneGUI, shows a position handle for target vector of target directable (pos handle in provided euler
+        ///     rotation)
+        /// </summary>
+        public static bool DoVectorPositionHandle(IDirectable directable, TransformSpace space, Vector3? euler
+            , ref Vector3 position)
+        {
             EditorGUI.BeginChangeCheck();
             var pos = directable.TransformPosition(position, space);
-            var rot = euler == null || UnityEditor.Tools.pivotRotation == PivotRotation.Global ? Quaternion.identity : directable.TransformRotation(euler.Value, space);
+            var rot = euler == null || Tools.pivotRotation == PivotRotation.Global ? Quaternion.identity
+                : directable.TransformRotation(euler.Value, space);
             var newPos = Handles.PositionHandle(pos, rot);
             Handles.SphereHandleCap(-10, pos, Quaternion.identity, 0.1f, EventType.Repaint);
-            if ( EditorGUI.EndChangeCheck() ) {
+
+            if (EditorGUI.EndChangeCheck()) {
                 Undo.RecordObject(directable as Object, "Position Change");
                 position = directable.InverseTransformPosition(newPos, space);
                 EditorUtility.SetDirty(directable as Object);
@@ -64,14 +76,16 @@ namespace Slate
         }
 
         ///<summary>In SceneGUI, shows a rotation handle for target vector of target directable</summary>
-        public static bool DoVectorRotationHandle(IDirectable directable, TransformSpace space, Vector3 position, ref Vector3 euler) {
+        public static bool DoVectorRotationHandle(IDirectable directable, TransformSpace space, Vector3 position
+            , ref Vector3 euler)
+        {
             EditorGUI.BeginChangeCheck();
             var pos = directable.TransformPosition(position, space);
             var rot = directable.TransformRotation(euler, space);
             var newRot = Handles.RotationHandle(rot, pos);
-
             Handles.SphereHandleCap(-10, pos, Quaternion.identity, 0.1f, EventType.Repaint);
-            if ( EditorGUI.EndChangeCheck() ) {
+
+            if (EditorGUI.EndChangeCheck()) {
                 Undo.RecordObject(directable as Object, "Rotation Change");
                 euler = directable.InverseTransformRotation(newRot, space);
                 EditorUtility.SetDirty(directable as Object);
@@ -103,7 +117,6 @@ namespace Slate
                     return current + (newValue - oldValue);
                 }
         */
-
     }
 }
 

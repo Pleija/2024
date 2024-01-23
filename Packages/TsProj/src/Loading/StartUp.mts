@@ -1,5 +1,5 @@
-import {StateFsm} from "Common/StateFsm.mjs";
-import {下载更新} from "Loading/StartUp/下载更新.mjs";
+import { StateFsm } from "Common/StateFsm.mjs";
+import { 下载更新 } from "Loading/StartUp/下载更新.mjs";
 import Time = CS.UnityEngine.Time;
 import Addressables = CS.UnityEngine.AddressableAssets.Addressables;
 import $promise = puer.$promise;
@@ -33,7 +33,7 @@ export class StartUp extends StateFsm {
         const loc = Res.Exists(this.prefab);
         const resVer = Setting.self.ResVersion.Value;
         const baseVer = JsMain.self.baseVersion;
-        const isNew = UnityApi.CompareVersion(resVer,baseVer) > 0; //resVer.localeCompare(baseVer, undefined, {numeric: true, sensitivity: 'base'})
+        const isNew = UnityApi.CompareVersion(resVer, baseVer) > 0; //resVer.localeCompare(baseVer, undefined, {numeric: true, sensitivity: 'base'})
         console.log(`ResVersion: ${resVer} baseVersion: ${baseVer} new: ${isNew}`)
         if (this.useRemote && loc && isNew) {
             console.log("StartContent Found");

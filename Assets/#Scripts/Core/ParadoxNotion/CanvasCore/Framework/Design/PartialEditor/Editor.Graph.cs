@@ -32,8 +32,8 @@ namespace NodeCanvas.Framework
 
             if (Application.isPlaying && EditorUtility.IsPersistent(assignable.subGraph)) {
                 ParadoxNotion.Services.Logger.LogWarning(
-                    "You can't view sub-graphs in play mode until they are initialized to avoid editing asset references accidentally",
-                    LogTag.EDITOR, this);
+                    "You can't view sub-graphs in play mode until they are initialized to avoid editing asset references accidentally"
+                    , LogTag.EDITOR, this);
                 _childAssignableIndex = -1;
                 return;
             }

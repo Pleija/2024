@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.DialogueTrees
 {
-    [Name("FINISH"), Category("Control"),
-     Description(
-         "End the dialogue in Success or Failure.\nNote: A Dialogue will anyway End in Succcess if it has reached a node without child connections. Thus this node is mostly useful if you want to end a Dialogue in Failure."),
-     Icon("Halt"), Color("6ebbff")]
+    [Name("FINISH"), Category("Control")
+     , Description(
+         "End the dialogue in Success or Failure.\nNote: A Dialogue will anyway End in Succcess if it has reached a node without child connections. Thus this node is mostly useful if you want to end a Dialogue in Failure.")
+     , Icon("Halt"), Color("6ebbff")]
     public class FinishNode : DTNode
     {
         public CompactStatus finishState = CompactStatus.Success;

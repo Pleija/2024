@@ -48,8 +48,8 @@ namespace NodeCanvas.Tasks.Conditions
             foreach (var parameter in parameters) {
                 BBObjectParameter bbParam = null;
                 if (!argumentsMap.TryGetValue(parameter.ID, out bbParam))
-                    bbParam = argumentsMap[parameter.ID] =
-                        new BBObjectParameter(parameter.type) { bb = ownerSystemBlackboard };
+                    bbParam = argumentsMap[parameter.ID] = new BBObjectParameter(parameter.type)
+                        { bb = ownerSystemBlackboard };
                 Editor.BBParameterEditor.ParameterField(parameter.name, bbParam);
             }
             foreach (var key in argumentsMap.Keys.ToArray())

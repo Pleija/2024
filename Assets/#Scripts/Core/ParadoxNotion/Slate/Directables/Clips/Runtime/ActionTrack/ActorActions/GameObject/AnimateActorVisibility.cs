@@ -3,19 +3,15 @@ using System.Collections;
 
 namespace Slate.ActionClips
 {
-
-    [Category("GameObject")]
-    [Description("Set or animate the actor gameobject visibility.")]
+    [Category("GameObject"), Description("Set or animate the actor gameobject visibility.")]
     public class AnimateActorVisibility : ActorActionClip
     {
-
-        [SerializeField]
-        [HideInInspector]
+        [SerializeField, HideInInspector]
         private float _length = 1;
 
         public override float length {
-            get { return _length; }
-            set { _length = value; }
+            get => _length;
+            set => _length = value;
         }
 
         [AnimatableParameter]
@@ -23,19 +19,23 @@ namespace Slate.ActionClips
 
         private bool wasVisible;
 
-        protected override void OnCreate() {
+        protected override void OnCreate()
+        {
             visible = actor.activeSelf;
         }
 
-        protected override void OnEnter() {
+        protected override void OnEnter()
+        {
             wasVisible = actor.activeSelf;
         }
 
-        protected override void OnUpdate(float time) {
+        protected override void OnUpdate(float time)
+        {
             actor.SetActive(visible);
         }
 
-        protected override void OnReverse() {
+        protected override void OnReverse()
+        {
             actor.SetActive(wasVisible);
         }
     }

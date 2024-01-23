@@ -1,5 +1,5 @@
 import StartUpAgent = CS.App.StartUpAgent;
-import {StartUp} from "Loading/StartUp.mjs";
+import { StartUp } from "Loading/StartUp.mjs";
 import { StateNode } from "Common/StateNode.mjs";
 
 

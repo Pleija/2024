@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Parameter Bool"), Category("Animator"),
-     Description(
+    [Name("Set Parameter Bool"), Category("Animator")
+     , Description(
          "You can either use a parameter name OR hashID. Leave the parameter name empty or none to use hashID instead.")]
     public class MecanimSetBool : ActionTask<Animator>
     {
@@ -13,8 +13,8 @@ namespace NodeCanvas.Tasks.Actions
         public BBParameter<int> parameterHashID;
         public BBParameter<bool> setTo;
 
-        protected override string info => string.Format("Mec.SetBool {0} to {1}",
-            string.IsNullOrEmpty(parameter.value) && !parameter.useBlackboard ? parameterHashID.ToString()
+        protected override string info => string.Format("Mec.SetBool {0} to {1}"
+            , string.IsNullOrEmpty(parameter.value) && !parameter.useBlackboard ? parameterHashID.ToString()
                 : parameter.ToString(), setTo);
 
         protected override void OnExecute()

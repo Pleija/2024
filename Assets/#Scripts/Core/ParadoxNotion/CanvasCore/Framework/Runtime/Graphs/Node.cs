@@ -26,8 +26,8 @@ namespace NodeCanvas.Framework
 {
     ///<summary>The base class for all nodes that can live in a NodeCanvas Graph</summary>
 #if UNITY_EDITOR //handles missing Nodes
-    [fsObject(Processor = typeof(fsRecoveryProcessor<Node, MissingNode>)), SpoofAOT, System.Serializable,
-     fsSerializeAsReference, fsDeserializeOverwrite]
+    [fsObject(Processor = typeof(fsRecoveryProcessor<Node, MissingNode>)), SpoofAOT, System.Serializable
+     , fsSerializeAsReference, fsDeserializeOverwrite]
 #endif
     public abstract partial class Node : IGraphElement, ISerializationCollectable
     {
@@ -39,7 +39,6 @@ namespace NodeCanvas.Framework
         public JSObject jsBind { get; set; }
         public string FsmName => graphAgent.name.Split(' ').First();
         public string NodeName => name.RegexReplace(@"\W+", "");
-
 
         ///<summary>The local blackboard of the graph where parentBlackboard if any is parented to</summary>
         public IBlackboard blackboard => localBlackboard ??= new BlackboardSource();
@@ -346,8 +345,8 @@ namespace NodeCanvas.Framework
                     var owner = agent as GraphOwner;
                     var contextName = owner != null ? owner.gameObject.name : graph.name;
                     Logger.LogWarning(
-                        string.Format("Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'", name, ID,
-                            graph.GetType().Name, contextName), "Breakpoint", this);
+                        string.Format("Node: '{0}' | ID: '{1}' | Graph Type: '{2}' | Context Object: '{3}'", name, ID
+                            , graph.GetType().Name, contextName), "Breakpoint", this);
                     if (owner != null) owner.PauseBehaviour();
                     if (breakEditor)
                         StartCoroutine(YieldBreak(() => {

@@ -7,37 +7,38 @@ namespace ParadoxNotion.Animation
 
     public enum EaseType
     {
-        Linear,
-        QuadraticIn,
-        QuadraticOut,
-        QuadraticInOut,
-        QuarticIn,
-        QuarticOut,
-        QuarticInOut,
-        QuinticIn,
-        QuinticOut,
-        QuinticInOut,
-        CubicIn,
-        CubicOut,
-        CubicInOut,
-        ExponentialIn,
-        ExponentialOut,
-        ExponentialInOut,
-        CircularIn,
-        CircularOut,
-        CircularInOut,
-        SinusoidalIn,
-        SinusoidalOut,
-        SinusoidalInOut,
-        ElasticIn,
-        ElasticOut,
-        ElasticInOut,
-        BounceIn,
-        BounceOut,
-        BounceInOut,
-        BackIn,
-        BackOut,
-        BackInOut,
+        Linear
+        , QuadraticIn
+        , QuadraticOut
+        , QuadraticInOut
+        , QuarticIn
+        , QuarticOut
+        , QuarticInOut
+        , QuinticIn
+        , QuinticOut
+        , QuinticInOut
+        , CubicIn
+        , CubicOut
+        , CubicInOut
+        , ExponentialIn
+        , ExponentialOut
+        , ExponentialInOut
+        , CircularIn
+        , CircularOut
+        , CircularInOut
+        , SinusoidalIn
+        , SinusoidalOut
+        , SinusoidalInOut
+        , ElasticIn
+        , ElasticOut
+        , ElasticInOut
+        , BounceIn
+        , BounceOut
+        , BounceInOut
+        , BackIn
+        , BackOut
+        , BackInOut
+        ,
     }
 
     ///<summary>Easing functions to be used for interpolation</summary>
@@ -122,8 +123,7 @@ namespace ParadoxNotion.Animation
 
         public static float QuarticInOut(float t)
         {
-            if ((t *= 2f) < 1f)
-                return 0.5f * t * t * t * t;
+            if ((t *= 2f) < 1f) return 0.5f * t * t * t * t;
             return -0.5f * ((t -= 2f) * t * t * t - 2f);
         }
 
@@ -132,8 +132,7 @@ namespace ParadoxNotion.Animation
 
         public static float QuinticInOut(float t)
         {
-            if ((t *= 2f) < 1)
-                return 0.5f * t * t * t * t * t;
+            if ((t *= 2f) < 1) return 0.5f * t * t * t * t * t;
             return 0.5f * ((t -= 2f) * t * t * t * t + 2f);
         }
 
@@ -170,8 +169,7 @@ namespace ParadoxNotion.Animation
         public static float ElasticInOut(float t)
         {
             var x = 2f * Mathf.PI / 4.5f;
-            if (t < 0.5f)
-                return -(Mathf.Pow(2f, 20f * t - 10f) * Mathf.Sin((20f * t - 11.125f) * x)) / 2f;
+            if (t < 0.5f) return -(Mathf.Pow(2f, 20f * t - 10f) * Mathf.Sin((20f * t - 11.125f) * x)) / 2f;
             return Mathf.Pow(2f, -20f * t + 10f) * Mathf.Sin((20f * t - 11.125f) * x) / 2f + 1f;
         }
 
@@ -207,8 +205,7 @@ namespace ParadoxNotion.Animation
         public static float BackInOut(float t)
         {
             var s = 1.70158f * 1.525f;
-            if ((t *= 2f) < 1f)
-                return 0.5f * (t * t * ((s + 1) * t - s));
+            if ((t *= 2f) < 1f) return 0.5f * (t * t * ((s + 1) * t - s));
             return 0.5f * ((t -= 2f) * t * ((s + 1f) * t + s) + 2f);
         }
     }

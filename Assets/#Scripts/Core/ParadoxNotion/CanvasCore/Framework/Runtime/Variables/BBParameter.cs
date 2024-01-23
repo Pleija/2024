@@ -10,8 +10,8 @@ using Threader = ParadoxNotion.Services.Threader;
 namespace NodeCanvas.Framework
 {
 #if UNITY_EDITOR //handles missing parameter types and upgrades of T to BBParameter<T>
-    [fsObject(Processor = typeof(fsBBParameterProcessor)), ParadoxNotion.Design.SpoofAOT, Serializable, fsAutoInstance,
-     fsUninitialized]
+    [fsObject(Processor = typeof(fsBBParameterProcessor)), ParadoxNotion.Design.SpoofAOT, Serializable, fsAutoInstance
+     , fsUninitialized]
 #endif
 
     //TODO: Change GlobalBlackboard resolution to use BB.UID
@@ -287,19 +287,19 @@ namespace NodeCanvas.Framework
                 varRef = null;
                 Logger.LogError(
                     string.Format(
-                        "Parameter '{0}' failed to promote to a variable, because Blackboard named '{1}' could not be found.",
-                        varName, bbName), LogTag.VARIABLE, this);
+                        "Parameter '{0}' failed to promote to a variable, because Blackboard named '{1}' could not be found."
+                        , varName, bbName), LogTag.VARIABLE, this);
                 return null;
             }
             varRef = targetBB.AddVariable(varName, varType);
             if (varRef != null)
                 Logger.Log(
-                    string.Format("Parameter '{0}' (of type '{1}') promoted to a Variable in Blackboard '{2}'.",
-                        varName, varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
+                    string.Format("Parameter '{0}' (of type '{1}') promoted to a Variable in Blackboard '{2}'.", varName
+                        , varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
             else
                 Logger.LogError(
-                    string.Format("Parameter {0} (of type '{1}') failed to promote to a Variable in Blackboard '{2}'.",
-                        varName, varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
+                    string.Format("Parameter {0} (of type '{1}') failed to promote to a Variable in Blackboard '{2}'."
+                        , varName, varType.FriendlyName(), targetBB), LogTag.VARIABLE, this);
             return varRef;
         }
 
@@ -362,8 +362,8 @@ namespace NodeCanvas.Framework
                 //Dynamic?
                 if (varRef == null && bb != null && !string.IsNullOrEmpty(name)) {
                     if (isPresumedDynamic) {
-                        Logger.Log(string.Format("Dynamic Parameter Variable '{0}' Encountered...", name),
-                            LogTag.VARIABLE, this);
+                        Logger.Log(string.Format("Dynamic Parameter Variable '{0}' Encountered...", name)
+                            , LogTag.VARIABLE, this);
                         //setting the varRef property also binds it
                         varRef = PromoteToVariable(bb);
                         if (setter != null) setter(value);
@@ -371,8 +371,8 @@ namespace NodeCanvas.Framework
                     else {
                         Logger.LogError(
                             string.Format(
-                                "A Parameter Variable named '{0}' is missing. If it was meant to be a dynamic variable, please ensure that it starts with an underscore ('_') prefix by convention.",
-                                name), LogTag.EXECUTION, this);
+                                "A Parameter Variable named '{0}' is missing. If it was meant to be a dynamic variable, please ensure that it starts with an underscore ('_') prefix by convention."
+                                , name), LogTag.EXECUTION, this);
                     }
                     return;
                 }
@@ -461,8 +461,8 @@ namespace NodeCanvas.Framework
             //we still set the setter and let us know that is impossible to do the conversion
             setter = (T value) => {
                 Logger.LogWarning(
-                    string.Format("Setting Parameter Type '{0}' back to Variable Type '{1}' is not possible.",
-                        typeof(T).FriendlyName(), variable.varType.FriendlyName()), "AutoConvert", this);
+                    string.Format("Setting Parameter Type '{0}' back to Variable Type '{1}' is not possible."
+                        , typeof(T).FriendlyName(), variable.varType.FriendlyName()), "AutoConvert", this);
             };
             return false;
         }

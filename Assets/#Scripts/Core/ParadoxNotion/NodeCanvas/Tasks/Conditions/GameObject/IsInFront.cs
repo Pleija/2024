@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Target In View Angle"), Category("GameObject"),
-     Description("Checks whether the target is in the view angle of the agent")]
+    [Name("Target In View Angle"), Category("GameObject")
+     , Description("Checks whether the target is in the view angle of the agent")]
     public class IsInFront : ConditionTask<Transform>
     {
         [RequiredField]

@@ -2,53 +2,59 @@
 
 namespace Slate.ActionClips
 {
-
-    [Category("Utility")]
-    [Description("Animates the playback speed of the cutscene")]
+    [Category("Utility"), Description("Animates the playback speed of the cutscene")]
     public class AnimatePlaybackSpeed : DirectorActionClip
     {
-
-        [SerializeField]
-        [HideInInspector]
+        [SerializeField, HideInInspector]
         private float _length = 1f;
-        [SerializeField]
-        [HideInInspector]
+
+        [SerializeField, HideInInspector]
         private float _blendIn;
-        [SerializeField]
-        [HideInInspector]
+
+        [SerializeField, HideInInspector]
         private float _blendOut;
 
         [AnimatableParameter(0.01f, 10)]
         public float speed;
-        public EaseType interpolation = EaseType.QuadraticInOut;
 
+        public EaseType interpolation = EaseType.QuadraticInOut;
         private float wasSpeed;
 
         public override float length {
-            get { return _length; }
-            set { _length = value; }
+            get => _length;
+            set => _length = value;
         }
 
         public override float blendIn {
-            get { return _blendIn; }
-            set { _blendIn = value; }
+            get => _blendIn;
+            set => _blendIn = value;
         }
 
         public override float blendOut {
-            get { return _blendOut; }
-            set { _blendOut = value; }
+            get => _blendOut;
+            set => _blendOut = value;
         }
 
-        protected override void OnCreate() {
+        protected override void OnCreate()
+        {
             speed = root.playbackSpeed;
         }
 
-        protected override void OnEnter() { wasSpeed = root.playbackSpeed; }
-        protected override void OnUpdate(float time) {
+        protected override void OnEnter()
+        {
+            wasSpeed = root.playbackSpeed;
+        }
+
+        protected override void OnUpdate(float time)
+        {
             var value = Easing.Ease(interpolation, wasSpeed, speed, GetClipWeight(time));
             value = Mathf.Clamp(value, 0.01f, 100);
             root.playbackSpeed = value;
         }
-        protected override void OnReverse() { root.playbackSpeed = wasSpeed; }
+
+        protected override void OnReverse()
+        {
+            root.playbackSpeed = wasSpeed;
+        }
     }
 }

@@ -30,8 +30,7 @@ namespace MoreTags
         {
             DrawDefaultInspector();
             s_PresetFoldout = EditorGUILayout.Foldout(s_PresetFoldout, "Preset", true);
-            if (s_PresetFoldout)
-                TagPreset.OnGUI();
+            if (s_PresetFoldout) TagPreset.OnGUI();
             s_ManagerFoldout = EditorGUILayout.Foldout(s_ManagerFoldout, "Tag Manager", true);
 
             if (s_ManagerFoldout) {
@@ -169,8 +168,7 @@ namespace MoreTags
             m_AllTag.OnRightClickItem += OnRightClickItem;
             m_AllTag.OnAddItem = (item) => {
                 if (!string.IsNullOrEmpty(item)) {
-                    if (!TagSystem.GetAllTags().Contains(item))
-                        AddTagToManager(item);
+                    if (!TagSystem.GetAllTags().Contains(item)) AddTagToManager(item);
                 }
                 else {
                     var menu = new GenericMenu();
@@ -192,8 +190,8 @@ namespace MoreTags
         {
             if (!s_Abbreviation) return new GUIContent(item);
             var list = item.Split('.');
-            var str = string.Join(".",
-                list.Take(list.Length - 1).Select(s => s.First().ToString()).Concat(new[] { list.Last() }).ToArray());
+            var str = string.Join("."
+                , list.Take(list.Length - 1).Select(s => s.First().ToString()).Concat(new[] { list.Last() }).ToArray());
             return new GUIContent(str, item);
         }
 
@@ -221,31 +219,27 @@ namespace MoreTags
                 TagSystem.AddTag(tag);
                 TagSystem.SetTagColor(tag, TagPreset.GetPresetColor(tag));
             }
-            foreach (var go in list)
-                go.AddTag(tag);
+            foreach (var go in list) go.AddTag(tag);
             EditorSceneManager.MarkSceneDirty(list.First().scene);
         }
 
         public static void RemoveTagInGameObjects(string tag, IEnumerable<GameObject> list)
         {
             if (!list.Any()) return;
-            foreach (var go in list)
-                go.RemoveTag(tag);
+            foreach (var go in list) go.RemoveTag(tag);
             EditorSceneManager.MarkSceneDirty(list.First().scene);
         }
 
         public static void ChangeGameObjectsTag(string old, string tag, IEnumerable<GameObject> list)
         {
             if (!list.Any()) return;
-            foreach (var go in list)
-                go.ChangeTag(old, tag);
+            foreach (var go in list) go.ChangeTag(old, tag);
             EditorSceneManager.MarkSceneDirty(list.First().scene);
         }
 
         private IEnumerable<string> GetInheritanceHierarchy(Type type)
         {
-            for (var current = type; current != null; current = current.BaseType)
-                yield return current.ToString();
+            for (var current = type; current != null; current = current.BaseType) yield return current.ToString();
         }
 
         private bool GameObjectWithComponent(GameObject go, string component)

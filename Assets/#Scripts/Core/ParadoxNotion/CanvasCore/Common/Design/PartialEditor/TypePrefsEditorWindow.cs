@@ -40,8 +40,8 @@ namespace ParadoxNotion.Design
             EditorGUILayout.HelpBox(
                 "Here you can specify frequently used types for your project and for easier access wherever you need to select a type, like for example when you create a new blackboard variable or using any refelection based actions. Furthermore, it is essential when working with AOT platforms like iOS or WebGL, that you generate an AOT Classes and link.xml files with the relevant button bellow. To add types in the list quicker, you can also Drag&Drop an object, or a Script file in this editor window.\n\nIf you save a preset in your 'Editor Default Resources/" +
                 TypePrefs.SYNC_FILE_NAME +
-                "' it will automatically sync with the list. Useful when working with others on source control.",
-                MessageType.Info);
+                "' it will automatically sync with the list. Useful when working with others on source control."
+                , MessageType.Info);
 
             if (GUILayout.Button("Add New Type", EditorStyles.miniButton)) {
                 GenericMenu.MenuFunction2 Selected = delegate(object o) {
@@ -78,16 +78,16 @@ namespace ParadoxNotion.Design
             }
 
             if (GUILayout.Button("Generate AOTClasses.cs and link.xml Files", EditorStyles.miniButton)) {
-                if (EditorUtility.DisplayDialog("Generate AOT Classes",
-                        "A script relevant to AOT compatibility for certain platforms will now be generated.", "OK")) {
+                if (EditorUtility.DisplayDialog("Generate AOT Classes"
+                    , "A script relevant to AOT compatibility for certain platforms will now be generated.", "OK")) {
                     var path = EditorUtility.SaveFilePanelInProject("AOT Classes File", "AOTClasses", "cs", "");
                     if (!string.IsNullOrEmpty(path))
                         AOTClassesGenerator.GenerateAOTClasses(path, TypePrefs.GetPreferedTypesList(true).ToArray());
                 }
 
-                if (EditorUtility.DisplayDialog("Generate link.xml File",
-                        "A file relevant to 'code stripping' for platforms that have code stripping enabled will now be generated.",
-                        "OK")) {
+                if (EditorUtility.DisplayDialog("Generate link.xml File"
+                    , "A file relevant to 'code stripping' for platforms that have code stripping enabled will now be generated."
+                    , "OK")) {
                     var path = EditorUtility.SaveFilePanelInProject("AOT link.xml", "link", "xml", "");
                     if (!string.IsNullOrEmpty(path))
                         AOTClassesGenerator.GenerateLinkXML(path, TypePrefs.GetPreferedTypesList().ToArray());
@@ -107,8 +107,8 @@ namespace ParadoxNotion.Design
                 var path = EditorUtility.SaveFilePanelInProject("Save Types Preset", "PreferredTypes", "typePrefs", "");
 
                 if (!string.IsNullOrEmpty(path)) {
-                    System.IO.File.WriteAllText(path,
-                        JSONSerializer.Serialize(typeof(List<System.Type>), typeList, null, true));
+                    System.IO.File.WriteAllText(path
+                        , JSONSerializer.Serialize(typeof(List<System.Type>), typeList, null, true));
                     AssetDatabase.Refresh();
                 }
             }
@@ -127,8 +127,8 @@ namespace ParadoxNotion.Design
             var syncPath = TypePrefs.SyncFilePath();
             EditorGUILayout.HelpBox(
                 syncPath != null ? "List synced with file: " + syncPath.Replace(Application.dataPath, ".../Assets")
-                    : "No sync file found in '.../Assets/Editor Default Resources'. Types are currently saved in Unity EditorPrefs only.",
-                MessageType.None);
+                    : "No sync file found in '.../Assets/Editor Default Resources'. Types are currently saved in Unity EditorPrefs only."
+                , MessageType.None);
             GUILayout.Space(5);
             scrollPos = GUILayout.BeginScrollView(scrollPos);
 

@@ -1,11 +1,10 @@
-
 import { StateFsm } from "Common/StateFsm.mjs";
 
 export class ShopPage extends StateFsm {
 
-      init(){
-          //
-      }
+    init() {
+        //
+    }
 }
 
-export const self:ShopPage = global.$ShopPage ??= new ShopPage();
+export const self: ShopPage = global.$ShopPage ??= new ShopPage();

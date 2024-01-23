@@ -5,8 +5,10 @@
  * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
  */
 
-var global = global || globalThis || (function () { return this; }());
-    
+var global = global || globalThis || (function () {
+    return this;
+}());
+
 let moduleCache = Object.create(null); // key to sid
 let tmpModuleStorage = []; // sid to module
 
@@ -22,9 +24,12 @@ function addModule(m) {
 
 function getModuleBySID(id) {
     return tmpModuleStorage[id];
-}``
+}
+
+``
 
 let buildinModule = Object.create(null);
+
 function executeModule(fullPath, script, debugPath, sid) {
     sid = (typeof sid == 'undefined') ? 0 : sid;
     let fullPathInJs = fullPath.replace(/\\/g, '\\\\');
@@ -35,7 +40,7 @@ function executeModule(fullPath, script, debugPath, sid) {
     let wrapped = puer.evalScript(
         // Wrap the script in the same way NodeJS does it. It is important since IDEs (VSCode) will use this wrapper pattern
         // to enable stepping through original source in-place.
-        "(function (exports, require, module, __filename, __dirname) { " + script + "\n});", 
+        "(function (exports, require, module, __filename, __dirname) { " + script + "\n});",
         debugPath
     )
     wrapped(exports, puer.genRequire(fullDirInJs), module, fullPathInJs, fullDirInJs)
@@ -44,17 +49,18 @@ function executeModule(fullPath, script, debugPath, sid) {
 
 function genRequire(requiringDir) {
     let localModuleCache = Object.create(null);
+
     function require(moduleName) {
         moduleName = moduleName.startsWith('./') ? moduleName.substr(2) : moduleName;
         if (moduleName in localModuleCache) return localModuleCache[moduleName].exports;
         if (moduleName in buildinModule) return buildinModule[moduleName];
-        
+
         let fullPath = puer.searchModule(requiringDir, moduleName);
         if (!fullPath) {
             try {
                 return nodeRequire(moduleName);
-                
-            } catch(e) {
+
+            } catch (e) {
                 throw new Error("can not find " + moduleName);
             }
         }
@@ -64,11 +70,11 @@ function genRequire(requiringDir) {
             localModuleCache[moduleName] = moduleCache[key];
             return localModuleCache[moduleName].exports;
         }
-        
+
         let {content, debugPath} = puer.loadFile(fullPath);
         const script = content;
 
-        let m = {"exports":{}};
+        let m = {"exports": {}};
         localModuleCache[moduleName] = m;
         moduleCache[key] = m;
         let sid = addModule(m);
@@ -92,6 +98,7 @@ function genRequire(requiringDir) {
             return m.exports;
         }
     }
+
     require.clearModuleCache = () => {
         localModuleCache = Object.create(null);
     }
@@ -114,11 +121,12 @@ puer.registerBuildinModule = registerBuildinModule;
 global.nodeRequire = global.nodeRequire || global.require;
 puer.require = global.require = genRequire("");
 
-function clearModuleCache () {
+function clearModuleCache() {
     tmpModuleStorage = [];
     moduleCache = Object.create(null);
     global.require.clearModuleCache();
 }
+
 global.clearModuleCache = clearModuleCache;
 
 registerBuildinModule("csharp", CS);

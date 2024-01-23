@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace NodeCanvas.Tasks.Actions
 {
-    [Name("Set Property (Desktop Only)", 7), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
-     Description("This version works in destop/JIT platform only.\n\nSet a property on a script.")]
+    [Name("Set Property (Desktop Only)", 7), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
+     , Description("This version works in destop/JIT platform only.\n\nSet a property on a script.")]
     public class SetProperty : ActionTask, IReflectedWrapper
     {
         [SerializeField]
@@ -84,18 +84,18 @@ namespace NodeCanvas.Tasks.Actions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(void), typeof(object),
-                            SetMethod, 1, true, false, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(void), typeof(object)
+                            , SetMethod, 1, true, false, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1, true,
-                        false, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1, true
+                        , false, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1,
-                            true, false, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(void), typeof(object), SetMethod, 1
+                            , true, false, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();
@@ -105,10 +105,10 @@ namespace NodeCanvas.Tasks.Actions
                 GUILayout.BeginVertical("box");
                 UnityEditor.EditorGUILayout.LabelField("Type", targetMethod.RTReflectedOrDeclaredType().FriendlyName());
                 UnityEditor.EditorGUILayout.LabelField("Property", targetMethod.Name);
-                UnityEditor.EditorGUILayout.LabelField("Set Type",
-                    functionWrapper.GetVariables()[0].varType.FriendlyName());
-                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod),
-                    UnityEditor.MessageType.None);
+                UnityEditor.EditorGUILayout.LabelField("Set Type"
+                    , functionWrapper.GetVariables()[0].varType.FriendlyName());
+                UnityEditor.EditorGUILayout.HelpBox(XMLDocs.GetMemberSummary(targetMethod)
+                    , UnityEditor.MessageType.None);
                 GUILayout.EndVertical();
                 Editor.BBParameterEditor.ParameterField("Set Value", functionWrapper.GetVariables()[0]);
             }

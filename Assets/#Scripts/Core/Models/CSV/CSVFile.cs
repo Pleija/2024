@@ -12,7 +12,7 @@ namespace Models.CSV
     {
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            CsvFile subAsset = ScriptableObject.CreateInstance<CsvFile>();
+            var subAsset = ScriptableObject.CreateInstance<CsvFile>();
             subAsset.assetPath = ctx.assetPath;
             subAsset.content = File.ReadAllText(ctx.assetPath).ToBase64();
             ctx.AddObjectToAsset("text", subAsset);

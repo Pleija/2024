@@ -104,8 +104,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
                     stream.Write("null");
                     break;
                 case fsDataType.Boolean:
-                    if (data.AsBool) stream.Write("true");
-                    else stream.Write("false");
+                    if (data.AsBool)
+                        stream.Write("true");
+                    else
+                        stream.Write("false");
                     break;
                 case fsDataType.Double:
                     // doubles must *always* include a decimal
@@ -158,8 +160,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
                     stream.Write("null");
                     break;
                 case fsDataType.Boolean:
-                    if (data.AsBool) stream.Write("true");
-                    else stream.Write("false");
+                    if (data.AsBool)
+                        stream.Write("true");
+                    else
+                        stream.Write("false");
                     break;
                 case fsDataType.Double:
                     stream.Write(ConvertDoubleToString(data.AsDouble));
@@ -266,8 +270,7 @@ namespace ParadoxNotion.Serialization.FullSerializer
         ///<summary> Utility method that converts a double to a string.</summary>
         private static string ConvertDoubleToString(double d)
         {
-            if (double.IsInfinity(d) || double.IsNaN(d))
-                return d.ToString(CultureInfo.InvariantCulture);
+            if (double.IsInfinity(d) || double.IsNaN(d)) return d.ToString(CultureInfo.InvariantCulture);
             var doubledString = d.ToString(CultureInfo.InvariantCulture);
 
             // NOTE/HACK: If we don't serialize with a period or an exponent,

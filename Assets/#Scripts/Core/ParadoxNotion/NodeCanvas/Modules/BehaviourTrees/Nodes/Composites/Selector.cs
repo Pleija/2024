@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace NodeCanvas.BehaviourTrees
 {
-    [Name("Selector", 9), Category("Composites"),
-     Description(
-         "Executes its childrfen in order and returns Failure if all children return Failure. As soon as a child returns Success, the Selector will stop and return Success as well."),
-     Icon("Selector"), Color("b3ff7f")]
+    [Name("Selector", 9), Category("Composites")
+     , Description(
+         "Executes its childrfen in order and returns Failure if all children return Failure. As soon as a child returns Success, the Selector will stop and return Success as well.")
+     , Icon("Selector"), Color("b3ff7f")]
     public class Selector : BTComposite
     {
         [Tooltip(

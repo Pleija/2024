@@ -25,7 +25,7 @@ public class MtsImporter : ScriptedImporter
     {
         //var content = XXTEA.EncryptToBase64String(File.ReadAllText(ctx.assetPath)) ;
         //var content = File.ReadAllText(ctx.assetPath).ToBase64();
-        MtsFile subAsset = ScriptableObject.CreateInstance<MtsFile>();
+        var subAsset = ScriptableObject.CreateInstance<MtsFile>();
         subAsset.assetPath = assetPath;
         var icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
             "Assets/Design/UI/GUI Mobile Hyper-Casual/Sprites/Items PSD + PNG/Mushroom/Mushroom.psd");

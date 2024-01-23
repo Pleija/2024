@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace NodeCanvas.Tasks.Conditions
 {
-    [Name("Check Property (Desktop Only)"), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)"),
-     Description(
+    [Name("Check Property (Desktop Only)"), Category("✫ Reflected/Faster Versions (Desktop Platforms Only)")
+     , Description(
          "This version works in destop/JIT platform only.\n\nCheck a property on a script and return if it's equal or not to the check value")]
     public class CheckProperty : ConditionTask
     {
@@ -36,8 +36,8 @@ namespace NodeCanvas.Tasks.Conditions
                 if (functionWrapper == null) return "No Property Selected";
                 if (targetMethod == null) return functionWrapper.AsString().FormatError();
                 var mInfo = targetMethod.IsStatic ? targetMethod.RTReflectedOrDeclaredType().FriendlyName() : agentInfo;
-                return string.Format("{0}.{1}{2}", mInfo, targetMethod.Name,
-                    OperationTools.GetCompareString(comparison) + checkValue.ToString());
+                return string.Format("{0}.{1}{2}", mInfo, targetMethod.Name
+                    , OperationTools.GetCompareString(comparison) + checkValue.ToString());
             }
         }
 
@@ -65,8 +65,8 @@ namespace NodeCanvas.Tasks.Conditions
         {
             if (functionWrapper == null) return true;
             if (checkValue.varType == typeof(float))
-                return OperationTools.Compare((float)functionWrapper.Call(), (float)checkValue.value, comparison,
-                    0.05f);
+                return OperationTools.Compare((float)functionWrapper.Call(), (float)checkValue.value, comparison
+                    , 0.05f);
             if (checkValue.varType == typeof(int))
                 return OperationTools.Compare((int)functionWrapper.Call(), (int)checkValue.value, comparison);
             return ObjectUtils.AnyEquals(functionWrapper.Call(), checkValue.value);
@@ -92,18 +92,18 @@ namespace NodeCanvas.Tasks.Conditions
 
                 if (agent != null) {
                     foreach (var comp in agent.GetComponents(typeof(Component))
-                                 .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object),
-                            typeof(object), SetMethod, 0, true, true, menu);
+                        .Where(c => !c.hideFlags.HasFlag(HideFlags.HideInInspector)))
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(comp.GetType(), typeof(object), typeof(object)
+                            , SetMethod, 0, true, true, menu);
                     menu.AddSeparator("/");
                 }
 
                 foreach (var t in TypePrefs.GetPreferedTypesList(typeof(object))) {
-                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0,
-                        true, true, menu);
+                    menu = EditorUtils.GetStaticMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod, 0
+                        , true, true, menu);
                     if (typeof(Component).IsAssignableFrom(t))
-                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod,
-                            0, true, true, menu);
+                        menu = EditorUtils.GetInstanceMethodSelectionMenu(t, typeof(object), typeof(object), SetMethod
+                            , 0, true, true, menu);
                 }
                 menu.ShowAsBrowser("Select Property", GetType());
                 Event.current.Use();

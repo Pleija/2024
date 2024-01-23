@@ -84,8 +84,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         ///----------------------------------------------------------------------------------------------
-        private static void Invoke_OnBeforeSerialize(List<fsObjectProcessor> processors, Type storageType,
-            object instance)
+        private static void Invoke_OnBeforeSerialize(List<fsObjectProcessor> processors, Type storageType
+            , object instance)
         {
             for (var i = 0; i < processors.Count; ++i) processors[i].OnBeforeSerialize(storageType, instance);
 
@@ -94,8 +94,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 ((UnityEngine.ISerializationCallbackReceiver)instance).OnBeforeSerialize();
         }
 
-        private static void Invoke_OnAfterSerialize(List<fsObjectProcessor> processors, Type storageType,
-            object instance, ref fsData data)
+        private static void Invoke_OnAfterSerialize(List<fsObjectProcessor> processors, Type storageType
+            , object instance, ref fsData data)
         {
             // We run the after calls in reverse order; this significantly reduces the interaction burden between
             // multiple processors - it makes each one much more independent and ignorant of the other ones.
@@ -103,21 +103,21 @@ namespace ParadoxNotion.Serialization.FullSerializer
                 processors[i].OnAfterSerialize(storageType, instance, ref data);
         }
 
-        private static void Invoke_OnBeforeDeserialize(List<fsObjectProcessor> processors, Type storageType,
-            ref fsData data)
+        private static void Invoke_OnBeforeDeserialize(List<fsObjectProcessor> processors, Type storageType
+            , ref fsData data)
         {
             for (var i = 0; i < processors.Count; ++i) processors[i].OnBeforeDeserialize(storageType, ref data);
         }
 
-        private static void Invoke_OnBeforeDeserializeAfterInstanceCreation(List<fsObjectProcessor> processors,
-            Type storageType, object instance, ref fsData data)
+        private static void Invoke_OnBeforeDeserializeAfterInstanceCreation(List<fsObjectProcessor> processors
+            , Type storageType, object instance, ref fsData data)
         {
             for (var i = 0; i < processors.Count; ++i)
                 processors[i].OnBeforeDeserializeAfterInstanceCreation(storageType, instance, ref data);
         }
 
-        private static void Invoke_OnAfterDeserialize(List<fsObjectProcessor> processors, Type storageType,
-            object instance)
+        private static void Invoke_OnAfterDeserialize(List<fsObjectProcessor> processors, Type storageType
+            , object instance)
         {
             for (var i = processors.Count - 1; i >= 0; --i) processors[i].OnAfterDeserialize(storageType, instance);
 
@@ -235,14 +235,10 @@ namespace ParadoxNotion.Serialization.FullSerializer
             //       list will be used before converters at the end. Converters
             //       added via AddConverter() are added to the front of the list.
             _availableConverters = new List<fsConverter> {
-                new fsUnityObjectConverter { Serializer = this },
-                new fsTypeConverter { Serializer = this },
-                new fsEnumConverter { Serializer = this },
-                new fsPrimitiveConverter { Serializer = this },
-                new fsArrayConverter { Serializer = this },
-                new fsDictionaryConverter { Serializer = this },
-                new fsListConverter { Serializer = this },
-                new fsReflectedConverter { Serializer = this },
+                new fsUnityObjectConverter { Serializer = this }, new fsTypeConverter { Serializer = this }
+                , new fsEnumConverter { Serializer = this }, new fsPrimitiveConverter { Serializer = this }
+                , new fsArrayConverter { Serializer = this }, new fsDictionaryConverter { Serializer = this }
+                , new fsListConverter { Serializer = this }, new fsReflectedConverter { Serializer = this },
             };
             _availableDirectConverters = new Dictionary<Type, fsDirectConverter>();
             _processors = new List<fsObjectProcessor>();
@@ -424,8 +420,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         //...
-        private fsResult Internal_Serialize(Type storageType, object instance, out fsData data,
-            Type overrideConverterType)
+        private fsResult Internal_Serialize(Type storageType, object instance, out fsData data
+            , Type overrideConverterType)
         {
             var instanceType = instance.GetType();
             var instanceTypeConverter = GetConverter(instanceType, overrideConverterType);
@@ -498,8 +494,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         //...
-        private fsResult Internal_Deserialize(fsData data, Type storageType, ref object result,
-            Type overrideConverterType)
+        private fsResult Internal_Deserialize(fsData data, Type storageType, ref object result
+            , Type overrideConverterType)
         {
             //$ref encountered. Do before inheritance.
             if (IsObjectReference(data)) {
@@ -550,8 +546,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
 
                     if (!storageType.IsAssignableFrom(type)) {
                         deserializeResult.AddMessage(string.Format(
-                            "Ignoring type specifier. Field or type {0} can't hold and instance of type {1}",
-                            storageType, type));
+                            "Ignoring type specifier. Field or type {0} can't hold and instance of type {1}"
+                            , storageType, type));
                         break;
                     }
                     objectType = type;
@@ -700,8 +696,8 @@ namespace ParadoxNotion.Serialization.FullSerializer
         }
 
         ///<summary>Create instance of previous type, deserialize it with previous data and call Migrate to currentInstance</summary>
-        private void TryDeserializeMigration(ref object currentInstance, ref fsData currentData, Type previousType,
-            object previousInstance)
+        private void TryDeserializeMigration(ref object currentInstance, ref fsData currentData, Type previousType
+            , object previousInstance)
         {
             if (currentInstance is IMigratable && currentData.IsDictionary) {
                 var instanceType = currentInstance.GetType();

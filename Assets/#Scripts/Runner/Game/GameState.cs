@@ -98,8 +98,7 @@ namespace Runner.Game
             pauseButton.gameObject.SetActive(!trackManager.isTutorial);
             m_CountdownRectTransform = countdownText.GetComponent<RectTransform>();
             m_LifeHearts = new Image[k_MaxLives];
-            for (var i = 0; i < k_MaxLives; ++i)
-                m_LifeHearts[i] = lifeRectTransform.GetChild(i).GetComponent<Image>();
+            for (var i = 0; i < k_MaxLives; ++i) m_LifeHearts[i] = lifeRectTransform.GetChild(i).GetComponent<Image>();
 
             if (MusicPlayer.instance.GetStem(0) != gameTheme) {
                 MusicPlayer.instance.SetStem(0, gameTheme);
@@ -186,8 +185,7 @@ namespace Runner.Game
                     AnalyticsEvent.AdOffer(adsRewarded, adsNetwork, adsPlacementId, new Dictionary<string, object> { { "level_index", PlayerData.instance.rank }, { "distance", TrackManager.instance == null ? 0 : TrackManager.instance.worldDistance }, });
 #endif
                 }
-                else if (trackManager.isTutorial || !m_AdsInitialised)
-                    adsForLifeButton.SetActive(false);
+                else if (trackManager.isTutorial || !m_AdsInitialised) adsForLifeButton.SetActive(false);
 #else
                 adsForLifeButton.SetActive(false); //Ads is disabled
 #endif
@@ -210,13 +208,13 @@ namespace Runner.Game
                         Health = chrCtrl.currentLife == 3 ? 100 : chrCtrl.currentLife * 33.3f;
                         oldLife = chrCtrl.currentLife;
                         // HealthImage.fillAmount = ;
-                        DOTween.To(() => HealthImage.fillAmount, x => HealthImage.fillAmount = x,
-                            chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
+                        DOTween.To(() => HealthImage.fillAmount, x => HealthImage.fillAmount = x
+                            , chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
                             //
                         });
                         m_PreReady = false;
-                        DOTween.To(() => PreHeathImage.fillAmount, x => PreHeathImage.fillAmount = x,
-                            chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
+                        DOTween.To(() => PreHeathImage.fillAmount, x => PreHeathImage.fillAmount = x
+                            , chrCtrl.currentLife / 3f, 1).SetEase(Ease.Linear).OnComplete(() => {
                             m_PreReady = true;
                         });
                     }
@@ -264,14 +262,13 @@ namespace Runner.Game
 
                 for (var i = 0; i < toRemove.Count; ++i) {
                     toRemove[i].Ended(trackManager.characterController);
-                    /*Addressables.ReleaseInstance*/Destroy(toRemove[i].gameObject);
-                    if (toRemoveIcon[i] != null)
-                        Destroy(toRemoveIcon[i].gameObject);
+                    /*Addressables.ReleaseInstance*/
+                    Destroy(toRemove[i].gameObject);
+                    if (toRemoveIcon[i] != null) Destroy(toRemoveIcon[i].gameObject);
                     chrCtrl.consumables.Remove(toRemove[i]);
                     m_PowerupIcons.Remove(toRemoveIcon[i]);
                 }
-                if (m_IsTutorial)
-                    TutorialCheckObstacleClear();
+                if (m_IsTutorial) TutorialCheckObstacleClear();
                 UpdateUI();
                 currentModifier.OnRunTick(this);
             }
@@ -290,8 +287,7 @@ namespace Runner.Game
         public void Pause(bool displayMenu = true)
         {
             //check if we aren't finished OR if we aren't already in pause (as that would mess states)
-            if (m_Finished || AudioListener.pause == true)
-                return;
+            if (m_Finished || AudioListener.pause == true) return;
             AudioListener.pause = true;
             Time.timeScale = 0;
             //pauseButton.gameObject.SetActive(false);
@@ -399,8 +395,7 @@ namespace Runner.Game
             //This check avoid a bug where the video AND premium button are released on the same frame.
             //It lead to the ads playing and then crashing the game as it try to start the second wind again.
             //Whichever of those function run first will take precedence
-            if (m_GameoverSelectionDone)
-                return;
+            if (m_GameoverSelectionDone) return;
             m_GameoverSelectionDone = true;
             PlayerData.instance.premium.Value -= 3;
             //since premium are directly added to the PlayerData premium count, we also need to remove them from the current run premium count
@@ -419,8 +414,7 @@ namespace Runner.Game
 
         public void ShowRewardedAd()
         {
-            if (m_GameoverSelectionDone)
-                return;
+            if (m_GameoverSelectionDone) return;
             m_GameoverSelectionDone = true;
 #if UNITY_ADS
             if (Advertisement.IsReady(adsPlacementId)) {
@@ -469,8 +463,7 @@ namespace Runner.Game
 
         private void TutorialCheckObstacleClear()
         {
-            if (trackManager.segments.Count == 0)
-                return;
+            if (trackManager.segments.Count == 0) return;
 
             if (AudioListener.pause && !trackManager.characterController.tutorialWaitingForValidation) {
                 m_DisplayTutorial = false;
@@ -534,8 +527,7 @@ namespace Runner.Game
                     trackManager.characterController.StopSliding();
                     trackManager.characterController.tutorialWaitingForValidation = value;
                     break;
-                default:
-                    break;
+                default: break;
             }
         }
 

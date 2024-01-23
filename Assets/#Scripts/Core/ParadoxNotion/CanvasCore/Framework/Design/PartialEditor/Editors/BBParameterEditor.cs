@@ -15,18 +15,18 @@ namespace NodeCanvas.Editor
             ParameterField(name, bbParam, false, context);
 
         ///<summary>An editor for BBParameter type to let user choose either a constant value or link to a Blackboard Variable.</summary>
-        public static BBParameter ParameterField(string name, BBParameter bbParam, bool blackboardOnly = false,
-            Object context = null)
+        public static BBParameter ParameterField(string name, BBParameter bbParam, bool blackboardOnly = false
+            , Object context = null)
         {
             var info = new InspectedFieldInfo();
             info.unityObjectContext = context;
-            return ParameterField(string.IsNullOrEmpty(name) ? GUIContent.none : EditorUtils.GetTempContent(name),
-                bbParam, blackboardOnly, false, info);
+            return ParameterField(string.IsNullOrEmpty(name) ? GUIContent.none : EditorUtils.GetTempContent(name)
+                , bbParam, blackboardOnly, false, info);
         }
 
         ///<summary>An editor for BBParameter type to let user choose either a constant value or link to a Blackboard Variable.</summary>
-        public static BBParameter ParameterField(GUIContent content, BBParameter bbParam, bool blackboardOnly = false,
-            bool required = false, InspectedFieldInfo info = default)
+        public static BBParameter ParameterField(GUIContent content, BBParameter bbParam, bool blackboardOnly = false
+            , bool required = false, InspectedFieldInfo info = default)
         {
             if (bbParam == null) {
                 EditorGUILayout.LabelField(content, EditorUtils.GetTempContent("BBParameter is null"));
@@ -57,8 +57,8 @@ namespace NodeCanvas.Editor
                         GUILayout.EndVertical();
                     }
                     if (!blackboardOnly)
-                        bbParam.useBlackboard = EditorGUILayout.Toggle(bbParam.useBlackboard, EditorStyles.radioButton,
-                            GUILayout.Width(18));
+                        bbParam.useBlackboard = EditorGUILayout.Toggle(bbParam.useBlackboard, EditorStyles.radioButton
+                            , GUILayout.Width(18));
                 }
                 GUILayout.EndHorizontal();
 
@@ -90,8 +90,8 @@ namespace NodeCanvas.Editor
                     }
                     else if (bbParam.varRef != null && bbParam.varType != bbParam.refType) {
                         var setPossible = bbParam.varRef.CanConvertFrom(bbParam.varType);
-                        textInfo = string.Format("AutoConvert: ({0} ➲ {1}){2}", bbParam.refType.FriendlyName(),
-                            bbParam.varType.FriendlyName(), setPossible ? string.Empty : " [GET ONLY]");
+                        textInfo = string.Format("AutoConvert: ({0} ➲ {1}){2}", bbParam.refType.FriendlyName()
+                            , bbParam.varType.FriendlyName(), setPossible ? string.Empty : " [GET ONLY]");
                     }
                 }
 
@@ -116,8 +116,8 @@ namespace NodeCanvas.Editor
                 GUI.backgroundColor = Color.white.WithAlpha(0.5f);
 
                 if (bbParam.bb != null &&
-                    GUILayout.Button(EditorUtils.GetTempContent(Icons.plusIcon, "Promote To Variable"),
-                        Styles.centerLabel, GUILayout.Width(18), GUILayout.Height(16))) {
+                    GUILayout.Button(EditorUtils.GetTempContent(Icons.plusIcon, "Promote To Variable")
+                        , Styles.centerLabel, GUILayout.Width(18), GUILayout.Height(16))) {
                     var menu = new GenericMenu();
                     foreach (var bb in bbParam.bb.GetAllParents(true).Reverse())
                         menu.AddItem(new GUIContent($"Promote Variable in '{bb.identifier}' Blackboard"), false, () => {
@@ -149,8 +149,8 @@ namespace NodeCanvas.Editor
                 foreach (var globalBB in GlobalBlackboard.GetAll()) {
                     var globalVars = globalBB.GetVariables(bbParam.varType);
                     foreach (var variable in globalVars)
-                        menu.AddItem(new GUIContent(globalBB.identifier + "/" + variable.name),
-                            bbParam.targetVariableID == variable.ID, () => {
+                        menu.AddItem(new GUIContent(globalBB.identifier + "/" + variable.name)
+                            , bbParam.targetVariableID == variable.ID, () => {
                                 bbParam.SetTargetVariable(globalBB, variable);
                             });
                     menu.AddSeparator(globalBB.identifier + "/");
@@ -168,8 +168,8 @@ namespace NodeCanvas.Editor
                     foreach (var actualBB in bbParam.bb.GetAllParents(true).Reverse()) {
                         var variables = actualBB.variables.Values.Where(v => v.CanConvertTo(bbParam.varType));
                         foreach (var variable in variables)
-                            menu.AddItem(new GUIContent(actualBB.identifier + "/" + variable.name),
-                                bbParam.targetVariableID == variable.ID, () => {
+                            menu.AddItem(new GUIContent(actualBB.identifier + "/" + variable.name)
+                                , bbParam.targetVariableID == variable.ID, () => {
                                     bbParam.SetTargetVariable(actualBB, variable);
                                 });
                         menu.AddSeparator(actualBB.identifier + "/");

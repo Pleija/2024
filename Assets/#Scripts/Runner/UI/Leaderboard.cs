@@ -26,8 +26,7 @@ namespace Runner.UI
         {
             // Start by making all entries enabled & putting player entry last again.
             playerEntry.transform.SetAsLastSibling();
-            for (var i = 0; i < entriesCount; ++i)
-                entriesRoot.GetChild(i).gameObject.SetActive(true);
+            for (var i = 0; i < entriesCount; ++i) entriesRoot.GetChild(i).gameObject.SetActive(true);
 
             // Find all index in local page space.
             var localStart = 0;
@@ -66,8 +65,7 @@ namespace Runner.UI
             }
 
             // If we force the player to be displayed, we enable it even if it was disabled from elsewhere
-            if (forcePlayerDisplay)
-                playerEntry.gameObject.SetActive(true);
+            if (forcePlayerDisplay) playerEntry.gameObject.SetActive(true);
             playerEntry.number.text = (place + 1).ToString();
         }
     }

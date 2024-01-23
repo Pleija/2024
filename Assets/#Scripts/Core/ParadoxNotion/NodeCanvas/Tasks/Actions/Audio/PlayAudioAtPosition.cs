@@ -19,14 +19,12 @@ namespace NodeCanvas.Tasks.Actions
         protected override void OnExecute()
         {
             AudioSource.PlayClipAtPoint(audioClip.value, agent.position, volume);
-            if (!waitActionFinish)
-                EndAction();
+            if (!waitActionFinish) EndAction();
         }
 
         protected override void OnUpdate()
         {
-            if (elapsedTime >= audioClip.value.length)
-                EndAction();
+            if (elapsedTime >= audioClip.value.length) EndAction();
         }
     }
 }

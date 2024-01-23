@@ -25,8 +25,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             Debug.Assert(relationshipType != typeof(string), "TextBlob property is already a string");
             var textblobAttribute = relationshipProperty.GetAttribute<TextBlobAttribute>();
             var textProperty = type.GetRuntimeProperty(textblobAttribute.TextProperty);
-            Debug.Assert(textProperty != null && textProperty.PropertyType == typeof(string),
-                "Text property for TextBlob relationship not found");
+            Debug.Assert(textProperty != null && textProperty.PropertyType == typeof(string)
+                , "Text property for TextBlob relationship not found");
             var textValue = (string)textProperty.GetValue(element, null);
             var value = textValue != null ? GetTextSerializer().Deserialize(textValue, relationshipType) : null;
             relationshipProperty.SetValue(element, value, null);
@@ -39,8 +39,8 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             Debug.Assert(relationshipType != typeof(string), "TextBlob property is already a string");
             var textblobAttribute = relationshipProperty.GetAttribute<TextBlobAttribute>();
             var textProperty = type.GetRuntimeProperty(textblobAttribute.TextProperty);
-            Debug.Assert(textProperty != null && textProperty.PropertyType == typeof(string),
-                "Text property for TextBlob relationship not found");
+            Debug.Assert(textProperty != null && textProperty.PropertyType == typeof(string)
+                , "Text property for TextBlob relationship not found");
             var value = relationshipProperty.GetValue(element, null);
             var textValue = value != null ? GetTextSerializer().Serialize(value) : null;
             textProperty.SetValue(element, textValue, null);

@@ -1,13 +1,12 @@
 ﻿/*
-* Tencent is pleased to support the open source community by making Puerts available.
-* Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
-* Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms. 
-* This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
-*/
+ * Tencent is pleased to support the open source community by making Puerts available.
+ * Copyright (C) 2020 THL A29 Limited, a Tencent company.  All rights reserved.
+ * Puerts is licensed under the BSD 3-Clause License, except for the third-party components listed in the file 'LICENSE' which may be subject to their corresponding license terms.
+ * This file is subject to the terms and conditions defined in file 'LICENSE', which is part of this source code package.
+ */
 
 #if UNITY_2020_1_OR_NEWER
 #if EXPERIMENTAL_IL2CPP_PUERTS && ENABLE_IL2CPP
-
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
@@ -20,6 +19,7 @@ namespace PuertsIl2cpp
     public class MonoPInvokeCallbackAttribute : System.Attribute
     {
         private Type type;
+
         public MonoPInvokeCallbackAttribute(Type t)
         {
             type = t;
@@ -106,7 +106,7 @@ namespace PuertsIl2cpp
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool InspectorTick(IntPtr jsEnv);
-        
+
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool LogicTick(IntPtr jsEnv);
 
@@ -175,7 +175,7 @@ namespace PuertsIl2cpp
         {
             throw new NotImplementedException();
         }
-        
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static void SetGlobalType_TypedValue(Type type)
         {
@@ -218,18 +218,15 @@ namespace PuertsIl2cpp
 #endif
             IntPtr fn1 = log == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(log);
 
-            try 
-            {
-                SetLogCallback(fn1);                
+            try {
+                SetLogCallback(fn1);
             }
-            catch(DllNotFoundException)
-            {
+            catch (DllNotFoundException) {
                 UnityEngine.Debug.LogError("[Puer001] PuerTS's Native Plugin(s) is missing. You can solve this problem following the FAQ.");
                 throw;
             }
         }
     }
 }
-
 #endif
 #endif

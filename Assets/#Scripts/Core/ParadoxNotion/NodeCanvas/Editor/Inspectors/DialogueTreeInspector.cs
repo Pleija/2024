@@ -25,8 +25,8 @@ namespace NodeCanvas.Editor
         {
             EditorUtils.CoolLabel("Dialogue Actor Parameters");
             EditorGUILayout.HelpBox(
-                "Enter the Key-Value pair for Dialogue Actors involved in the Dialogue.\nThe reference Object must be an IDialogueActor or have an IDialogueActor component.\nReferencing a Dialogue Actor is optional.",
-                MessageType.Info);
+                "Enter the Key-Value pair for Dialogue Actors involved in the Dialogue.\nThe reference Object must be an IDialogueActor or have an IDialogueActor component.\nReferencing a Dialogue Actor is optional."
+                , MessageType.Info);
             GUILayout.BeginVertical(GUI.skin.box);
 
             if (GUILayout.Button("Add Actor Parameter")) {
