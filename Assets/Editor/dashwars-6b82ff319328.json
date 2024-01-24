@@ -1,13 +1,13 @@
 {
-  "type": "service_account",
-  "project_id": "dashwars",
-  "private_key_id": "6b82ff3193289a83bd366ca9b3e1a027467cb71d",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDgVfSshYGd/3KM\n70iLBv4XEN5iIW5XQ+avkIkz0a+5Q0cp4bQfbF7Ei6EU8YsLte04dQ3ejAlS+kmU\nzGRXpJjTXXzUaU+TU7VvdFzz9Dum74fbaQQyfOGVvg3bBAQ0VJ6pbhf0lD9ZjL0p\nYt151Kzysy2Q5Y88IYCQ+bnjSmOIWmE8FCJKM8BwjwLaDYrhjwJsB8tLI0hlN5ZK\n0CRa1M6w6cVmJ5mwR7X8YHI/wB+7fr+9B1GcDpkGd5EBPjg8eSeUycYKbOJtwMtK\noNSJQJMXdy+Rcq9SkphKu7bFIa1Csgq1CQcNWrr9gVkmeoh3KkDu6sRQ65Ei4ePS\nWN0fJNolAgMBAAECggEAALuHHwEYmUF6SEeHvxx4u+6MK1ncmGBaYnxgVlD69+nm\nU5avFeMutAmYrw7S22juq16GexGN/j1e/CNmuHqLHTWS8MafQeXmE8UXgJxtjW/+\ny5KeNuP9gJWsSejLcrhMBFWdsmjBhDNXcskl2/37ypcXMP/u5c1eNBr8pmdZx9oy\nIlgh6XGtcH161hR+eToUymNkDrDi2NHaGaPGDgBElI5ULvzTgMHn2F4cT3FghY9g\nn954clTyixkXCeS7gVgstL70sF5o7m0Hh69qDg89DyKQLhGob3T2W//2hBxZELXy\ngnragscmyyRtrkRnOZuDP7LHyFgz8iopQnZxqN7zQQKBgQD0n/bg2p22DtB8VdCQ\nkXDkpj/N9IKLoGxk2LkgrlxsStNyw+63YkdSjYs4yQkCHdjMs8J/1Cv2BaZ1xkQT\nH7ZEs4xfxaJ8N6urb0CeMO8PTQ5B1BH9qzOPWtr9C4ImkGC7tN66ks20RHOafs1U\nTyEwtDVEHRQZDKcqzEMffICJyQKBgQDqxHfddNzCZ9J4sBrR+VK7HhZo53Fwj1J3\nb9ksnbqt+VYJSH2uKtI1penyOOI5NH9yvcpsVcThJ4kqzTHkbBj06zbl4WH3J8Y5\nUd9Tr0tkPbPql0qO0yg6B2rf6tUluq0oNY/9912wPZK90qQ9trRM/HfqhTRuE7Vu\nG/jiV757fQKBgQDelHp+x4w+riYXK8H0+NEeywI9NKBfyV03OVbhHKVtx3uz7gFU\nDPFWdQHbblhq+5tbTqjHxNcnKKb4fKlOOUmQI0qzjdE1czYZa8YA6gdrBbLWRM8F\n3/OvGX0uR31p9258/Kq4WoEe6DXDumK7trA9b4sT6d1ymWe1clwU1yThuQKBgQDQ\n2aNAsbvKfo4wq4nQjhrZN7T78hlq5zWX5zquhEsUhiHR9FlKXfHPpB/xSkWGWnue\n2dSAd/TD0GYoW48tBDVXfQDDlLOQKiQfzgP88I8DSBkMczbyxEqfBQZA2SpxfBab\nFLtaVXtVVBF9KSzPcgAIFPmg+otf+cyHff71bNWaCQKBgGMwQrvC52/X1Rc8jWcb\nj7oZVnpAew4od/771sSfp7vPGt45KXnfH7u1WuKRjvlRKH6sUoN+ekZhbr10XfM8\nQkfAwbsQ5ezeiNPB8kF6usPNDaa/fFiWIhaPKzioLoMLK81algHYo5pbiBD3dHy5\nrlEpaO0YqqH+fkcKYcGG18us\n-----END PRIVATE KEY-----\n",
-  "client_email": "fb-service-account@dashwars.iam.gserviceaccount.com",
-  "client_id": "116048139600170929608",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fb-service-account%40dashwars.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+    "type": "service_account",
+    "project_id": "dashwars",
+    "private_key_id": "6b82ff3193289a83bd366ca9b3e1a027467cb71d",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDgVfSshYGd/3KM\n70iLBv4XEN5iIW5XQ+avkIkz0a+5Q0cp4bQfbF7Ei6EU8YsLte04dQ3ejAlS+kmU\nzGRXpJjTXXzUaU+TU7VvdFzz9Dum74fbaQQyfOGVvg3bBAQ0VJ6pbhf0lD9ZjL0p\nYt151Kzysy2Q5Y88IYCQ+bnjSmOIWmE8FCJKM8BwjwLaDYrhjwJsB8tLI0hlN5ZK\n0CRa1M6w6cVmJ5mwR7X8YHI/wB+7fr+9B1GcDpkGd5EBPjg8eSeUycYKbOJtwMtK\noNSJQJMXdy+Rcq9SkphKu7bFIa1Csgq1CQcNWrr9gVkmeoh3KkDu6sRQ65Ei4ePS\nWN0fJNolAgMBAAECggEAALuHHwEYmUF6SEeHvxx4u+6MK1ncmGBaYnxgVlD69+nm\nU5avFeMutAmYrw7S22juq16GexGN/j1e/CNmuHqLHTWS8MafQeXmE8UXgJxtjW/+\ny5KeNuP9gJWsSejLcrhMBFWdsmjBhDNXcskl2/37ypcXMP/u5c1eNBr8pmdZx9oy\nIlgh6XGtcH161hR+eToUymNkDrDi2NHaGaPGDgBElI5ULvzTgMHn2F4cT3FghY9g\nn954clTyixkXCeS7gVgstL70sF5o7m0Hh69qDg89DyKQLhGob3T2W//2hBxZELXy\ngnragscmyyRtrkRnOZuDP7LHyFgz8iopQnZxqN7zQQKBgQD0n/bg2p22DtB8VdCQ\nkXDkpj/N9IKLoGxk2LkgrlxsStNyw+63YkdSjYs4yQkCHdjMs8J/1Cv2BaZ1xkQT\nH7ZEs4xfxaJ8N6urb0CeMO8PTQ5B1BH9qzOPWtr9C4ImkGC7tN66ks20RHOafs1U\nTyEwtDVEHRQZDKcqzEMffICJyQKBgQDqxHfddNzCZ9J4sBrR+VK7HhZo53Fwj1J3\nb9ksnbqt+VYJSH2uKtI1penyOOI5NH9yvcpsVcThJ4kqzTHkbBj06zbl4WH3J8Y5\nUd9Tr0tkPbPql0qO0yg6B2rf6tUluq0oNY/9912wPZK90qQ9trRM/HfqhTRuE7Vu\nG/jiV757fQKBgQDelHp+x4w+riYXK8H0+NEeywI9NKBfyV03OVbhHKVtx3uz7gFU\nDPFWdQHbblhq+5tbTqjHxNcnKKb4fKlOOUmQI0qzjdE1czYZa8YA6gdrBbLWRM8F\n3/OvGX0uR31p9258/Kq4WoEe6DXDumK7trA9b4sT6d1ymWe1clwU1yThuQKBgQDQ\n2aNAsbvKfo4wq4nQjhrZN7T78hlq5zWX5zquhEsUhiHR9FlKXfHPpB/xSkWGWnue\n2dSAd/TD0GYoW48tBDVXfQDDlLOQKiQfzgP88I8DSBkMczbyxEqfBQZA2SpxfBab\nFLtaVXtVVBF9KSzPcgAIFPmg+otf+cyHff71bNWaCQKBgGMwQrvC52/X1Rc8jWcb\nj7oZVnpAew4od/771sSfp7vPGt45KXnfH7u1WuKRjvlRKH6sUoN+ekZhbr10XfM8\nQkfAwbsQ5ezeiNPB8kF6usPNDaa/fFiWIhaPKzioLoMLK81algHYo5pbiBD3dHy5\nrlEpaO0YqqH+fkcKYcGG18us\n-----END PRIVATE KEY-----\n",
+    "client_email": "fb-service-account@dashwars.iam.gserviceaccount.com",
+    "client_id": "116048139600170929608",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fb-service-account%40dashwars.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
 }

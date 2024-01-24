@@ -1,0 +1,194 @@
+﻿#region
+using UnityEngine;
+#endregion
+
+namespace Slate.ActionClips
+{
+    [Name("Animation Clip"),
+     Description(
+         "Play an Animation Clip on target actor with Animator component attached.\nIf this is the Layer 0 Animator Track, you can choose to explicitely set a 'Starting Position' and a 'Starting Rotation' for when the clip starts. This also takes into account Root Motion if enabled in the Animator Track."),
+     Attachable(typeof(AnimatorTrack))]
+    public class PlayAnimatorClip : ActorActionClip, ISubClipContainable
+    {
+        public enum ClipWrapMode { Loop = 0, PingPong = 1 }
+        public enum StartingTransformsMode { AutoMatchTransforms = 0, ManualSetTransforms = 1 }
+
+        [SerializeField, HideInInspector]
+        private float _length = 1f;
+
+        [SerializeField, HideInInspector]
+        private float _blendIn;
+
+        [SerializeField, HideInInspector]
+        private float _blendOut;
+
+        [Required, Header("Animation Clip Settings")]
+        public AnimationClip animationClip;
+
+        public float clipOffset;
+        public ClipWrapMode clipWrapMode = ClipWrapMode.Loop;
+
+        [Range(0, 1)]
+        public float clipWeight = 1f;
+
+        [Range(-5, 5)]
+        public float playbackSpeed = 1f;
+
+        [Header("Starting Transforms Settings"), ShowIf(nameof(isMasterTrack), 1)]
+        public StartingTransformsMode startingTransformsMode;
+
+        [ShowIf(nameof(isMasterAndManualSet), 1)]
+        public MiniTransformSpace transformSpace;
+
+        [ShowIf(nameof(isMasterAndManualSet), 1)]
+        public Vector3 startingPosition;
+
+        [ShowIf(nameof(isMasterAndManualSet), 1)]
+        public Vector3 startingRotation;
+
+        [Header("Offsets"), AnimatableParameter("Local Rotation Offset"),
+         HelpBox(
+             "'Local Rotation Offset' is only used if this clip is part of the Layer 0 Track and RootMotion is enabled in that Track.\nYou can animate this parameter to rotate the actor while using it's RootMotion within the Animation Clip.\nThis can be very useful for animations like Walk or Run. Most of the times, simply animating 'Y' will suffice.")]
+        public Vector2 steerLocalRotation;
+
+        private Vector3 wasPosition;
+        private Quaternion wasRotation;
+
+        private bool isMasterAndManualSet => isMasterTrack
+                && startingTransformsMode == StartingTransformsMode.ManualSetTransforms;
+
+        public override string info => animationClip != null ? animationClip.name : base.info;
+
+        public override bool isValid => base.isValid
+                && animator != null
+                && animationClip != null
+                && !animationClip.legacy;
+
+        public override float length {
+            get => _length;
+            set => _length = value;
+        }
+
+        private AnimatorTrack track => (AnimatorTrack)parent;
+        private Animator animator => track.animator;
+        private bool isMasterTrack => track.isMasterTrack;
+
+        ///----------------------------------------------------------------------------------------------
+        float ISubClipContainable.subClipOffset {
+            get => clipOffset;
+            set => clipOffset = value;
+        }
+
+        float ISubClipContainable.subClipLength => animationClip != null ? animationClip.length : 0;
+        float ISubClipContainable.subClipSpeed => playbackSpeed;
+
+        public override float blendIn {
+            get => _blendIn;
+            set => _blendIn = value;
+        }
+
+        public override float blendOut {
+            get => _blendOut;
+            set => _blendOut = value;
+        }
+
+        public override bool canCrossBlend => true;
+
+        ///----------------------------------------------------------------------------------------------
+        protected override void OnEnter()
+        {
+            wasPosition = animator.transform.position;
+            wasRotation = animator.transform.rotation;
+
+            if (!isMasterTrack
+                || startingTransformsMode == StartingTransformsMode.AutoMatchTransforms) {
+                startingPosition = animator.transform.position;
+                startingRotation = animator.transform.eulerAngles;
+            }
+
+            if (startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
+                animator.transform.position = TransformPosition(
+                    startingPosition, (TransformSpace)transformSpace);
+                animator.transform.rotation = TransformRotation(
+                    startingRotation, (TransformSpace)transformSpace);
+            }
+            track.EnableClip(this, GetClipWeight(0) * clipWeight);
+        }
+
+        protected override void OnReverseEnter()
+        {
+            track.EnableClip(this, GetClipWeight(length) * clipWeight);
+        }
+
+        protected override void OnUpdate(float time, float previousTime)
+        {
+            if (track.useRootMotion && steerLocalRotation != default) {
+                var rot = TransformRotation(startingRotation + (Vector3)steerLocalRotation,
+                    (TransformSpace)transformSpace);
+                animator.transform.localRotation = rot;
+            }
+            var doLerp = time <= blendIn || previousTime <= blendIn;
+
+            if (doLerp
+                && isMasterTrack
+                && startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
+                var blend = blendIn > 0 ? time / blendIn : 1;
+                var targetPosition = TransformPosition(
+                    startingPosition, (TransformSpace)transformSpace);
+                animator.transform.position = Vector3.Lerp(wasPosition, targetPosition, blend);
+                var targetRotation = TransformRotation(
+                    startingRotation, (TransformSpace)transformSpace);
+                animator.transform.rotation = Quaternion.Lerp(wasRotation, targetRotation, blend);
+            }
+            var clipTime = (time - clipOffset) * playbackSpeed;
+            var clipPrevious = (previousTime - clipOffset) * playbackSpeed;
+
+            if (clipWrapMode == ClipWrapMode.PingPong) {
+                clipTime = Mathf.PingPong(clipTime, animationClip.length);
+                clipPrevious = Mathf.PingPong(clipPrevious, animationClip.length);
+            }
+            track.UpdateClip(this, clipTime, clipPrevious, GetClipWeight(time) * clipWeight);
+        }
+
+        protected override void OnExit()
+        {
+            track.DisableClip(this, GetClipWeight(length) * clipWeight);
+        }
+
+        protected override void OnReverse()
+        {
+            animator.transform.position = wasPosition;
+            animator.transform.rotation = wasRotation;
+            track.DisableClip(this, GetClipWeight(0) * clipWeight);
+        }
+
+        ///----------------------------------------------------------------------------------------------
+        ///---------------------------------------UNITY EDITOR-------------------------------------------
+#if UNITY_EDITOR
+        private bool pendingResample;
+
+        protected override void OnClipGUI(Rect rect)
+        {
+            if (animationClip != null)
+                EditorTools.DrawLoopedLines(rect, animationClip.length / playbackSpeed, length,
+                    clipOffset);
+        }
+
+        protected override void OnSceneGUI()
+        {
+            if (startingTransformsMode == StartingTransformsMode.ManualSetTransforms) {
+                pendingResample |= SceneGUIUtility.DoVectorPositionHandle(this,
+                    (TransformSpace)transformSpace, startingRotation, ref startingPosition);
+                pendingResample |= SceneGUIUtility.DoVectorRotationHandle(this,
+                    (TransformSpace)transformSpace, startingPosition, ref startingRotation);
+            }
+
+            if (pendingResample && GUIUtility.hotControl == 0) {
+                pendingResample = false;
+                root.ReSample();
+            }
+        }
+
+#endif
+    }
+}

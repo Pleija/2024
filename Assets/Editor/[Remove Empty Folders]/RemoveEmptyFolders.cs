@@ -1,43 +1,41 @@
-using UnityEngine;
-using UnityEditor;
+#region
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
-using System;
-
-
+using System.Text;
+using UnityEditor;
+using UnityEngine;
+#endregion
 
 /// <summary>
-/// Remove empty folders automatically.
+///     Remove empty folders automatically.
 /// </summary>
 public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
 {
     public const string kMenuText = "Assets/Remove Empty Folders";
-    static readonly StringBuilder s_Log = new StringBuilder();
-    static readonly List<DirectoryInfo> s_Results = new List<DirectoryInfo>();
+    private static readonly StringBuilder s_Log = new StringBuilder();
+    private static readonly List<DirectoryInfo> s_Results = new List<DirectoryInfo>();
 
     /// <summary>
-    /// Raises the initialize on load method event.
+    ///     Raises the initialize on load method event.
     /// </summary>
     // [InitializeOnLoadMethod]
     // static void OnInitializeOnLoadMethod()
     // {
     //     EditorApplication.delayCall += () => Valid();
     // }
-
     [MenuItem("Assets/Clear All Empty Folder Direct")]
-    public static void Clear() => __OnWillSaveAssets(new string[]{});
+    public static void Clear() => __OnWillSaveAssets(new string[] { });
 
     /// <summary>
-    /// Raises the will save assets event.
+    ///     Raises the will save assets event.
     /// </summary>
     public static string[] __OnWillSaveAssets(string[] paths)
     {
         //Debug.Log($"check clear directory: {paths.JoinStr()}");
         // If menu is unchecked, do nothing.
-        if (!EditorPrefs.GetBool(kMenuText, false))
-            return paths;
+        if (!EditorPrefs.GetBool(kMenuText, false)) return paths;
 
         // Get empty directories in Assets directory
         s_Results.Clear();
@@ -45,7 +43,10 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
         GetEmptyDirectories(new DirectoryInfo(assetsDir), s_Results);
         GetEmptyDirectories(new DirectoryInfo(Application.dataPath + "/../Packages"), s_Results);
         var result = s_Results.Where(x =>
-            !paths.Contains(x.FullName.Replace(Directory.GetCurrentDirectory() + "/", "") + ".meta")).ToArray();
+                        !paths.Contains(
+                            x.FullName.Replace(Directory.GetCurrentDirectory() + "/", "")
+                            + ".meta"))
+                .ToArray();
 
         // When empty directories has detected, remove the directory.
         if (0 < result.Length) {
@@ -65,7 +66,6 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
                 }
             }
 
-
             // UNITY BUG: Debug.Log can not set about more than 15000 characters.
             s_Log.Length = Mathf.Min(s_Log.Length, 15000);
             Debug.Log(s_Log.ToString());
@@ -76,22 +76,22 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
     }
 
     /// <summary>
-    /// Toggles the menu.
+    ///     Toggles the menu.
     /// </summary>
     [MenuItem(kMenuText)]
-    static void OnClickMenu()
+    private static void OnClickMenu()
     {
         // Check/Uncheck menu.
-        bool isChecked = !Menu.GetChecked(kMenuText);
+        var isChecked = !Menu.GetChecked(kMenuText);
         Menu.SetChecked(kMenuText, isChecked);
 
         // Save to EditorPrefs.
         EditorPrefs.SetBool(kMenuText, isChecked);
-        __OnWillSaveAssets(new string[]{});
+        __OnWillSaveAssets(new string[] { });
     }
 
     [MenuItem(kMenuText, true)]
-    static bool Valid()
+    private static bool Valid()
     {
         // Check/Uncheck menu from EditorPrefs.
         Menu.SetChecked(kMenuText, EditorPrefs.GetBool(kMenuText, false));
@@ -99,11 +99,11 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
     }
 
     /// <summary>
-    /// Get empty directories.
+    ///     Get empty directories.
     /// </summary>
-    static bool GetEmptyDirectories(DirectoryInfo dir, List<DirectoryInfo> results)
+    private static bool GetEmptyDirectories(DirectoryInfo dir, List<DirectoryInfo> results)
     {
-        bool isEmpty = true;
+        var isEmpty = true;
 
         if (dir.FullName.EndsWith("~") && File.Exists(dir.FullName + ".meta")) {
             FileUtil.DeleteFileOrDirectory(dir.FullName + ".meta");
@@ -112,18 +112,18 @@ public class RemoveEmptyFolders : UnityEditor.AssetModificationProcessor
 
         try {
             isEmpty =
-                // Are sub directories empty?
-                dir.GetDirectories().Count(x => !GetEmptyDirectories(x, results)) == 0
-                // No file exist?
-                && dir.GetFiles("*.*").All(x => x.Extension == ".meta" || x.Name == ".DS_Store");
+                    // Are sub directories empty?
+                    dir.GetDirectories().Count(x => !GetEmptyDirectories(x, results)) == 0
+                    // No file exist?
+                    && dir.GetFiles("*.*")
+                            .All(x => x.Extension == ".meta" || x.Name == ".DS_Store");
         }
         catch {
             //
         }
 
         // Store empty directory to results.
-        if (isEmpty)
-            results.Add(dir);
+        if (isEmpty) results.Add(dir);
         return isEmpty;
     }
 }

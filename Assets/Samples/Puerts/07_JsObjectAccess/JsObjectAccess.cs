@@ -38,7 +38,7 @@ namespace PuertsTest
     {
         void Start()
         {
-            var jsEnv = new JsEnv();
+            var jsEnv = new Puerts.JsEnv();
 
             jsEnv.Eval(@"
                 let obj = new CS.PuertsTest.JsObjectTest();

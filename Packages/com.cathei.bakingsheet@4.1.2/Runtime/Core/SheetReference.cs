@@ -1,6 +1,7 @@
 ﻿// BakingSheet, Maxwell Keonwoo Kang <code.athei@gmail.com>, 2022
 
 using System;
+using System.Runtime.InteropServices;
 using Cathei.BakingSheet.Internal;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,7 @@ namespace Cathei.BakingSheet
         /// <summary>
         /// Cross-sheet reference column to this Sheet.
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         public partial struct Reference : ISheetReference
         {
             [Preserve] public TKey Id { get; private set; }

@@ -17,11 +17,11 @@ namespace PuertsTest
         public Action JsUpdate;
         public Action JsOnDestroy;
 
-        static JsEnv jsEnv;
+        static Puerts.JsEnv jsEnv;
 
         private void OnEnable()
         {
-            if (jsEnv == null) jsEnv = new JsEnv(new DefaultLoader(), 9229);
+            if (jsEnv == null) jsEnv = new Puerts.JsEnv(new DefaultLoader(), 9229);
             var varname = "m_" + Time.frameCount;
             var init = jsEnv.ExecuteModule(ModuleName).Get<ModuleInit>("init");
 

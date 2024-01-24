@@ -13022,7 +13022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mtsFile: {fileID: 0}
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"MissionState","_preTags":[],"_postTags":[],"_position":{"x":391.0,"y":201.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
+  _boundGraphSerialization: '{"type":"NodeCanvas.StateMachines.FSM","nodes":[{"_actionList":{"executionMode":1,"actions":[]},"_color":{"r":1.0,"g":0.42,"b":0.32,"a":1.0},"localBlackboard":{"_variables":{}},"_name":"MissionState","_preTags":{"data":[]},"_postTags":{"data":[]},"_position":{"x":391.0,"y":201.0},"$type":"NodeCanvas.StateMachines.ActionState"}],"connections":[],"canvasGroups":[],"localBlackboard":{"_variables":{}}}'
   _boundGraphObjectReferences: []
   _boundGraphSource:
     _version: 3.29

@@ -8,11 +8,11 @@ namespace PuertsTest
 {
     public class TsQuickStart : MonoBehaviour
     {
-        JsEnv jsEnv;
+        Puerts.JsEnv jsEnv;
 
         void Start()
         {
-            jsEnv = new JsEnv();
+            jsEnv = new Puerts.JsEnv();
             //jsEnv = new JsEnv(new DefaultLoader(UnityEngine.Application.dataPath + "../TsProj/output/"), 8080);
             //jsEnv.WaitDebugger();
             jsEnv.ExecuteModule("Quickstart.mjs");

@@ -1,4 +1,6 @@
+#region
 using UnityEditor;
+#endregion
 
 namespace Editors
 {

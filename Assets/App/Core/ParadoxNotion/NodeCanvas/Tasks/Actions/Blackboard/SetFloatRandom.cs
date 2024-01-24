@@ -1,0 +1,28 @@
+﻿#region
+using NodeCanvas.Framework;
+using ParadoxNotion.Design;
+using UnityEngine;
+#endregion
+
+namespace NodeCanvas.Tasks.Actions
+{
+    [Category("✫ Blackboard"),
+     Description("Set a blackboard float variable at random between min and max value")]
+    public class SetFloatRandom : ActionTask
+    {
+        [BlackboardOnly]
+        public BBParameter<float> floatVariable;
+
+        public BBParameter<float> maxValue;
+        public BBParameter<float> minValue;
+
+        protected override string info =>
+                "Set " + floatVariable + " Random(" + minValue + ", " + maxValue + ")";
+
+        protected override void OnExecute()
+        {
+            floatVariable.value = Random.Range(minValue.value, maxValue.value);
+            EndAction();
+        }
+    }
+}

@@ -4,13 +4,13 @@ using Puerts;
 
 public class UIEvent : MonoBehaviour
 {
-    static JsEnv jsEnv;
+    static Puerts.JsEnv jsEnv;
 
     void Start()
     {
         if (jsEnv == null)
         {
-            jsEnv = new JsEnv();
+            jsEnv = new Puerts.JsEnv();
             jsEnv.UsingAction<bool>();//toggle.onValueChanged用到
         }
 

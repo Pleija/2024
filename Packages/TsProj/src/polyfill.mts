@@ -1,6 +1,6 @@
 import $typeof = puer.$typeof;
-import Js = CS.Js;
 import FSMState = CS.NodeCanvas.StateMachines.FSMState;
+import JsEnv = CS.Puerts.JsEnv;
 
 global.__dirname = ".";
 global.Buffer ??= require("buffer");
@@ -18,5 +18,5 @@ global.getAllMethod = function getAllMethod(toCheck: any): string[] {
 }
 
 
-Js.self.UsingFunc($typeof(FSMState), $typeof(CS.System.Boolean));
-Js.self.UsingFunc($typeof(CS.System.Object), $typeof(CS.System.Boolean));
+JsEnv.self.UsingFunc($typeof(FSMState), $typeof(CS.System.Boolean));
+JsEnv.self.UsingFunc($typeof(CS.System.Object), $typeof(CS.System.Boolean));

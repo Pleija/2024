@@ -5,11 +5,11 @@ namespace PuertsTest
 {
     public class JsCallCs : MonoBehaviour
     {
-        JsEnv jsEnv;
+        Puerts.JsEnv jsEnv;
 
         void Start()
         {
-            jsEnv = new JsEnv();
+            jsEnv = new Puerts.JsEnv();
 
             jsEnv.Eval(@"
                 let gameObject = new CS.UnityEngine.GameObject('testObject');

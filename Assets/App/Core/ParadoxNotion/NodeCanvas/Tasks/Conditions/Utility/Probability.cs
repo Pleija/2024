@@ -1,0 +1,26 @@
+﻿#region
+using NodeCanvas.Framework;
+using ParadoxNotion.Design;
+using UnityEngine;
+#endregion
+
+namespace NodeCanvas.Tasks.Conditions
+{
+    [Category("✫ Utility"),
+     Description(
+         "Return true or false based on the probability settings. The chance is rolled for once whenever the condition is enabled.")]
+    public class Probability : ConditionTask
+    {
+        public BBParameter<float> maxValue = 1;
+        public BBParameter<float> probability = 0.5f;
+        private bool success;
+        protected override string info => probability.value / maxValue.value * 100 + "%";
+
+        protected override void OnEnable()
+        {
+            success = Random.Range(0f, maxValue.value) <= probability.value;
+        }
+
+        protected override bool OnCheck() => success;
+    }
+}

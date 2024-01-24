@@ -5,12 +5,12 @@ namespace PuertsTest
 {
     public class Callback : MonoBehaviour
     {
-        JsEnv jsEnv;
+        Puerts.JsEnv jsEnv;
 
         // Use this for initialization
         void Start()
         {
-            jsEnv = new JsEnv();
+            jsEnv = new Puerts.JsEnv();
 
             //要使用值类型参数或者返回值的委托要声明，而Callback1因为是引用类型所以不用。
             jsEnv.UsingAction<int>();

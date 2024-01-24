@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿#region
 using MS.Shell.Editor;
-using UnityEngine;
 using UnityEditor;
+#endregion
 
 public class BundleAndBuild
 {
     [MenuItem("Tests/Build with Bundle/Build")]
-    static void Build() { }
+    private static void Build() { }
 
     [MenuItem("Tests/Build with Bundle/Build and Run")]
-    static void BuildAndRun() { }
+    private static void BuildAndRun() { }
 
     [MenuItem("Tests/Shell Test")]
-    static void TestShell()
+    private static void TestShell()
     {
         EditorShell.GitUpdate();
         // var operation = EditorShell.Execute("art git update 2>&1", new EditorShell.Options() {

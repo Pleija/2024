@@ -1,9 +1,8 @@
+#region
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using Api;
-using App.Models;
 using HashidsNet;
 using MessagePack;
 using Models;
@@ -11,6 +10,7 @@ using Network;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+#endregion
 
 [TestFixture]
 public class TestRandom
@@ -20,9 +20,7 @@ public class TestRandom
     [MenuItem("Tests/Test Random"), Test]
     public static void Test()
     {
-        if(seed == 0) {
-            seed = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
-        }
+        if (seed == 0) seed = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
         var pcg = new PcgRandom(0, seed);
         Debug.Log($"seed: {seed} result: {pcg.Shuffle(NetConfig.Base64)}");
             // @formatter:off
@@ -31,7 +29,7 @@ public class TestRandom
                 0x6E, 0x7A, 0x75, 0x32, 0x74, 0x55, 0x73, 0x37, 0x4A, 0x44, 0x46, 0x6C, 0x6B, 
                 0x35, 0x57, 0x66, 0x79, 0x62, 0x30, 0x4E, 0x36, 0x4F, 0x70, 0x65, 0x39, 0x4D,
                 0x48, 0x77, 0x2F, 0x51, 0x78, 0x6A, 0x49, 0x58, 0x72, 0x45, 0x63, 0x52, 0x6F,
-                0x53, 0x69, 0x2B, 0x41, 0x76, 0x54, 0x47, 0x5A, 0x31, 0x71, 0x67, 0x64
+                0x53, 0x69, 0x2B, 0x41, 0x76, 0x54, 0x47, 0x5A, 0x31, 0x71, 0x67, 0x64,
             }));
         // @formatter:on
     }
@@ -73,8 +71,6 @@ public class TestRandom
         Debug.Log(MessagePackSerializer.Serialize(HashId.self.EncodeLong(timestamp)).Length);
     }
 
-    
-
     [Test]
     public static void TestTuple()
     {
@@ -85,8 +81,8 @@ public class TestRandom
         Debug.Log((1, "test").GetType().FullName);
         Debug.Log(data.Length);
         var method =
-            typeof(NetConfig).GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static)!
-                .MakeGenericMethod(type);
+                typeof(NetConfig).GetMethod("Deserialize",
+                    BindingFlags.Public | BindingFlags.Static)!.MakeGenericMethod(type);
         var ret = method.Invoke(null, new object[] { data });
         // var ret = MessagePackSerializer.Deserialize<Tuple<int,string>>(data);
         Debug.Log(ret);

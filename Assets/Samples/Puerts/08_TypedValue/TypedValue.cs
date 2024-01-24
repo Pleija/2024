@@ -5,12 +5,12 @@ namespace PuertsTest
 {
     public class TypedValue : MonoBehaviour
     {
-        JsEnv jsEnv;
+        Puerts.JsEnv jsEnv;
 
         // Use this for initialization
         void Start()
         {
-            jsEnv = new JsEnv();
+            jsEnv = new Puerts.JsEnv();
 
             jsEnv.Eval(@"
                 let value = new CS.Puerts.Int64Value(512n);

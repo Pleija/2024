@@ -1,0 +1,33 @@
+﻿#region
+using System.Collections.Generic;
+using NodeCanvas.Framework;
+using ParadoxNotion.Design;
+#endregion
+
+namespace NodeCanvas.Tasks.Actions
+{
+    [Category("✫ Blackboard/Lists")]
+    public class PickListElement<T> : ActionTask
+    {
+        public BBParameter<int> index;
+
+        [BlackboardOnly]
+        public BBParameter<T> saveAs;
+
+        [RequiredField, BlackboardOnly]
+        public BBParameter<List<T>> targetList;
+
+        protected override string info =>
+                string.Format("{0} = {1} [{2}]", saveAs, targetList, index);
+
+        protected override void OnExecute()
+        {
+            if (index.value < 0 || index.value >= targetList.value.Count) {
+                EndAction(false);
+                return;
+            }
+            saveAs.value = targetList.value[index.value];
+            EndAction(true);
+        }
+    }
+}

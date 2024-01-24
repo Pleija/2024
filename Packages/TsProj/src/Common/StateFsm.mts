@@ -122,7 +122,7 @@ export class StateFsm {
     exitNode(s: FSMState) {
         if (!this[s.NodeName]) return;
 
-        console.log("Exit Node:", s.NodeName);
+        //console.log("Exit Node:", s.NodeName);
         //(s.jsBind as StateNode)?._exit(s.jsBind);
         this[s.NodeName].exit?.();
     }

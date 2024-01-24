@@ -1,0 +1,22 @@
+﻿#region
+using UnityEngine;
+#endregion
+
+namespace Slate
+{
+    ///<summary>Action Tracks contain general purpose ActionClips</summary>
+    [Name("Action Track"),
+     Description(
+         "Action Tracks are generic purpose tracks. Once an Action Clip has been placed, the Action Track will lock to accept only clips of the same category."),
+     Icon(typeof(CircleCollider2D))]
+    public abstract class ActionTrack : CutsceneTrack
+    {
+#if UNITY_EDITOR
+
+        [SerializeField]
+        protected Texture _icon;
+
+        public override Texture icon => _icon != null ? _icon : base.icon;
+#endif
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Core",
+    "references": [
+        "UltEvents",
+        "Shared",
+        "com.tencent.puerts.core",
+        "Unity.Addressables.Editor",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "UniRx",
+        "UniTask",
+        "FrameCapturer",
+        "Unity.Postprocessing.Runtime",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime"
+    ]
+}

@@ -1,0 +1,39 @@
+﻿#region
+using ParadoxNotion.Design;
+using UnityEngine;
+#endregion
+
+namespace FlowCanvas.Nodes
+{
+    [Name("OR"), Category("Flow Controllers/Flow Merge"),
+     Description(
+         "Calls Out when either input is called, but only once per frame regardless of how many inputs are called.")]
+    public class ORMerge : FlowControlNode
+    {
+        [SerializeField, ExposeField, MinValue(2), DelayedField, GatherPortsCallback]
+        private int _portCount = 2;
+
+        private FlowOutput fOut;
+        private int lastFrameCall;
+
+        protected override void RegisterPorts()
+        {
+            fOut = AddFlowOutput("Out");
+
+            for (var _i = 0; _i < _portCount; _i++) {
+                var i = _i;
+                AddFlowInput(i.ToString(), f => {
+                    Check(i, f);
+                });
+            }
+        }
+
+        private void Check(int index, Flow f)
+        {
+            if (Time.frameCount != lastFrameCall) {
+                lastFrameCall = Time.frameCount;
+                fOut.Call(f);
+            }
+        }
+    }
+}

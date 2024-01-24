@@ -1,0 +1,79 @@
+﻿#region
+using System;
+using NodeCanvas.Framework;
+using ParadoxNotion;
+using ParadoxNotion.Design;
+using ParadoxNotion.Serialization;
+using UnityEngine;
+#endregion
+
+namespace FlowCanvas.Nodes
+{
+    [Name("Delegate Callback", 1), Category("Events/Custom"),
+     Description(
+         "The exposed Delegate points directly to the 'Callback' output. You can connect this delegate as listener to a Unity or C# Event using the AddListener function of that Unity Event, or the += function of that C# Event. When that event is raised, this node will be called."),
+     ContextDefinedOutputs(typeof(Flow), typeof(Delegate))]
+    public class DelegateCallbackEvent : EventNode, IReflectedWrapper
+    {
+        [SerializeField]
+        private SerializedTypeInfo _type;
+
+        private object[] args;
+        private FlowOutput callbackPort;
+        private ValueOutput delegatePort;
+        private ReflectedDelegateEvent reflectedEvent;
+
+        private Type delegateType {
+            get => _type;
+            set {
+                if (_type != value) _type = new SerializedTypeInfo(value);
+            }
+        }
+
+        ISerializedReflectedInfo IReflectedWrapper.GetSerializedInfo() => _type;
+
+        protected override void RegisterPorts()
+        {
+            delegateType = delegateType != null ? delegateType : typeof(Delegate);
+            delegatePort = AddValueOutput(delegateType.FriendlyName(), "Delegate", delegateType,
+                () => {
+                    return reflectedEvent.AsDelegate();
+                });
+            callbackPort = AddFlowOutput("Callback");
+            if (delegateType == typeof(Delegate)) return;
+
+            if (reflectedEvent == null) {
+                reflectedEvent = new ReflectedDelegateEvent(delegateType);
+                reflectedEvent.Add(Callback);
+            }
+            var parameters = delegateType.RTGetDelegateTypeParameters();
+
+            for (var _i = 0; _i < parameters.Length; _i++) {
+                var i = _i;
+                var parameter = parameters[i];
+                AddValueOutput(parameter.Name, "arg" + i, parameter.ParameterType, () => {
+                    return args[i];
+                });
+            }
+        }
+
+        private void Callback(params object[] args)
+        {
+            this.args = args;
+            callbackPort.Call(new Flow());
+        }
+
+        public override void OnGraphStoped()
+        {
+            args = null;
+        }
+
+        public override void OnPortConnected(Port port, Port otherPort)
+        {
+            if (port == delegatePort && otherPort.type.RTIsSubclassOf(typeof(Delegate))) {
+                delegateType = otherPort.type;
+                GatherPorts();
+            }
+        }
+    }
+}

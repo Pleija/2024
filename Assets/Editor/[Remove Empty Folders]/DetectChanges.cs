@@ -1,7 +1,9 @@
+#region
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+#endregion
 
 namespace Editors
 {
@@ -44,11 +46,10 @@ namespace Editors
                 }
                 Debug.Log(s.JoinStr("\n"));
             }
-
-            if ((deletedAssets.Any() || moved.Any()) && !EditorApplication.isCompiling &&
-                !EditorApplication.isUpdating) {
+            if ((deletedAssets.Any() || moved.Any())
+                && !EditorApplication.isCompiling
+                && !EditorApplication.isUpdating)
                 RemoveEmptyFolders.__OnWillSaveAssets(importedAssets);
-            }
         }
     }
 }

@@ -1,0 +1,48 @@
+﻿#region
+using ParadoxNotion;
+using ParadoxNotion.Design;
+using ParadoxNotion.Serialization;
+using UnityEngine;
+#endregion
+
+namespace NodeCanvas.Framework.Internal
+{
+    /// <summary>
+    ///     Missing node types are deserialized into this on deserialization and can load back if type
+    ///     is found
+    /// </summary>
+    [DoNotList,
+     Description(
+         "Please resolve the MissingConnection issue by either replacing the connection, importing the missing connection type, or refactoring the type in GraphRefactor.")]
+    public sealed class MissingConnection : Connection, IMissingRecoverable
+    {
+        [SerializeField]
+        private string _missingType;
+
+        [SerializeField]
+        private string _recoveryState;
+
+        string IMissingRecoverable.missingType {
+            get => _missingType;
+            set => _missingType = value;
+        }
+
+        string IMissingRecoverable.recoveryState {
+            get => _recoveryState;
+            set => _recoveryState = value;
+        }
+
+        ///----------------------------------------------------------------------------------------------
+        ///---------------------------------------UNITY EDITOR-------------------------------------------
+#if UNITY_EDITOR
+        public override Color defaultColor => Color.red;
+
+        public override TipConnectionStyle tipConnectionStyle => TipConnectionStyle.None;
+        protected override void OnConnectionInspectorGUI()
+        {
+            GUILayout.Label(_missingType.FormatError());
+            GUILayout.Label(_recoveryState);
+        }
+#endif
+    }
+}

@@ -12,13 +12,13 @@ namespace PuertsTest
 
     public class NodeJS : MonoBehaviour
     {
-        JsEnv env;
+        Puerts.JsEnv env;
         // Start is called before the first frame update
         void Start()
         {
             if (PuertsDLL.GetLibBackend() == 1)
             {
-                env = new JsEnv(new DefaultLoader(), 9222);
+                env = new Puerts.JsEnv(new DefaultLoader(), 9222);
                 env.ExecuteModule("node-example.mjs");
             }
             else

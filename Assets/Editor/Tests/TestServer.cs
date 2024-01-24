@@ -1,7 +1,3 @@
-using System;
-using NUnit.Framework;
-using UnityEditor;
-
 namespace Tests
 {
     public class TestServer
