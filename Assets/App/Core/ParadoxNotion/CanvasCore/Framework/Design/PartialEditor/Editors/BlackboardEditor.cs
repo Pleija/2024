@@ -115,7 +115,7 @@ namespace NodeCanvas.Editor
                     GUILayout.ExpandWidth(true));
                 GUILayout.EndHorizontal();
             }
-            //Debug.Log(bb.unityContextObject.GetType().Name); 
+            //Debug.Log(bb.unityContextObject.GetType().Name);
 
             //Add variable button
             GUI.backgroundColor = Colors.lightBlue;
@@ -158,9 +158,19 @@ namespace NodeCanvas.Editor
                     return;
                 }
                 GUILayout.Space(data.varType == typeof(VariableSeperator) ? 5 : 0);
-                GUILayout.BeginHorizontal();
-                DoVariableGUI(data, i, isPicked);
-                GUILayout.EndHorizontal();
+                GUI.backgroundColor = data.color == default ? Color.white : data.color;
+                GUILayout.BeginVertical("box");
+                {
+                    GUILayout.BeginHorizontal();
+                    DoVariableGUI(data, i, isPicked);
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Desc:", GUILayout.Width(40));
+                    data.Desc = EditorGUILayout.TextField(data.Desc);
+                    data.color = EditorGUILayout.ColorField(data.color, GUILayout.Width(40));
+                    GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
+                }
                 GUI.color = Color.white;
                 GUI.backgroundColor = Color.white;
                 if (elementDefinedParameterIDs != null
@@ -308,7 +318,7 @@ namespace NodeCanvas.Editor
             }
             GUI.color = data.isExposedPublic ? GUI.color.WithAlpha(0.5f) : GUI.color;
             EditorGUIUtility.labelWidth = 10;
-            var newVal = VariableField(data, contextObject, layoutOptions);
+            var newVal = VariableField(bb, data, contextObject, -1,layoutOptions);
             EditorGUIUtility.labelWidth = 0;
 
             // if (data.varType == typeof(AssetReference)) {
@@ -317,7 +327,7 @@ namespace NodeCanvas.Editor
             //     //
             //     //     //Debug.Log(AssetDatabase.GetAssetPath(reference.editorAsset));
             //     // }
-            // } else 
+            // } else
             if (!Equals(data.value, newVal)) {
                 Debug.Log("changed");
                 UndoUtility.RecordObject(contextObject, "Variable Value Change");
@@ -519,10 +529,10 @@ namespace NodeCanvas.Editor
         }
 
         //the variable data field
-        private object VariableField(Variable data, Object contextParent,
-            GUILayoutOption[] layoutOptions)
+        public static object VariableField(IBlackboard bb, Variable data, Object contextParent, int index =-1,
+            params GUILayoutOption[] layoutOptions)
         {
-            var o = data.value;
+            var o = /*index == -1 ? data.value : */data[index];
             var t = data.varType;
 
             if (t == typeof(VariableSeperator)) {
@@ -540,7 +550,7 @@ namespace NodeCanvas.Editor
                 && t != typeof(Type)) {
                 if (GUILayout.Button("(null) Create-1", layoutOptions))
                     EditorUtils.GetTypeSelectionMenu(t, derived => {
-                                data.value = Activator.CreateInstance(derived);
+                                data[index]/*data.value*/ = Activator.CreateInstance(derived);
                             })
                             .ShowAsBrowser("Select Derived Type");
                 return o;
@@ -558,9 +568,9 @@ namespace NodeCanvas.Editor
                         o is IList ? ((IList)o).Count.ToString() : string.Empty), layoutOptions))
                     //we use bb.GetVariableByID to avoid undo creating new instance of variable and thus generic inspector, left inspecting something else
                 GenericInspectorWindow.Show(data.name, t, contextParent, () => {
-                    return bb.GetVariableByID(data.ID).value;
+                    return bb.GetVariableByID(data.ID)[index]/*.value*/;
                 }, newValue => {
-                    bb.GetVariableByID(data.ID).value = newValue;
+                    bb.GetVariableByID(data.ID)[index]/*.value*/ = newValue;
                 });
             return o;
         }

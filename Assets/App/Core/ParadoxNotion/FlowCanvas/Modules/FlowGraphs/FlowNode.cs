@@ -45,7 +45,7 @@ namespace FlowCanvas
         public sealed override Alignment2x2 commentsAlignment => Alignment2x2.Bottom;
         public override Alignment2x2 iconAlignment => Alignment2x2.Left;
         public FlowGraph flowGraph => (FlowGraph)graph;
-        protected string SPACE => StringUtils.SPACE;
+        protected string SPACE => ParadoxNotion.StringUtils.SPACE;
 
         ///----------------------------------------------------------------------------------------------
         ///<summary>Ignore the Self Instance Object feature altogether for the the node?</summary>

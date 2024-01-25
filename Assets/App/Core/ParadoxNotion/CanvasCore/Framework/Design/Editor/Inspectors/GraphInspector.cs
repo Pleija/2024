@@ -60,7 +60,7 @@ namespace NodeCanvas.Editor
             graph.comments = GUILayout.TextArea(graph.comments, GUILayout.Height(45));
             EditorUtils.CommentLastTextField(graph.comments);
             GUI.backgroundColor = Colors.lightBlue;
-            if (GUILayout.Button(string.Format("EDIT {0}",
+            if (GUILayout.Button(string.Format("EDIT#2 {0}",
                 graph.GetType().Name.SplitCamelCase().ToUpper())))
                 GraphEditor.OpenWindow(graph);
             GUI.backgroundColor = Color.white;

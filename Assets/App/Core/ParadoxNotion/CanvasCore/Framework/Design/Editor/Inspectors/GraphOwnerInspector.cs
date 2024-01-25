@@ -276,8 +276,9 @@ namespace NodeCanvas.Editor
                 GUILayout.BeginHorizontal();
                 {
                     if (GUILayout.Button(
-                        ("Edit " + owner.graphType.Name.SplitCamelCase()).ToUpper())) {
+                        ("Edit#1 " + owner.graphType.Name.SplitCamelCase()).ToUpper())) {
                         owner.graph.CheckVarsFromTs(owner.graph.MakeFile(), owner.graph.blackboard);
+                        Debug.Log($"owner: {owner.GetType().FullName}");
                         GraphEditor.OpenWindow(owner);
                     }
 

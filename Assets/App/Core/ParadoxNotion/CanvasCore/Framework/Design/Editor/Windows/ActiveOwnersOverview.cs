@@ -73,7 +73,7 @@ namespace NodeCanvas.Editor
                 var displayName = string.Format("<size=9><b>{0}</b> ({1})</size>", owner.name,
                     owner.graphType.FriendlyName());
                 if (!string.IsNullOrEmpty(search))
-                    if (!StringUtils.SearchMatch(search, displayName))
+                    if (!ParadoxNotion.StringUtils.SearchMatch(search, displayName))
                         continue;
                 GUILayout.BeginHorizontal(GUI.skin.box);
                 GUILayout.Label(displayName);

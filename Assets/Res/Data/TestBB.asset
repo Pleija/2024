@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4fa5caed5fb2b43b903ef7859c9bf9, type: 3}
+  m_Name: TestBB
+  m_EditorClassIdentifier: 
+  showFold: 1
+  _serializedBlackboard: '{"_variables":{"myInteger":{"_value":123,"odd":[0.0],"multiply":[1.0],"values":[{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"}],"_name":"myInteger","_id":"05b32bf2-71ba-4c07-ad4f-6c4a8a117c2a","_data":"{}","_desc":"gjjhggj
+    ","m_Color":{"r":1.0,"g":0.9198113,"b":0.9198113,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myString":{"_value":"test","odd":[0.0],"multiply":[1.0],"values":[{"$content":"test","$type":"System.String"},{"$content":"hellow","$type":"System.String"},{"$content":"test","$type":"System.String"},{"$content":"test","$type":"System.String"},{"$content":"test","$type":"System.String"}],"_name":"myString","_id":"50698924-1950-4b1d-813d-6b7f5282bf98","_data":"{}","_desc":"jgghhj
+    ","m_Color":{"r":0.9292453,"g":1.0,"b":0.9943532,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.String,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myFloat":{"_value":111.0,"odd":[0.0],"multiply":[1.0],"values":[{"$content":111.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"},{"$content":1117778.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"}],"_name":"myFloat","_id":"b6261a34-d44a-4768-b13e-bd377739446a","_data":"{}","_desc":"nlkkll111","m_Color":{"r":0.851467,"g":1.0,"b":0.7688679,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+  _version: 1.0
+  LevelCount: 5
+  _objectReferences: []
+  _UID: 50c304b9-92bd-4bbd-aa9c-7822322d44b5
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []

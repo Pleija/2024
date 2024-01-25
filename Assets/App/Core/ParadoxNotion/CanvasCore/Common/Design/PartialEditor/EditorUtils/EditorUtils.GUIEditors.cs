@@ -70,6 +70,7 @@ namespace ParadoxNotion.Design
         ///<summary>Just a fancy ending for inspectors</summary>
         public static void EndOfInspector()
         {
+            return;
             var lastRect = GUILayoutUtility.GetLastRect();
             GUILayout.Space(8);
             GUI.color = new Color(0, 0, 0, 0.4f);

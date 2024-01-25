@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using CSharpVitamins;
+using Newtonsoft.Json;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion.Serialization;
 using ParadoxNotion.Services;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
 using Sirenix.Serialization;
 using UnityEditor;
 using UnityEngine;
@@ -16,9 +16,8 @@ using Object = UnityEngine.Object;
 namespace NodeCanvas.Framework
 {
 #if UNITY_EDITOR
-    [CustomEditor(typeof(AssetBlackboard))]
-    public class AssetBlackboardEditor : OdinEditor { }
 #endif
+
     [CreateAssetMenu(menuName = "ParadoxNotion/CanvasCore/Blackboard Asset"),
      ShowOdinSerializedPropertiesInInspector]
     public class AssetBlackboard : ScriptableObject, ISerializationCallbackReceiver,
@@ -27,13 +26,18 @@ namespace NodeCanvas.Framework
         public event Action<Variable> onVariableAdded;
         public event Action<Variable> onVariableRemoved;
         public bool showFold;
-        public BlackBoardData Data;
+
+        // [SerializeField]
+        // public BlackBoardData Data;
 
         [SerializeField]
         private string _serializedBlackboard;
 
+
         [SerializeField]
         private string _version;
+
+        public int LevelCount;
 
         [SerializeField]
         private List<Object> _objectReferences;
@@ -46,6 +50,9 @@ namespace NodeCanvas.Framework
 
         [NonSerialized]
         private BlackboardSource _blackboard = new BlackboardSource();
+
+        [NonSerialized]
+        private List<BlackboardSource>  _levels = new List<BlackboardSource>();
 
         ///----------------------------------------------------------------------------------------------
         void ISerializationCallbackReceiver.OnBeforeSerialize()
@@ -78,13 +85,21 @@ namespace NodeCanvas.Framework
             _blackboard = JSONSerializer.Deserialize<BlackboardSource>(
                 _serializedBlackboard, _objectReferences);
             if (_blackboard == null) _blackboard = new BlackboardSource();
+
         }
 
         ///----------------------------------------------------------------------------------------------
-        Dictionary<string, Variable> IBlackboard.variables {
+         Dictionary<string, Variable> IBlackboard.variables {
             get => _blackboard.variables;
             set => _blackboard.variables = value;
         }
+
+        // [SerializeField]
+        // private List<SortedDictionary<string, Variable>>
+        //         values = new List<SortedDictionary<string, Variable>>();
+        //
+        // public List<SortedDictionary<string, Variable>> Values =>
+        //         values ??= new List<SortedDictionary<string, Variable>>();
 
         Object IBlackboard.unityContextObject => this;
         IBlackboard IBlackboard.parent => null;
@@ -106,9 +121,10 @@ namespace NodeCanvas.Framework
 
         public string UID => _UID;
 
-        [ContextMenu("Show Json")]
+        [ContextMenu("Show Json"), Button]
         private void ShowJson()
         {
+            //JSONSerializer.ShowData(JsonUtility.ToJson(_blackboard), name);
             JSONSerializer.ShowData(_serializedBlackboard, name);
         }
 

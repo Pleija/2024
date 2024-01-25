@@ -43,15 +43,15 @@ namespace Runner
 
         // This will allow us to add data even after production, and so keep all existing save STILL valid. See loading & saving for how it work.
         // Note in a real production it would probably reset that to 1 before release (as all dev save don't have to be compatible w/ final product)
-        // Then would increment again with every subsequent patches. We kept it to its dev value here for teaching purpose. 
+        // Then would increment again with every subsequent patches. We kept it to its dev value here for teaching purpose.
         private static int s_Version = 12;
         public string saveFile = "";
         public IntReactiveProperty coins = 0;
         public IntReactiveProperty premium = 0;
 
         public Dictionary<Consumable.Consumable.ConsumableType, int> consumables =
-                new Dictionary<Consumable.Consumable.ConsumableType,
-                    int>(); // Inventory of owned consumables and quantity.
+                new Dictionary<Consumable.Consumable.ConsumableType, int>();
+        // Inventory of owned consumables and quantity.
 
         public List<string> characters = new List<string>(); // Inventory of characters owned.
         public int usedCharacter;                            // Currently equipped character.

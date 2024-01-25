@@ -31,6 +31,7 @@ namespace NodeCanvas.Framework.Internal
             set => _variables = value;
         }
 
+
         public IBlackboard parent { get; set; }
         public Object unityContextObject { get; set; }
         public Component propertiesBindTarget { get; set; }

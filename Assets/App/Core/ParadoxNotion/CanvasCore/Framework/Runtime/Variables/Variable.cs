@@ -1,5 +1,6 @@
 ﻿#region
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion;
@@ -28,10 +29,29 @@ namespace NodeCanvas.Framework
         private string _id;
 
         [SerializeField]
+        private string _data = "{}";
+
+        [SerializeField]
         private bool _isPublic;
 
         [SerializeField, fsIgnoreInBuild]
         private bool _debugBoundValue;
+
+        [SerializeField, fsIgnoreInBuild]
+        private string _desc;
+
+        [SerializeField, fsIgnoreInBuild]
+        private Color m_Color = Color.white;
+
+        public Color color {
+            get => m_Color == default ? Color.white : m_Color;
+            set => m_Color = value;
+        }
+
+        public string Desc {
+            get => _desc;
+            set => _desc = value;
+        }
 
         [SerializeField]
         public AssetObject assetObject;
@@ -179,10 +199,36 @@ namespace NodeCanvas.Framework
 
         //...
         public override string ToString() => name;
+
+        [SerializeField]
+        public List<object> values = new List<object>();
+
+        public object this[int index] {
+            get {
+                if (index < 0) return value;
+
+                while ((values ??= new List<object>()).Count <= index) {
+                    values.Add(value);
+                }
+                return values[index];
+            }
+            set {
+                if (index < 0) {
+                    this.value = value;
+                    return;
+                }
+
+                while ((values ??= new List<object>()).Count <= index) {
+                    values.Add(value);
+                }
+                values[index] = value;
+            }
+        }
     }
 
     ///----------------------------------------------------------------------------------------------
     ///<summary>The actual Variable</summary>
+    [Serializable]
     public class Variable<T> : Variable
     {
         [SerializeField]
@@ -213,6 +259,17 @@ namespace NodeCanvas.Framework
         public override string propertyPath {
             get => _propertyPath;
             set => _propertyPath = value;
+        }
+
+        public List<float> odd = new List<float>() { 0 };
+        public List<float> multiply = new List<float>() { 1f };
+
+        [SerializeField]
+        public new List<T> values = new List<T>();
+
+        public new T this[int index] {
+            get => (T)base[index];
+            set => base[index] = value;
         }
 
         ///<summary>The value as type T when accessing as this type</summary>

@@ -5,6 +5,8 @@ using Sirenix.Serialization;
 using UnityEngine;
 #endregion
 
+public class View<T> : BehaviourBase where T : View<T> { }
+
 [ShowOdinSerializedPropertiesInInspector]
 public abstract class BehaviourBase : MonoBehaviour, ISerializationCallbackReceiver,
         ISupportsPrefabSerialization

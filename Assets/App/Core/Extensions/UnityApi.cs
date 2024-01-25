@@ -55,6 +55,13 @@ public static partial class UnityApi
         return ret;
     }
 
+    public static IDictionary<string, object> ToDictionary(this object o)
+    {
+        if (o == null) return new Dictionary<string, object>();
+        return o.GetType().GetProperties().ToDictionary(x => x.Name, x => x.GetValue(o));
+    }
+
+
     public static Array CreateArray(this Type type, params object[] args)
     {
         var ret = Array.CreateInstance(type, args.Length);

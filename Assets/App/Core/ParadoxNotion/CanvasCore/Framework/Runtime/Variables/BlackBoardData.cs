@@ -1,16 +1,24 @@
 #region
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using SqlCipher4Unity3D;
+using UnityEngine;
 #endregion
 
 namespace NodeCanvas.Framework
 {
-    public class BlackBoardData : DataModel<BlackBoardData>
+    [Serializable]
+    public class BlackBoardData
     {
-        [OdinSerialize]
-        public Dictionary<string, int> Level { get; set; } = new Dictionary<string, int>();
+        public string Name;
+
+        [TableList(ShowIndexLabels = true, AlwaysExpanded = true),SerializeField]
+        public List<LevelData> LevelData = new List<LevelData>();
+
+        //[OdinSerialize]
+        //public Dictionary<string, int> Levels { get; set; } = new Dictionary<string, int>();
 
         [OdinSerialize]
         public string version { get; set; } = "1.0";

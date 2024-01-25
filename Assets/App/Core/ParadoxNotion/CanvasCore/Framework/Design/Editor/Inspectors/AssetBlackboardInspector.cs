@@ -4,6 +4,7 @@
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 #endregion
@@ -19,8 +20,13 @@ namespace NodeCanvas.Editor
         protected override void OnEnable()
         {
             base.OnEnable();
-            if (!editor) editor = CreateEditor(bb.Data);
-            if (!bb.Data) bb.Data = CreateInstance<BlackBoardData>();
+
+            // if (bb.Data == null) {
+            //     bb.Data = new BlackBoardData();
+            //     UndoUtility.SetDirty(bb);
+            //     AssetDatabase.SaveAssets();
+            // }
+            // if (!editor) editor = CreateEditor(bb);
         }
 
         public override void OnInspectorGUI()
@@ -28,17 +34,18 @@ namespace NodeCanvas.Editor
             bb.showFold = EditorGUILayout.Foldout(bb.showFold, "#Database");
 
             if (bb.showFold) {
-                GUILayout.Box("table: " + bb.tableName, GUILayout.ExpandWidth(true));
-                //GUILayout.Label("test");
-                GUILayout.BeginVertical();
-                if (editor) editor.OnInspectorGUI();
-                GUILayout.EndVertical();
-                // base.OnInspectorGUI();
+                // GUILayout.Box("table: " + bb.tableName, GUILayout.ExpandWidth(true));
+                // //GUILayout.Label("test");
+                // GUILayout.BeginVertical();
+                // if (editor) editor.OnInspectorGUI();
+                // GUILayout.EndVertical();
+                 base.OnInspectorGUI();
             }
             else {
                 BlackboardEditor.ShowVariables(bb);
-                //Repaint();
+                //this.RepaintIfRequested();
             }
+            Repaint();
             EditorUtils.EndOfInspector();
         }
     }

@@ -1,4 +1,5 @@
 #region
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -10,6 +11,8 @@ namespace ParadoxNotion
     {
         [SerializeField]
         private AssetReference value;
+
+        public List<AssetReference> values = new List<AssetReference>();
 
         public string path;
         public AssetReference Reference {

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a686a47eee2fa44cb0a34b5d86e4d5e, type: 3}
+  m_Name: New Behaviour Tree
+  m_EditorClassIdentifier: 
+  mtsFile: {fileID: 0}
+  _serializedGraph_encrypted: eaIdA5dBClbaplNtbn06bD6+G5UzLDjA0D2khb40FUNShlhln5759NkNo8vN2nu0dmg5Ka8bYBM3W7W1ygwW9X4RtDsK/EmtB2bDVUNJ9jGexdSvhk8Vs85bQnc1KQeBuv2uewMsxrS2d7Fpfps5ZnApT4aZWcBUhLXYxOj7luMpZiwG/SJQsrHxS15lw/PopM8W/g+QbfNoXGpb+2SeznJbDf92MKNvWlTZZdDEhRUQ/PaIOc0sh6w1yvM0AHqXJ6DCwJiJQ82UIox5q6EoYtkU7vpsacBRj1hj1g42P30wUky04CHgGABaHV07THYeOlwsNBKl/lkE7i3JEet8h/6dlCzfkWfq4TqPu6nhsooHp6K6mDljXWpmU2fv8YKcYU0tGsuGd5F8i7viEVwOQe3/xG1cpBlz701q3lB0P+FxnDDHu7xSwbJDms1EmsTjmGd1WygYstmY0Ih3PgywHqxvQYtnzFjqd5/RWLACUGHCQK4KwCH8FImrnrMA8nEQyyJsy0ullDZIRLOsti5CQdVHmm6g7fGCF5HC8bAxebQPZ2OMyBHvPHqQQ29klZ5YVzFQDmmlBq6YMuN+hEPsh45z+6MzYQIV4Dj+QQWbNZF7YLs+AdWcCfkCfrUDuslpl80D/PKtCGJP1u4rhqjRhHqtwvJCpYVy33tZEH0lrk06qpg1g511UUlviNROxVcSwwIREW20g167YGtV47iEC7DZThtn3IMUdPWF0/u3SuTWQC7OtA2oxJxbuqi9yxX5
+  _objectReferences: []
+  _graphSource:
+    _version: 3.29
+    _category: 
+    _comments: 
+    _translation: {x: -126, y: -12}
+    _zoomFactor: 1
+  _hashIdMax: 3
+  _haltSerialization: 0
+  _externalSerializationFile: {fileID: 0}
+  jsStarted: 0
+  jsStoped: 0

@@ -29,9 +29,9 @@ namespace FlowCanvas.Nodes
 
             for (var i = 0; i < _portCount; i++) {
                 probabilityValues.Add(
-                    AddValueInput<float>(StringUtils.GetAlphabetLetter(i), i.ToString())
+                    AddValueInput<float>(ParadoxNotion.StringUtils.GetAlphabetLetter(i), i.ToString())
                             .SetDefaultAndSerializedValue(1));
-                probabilityOuts.Add(AddFlowOutput(StringUtils.GetAlphabetLetter(i), i.ToString()));
+                probabilityOuts.Add(AddFlowOutput(ParadoxNotion.StringUtils.GetAlphabetLetter(i), i.ToString()));
             }
             AddValueOutput("Current", () => {
                 return current;

@@ -17,7 +17,7 @@ namespace App.Models
         public static void Gen()
         {
             if (EditorApplication.isUpdating || EditorApplication.isCompiling) return;
-            typeof(Game).Assembly.GetExportedTypes()
+            typeof(global::Models.Game).Assembly.GetExportedTypes()
                     .Where(t =>
                             typeof(ModelBase).IsAssignableFrom(t)
                             && t != typeof(ModelBase)
