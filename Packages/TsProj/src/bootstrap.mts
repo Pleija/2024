@@ -1,6 +1,9 @@
 import "Game/ChangeCharacter.mjs";
 import "HeroesPage/ChangeCharacterBtn.mjs";
 import "Main/LoadingCharPos.mjs";
+import "Common/Helpers.mjs";
+import "Common/TypeUtils.mjs";
+
 import "Game/HpSlider.mjs";
 import "MissionPage/Settings.mjs";
 import "Main/CardAgent.mjs";
@@ -18,8 +21,7 @@ import "Start/Updating.mjs";
 import "Main/Mission.mjs";
 import "Start/StartButton.mjs";
 
-import "Common/Helpers.mjs";
-import "Common/TypeUtils.mjs";
+
 import "Game/BackupCard.mjs";
 import "Loading/StartUp.mjs";
 import SceneManager = CS.UnityEngine.SceneManagement.SceneManager;
@@ -74,5 +76,3 @@ export const setup = function () {
 }
 
 //Setup().catch(console.error);
-
-

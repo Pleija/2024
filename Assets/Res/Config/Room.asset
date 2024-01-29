@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b27d667fcc420ab79c449cdc5720a3, type: 3}
   m_Name: Room
   m_EditorClassIdentifier: 
-  Id: 1
-  Version: 1.0
-  Extra: '{}'
-  localExtra: '{}'
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -25,5 +21,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  Id: 1
+  Extra: '{}'
+  localExtra: '{}'
   roomId:
-    value: 2
+    value: tree

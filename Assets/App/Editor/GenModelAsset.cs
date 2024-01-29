@@ -19,8 +19,8 @@ namespace App.Models
             if (EditorApplication.isUpdating || EditorApplication.isCompiling) return;
             typeof(global::Models.Game).Assembly.GetExportedTypes()
                     .Where(t =>
-                            typeof(ModelBase).IsAssignableFrom(t)
-                            && t != typeof(ModelBase)
+                            typeof(DbTable).IsAssignableFrom(t)
+                            && t != typeof(DbTable)
                             && !t.IsAbstract
                             && !t.IsGenericType)
                     .ForEach(type => {

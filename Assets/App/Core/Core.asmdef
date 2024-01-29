@@ -9,9 +9,12 @@
         "Unity.ResourceManager",
         "UniRx",
         "UniTask",
+        "Unity.TextMeshPro",
         "FrameCapturer",
         "Unity.Postprocessing.Runtime",
         "Unity.RenderPipelines.Core.Runtime",
-        "Unity.RenderPipelines.Universal.Runtime"
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.GoQL.Runtime",
+        "UnityUIExtensions"
     ]
 }

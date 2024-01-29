@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CSharpVitamins;
+using Models;
 using Newtonsoft.Json;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion.Serialization;
@@ -25,14 +26,15 @@ namespace NodeCanvas.Framework
     {
         public event Action<Variable> onVariableAdded;
         public event Action<Variable> onVariableRemoved;
+
+        [ReadOnly]
         public bool showFold;
 
         // [SerializeField]
         // public BlackBoardData Data;
 
-        [SerializeField]
+        [SerializeField, ReadOnly]
         private string _serializedBlackboard;
-
 
         [SerializeField]
         private string _version;
@@ -42,7 +44,7 @@ namespace NodeCanvas.Framework
         [SerializeField]
         private List<Object> _objectReferences;
 
-        [SerializeField]
+        [SerializeField, ReadOnly]
         private string _UID = Guid.NewGuid().ToString();
 
         [ShowInInspector]
@@ -52,7 +54,7 @@ namespace NodeCanvas.Framework
         private BlackboardSource _blackboard = new BlackboardSource();
 
         [NonSerialized]
-        private List<BlackboardSource>  _levels = new List<BlackboardSource>();
+        private List<BlackboardSource> _levels = new List<BlackboardSource>();
 
         ///----------------------------------------------------------------------------------------------
         void ISerializationCallbackReceiver.OnBeforeSerialize()
@@ -85,11 +87,10 @@ namespace NodeCanvas.Framework
             _blackboard = JSONSerializer.Deserialize<BlackboardSource>(
                 _serializedBlackboard, _objectReferences);
             if (_blackboard == null) _blackboard = new BlackboardSource();
-
         }
 
         ///----------------------------------------------------------------------------------------------
-         Dictionary<string, Variable> IBlackboard.variables {
+        Dictionary<string, Variable> IBlackboard.variables {
             get => _blackboard.variables;
             set => _blackboard.variables = value;
         }
@@ -100,7 +101,6 @@ namespace NodeCanvas.Framework
         //
         // public List<SortedDictionary<string, Variable>> Values =>
         //         values ??= new List<SortedDictionary<string, Variable>>();
-
         Object IBlackboard.unityContextObject => this;
         IBlackboard IBlackboard.parent => null;
         Component IBlackboard.propertiesBindTarget => null;
@@ -116,7 +116,7 @@ namespace NodeCanvas.Framework
             if (onVariableRemoved != null) onVariableRemoved(variable);
         }
 
-        [field: NonSerialized]
+        [field: SerializeField,ShowInInspector,ReadOnly]
         public string identifier { get; private set; }
 
         public string UID => _UID;
@@ -128,7 +128,27 @@ namespace NodeCanvas.Framework
             JSONSerializer.ShowData(_serializedBlackboard, name);
         }
 
+        public int Id;
+
+        public List<(string id, string name, string value)> keyTree =
+            new List<(string id, string name, string value)>();
+
+
         public override string ToString() => identifier;
+
+        [ShowInInspector]
+        public Dictionary<string, object> values;
+
+        [Button]
+        public void ResetValues()
+        {
+            values = new Dictionary<string, object>() {
+                ["test"] = 1,
+                ["t2"] = 2.1f,
+                ["str"] = "string",
+                ["list"] = new List<string>() { "12", "2343" }
+            };
+        }
 
         private void OnValidate()
         {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestBB
   m_EditorClassIdentifier: 
   showFold: 1
-  _serializedBlackboard: '{"_variables":{"myInteger":{"_value":123,"odd":[0.0],"multiply":[1.0],"values":[{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"}],"_name":"myInteger","_id":"05b32bf2-71ba-4c07-ad4f-6c4a8a117c2a","_data":"{}","_desc":"gjjhggj
+  _serializedBlackboard: '{"_variables":{"myInteger":{"_value":123,"odd":[0.0],"multiply":[1.0],"values":[{"$content":77,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"}],"_name":"myInteger","_id":"05b32bf2-71ba-4c07-ad4f-6c4a8a117c2a","_data":"{}","_desc":"gjjhggj
     ","m_Color":{"r":1.0,"g":0.9198113,"b":0.9198113,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myString":{"_value":"test","odd":[0.0],"multiply":[1.0],"values":[{"$content":"test","$type":"System.String"},{"$content":"hellow","$type":"System.String"},{"$content":"test","$type":"System.String"},{"$content":"test","$type":"System.String"},{"$content":"test","$type":"System.String"}],"_name":"myString","_id":"50698924-1950-4b1d-813d-6b7f5282bf98","_data":"{}","_desc":"jgghhj
     ","m_Color":{"r":0.9292453,"g":1.0,"b":0.9943532,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.String,
@@ -31,4 +31,107 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: values
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: test
+    - Name: $v
+      Entry: 7
+      Data: 2|System.Int32, mscorlib
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: t2
+    - Name: $v
+      Entry: 7
+      Data: 3|System.Single, mscorlib
+    - Name: 
+      Entry: 4
+      Data: 2.1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: str
+    - Name: $v
+      Entry: 7
+      Data: 4|System.String, mscorlib
+    - Name: 
+      Entry: 1
+      Data: ewrwe
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: list
+    - Name: $v
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 1
+      Data: 45345312
+    - Name: 
+      Entry: 1
+      Data: 43433reger
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  <identifier>k__BackingField: TestBB
+  Id: 0

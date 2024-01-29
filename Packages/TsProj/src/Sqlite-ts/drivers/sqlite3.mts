@@ -17,11 +17,11 @@ interface SQLite3ResultSet {
 
 export class SQLite3Driver implements DbDriver {
     db: Database
-
+    
     constructor(db: Database) {
         this.db = db
     }
-
+    
     transaction(
         scope: (tx: Transaction) => void,
         error?: ((error: any) => void),
@@ -29,35 +29,35 @@ export class SQLite3Driver implements DbDriver {
     ): void {
         this.db.serialize(() => {
             this.db.run('BEGIN TRANSACTION')
-
+            
             scope({
                 execSql: (sql, args, resolve, reject) => {
                     this.db
-                        .prepare(sql)
-                        .run(args, function (err) {
-                            if (err) {
-                                if (reject) {
-                                    reject(err)
-                                }
-
-                                return
+                    .prepare(sql)
+                    .run(args, function (err) {
+                        if (err) {
+                            if (reject) {
+                                reject(err)
                             }
-
-                            if (resolve) {
-                                const result: SQLite3ResultSet = {
-                                    changes: this.changes,
-                                    lastID: this.lastID,
-                                    results: [],
-                                    rowCount: 0
-                                }
-
-                                resolve(result)
+                            
+                            return
+                        }
+                        
+                        if (resolve) {
+                            const result: SQLite3ResultSet = {
+                                changes: this.changes,
+                                lastID: this.lastID,
+                                results: [],
+                                rowCount: 0
                             }
-                        })
-                        .finalize()
+                            
+                            resolve(result)
+                        }
+                    })
+                    .finalize()
                 }
             })
-
+            
             this.db.run('COMMIT TRANSACTION', [], err => {
                 if (err) {
                     if (error) {
@@ -65,14 +65,14 @@ export class SQLite3Driver implements DbDriver {
                     }
                     return
                 }
-
+                
                 if (success) {
                     success()
                 }
             })
         })
     }
-
+    
     query(
         sql: string,
         args: any[],
@@ -91,11 +91,11 @@ export class SQLite3Driver implements DbDriver {
                 results: rows,
                 rowCount: rows.length
             }
-
+            
             success(result)
         })
     }
-
+    
     getQueryResult(result: SQLite3ResultSet): ResultSet {
         return {
             insertId: result.lastID,
@@ -107,7 +107,7 @@ export class SQLite3Driver implements DbDriver {
             rowsAffected: result.changes
         }
     }
-
+    
     close(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.db.close(error => {

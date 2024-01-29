@@ -2863,7 +2863,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -2873,7 +2873,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    guid: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     components:
     - {fileID: 1384157863}
     - {fileID: 1384157862}
@@ -2884,7 +2884,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -2894,7 +2894,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: 334eb152-ee8e-4a7d-a87e-5d0454589b38
+    guid: 05e21361-ad42-4ff7-8f24-0ca53fb9ff87
     components:
     - {fileID: 1829370106}
     - {fileID: 1829370105}
@@ -2905,7 +2905,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -2915,17 +2915,17 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: 05bff29e-7f07-414f-ba44-93144a20f008
+    guid: fba416bb-c5c9-4b3b-8100-210b3e8d4878
     components:
     - {fileID: 945215721}
   - gameObject: {fileID: 593405286}
     name: Main Camera
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: -10}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -2935,7 +2935,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: a38910e1-e55d-4d48-b29e-ba686f3b2c6f
+    guid: 265c3aeb-7a0b-4f40-ad0e-45d2b7fc0795
     components:
     - {fileID: 593405289}
     - {fileID: 593405288}
@@ -2944,11 +2944,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785102}
     name: LoadCanvas
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 540, y: 1140, z: 0}
     scale: {x: 1.5, y: 1.5, z: 1.5}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 540, y: 1140, z: 0}
       AnchoredPosition: {x: 540, y: 1140}
@@ -2958,7 +2958,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1.5, y: 1.5, z: 1.5}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: c8847c03-d704-472d-9c85-260c0db31fd1
+    guid: 24bb4b7d-e1d6-48fe-b3ab-cbef1edbbf67
     components:
     - {fileID: 3868378820542785101}
     - {fileID: 3868378820542785100}
@@ -2970,12 +2970,12 @@ MonoBehaviour:
     - {fileID: 3868378820542785120}
   - gameObject: {fileID: 3868378820542785094}
     name: Ufo
-    active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    active: 0
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 205, y: 700, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 205, y: 700, z: 0}
       AnchoredPosition: {x: -155, y: -60}
@@ -2985,7 +2985,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 24501a4c-125f-46fe-a1b5-65af6fa7da46
+    guid: 5fd7ed92-78d1-4d84-a6ba-86819e17c674
     components:
     - {fileID: 3868378820542785093}
     - {fileID: 3868378820542785092}
@@ -2993,11 +2993,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785090}
     name: Image (1)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 17, y: -163, z: 0}
     scale: {x: 1.5, y: 1.5, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 17, y: -163, z: 0}
       AnchoredPosition: {x: 17, y: 597}
@@ -3007,7 +3007,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1.5, y: 1.5, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 2e34d4c3-cd7a-4624-b00b-b0ed42293847
+    guid: d3acba8b-a3c0-4006-aeb3-9963f3eabcbe
     components:
     - {fileID: 3868378820542785089}
     - {fileID: 3868378820542785088}
@@ -3015,11 +3015,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785086}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 576.1885, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 576.1885, z: 0}
       AnchoredPosition: {x: 0, y: -183.81152}
@@ -3029,7 +3029,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-    guid: 6b2b1e71-1c0d-4291-af97-d26990fbced9
+    guid: 9bd35015-73ed-4a9d-9381-928ff3984583
     components:
     - {fileID: 3868378820542785085}
     - {fileID: 3868378820542785084}
@@ -3037,11 +3037,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785082}
     name: GameObject
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 94, y: 519, z: 0}
     scale: {x: 0.8, y: 0.8, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 94, y: 519, z: 0}
       AnchoredPosition: {x: 94, y: 1279}
@@ -3051,17 +3051,17 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 0.8, y: 0.8, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: ea25c415-ee83-447a-96de-0c26f3884e13
+    guid: f70bc1e1-8ea7-45e3-9cd3-e4839ac92a1c
     components:
     - {fileID: 3868378820542785081}
   - gameObject: {fileID: 3868378820542785080}
     name: Text (TMP) (5)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 54.363766, y: 39.550385, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 54.363766, y: 39.550385, z: 0}
       AnchoredPosition: {x: 54.363766, y: -120.7446}
@@ -3071,7 +3071,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    guid: 671abd35-9260-40cb-801a-a35cc37a4c06
+    guid: ff50ebab-26dd-4263-804e-bb50b01d6221
     components:
     - {fileID: 3868378820542785079}
     - {fileID: 3868378820542785078}
@@ -3079,11 +3079,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785076}
     name: Text (TMP) (6)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 238.0231, y: -75.762634, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 238.0231, y: -75.762634, z: 0}
       AnchoredPosition: {x: 238.0231, y: -236.05762}
@@ -3093,7 +3093,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    guid: e7bf894c-20e8-455a-b7ab-2ab00f16e639
+    guid: b8bd603a-a4dd-43b8-9f98-01efaf987e49
     components:
     - {fileID: 3868378820542785075}
     - {fileID: 3868378820542785074}
@@ -3101,11 +3101,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785072}
     name: Text (TMP) (7)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -166, y: -118.70502, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -166, y: -118.70502, z: 0}
       AnchoredPosition: {x: -166, y: -279}
@@ -3115,7 +3115,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    guid: a2f7ebf4-d7df-4452-ae5a-aad90f700fee
+    guid: 347d2613-f263-41f9-a1c9-d0608dac5a94
     components:
     - {fileID: 3868378820542785071}
     - {fileID: 3868378820542785070}
@@ -3123,11 +3123,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785119}
     name: GameObject (1)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 94, y: 519, z: 0}
     scale: {x: 0.8, y: 0.8, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 94, y: 519, z: 0}
       AnchoredPosition: {x: 94, y: 1279}
@@ -3137,27 +3137,27 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 0.8, y: 0.8, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: ece44961-eeff-4a34-b5e5-e853ecc6ec19
+    guid: a40aa556-d8d4-4966-9073-ee6548cd69b1
     components:
     - {fileID: 3868378820542785106}
   - gameObject: {fileID: 3868378820542785116}
     name: Text (TMP) (5)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
-    position: {x: -368.02924, y: 39.550476, z: 0}
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
+    position: {x: -391, y: 20.054977, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
-      LocalPosition: {x: -368.02924, y: 39.550476, z: 0}
-      AnchoredPosition: {x: -368.02924, y: -120.74451}
-      SizeDelta: {x: 968.3748, y: 251.2729}
+      LocalPosition: {x: -391, y: 20.054977, z: 0}
+      AnchoredPosition: {x: -391, y: -140.24}
+      SizeDelta: {x: 784.3778, y: 233.9994}
       AnchorMin: {x: 0.5, y: 1}
       AnchorMax: {x: 0.5, y: 1}
       Pivot: {x: 0.17574425, y: 0.5857167}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    guid: 81cce3c1-ab2b-47e2-8abe-ddedba8fccc1
+    guid: 9925012f-c656-4da4-8ec8-e9c1558bf6f4
     components:
     - {fileID: 3868378820542785115}
     - {fileID: 3868378820542785118}
@@ -3165,11 +3165,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785112}
     name: Text (TMP) (6)
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 102.99916, y: -75.762634, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 102.99916, y: -75.762634, z: 0}
       AnchoredPosition: {x: 102.99916, y: -236.05762}
@@ -3179,7 +3179,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    guid: 52686fdc-4885-40ef-a6c7-32c8e6d7f1e3
+    guid: 069c9f63-7a97-49c5-8fd6-5aadd2fff917
     components:
     - {fileID: 3868378820542785111}
     - {fileID: 3868378820542785114}
@@ -3187,11 +3187,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785108}
     name: Text (TMP) (7)
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -166, y: -118.70502, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -166, y: -118.70502, z: 0}
       AnchoredPosition: {x: -166, y: -279}
@@ -3201,7 +3201,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: 0.043619405, w: 0.9990483}
-    guid: f9ff051b-d21d-4747-9c16-44cbe91a7714
+    guid: 2fd99f18-2d8e-4d83-9f3b-1880e26698a9
     components:
     - {fileID: 3868378820542785107}
     - {fileID: 3868378820542785110}
@@ -3209,11 +3209,11 @@ MonoBehaviour:
   - gameObject: {fileID: 3868378820542785104}
     name: TagsRef
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -0, y: -0, z: 0}
     scale: {x: 0, y: 0, z: 0}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3223,18 +3223,18 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: 3a1cc7d4-db83-4911-9994-98e23707bbbc
+    guid: f017e407-48b3-40c2-a5e8-0a4653162616
     components:
     - {fileID: 3868378820542785103}
     - {fileID: 3868378820542785105}
   - gameObject: {fileID: 656880021}
     name: IngameDebugConsole
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 540, y: 1140, z: 0}
     scale: {x: 2.2649503, y: 2.2649503, z: 2.2649503}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 540, y: 1140, z: 0}
       AnchoredPosition: {x: 540, y: 1140}
@@ -3244,7 +3244,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 2.2649503, y: 2.2649503, z: 2.2649503}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: acdce19c-14fa-44c1-8bab-acd45a3fde09
+    guid: 4f3805a8-91a3-444d-a2e5-e029656c1be7
     components:
     - {fileID: 656880020}
     - {fileID: 656880019}
@@ -3255,11 +3255,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656880014}
     name: DebugLogWindow
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -238.41583, y: 503.3223, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -238.41583, y: 503.3223, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3269,7 +3269,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 1}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 8e2e5951-d855-4e36-a271-49da79db6aff
+    guid: f031a010-712a-421a-821c-d29cb5ce8025
     components:
     - {fileID: 656880013}
     - {fileID: 656880012}
@@ -3278,11 +3278,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656880009}
     name: Buttons
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 476.83167, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 476.83167, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3292,7 +3292,7 @@ MonoBehaviour:
       Pivot: {x: 1, y: 1}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: d71f9583-4a47-40d5-8443-2761fc3fb207
+    guid: cb8a62ba-5692-4c97-bd5b-8efb024427c1
     components:
     - {fileID: 656880008}
     - {fileID: 656880007}
@@ -3301,11 +3301,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656880004}
     name: ClearButton
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -445.5297, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -445.5297, y: -18, z: 0}
       AnchoredPosition: {x: 31.30198, y: -18}
@@ -3315,7 +3315,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 339f19f8-24d4-4992-8621-40c3a5845659
+    guid: b53f8417-74aa-4cfe-a814-f34b130ca4e8
     components:
     - {fileID: 656880003}
     - {fileID: 656880002}
@@ -3324,11 +3324,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879999}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0.0000019073486, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0.0000019073486, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3338,7 +3338,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 89fff975-beee-49b5-adf7-44c6f7c00156
+    guid: c140d5a8-b3bc-43e3-9e69-3dd16d4c9cf0
     components:
     - {fileID: 656879998}
     - {fileID: 656879997}
@@ -3346,11 +3346,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879995}
     name: CollapseButton
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -382.92572, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -382.92572, y: -18, z: 0}
       AnchoredPosition: {x: 93.90594, y: -18}
@@ -3360,7 +3360,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 457250ff-4676-4c4d-bb85-6c863798dd99
+    guid: 9058bc30-88da-49ea-8fb9-47addba5d9d7
     components:
     - {fileID: 656879994}
     - {fileID: 656879993}
@@ -3369,11 +3369,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879990}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0.0000019073486, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0.0000019073486, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3383,7 +3383,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 9193af27-d7fc-4a3a-bab1-76c26dbe161c
+    guid: a1d85363-9c52-4829-96e3-4ae2480ad85e
     components:
     - {fileID: 656879989}
     - {fileID: 656879988}
@@ -3391,11 +3391,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879986}
     name: SearchbarSlotTop
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -301.01978, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -301.01978, y: -18, z: 0}
       AnchoredPosition: {x: 175.81187, y: -18}
@@ -3405,7 +3405,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 419010a1-4cbc-4a9b-a938-ab5f33dbac45
+    guid: e1e8f581-2682-4373-8bed-0e26a1453c95
     components:
     - {fileID: 656879985}
     - {fileID: 656879984}
@@ -3414,11 +3414,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879981}
     name: Searchbar
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3428,7 +3428,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 6656b74c-3727-4ea4-803f-3cb406df9aba
+    guid: 2eff37f0-97bc-4a24-a5c7-e76814c8e802
     components:
     - {fileID: 656879980}
     - {fileID: 656879979}
@@ -3437,11 +3437,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879976}
     name: Icon
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -48.60396, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -48.60396, y: 0, z: 0}
       AnchoredPosition: {x: 2, y: 0}
@@ -3451,7 +3451,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 1646c005-8b75-442d-99a7-acd1a8119b64
+    guid: 7e25d76c-a115-4579-92d6-8cacb1d08e2c
     components:
     - {fileID: 656879975}
     - {fileID: 656879974}
@@ -3459,11 +3459,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879972}
     name: Placeholder
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 15, y: -0.5, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 15, y: -0.5, z: 0}
       AnchoredPosition: {x: 15, y: -0.5}
@@ -3473,7 +3473,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: fbb2bdcc-8f32-4621-a37f-9e685d016aae
+    guid: 8de0bd97-507a-4eba-bb1e-7b524541b8f8
     components:
     - {fileID: 656879971}
     - {fileID: 656879970}
@@ -3481,11 +3481,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879968}
     name: Text
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 15, y: -0.5, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 15, y: -0.5, z: 0}
       AnchoredPosition: {x: 15, y: -0.5}
@@ -3495,7 +3495,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 0ee35705-9811-4261-9d42-f6d0b905b430
+    guid: ff9ea3ea-8c0f-48a7-a886-c2be5de7bd34
     components:
     - {fileID: 656879967}
     - {fileID: 656879966}
@@ -3503,11 +3503,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879964}
     name: FilterLogButton
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -219.11386, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -219.11386, y: -18, z: 0}
       AnchoredPosition: {x: 257.7178, y: -18}
@@ -3517,7 +3517,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: c18deee9-57dc-47dd-86e6-b1985c22f886
+    guid: e26ae9ea-5254-4c4b-b40c-4519fe783095
     components:
     - {fileID: 656879963}
     - {fileID: 656879962}
@@ -3526,11 +3526,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879959}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -13.08589, y: 0.5, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -13.08589, y: 0.5, z: 0}
       AnchoredPosition: {x: 1, y: 0.5}
@@ -3540,7 +3540,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 597637e1-e3b3-45a6-80d3-7ead528a2bd6
+    guid: 35d64521-0d68-4c8a-a170-2a5c9cc4d87b
     components:
     - {fileID: 656879958}
     - {fileID: 656879957}
@@ -3548,11 +3548,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879955}
     name: LogCount
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 17.21609, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 17.21609, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3562,7 +3562,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 59528388-ecb0-4366-80c6-6415abd4a2f5
+    guid: 2a0129fc-0868-4f5b-930c-463910d8b5b2
     components:
     - {fileID: 656879954}
     - {fileID: 656879953}
@@ -3570,11 +3570,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879951}
     name: FilterWarningButton
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -156.50992, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -156.50992, y: -18, z: 0}
       AnchoredPosition: {x: 320.32175, y: -18}
@@ -3584,7 +3584,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: f5489672-8a12-400c-ac3e-bbb158466827
+    guid: fe4d963f-6304-49e6-954f-ef6960adecc5
     components:
     - {fileID: 656879950}
     - {fileID: 656879949}
@@ -3593,11 +3593,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879946}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -13.08589, y: 0.5, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -13.08589, y: 0.5, z: 0}
       AnchoredPosition: {x: 1, y: 0.5}
@@ -3607,7 +3607,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 35f1f8bc-f047-4de8-a35c-646a51fc4e4b
+    guid: ec081996-d345-4f3c-b0c4-491fee232f7d
     components:
     - {fileID: 656879945}
     - {fileID: 656879944}
@@ -3615,11 +3615,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879942}
     name: WarningCount
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 17.21609, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 17.21609, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3629,7 +3629,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 843a87e4-e7f3-4e9e-a08c-c709150a8290
+    guid: 9ccec327-89be-4906-8c9f-19d7daaa087a
     components:
     - {fileID: 656879941}
     - {fileID: 656879940}
@@ -3637,11 +3637,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879938}
     name: FilterErrorButton
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -93.905975, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -93.905975, y: -18, z: 0}
       AnchoredPosition: {x: 382.9257, y: -18}
@@ -3651,7 +3651,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 4bc1e50a-90a5-4513-b676-e60169e65e98
+    guid: 2c2e19f6-50be-4f16-817e-1fd0f94fd803
     components:
     - {fileID: 656879937}
     - {fileID: 656879936}
@@ -3660,11 +3660,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879933}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -13.08589, y: 0.5, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -13.08589, y: 0.5, z: 0}
       AnchoredPosition: {x: 1, y: 0.5}
@@ -3674,7 +3674,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 836a1118-38b1-44ca-b5a1-25c8ce174d03
+    guid: e3aa66a3-eb07-4e10-be7f-2344807b4ffa
     components:
     - {fileID: 656879932}
     - {fileID: 656879931}
@@ -3682,11 +3682,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879929}
     name: ErrorCount
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 17.21609, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 17.21609, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3696,7 +3696,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: c85904fa-763f-422f-b010-a4c4a9b22d33
+    guid: 856e5a44-25c4-4cf2-ba23-ad4c16c2c923
     components:
     - {fileID: 656879928}
     - {fileID: 656879927}
@@ -3704,11 +3704,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879925}
     name: HideButton
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -31.302032, y: -18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -31.302032, y: -18, z: 0}
       AnchoredPosition: {x: 445.52963, y: -18}
@@ -3718,7 +3718,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: f27e10b0-91e2-49d6-bd73-b0072d43ce93
+    guid: e37fdbf8-90fb-4ef6-9b45-b4b108a8af45
     components:
     - {fileID: 656879924}
     - {fileID: 656879923}
@@ -3727,11 +3727,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879920}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0.0000019073486, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0.0000019073486, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3741,7 +3741,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 7cb2f2f1-c2b1-4aff-9c3f-9e0db0c3c040
+    guid: dea0cad3-d360-4142-b63d-b913f46e5d12
     components:
     - {fileID: 656879919}
     - {fileID: 656879918}
@@ -3749,11 +3749,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879916}
     name: SearchbarSlotBottom
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 238.41583, y: -36, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 238.41583, y: -36, z: 0}
       AnchoredPosition: {x: 0, y: -36}
@@ -3763,7 +3763,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 1}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: d7ff9158-2246-43e5-a6b5-4c2fb95bffd5
+    guid: 6e858922-e0a4-4bcf-a0a1-74f849d96955
     components:
     - {fileID: 656879915}
     - {fileID: 656879914}
@@ -3771,11 +3771,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879912}
     name: Debugs
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 238.41583, y: -251.66115, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 238.41583, y: -251.66115, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3785,7 +3785,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: ca45e9a4-74b6-4109-b0ca-9045b5947cef
+    guid: 2259b8d9-0434-4d11-a111-e2a5c1b2658b
     components:
     - {fileID: 656879911}
     - {fileID: 656879910}
@@ -3795,11 +3795,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879906}
     name: Viewport
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -238.41583, y: 215.66115, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -238.41583, y: 215.66115, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3809,18 +3809,18 @@ MonoBehaviour:
       Pivot: {x: 0, y: 1}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: acdc20af-0a0a-4773-aa7e-baba729c36b6
+    guid: f40dd38b-ff4a-4503-bd68-31c3341ad868
     components:
     - {fileID: 656879905}
     - {fileID: 656879904}
   - gameObject: {fileID: 656879903}
     name: LogsContainer
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3830,18 +3830,18 @@ MonoBehaviour:
       Pivot: {x: 0, y: 1}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 08cb77d9-76bc-42b3-9db7-05697c554790
+    guid: 0b939dd6-0612-46bd-acf4-1cc20285aabe
     components:
     - {fileID: 656879902}
     - {fileID: 656879901}
   - gameObject: {fileID: 656879900}
     name: SnapToBottom
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 223.91583, y: -423.3223, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 223.91583, y: -423.3223, z: 0}
       AnchoredPosition: {x: 0, y: 8}
@@ -3851,7 +3851,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: ec65b38e-a366-45f0-a330-0717fb1d5c30
+    guid: 279144ab-6152-42f0-9312-82e94840e8dd
     components:
     - {fileID: 656879899}
     - {fileID: 656879898}
@@ -3860,11 +3860,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879895}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0.0000009536743, y: 21, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0.0000009536743, y: 21, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3874,7 +3874,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 66deb89b-b0ec-44a2-8f00-ea50d237b9e3
+    guid: f63fcc28-4cdf-4929-a98c-0d54c996aeaa
     components:
     - {fileID: 656879894}
     - {fileID: 656879893}
@@ -3882,11 +3882,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879891}
     name: Scrollbar Vertical
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 238.41583, y: 215.66115, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 238.41583, y: 215.66115, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3896,7 +3896,7 @@ MonoBehaviour:
       Pivot: {x: 1, y: 1}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: cfcc78d3-f9a4-4b88-9cac-5c587ce0d1a0
+    guid: 8cbb8d6e-b595-4868-9576-4c7c282790e3
     components:
     - {fileID: 656879890}
     - {fileID: 656879889}
@@ -3906,11 +3906,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879885}
     name: Sliding Area
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -14, y: -215.66115, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -14, y: -215.66115, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3920,17 +3920,17 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 0479bb89-cd76-436c-a936-f3da56b77914
+    guid: 71c6c09d-dc92-4224-addc-da48ab2d1a6b
     components:
     - {fileID: 656879884}
   - gameObject: {fileID: 656879883}
     name: Handle
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -3940,7 +3940,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: c6e693ab-0688-4de8-8c6b-55f813cd7318
+    guid: 3f8bc449-1156-4cb1-a22d-80bee1c1c413
     components:
     - {fileID: 656879882}
     - {fileID: 656879881}
@@ -3948,11 +3948,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879879}
     name: CommandSuggestions
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: -467.3223, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: -467.3223, z: 0}
       AnchoredPosition: {x: 0, y: 36}
@@ -3962,18 +3962,18 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 3d040106-f19f-4816-b738-833eef25d335
+    guid: e6fb5cc1-4204-4930-9a83-2e565e797cd4
     components:
     - {fileID: 656879878}
     - {fileID: 656879877}
   - gameObject: {fileID: 656879876}
     name: CommandSuggestionsContainer
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: -0.00005340576, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: -0.00005340576, z: 0}
       AnchoredPosition: {x: 0, y: -0.00005340576}
@@ -3983,7 +3983,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 6cb14196-c3e7-4a97-86d8-3f294c826b40
+    guid: c6cb46c8-6a96-4c3e-9fd5-9b567ceaf334
     components:
     - {fileID: 656879875}
     - {fileID: 656879874}
@@ -3992,11 +3992,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879871}
     name: CommandInputField
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 206.41583, y: -503.3223, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 206.41583, y: -503.3223, z: 0}
       AnchoredPosition: {x: -32, y: 0}
@@ -4006,7 +4006,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 1b22329d-5859-49bb-8ffe-89d82fd8206b
+    guid: b9b978d8-eb51-45df-b383-5a3a825063fd
     components:
     - {fileID: 656879870}
     - {fileID: 656879869}
@@ -4015,11 +4015,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879866}
     name: Placeholder
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 18, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4029,7 +4029,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: d6f92e46-64a7-4293-8594-47d567a92660
+    guid: edeeb20c-3194-4ca8-b238-ffd88dbd1d0b
     components:
     - {fileID: 656879865}
     - {fileID: 656879864}
@@ -4037,11 +4037,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879862}
     name: Text
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 18, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4051,7 +4051,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: edb19cef-d40a-4ccb-99a8-daa0d2e8c83f
+    guid: 11ace0a3-4893-491d-9457-cae4e072e14c
     components:
     - {fileID: 656879861}
     - {fileID: 656879860}
@@ -4059,11 +4059,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879858}
     name: DebugLogWindowResize
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 476.83167, y: -503.3223, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 476.83167, y: -503.3223, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4073,7 +4073,7 @@ MonoBehaviour:
       Pivot: {x: 1, y: 0}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 0370bb4c-80d3-41eb-a76f-f14d055573b2
+    guid: 4911afb5-69c4-458b-b4e2-8cb0f016de48
     components:
     - {fileID: 656879857}
     - {fileID: 656879856}
@@ -4082,11 +4082,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879853}
     name: Image
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -32, y: 18, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -32, y: 18, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4096,7 +4096,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: d069c536-0408-4914-a636-73aac8ec8e2d
+    guid: 7a6260ca-d159-431e-bfaa-4c2ced05bd50
     components:
     - {fileID: 656879852}
     - {fileID: 656879851}
@@ -4104,11 +4104,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879849}
     name: DebugLogPopup
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 1000, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 1000, y: 0, z: 0}
       AnchoredPosition: {x: 1000, y: 0}
@@ -4118,7 +4118,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 896760cb-e6fb-444a-91b2-a9c03d5b1a11
+    guid: 2162e39d-1166-4e50-bf88-0b0b20e0c00f
     components:
     - {fileID: 656879848}
     - {fileID: 656879847}
@@ -4128,11 +4128,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879843}
     name: InfoImage
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -3.6000023, y: 23.400003, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -3.6000023, y: 23.400003, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4142,7 +4142,7 @@ MonoBehaviour:
       Pivot: {x: 1, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: e52f7268-8075-4f3a-b00b-a27b619bdcc2
+    guid: cf48c71b-87e0-4dca-bfb6-a78b40439647
     components:
     - {fileID: 656879842}
     - {fileID: 656879841}
@@ -4150,11 +4150,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879839}
     name: WarningImage
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -3.6000023, y: -0.0000009536743, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -3.6000023, y: -0.0000009536743, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4164,7 +4164,7 @@ MonoBehaviour:
       Pivot: {x: 1, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 1cdd9462-666c-4019-bd63-0a04977c04ae
+    guid: f875ea06-6aa5-4c50-b8b1-2fddd985e25f
     components:
     - {fileID: 656879838}
     - {fileID: 656879837}
@@ -4172,11 +4172,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879835}
     name: ErrorImage
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -3.6000023, y: -23.400002, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -3.6000023, y: -23.400002, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4186,7 +4186,7 @@ MonoBehaviour:
       Pivot: {x: 1, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: e3574449-b892-417d-8860-57021e572778
+    guid: cf8ed0b5-d4be-483c-a972-8c0df27d81a2
     components:
     - {fileID: 656879834}
     - {fileID: 656879833}
@@ -4194,11 +4194,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879831}
     name: NewInfoCount
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 15.199999, y: 23.400003, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 15.199999, y: 23.400003, z: 0}
       AnchoredPosition: {x: -1, y: 0}
@@ -4208,7 +4208,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 59619408-44e4-40eb-9bbe-0ad978c39a4b
+    guid: 5a4fb64b-d1f1-4e60-b12d-b80c2e4cb905
     components:
     - {fileID: 656879830}
     - {fileID: 656879829}
@@ -4216,11 +4216,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879827}
     name: NewWarningCount
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 15.199999, y: -0.0000009536743, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 15.199999, y: -0.0000009536743, z: 0}
       AnchoredPosition: {x: -1, y: 0}
@@ -4230,7 +4230,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: ca9ce6e2-4e20-4144-9e7d-037cfedf3a19
+    guid: 7096e75f-a9a4-4017-8efe-1675085f66ff
     components:
     - {fileID: 656879826}
     - {fileID: 656879825}
@@ -4238,11 +4238,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879823}
     name: NewErrorCount
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 15.199999, y: -23.400002, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 15.199999, y: -23.400002, z: 0}
       AnchoredPosition: {x: -1, y: 0}
@@ -4252,7 +4252,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: b7f08642-75e5-4321-8a74-2804c368c71c
+    guid: 5d02d580-64a1-4806-be45-25b44e02993e
     components:
     - {fileID: 656879822}
     - {fileID: 656879821}
@@ -4260,11 +4260,11 @@ MonoBehaviour:
   - gameObject: {fileID: 656879819}
     name: EventSystem
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4274,7 +4274,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: 00bbcdde-0d34-45d9-a221-f32d5f6d341b
+    guid: a29027fb-ab58-444f-859b-d86f6e0886ca
     components:
     - {fileID: 656879818}
     - {fileID: 656879817}
@@ -4283,11 +4283,11 @@ MonoBehaviour:
   - gameObject: {fileID: 802775690}
     name: EventSystem
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4297,7 +4297,7 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: 1a3c8068-bb7d-4418-804a-736f28686d8f
+    guid: 56a5d72a-932e-40a5-896c-a0b053db9cf2
     components:
     - {fileID: 802775691}
     - {fileID: 802775693}
@@ -4305,11 +4305,11 @@ MonoBehaviour:
   - gameObject: {fileID: 209455687}
     name: Bootstrap
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4319,18 +4319,18 @@ MonoBehaviour:
       Pivot: {x: 0, y: 0}
       Scale: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0, w: 0}
-    guid: d79d884f-48c0-4154-91af-fe722637e958
+    guid: b98040f7-82d3-4d66-b32e-6debe3cddd4e
     components:
     - {fileID: 209455689}
     - {fileID: 209455688}
   - gameObject: {fileID: 736992886}
     name: ProgressCanvas
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 540, y: 1140, z: 0}
     scale: {x: 1.5, y: 1.5, z: 1.5}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 540, y: 1140, z: 0}
       AnchoredPosition: {x: 540, y: 1140}
@@ -4340,7 +4340,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1.5, y: 1.5, z: 1.5}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: a30cde79-6109-4e1e-ac32-532f38153b29
+    guid: d216aa4c-1b73-46b5-a1c1-bf553cb3b36c
     components:
     - {fileID: 736992885}
     - {fileID: 736992884}
@@ -4349,11 +4349,11 @@ MonoBehaviour:
   - gameObject: {fileID: 736992881}
     name: Panel
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 0, z: 0}
       AnchoredPosition: {x: 0, y: 0}
@@ -4363,7 +4363,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: c33840eb-3f8b-4775-9d0f-7c4a04796f7d
+    guid: 8d3c35c5-5d7d-47b2-bdc9-1dcc5927552c
     components:
     - {fileID: 736992880}
     - {fileID: 736992879}
@@ -4371,11 +4371,11 @@ MonoBehaviour:
   - gameObject: {fileID: 736992877}
     name: Progress Bar
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: -629, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: -629, z: 0}
       AnchoredPosition: {x: 0, y: 131}
@@ -4385,18 +4385,18 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 767ae827-f221-4088-8410-982caed8e57c
+    guid: 95af5e4b-fbb1-4680-a851-88705afb4f51
     components:
     - {fileID: 736992876}
     - {fileID: 736992875}
   - gameObject: {fileID: 736992874}
     name: Background
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: 0, y: 5.922394, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: 0, y: 5.922394, z: 0}
       AnchoredPosition: {x: 0, y: 5.922394}
@@ -4406,7 +4406,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 1e60b16a-8cce-4ed2-8f53-2b17ccda4182
+    guid: 9ecdb563-f5b9-47a0-9dc2-abd359ca0999
     components:
     - {fileID: 736992873}
     - {fileID: 736992872}
@@ -4415,11 +4415,11 @@ MonoBehaviour:
   - gameObject: {fileID: 736992869}
     name: Fill Area
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -0.0079956055, y: 2.4994202, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -0.0079956055, y: 2.4994202, z: 0}
       AnchoredPosition: {x: -0.0079956055, y: 2.4994202}
@@ -4429,7 +4429,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: e8e55ffe-45a8-4c38-8aad-17a629770399
+    guid: 89854a75-1c7d-44d0-ad65-09f4c72d7774
     components:
     - {fileID: 736992868}
     - {fileID: 736992867}
@@ -4438,11 +4438,11 @@ MonoBehaviour:
   - gameObject: {fileID: 736992864}
     name: Fill
     active: 1
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -317.5997, y: 2.626007, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: -0, y: -0, z: -0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -317.5997, y: 2.626007, z: 0}
       AnchoredPosition: {x: 0, y: 2.626007}
@@ -4452,7 +4452,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    guid: 799abee1-8391-410c-a3e9-c1abf93afb5f
+    guid: d1e94a6f-004f-439b-8b81-04a518859a0c
     components:
     - {fileID: 736992863}
     - {fileID: 736992862}
@@ -4461,11 +4461,11 @@ MonoBehaviour:
   - gameObject: {fileID: 736992859}
     name: Text
     active: 0
-    parent: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    parent: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     position: {x: -0.000005722, y: 5.5707, z: 0}
     scale: {x: 1, y: 1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    root: 9012c454-b366-46f9-bb9f-9d8f5096bdab
+    root: 583a2c71-0117-47ed-8720-5a4b0968b2a3
     rectTransformData:
       LocalPosition: {x: -0.000005722, y: 5.5707, z: 0}
       AnchoredPosition: {x: -0.000005722, y: 5.5707}
@@ -4475,7 +4475,7 @@ MonoBehaviour:
       Pivot: {x: 0.5, y: 0.5}
       Scale: {x: 1, y: 1, z: 1}
       Rotation: {x: 0, y: 0, z: 0, w: 1}
-    guid: 901f9e0d-30b7-42ab-a7e1-b20308c77e6b
+    guid: 14d7538e-1d30-451f-a56f-a8795ed3ec01
     components:
     - {fileID: 736992858}
     - {fileID: 736992857}
@@ -4577,6 +4577,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 945215721}
     m_Modifications:
+    - target: {fileID: 1750019222062459384, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3868378819900368161, guid: c5d22a836111b41228108fdd9e5158ef,
         type: 3}
       propertyPath: m_Name
@@ -4691,6 +4696,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingOrder
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4191358422266285639, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_text
+      value: Casual
+      objectReference: {fileID: 0}
+    - target: {fileID: 4191358422266285639, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 190.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4191358422266285639, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7068091506727168197, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 784.3778
+      objectReference: {fileID: 0}
+    - target: {fileID: 7068091506727168197, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 233.9994
+      objectReference: {fileID: 0}
+    - target: {fileID: 7068091506727168197, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -391
+      objectReference: {fileID: 0}
+    - target: {fileID: 7068091506727168197, guid: c5d22a836111b41228108fdd9e5158ef,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -140.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5d22a836111b41228108fdd9e5158ef, type: 3}

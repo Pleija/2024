@@ -6,14 +6,22 @@ using System.Linq;
 
 public static partial class UnityApi
 {
-    public static IEnumerable<object> ForEach(this IEnumerable<object> source,
+
+    public static U TryGetOrAdd<T, U>(this IDictionary<T, U> dict, T key, Func<T,U> func)
+    {
+        if (!dict.TryGetValue(key, out var ret)) {
+            return dict[key] = func.Invoke(key);
+        }
+        return ret;
+    }
+    public static IEnumerable<object> forEach(this IEnumerable<object> source,
         Action<object> action)
     {
         foreach (var obj in source) action(obj);
         return source;
     }
 
-    public static IEnumerable<object> ForEach(this IEnumerable<object> source,
+    public static IEnumerable<object> forEach(this IEnumerable<object> source,
         Action<object, int> action)
     {
         var num = 0;
@@ -21,13 +29,13 @@ public static partial class UnityApi
         return source;
     }
 
-    public static List<object> ForEach(this List<object> source, Action<object> action)
+    public static List<object> forEach(this List<object> source, Action<object> action)
     {
         foreach (var obj in source) action(obj);
         return source;
     }
 
-    public static List<object> ForEach(this List<object> source, Action<object, int> action)
+    public static List<object> forEach(this List<object> source, Action<object, int> action)
     {
         var num = 0;
         foreach (var obj in source) action(obj, num++);
@@ -82,20 +90,20 @@ public static partial class UnityApi
     //     return source.ForEach(action);
     // }
     public static IEnumerable<object>
-            AsWhere(this IEnumerable<object> data, Func<object, bool> cb) => data.Where(cb);
+            asWhere(this IEnumerable<object> data, Func<object, bool> cb) => data.Where(cb);
 
-    public static object AsFirstOrDefault(this IEnumerable<object> data,
+    public static object asFirstOrDefault(this IEnumerable<object> data,
         Func<object, bool> cb = null) =>
             cb != null ? data.FirstOrDefault(cb) : data.FirstOrDefault();
 
-    public static object AsFirst(this IEnumerable<object> data, Func<object, bool> cb = null) =>
+    public static object asFirst(this IEnumerable<object> data, Func<object, bool> cb = null) =>
             cb != null ? data.First(cb) : data.First();
 
-    public static IEnumerable<object> AsForEach(this IEnumerable<object> data, Action<object> cb) =>
-            data.ForEach(cb);
+    public static IEnumerable<object> asForEach(this IEnumerable<object> data, Action<object> cb) =>
+            data.forEach(cb);
 
-    public static IEnumerable<object> AsForEach(this IEnumerable<object> source,
-        Action<object, int> action) => source.ForEach(action);
+    public static IEnumerable<object> asForEach(this IEnumerable<object> source,
+        Action<object, int> action) => source.forEach(action);
 
     // public static T GetFirst<T>(this IEnumerable<T> value, T _ = default) => value.FirstOrDefault();
     // public static T Find<T>(this IEnumerable<T> obj, Func<T, bool> func, T _ = default) => obj.FirstOrDefault(func);

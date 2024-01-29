@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using App;
+using Gen;
 using Runner;
 using Sirenix.Utilities;
 using SqlCipher4Unity3D;
@@ -32,95 +33,12 @@ namespace Puerts
         [Binding]
         private static IEnumerable<Type> Bindings => new List<Type>() {
 #if UNITY_EDITOR
-            typeof(EditorApplication),
-            typeof(EditorSceneManager),
-            typeof(AssetDatabase),
+                    typeof(EditorApplication),
+                    typeof(EditorSceneManager),
+                    typeof(AssetDatabase),
 #endif
-            //todo: 每个泛型都要写一个, 否则导不出泛型的方法, https://github.com/Tencent/puerts/issues/963
-            // typeof(DataModel<DataModelSample>),
-            // typeof(Singleton<SingletonSample>),
-            // typeof(Agent<AgentSample>),
-            //
-
-            typeof(JSObject),
-            typeof(Uri),
-            typeof(System.Object),
-            typeof(UnityEngine.Object),
-            typeof(XXTEA),
-            typeof(Addressables),
-            typeof(Enumerable),
-            typeof(LinqExtensions),
-            typeof(AsyncOperationHandle<SceneInstance>),
-            typeof(AsyncOperationHandle<UnityEngine.Object>),
-            typeof(AsyncOperationHandle<GameObject>),
-            typeof(AsyncOperationHandle<Texture2D>),
-            typeof(AsyncOperationHandle<Texture>),
-            typeof(AsyncOperationHandle<>),
-            typeof(AsyncOperationHandle),
-            typeof(Application),
-            typeof(object),
-            typeof(GameObject),
-            typeof(Transform),
-            typeof(Component),
-            typeof(UnityEngine.Object),
-            typeof(Vector3),
-            typeof(Vector2),
-            typeof(Vector3Int),
-            typeof(Vector2Int),
-            typeof(Hashtable),
-            typeof(Array),
-            typeof(IList),
-            typeof(List<>),
-            typeof(List<string>),
-            typeof(Dictionary<,>),
-            typeof(Dictionary<string,string>),
-            typeof(HashSet<>),
-            typeof(HashSet<GameObject>),
-            typeof(Debug),
-            typeof(PuertsTest.TestClass),
-            typeof(Vector3),
-            typeof(Type),
-            typeof(List<int>),
-            typeof(Dictionary<string, List<int>>),
-            typeof(PuertsTest.BaseClass),
-            typeof(PuertsTest.DerivedClass),
-            typeof(PuertsTest.BaseClassExtension),
-            typeof(PuertsTest.MyEnum),
-            typeof(Time),
-            typeof(Transform),
-            typeof(Component),
-            typeof(GameObject),
-            typeof(UnityEngine.Object),
-            typeof(Delegate),
-            typeof(object),
-            typeof(Type),
-            typeof(ParticleSystem),
-            typeof(Canvas),
-            typeof(RenderMode),
-            typeof(Behaviour),
-            typeof(MonoBehaviour),
-            typeof(ScriptableObject),
-            typeof(System.IO.File),
-            typeof(System.IO.Path),
-            typeof(System.IO.Directory),
-            typeof(UnityEngine.Networking.UnityWebRequest),
-            typeof(UnityEngine.Networking.DownloadHandler),
-            typeof(UnityEngine.EventSystems.UIBehaviour),
-            typeof(UnityEngine.UI.Selectable),
-            typeof(UnityEngine.UI.Button),
-            typeof(UnityEngine.UI.Text),
-            typeof(UnityEngine.UI.Button.ButtonClickedEvent),
-            typeof(UnityEngine.Events.UnityEvent),
-            typeof(UnityEngine.UI.InputField),
-            typeof(UnityEngine.UI.Toggle),
-            typeof(UnityEngine.UI.Toggle.ToggleEvent),
-            typeof(UnityEngine.Events.UnityEvent<bool>),
-            typeof(PuertsDeclareTest.Plants.pumkinPeaShooter),
-            typeof(PuertsDeclareTest.Plants.Shootable),
-            typeof(PuertsDeclareTest.Zombies.Walkable),
-            typeof(PuertsDeclareTest.Zombies.Flyable),
-            typeof(PuertsDeclareTest.Zombies.BalloonZombie),
-        }.Distinct();
+                }.Union(GenTypes.Bindings)
+                .Distinct();
 
         [BlittableCopy]
         private static IEnumerable<Type> Blittables => new List<Type>() {
@@ -132,15 +50,16 @@ namespace Puerts
         private static bool FilterMethods(System.Reflection.MemberInfo mb)
         {
             // 排除 MonoBehaviour.runInEditMode, 在 Editor 环境下可用发布后不存在
-            if(mb.DeclaringType == typeof(MonoBehaviour) && mb.Name == "runInEditMode") return true;
-            if(mb.DeclaringType == typeof(Type) &&
-               (mb.Name == "MakeGenericSignatureType" || mb.Name == "IsCollectible"))
+            if (mb.DeclaringType == typeof(MonoBehaviour) && mb.Name == "runInEditMode")
+                return true;
+            if (mb.DeclaringType == typeof(Type)
+                && (mb.Name == "MakeGenericSignatureType" || mb.Name == "IsCollectible"))
                 return true;
 
-            if(mb.DeclaringType == typeof(System.IO.File)) {
-                if(mb.Name == "SetAccessControl" || mb.Name == "GetAccessControl")
+            if (mb.DeclaringType == typeof(System.IO.File)) {
+                if (mb.Name == "SetAccessControl" || mb.Name == "GetAccessControl")
                     return true;
-                else if(mb.Name == "Create") return true;
+                else if (mb.Name == "Create") return true;
             }
             return false;
         }

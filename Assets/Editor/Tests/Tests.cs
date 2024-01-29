@@ -39,16 +39,15 @@ namespace Tests
         [MenuItem("Tests/JsEnv")]
         private static void TestJs()
         {
-            JsEnv.Require("debug", "DevDebug");
-            JsEnv.Require("debug", "say", "hello");
+            JsEnv.self.Require("debug", "DevDebug");
+            JsEnv.self.Require("debug", "say", "hello");
         }
 
         [MenuItem("Tests/Network")]
         private static void TestNetwork()
         {
             // Js.Require("debug", "DevDebug");
-            JsEnv.Reload();
-            JsEnv.Require("debug", "network");
+            JsEnv.Reload().Require("debug", "network");
         }
     }
 }

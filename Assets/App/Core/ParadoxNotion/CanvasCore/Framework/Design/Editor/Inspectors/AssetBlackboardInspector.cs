@@ -39,13 +39,13 @@ namespace NodeCanvas.Editor
                 // GUILayout.BeginVertical();
                 // if (editor) editor.OnInspectorGUI();
                 // GUILayout.EndVertical();
-                 base.OnInspectorGUI();
+                base.OnInspectorGUI();
             }
             else {
                 BlackboardEditor.ShowVariables(bb);
-                //this.RepaintIfRequested();
             }
-            Repaint();
+            this.RepaintIfRequested();
+            //Repaint();
             EditorUtils.EndOfInspector();
         }
     }

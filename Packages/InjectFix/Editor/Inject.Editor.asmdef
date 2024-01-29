@@ -1,0 +1,12 @@
+{
+    "name": "Inject.Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "references": [
+        "Pleija.Core",
+        "Pleija.Inject",
+        "HotFix.Core",
+        "Unity.Addressables.Editor"
+    ]
+}

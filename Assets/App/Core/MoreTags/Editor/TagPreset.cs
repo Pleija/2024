@@ -190,7 +190,7 @@ namespace MoreTags
                 AutoClassGroup(tag, ref code);
         }
 
-        private static void AutoClass()
+        public static void AutoClass()
         {
             var go = TagHelper.CreateGameObject();
             var ms = MonoScript.FromMonoBehaviour(go.AddComponent<Tags>());

@@ -14,16 +14,15 @@ using UnityEngine;
 namespace ParadoxNotion.Design
 {
     ///<summary>An editor for preferred types</summary>
-    public class TypePrefsEditorWindow : OdinEditorWindow
+    public class TypePrefsEditorWindow : EditorWindow
     {
         private List<Type> alltypes;
         private Vector2 scrollPos;
         private List<Type> typeList;
 
         //...
-        protected override void OnEnable()
+        protected  void OnEnable()
         {
-            base.OnEnable();
             titleContent = new GUIContent("Preferred Types");
             typeList = TypePrefs.GetPreferedTypesList();
             alltypes = ReflectionTools.GetAllTypes(true)
@@ -32,9 +31,8 @@ namespace ParadoxNotion.Design
         }
 
         //...
-        protected override void OnGUI()
+        protected  void OnGUI()
         {
-            base.OnGUI();
             GUI.skin.label.richText = true;
             EditorGUILayout.HelpBox(
                 "Here you can specify frequently used types for your project and for easier access wherever you need to select a type, like for example when you create a new blackboard variable or using any refelection based actions. Furthermore, it is essential when working with AOT platforms like iOS or WebGL, that you generate an AOT Classes and link.xml files with the relevant button bellow. To add types in the list quicker, you can also Drag&Drop an object, or a Script file in this editor window.\n\nIf you save a preset in your 'Editor Default Resources/"

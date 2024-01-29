@@ -1,0 +1,59 @@
+/**字段信息 */
+class DBColumn {
+    /**字段名->key */
+    prop;
+    /**字段数据类型 */
+    propType;
+    /**数据库字段名称 */
+    name;
+    /**是否为主键 */
+    pk;
+    /**是否主键自增 */
+    autoInc;
+    /**是否唯一约束键 */
+    unique;
+    /**不允许为空 */
+    notNull;
+    /**默认值 */
+    defaultValue;
+    /**最大长度 */
+    maxLength;
+    constructor(p) {
+        if (p) {
+            this.prop = p.prop;
+            this.propType = p.propType;
+            this.name = p.name;
+            this.pk = p.pk;
+            this.autoInc = p.autoInc;
+            this.unique = p.unique;
+            this.notNull = p.notNull;
+            this.defaultValue = p.defaultValue;
+            this.maxLength = p.maxLength;
+        }
+    }
+    encode(obj) {
+        if (this.propType === "object" && obj !== undefined) {
+        }
+        return obj;
+    }
+    decode(obj) {
+        if (this.propType === "object" && obj !== undefined) {
+        }
+        return obj;
+    }
+}
+/**表信息 */
+class DBTable {
+    tableName;
+    columns;
+    constructor(data) {
+        if (data) {
+            this.tableName = data.tableName;
+            this.columns = data.columns;
+        }
+        if (!this.columns)
+            this.columns = [];
+    }
+}
+export { DBColumn, DBTable };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiREJDb2x1bW4ubWpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vUGFja2FnZXMvVHNQcm9qL3NyYy9TcWxpdGUzL0RCQ29sdW1uLm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFQSxVQUFVO0FBQ1YsTUFBTSxRQUFRO0lBQ1YsY0FBYztJQUNQLElBQUksQ0FBUztJQUNwQixZQUFZO0lBQ0wsUUFBUSxDQUFTO0lBQ3hCLGFBQWE7SUFDTixJQUFJLENBQVU7SUFDckIsV0FBVztJQUNKLEVBQUUsQ0FBVztJQUNwQixZQUFZO0lBQ0wsT0FBTyxDQUFXO0lBQ3pCLGFBQWE7SUFDTixNQUFNLENBQVc7SUFDeEIsV0FBVztJQUNKLE9BQU8sQ0FBVztJQUN6QixTQUFTO0lBQ0YsWUFBWSxDQUFPO0lBQzFCLFVBQVU7SUFDSCxTQUFTLENBQVU7SUFDMUIsWUFBWSxDQUFxQjtRQUM3QixJQUFJLENBQUMsRUFBRSxDQUFDO1lBQ0osSUFBSSxDQUFDLElBQUksR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDO1lBQ25CLElBQUksQ0FBQyxRQUFRLEdBQUcsQ0FBQyxDQUFDLFFBQVEsQ0FBQztZQUMzQixJQUFJLENBQUMsSUFBSSxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUM7WUFDbkIsSUFBSSxDQUFDLEVBQUUsR0FBRyxDQUFDLENBQUMsRUFBRSxDQUFDO1lBQ2YsSUFBSSxDQUFDLE9BQU8sR0FBRyxDQUFDLENBQUMsT0FBTyxDQUFDO1lBQ3pCLElBQUksQ0FBQyxNQUFNLEdBQUcsQ0FBQyxDQUFDLE1BQU0sQ0FBQztZQUN2QixJQUFJLENBQUMsT0FBTyxHQUFHLENBQUMsQ0FBQyxPQUFPLENBQUM7WUFDekIsSUFBSSxDQUFDLFlBQVksR0FBRyxDQUFDLENBQUMsWUFBWSxDQUFDO1lBQ25DLElBQUksQ0FBQyxTQUFTLEdBQUcsQ0FBQyxDQUFDLFNBQVMsQ0FBQztRQUNqQyxDQUFDO0lBQ0wsQ0FBQztJQUNNLE1BQU0sQ0FBQyxHQUFRO1FBQ2xCLElBQUksSUFBSSxDQUFDLFFBQVEsS0FBSyxRQUFRLElBQUksR0FBRyxLQUFLLFNBQVMsRUFBRSxDQUFDO1FBRXRELENBQUM7UUFDRCxPQUFPLEdBQUcsQ0FBQztJQUNmLENBQUM7SUFDTSxNQUFNLENBQUMsR0FBUTtRQUNsQixJQUFJLElBQUksQ0FBQyxRQUFRLEtBQUssUUFBUSxJQUFJLEdBQUcsS0FBSyxTQUFTLEVBQUUsQ0FBQztRQUV0RCxDQUFDO1FBQ0QsT0FBTyxHQUFHLENBQUM7SUFDZixDQUFDO0NBQ0o7QUFFRCxTQUFTO0FBQ1QsTUFBTSxPQUFPO0lBQ0YsU0FBUyxDQUFVO0lBQ25CLE9BQU8sQ0FBWTtJQUMxQixZQUFZLElBQXVCO1FBQy9CLElBQUksSUFBSSxFQUFFLENBQUM7WUFDUCxJQUFJLENBQUMsU0FBUyxHQUFHLElBQUksQ0FBQyxTQUFTLENBQUM7WUFDaEMsSUFBSSxDQUFDLE9BQU8sR0FBRyxJQUFJLENBQUMsT0FBTyxDQUFDO1FBQ2hDLENBQUM7UUFDRCxJQUFJLENBQUMsSUFBSSxDQUFDLE9BQU87WUFBRSxJQUFJLENBQUMsT0FBTyxHQUFHLEVBQUUsQ0FBQztJQUN6QyxDQUFDO0NBQ0o7QUFFRCxPQUFPLEVBQ0gsUUFBUSxFQUNSLE9BQU8sRUFDVixDQUFDIn0=

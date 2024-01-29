@@ -1,8 +1,8 @@
-type string = string & CS.System.String;
-// type Object = Object & CS.System.Object;
+
 
 declare global {
-
+    
+    import { iterator as $iterator } from "Common/Iterator.mjs";
     import { BaseTag, $ } from "Common/BaseTag.mjs";
     import protobuf from "protobufjs";
 
@@ -19,7 +19,6 @@ declare global {
     import { HeroesPage } from "Main/HeroesPage.mjs";
     import { CardsPage } from "Main/CardsPage.mjs";
     import { ClanPage } from "Main/ClanPage.mjs";
-    import { CardAgent } from "Main/CardAgent.mjs";
     import { Settings } from "MissionPage/Settings.mjs";
     import { HpSlider } from "Game/HpSlider.mjs";
     import { LoadingCharPos } from "Main/LoadingCharPos.mjs";
@@ -31,7 +30,6 @@ declare global {
     import { CardAgent } from "Game/CardAgent.mjs";
     import { Main } from "Main/Main.mjs";
     declare var $Main: Main;
-    declare var $CardAgent: CardAgent;
     declare var $StartUp: StartUp;
     declare var $BackupCard: BackupCard;
     declare var $ChangeCharacter: ChangeCharacter;
@@ -57,6 +55,7 @@ declare global {
 
     declare var protobuf: protobuf;
     declare var $: $;
+    declare var iterator = $iterator;
 
     declare interface Class<T> {
         new(...args: any[]): T

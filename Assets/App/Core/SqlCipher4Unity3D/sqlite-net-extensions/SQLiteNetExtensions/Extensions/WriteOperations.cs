@@ -581,7 +581,7 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                 var parameters = new List<object> { primaryKey };
                 parameters.AddRange(chunk);
                 currentChildKeyList.AddRange(from object child in conn.Query(
-                        conn.GetMapping(intermediateType), currentChildrenQuery,
+                        conn.GetMapping(intermediateType,null), currentChildrenQuery,
                         parameters.ToArray())
                     select otherEntityForeignKeyProperty.GetValue(child, null));
             }

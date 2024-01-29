@@ -1,15 +1,16 @@
 #region
 #if UNITY_EDITOR
-using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
+using System.IO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Puerts;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -25,6 +26,25 @@ public static partial class UnityApi
         Debug.Log(jsObject.Safe);
     }
 
+    public static T CreateInstance<T>(params object[] args) => (T)CreateInstance(typeof(T), args);
+
+    public static object CreateInstance(this Type type, params object[] args)
+    {
+        if (typeof(ScriptableObject).IsAssignableFrom(type)) {
+            return ScriptableObject.CreateInstance(type);
+        }
+        if (type.GetConstructor(Type.EmptyTypes) != null && !type.IsAbstract) {
+           return Activator.CreateInstance(type, args);
+        }
+        return default;
+    }
+
+    public static void CheckType(params object[] values)
+    {
+        Debug.Log(values.Select(x => x?.GetType()?.Name ?? "null").JoinStr());
+    }
+
+    public static bool IsInteger(this double d) => Math.Abs(d % 1) <= (Double.Epsilon * 100);
     public static Object ToNull(this Object obj) => obj ? obj : null;
     public static Object AsNull(this Object obj) => obj ? obj : null;
     public static bool IsNull(this Object obj) => obj;
@@ -60,7 +80,6 @@ public static partial class UnityApi
         if (o == null) return new Dictionary<string, object>();
         return o.GetType().GetProperties().ToDictionary(x => x.Name, x => x.GetValue(o));
     }
-
 
     public static Array CreateArray(this Type type, params object[] args)
     {

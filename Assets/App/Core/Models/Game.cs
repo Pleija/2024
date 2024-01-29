@@ -7,7 +7,7 @@ using UniRx;
 
 namespace Models
 {
-    public class Game : DataModel<Game>
+    public class Game : DbTable<Game>
     {
         public LongReactiveProperty startTime = 0;
         public IntReactiveProperty frameCount = 0;

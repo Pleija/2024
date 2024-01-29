@@ -40,12 +40,20 @@ namespace NodeCanvas.Framework
         [SerializeField, fsIgnoreInBuild]
         private string _desc;
 
+        [SerializeField]
+        private string _key;
+
         [SerializeField, fsIgnoreInBuild]
         private Color m_Color = Color.white;
 
         public Color color {
             get => m_Color == default ? Color.white : m_Color;
             set => m_Color = value;
+        }
+
+        public string key {
+            get => _key;
+            set => _key = value;
         }
 
         public string Desc {
@@ -203,6 +211,16 @@ namespace NodeCanvas.Framework
         [SerializeField]
         public List<object> values = new List<object>();
 
+        [SerializeField]
+        public Dictionary<string, object> _kv;
+
+        public Dictionary<string, object> kv => _kv ??= new Dictionary<string, object>();
+
+        public object this[string index] {
+            get => kv.TryGetOrAdd(index, t => value);
+            set => kv[index] = value;
+        }
+
         public object this[int index] {
             get {
                 if (index < 0) return value;
@@ -246,7 +264,7 @@ namespace NodeCanvas.Framework
         public Variable(string name, string ID) : base(name, ID) { }
 
         public Variable(string name, Type type) : base(name, Guid.NewGuid().ToString()) =>
-                varType = type;
+            varType = type;
 
         //
         public override Type varType {
@@ -304,8 +322,8 @@ namespace NodeCanvas.Framework
 
         ///<summary>Same as .value. Used for binding.</summary>
         public override object GetValueBoxed() =>
-                //Debug.Log(typeof(T).Name);
-                value;
+            //Debug.Log(typeof(T).Name);
+            value;
 
         ///<summary>Same as .value. Used for binding.</summary>
         public override void SetValueBoxed(object newValue)
@@ -403,7 +421,7 @@ namespace NodeCanvas.Framework
                 var getMethod = prop.RTGetGetMethod();
                 var setMethod = prop.RTGetSetMethod();
                 var isStatic = (getMethod != null && getMethod.IsStatic)
-                        || (setMethod != null && setMethod.IsStatic);
+                    || (setMethod != null && setMethod.IsStatic);
                 var instance = isStatic ? null : go.GetComponent(type);
 
                 if (instance == null && !isStatic) {

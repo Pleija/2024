@@ -1,0 +1,9 @@
+import { Enumerable } from "../Enumerable/Enumerable";
+Array.prototype.each = Array.prototype.forEach;
+Enumerable.prototype.each = function (executor) {
+    let i = 0;
+    for (const item of this) {
+        executor(item, i++);
+    }
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiSUVudW1lcmFibGVFeHRlbnNpb24uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi9QYWNrYWdlcy9Uc1Byb2ovc3JjL3NyYy9FeHRlbnNpb25zL0lFbnVtZXJhYmxlRXh0ZW5zaW9uLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxVQUFVLEVBQUUsTUFBTSwwQkFBMEIsQ0FBQztBQVV0RCxLQUFLLENBQUMsU0FBUyxDQUFDLElBQUksR0FBRyxLQUFLLENBQUMsU0FBUyxDQUFDLE9BQU8sQ0FBQztBQUUvQyxVQUFVLENBQUMsU0FBUyxDQUFDLElBQUksR0FBRyxVQUFrQyxRQUEwQztJQUNwRyxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7SUFDVixLQUFLLE1BQU0sSUFBSSxJQUFJLElBQUksRUFBRSxDQUFDO1FBQ3RCLFFBQVEsQ0FBQyxJQUFJLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQztJQUN4QixDQUFDO0FBQ0wsQ0FBQyxDQUFDIn0=

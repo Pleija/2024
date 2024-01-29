@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
+        "target": "ESNext",
         "module": "ES2020",
         "jsx": "react",
         "inlineSourceMap": true,
@@ -49,5 +49,9 @@
     "include": [
         "src/**/*",
         "Typing~/**/*"
-    ]
+    ] ,
+    "ts-node": {
+        "esm": true,
+        "transpileOnly": true
+    }
 }

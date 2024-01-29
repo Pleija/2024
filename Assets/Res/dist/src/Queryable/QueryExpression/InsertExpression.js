@@ -1,0 +1,60 @@
+import { resolveTreeClone } from "../../Helper/ExpressionUtil";
+import { hashCode, resolveClone } from "../../Helper/Util";
+import { EntityExpression } from "./EntityExpression";
+import { QueryExpression } from "./QueryExpression";
+// TODO: change to single insert
+export class InsertExpression extends QueryExpression {
+    get columns() {
+        if (!this._columns && this.entity instanceof EntityExpression) {
+            this._columns = this.entity.metaData.columns
+                .except(this.entity.metaData.insertGeneratedColumns)
+                .select((o) => this.entity.columns.first((c) => c.propertyName === o.propertyName)).toArray();
+        }
+        return this._columns;
+    }
+    get type() {
+        return undefined;
+    }
+    constructor(entity, values, columns) {
+        super();
+        this.entity = entity;
+        this.values = values;
+        if (columns) {
+            this._columns = columns;
+        }
+    }
+    clone(replaceMap) {
+        if (!replaceMap) {
+            replaceMap = new Map();
+        }
+        const entity = resolveClone(this.entity, replaceMap);
+        const columns = this.columns.select((o) => resolveClone(o, replaceMap)).toArray();
+        const values = this.values.select((o) => {
+            const item = {};
+            for (const prop in o) {
+                item[prop] = resolveClone(o[prop], replaceMap);
+            }
+            return item;
+        }).toArray();
+        const clone = new InsertExpression(entity, values, columns);
+        clone.parameterTree = resolveTreeClone(this.parameterTree, replaceMap);
+        replaceMap.set(this, clone);
+        return clone;
+    }
+    getEffectedEntities() {
+        return this.entity.entityTypes;
+    }
+    hashCode() {
+        return hashCode("INSERT", hashCode(this.entity.name, this.values.select((o) => {
+            let hash = 0;
+            for (const prop in o) {
+                hash += hashCode(prop, o[prop].hashCode());
+            }
+            return hash;
+        }).sum()));
+    }
+    toString() {
+        return `Insert(${this.entity.toString()})`;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiSW5zZXJ0RXhwcmVzc2lvbi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL1BhY2thZ2VzL1RzUHJvai9zcmMvc3JjL1F1ZXJ5YWJsZS9RdWVyeUV4cHJlc3Npb24vSW5zZXJ0RXhwcmVzc2lvbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFQSxPQUFPLEVBQUUsZ0JBQWdCLEVBQUUsTUFBTSw2QkFBNkIsQ0FBQztBQUMvRCxPQUFPLEVBQUUsUUFBUSxFQUFFLFlBQVksRUFBRSxNQUFNLG1CQUFtQixDQUFDO0FBQzNELE9BQU8sRUFBRSxnQkFBZ0IsRUFBRSxNQUFNLG9CQUFvQixDQUFDO0FBR3RELE9BQU8sRUFBRSxlQUFlLEVBQUUsTUFBTSxtQkFBbUIsQ0FBQztBQUVwRCxnQ0FBZ0M7QUFDaEMsTUFBTSxPQUFPLGdCQUEwQixTQUFRLGVBQXFCO0lBQ2hFLElBQVcsT0FBTztRQUNkLElBQUksQ0FBQyxJQUFJLENBQUMsUUFBUSxJQUFJLElBQUksQ0FBQyxNQUFNLFlBQVksZ0JBQWdCLEVBQUUsQ0FBQztZQUM1RCxJQUFJLENBQUMsUUFBUSxHQUFHLElBQUksQ0FBQyxNQUFNLENBQUMsUUFBUSxDQUFDLE9BQU87aUJBQ3ZDLE1BQU0sQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxzQkFBc0IsQ0FBQztpQkFDbkQsTUFBTSxDQUFDLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLE9BQU8sQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLEVBQUUsRUFBRSxDQUFDLENBQUMsQ0FBQyxZQUFZLEtBQUssQ0FBQyxDQUFDLFlBQVksQ0FBQyxDQUFDLENBQUMsT0FBTyxFQUFFLENBQUM7UUFDdEcsQ0FBQztRQUNELE9BQU8sSUFBSSxDQUFDLFFBQVEsQ0FBQztJQUN6QixDQUFDO0lBRUQsSUFBVyxJQUFJO1FBQ1gsT0FBTyxTQUFnQixDQUFDO0lBQzVCLENBQUM7SUFDRCxZ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

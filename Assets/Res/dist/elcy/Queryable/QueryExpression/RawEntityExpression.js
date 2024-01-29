@@ -1,0 +1,34 @@
+import { hashCode } from "../../Helper/Util";
+import { ColumnExpression } from "./ColumnExpression";
+export class RawEntityExpression {
+    constructor(type, schema, definingQuery, alias) {
+        this.type = type;
+        this.schema = schema;
+        this.definingQuery = definingQuery;
+        this.alias = alias;
+        this.entityTypes = [this.type];
+        this.defaultOrders = [];
+        this.primaryColumns = [];
+        this.columns = [];
+        for (const prop in schema) {
+            const valueType = schema[prop] || String;
+            const columnExp = new ColumnExpression(this, valueType, prop, prop, false, true);
+            this.columns.push(columnExp);
+        }
+    }
+    get name() {
+        return this.alias;
+    }
+    clone(replaceMap) {
+        const clone = new RawEntityExpression(this.type, this.schema, this.definingQuery, this.alias);
+        replaceMap.set(this, clone);
+        return clone;
+    }
+    hashCode() {
+        return hashCode(this.name);
+    }
+    toString() {
+        return `Entity(${this.name}:${this.definingQuery})`;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUmF3RW50aXR5RXhwcmVzc2lvbi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL1BhY2thZ2VzL1RzUHJvai9zcmMvZWxjeS9RdWVyeWFibGUvUXVlcnlFeHByZXNzaW9uL1Jhd0VudGl0eUV4cHJlc3Npb24udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUEsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLG1CQUFtQixDQUFDO0FBRzdDLE9BQU8sRUFBRSxnQkFBZ0IsRUFBRSxNQUFNLG9CQUFvQixDQUFDO0FBS3RELE1BQU0sT0FBTyxtQkFBbUI7SUFDNUIsWUFBNEIsSUFBb0IsRUFDMUIsTUFBMEQsRUFDcEQsYUFBcUIsRUFDOUIsS0FBYTtRQUhKLFNBQUksR0FBSixJQUFJLENBQWdCO1FBQzFCLFdBQU0sR0FBTixNQUFNLENBQW9EO1FBQ3BELGtCQUFhLEdBQWIsYUFBYSxDQUFRO1FBQzlCLFVBQUssR0FBTCxLQUFLLENBQVE7UUFDNUIsSUFBSSxDQUFDLFdBQVcsR0FBRyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUMvQixJQUFJLENBQUMsYUFBYSxHQUFHLEVBQUUsQ0FBQztRQUN4QixJQUFJLENBQUMsY0FBYyxHQUFHLEVBQUUsQ0FBQztRQUN6QixJQUFJLENBQUMsT0FBTyxHQUFHLEVBQUUsQ0FBQztRQUNsQixLQUFLLE1BQU0sSUFBSSxJQUFJLE1BQU0sRUFBRSxDQUFDO1lBQ3hCLE1BQU0sU0FBUyxHQUFHLE1BQU0sQ0FBQyxJQUFJLENBQUMsSUFBSSxNQUFNLENBQUM7WUFDekMsTUFBTSxTQUFTLEdBQUcsSUFBSSxnQkFBZ0IsQ0FBSSxJQUFJLEVBQUUsU0FBUyxFQUFFLElBQUksRUFBRSxJQUFJLEVBQUUsS0FBSyxFQUFFLElBQUksQ0FBQyxDQUFDO1lBQ3BGLElBQUksQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxDQUFDO1FBQ2pDLENBQUM7SUFDTCxDQUFDO0lBR0QsSUFBVyxJQUFJO1FBQ1gsT0FBTyxJQUFJLENBQUMsS0FBSyxDQUFDO0lBQ3RCLENBQUM7SUFLTSxLQUFLLENBQUMsVUFBMEM7UUFDbkQsTUFBTSxLQUFLLEdBQUcsSUFBSSxtQkFBbUIsQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFLElBQUksQ0FBQyxNQUFNLEVBQUUsSUFBSSxDQUFDLGFBQWEsRUFBRSxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUM7UUFDOUYsVUFBVSxDQUFDLEdBQUcsQ0FBQyxJQUFJLEVBQUUsS0FBSyxDQUFDLENBQUM7UUFDNUIsT0FBTyxLQUFLLENBQUM7SUFDakIsQ0FBQztJQUNNLFFBQVE7UUFDWCxPQUFPLFFBQVEsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUM7SUFDL0IsQ0FBQztJQUNNLFFBQVE7UUFDWCxPQUFPLFVBQVUsSUFBSSxDQUFDLElBQUksSUFBSSxJQUFJLENBQUMsYUFBYSxHQUFHLENBQUM7SUFDeEQsQ0FBQztDQUNKIn0=

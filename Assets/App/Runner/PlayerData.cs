@@ -37,7 +37,7 @@ namespace Runner
     ///     somewhere to avoid player tampering with it. Here potentially a player could modify the binary
     ///     file to add premium currency.
     /// </summary>
-    public class PlayerData : DataModel<PlayerData>
+    public class PlayerData : DbTable<PlayerData>
     {
         public static PlayerData m_Instance;
 

@@ -9,7 +9,7 @@ using UnityEngine.AddressableAssets;
 
 namespace Models
 {
-    public class User : DataModel<User>
+    public class User : DbTable<User>
     {
         // 小写字母开头为本地数据,从数据库获取
         public StringReactiveProperty username = "";

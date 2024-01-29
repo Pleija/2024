@@ -120,10 +120,20 @@ namespace NodeCanvas.Editor
             //Add variable button
             GUI.backgroundColor = Colors.lightBlue;
 
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Add Variable")) {
                 GetAddVariableMenu(bb, contextObject).ShowAsBrowser("Add Variable");
                 Event.current.Use();
             }
+
+            if (GUILayout.Button("Types Editor")) {
+                TypePrefsEditorWindow.ShowWindow();
+            }
+
+            if (GUILayout.Button("Data Manager")) {
+                 GameDataManager.ShowDialog();
+            }
+            GUILayout.EndHorizontal();
             GUI.backgroundColor = Color.white;
 
             //Simple column header info
@@ -147,6 +157,7 @@ namespace NodeCanvas.Editor
             options.blockReorder = contextObject != null
                     ? PrefabUtility.IsPartOfRegularPrefab(contextObject) : false;
             options.unityObjectContext = contextObject;
+            //Debug.Log($"context: "+contextObject.name);
             options.customItemMenu = i => {
                 return GetVariableMenu(tempVariablesList[i], i);
             };
@@ -165,7 +176,9 @@ namespace NodeCanvas.Editor
                     DoVariableGUI(data, i, isPicked);
                     GUILayout.EndHorizontal();
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Desc:", GUILayout.Width(40));
+                    GUILayout.Label("Key:",GUILayout.Width(30));
+                    data.key = EditorGUILayout.TextField(data.key);
+                    GUILayout.Label("备注:", GUILayout.Width(30));
                     data.Desc = EditorGUILayout.TextField(data.Desc);
                     data.color = EditorGUILayout.ColorField(data.color, GUILayout.Width(40));
                     GUILayout.EndHorizontal();

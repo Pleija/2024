@@ -5,7 +5,7 @@ using UniRx;
 
 namespace Models
 {
-    public class Room : DataModel<Room>
+    public class Room : DbTable<Room>
     {
         public StringReactiveProperty roomId = "";
     }

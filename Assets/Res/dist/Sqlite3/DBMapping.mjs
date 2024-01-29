@@ -1,0 +1,138 @@
+import { ClassMetadata, FieldMetadata } from "./Utils/Decorator.mjs";
+import { DBCommandInsert } from "./DBCommandInsert.mjs";
+import { DBColumn } from "./DBColumn.mjs";
+import { Table, Column, PrimaryKey, AutoInc, Unique, NotNull, DefaultValue, MaxLength } from "./Utils/Attributes.mjs";
+/**数据表映射信息 */
+class DBMapping {
+    /**表对应的js原型 proto */
+    Type;
+    /**数据表名称 */
+    tableName;
+    /**主键 */
+    pk;
+    /**字段信息 */
+    columns;
+    /**通过主键查询 */
+    getByPrimaryKeySql;
+    //插入命令行
+    _insertCommand;
+    _insertCommandExtra;
+    /**字段信息 */
+    _insertColumns;
+    _insertOrReplaceColumns;
+    get insertColumns() {
+        if (!this._insertColumns) {
+            this._insertColumns = new Array();
+            this.columns.forEach(col => {
+                if (!col.autoInc)
+                    this._insertColumns.push(col);
+            });
+        }
+        return this._insertColumns;
+    }
+    get insertOrReplaceColumns() {
+        if (!this._insertOrReplaceColumns) {
+            this._insertOrReplaceColumns = new Array();
+            this.columns.forEach(col => this._insertOrReplaceColumns.push(col));
+        }
+        return this._insertOrReplaceColumns;
+    }
+    constructor(type) {
+        this.Type = type;
+        //数据表名称
+        let name = ClassMetadata.getFirst(type, Table)?.info ?? type.name;
+        this.tableName = name;
+        //获取字段信息
+        this.columns = new Array();
+        for (let key of FieldMetadata.getFields(type, true)) {
+            let conf = FieldMetadata.getFirst(type, key, Column, true)?.info;
+            if (!conf)
+                continue;
+            let pk = !!FieldMetadata.getFirst(type, key, PrimaryKey, true);
+            let autoInc = pk && !!FieldMetadata.getFirst(type, key, AutoInc, true);
+            let unique = !!FieldMetadata.getFirst(type, key, Unique, true);
+            let notNull = !!FieldMetadata.getFirst(type, key, NotNull, true);
+            let value = FieldMetadata.getFirst(type, key, DefaultValue, true)?.info;
+            let len = FieldMetadata.getFirst(type, key, MaxLength, true)?.info;
+            let col = new DBColumn({
+                prop: key,
+                propType: conf.type,
+                name: conf.alias ?? key,
+                pk: pk,
+                autoInc: autoInc,
+                unique: unique,
+                notNull: notNull,
+                defaultValue: value,
+                maxLength: len,
+            });
+            this.columns.push(col);
+            if (col.pk)
+                this.pk = col;
+        }
+        if (this.columns.length <= 0)
+            throw new Error(`数据表${type.name}(${this.tableName}), 没有有效字段`);
+        let info = "";
+        this.columns.forEach(col => info += "\n" + JSON.stringify(col));
+        //console.log(`DBMapping: ${this.tableName}:${info}`);
+        //PK
+        if (this.pk)
+            this.getByPrimaryKeySql = `SELECT * FROM "${this.tableName}" WHERE "${this.pk.name}" = ?`;
+        else
+            this.getByPrimaryKeySql = `SELECT * FROM "${this.tableName}" LIMIT 1`;
+    }
+    findColumn(name) {
+        for (let i = 0; i < this.columns.length; i++) {
+            if (this.columns[i].name == name)
+                return this.columns[i];
+        }
+        return null;
+    }
+    findColumnByPorpertyName(name) {
+        for (let i = 0; i < this.columns.length; i++) {
+            if (this.columns[i].prop == name)
+                return this.columns[i];
+        }
+        return null;
+    }
+    dispose() {
+        if (this._insertCommand)
+            this._insertCommand.dispose();
+    }
+    getInsertCommand(conn, extra) {
+        if (!this._insertCommand) {
+            this._insertCommand = this.createInsertCommand(conn, extra);
+            this._insertCommandExtra = extra;
+        }
+        else if (!this._insertCommand.isConnect(conn) || this._insertCommandExtra != extra) {
+            this._insertCommand.dispose();
+            this._insertCommand = this.createInsertCommand(conn, extra);
+            this._insertCommandExtra = extra;
+        }
+        return this._insertCommand;
+    }
+    createInsertCommand(conn, extra) {
+        let insertSql = "";
+        let cols = this.insertColumns;
+        if (cols.length == 1 && cols[0].autoInc) {
+            insertSql = `INSERT ${this.tableName} INTO "${extra}" DEFAULT VALUES`;
+        }
+        else {
+            if (extra === "OR REPLACE")
+                cols = this.insertOrReplaceColumns;
+            let names = new Array(), vals = new Array();
+            for (let col of cols) {
+                names.push("\"" + col.name + "\"");
+                vals.push("?");
+            }
+            insertSql = `INSERT ${extra} INTO "${this.tableName}"(${names.join(",")}) VALUES (${vals.join(",")})`;
+        }
+        let cmd = new DBCommandInsert(conn);
+        cmd.commandText = insertSql;
+        return cmd;
+    }
+    createInstance() {
+        return new (this.Type)();
+    }
+}
+export { DBMapping };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiREJNYXBwaW5nLm1qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL1BhY2thZ2VzL1RzUHJvai9zcmMvU3FsaXRlMy9EQk1hcHBpbmcubXRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxhQUFhLEVBQUUsYUFBYSxFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFFckUsT0FBTyxFQUFFLGVBQWUsRUFBRSxNQUFNLHVCQUF1QixDQUFDO0FBQ3hELE9BQU8sRUFBRSxRQUFRLEVBQUUsTUFBTSxnQkFBZ0IsQ0FBQztBQUMxQyxPQUFPLEVBQ0gsS0FBSyxFQUNMLE1BQU0sRUFDTixVQUFVLEVBQ1YsT0FBTyxFQUNQLE1BQU0sRUFDTixPQUFPLEVBQ1AsWUFBWSxFQUNaLFNBQVMsRUFDWixNQUFNLHdCQUF3QixDQUFDO0FBS2hDLGFBQWE7QUFDYixNQUFNLFNBQVM7SUFDWCxvQkFBb0I7SUFDYixJQUFJLENBQWU7SUFDMUIsV0FBVztJQUNKLFNBQVMsQ0FBUztJQUN6QixRQUFRO0lBQ0QsRUFBRSxDQUFXO0lBQ3BCLFVBQVU7SUFDSCxPQUFPLENBQWE7SUFDM0IsWUFBWTtJQUNMLGtCQUFrQixDQUFTO0lBQ2xDLE9BQU87SUFDQyxjQUFjLENBQWtCO0lBQ2hDLG1CQUFtQixDQUFTO0lBQ3BDLFVBQVU7SUFDRixjQUFjLENBQWE7SUFDM0IsdUJBQXVCLENBQWE7SUFDNUMsSUFBVyxhQUFhO1FBQ3BCLElBQUksQ0FBQyxJQUFJLENBQUMsY0FBYyxFQUFFLENBQUM7WUFDdkIsSUFBSSxDQUFDLGNBQWMsR0FBRyxJQUFJLEtBQUssRUFBRSxDQUFDO1lBQ2xDLElBQUksQ0FBQyxPQUFPLENBQUMsT0FBTyxDQUFDLEdBQUcsQ0FBQyxFQUFFO2dCQUN2QixJQUFJLENBQUMsR0FBRyxDQUFDLE9BQU87b0JBQUUsSUFBSSxDQUFDLGNBQWMsQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7WUFDcEQsQ0FBQyxDQUFDLENBQUM7UUFDUCxDQUFDO1FBQ0QsT0FBTyxJQUFJLENBQUMsY0FBYyxDQUFDO0lBQy9CLENBQUM7SUFDRCxJQUFXLHNCQUFzQjtRQUM3QixJQUFJLENBQUMsSUFBSSxDQUFDLHVCQUF1QixFQUFFLENBQUM7WUFDaEMsSUFBSSxDQUFDLHVCQUF1QixHQUFHLElBQUksS0FBSyxFQUFFLENBQUM7WUFDM0MsSUFBSSxDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxJQUFJLENBQUMsdUJBQXVCLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUM7UUFDeEUsQ0FBQztRQUNELE9BQU8sSUFBSSxDQUFDLHVCQUF1QixDQUFDO0lBQ3hDLENBQUM7SUFFRCxZQUFZLElBQWtCO1FBQzFCLElBQUksQ0FBQyxJQUFJLEdBQUcsSUFBSSxDQUFDO1FBQ2pCLE9BQU87UUFDUCxJQUFJLElBQUksR0FBVyxhQUFhLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxLQUFLLENBQUMsRUFBRSxJQUFJLElBQUksSUFBSSxDQUFDLElBQUksQ0FBQztRQUMxRSxJQUFJLENBQUMsU0FBUyxHQUFHLElBQUksQ0FBQztRQUN0QixRQUFRO1FBQ1IsSUFBSSxDQUFDLE9BQU8sR0FBRyxJQUFJLEtBQUssRUFBRSxDQUFDO1FBQzNCLEtBQUssSUFBSSxHQUFHLElBQUksYUFBYSxDQUFDLFNBQVMsQ0FBQyxJQUFJLEVBQUUsSUFBSSxDQUFDLEVBQUUsQ0FBQztZQUNsRCxJQUFJLElBQUksR0FBRyxhQUFhLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxHQUFHLEVBQUUsTUFBTSxFQUFFLElBQUksQ0FBQyxFQUFFLElBQXVDLENBQUM7WUFDcEcsSUFBSSxDQUFDLElBQUk7Z0JBQ0wsU0FBUztZQUViLElBQUksRUFBRSxHQUFZLENBQUMsQ0FBQyxhQUFhLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxHQUFHLEVBQUUsVUFBVSxFQUFFLElBQUksQ0FBQyxDQUFDO1lBQ3hFLElBQUksT0FBTyxHQUFZLEVBQUUsSUFBSSxDQUFDLENBQUMsYUFBYSxDQUFDLFFBQVEsQ0FBQyxJQUFJLEVBQUUsR0FBRyxFQUFFLE9BQU8sRUFBRSxJQUFJLENBQUMsQ0FBQztZQUNoRixJQUFJLE1BQU0sR0FBWSxDQUFDLENBQUMsYUFBYSxDQUFDLFFBQVEsQ0FBQyxJQUFJLEVBQUUsR0FBRyxFQUFFLE1BQU0sRUFBRSxJQUFJLENBQUMsQ0FBQztZQUN4RSxJQUFJLE9BQU8sR0FBWSxDQUFDLENBQUMsYUFBYSxDQUFDLFFBQVEsQ0FBQyxJQUFJLEVBQUUsR0FBRyxFQUFFLE9BQU8sRUFBRSxJQUFJLENBQUMsQ0FBQztZQUMxRSxJQUFJLEtBQUssR0FBWSxhQUFhLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxHQUFHLEVBQUUsWUFBWSxFQUFFLElBQUksQ0FBQyxFQUFFLElBQUksQ0FBQztZQUNqRixJQUFJLEdBQUcsR0FBVyxhQUFhLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxHQUFHLEVBQUUsU0FBUyxFQUFFLElBQUksQ0FBQyxFQUFFLElBQUksQ0FBQztZQUUzRSxJQUFJLEdBQUcsR0FBRyxJQUFJLFFBQVEsQ0FBQztnQkFDbkIsSUFBSSxFQUFFLEdBQUc7Z0JBQ1QsUUFBUSxFQUFFLElBQUksQ0FBQyxJQUFJO2dCQUNuQixJQUFJLEVBQUUsSUFBSSxDQUFDLEtBQUssSUFBSSxHQUFHO2dCQUN2QixFQUFFLEVBQUUsRUFBRTtnQkFDTixPQUFPLEVBQUUsT0FBTztnQkFDaEIsTUFBTSxFQUFFLE1BQU07Z0JBQ2QsT0FBTyxFQUFFLE9BQU87Z0JBQ2hCLFlBQVksRUFBRSxLQUFLO2dCQUNuQixTQUFTLEVBQUUsR0FBRzthQUNqQixDQUFDLENBQUM7WUFFSCxJQUFJLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQztZQUN2QixJQUFJLEdBQUcsQ0FBQyxFQUFFO2dCQUFFLElBQUksQ0FBQyxFQUFFLEdBQUcsR0FBRyxDQUFDO1FBQzlCLENBQUM7UUFDRCxJQUFJLElBQUksQ0FBQyxPQUFPLENBQUMsTUFBTSxJQUFJLENBQUM7WUFDeEIsTUFBTSxJQUFJLEtBQUssQ0FBQyxNQUFNLElBQUksQ0FBQyxJQUFJLElBQUksSUFBSSxDQUFDLFNBQVMsV0FBVyxDQUFDLENBQUM7UUFFbEUsSUFBSSxJQUFJLEdBQUcsRUFBRSxDQUFDO1FBQ2QsSUFBSSxDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxJQUFJLElBQUksSUFBSSxHQUFHLElBQUksQ0FBQyxTQUFTLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQztRQUNoRSxzREFBc0Q7UUFDdEQsSUFBSTtRQUNKLElBQUksSUFBSSxDQUFDLEVBQUU7WUFDUCxJQUFJLENBQUMsa0JBQWtCLEdBQUcsa0JBQWtCLElBQUksQ0FBQyxTQUFTLFlBQVksSUFBSSxDQUFDLEVBQUUsQ0FBQyxJQUFJLE9BQU8sQ0FBQzs7WUFFMUYsSUFBSSxDQUFDLGtCQUFrQixHQUFHLGtCQUFrQixJQUFJLENBQUMsU0FBUyxXQUFXLENBQUM7SUFDOUUsQ0FBQztJQUNNLFVBQVUsQ0FBQyxJQUFZO1FBQzFCLEtBQUssSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsR0FBRyxJQUFJLENBQUMsT0FBTyxDQUFDLE1BQU0sRUFBRSxDQUFDLEVBQUUsRUFBRSxDQUFDO1lBQzNDLElBQUksSUFBSSxDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLElBQUksSUFBSTtnQkFDNUIsT0FBTyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQyxDQUFDO1FBQy9CLENBQUM7UUFDRCxPQUFPLElBQUksQ0FBQztJQUNoQixDQUFDO0lBQ00sd0JBQXdCLENBQUMsSUFBWTtRQUN4QyxLQUFLLElBQUksQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEdBQUcsSUFBSSxDQUFDLE9BQU8sQ0FBQyxNQUFNLEVBQUUsQ0FBQyxFQUFFLEVBQUUsQ0FBQztZQUMzQyxJQUFJLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQyxDQUFDLENBQUMsSUFBSSxJQUFJLElBQUk7Z0JBQzVCLE9BQU8sSUFBSSxDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUMsQ0FBQztRQUMvQixDQUFDO1FBQ0QsT0FBTyxJQUFJLENBQUM7SUFDaEIsQ0FBQztJQUNNLE9BQU87UUFDVixJQUFJLElBQUksQ0FBQyxjQUFjO1lBQ25CLElBQUksQ0FBQyxjQUFjLENBQUMsT0FBTyxFQUFFLENBQUM7SUFDdEMsQ0FBQztJQUNNLGdCQUFnQixDQUFDLElBQWtCLEVBQUUsS0FBYTtRQUNyRCxJQUFJLENBQUMsSUFBSSxDQUFDLGNBQWMsRUFBRSxDQUFDO1lBQ3ZCLElBQUksQ0FBQyxjQUFjLEdBQUcsSUFBSSxDQUFDLG1CQUFtQixDQUFDLElBQUksRUFBRSxLQUFLLENBQUMsQ0FBQztZQUM1RCxJQUFJLENBQUMsbUJBQW1CLEdBQUcsS0FBSyxDQUFDO1FBQ3JDLENBQUM7YUFDSSxJQUFJLENBQUMsSUFBSSxDQUFDLGNBQWMsQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLElBQUksSUFBSSxDQUFDLG1CQUFtQixJQUFJLEtBQUssRUFBRSxDQUFDO1lBQ2pGLElBQUksQ0FBQyxjQUFjLENBQUMsT0FBTyxFQUFFLENBQUM7WUFDOUIsSUFBSSxDQUFDLGNBQWMsR0FBRyxJQUFJLENBQUMsbUJBQW1CLENBQUMsSUFBSSxFQUFFLEtBQUssQ0FBQyxDQUFDO1lBQzVELElBQUksQ0FBQyxtQkFBbUIsR0FBRyxLQUFLLENBQUM7UUFDckMsQ0FBQztRQUNELE9BQU8sSUFBSSxDQUFDLGNBQWMsQ0FBQztJQUMvQixDQUFDO0lBQ00sbUJBQW1CLENBQUMsSUFBa0IsRUFBRSxLQUFhO1FBQ3hELElBQUksU0FBUyxHQUFHLEVBQUUsQ0FBQztRQUNuQixJQUFJLElBQUksR0FBRyxJQUFJLENBQUMsYUFBYSxDQUFDO1FBQzlCLElBQUksSUFBSSxDQUFDLE1BQU0sSUFBSSxDQUFDLElBQUksSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLE9BQU8sRUFBRSxDQUFDO1lBQ3RDLFNBQVMsR0FBRyxVQUFVLElBQUksQ0FBQyxTQUFTLFVBQVUsS0FBSyxrQkFBa0IsQ0FBQTtRQUN6RSxDQUFDO2FBQ0ksQ0FBQztZQUNGLElBQUksS0FBSyxLQUFLLFlBQVk7Z0JBQUUsSUFBSSxHQUFHLElBQUksQ0FBQyxzQkFBc0IsQ0FBQztZQUMvRCxJQUFJLEtBQUssR0FBRyxJQUFJLEtBQUssRUFBVSxFQUFFLElBQUksR0FBRyxJQUFJLEtBQUssRUFBVSxDQUFDO1lBQzVELEtBQUssSUFBSSxHQUFHLElBQUksSUFBSSxFQUFFLENBQUM7Z0JBQ25CLEtBQUssQ0FBQyxJQUFJLENBQUMsSUFBSSxHQUFHLEdBQUcsQ0FBQyxJQUFJLEdBQUcsSUFBSSxDQUFDLENBQUM7Z0JBQ25DLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7WUFDbkIsQ0FBQztZQUNELFNBQVMsR0FBRyxVQUFVLEtBQUssVUFBVSxJQUFJLENBQUMsU0FBUyxLQUFLLEtBQUssQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLGFBQWEsSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsR0FBRyxDQUFBO1FBQ3pHLENBQUM7UUFDRCxJQUFJLEdBQUcsR0FBRyxJQUFJLGVBQWUsQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUNwQyxHQUFHLENBQUMsV0FBVyxHQUFHLFNBQVMsQ0FBQztRQUM1QixPQUFPLEdBQUcsQ0FBQztJQUNmLENBQUM7SUFDTSxjQUFjO1FBQ2pCLE9BQU8sSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsRUFBRSxDQUFDO0lBQzdCLENBQUM7Q0FDSjtBQUVELE9BQU8sRUFBRSxTQUFTLEVBQUUsQ0FBQyJ9

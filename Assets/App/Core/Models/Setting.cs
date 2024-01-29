@@ -6,7 +6,7 @@ using UniRx;
 
 namespace Models
 {
-    public class Setting : DataModel<Setting>
+    public class Setting : DbTable<Setting>
     {
         // 大写字母开头从 ScriptableObject asset 获取
         public StringReactiveProperty ResVersion = "1.0.0";

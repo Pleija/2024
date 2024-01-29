@@ -2,6 +2,7 @@
 
 #region
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace MoreTags
 
             if (!EditorGUILayout.ToggleLeft("#tags", component)) {
                 if (component) {
-                    go.RemoveTag(component.tags);
+                    go.RemoveTag(component.tags.ToArray());
                     component.DestroySelf();
                 }
                 return;

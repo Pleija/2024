@@ -20,6 +20,18 @@ namespace Tests
         }
 
         [Test]
+        public static void TestTsDb()
+        {
+            JsEnv.Reload().Require("dbtest", "orm");
+        }
+
+        [Test]
+        public static void CheckType()
+        {
+            JsEnv.Reload().Require("debug", "checkType");
+        }
+
+        [Test]
         public static void TestJson()
         {
             Debug.Log(JsonConvert.SerializeObject("test"));

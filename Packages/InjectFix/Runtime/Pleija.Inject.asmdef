@@ -1,0 +1,11 @@
+{
+    "name": "Pleija.Inject",
+    "precompiledReferences": [
+    ],
+    "references": [
+        "HotFix.Core",
+        "Unity.Addressables.Editor",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ]
+}

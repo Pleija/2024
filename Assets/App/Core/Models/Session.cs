@@ -5,7 +5,7 @@ using UniRx;
 
 namespace Models
 {
-    public class Session : DataModel<Session>
+    public class Session : DbTable<Session>
     {
         public LongReactiveProperty timestamp = 0;
         public LongReactiveProperty DefaultSeed = 0;

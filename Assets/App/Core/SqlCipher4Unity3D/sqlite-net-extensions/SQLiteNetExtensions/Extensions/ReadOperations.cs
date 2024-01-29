@@ -239,7 +239,7 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
                     && otherEntityForeignKeyProperty != null;
             Assert(hasForeignKey || hasInverseForeignKey, type, relationshipProperty,
                 "Missing either ForeignKey or PrimaryKey for a complete OneToOne relationship");
-            var tableMapping = conn.GetMapping(entityType);
+            var tableMapping = conn.GetMapping(entityType,null);
             Assert(tableMapping != null, type, relationshipProperty,
                 "There's no mapping table for OneToOne relationship");
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
@@ -331,7 +331,7 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var currentEntityForeignKeyProperty = type.GetForeignKeyProperty(relationshipProperty);
             Assert(currentEntityForeignKeyProperty != null, type, relationshipProperty,
                 "ManyToOne relationship origin must have Foreign Key");
-            var tableMapping = conn.GetMapping(entityType);
+            var tableMapping = conn.GetMapping(entityType,null);
             Assert(tableMapping != null, type, relationshipProperty,
                 "There's no mapping table for OneToMany relationship destination");
 
@@ -413,7 +413,7 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             Assert(otherEntityForeignKeyProperty != null, type, relationshipProperty,
                 "OneToMany relationship destination must have Foreign Key to the origin class");
             var otherEntityPrimaryKeyProperty = entityType.GetPrimaryKey();
-            var tableMapping = conn.GetMapping(entityType);
+            var tableMapping = conn.GetMapping(entityType,null);
             Assert(tableMapping != null, type, relationshipProperty,
                 "There's no mapping table for OneToMany relationship destination");
             var inverseProperty = type.GetInverseProperty(relationshipProperty);
@@ -506,7 +506,7 @@ namespace SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions
             var currentEntityForeignKeyProperty = manyToManyMetaInfo.OriginProperty;
             var otherEntityForeignKeyProperty = manyToManyMetaInfo.DestinationProperty;
             var intermediateType = manyToManyMetaInfo.IntermediateType;
-            var tableMapping = conn.GetMapping(entityType);
+            var tableMapping = conn.GetMapping(entityType,null);
             Assert(enclosedType != EnclosedType.None, type, relationshipProperty,
                 "ManyToMany relationship must be a List or Array");
             Assert(currentEntityPrimaryKeyProperty != null, type, relationshipProperty,

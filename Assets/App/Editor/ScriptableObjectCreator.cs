@@ -22,8 +22,8 @@ namespace Editors
             AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes)
                     .Where(t => t.IsClass
                             && !t.IsAbstract
-                            && typeof(ModelBase).IsAssignableFrom(t)
-                            && t != typeof(ModelBase)
+                            && typeof(DbTable).IsAssignableFrom(t)
+                            && t != typeof(DbTable)
                             && !t.IsGenericType
                             && !typeof(EditorWindow).IsAssignableFrom(t)
                             && !typeof(Editor).IsAssignableFrom(t)));

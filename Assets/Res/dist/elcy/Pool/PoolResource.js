@@ -1,0 +1,7 @@
+import { EventHandlerFactory } from "../Event/EventHandlerFactory";
+export class PoolResource {
+    constructor() {
+        [this.releaseEvent, this.onReleased] = EventHandlerFactory(null);
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUG9vbFJlc291cmNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vUGFja2FnZXMvVHNQcm9qL3NyYy9lbGN5L1Bvb2wvUG9vbFJlc291cmNlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLDhCQUE4QixDQUFDO0FBR25FLE1BQU0sT0FBZ0IsWUFBWTtJQUM5QjtRQUNJLENBQUMsSUFBSSxDQUFDLFlBQVksRUFBRSxJQUFJLENBQUMsVUFBVSxDQUFDLEdBQUcsbUJBQW1CLENBQWEsSUFBSSxDQUFDLENBQUM7SUFDakYsQ0FBQztDQUlKIn0=

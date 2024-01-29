@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373e1c939fc44bcbb4ce899bb246f31c, type: 3}
   m_Name: Setting
   m_EditorClassIdentifier: 
-  Id: 1
-  Version: 1.0
-  Extra: '{}'
-  localExtra: '{}'
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -25,8 +21,11 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  Id: 1
+  Extra: '{}'
+  localExtra: '{}'
   ResVersion:
-    value: 1.0.1
+    value: 1.0.2
   RegisterServer:
     value: 
   Servers: []

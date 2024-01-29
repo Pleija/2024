@@ -24,7 +24,7 @@ namespace App
         // [ReadOnly]
         // public T value;
         public int Id = 1;
-        public ModelBase model;
+        public DbTable model;
         public Func<object, object> OnChange;
 
         [ValueDropdown(nameof(ListTypes))]
@@ -36,7 +36,7 @@ namespace App
         private IEnumerable<Type> ListTypes => AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic)
                 .SelectMany(x => x.ExportedTypes.Where(a =>
-                        typeof(ModelBase).IsAssignableFrom(a)
+                        typeof(DbTable).IsAssignableFrom(a)
                         && !a.IsAbstract
                         && !a.IsGenericType));
 
@@ -64,7 +64,7 @@ namespace App
                             BindingFlags.Static
                             | BindingFlags.FlattenHierarchy
                             | BindingFlags.Public)
-                        ?.GetValue(null, null) as ModelBase;
+                        ?.GetValue(null, null) as DbTable;
             Assert.IsNotNull(model, $"model: {type.FullName}.self == null");
         }
 

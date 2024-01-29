@@ -5,7 +5,7 @@ using UniRx;
 
 namespace Models
 {
-    public class Players : DataModel<Players>
+    public class Players : DbTable<Players>
     {
         public StringReactiveProperty username = "";
         public IntReactiveProperty uid = 0;

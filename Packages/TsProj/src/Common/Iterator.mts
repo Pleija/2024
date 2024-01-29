@@ -9,6 +9,8 @@ import $typeof = puer.$typeof;
 import $generic = puer.$generic;
 
 type Array$1Iterator<T> = {
+    length: number;
+    item(index:number):T;
     /**
      * 遍历Array$1对象
      * @param callbackfn
@@ -26,6 +28,11 @@ type Array$1Iterator<T> = {
 }
 
 function defineArrayIterator(prototype: object) {
+    prototype['length'] = this.Length;
+    prototype['item'] = function (index: number):any {
+        return this.get_Item(index);
+    }
+    
     prototype["forEach"] = function (callbackfn: (v: any, k: any) => void | boolean) {
         let length = this.Length;
         for (let i = 0; i < length; i++) {

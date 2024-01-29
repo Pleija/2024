@@ -16,6 +16,7 @@ namespace Slate
         private IDirector director;
         private Vector2 scrollPos;
 
+
         public ShotPicker(IDirector director, Action<ShotCamera> callback)
         {
             this.director = director;

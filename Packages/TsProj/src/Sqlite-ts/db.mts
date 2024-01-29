@@ -122,6 +122,7 @@ export class Db<T> {
     async createAllTables() {
         return this.transaction(({tables, exec}) => {
             for (const key of Object.keys(tables)) {
+                console.log(`create table: ${key}, ${tables[key]}`)
                 exec(tables[key].create())
             }
         })

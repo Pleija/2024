@@ -1,3 +1,5 @@
+import { iterator } from "Common/Iterator.mjs";
+
 export const bindClass = global.bindClass = function bindClass<T>(component: T, ...classes: any[]): T {
     let result = component;
     let cp = Object.getPrototypeOf(result);
@@ -23,3 +25,5 @@ export const bindClass = global.bindClass = function bindClass<T>(component: T, 
 
     return result;
 }
+
+global.iterator = iterator;

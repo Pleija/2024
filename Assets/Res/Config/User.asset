@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 874aad0016e247f6a1cf7ebca527abc5, type: 3}
   m_Name: User
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   Id: 1
-  Version: 1.0
   Extra: '{}'
   localExtra: '{}'
   username:
@@ -23,15 +31,15 @@ MonoBehaviour:
   musicOn:
     value: 1
   key:
-    value: 1831f3eec7664202b710b3501bea22f0
+    value: 721a5c4877c14f4c93b31ab7d0926e40
   loginServer:
-    value: 
+    value: test
   roomServer:
-    value: 
+    value: test
   loginTime:
     value: 0
   level:
-    value: 1
+    value: 0
   coin:
     value: 0
   power:

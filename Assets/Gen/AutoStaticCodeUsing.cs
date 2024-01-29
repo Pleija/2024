@@ -145,6 +145,7 @@
             jsEnv.UsingFunc<System.IntPtr, System.IntPtr, System.Int32, System.Object>();
             jsEnv.UsingFunc<System.Object, Cysharp.Threading.Tasks.UniTask>();
             jsEnv.UsingFunc<System.Object, System.Boolean>();
+            jsEnv.UsingFunc<System.Object, System.Object, System.Int32>();
             jsEnv.UsingFunc<System.Reflection.Assembly, System.String, System.Boolean, System.Type>();
             jsEnv.UsingFunc<System.Reflection.FieldInfo, System.Boolean>();
             jsEnv.UsingFunc<System.Reflection.MemberInfo, System.Object, System.Boolean>();

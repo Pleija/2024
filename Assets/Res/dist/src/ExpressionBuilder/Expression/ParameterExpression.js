@@ -1,0 +1,18 @@
+import { hashCode } from "../../Helper/Util";
+export class ParameterExpression {
+    constructor(name, type, index) {
+        this.name = name;
+        this.index = index;
+        this.type = type;
+    }
+    clone(replaceMap) {
+        return this;
+    }
+    hashCode() {
+        return this.type ? hashCode(this.type.name) : 27;
+    }
+    toString() {
+        return this.name;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUGFyYW1ldGVyRXhwcmVzc2lvbi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL1BhY2thZ2VzL1RzUHJvai9zcmMvc3JjL0V4cHJlc3Npb25CdWlsZGVyL0V4cHJlc3Npb24vUGFyYW1ldGVyRXhwcmVzc2lvbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQSxPQUFPLEVBQUUsUUFBUSxFQUFFLE1BQU0sbUJBQW1CLENBQUM7QUFHN0MsTUFBTSxPQUFPLG1CQUFtQjtJQUM1QixZQUFtQixJQUFZLEVBQUUsSUFBcUIsRUFBUyxLQUFjO1FBQTFELFNBQUksR0FBSixJQUFJLENBQVE7UUFBZ0MsVUFBSyxHQUFMLEtBQUssQ0FBUztRQUN6RSxJQUFJLENBQUMsSUFBSSxHQUFHLElBQUksQ0FBQztJQUNyQixDQUFDO0lBR00sS0FBSyxDQUFDLFVBQTBDO1FBQ25ELE9BQU8sSUFBSSxDQUFDO0lBQ2hCLENBQUM7SUFDTSxRQUFRO1FBQ1gsT0FBTyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDO0lBQ3JELENBQUM7SUFDTSxRQUFRO1FBQ1gsT0FBTyxJQUFJLENBQUMsSUFBSSxDQUFDO0lBQ3JCLENBQUM7Q0FDSiJ9

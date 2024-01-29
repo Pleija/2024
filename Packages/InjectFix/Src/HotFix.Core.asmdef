@@ -1,0 +1,10 @@
+{
+    "name": "HotFix.Core",
+    "rootNamespace": "Hotfix",
+    "precompiledReferences": [
+        "Mono.Cecil.dll"
+    ],
+    "overrideReferences": false,
+    "autoReferenced": true,
+    "allowUnsafeCode": true
+}
