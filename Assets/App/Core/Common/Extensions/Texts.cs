@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Texts
     {

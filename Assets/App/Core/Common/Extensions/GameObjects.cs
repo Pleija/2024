@@ -1,18 +1,18 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
 #if UNITY_2020
-using UnityEditor.Experimental.SceneManagement;
 
 #else
 using UnityEditor.SceneManagement;
 #endif
 #endif
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class GameObjects
     {

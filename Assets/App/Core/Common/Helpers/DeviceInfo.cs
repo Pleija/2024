@@ -1,8 +1,9 @@
 using System;
 using System.IO;
+using Extensions;
 using UnityEngine;
 
-namespace Runtime.Helpers
+namespace Helpers
 {
     /// <summary>
     /// the DeviceInfo class is used to collect all technical details to be included in any debug report.

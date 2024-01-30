@@ -1,1 +1,1 @@
-namespace Runtime.Extensions { }
+namespace Extensions { }

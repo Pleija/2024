@@ -2,7 +2,7 @@ using System.Collections;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Tasks
     {

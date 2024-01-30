@@ -6,7 +6,7 @@ using System.Linq;
 using Unity.Entities;
 #endif
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Types
     {

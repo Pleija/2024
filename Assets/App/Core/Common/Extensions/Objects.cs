@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Objects
     {

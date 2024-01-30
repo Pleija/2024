@@ -6,14 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-// using Runtime.AI;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+// using Runtime.AI;
 using Object = UnityEngine.Object;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static partial class Transforms
     {

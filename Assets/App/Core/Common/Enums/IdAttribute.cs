@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using Data;
+using Extensions;
 using MoreTags;
 using Newtonsoft.Json;
-using Runtime.Extensions;
+using Runtime;
 using Sirenix.Utilities;
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Callbacks;
-#endif
+using UnityEngine;
 
-namespace Runtime.Enums
+namespace Enums
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class IdAttribute : Attribute

@@ -1,7 +1,5 @@
 //using GameEngine.Kernel;
 
-using Runtime.Contracts;
-using Runtime.Models;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -9,7 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 
 // Add an entry to the Assets menu for creating an asset of this type
-namespace Runtime
+namespace Data
 {
     [CreateAssetMenu(menuName = "Custom/Engine/" + nameof(AppConfig))]
     public class AppConfig : /*SingletonScriptableObject*/Model<AppConfig>

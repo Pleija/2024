@@ -1,6 +1,6 @@
 using SqlCipher4Unity3D;
 
-namespace Runtime
+namespace Data
 {
     public static class SqliteConnectionExtion
     {

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Runtime.Contracts;
 using Sirenix.Serialization;
 using UnityEngine;
 
-namespace Runtime.Models
+namespace Data
 {
     [CreateAssetMenu(fileName = "TestModel", menuName = "Custom/Tests/TestModel", order = 0)]
     public class TestModel : Model<TestModel>

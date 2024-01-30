@@ -2,7 +2,7 @@ using System;
 using Puerts;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Assets
     {

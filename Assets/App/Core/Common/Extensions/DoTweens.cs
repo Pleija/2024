@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     /// <summary>
     ///     RectTransform 的 DOJump 效果位移不对的补丁

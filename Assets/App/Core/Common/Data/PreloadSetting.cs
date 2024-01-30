@@ -1,15 +1,11 @@
 using System;
 using System.Linq;
-using Runtime.Contracts;
-using Runtime.Models;
 using Sirenix.Utilities;
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
-#endif
 
-namespace Runtime.Attributes
+namespace Data
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class PreloadSettingAttribute : Attribute

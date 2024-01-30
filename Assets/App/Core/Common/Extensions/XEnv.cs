@@ -6,7 +6,7 @@ using Puerts;
 using UnityEditor;
 using UnityEngine;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class XEnv
     {

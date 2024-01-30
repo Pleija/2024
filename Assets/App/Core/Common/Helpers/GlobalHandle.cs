@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
-#endif
+using UnityEngine;
 
-namespace Runtime
+namespace Helpers
 {
     [ExecuteAlways]
     public class GlobalHandle : SerializedMonoBehaviour

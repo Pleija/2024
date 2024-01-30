@@ -1,7 +1,6 @@
-using Runtime.Contracts;
 using UnityEngine;
 
-namespace Runtime.Models
+namespace Data
 {
     public class TestGameTable : Model<TestGameTable>
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Runtime.Enums
+namespace Enums
 {
     //事件和消息
     [Flags]

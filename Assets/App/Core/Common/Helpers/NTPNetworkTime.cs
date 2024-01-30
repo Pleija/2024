@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using UnityEditor;
 using UnityEngine;
 
-namespace Runtime.Helpers.NTP
+namespace Helpers
 {
     namespace NTP
     {

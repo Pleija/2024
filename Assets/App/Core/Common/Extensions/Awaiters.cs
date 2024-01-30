@@ -1,4 +1,4 @@
-namespace Runtime.Extensions
+namespace Extensions
 {
 //
 //    public static class AsyncOperationHandleExtensions {

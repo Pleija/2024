@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Extensions;
 using MoreTags;
-using Runtime.Extensions;
 using UnityEngine;
 
 namespace Runtime

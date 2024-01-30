@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
+using Extensions;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Sirenix.Utilities;
-
-#if UNITY_EDITOR
 using Sirenix.Utilities.Editor;
-using UnityEditor;
-#endif
 using SqlCipher4Unity3D;
 using SqlCipher4Unity3D.SQLite.Attribute;
-// using SQLite.Attributes;
+using UnityEditor;
 using UnityEngine;
+// using SQLite.Attributes;
 
-namespace Runtime.Contracts
+namespace Data
 {
     [Serializable]
     public class TableBase : SerializedScriptableObject

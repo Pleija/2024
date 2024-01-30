@@ -1,6 +1,6 @@
 using System;
 
-namespace Runtime.Enums
+namespace Enums
 {
     [Flags]
     public enum Actor

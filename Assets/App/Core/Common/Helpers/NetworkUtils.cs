@@ -2,7 +2,7 @@ using System.Net;
 using UnityEditor;
 using UnityEngine;
 
-namespace Runtime.Helpers
+namespace Helpers
 {
     public class NetworkUtils
     {

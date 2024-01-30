@@ -1,10 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using Runtime.Contracts;
-using Runtime.Models;
 using SqlCipher4Unity3D;
 
-namespace Runtime
+namespace Data
 {
     public static class DB
     {

@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Runtime
+namespace Data
 {
     [CreateAssetMenu(fileName = "Storage", menuName = "Custom/Storage")]
     public class SingletonData : SerializedScriptableObject { }

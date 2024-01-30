@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Runtime.Extensions;
 using Sirenix.OdinInspector;
 using SqlCipher4Unity3D;
 using SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions;
@@ -10,7 +9,7 @@ using SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions;
 #if UNITY_EDITOR
 #endif
 
-namespace Runtime.Contracts
+namespace Data
 {
     [Serializable]
     [ShowOdinSerializedPropertiesInInspector]

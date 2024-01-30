@@ -4,14 +4,15 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Extensions;
 using LZ4;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
-// using Runtime.Attributes.Puerts;
 using UnityEditor;
 using UnityEngine;
+// using Runtime.Attributes.Puerts;
 
-namespace Runtime.Helpers
+namespace Helpers
 {
     /// <summary>
     /// https://stackoverflow.com/questions/33462319/how-do-i-replicate-phps-prng-algorithm-implementation-in-c

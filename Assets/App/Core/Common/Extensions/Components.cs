@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     #if UNITY_EDITOR
     #endif

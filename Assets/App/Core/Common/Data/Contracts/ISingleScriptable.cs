@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Runtime.Contracts
+namespace Data
 {
     public interface ISingleScriptable
     {

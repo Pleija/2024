@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     [Serializable]
     public class RectTransformData

@@ -1,4 +1,4 @@
-namespace Runtime.Contracts
+namespace Data
 {
 //public static class IDataExtension {
 //

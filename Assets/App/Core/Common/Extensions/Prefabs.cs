@@ -1,8 +1,8 @@
-using UnityEditor;
-using UnityEngine;
 #if UNITY_EDITOR
-#if UNITY_2020
+using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
+using UnityEngine;
+#if UNITY_2020
 
 #else
 using UnityEditor.SceneManagement;
@@ -11,7 +11,7 @@ using UnityEditor.SceneManagement;
 
 // using WebSocketSharp;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Prefabs
     {

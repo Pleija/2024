@@ -1,6 +1,6 @@
 using System;
 
-namespace Runtime.Enums
+namespace Enums
 {
     [Flags] // 类=item, 可重复
     public enum It

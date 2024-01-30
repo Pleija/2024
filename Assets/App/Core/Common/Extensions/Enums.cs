@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Runtime.Enums;
+using Enums;
 using UnityEngine;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Enums
     {

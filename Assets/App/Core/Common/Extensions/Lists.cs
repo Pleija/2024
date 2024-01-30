@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Sirenix.Utilities;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Lists
     {

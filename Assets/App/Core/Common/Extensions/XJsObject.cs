@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Puerts;
 using UnityEngine;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class XJsObject
     {

@@ -1,129 +1,117 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using Extensions;
+using Puerts;
 using Sirenix.Utilities;
 using SqlCipher4Unity3D;
-// using SQLiteNetExtensions.Extensions.TextBlob.Serializers;
 using UnityEditor;
 using UnityEngine;
-using Puerts;
-// using Runtime.Contracts;
-using Runtime.Extensions;
-using SqlCipher4Unity3D.Example;
-using SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions.TextBlob.Serializers;
-// using Runtime.Models;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
-using UnityEngine.SceneManagement; //using GameEngine.Controllers.Contracts;
-//using GameEngine.Views.Contracts;
-
-// using Unity.Entities;
-// using UnityEditor;
+using UnityEngine.SceneManagement;
 using Component = UnityEngine.Component;
 using Random = System.Random;
 
-namespace Runtime
+public static partial class Core
 {
-    public static partial class Core
+    public static Assembly MainAssembly => GetAssemblyByName("Assembly-CSharp");
+
+    public static Assembly GetAssemblyByName(string name)
     {
-        public static Assembly MainAssembly => GetAssemblyByName("Assembly-CSharp");
+        return AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == name);
+    }
 
-        public static Assembly GetAssemblyByName(string name)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == name);
-        }
+    // static string db_suffix => (Application.isEditor || Debug.isDebugBuild) && DBManager.instance.useDevFile
+    //     ? "^_dev^"
+    //     : "";
 
-        // static string db_suffix => (Application.isEditor || Debug.isDebugBuild) && DBManager.instance.useDevFile
-        //     ? "^_dev^"
-        //     : "";
+    public static string DB_FILENAME => "^7456765D.bytes^";
+    public static JsEnv js => JsEnv.self;
 
-        public static string DB_FILENAME => "^7456765D.bytes^";
-        public static JsEnv js => JsEnv.self;
+    public static string FindRootPath(string dirname)
+    {
+        // DirectoryInfo info = new DirectoryInfo(Application.dataPath);
+        // var dirs = info.EnumerateDirectories();
+        var dirs = Directory.EnumerateDirectories(Application.dataPath, "*.*", SearchOption.AllDirectories);
+        return dirs.FirstOrDefault(t => Path.GetFileName(t) == dirname)?.DataPathRoot();
+    }
 
-        public static string FindRootPath(string dirname)
-        {
-            // DirectoryInfo info = new DirectoryInfo(Application.dataPath);
-            // var dirs = info.EnumerateDirectories();
-            var dirs = Directory.EnumerateDirectories(Application.dataPath, "*.*", SearchOption.AllDirectories);
-            return dirs.FirstOrDefault(t => Path.GetFileName(t) == dirname)?.DataPathRoot();
-        }
+    public static T PickRandom<T>(this IEnumerable<T> source)
+    {
+        return source.PickRandom(1).Single();
+    }
 
-        public static T PickRandom<T>(this IEnumerable<T> source)
-        {
-            return source.PickRandom(1).Single();
-        }
+    public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
+    {
+        return source.ShuffleStr().Take(count);
+    }
 
-        public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
-        {
-            return source.Shuffle().Take(count);
-        }
+    public static IEnumerable<T> ShuffleStr<T>(this IEnumerable<T> source)
+    {
+        return source.OrderBy(x => Guid.NewGuid());
+    }
 
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
-        {
-            return source.OrderBy(x => Guid.NewGuid());
-        }
+    public static AsyncOperationHandle<IList<IResourceLocation>> LoadByLables(Action<string> action,
+        out bool result, params string[] keys)
+    {
+        var ret = false;
+        var handle = Addressables.LoadResourceLocationsAsync(keys, Addressables.MergeMode.Intersection);
+        handle.Completed += async op => {
+            var key = op.Result.FirstOrDefault()?.PrimaryKey;
+            if (ret = op.Status == AsyncOperationStatus.Succeeded && key != null) {
+                await Addressables.DownloadDependenciesAsync(key).Task;
+                action.Invoke(key);
+            }
+        };
+        result = ret;
+        return handle;
+    }
 
-        public static AsyncOperationHandle<IList<IResourceLocation>> LoadByLables(Action<string> action,
-            out bool result, params string[] keys)
-        {
-            var ret = false;
-            var handle = Addressables.LoadResourceLocationsAsync(keys, Addressables.MergeMode.Intersection);
-            handle.Completed += async op => {
-                var key = op.Result.FirstOrDefault()?.PrimaryKey;
-                if (ret = op.Status == AsyncOperationStatus.Succeeded && key != null) {
-                    await Addressables.DownloadDependenciesAsync(key).Task;
-                    action.Invoke(key);
-                }
-            };
-            result = ret;
-            return handle;
-        }
+    //        public static string UpdateServerUrl { get; set; } =
+    //            "https://git.lug.ustc.edu.cn/joycraft/brick2020-assets/-/raw/master";
 
-//        public static string UpdateServerUrl { get; set; } =
-//            "https://git.lug.ustc.edu.cn/joycraft/brick2020-assets/-/raw/master";
+    public static T KeyByValue<T, W>(this Dictionary<T, W> dict, W val)
+    {
+        T key = default;
+        foreach (var pair in dict)
+            if (EqualityComparer<W>.Default.Equals(pair.Value, val)) {
+                key = pair.Key;
+                break;
+            }
 
-        public static T KeyByValue<T, W>(this Dictionary<T, W> dict, W val)
-        {
-            T key = default;
-            foreach (var pair in dict)
-                if (EqualityComparer<W>.Default.Equals(pair.Value, val)) {
-                    key = pair.Key;
-                    break;
-                }
+        return key;
+    }
 
-            return key;
-        }
+    static readonly Dictionary<string, ScriptableObject>
+        models = new Dictionary<string, ScriptableObject>(); //名字---模型
 
-        static readonly Dictionary<string, ScriptableObject>
-            models = new Dictionary<string, ScriptableObject>(); //名字---模型
+    //static readonly Dictionary<string, BaseView> views = new Dictionary<string, BaseView>(); //名字---视图
+    static readonly Dictionary<string, Type> commandMap = new Dictionary<string, Type>(); //事件名字--控制器类型
 
-        //static readonly Dictionary<string, BaseView> views = new Dictionary<string, BaseView>(); //名字---视图
-        static readonly Dictionary<string, Type> commandMap = new Dictionary<string, Type>(); //事件名字--控制器类型
+    //static IEnumerable<Type> m_ControllerTypes;
+    static readonly Dictionary<Type, IEnumerable<Type>> TypesCache = new Dictionary<Type, IEnumerable<Type>>();
+    static SQLiteConnection m_DB;
+    public static string m_seed;
 
-        //static IEnumerable<Type> m_ControllerTypes;
-        static readonly Dictionary<Type, IEnumerable<Type>> TypesCache = new Dictionary<Type, IEnumerable<Type>>();
-        static SQLiteConnection m_DB;
-        public static string m_seed;
+    //= "A802F98A-A602-4EF6-9AD6-20BEDFB16574";
+    public static Random m_random;
+    static readonly Dictionary<Type, object> Tables = new Dictionary<Type, object>();
 
-        //= "A802F98A-A602-4EF6-9AD6-20BEDFB16574";
-        public static Random m_random;
-        static readonly Dictionary<Type, object> Tables = new Dictionary<Type, object>();
+    //public static IEnumerable<Type> ControllerTypes => GetTypes<Controller>();
+    public static string RandomSeed => m_seed.IsNullOrWhitespace() ? m_seed = NewGuid() : m_seed;
 
-        //public static IEnumerable<Type> ControllerTypes => GetTypes<Controller>();
-        public static string RandomSeed => m_seed.IsNullOrWhitespace() ? m_seed = NewGuid() : m_seed;
+    //public static Config Config => Instance.m_Config;
 
-        //public static Config Config => Instance.m_Config;
-
-        public static string Version {
-            get {
+    public static string Version {
+        get {
 #if UNITY_EDITOR && false
             var v1 = DateTime.Now.ToString("ddH");
             var n = int.Parse(DateTime.Now.ToString("yy")) - 19;
@@ -149,83 +137,83 @@ namespace Runtime
 
             return PlayerSettings.bundleVersion;
 #else
-                return Application.version;
+            return Application.version;
 #endif
-            }
-            set {
-#if UNITY_EDITOR
-                if (PlayerSettings.bundleVersion != value) PlayerSettings.bundleVersion = value;
-#endif
-            }
         }
+        set {
+#if UNITY_EDITOR
+            if (PlayerSettings.bundleVersion != value) PlayerSettings.bundleVersion = value;
+#endif
+        }
+    }
 
-        public static TextAsset UserFile;
+    public static TextAsset UserFile;
 
-        // public static SQLiteConnection UserConnection {
-        //     get {
-        //         if (m_DB == null) {
-        //             TypeDescriptor.AddAttributes(typeof((int, int)),
-        //                 new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
-        //             m_DB = new DataService(UserFile, (DB_FILENAME + DB_FILENAME).Md5Salt()).Connection();
-        //             m_DB.Trace = false; // GameCore.Config.Instance.LogSqliteQuery;
-        //             if (m_DB.Trace)
-        //                 m_DB.Tracer += str => {
-        //                     Debug.Log(str);
-        //                 };
-        //             else
-        //                 m_DB.Tracer = null;
-        //         }
-        //
-        //         return m_DB;
-        //     }
-        //     private set => m_DB = value;
-        // }
+    // public static SQLiteConnection UserConnection {
+    //     get {
+    //         if (m_DB == null) {
+    //             TypeDescriptor.AddAttributes(typeof((int, int)),
+    //                 new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
+    //             m_DB = new DataService(UserFile, (DB_FILENAME + DB_FILENAME).Md5Salt()).Connection();
+    //             m_DB.Trace = false; // GameCore.Config.Instance.LogSqliteQuery;
+    //             if (m_DB.Trace)
+    //                 m_DB.Tracer += str => {
+    //                     Debug.Log(str);
+    //                 };
+    //             else
+    //                 m_DB.Tracer = null;
+    //         }
+    //
+    //         return m_DB;
+    //     }
+    //     private set => m_DB = value;
+    // }
 
-//         public static SQLiteConnection Connection {
-//             get {
-//                 if (m_DB == null) {
-//                     TypeDescriptor.AddAttributes(typeof((int, int)),
-//                         new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
-//                     var asset = (Application.isEditor || Debug.isDebugBuild) && DBManager.instance.useDevFile
-//                         ? DBManager.instance.devFile
-//                         : DBManager.instance.file;
-// #if UNITY_EDITOR
-//
-//                     //  Debug.Log($"Asset Path: {AssetDatabase.GetAssetPath(asset)}");
-//                     //      Debug.Log($"DB_FILENAME:{DB_FILENAME}");
-// #endif
-//                     m_DB = new DataService(asset, DB_FILENAME + ".bytes").Connection();
-//                     m_DB.Trace = false; // GameCore.Config.Instance.LogSqliteQuery;
-//                     if (m_DB.Trace)
-//                         m_DB.Tracer += str => {
-//                             Debug.Log(str);
-//                         };
-//                     else
-//                         m_DB.Tracer = null;
-//                 }
-//
-//                 return m_DB;
-//             }
-//             private set => m_DB = value;
-//         }
+    //         public static SQLiteConnection Connection {
+    //             get {
+    //                 if (m_DB == null) {
+    //                     TypeDescriptor.AddAttributes(typeof((int, int)),
+    //                         new TypeConverterAttribute(typeof(TupleConverter<int, int>)));
+    //                     var asset = (Application.isEditor || Debug.isDebugBuild) && DBManager.instance.useDevFile
+    //                         ? DBManager.instance.devFile
+    //                         : DBManager.instance.file;
+    // #if UNITY_EDITOR
+    //
+    //                     //  Debug.Log($"Asset Path: {AssetDatabase.GetAssetPath(asset)}");
+    //                     //      Debug.Log($"DB_FILENAME:{DB_FILENAME}");
+    // #endif
+    //                     m_DB = new DataService(asset, DB_FILENAME + ".bytes").Connection();
+    //                     m_DB.Trace = false; // GameCore.Config.Instance.LogSqliteQuery;
+    //                     if (m_DB.Trace)
+    //                         m_DB.Tracer += str => {
+    //                             Debug.Log(str);
+    //                         };
+    //                     else
+    //                         m_DB.Tracer = null;
+    //                 }
+    //
+    //                 return m_DB;
+    //             }
+    //             private set => m_DB = value;
+    //         }
 
-        // Turn a GUID into a string and strip out the '-' characters.
-        public static BigInteger huge => BigInteger.Parse(RandomSeed.Replace("-", ""), NumberStyles.AllowHexSpecifier);
+    // Turn a GUID into a string and strip out the '-' characters.
+    public static BigInteger huge => BigInteger.Parse(RandomSeed.Replace("-", ""), NumberStyles.AllowHexSpecifier);
 
-        // 基于GUID的Random Seed
-        public static Random Rnd => m_random ?? (m_random = new Random((int)(huge % int.MaxValue)));
+    // 基于GUID的Random Seed
+    public static Random Rnd => m_random ?? (m_random = new Random((int)(huge % int.MaxValue)));
 
-        // {
-        //     get {
-        //         if ( m_ControllerTypes == null ) {
-        //             var types = AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes)
-        //                 .Where(t => typeof(Controller).IsAssignableFrom(t));
-        //             m_ControllerTypes = types;
-        //         }
-        //
-        //         return m_ControllerTypes;
-        //     }
-        // }
+    // {
+    //     get {
+    //         if ( m_ControllerTypes == null ) {
+    //             var types = AssemblyUtilities.GetTypes(AssemblyTypeFlags.CustomTypes)
+    //                 .Where(t => typeof(Controller).IsAssignableFrom(t));
+    //             m_ControllerTypes = types;
+    //         }
+    //
+    //         return m_ControllerTypes;
+    //     }
+    // }
 #if UNITY_EDITOR && ECS
     [InitializeOnLoadMethod]
     static void InitWorld()
@@ -235,197 +223,197 @@ namespace Runtime
         }
     }
 #endif
-        public static IEnumerable<Type> GetTypes<T>()
-        {
-            return GetTypes(typeof(T));
-        }
+    public static IEnumerable<Type> GetTypes<T>()
+    {
+        return GetTypes(typeof(T));
+    }
 
-        public static IEnumerable<Type> GetTypes(Type type)
-        {
-            if (!TypesCache.ContainsKey(type))
-                TypesCache[type] = typeof(Core).Assembly.GetTypes().Where(t1 => type.IsAssignableFrom(t1));
+    public static IEnumerable<Type> GetTypes(Type type)
+    {
+        if (!TypesCache.ContainsKey(type))
+            TypesCache[type] = typeof(Core).Assembly.GetTypes().Where(t1 => type.IsAssignableFrom(t1));
 
-            return TypesCache[type];
-        }
+        return TypesCache[type];
+    }
 
-        public static TA RandomEnumValue<TA>() where TA : Enum
-        {
-            var v = Enum.GetValues(typeof(TA));
-            return (TA)v.GetValue(Rnd.Next(v.Length));
-        }
+    public static TA RandomEnumValue<TA>() where TA : Enum
+    {
+        var v = Enum.GetValues(typeof(TA));
+        return (TA)v.GetValue(Rnd.Next(v.Length));
+    }
 
-        public static string NewGuid()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
+    public static string NewGuid()
+    {
+        return Guid.NewGuid().ToString("N");
+    }
 
-        public static List<Component> FindObjectsOfTypeAll(Type type)
-        {
-            return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
-                .SelectMany(scen => scen.GetRootGameObjects())
+    public static List<Component> FindObjectsOfTypeAll(Type type)
+    {
+        return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
+            .SelectMany(scen => scen.GetRootGameObjects())
 
-                //.GetRootGameObjects()
-                .SelectMany(g => g.GetComponentsInChildren(type, true)).ToList();
-        }
+            //.GetRootGameObjects()
+            .SelectMany(g => g.GetComponentsInChildren(type, true)).ToList();
+    }
 
-        public static T FindInRoot<T>() where T : Component
-        {
-            return FindInRoot(typeof(T)) as T;
-        }
+    public static T FindInRoot<T>() where T : Component
+    {
+        return FindInRoot(typeof(T)) as T;
+    }
 
-        public static Component FindInRoot(Type type)
-        {
-            return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
-                .SelectMany(scen => scen.GetRootGameObjects())
+    public static Component FindInRoot(Type type)
+    {
+        return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
+            .SelectMany(scen => scen.GetRootGameObjects())
 
-                //.GetRootGameObjects()
-                .Select(t => t.GetComponent(type)).FirstOrDefault(t => t != null);
-        }
+            //.GetRootGameObjects()
+            .Select(t => t.GetComponent(type)).FirstOrDefault(t => t != null);
+    }
 
-        public static List<T> FindObjectsOfTypeAll<T>()
-        {
-            return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
-                .SelectMany(scen => scen.GetRootGameObjects())
+    public static List<T> FindObjectsOfTypeAll<T>()
+    {
+        return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
+            .SelectMany(scen => scen.GetRootGameObjects())
 
-                //.GetRootGameObjects()
-                .SelectMany(g => g.GetComponentsInChildren<T>(true)).ToList();
-        }
+            //.GetRootGameObjects()
+            .SelectMany(g => g.GetComponentsInChildren<T>(true)).ToList();
+    }
 
-        public static Component FindObjectOfTypeAll(Type type)
-        {
-            if (!SceneManager.GetActiveScene().isLoaded) return null;
+    public static Component FindObjectOfTypeAll(Type type)
+    {
+        if (!SceneManager.GetActiveScene().isLoaded) return null;
 
-            return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
-                .SelectMany(scen => scen.GetRootGameObjects())
+        return SceneManager.GetAllScenes().Where(scene => scene.isLoaded)
+            .SelectMany(scen => scen.GetRootGameObjects())
 
-                //.GetRootGameObjects()
-                .SelectMany(g => g.GetComponentsInChildren(type, true)).FirstOrDefault();
+            //.GetRootGameObjects()
+            .SelectMany(g => g.GetComponentsInChildren(type, true)).FirstOrDefault();
 
-            //.ToList();
-        }
+        //.ToList();
+    }
 
-        public static T FindObjectOfTypeAll<T>() where T : Component
-        {
-            var ret = SceneManager.GetAllScenes()
-                .Where(scene => scene.isLoaded /*|| scene == SceneManager.GetActiveScene()*/)
-                .SelectMany(scene => scene.GetRootGameObjects())
+    public static T FindObjectOfTypeAll<T>() where T : Component
+    {
+        var ret = SceneManager.GetAllScenes()
+            .Where(scene => scene.isLoaded /*|| scene == SceneManager.GetActiveScene()*/)
+            .SelectMany(scene => scene.GetRootGameObjects())
 
-                //.GetRootGameObjects()
-                .SelectMany(g => g.GetComponentsInChildren<T>(true)).FirstOrDefault();
-            if (ret == null && SceneManager.GetActiveScene().isLoaded)
-                ret = (GameObject.Find("/" + typeof(T).Name) ?? new GameObject(typeof(T).Name)).RequireComponent<T>();
+            //.GetRootGameObjects()
+            .SelectMany(g => g.GetComponentsInChildren<T>(true)).FirstOrDefault();
+        if (ret == null && SceneManager.GetActiveScene().isLoaded)
+            ret = (GameObject.Find("/" + typeof(T).Name) ?? new GameObject(typeof(T).Name)).RequireComponent<T>();
 
-            return ret;
+        return ret;
 
-            //.ToList();
-        }
+        //.ToList();
+    }
 
-//    public static IEnumerable<Type> StateTypes<T>()
-//    {
-//        var t1 = ControllerTypes.Where(t =>
-//            t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericArguments().Contains(typeof(T)));
-//        return ControllerTypes.Where(t =>
-//            !t1.Contains(t) && t.BaseType != null && t.BaseType.IsGenericType &&
-//            t.BaseType.GetGenericArguments().Any(t2 => t1.Any(x => x == t2)));
-//    }
+    //    public static IEnumerable<Type> StateTypes<T>()
+    //    {
+    //        var t1 = ControllerTypes.Where(t =>
+    //            t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericArguments().Contains(typeof(T)));
+    //        return ControllerTypes.Where(t =>
+    //            !t1.Contains(t) && t.BaseType != null && t.BaseType.IsGenericType &&
+    //            t.BaseType.GetGenericArguments().Any(t2 => t1.Any(x => x == t2)));
+    //    }
 
-        //注册模型
-        public static void RegisterModel(ScriptableObject model)
-        {
-            models[model.GetType().FullName + ""] = model;
-        }
+    //注册模型
+    public static void RegisterModel(ScriptableObject model)
+    {
+        models[model.GetType().FullName + ""] = model;
+    }
 
-        public static bool isQuit;
-        public static bool isBuilding;
-        public static Action OnQuit;
+    public static bool isQuit;
+    public static bool isBuilding;
+    public static Action OnQuit;
 
-        static void Quiting()
-        {
-            isQuit = true;
-            OnQuit?.Invoke();
-            Debug.Log("Quitting the Player");
-            OnDestroy();
-            Debug.Log("quitting end");
-        }
+    static void Quiting()
+    {
+        isQuit = true;
+        OnQuit?.Invoke();
+        Debug.Log("Quitting the Player");
+        OnDestroy();
+        Debug.Log("quitting end");
+    }
 
-        [RuntimeInitializeOnLoadMethod]
-        static void RunOnStart()
-        {
-            Application.quitting -= Quiting;
-            Application.quitting += Quiting;
+    [RuntimeInitializeOnLoadMethod]
+    static void RunOnStart()
+    {
+        Application.quitting -= Quiting;
+        Application.quitting += Quiting;
 #if UNITY_EDITOR
-            EditorApplication.playModeStateChanged -= playModeChanged;
-            EditorApplication.playModeStateChanged += playModeChanged;
+        EditorApplication.playModeStateChanged -= playModeChanged;
+        EditorApplication.playModeStateChanged += playModeChanged;
 #endif
-        }
+    }
 #if UNITY_EDITOR
-        static void playModeChanged(PlayModeStateChange obj)
-        {
-            if (obj == PlayModeStateChange.ExitingPlayMode) {
-                isQuit = false;
-                OnQuit = null;
-            }
+    static void playModeChanged(PlayModeStateChange obj)
+    {
+        if (obj == PlayModeStateChange.ExitingPlayMode) {
+            isQuit = false;
+            OnQuit = null;
         }
+    }
 #endif
 
-        public static void OnDestroy()
-        {
-            /* liteDB */
-            //DbModel.WriteToFile();
-            if (m_DB != null) {
-                m_DB.Close();
-                m_DB = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
+    public static void OnDestroy()
+    {
+        /* liteDB */
+        //DbModel.WriteToFile();
+        if (m_DB != null) {
+            m_DB.Close();
+            m_DB = null;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
+    }
 
-//
-//        public static Db<T1> Data<T1>(T1 value) where T1 : Db<T1>, new()
-//        {
-//            var type = typeof(T1);
-//            if (!Tables.ContainsKey(type)) {
-//                Tables[type] = new Db<T1>();
-//            }
-//
-//            if (Tables[type] is Db<T1> data && value != null) {
-//                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(value), data);
-//            }
-//
-//            return Tables[typeof(T1)] as Db<T1>;
-//        }
+    //
+    //        public static Db<T1> Data<T1>(T1 value) where T1 : Db<T1>, new()
+    //        {
+    //            var type = typeof(T1);
+    //            if (!Tables.ContainsKey(type)) {
+    //                Tables[type] = new Db<T1>();
+    //            }
+    //
+    //            if (Tables[type] is Db<T1> data && value != null) {
+    //                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(value), data);
+    //            }
+    //
+    //            return Tables[typeof(T1)] as Db<T1>;
+    //        }
 
-        //注册视图
-//    public static void RegisterView(BaseView baseView)
-//    {
-//        // if(views.ContainsKey(view.getName())) {
-//        //     return;
-//        // }
-//        //
-//        // views[view.getName()] = view;
-//        // view.RegisterViewEvents(); //注册关心的事件
-//    }
+    //注册视图
+    //    public static void RegisterView(BaseView baseView)
+    //    {
+    //        // if(views.ContainsKey(view.getName())) {
+    //        //     return;
+    //        // }
+    //        //
+    //        // views[view.getName()] = view;
+    //        // view.RegisterViewEvents(); //注册关心的事件
+    //    }
 
-        //注册控制器
-        public static void RegisterController(string eventName, Type controllerType)
-        {
-            commandMap[eventName] = controllerType;
-        }
+    //注册控制器
+    public static void RegisterController(string eventName, Type controllerType)
+    {
+        commandMap[eventName] = controllerType;
+    }
 
-        public static void RegisterController(object eventName, Type controllerType)
-        {
-            commandMap[eventName.GetType().FullName + "." + eventName] = controllerType;
-        }
+    public static void RegisterController(object eventName, Type controllerType)
+    {
+        commandMap[eventName.GetType().FullName + "." + eventName] = controllerType;
+    }
 
-        public static void SendEvent(object eventName, params object[] data)
-        {
-            SendEvent<object>(GetName(eventName), data);
-        }
+    public static void SendEvent(object eventName, params object[] data)
+    {
+        SendEvent<object>(GetName(eventName), data);
+    }
 
-        public static void SendEvent<T>(object eventName, params object[] data)
-        {
-            SendEvent<T>(GetName(eventName), data);
-        }
+    public static void SendEvent<T>(object eventName, params object[] data)
+    {
+        SendEvent<T>(GetName(eventName), data);
+    }
 
 #if ECS
     public static void SendEvent<T>(string eventName, params object[] data)
@@ -469,139 +457,138 @@ namespace Runtime
             });
     }
 #endif
-        public static string GetName(object name)
-        {
-            return name == null ? string.Empty : name.GetType().FullName + ":" + name;
-        }
-
-        //发送事件
-        public static void SendEvent(string eventName, object data = null)
-        {
-            SendEvent<object>(eventName, data);
-
-            //控制层
-            // Type t = null;
-            //
-            // commandMap.TryGetValue(eventName, out t);
-            // if ( t != null ) {
-            //     var instance = Activator.CreateInstance(t);
-            //     if ( instance is Controller ) {
-            //         ((Controller)instance).Execute(data);
-            //     }
-            // }
-            //
-            // //视图层
-            // foreach ( var v in views.Values ) {
-            //     if ( v.attentionEvents.Contains(eventName) ) {
-            //         v.HandleEvent(eventName, data);
-            //     }
-            // }
-        }
-
-        //获取模型
-        public static T GetModel<T>() where T : DbTable<T>, new()
-        {
-            foreach (var m in models.Values)
-                if (m is T)
-                    return (T)m;
-
-            return null;
-        }
-
-        //获取视图
-//    public static T GetView<T>() where T : BaseView
-//    {
-//        foreach (var v in views.Values) {
-//            if (v is T view) {
-//                return view;
-//            }
-//        }
-//
-//        return null;
-//    }
-
-        // //#if ECS
-        // public static int AddAuthoring<T1, T2>() where T1 : Component where T2 : IComponentData
-        // {
-        //     var count = 0;
-        //     var btntype = typeof(T2).Assembly.GetType(typeof(T2).FullName + "Authoring");
-        //
-        //     FindObjectsOfTypeAll<T1>()
-        //         .Where(btn => btn.gameObject.GetComponent(btntype) == null)
-        //         ?.ForEach(btn => {
-        //             var func = btn.gameObject.GetType()
-        //                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-        //                 .FirstOrDefault(tm =>
-        //                     tm.Name.Equals("AddComponent", StringComparison.OrdinalIgnoreCase)
-        //                     && tm.IsGenericMethod
-        //                     && tm.GetGenericArguments()[0].BaseType == typeof(Component));
-        //
-        //             var fn = func?.MakeGenericMethod(btntype);
-        //             count += 1;
-        //
-        //             if (btn.gameObject.GetComponent(btntype) == null) {
-        //                 fn?.Invoke(btn.gameObject, null);
-        //             }
-        //
-        //             // btn.gameObject.AddComponent("TBtn");
-        //         });
-        //
-        //     FindObjectsOfTypeAll<T1>()
-        //         .ForEach(btn => {
-        //             var cc = btn.gameObject.GetComponent<ConvertToEntity>()
-        //                 ?? btn.gameObject.AddComponent<ConvertToEntity>();
-        //
-        //             // if(cc.ConversionMode == ConvertToEntity.Mode.ConvertAndDestroy) {
-        //             //     cc.ConversionMode = ConvertToEntity.Mode.ConvertAndInjectGameObject;
-        //             // }
-        //         });
-        //
-        //     return count;
-        // }
-        public static void ShowNotifyOrLog(string msg)
-        {
-#if UNITY_EDITOR
-            if (Resources.FindObjectsOfTypeAll<SceneView>().Length > 0)
-                EditorWindow.GetWindow<SceneView>().ShowNotification(new GUIContent(msg));
-            else
-                Debug.Log(msg); // When there's no scene view opened, we just print a log
-#endif
-        }
-
-        public static bool isCompile {
-            get {
-#if UNITY_EDITOR
-                return BuildPipeline.isBuildingPlayer || EditorApplication.isCompiling || EditorApplication.isUpdating;
-#endif
-                return false;
-            }
-        }
-
-        public static bool isOffline => !Application.isEditor &&
-                                        Application.internetReachability == NetworkReachability.NotReachable;
-
-        public static bool isOnline => !isOffline;
-
-        public static IEnumerator CheckInternetConnection(Action<bool> syncResult,
-            string echoServer = "https://www.taobao.com/robots.txt")
-        {
-            //  const string echoServer = "http://google.com";
-
-            bool result;
-            using (var request = UnityWebRequest.Head(echoServer)) {
-                request.timeout = 5;
-                yield return request.SendWebRequest();
-                result = request.result != UnityWebRequest.Result.ConnectionError &&
-                         request.result != UnityWebRequest.Result.ProtocolError && request.responseCode == 200;
-            }
-
-            syncResult(result);
-        }
-
-        public static bool isWifi =>
-            Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
-
-        public static bool isNotWifi =>
-            Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork;
+    public static string GetName(object name)
+    {
+        return name == null ? string.Empty : name.GetType().FullName + ":" + name;
     }
+
+    //发送事件
+    public static void SendEvent(string eventName, object data = null)
+    {
+        SendEvent<object>(eventName, data);
+
+        //控制层
+        // Type t = null;
+        //
+        // commandMap.TryGetValue(eventName, out t);
+        // if ( t != null ) {
+        //     var instance = Activator.CreateInstance(t);
+        //     if ( instance is Controller ) {
+        //         ((Controller)instance).Execute(data);
+        //     }
+        // }
+        //
+        // //视图层
+        // foreach ( var v in views.Values ) {
+        //     if ( v.attentionEvents.Contains(eventName) ) {
+        //         v.HandleEvent(eventName, data);
+        //     }
+        // }
+    }
+
+    //获取模型
+    public static T GetModel<T>() where T : DbTable<T>, new()
+    {
+        foreach (var m in models.Values)
+            if (m is T)
+                return (T)m;
+
+        return null;
+    }
+
+    //获取视图
+    //    public static T GetView<T>() where T : BaseView
+    //    {
+    //        foreach (var v in views.Values) {
+    //            if (v is T view) {
+    //                return view;
+    //            }
+    //        }
+    //
+    //        return null;
+    //    }
+
+    // //#if ECS
+    // public static int AddAuthoring<T1, T2>() where T1 : Component where T2 : IComponentData
+    // {
+    //     var count = 0;
+    //     var btntype = typeof(T2).Assembly.GetType(typeof(T2).FullName + "Authoring");
+    //
+    //     FindObjectsOfTypeAll<T1>()
+    //         .Where(btn => btn.gameObject.GetComponent(btntype) == null)
+    //         ?.ForEach(btn => {
+    //             var func = btn.gameObject.GetType()
+    //                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+    //                 .FirstOrDefault(tm =>
+    //                     tm.Name.Equals("AddComponent", StringComparison.OrdinalIgnoreCase)
+    //                     && tm.IsGenericMethod
+    //                     && tm.GetGenericArguments()[0].BaseType == typeof(Component));
+    //
+    //             var fn = func?.MakeGenericMethod(btntype);
+    //             count += 1;
+    //
+    //             if (btn.gameObject.GetComponent(btntype) == null) {
+    //                 fn?.Invoke(btn.gameObject, null);
+    //             }
+    //
+    //             // btn.gameObject.AddComponent("TBtn");
+    //         });
+    //
+    //     FindObjectsOfTypeAll<T1>()
+    //         .ForEach(btn => {
+    //             var cc = btn.gameObject.GetComponent<ConvertToEntity>()
+    //                 ?? btn.gameObject.AddComponent<ConvertToEntity>();
+    //
+    //             // if(cc.ConversionMode == ConvertToEntity.Mode.ConvertAndDestroy) {
+    //             //     cc.ConversionMode = ConvertToEntity.Mode.ConvertAndInjectGameObject;
+    //             // }
+    //         });
+    //
+    //     return count;
+    // }
+    public static void ShowNotifyOrLog(string msg)
+    {
+#if UNITY_EDITOR
+        if (Resources.FindObjectsOfTypeAll<SceneView>().Length > 0)
+            EditorWindow.GetWindow<SceneView>().ShowNotification(new GUIContent(msg));
+        else
+            Debug.Log(msg); // When there's no scene view opened, we just print a log
+#endif
+    }
+
+    public static bool isCompile {
+        get {
+#if UNITY_EDITOR
+            return BuildPipeline.isBuildingPlayer || EditorApplication.isCompiling || EditorApplication.isUpdating;
+#endif
+            return false;
+        }
+    }
+
+    public static bool isOffline => !Application.isEditor &&
+        Application.internetReachability == NetworkReachability.NotReachable;
+
+    public static bool isOnline => !isOffline;
+
+    public static IEnumerator CheckInternetConnection(Action<bool> syncResult,
+        string echoServer = "https://www.taobao.com/robots.txt")
+    {
+        //  const string echoServer = "http://google.com";
+
+        bool result;
+        using (var request = UnityWebRequest.Head(echoServer)) {
+            request.timeout = 5;
+            yield return request.SendWebRequest();
+            result = request.result != UnityWebRequest.Result.ConnectionError &&
+                request.result != UnityWebRequest.Result.ProtocolError && request.responseCode == 200;
+        }
+
+        syncResult(result);
+    }
+
+    public static bool isWifi =>
+        Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
+
+    public static bool isNotWifi =>
+        Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork;
 }

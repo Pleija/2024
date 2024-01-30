@@ -1,22 +1,21 @@
 using System;
 using System.Linq.Expressions;
-
-//using Runtime.Agents;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using SqlCipher4Unity3D;
 using SqlCipher4Unity3D.sqlite_net_extensions.SQLiteNetExtensions.Extensions;
 using SqlCipher4Unity3D.SQLite.Attribute;
-// using SQLite.Attributes;
-// using SQLiteNetExtensions.Extensions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Assertions;
+//using Runtime.Agents;
+// using SQLite.Attributes;
+// using SQLiteNetExtensions.Extensions;
 #if ECS
 using Unity.Entities;
 #endif
 
-namespace Runtime.Contracts
+namespace Data
 {
     //[CreateAssetMenu(fileName = nameof(Model<T>), menuName = "Custom/Models/" + nameof(Model<T>), order = 0)]
     public class Model<TModel> : TableBase, IData, ISingleScriptable /*, IObjectInitializationDataProvider*/

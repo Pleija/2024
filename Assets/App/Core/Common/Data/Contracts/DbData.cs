@@ -1,15 +1,13 @@
 using System;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
-using SqlCipher4Unity3D.SQLite.Attribute;
-#if UNITY_EDITOR
-using UnityEditor;
 using Sirenix.Utilities.Editor;
-#endif
-// using SQLite.Attributes;
+using SqlCipher4Unity3D.SQLite.Attribute;
+using UnityEditor;
 using UnityEngine;
+// using SQLite.Attributes;
 
-namespace Runtime.Contracts
+namespace Data
 {
     [Serializable]
     [ShowOdinSerializedPropertiesInInspector]

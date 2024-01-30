@@ -1,6 +1,6 @@
 using System;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static class Floats
     {

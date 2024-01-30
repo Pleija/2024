@@ -2,7 +2,7 @@ using System;
 #if UNITY_EDITOR
 #endif
 
-namespace Runtime.Enums
+namespace Enums
 {
     // 唯一
     [Flags]

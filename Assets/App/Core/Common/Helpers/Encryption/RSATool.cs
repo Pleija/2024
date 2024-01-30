@@ -1,26 +1,23 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Extensions;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Encodings;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Generators;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Pkcs;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.X509;
 using UnityEditor;
 using UnityEngine;
 
-namespace Runtime.Encryption
+namespace Helpers.Encryption
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Org.BouncyCastle.Asn1.Pkcs;
-    using Org.BouncyCastle.Asn1.X509;
-    using Org.BouncyCastle.Crypto.Generators;
-    using Org.BouncyCastle.Crypto.Parameters;
-    using Org.BouncyCastle.Math;
-    using Org.BouncyCastle.Pkcs;
-    using Org.BouncyCastle.Security;
-    using Org.BouncyCastle.Crypto.Engines;
-    using Org.BouncyCastle.X509;
-    using Org.BouncyCastle.Crypto;
-    using Org.BouncyCastle.Asn1;
-    using Org.BouncyCastle.Crypto.Encodings;
-    using System.IO;
-
     public partial class RSATool
     {
         static RSATool m_instance;
@@ -61,20 +58,20 @@ namespace Runtime.Encryption
         #endif
 
         public RSAKEY GetKey() {
-            //RSA密钥对的构造器  
+            //RSA密钥对的构造器
             var keyGenerator = new RsaKeyPairGenerator();
 
-            //RSA密钥构造器的参数  
-            var param = new RsaKeyGenerationParameters(BigInteger.ValueOf(3), new SecureRandom(), 1024, //密钥长度  
+            //RSA密钥构造器的参数
+            var param = new RsaKeyGenerationParameters(BigInteger.ValueOf(3), new SecureRandom(), 1024, //密钥长度
                 25);
 
-            //用参数初始化密钥构造器  
+            //用参数初始化密钥构造器
             keyGenerator.Init(param);
 
-            //产生密钥对  
+            //产生密钥对
             var keyPair = keyGenerator.GenerateKeyPair();
 
-            //获取公钥和密钥  
+            //获取公钥和密钥
             var publicKey = keyPair.Public;
             var privateKey = keyPair.Private;
             var subjectPublicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(publicKey);
@@ -112,8 +109,8 @@ namespace Runtime.Encryption
 
         AsymmetricKeyParameter GetPublicKeyParameter(string s = null) {
             //s = s.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-            var publicInfoByte = s.IsNullOrEmpty() ? publicKey : Convert.FromBase64String(s);
-            var pubKeyObj = Asn1Object.FromByteArray(publicInfoByte); //这里也可以从流中读取，从本地导入   
+            var publicInfoByte = Strings.IsNullOrEmpty(s) ? publicKey : Convert.FromBase64String(s);
+            var pubKeyObj = Asn1Object.FromByteArray(publicInfoByte); //这里也可以从流中读取，从本地导入
             var pubKey = PublicKeyFactory.CreateKey(publicInfoByte);
             return pubKey;
         }
@@ -122,9 +119,9 @@ namespace Runtime.Encryption
             #if UNITY_EDITOR
 
             //s = s.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-            var privateInfoByte = s.IsNullOrEmpty() ? privateKey : Convert.FromBase64String(s);
+            var privateInfoByte = Strings.IsNullOrEmpty(s) ? privateKey : Convert.FromBase64String(s);
 
-            // Asn1Object priKeyObj = Asn1Object.FromByteArray(privateInfoByte);//这里也可以从流中读取，从本地导入   
+            // Asn1Object priKeyObj = Asn1Object.FromByteArray(privateInfoByte);//这里也可以从流中读取，从本地导入
             // PrivateKeyInfo privateKeyInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(privateKey);
             var priKey = PrivateKeyFactory.CreateKey(privateInfoByte);
             return priKey;
@@ -133,10 +130,10 @@ namespace Runtime.Encryption
         }
 
         public bool EncryptByKey(ref byte[] byteData, bool isPublic = false) {
-            //非对称加密算法，加解密用  
+            //非对称加密算法，加解密用
             IAsymmetricBlockCipher engine = new Pkcs1Encoding(new RsaEngine());
 
-            //加密  
+            //加密
             //try {
             engine.Init(true, isPublic ? GetPublicKeyParameter() : GetPrivateKeyParameter());
 
@@ -174,10 +171,10 @@ namespace Runtime.Encryption
         }
 
         public string EncryptByKey(string s, string key = null, bool isPublic = false) {
-            //非对称加密算法，加解密用  
+            //非对称加密算法，加解密用
             IAsymmetricBlockCipher engine = new Pkcs1Encoding(new RsaEngine());
 
-            //加密  
+            //加密
             //try {
             engine.Init(true, isPublic ? GetPublicKeyParameter(key) : GetPrivateKeyParameter(key));
             var byteData = Encoding.UTF8.GetBytes($"{s}");
@@ -222,10 +219,10 @@ namespace Runtime.Encryption
         public bool DecryptByPublicKey(ref byte[] byteData, bool isPublic = true) {
             //   s = s.Replace("\r", "").Replace("\n", "").Replace(" ", "");
 
-            //非对称加密算法，加解密用  
+            //非对称加密算法，加解密用
             IAsymmetricBlockCipher engine = new Pkcs1Encoding(new RsaEngine());
 
-            //加密  
+            //加密
 
             //try {
             engine.Init(false, isPublic ? GetPublicKeyParameter() : GetPrivateKeyParameter());
@@ -275,10 +272,10 @@ namespace Runtime.Encryption
         public string DecryptByPublicKey(string s, string key = null, bool isPublic = true) {
             //s = s.Replace("\r", "").Replace("\n", "").Replace(" ", "");
 
-            //非对称加密算法，加解密用  
+            //非对称加密算法，加解密用
             IAsymmetricBlockCipher engine = new Pkcs1Encoding(new RsaEngine());
 
-            //加密  
+            //加密
             try {
                 engine.Init(false, isPublic ? GetPublicKeyParameter(key) : GetPrivateKeyParameter(key));
                 var byteData = Convert.FromBase64String($"{s}");

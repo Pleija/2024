@@ -1,9 +1,7 @@
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
-#endif
+using UnityEngine;
 
-namespace Runtime.Extensions
+namespace Extensions
 {
     public static partial class Scenes
     {

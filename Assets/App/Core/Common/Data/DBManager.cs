@@ -1,11 +1,9 @@
-using Runtime.Attributes;
-using Runtime.Contracts;
-using Runtime.Models;
+using Extensions;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
 
-namespace Runtime
+namespace Data
 {
     [CreateAssetMenu(fileName = nameof(DBManager), menuName = "Custom/Common/" + nameof(DBManager))]
     [PreloadSetting]
