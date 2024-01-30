@@ -1,6 +1,3 @@
 [submodule "Packages/HostedData"]
 	path = Packages/HostedData
 	url = git@github.com:Pleija/game-assets.git
-
-
-## git submodule deinit Packages/HostedData/docs
