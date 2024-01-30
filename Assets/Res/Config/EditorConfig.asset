@@ -20,253 +20,44 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: _treeData
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.ValueTuple`3[[System.String,
-        mscorlib],[System.String, mscorlib],[System.Int32, mscorlib]], mscorlib]],
-        mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 9
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: 390f62bf-ef39-4de6-a3de-94573a876a91
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Mammals
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: e11464cb-967c-4364-94a1-d1e260858466
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Mammals/Armadillo
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: de3e5d19-a859-4ff2-a020-f32d97acaec0
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Mammals/Elephant
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: 79149bb4-64ad-497b-8945-69ec7d2156ab
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 5
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Mammals/Okapi
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: df2361f8-4a4f-4cdb-9011-ecdc135e6c90
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Mammals/Tiger
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: 7a7dee79-8786-4ae1-86cd-222eaf14db9e
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Reptiles
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: 8b6164a5-3e74-4172-940a-864812360b70
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Reptiles/Crocodile
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: 5f23d702-32c3-4696-9262-7d0b0a5e5985
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: Animals/Reptiles/Lizard
-    - Name: $v
-      Entry: 7
-      Data: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: Item1
-      Entry: 1
-      Data: c54a91fa-b5e9-460a-9f68-323a3de54d94
-    - Name: Item2
-      Entry: 1
-      Data: 
-    - Name: Item3
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   Id: 1
   Extra: '{}'
   localExtra: '{}'
+  _treeData:
+  - key: Animals
+    guid: 35ece87c-becb-4e9b-8d32-951fef706bae
+    desc: 
+    levels: 0
+  - key: Animals/Reptiles
+    guid: c265e9d8-c88f-4703-8e06-b8ead60cdab8
+    desc: 
+    levels: 0
+  - key: Animals/Reptiles/Lizard
+    guid: f6d38607-d1e5-4f0e-8363-c9d002d52ad8
+    desc: 
+    levels: 0
+  - key: Animals/Reptiles/Crocodile
+    guid: bdad7324-97d7-41c8-b94a-0e429b5a0e42
+    desc: 
+    levels: 0
+  - key: Animals/Mammals
+    guid: 69395b1f-fc9c-4761-bed3-46a0a64ab23a
+    desc: 
+    levels: 6
+  - key: Animals/Mammals/Tiger
+    guid: ce11673c-206e-4bc9-986e-3941a0e4dd90
+    desc: 
+    levels: 0
+  - key: Animals/Mammals/Armadillo
+    guid: 15715597-2347-4590-869b-71845c8fb1a1
+    desc: 
+    levels: 0
+  - key: Animals/Mammals/Okapi
+    guid: bfebb036-b285-4de8-8c7c-1f20da5d02bf
+    desc: 
+    levels: 0
+  - key: Animals/Mammals/Elephant
+    guid: eb2d546f-507b-41a4-808f-4a9eab2dcecf
+    desc: 
+    levels: 5

@@ -13,10 +13,12 @@ using Sirenix.Serialization;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 using SqlCipher4Unity3D;
+using TreeEditor;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.Assertions;
+using EditorConfig = Models.EditorConfig;
 using Object = System.Object;
 #endregion
 
@@ -34,7 +36,7 @@ namespace NodeCanvas.Editor
             new Dictionary<Graph, UnityEditor.Editor>();
 
         //TreeView 不可序列化，因此应该通过树数据对其进行重建。
-        private SimpleTreeView m_SimpleTreeView;
+        private SimpleTreeView m_TreeView;
         private float oldWith;
         private ScriptableObject previewObject;
         private Vector2 scrollArea;
@@ -50,7 +52,7 @@ namespace NodeCanvas.Editor
             new List<(string id, string name, string desc)>();
 
         [SerializeField]
-        public string[] sampleTree = new[] {
+        public string[] sampleTree = {
             "Animals/Mammals/Tiger",
             "Animals/Mammals/Elephant",
             "Animals/Mammals/Okapi",
@@ -61,8 +63,9 @@ namespace NodeCanvas.Editor
 
         //[SerializeField, OdinSerialize]
         // public Dictionary<string, (string guid, string desc, int levels)> treeData =>
-        //     EditorConfig.self.treeData ??=
+        //    treeData ??=
         //         new Dictionary<string, (string guid, string desc, int levels)>();
+        public static List<EditorConfig.TreeItem> treeData => EditorConfig.self.treeData;
 
         protected override void OnEnable()
         {
@@ -85,50 +88,58 @@ namespace NodeCanvas.Editor
             // new TreeViewItem { id = 9, depth = 2, displayName = "Lizard" },
 
             //tree.AddRange();
-            var data = sampleTree.OrderBy(t => t);
-            var dirty = false;
-            data.ForEach(x => {
-                var t = "";
-                var arr = x.Split('/');
+            if (!treeData.Any()) {
+                sampleTree.OrderBy(t => t)
+                    .ForEach(x => {
+                        var itemName = "";
+                        var arr = x.Split('/');
 
-                for (int i = 0; i < arr.Length; i++) {
-                    t += i == 0 ? arr[i] : "/" + arr[i];
+                        for (int i = 0; i < arr.Length; i++) {
+                            itemName += i == 0 ? arr[i] : "/" + arr[i];
+                            if (treeData.FirstOrDefault(s => s.key == itemName) == null)
+                                treeData.Add(new EditorConfig.TreeItem() {
+                                    key = itemName,
+                                    guid = Guid.NewGuid().ToString(),
+                                });
+                        }
+                    });
+                EditorConfig.self.SetDirtyAndSave();
+            }
 
-                    if (!EditorConfig.self.treeData.TryGetValue(t, out var ret)) {
-                        dirty = true;
-                        Debug.Log($"lost: {t}");
-                        EditorConfig.self.treeData[t] = (Guid.NewGuid().ToString(), "", 0);
-                    }
-                }
-            });
-            if(dirty) EditorConfig.self.SetDirtyAndSave();
             //}
-            m_SimpleTreeView = new SimpleTreeView(m_TreeViewState);
-            m_SimpleTreeView.ExpandAll();
+            m_TreeView = new SimpleTreeView(m_TreeViewState);
+            m_TreeView.OnSelectionChange += ids => {
+                var select = ids.Last();
+                var item = m_TreeView.caches.FirstOrDefault(x => x.Key.id == select).Value;
+
+                if (item != null && lastKey != item.key) {
+                    //Debug.Log($"select: {item}");
+                    lastKey = item.key;
+                    editKey = lastKey.Split('/').Last();
+                }
+            };
+            m_TreeView.ExpandAll();
         }
 
+        [SerializeField]
         private string lastKey;
+
+        [SerializeField]
+        private string editKey;
+
         private bool ready;
 
         protected override void OnGUI()
         {
             if (this == null || EditorApplication.isUpdating || EditorApplication.isCompiling)
                 return;
-
             ready = true;
-
             base.OnGUI();
             if (Math.Abs(oldWith - MenuWidth) > float.Epsilon) TreeWidth = oldWith = MenuWidth;
 
-            if (m_SimpleTreeView.GetSelection().Any()) {
-                var select = m_SimpleTreeView.GetSelection().Last();
-                var item = m_SimpleTreeView.caches.FirstOrDefault(x => x.Value.id == select).Key;
-
-                if (lastKey != item) {
-                    Debug.Log($"select: {item}");
-                    lastKey = item;
-                }
-            }
+            // if (m_SimpleTreeView.GetSelection().Any()) {
+            //
+            // }
             return;
             GUILayout.BeginHorizontal();
             {
@@ -207,6 +218,8 @@ namespace NodeCanvas.Editor
             // }
             GUILayout.BeginVertical();
             tab = GUILayout.Toolbar(tab, new[] { "Object", "Bake", "Layers" });
+            editKey ??= "";
+            lastKey ??= "";
 
             switch (tab) {
                 case 0:
@@ -219,33 +232,37 @@ namespace NodeCanvas.Editor
                     // GUILayout.Box("", GUILayout.ExpandWidth(true),
                     //     GUILayout.ExpandHeight(true));
                     GUILayout.BeginHorizontal();
+                    GUI.enabled = editKey != lastKey.Split('/').Last() && !editKey.IsNullOrEmpty();
 
                     if (GUILayout.Button("Add", EditorStyles.miniButtonLeft)) { }
 
-                    if (GUILayout.Button("Edit", EditorStyles.miniButtonMid)) { }
+                    if (GUILayout.Button("Add Child", EditorStyles.miniButtonMid)) { }
+                    GUI.enabled = editKey == lastKey.Split('/').Last() && !editKey.IsNullOrEmpty();
 
                     if (GUILayout.Button("Del", EditorStyles.miniButtonRight)) { }
+                    GUI.enabled = true;
                     GUILayout.EndHorizontal();
                     GUILayout.BeginHorizontal();
-                    lastKey = GUILayout.TextField(lastKey);
 
-                    if (EditorConfig.self.treeData != null
-                        && lastKey != null
-                        && EditorConfig.self.treeData.TryGetValue(lastKey, out var val)) {
+                    // if (editKey.IsNullOrEmpty() && !lastKey.IsNullOrEmpty()) {
+                    //     editKey = lastKey.Split('/').Last();
+                    // }
+                    editKey = GUILayout.TextField(editKey);
+
+                    if (treeData.FirstOrDefault(x =>
+                        x.key == lastKey) is { } val) {
                         var levels = EditorGUILayout.IntField(val.levels, GUILayout.Width(30));
 
                         if (levels != val.levels) {
                             val.levels = levels;
-                            EditorConfig.self.treeData[lastKey] = val;
-                            EditorConfig.self.SetDirtyAndSave();
-
-                            m_SimpleTreeView.caches[lastKey].displayName = lastKey.Split('/').Last()
-                                + (levels > 0 ? $" ({levels})" : "");
+                            //treeData[lastKey] = val;
+                            EditorConfig.self.Set(t => val.levels = levels);
+                            val.item.displayName = val.itemName;
                         }
                     }
                     GUILayout.EndHorizontal();
                     var rect = EditorGUILayout.BeginVertical(GUILayout.ExpandHeight(true));
-                    m_SimpleTreeView.OnGUI(rect /*new Rect(0,30,200,330)*/);
+                    m_TreeView.OnGUI(rect /*new Rect(0,30,200,330)*/);
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                     GUILayout.EndVertical();
@@ -413,10 +430,12 @@ namespace NodeCanvas.Editor
         public SimpleTreeView(TreeViewState treeViewState) : base(treeViewState)
         {
             //this.items = items;
+            showAlternatingRowBackgrounds = true; //隔行显示颜色
+            showBorder = false;                    //表格边框
             Reload();
         }
 
-        public Dictionary<string, TreeViewItem> caches = new Dictionary<string, TreeViewItem>();
+        public Dictionary<TreeViewItem, EditorConfig.TreeItem> caches;
 
         protected override TreeViewItem BuildRoot()
         {
@@ -428,15 +447,15 @@ namespace NodeCanvas.Editor
             // 必须为 -1，其余项的深度在此基础上递增。
             var root = new TreeViewItem { id = 0, depth = -1, displayName = "Root" };
             var allItems = new List<TreeViewItem>();
-            EditorConfig.self.treeData.OrderBy(x => x.Key).ForEach((x, i) => {
-                var item = new TreeViewItem() {
+            caches = new Dictionary<TreeViewItem, EditorConfig.TreeItem>();
+            EditorConfig.self.treeData.ForEach((x, i) => {
+                x.item = new TreeViewItem() {
                     id = i,
-                    depth = x.Key.Split('/').Length - 1,
-                    displayName = x.Key.Split('/').Last()
-                        + (x.Value.levels > 0 ? $" ({x.Value.levels})" : "")
+                    depth = x.key.Split('/').Length - 1,
+                    displayName = x.itemName
                 };
-                caches[x.Key] = item;
-                allItems.Add(item);
+                caches[x.item] = x;
+                allItems.Add(x.item);
             });
             // var allItems = new List<TreeViewItem> {
             //     new TreeViewItem { id = 1, depth = 0, displayName = "Animals" },
@@ -452,9 +471,179 @@ namespace NodeCanvas.Editor
 
             // 用于初始化所有项的 TreeViewItem.children 和 .parent 的实用方法。
             SetupParentsAndChildrenFromDepths(root, allItems);
+            Debug.Log("reload?");
 
             //返回树的根
             return root;
+        }
+
+        protected override bool CanRename(TreeViewItem item)
+        {
+            item.displayName = caches[item].itemEditName;
+            return true;
+            // Rect renameRect = GetRenameRect(treeViewRect, 0, item);
+            // return renameRect.width > 150;
+        }
+
+        protected override bool CanStartDrag(CanStartDragArgs args)
+        {
+            return true;
+        }
+
+        private List<int> dragItems;
+        string k_GenericDragId => GetType().Name;
+
+        protected override void SetupDragAndDrop(SetupDragAndDropArgs args)
+        {
+            dragItems = args.draggedItemIDs.ToList();
+            //SetSelection(dragItems);
+            DragAndDrop.PrepareStartDrag();
+            var draggedRows =
+                GetRows().Where(item => args.draggedItemIDs.Contains(item.id)).ToList();
+            DragAndDrop.SetGenericData(k_GenericDragId, draggedRows);
+            DragAndDrop.objectReferences =
+                new UnityEngine.Object[] { }; // this IS required for dragging to work
+            string title = draggedRows.Count == 1 ? draggedRows[0].displayName : "< Multiple >";
+            DragAndDrop.StartDrag(title);
+        }
+
+        public Action<IList<int>> OnSelectionChange;
+
+        protected override void SelectionChanged(IList<int> selectedIds)
+        {
+            OnSelectionChange?.Invoke(selectedIds);
+        }
+
+        public List<EditorConfig.TreeItem> data => EditorConfig.self.treeData;
+        List<EditorConfig.TreeItem> selects = new List<EditorConfig.TreeItem>();
+
+        protected override DragAndDropVisualMode HandleDragAndDrop(DragAndDropArgs args)
+        {
+            if (args.performDrop) {
+                //var insert = caches.FirstOrDefault(x => x.Key.id == args.insertAtIndex).Key;
+                var draggedRows =
+                    GetRows().Where(item => dragItems.Contains(item.id)).ToList();
+                var items = caches.Where(x => draggedRows.Contains(x.Key)).Select(x => x.Value);
+                selects.Clear();
+
+                void Press(Action<EditorConfig.TreeItem> action)
+                {
+                    items.ForEach(item => {
+                        var key = item.key;
+                        data.Remove(item);
+                        action.Invoke(item);
+                        selects.Add(item);
+                        data.ToList()
+                            .Where(x => x.key.StartsWith(key + "/"))
+                            .Reverse()
+                            .ForEach(x => {
+                                x.key = x.key.Replace(key, item.key);
+                                data.Remove(x);
+                                var index = data.IndexOf(item);
+
+                                if (index == data.Count - 1) {
+                                    data.Add(x);
+                                }
+                                else {
+                                    data.Insert(index + 1, x);
+                                }
+                            });
+                    });
+                }
+
+                switch (args.dragAndDropPosition) {
+                    case DragAndDropPosition.BetweenItems:
+                        Debug.Log(@$"between: parent: {args.parentItem?.displayName} insert: {
+                            args.insertAtIndex} ");
+
+                        if (args.parentItem == rootItem) {
+                            Press(x => {
+                                x.key = x.key.Split('/').Last();
+                                data.Insert(0, x);
+                            });
+                        }
+                        else if (args.parentItem is { } parentItem && args.insertAtIndex != -1) {
+                            var id = args.parentItem.id + args.insertAtIndex + 1;
+                            var ctx = data.FirstOrDefault(x => x.item.id == id);
+                            Press(x => {
+                                x.key = caches[parentItem].key + "/" + x.key.Split('/').Last();
+
+                                if (ctx == null) {
+                                    data.Add(x);
+                                    return;
+                                }
+                                var index = data.IndexOf(ctx);
+
+                                if (index > -1) {
+                                    data.Insert(index, x);
+                                }
+                            });
+                        }
+                        else {
+                            return DragAndDropVisualMode.None;
+                        }
+                        break;
+                    case DragAndDropPosition.UponItem:
+                        Debug.Log($"upon: {args.parentItem?.displayName}");
+
+                        if (args.parentItem is { } item) {
+                            Press(x => {
+                                x.key = caches[item].key + "/" + x.key.Split('/').Last();
+                                var index = data.IndexOf(caches[item]);
+                                if (index == data.Count - 1)
+                                    data.Add(x);
+                                else
+                                    data.Insert(index + 1, x);
+                            });
+                        }
+                        break;
+                    case DragAndDropPosition.OutsideItems:
+                        Debug.Log($"outside: insert id: {args.insertAtIndex}");
+                        Press(x => {
+                            x.key = x.key.Split('/').Last();
+                            data.Add(x);
+                        });
+                        break;
+                }
+                EditorConfig.self.SetDirtyAndSave();
+                Reload();
+                ExpandAll();
+                var ids = selects.Select(x => x.item.id).ToList();
+                SetSelection(ids);
+                SelectionChanged(ids);
+                //OnSelectionChange?.Invoke(ids);
+
+            }
+            return DragAndDropVisualMode.Move;
+        }
+
+        protected override void RenameEnded(RenameEndedArgs args)
+        {
+            Debug.Log($"RenameEnded: itemID: {args.itemID}, {args.originalName} => {args.newName}");
+            var item = caches.FirstOrDefault(x => x.Key.id == args.itemID).Key;
+
+            if (!args.acceptedRename || args.newName.IsNullOrEmpty()) {
+                item.displayName = caches[item].itemName;
+                Reload();
+                return;
+            }
+            //var value = treeData[item];
+            var treeItem = caches[item];
+            var key = treeItem.key;
+            // item.displayName =
+            //     args.newName + (value.levels > 0 ? $" ({value.levels})" : "");
+            var t = treeItem.key.Split('/');
+            t[t.Length - 1] = args.newName;
+            var newKey = string.Join("/", t);
+            EditorConfig.self.Set(x => {
+                x.treeData
+                    .Where(s => s == treeItem || s.key.StartsWith(key + "/"))
+                    .ForEach(k => {
+                        k.key = k.key.Replace(key, newKey);
+                    });
+            });
+            item.displayName = treeItem.itemName;
+            Reload();
         }
     }
 }
