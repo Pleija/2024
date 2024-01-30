@@ -108,9 +108,15 @@ namespace NodeCanvas.Editor
         }
 
         private string lastKey;
+        private bool ready;
 
         protected override void OnGUI()
         {
+            if (this == null || EditorApplication.isUpdating || EditorApplication.isCompiling)
+                return;
+
+            ready = true;
+
             base.OnGUI();
             if (Math.Abs(oldWith - MenuWidth) > float.Epsilon) TreeWidth = oldWith = MenuWidth;
 
@@ -186,6 +192,8 @@ namespace NodeCanvas.Editor
 
         protected override void DrawEditor(int index)
         {
+            if (EditorApplication.isCompiling || EditorApplication.isUpdating || !ready) return;
+
             //Debug.Log(index);
             if (!(previewObject is AssetBlackboard bb)) return;
             // if (!(m_Editors.TryGetValue(graph, out var editor) && editor)) {

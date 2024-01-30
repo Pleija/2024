@@ -47,8 +47,8 @@
         "outDir": "../../Assets/Res/dist"
     },
     "include": [
-        "src/**/*",
-        "Typing~/**/*"
+        "./src/**/*",
+        "./Typing~/**/*"
     ] ,
     "ts-node": {
         "esm": true,
