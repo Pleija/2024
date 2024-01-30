@@ -212,7 +212,18 @@ namespace NodeCanvas.Framework
         public List<object> values = new List<object>();
 
         [SerializeField]
-        public Dictionary<string, object> _kv;
+        private Dictionary<string, object> _kv;
+
+
+        [SerializeField]
+        private Dictionary<string, float> _addValue;
+        public Dictionary<string, float> addValue => _addValue ??= new Dictionary<string, float>();
+
+        [SerializeField]
+        private Dictionary<string, float> _multiplyValue;
+
+        public Dictionary<string, float> multiplyValue =>
+            _multiplyValue ??= new Dictionary<string, float>();
 
         public Dictionary<string, object> kv => _kv ??= new Dictionary<string, object>();
 
@@ -285,10 +296,15 @@ namespace NodeCanvas.Framework
         [SerializeField]
         public new List<T> values = new List<T>();
 
+        public new T this[string index] {
+            get => (T)base[index];
+            set => base[index] = value;
+        }
         public new T this[int index] {
             get => (T)base[index];
             set => base[index] = value;
         }
+
 
         ///<summary>The value as type T when accessing as this type</summary>
         public new T value {

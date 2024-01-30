@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Models;
 using Models.CSV;
 using NodeCanvas.Framework;
 using NodeCanvas.Framework.Internal;
@@ -51,8 +52,8 @@ namespace NodeCanvas.Editor
         private void OnGraphSelectionChange(IGraphElement element)
         {
             elementDefinedParameterIDs = element != null ? Graph.GetParametersInElement(element)
-                    .Where(p => p != null && p.isDefined)
-                    .Select(p => p.targetVariableID) : null;
+                .Where(p => p != null && p.isDefined)
+                .Select(p => p.targetVariableID) : null;
         }
 
         ///<summary>reset pick info</summary>
@@ -69,7 +70,7 @@ namespace NodeCanvas.Editor
         public static void ShowVariables(IBlackboard bb, Object overrideContextObject = null)
         {
             EditorWrapperFactory.GetEditor<BlackboardEditor>(bb)
-                    ._InspectorGUI(bb, overrideContextObject);
+                ._InspectorGUI(bb, overrideContextObject);
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace NodeCanvas.Editor
                 EditorUtils.Separator();
             }
             contextObject = overrideContextObject != null ? overrideContextObject
-                    : bb.unityContextObject;
+                : bb.unityContextObject;
             this.bb = bb;
             variablesProperty = null;
 
@@ -93,7 +94,7 @@ namespace NodeCanvas.Editor
                 && bb.independantVariablesFieldName != null) {
                 serializedContext = new SerializedObject(contextObject);
                 variablesProperty =
-                        serializedContext.FindProperty(bb.independantVariablesFieldName);
+                    serializedContext.FindProperty(bb.independantVariablesFieldName);
             }
 
             if (bb.unityContextObject is Graph graph) {
@@ -119,8 +120,8 @@ namespace NodeCanvas.Editor
 
             //Add variable button
             GUI.backgroundColor = Colors.lightBlue;
-
             GUILayout.BeginHorizontal();
+
             if (GUILayout.Button("Add Variable")) {
                 GetAddVariableMenu(bb, contextObject).ShowAsBrowser("Add Variable");
                 Event.current.Use();
@@ -131,7 +132,7 @@ namespace NodeCanvas.Editor
             }
 
             if (GUILayout.Button("Data Manager")) {
-                 GameDataManager.ShowDialog();
+                GameDataManager.ShowDialog();
             }
             GUILayout.EndHorizontal();
             GUI.backgroundColor = Color.white;
@@ -155,7 +156,7 @@ namespace NodeCanvas.Editor
             //The actual variables reorderable list
             var options = new EditorUtils.ReorderableListOptions();
             options.blockReorder = contextObject != null
-                    ? PrefabUtility.IsPartOfRegularPrefab(contextObject) : false;
+                ? PrefabUtility.IsPartOfRegularPrefab(contextObject) : false;
             options.unityObjectContext = contextObject;
             //Debug.Log($"context: "+contextObject.name);
             options.customItemMenu = i => {
@@ -176,8 +177,28 @@ namespace NodeCanvas.Editor
                     DoVariableGUI(data, i, isPicked);
                     GUILayout.EndHorizontal();
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Key:",GUILayout.Width(30));
-                    data.key = EditorGUILayout.TextField(data.key);
+                    var menu = EditorConfig.self.treeData.Select(x => x.key)
+                        .Prepend("<Key>")
+                        .ToList();
+                    //menu.Prepend()
+                    var index = data.key.IsNullOrEmpty() ? 0 : menu.IndexOf(EditorConfig.self
+                        .treeData.FirstOrDefault(x => x.guid == data.key)
+                        ?.key);
+                    var content = new GUIContent(index >= 0 ? menu[index] : "<Key>");
+
+                    // if (GUILayout.Button(content,
+                    //     GUILayout.Width(GUI.skin.button.CalcSize(content).x))) {
+                    //     Debug.Log(menu.JoinStr());
+                    index = EditorGUILayout.Popup(index, menu.ToArray(),
+                        GUILayout.Width(GUI.skin.button.CalcSize(content).x + 10));
+                    data.key = EditorConfig.self.treeData
+                        .FirstOrDefault(x => x.key == menu[index])
+                        ?.guid;
+
+                    // Debug.Log(index);
+                    // }
+                    //GUILayout.Label("Key:",GUILayout.Width(30));
+                    //data.key = EditorGUILayout.TextField(data.key);
                     GUILayout.Label("备注:", GUILayout.Width(30));
                     data.Desc = EditorGUILayout.TextField(data.Desc);
                     data.color = EditorGUILayout.ColorField(data.color, GUILayout.Width(40));
@@ -209,8 +230,10 @@ namespace NodeCanvas.Editor
         //...
         private void DoVariableGUI(Variable data, int index, bool isPicked)
         {
+
             if (data is MissingVariableType) {
                 var missingVariableType = (MissingVariableType)data;
+
                 GUILayout.Label(data.name, Styles.leftLabel, layoutOptions);
                 GUILayout.Label(
                     ReflectionTools.FriendlyTypeName(missingVariableType.missingType).FormatError(),
@@ -245,6 +268,9 @@ namespace NodeCanvas.Editor
                 GUI.color = Color.red;
             ShowDataLabelGUI(data, index);
             ShowDataFieldGUI(data, index);
+            var content = new GUIContent(data.varType.Name);
+            var size = GUI.skin.button.CalcSize(content).x;
+            GUILayout.Button(content, GUILayout.Width(size));
         }
 
         //Data label (left side)
@@ -253,7 +279,7 @@ namespace NodeCanvas.Editor
             var e = Event.current;
             var separator = data.value as VariableSeperator;
             var isVariablePrefabInstanceModified = variablesProperty != null
-                    ? variablesProperty.GetArrayElementAtIndex(index).prefabOverride : false;
+                ? variablesProperty.GetArrayElementAtIndex(index).prefabOverride : false;
 
             //this is a separator
             if (separator != null) {
@@ -293,10 +319,12 @@ namespace NodeCanvas.Editor
                 }
             }
             else {
+
+
                 //not a separator
                 var wasFontStyle = GUI.skin.textField.fontStyle;
                 GUI.skin.textField.fontStyle = isVariablePrefabInstanceModified ? FontStyle.Bold
-                        : FontStyle.Normal;
+                    : FontStyle.Normal;
                 var newName = EditorGUILayout.DelayedTextField(data.name, layoutOptions);
 
                 if (data.name != newName) {
@@ -322,7 +350,7 @@ namespace NodeCanvas.Editor
                 var memberName = data.propertyPath.Substring(idx + 1);
                 GUI.color = new Color(0.8f, 0.8f, 1);
                 var suf = data.debugBoundValue && Application.isPlaying
-                        ? data.value.ToStringAdvanced() : typeName.Split('.').Last();
+                    ? data.value.ToStringAdvanced() : typeName.Split('.').Last();
                 GUILayout.Label(string.Format(".{0} ({1}) {2}", memberName, suf,
                         data.debugBoundValue ? "*" : string.Empty), Styles.leftLabel,
                     layoutOptions);
@@ -331,7 +359,7 @@ namespace NodeCanvas.Editor
             }
             GUI.color = data.isExposedPublic ? GUI.color.WithAlpha(0.5f) : GUI.color;
             EditorGUIUtility.labelWidth = 10;
-            var newVal = VariableField(bb, data, contextObject, -1,layoutOptions);
+            var newVal = VariableField(bb, data, contextObject, "", layoutOptions);
             EditorGUIUtility.labelWidth = 0;
 
             // if (data.varType == typeof(AssetReference)) {
@@ -383,7 +411,7 @@ namespace NodeCanvas.Editor
 
             if (bb.propertiesBindTarget != null) {
                 foreach (var comp in bb.propertiesBindTarget.GetComponents(typeof(Component))
-                        .Where(c => c.hideFlags == 0)) {
+                    .Where(c => c.hideFlags == 0)) {
                     menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), typeof(object),
                         AddBoundField, menu, "Bound (Self)");
                     menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(),
@@ -443,7 +471,7 @@ namespace NodeCanvas.Editor
 
             if (bb.propertiesBindTarget != null) {
                 foreach (var comp in bb.propertiesBindTarget.GetComponents(typeof(Component))
-                        .Where(c => c != null)) {
+                    .Where(c => c != null)) {
                     menu = EditorUtils.GetInstanceFieldSelectionMenu(comp.GetType(), data.varType,
                         BindField, menu, "Bind (Self)");
                     menu = EditorUtils.GetInstancePropertySelectionMenu(comp.GetType(),
@@ -503,7 +531,7 @@ namespace NodeCanvas.Editor
 
             if (serProp != null && serProp.prefabOverride) {
                 var prefabAssetPath =
-                        PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(contextObject);
+                    PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(contextObject);
                 var asset = AssetDatabase.LoadAssetAtPath<Object>(prefabAssetPath);
                 menu.AddItem(new GUIContent("Apply Prefab Modification To '" + asset.name + "'"),
                     false,
@@ -542,7 +570,8 @@ namespace NodeCanvas.Editor
         }
 
         //the variable data field
-        public static object VariableField(IBlackboard bb, Variable data, Object contextParent, int index =-1,
+        public static object VariableField(IBlackboard bb, Variable data, Object contextParent,
+            string index,
             params GUILayoutOption[] layoutOptions)
         {
             var o = /*index == -1 ? data.value : */data[index];
@@ -563,9 +592,9 @@ namespace NodeCanvas.Editor
                 && t != typeof(Type)) {
                 if (GUILayout.Button("(null) Create-1", layoutOptions))
                     EditorUtils.GetTypeSelectionMenu(t, derived => {
-                                data[index]/*data.value*/ = Activator.CreateInstance(derived);
-                            })
-                            .ShowAsBrowser("Select Derived Type");
+                            data[index] /*data.value*/ = Activator.CreateInstance(derived);
+                        })
+                        .ShowAsBrowser("Select Derived Type");
                 return o;
             }
             ///----------------------------------------------------------------------------------------------
@@ -578,12 +607,12 @@ namespace NodeCanvas.Editor
             //If some other type, show it in the generic object editor window with its true value type
             t = o != null ? o.GetType() : t;
             if (GUILayout.Button(string.Format("{0} {1}", t.FriendlyName(),
-                        o is IList ? ((IList)o).Count.ToString() : string.Empty), layoutOptions))
-                    //we use bb.GetVariableByID to avoid undo creating new instance of variable and thus generic inspector, left inspecting something else
+                    o is IList ? ((IList)o).Count.ToString() : string.Empty), layoutOptions))
+                //we use bb.GetVariableByID to avoid undo creating new instance of variable and thus generic inspector, left inspecting something else
                 GenericInspectorWindow.Show(data.name, t, contextParent, () => {
-                    return bb.GetVariableByID(data.ID)[index]/*.value*/;
+                    return bb.GetVariableByID(data.ID)[index] /*.value*/;
                 }, newValue => {
-                    bb.GetVariableByID(data.ID)[index]/*.value*/ = newValue;
+                    bb.GetVariableByID(data.ID)[index] /*.value*/ = newValue;
                 });
             return o;
         }

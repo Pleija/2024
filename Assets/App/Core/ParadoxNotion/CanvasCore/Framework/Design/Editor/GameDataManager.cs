@@ -291,62 +291,104 @@ namespace NodeCanvas.Editor
                         GUILayout.BeginVertical(GUILayout.MaxWidth(200));
 
                         foreach (var tVar in variables) {
-                            // if (!editorCache.TryGetValue($"{tVar.ID}:{i}", out var data)) {
-                            //     data = editorCache[$"{tVar.ID}:{i}"] = DbTable.Connection
-                            //         .Table<Var>()
-                            //         .FirstOrInsert(x => x.index == i
-                            //             && x.guid == tVar.ID
-                            //             && x.tableName == bb.tableName, aVar => {
-                            //             aVar.index = i;
-                            //             aVar.name = tVar.name;
-                            //             aVar.guid = tVar.ID;
-                            //             aVar.tableName = bb.tableName;
-                            //             aVar.type = tVar.varType;
-                            //             aVar.value = tVar[i];
-                            //         });
-                            // }
+                            var keys = new List<string>();
 
-                            // if (data.name != tVar.name
-                            //     || data.type != tVar.varType
-                            //     || data.value != tVar[i]) {
-                            //     data.value = tVar[i];
-                            //     data.name = tVar.name;
-                            //     data.type = tVar.varType;
-                            //     data.Save();
-                            // }
-                            GUI.backgroundColor = tVar.color == default ? Color.white : tVar.color;
-                            EditorGUILayout.BeginVertical("box", GUILayout.MaxWidth(200),
-                                GUILayout.ExpandWidth(false));
-                            GUILayout.Label(tVar.name);
-                            EditorGUI.BeginChangeCheck();
-                            // if (!objs.TryGetValue(data, out var editorObj) || editorObj == null)
-                            //     editorObj = new SerializedObject(data);
-                            //data.value ??= tVar.value ?? data.type.CreateInstance();
-                            // var oldValue = data.value;
-                            // //var editor = editors.AddOrGet(data, UnityEditor.Editor.CreateEditor);
-                            // EditorGUI.BeginChangeCheck();
-                            // EditorGUILayout.PropertyField(editorObj.FindProperty("value"));
-                            // editorObj.ApplyModifiedProperties();
-                            //
-                            // if (EditorGUI.EndChangeCheck() || oldValue != data.value) {
-                            //
-                            // }
-                            var value = BlackboardEditor.VariableField(bb, tVar, bb, i,
-                                GUILayout.MaxWidth(150));
+                            if (treeData.FirstOrDefault(t => t.guid == tVar.key)
+                                is { } item) {
+                                treeData.Where(x => x.key.StartsWith(item.key + "/"))
+                                    .ForEach(x =>
+                                        keys.Add(@$"{i}:{item.itemEditName}:{
+                                            x.key.Replace(item.key + "/", "")}"));
 
-                            //Assert.IsTrue(Object.ReferenceEquals(tVar[i], value),"Object.ReferenceEquals(tVar[i], value)");
-
-                            if ( /*value != tVar[i] ||*/ EditorGUI.EndChangeCheck()) {
-                                Debug.Log("===========changed=========");
-                                UndoUtility.RecordObject(bb, "Variable Value Change");
-                                tVar[i] = value;
-                                //data.value = value;
-                                //UndoUtility.SetDirty(data);
-                                UndoUtility.SetDirty(bb);
-                                //data.Save();
+                                if (!keys.Any() && item.levels > 0) {
+                                    Enumerable.Range(0, item.levels)
+                                        .ForEach(t => keys.Add($"{i}:{item.itemEditName}:{t}"));
+                                }
                             }
-                            //if (EditorGUI.EndChangeCheck()) UndoUtility.SetDirty(bb);
-                            GUILayout.EndVertical();
+                            else {
+                                keys.Add(i.ToString());
+                            }
+
+                            foreach (var key in keys) {
+                                // if (!editorCache.TryGetValue($"{tVar.ID}:{i}", out var data)) {
+                                //     data = editorCache[$"{tVar.ID}:{i}"] = DbTable.Connection
+                                //         .Table<Var>()
+                                //         .FirstOrInsert(x => x.index == i
+                                //             && x.guid == tVar.ID
+                                //             && x.tableName == bb.tableName, aVar => {
+                                //             aVar.index = i;
+                                //             aVar.name = tVar.name;
+                                //             aVar.guid = tVar.ID;
+                                //             aVar.tableName = bb.tableName;
+                                //             aVar.type = tVar.varType;
+                                //             aVar.value = tVar[i];
+                                //         });
+                                // }
+
+                                // if (data.name != tVar.name
+                                //     || data.type != tVar.varType
+                                //     || data.value != tVar[i]) {
+                                //     data.value = tVar[i];
+                                //     data.name = tVar.name;
+                                //     data.type = tVar.varType;
+                                //     data.Save();
+                                // }
+                                GUI.backgroundColor =
+                                    tVar.color == default ? Color.white : tVar.color;
+                                EditorGUILayout.BeginVertical("box", GUILayout.MaxWidth(200),
+                                    GUILayout.ExpandWidth(false));
+
+                                if (key != i.ToString()) {
+                                    GUILayout.Label(key.Replace($"{i}:",""));
+                                }
+                                GUILayout.BeginHorizontal();
+                                GUILayout.Label(tVar.name);
+                                EditorGUI.BeginChangeCheck();
+
+                                if (tVar.varType == typeof(int) || tVar.varType == typeof(float)) {
+                                    // GUILayout.Label("x", GUILayout.Width(GUI.skin.label.CalcSize(new GUIContent("x")).x));
+                                    //GUILayout.Label("+|x", GUILayout.Width(GUI.skin.label.CalcSize(new GUIContent("+|x")).x));
+                                    //EditorGUILayout.FloatField(0f, GUILayout.Width(30));
+                                    tVar.addValue[key] =
+                                        EditorGUILayout.FloatField(
+                                            tVar.addValue.TryGetValue(key, out var add) ? add
+                                                : tVar.addValue[key] = 0f, GUILayout.Width(30));
+                                    tVar.multiplyValue[key] =
+                                        EditorGUILayout.FloatField(
+                                            tVar.multiplyValue.TryGetValue(key, out var mul) ? mul
+                                                : tVar.multiplyValue[key] = 1f,
+                                            GUILayout.Width(30));
+                                }
+                                GUILayout.EndHorizontal();
+                                // if (!objs.TryGetValue(data, out var editorObj) || editorObj == null)
+                                //     editorObj = new SerializedObject(data);
+                                //data.value ??= tVar.value ?? data.type.CreateInstance();
+                                // var oldValue = data.value;
+                                // //var editor = editors.AddOrGet(data, UnityEditor.Editor.CreateEditor);
+                                // EditorGUI.BeginChangeCheck();
+                                // EditorGUILayout.PropertyField(editorObj.FindProperty("value"));
+                                // editorObj.ApplyModifiedProperties();
+                                //
+                                // if (EditorGUI.EndChangeCheck() || oldValue != data.value) {
+                                //
+                                // }
+                                var value = BlackboardEditor.VariableField(bb, tVar, bb, key,
+                                    GUILayout.MaxWidth(150));
+
+                                //Assert.IsTrue(Object.ReferenceEquals(tVar[i], value),"Object.ReferenceEquals(tVar[i], value)");
+
+                                if ( /*value != tVar[i] ||*/ EditorGUI.EndChangeCheck()) {
+                                    Debug.Log("===========changed=========");
+                                    UndoUtility.RecordObject(bb, "Variable Value Change");
+                                    tVar[key] = value;
+                                    //data.value = value;
+                                    //UndoUtility.SetDirty(data);
+                                    UndoUtility.SetDirty(bb);
+                                    //data.Save();
+                                }
+                                //if (EditorGUI.EndChangeCheck()) UndoUtility.SetDirty(bb);
+                                GUILayout.EndVertical();
+                            }
                             GUI.backgroundColor = Color.white;
                         }
                         GUILayout.EndVertical();
@@ -431,7 +473,7 @@ namespace NodeCanvas.Editor
         {
             //this.items = items;
             showAlternatingRowBackgrounds = true; //隔行显示颜色
-            showBorder = false;                    //表格边框
+            showBorder = false;                   //表格边框
             Reload();
         }
 
@@ -612,7 +654,6 @@ namespace NodeCanvas.Editor
                 SetSelection(ids);
                 SelectionChanged(ids);
                 //OnSelectionChange?.Invoke(ids);
-
             }
             return DragAndDropVisualMode.Move;
         }

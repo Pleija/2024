@@ -12,3 +12,781 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d181f9974948a9b8540a73b78b56a4, type: 3}
   m_Name: TagManager
   m_EditorClassIdentifier: 
+  m_tags:
+  - name: AutoUpdate
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.BackupCard
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.CardAgent
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.CardManager
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.CardsPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ChangeCharacter
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ChangeCharacterBtn
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ChangeCharcter
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ClanPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Game
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.GameManager
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.GameOverState
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.GameState
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.HeroesPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.HpSlider
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.LevelStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Loading
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.LoadingCharPos
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.LoadoutState
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Login
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Main
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.MainHP
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.MenuArea
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Mission
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.MissionPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Misson
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.MissonBtn
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Modifier
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Navbar
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.SeededRun
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Settings
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.ShopPage
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Start
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.StartButton
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.StartUp
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Test
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.UICamera
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: FSM.Updating
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Hello
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Action
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Actor
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.All
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Any
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Bot
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Bundle
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.CreateRoom
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.EditorOnly
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.EndPoint
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.FieldOfView
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.ForbiddenArea
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Friend
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.GameManagerStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Goal
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.HideOnReady
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.HideOnStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.MainMenu
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Managers
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.None
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.OnGameBegin
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.OnStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Opponent
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Parent
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Parents
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Pause
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Plan
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Player
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.PowerBar
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.PowerText
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.PreviewRoot
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Red
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Run
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.ScoreBar
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.ScoreText
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Self
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Settings
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.ShowOnReady
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.ShowOnStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Skier
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.StartGame
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.StartPoint
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.State
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Test
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Worlds
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Id.Yellow
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: It.Faction
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: It.None
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: It.Parent
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: It.Parents
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: It.Test
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: MainMenu
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: MenuButton
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.AppInit
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.AppStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.GameOver
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.Idle
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.MissionReady
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.MissionStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.None
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.OpenArena
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.OpenMainMenu
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.OpenWorlds
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.Pause
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.PlayerReady
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.Playing
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.RoomReady
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: On.RoomStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Test
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Ui.BtnBack
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Ui.BtnCreateRoom
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Ui.BtnStart
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []
+  - name: Ui.None
+    value: 
+    cost: 0
+    number: 0
+    enable: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    gameObjects: []

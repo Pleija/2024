@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4fa5caed5fb2b43b903ef7859c9bf9, type: 3}
   m_Name: TestBB
   m_EditorClassIdentifier: 
-  showFold: 1
-  _serializedBlackboard: '{"_variables":{"myInteger":{"_value":123,"odd":[0.0],"multiply":[1.0],"values":[{"$content":77,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"}],"_name":"myInteger","_id":"05b32bf2-71ba-4c07-ad4f-6c4a8a117c2a","_data":"{}","_desc":"gjjhggj
-    ","m_Color":{"r":1.0,"g":0.9198113,"b":0.9198113,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+  showFold: 0
+  _serializedBlackboard: '{"_variables":{"myInteger":{"_value":123,"odd":[0.0],"multiply":[1.0],"values":[{"$content":77,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":454,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"},{"$content":123,"$type":"System.Int32"}],"_name":"myInteger","_id":"05b32bf2-71ba-4c07-ad4f-6c4a8a117c2a","_data":"{}","_desc":"gjjhggj
+    ","_key":"69395b1f-fc9c-4761-bed3-46a0a64ab23a","m_Color":{"r":1.0,"g":0.9198113,"b":0.9198113,"a":1.0},"_kv":{"0:Reptiles_Lizard":{"$content":123,"$type":"System.Int32"},"0:Reptiles_Crocodile":{"$content":123,"$type":"System.Int32"},"1:Reptiles_Lizard":{"$content":123,"$type":"System.Int32"},"1:Reptiles_Crocodile":{"$content":123,"$type":"System.Int32"},"2:Reptiles_Lizard":{"$content":123,"$type":"System.Int32"},"2:Reptiles_Crocodile":{"$content":123,"$type":"System.Int32"},"3:Reptiles_Lizard":{"$content":123,"$type":"System.Int32"},"3:Reptiles_Crocodile":{"$content":123,"$type":"System.Int32"},"4:Reptiles_Lizard":{"$content":123,"$type":"System.Int32"},"4:Reptiles_Crocodile":{"$content":123,"$type":"System.Int32"},"":{"$content":123,"$type":"System.Int32"},"0:Mammals_Tiger":{"$content":123,"$type":"System.Int32"},"0:Mammals_Armadillo":{"$content":123,"$type":"System.Int32"},"0:Mammals_Okapi":{"$content":123,"$type":"System.Int32"},"0:Mammals_Elephant":{"$content":123,"$type":"System.Int32"},"1:Mammals_Tiger":{"$content":123,"$type":"System.Int32"},"1:Mammals_Armadillo":{"$content":123,"$type":"System.Int32"},"1:Mammals_Okapi":{"$content":123,"$type":"System.Int32"},"1:Mammals_Elephant":{"$content":123,"$type":"System.Int32"},"2:Mammals_Tiger":{"$content":123,"$type":"System.Int32"},"2:Mammals_Armadillo":{"$content":123,"$type":"System.Int32"},"2:Mammals_Okapi":{"$content":123,"$type":"System.Int32"},"2:Mammals_Elephant":{"$content":123,"$type":"System.Int32"},"3:Mammals_Tiger":{"$content":123,"$type":"System.Int32"},"3:Mammals_Armadillo":{"$content":123,"$type":"System.Int32"},"3:Mammals_Okapi":{"$content":123,"$type":"System.Int32"},"3:Mammals_Elephant":{"$content":123,"$type":"System.Int32"},"4:Mammals_Tiger":{"$content":123,"$type":"System.Int32"},"4:Mammals_Armadillo":{"$content":123,"$type":"System.Int32"},"4:Mammals_Okapi":{"$content":123,"$type":"System.Int32"},"4:Mammals_Elephant":{"$content":123,"$type":"System.Int32"},"0:Mammals:Tiger":{"$content":123,"$type":"System.Int32"},"0:Mammals:Armadillo":{"$content":123,"$type":"System.Int32"},"0:Mammals:Okapi":{"$content":123,"$type":"System.Int32"},"0:Mammals:Elephant":{"$content":123,"$type":"System.Int32"},"1:Mammals:Tiger":{"$content":123,"$type":"System.Int32"},"1:Mammals:Armadillo":{"$content":123,"$type":"System.Int32"},"1:Mammals:Okapi":{"$content":123,"$type":"System.Int32"},"1:Mammals:Elephant":{"$content":123,"$type":"System.Int32"},"2:Mammals:Tiger":{"$content":444,"$type":"System.Int32"},"2:Mammals:Armadillo":{"$content":324,"$type":"System.Int32"},"2:Mammals:Okapi":{"$content":123,"$type":"System.Int32"},"2:Mammals:Elephant":{"$content":123,"$type":"System.Int32"},"3:Mammals:Tiger":{"$content":123,"$type":"System.Int32"},"3:Mammals:Armadillo":{"$content":123,"$type":"System.Int32"},"3:Mammals:Okapi":{"$content":123,"$type":"System.Int32"},"3:Mammals:Elephant":{"$content":123,"$type":"System.Int32"},"4:Mammals:Tiger":{"$content":123,"$type":"System.Int32"},"4:Mammals:Armadillo":{"$content":123,"$type":"System.Int32"},"4:Mammals:Okapi":{"$content":123,"$type":"System.Int32"},"4:Mammals:Elephant":{"$content":123,"$type":"System.Int32"}},"_addValue":{"0:Reptiles_Lizard":0.0,"0:Reptiles_Crocodile":0.0,"1:Reptiles_Lizard":0.0,"1:Reptiles_Crocodile":0.0,"2:Reptiles_Lizard":0.0,"2:Reptiles_Crocodile":0.0,"3:Reptiles_Lizard":0.0,"3:Reptiles_Crocodile":0.0,"4:Reptiles_Lizard":0.0,"4:Reptiles_Crocodile":0.0,"0:Mammals_Tiger":0.0,"0:Mammals_Armadillo":0.0,"0:Mammals_Okapi":0.0,"0:Mammals_Elephant":0.0,"1:Mammals_Tiger":0.0,"1:Mammals_Armadillo":0.0,"1:Mammals_Okapi":0.0,"1:Mammals_Elephant":0.0,"2:Mammals_Tiger":0.0,"2:Mammals_Armadillo":0.0,"2:Mammals_Okapi":0.0,"2:Mammals_Elephant":0.0,"3:Mammals_Tiger":0.0,"3:Mammals_Armadillo":0.0,"3:Mammals_Okapi":0.0,"3:Mammals_Elephant":0.0,"4:Mammals_Tiger":0.0,"4:Mammals_Armadillo":0.0,"4:Mammals_Okapi":0.0,"4:Mammals_Elephant":0.0,"0:Mammals:Tiger":0.0,"0:Mammals:Armadillo":0.0,"0:Mammals:Okapi":0.0,"0:Mammals:Elephant":0.0,"1:Mammals:Tiger":0.0,"1:Mammals:Armadillo":0.0,"1:Mammals:Okapi":0.0,"1:Mammals:Elephant":0.0,"2:Mammals:Tiger":0.0,"2:Mammals:Armadillo":5.0,"2:Mammals:Okapi":0.0,"2:Mammals:Elephant":0.0,"3:Mammals:Tiger":0.0,"3:Mammals:Armadillo":0.0,"3:Mammals:Okapi":0.0,"3:Mammals:Elephant":0.0,"4:Mammals:Tiger":0.0,"4:Mammals:Armadillo":0.0,"4:Mammals:Okapi":0.0,"4:Mammals:Elephant":0.0},"_multiplyValue":{"0:Reptiles_Lizard":1.0,"0:Reptiles_Crocodile":1.0,"1:Reptiles_Lizard":1.0,"1:Reptiles_Crocodile":1.0,"2:Reptiles_Lizard":1.0,"2:Reptiles_Crocodile":1.0,"3:Reptiles_Lizard":1.0,"3:Reptiles_Crocodile":1.0,"4:Reptiles_Lizard":1.0,"4:Reptiles_Crocodile":1.0,"0:Mammals_Tiger":1.0,"0:Mammals_Armadillo":1.0,"0:Mammals_Okapi":1.0,"0:Mammals_Elephant":1.0,"1:Mammals_Tiger":1.0,"1:Mammals_Armadillo":1.0,"1:Mammals_Okapi":1.0,"1:Mammals_Elephant":1.0,"2:Mammals_Tiger":1.0,"2:Mammals_Armadillo":1.0,"2:Mammals_Okapi":1.0,"2:Mammals_Elephant":1.0,"3:Mammals_Tiger":1.0,"3:Mammals_Armadillo":1.0,"3:Mammals_Okapi":1.0,"3:Mammals_Elephant":1.0,"4:Mammals_Tiger":1.0,"4:Mammals_Armadillo":1.0,"4:Mammals_Okapi":1.0,"4:Mammals_Elephant":1.0,"0:Mammals:Tiger":1.0,"0:Mammals:Armadillo":1.0,"0:Mammals:Okapi":1.0,"0:Mammals:Elephant":1.0,"1:Mammals:Tiger":1.0,"1:Mammals:Armadillo":1.0,"1:Mammals:Okapi":1.0,"1:Mammals:Elephant":1.0,"2:Mammals:Tiger":2.0,"2:Mammals:Armadillo":6.0,"2:Mammals:Okapi":1.0,"2:Mammals:Elephant":1.0,"3:Mammals:Tiger":1.0,"3:Mammals:Armadillo":1.0,"3:Mammals:Okapi":1.0,"3:Mammals:Elephant":1.0,"4:Mammals:Tiger":1.0,"4:Mammals:Armadillo":1.0,"4:Mammals:Okapi":1.0,"4:Mammals:Elephant":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myString":{"_value":"test","odd":[0.0],"multiply":[1.0],"values":[{"$content":"test","$type":"System.String"},{"$content":"hellow","$type":"System.String"},{"$content":"test","$type":"System.String"},{"$content":"test","$type":"System.String"},{"$content":"test","$type":"System.String"}],"_name":"myString","_id":"50698924-1950-4b1d-813d-6b7f5282bf98","_data":"{}","_desc":"jgghhj
-    ","m_Color":{"r":0.9292453,"g":1.0,"b":0.9943532,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.String,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myFloat":{"_value":111.0,"odd":[0.0],"multiply":[1.0],"values":[{"$content":111.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"},{"$content":1117778.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"}],"_name":"myFloat","_id":"b6261a34-d44a-4768-b13e-bd377739446a","_data":"{}","_desc":"nlkkll111","m_Color":{"r":0.851467,"g":1.0,"b":0.7688679,"a":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    ","m_Color":{"r":0.9292453,"g":1.0,"b":0.9943532,"a":1.0},"_kv":{"0:Animals_Reptiles":{"$content":"test","$type":"System.String"},"0:Animals_Reptiles/Lizard":{"$content":"test","$type":"System.String"},"0:Animals_Reptiles/Crocodile":{"$content":"test","$type":"System.String"},"0:Animals_Mammals":{"$content":"test","$type":"System.String"},"0:Animals_Mammals/Tiger":{"$content":"test","$type":"System.String"},"0:Animals_Mammals/Armadillo":{"$content":"test","$type":"System.String"},"0:Animals_Mammals/Okapi":{"$content":"test","$type":"System.String"},"0:Animals_Mammals/Elephant":{"$content":"test","$type":"System.String"},"1:Animals_Reptiles":{"$content":"test","$type":"System.String"},"1:Animals_Reptiles/Lizard":{"$content":"test","$type":"System.String"},"1:Animals_Reptiles/Crocodile":{"$content":"test","$type":"System.String"},"1:Animals_Mammals":{"$content":"test","$type":"System.String"},"1:Animals_Mammals/Tiger":{"$content":"test","$type":"System.String"},"1:Animals_Mammals/Armadillo":{"$content":"test","$type":"System.String"},"1:Animals_Mammals/Okapi":{"$content":"test","$type":"System.String"},"1:Animals_Mammals/Elephant":{"$content":"test","$type":"System.String"},"2:Animals_Reptiles":{"$content":"test","$type":"System.String"},"2:Animals_Reptiles/Lizard":{"$content":"test","$type":"System.String"},"2:Animals_Reptiles/Crocodile":{"$content":"test","$type":"System.String"},"2:Animals_Mammals":{"$content":"test","$type":"System.String"},"2:Animals_Mammals/Tiger":{"$content":"test","$type":"System.String"},"2:Animals_Mammals/Armadillo":{"$content":"test","$type":"System.String"},"2:Animals_Mammals/Okapi":{"$content":"test","$type":"System.String"},"2:Animals_Mammals/Elephant":{"$content":"test","$type":"System.String"},"3:Animals_Reptiles":{"$content":"test","$type":"System.String"},"3:Animals_Reptiles/Lizard":{"$content":"test","$type":"System.String"},"3:Animals_Reptiles/Crocodile":{"$content":"test","$type":"System.String"},"3:Animals_Mammals":{"$content":"test","$type":"System.String"},"3:Animals_Mammals/Tiger":{"$content":"test","$type":"System.String"},"3:Animals_Mammals/Armadillo":{"$content":"test","$type":"System.String"},"3:Animals_Mammals/Okapi":{"$content":"test","$type":"System.String"},"3:Animals_Mammals/Elephant":{"$content":"test","$type":"System.String"},"4:Animals_Reptiles":{"$content":"test","$type":"System.String"},"4:Animals_Reptiles/Lizard":{"$content":"test","$type":"System.String"},"4:Animals_Reptiles/Crocodile":{"$content":"test","$type":"System.String"},"4:Animals_Mammals":{"$content":"test","$type":"System.String"},"4:Animals_Mammals/Tiger":{"$content":"test","$type":"System.String"},"4:Animals_Mammals/Armadillo":{"$content":"test","$type":"System.String"},"4:Animals_Mammals/Okapi":{"$content":"test","$type":"System.String"},"4:Animals_Mammals/Elephant":{"$content":"test","$type":"System.String"},"":{"$content":"test","$type":"System.String"},"0":{"$content":"test","$type":"System.String"},"1":{"$content":"test","$type":"System.String"},"2":{"$content":"sfesefe","$type":"System.String"},"3":{"$content":"ssss","$type":"System.String"},"4":{"$content":"test","$type":"System.String"}},"$type":"NodeCanvas.Framework.Variable`1[[System.String,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"myFloat":{"_value":111.0,"odd":[0.0],"multiply":[1.0],"values":[{"$content":111.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"},{"$content":1117778.0,"$type":"System.Single"},{"$content":111.0,"$type":"System.Single"}],"_name":"myFloat","_id":"b6261a34-d44a-4768-b13e-bd377739446a","_data":"{}","_desc":"nlkkll111","m_Color":{"r":0.851467,"g":1.0,"b":0.7688679,"a":1.0},"_kv":{"0:Mammals_Tiger":{"$content":111.0,"$type":"System.Single"},"0:Mammals_Armadillo":{"$content":111.0,"$type":"System.Single"},"0:Mammals_Okapi":{"$content":111.0,"$type":"System.Single"},"0:Mammals_Elephant":{"$content":111.0,"$type":"System.Single"},"1:Mammals_Tiger":{"$content":111.0,"$type":"System.Single"},"1:Mammals_Armadillo":{"$content":111.0,"$type":"System.Single"},"1:Mammals_Okapi":{"$content":111.0,"$type":"System.Single"},"1:Mammals_Elephant":{"$content":111.0,"$type":"System.Single"},"2:Mammals_Tiger":{"$content":111.0,"$type":"System.Single"},"2:Mammals_Armadillo":{"$content":111.0,"$type":"System.Single"},"2:Mammals_Okapi":{"$content":111.0,"$type":"System.Single"},"2:Mammals_Elephant":{"$content":111.0,"$type":"System.Single"},"3:Mammals_Tiger":{"$content":111.0,"$type":"System.Single"},"3:Mammals_Armadillo":{"$content":111.0,"$type":"System.Single"},"3:Mammals_Okapi":{"$content":111.0,"$type":"System.Single"},"3:Mammals_Elephant":{"$content":111.0,"$type":"System.Single"},"4:Mammals_Tiger":{"$content":111.0,"$type":"System.Single"},"4:Mammals_Armadillo":{"$content":111.0,"$type":"System.Single"},"4:Mammals_Okapi":{"$content":111.0,"$type":"System.Single"},"4:Mammals_Elephant":{"$content":111.0,"$type":"System.Single"},"":{"$content":111.0,"$type":"System.Single"},"0":{"$content":0.0,"$type":"System.Single"},"1":{"$content":3.0,"$type":"System.Single"},"2":{"$content":8.0,"$type":"System.Single"},"3":{"$content":111.0,"$type":"System.Single"},"4":{"$content":111.0,"$type":"System.Single"}},"_addValue":{"0:Mammals_Tiger":0.0,"0:Mammals_Armadillo":0.0,"0:Mammals_Okapi":0.0,"0:Mammals_Elephant":0.0,"1:Mammals_Tiger":0.0,"1:Mammals_Armadillo":0.0,"1:Mammals_Okapi":0.0,"1:Mammals_Elephant":0.0,"2:Mammals_Tiger":0.0,"2:Mammals_Armadillo":0.0,"2:Mammals_Okapi":0.0,"2:Mammals_Elephant":0.0,"3:Mammals_Tiger":0.0,"3:Mammals_Armadillo":0.0,"3:Mammals_Okapi":0.0,"3:Mammals_Elephant":0.0,"4:Mammals_Tiger":0.0,"4:Mammals_Armadillo":0.0,"4:Mammals_Okapi":0.0,"4:Mammals_Elephant":0.0,"0":0.0,"1":0.0,"2":0.0,"3":0.0,"4":0.0},"_multiplyValue":{"0:Mammals_Tiger":1.0,"0:Mammals_Armadillo":1.0,"0:Mammals_Okapi":1.0,"0:Mammals_Elephant":1.0,"1:Mammals_Tiger":1.0,"1:Mammals_Armadillo":1.0,"1:Mammals_Okapi":1.0,"1:Mammals_Elephant":1.0,"2:Mammals_Tiger":1.0,"2:Mammals_Armadillo":1.0,"2:Mammals_Okapi":1.0,"2:Mammals_Elephant":1.0,"3:Mammals_Tiger":1.0,"3:Mammals_Armadillo":1.0,"3:Mammals_Okapi":1.0,"3:Mammals_Elephant":1.0,"4:Mammals_Tiger":1.0,"4:Mammals_Armadillo":1.0,"4:Mammals_Okapi":1.0,"4:Mammals_Elephant":1.0,"0":1.0,"1":1.0,"2":1.0,"3":1.0,"4":1.0},"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   _version: 1.0
   LevelCount: 5
@@ -32,13 +32,27 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: keyTree
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[System.ValueTuple`3[[System.String,
+        mscorlib],[System.String, mscorlib],[System.String, mscorlib]], mscorlib]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: values
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object,
+      Data: 1|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 2|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -54,7 +68,7 @@ MonoBehaviour:
       Data: test
     - Name: $v
       Entry: 7
-      Data: 2|System.Int32, mscorlib
+      Data: 3|System.Int32, mscorlib
     - Name: 
       Entry: 3
       Data: 1
@@ -72,7 +86,7 @@ MonoBehaviour:
       Data: t2
     - Name: $v
       Entry: 7
-      Data: 3|System.Single, mscorlib
+      Data: 4|System.Single, mscorlib
     - Name: 
       Entry: 4
       Data: 2.1
@@ -90,7 +104,7 @@ MonoBehaviour:
       Data: str
     - Name: $v
       Entry: 7
-      Data: 4|System.String, mscorlib
+      Data: 5|System.String, mscorlib
     - Name: 
       Entry: 1
       Data: ewrwe
@@ -108,7 +122,7 @@ MonoBehaviour:
       Data: list
     - Name: $v
       Entry: 7
-      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+      Data: 6|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 2
