@@ -378,7 +378,7 @@ namespace NodeCanvas.Editor
                                 //Assert.IsTrue(Object.ReferenceEquals(tVar[i], value),"Object.ReferenceEquals(tVar[i], value)");
 
                                 if ( /*value != tVar[i] ||*/ EditorGUI.EndChangeCheck()) {
-                                    Debug.Log("===========changed=========");
+                                    Debug.Log("=========== changed =========");
                                     UndoUtility.RecordObject(bb, "Variable Value Change");
                                     tVar[key] = value;
                                     //data.value = value;
