@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using FlowCanvas.Macros;
 using FlowCanvas.Nodes;
+
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+using UnityEditor;
+#endif
 using NodeCanvas.Framework;
 using ParadoxNotion;
 using ParadoxNotion.Design;
-using UnityEditor;
 using UnityEngine;
 using Logger = ParadoxNotion.Services.Logger;
 using Object = UnityEngine.Object;

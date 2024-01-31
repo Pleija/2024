@@ -36,7 +36,10 @@ namespace Puerts
             }
         }
 
-        [MenuItem("Tests/Js Extensions")]
+#if UNITY_EDITOR
+              [MenuItem("Tests/Js Extensions")]
+
+#endif
         public static void Test()
         {
             // CheckExtensions();

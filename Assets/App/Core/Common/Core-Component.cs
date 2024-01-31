@@ -12,9 +12,14 @@ using Enums;
 using Extensions;
 using MoreTags;
 using Sirenix.Utilities;
+
+#if UNITY_EDITOR
+
+
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.Experimental.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;

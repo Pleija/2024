@@ -1,6 +1,9 @@
 #region
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEngine;

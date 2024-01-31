@@ -1,9 +1,12 @@
 #region
 using System.Linq;
+
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+using UnityEditor;
+#endif
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
-using UnityEditor;
 using UnityEngine;
 #endregion
 

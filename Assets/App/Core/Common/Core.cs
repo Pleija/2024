@@ -9,10 +9,15 @@ using System.Text.RegularExpressions;
 using Extensions;
 using Puerts;
 using Sirenix.Utilities;
+
+#if UNITY_EDITOR
+
+
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build.DataBuilders;
 using UnityEditor.Callbacks;
+#endif
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -37,9 +42,9 @@ public static partial class Core
     }
 
 #if UNITY_EDITOR
-    [MenuItem("Tests/Git Current Tag")]
-    [PostProcessScene(10)]
-    [InitializeOnLoadMethod]
+     [MenuItem("Tests/Git Current Tag")]
+    // [PostProcessScene(10)]
+    // [InitializeOnLoadMethod]
     static void TestCurrentTag()
     {
         if (Application.isPlaying) return;

@@ -1,6 +1,10 @@
 ﻿#region
 using ParadoxNotion.Design;
+
+#if UNITY_EDITOR
 using UnityEditorInternal;
+
+#endif
 using UnityEngine;
 #endregion
 

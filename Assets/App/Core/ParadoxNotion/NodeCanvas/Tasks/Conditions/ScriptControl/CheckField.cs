@@ -2,7 +2,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using NodeCanvas.Framework;
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion;

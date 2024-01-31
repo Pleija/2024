@@ -7,8 +7,12 @@ using Cysharp.Threading.Tasks;
 using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
+
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;

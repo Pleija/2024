@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.Serialization;
 using SqlCipher4Unity3D;
+
+#if UNITY_EDITOR
 using UnityEditor.IMGUI.Controls;
+
+#endif
 using UnityEngine;
 
 namespace Models
@@ -17,7 +21,10 @@ namespace Models
             public string guid;
             public string desc;
             public int levels;
-            public TreeViewItem item { get; set; }
+#if UNITY_EDITOR
+             public TreeViewItem item { get; set; }
+
+#endif
             public string itemEditName => key.Split('/').Last();
             public string itemName => key.Split('/').Last() + (levels == 0 ? "" : $" ({levels})");
         }

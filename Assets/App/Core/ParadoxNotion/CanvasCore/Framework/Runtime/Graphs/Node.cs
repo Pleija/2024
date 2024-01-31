@@ -6,7 +6,10 @@ using System.IO;
 using System.Linq;
 using HashidsNet;
 using MoreTags;
+
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion;
 using ParadoxNotion.Design;

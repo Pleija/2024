@@ -2,7 +2,9 @@
 
 #region
 using MoreTags;
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using ParadoxNotion;
 using ParadoxNotion.Design;
 using ParadoxNotion.Serialization.FullSerializer;

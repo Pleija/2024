@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 using Enums;
 using Extensions;
 using Sirenix.Utilities;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
+#endif
+
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;

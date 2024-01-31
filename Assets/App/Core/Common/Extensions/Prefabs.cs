@@ -2,12 +2,7 @@
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
-#if UNITY_2020
 
-#else
-using UnityEditor.SceneManagement;
-#endif
-#endif
 
 // using WebSocketSharp;
 
@@ -83,3 +78,5 @@ namespace Extensions
         }
     }
 }
+
+#endif

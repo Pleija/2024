@@ -9,7 +9,9 @@ using System.Reflection;
 using System.Text;
 using FlowCanvas.Macros;
 using FlowCanvas.Nodes;
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using NodeCanvas.Framework;
 using ParadoxNotion;
 using ParadoxNotion.Design;

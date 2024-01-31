@@ -1,8 +1,12 @@
 using System;
 using System.Linq;
 using Sirenix.Utilities;
+
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEditor.Callbacks;
+#endif
 using UnityEngine;
 
 namespace Data

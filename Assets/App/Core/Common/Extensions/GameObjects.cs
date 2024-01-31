@@ -1,16 +1,12 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
-#if UNITY_2020
 
-#else
-using UnityEditor.SceneManagement;
-#endif
-#endif
 
 namespace Extensions
 {

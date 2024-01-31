@@ -1,7 +1,11 @@
 ﻿#region
 using ParadoxNotion.Design;
 using ParadoxNotion.Services;
+
+#if UNITY_EDITOR
 using UnityEditorInternal;
+
+#endif
 using UnityEngine;
 #endregion
 

@@ -10,7 +10,11 @@ using Extensions;
 using Puerts;
 using Sirenix.Utilities;
 using SqlCipher4Unity3D;
+
+#if UNITY_EDITOR
+
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;

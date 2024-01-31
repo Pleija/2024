@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MoreTags;
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using ParadoxNotion;
 using ParadoxNotion.Design;
 using ParadoxNotion.Serialization.FullSerializer;

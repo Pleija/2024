@@ -4,7 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEditor;

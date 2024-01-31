@@ -1,7 +1,11 @@
 #region
 using System.IO;
 using Sirenix.OdinInspector;
+
+#if UNITY_EDITOR
 using UnityEditor.AssetImporters;
+
+#endif
 using UnityEngine;
 #endregion
 

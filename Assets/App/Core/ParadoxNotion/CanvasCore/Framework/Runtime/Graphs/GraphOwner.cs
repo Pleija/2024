@@ -1,7 +1,10 @@
 #region
 using System;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
 using NodeCanvas.Editor;
+#endif
 using NodeCanvas.Framework.Internal;
 using ParadoxNotion.Design;
 using ParadoxNotion.Serialization;

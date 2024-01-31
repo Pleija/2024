@@ -9,7 +9,11 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using ParadoxNotion.Serialization;
+
+#if UNITY_EDITOR
 using UnityEditor.Callbacks;
+
+#endif
 using Logger = ParadoxNotion.Services.Logger;
 using Object = UnityEngine.Object;
 #endregion

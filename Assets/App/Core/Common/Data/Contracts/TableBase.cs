@@ -4,7 +4,11 @@ using Extensions;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Sirenix.Utilities;
+
+#if UNITY_EDITOR
+
 using Sirenix.Utilities.Editor;
+#endif
 using SqlCipher4Unity3D;
 using SqlCipher4Unity3D.SQLite.Attribute;
 using UnityEditor;
