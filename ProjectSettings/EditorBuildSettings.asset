@@ -6,9 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/App/TankShooter/Scenes/menu.unity
+    guid: 356656cd66966064dad17e3f81dd7ac1
+  - enabled: 1
+    path: Assets/App/TankShooter/Scenes/level1.unity
+    guid: f7b246039ca85b541a15fff30af7c8fb
+  - enabled: 1
+    path: Assets/App/TankShooter/Scenes/level2.unity
+    guid: 2e587a58f908d954f96db0e11481a5d3
+  - enabled: 1
+    path: Assets/App/TankShooter/Scenes/level3.unity
+    guid: 87d3d420505be724fbcc0a17533d7685
+  - enabled: 1
+    path: Assets/App/TankShooter/Scenes/level4.unity
+    guid: 79645844b47999e4b9adc97cfc20a7e3
+  - enabled: 1
+    path: Assets/App/Dungeon/Scenes/Game.unity
+    guid: cd3e567a37c3fae4c97971ce706b5a63
+  - enabled: 0
     path: Assets/Scenes/BaseStart.unity
     guid: 490ec68fb6fa84263974e5c283fc1f6b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Loading.unity
     guid: 55ae290035c53434eb94fc9842eb61b8
   - enabled: 0

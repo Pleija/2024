@@ -5,6 +5,7 @@ using UnityEngine.Advertisements;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Extensions;
 using Runner.Sounds;
 using Runner.Tracks;
 using Runner.UI;
@@ -121,6 +122,7 @@ namespace Runner.Game
 
         public void StartGame()
         {
+            Debug.Log("start game".ToBlue());
             canvas.gameObject.SetActive(true);
             pauseMenu.gameObject.SetActive(false);
             wholeUI.gameObject.SetActive(true);

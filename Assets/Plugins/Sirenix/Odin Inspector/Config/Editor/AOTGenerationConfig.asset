@@ -16,7 +16,7 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 09000000140000000d000000
-  lastScan: 638430885543770010
+  lastScan: 638531223764845340
   supportSerializedTypes:
   - TypeName: SqlCipher4Unity3D.Model, SqlCipher4Unity3D
     IsCustom: 1
@@ -80,6 +80,10 @@ MonoBehaviour:
   - TypeName: UnityEngine.GameObject, UnityEngine.CoreModule
     IsCustom: 0
     Emit: 1
+  - TypeName: System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
+      mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
   - TypeName: System.Collections.Generic.GenericEqualityComparer`1[[System.String,
       mscorlib]], mscorlib
     IsCustom: 0
@@ -92,6 +96,10 @@ MonoBehaviour:
     Emit: 1
   - TypeName: System.Collections.Generic.IEqualityComparer`1[[Runner.Consumable.Consumable+ConsumableType,
       Assembly-CSharp]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.IEqualityComparer`1[[System.Int32, mscorlib]],
+      mscorlib
     IsCustom: 0
     Emit: 1
   - TypeName: System.Collections.Generic.IEqualityComparer`1[[System.String, mscorlib]],
@@ -134,7 +142,13 @@ MonoBehaviour:
       mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: Runner.Missions.PickupMission, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
   - TypeName: UnityRoyale.Placeable+Faction, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: Runner.Missions.SlidingMission, Assembly-CSharp
     IsCustom: 0
     Emit: 1
   - TypeName: System.String, mscorlib

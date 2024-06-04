@@ -3859,26 +3859,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
+    SerializedFormat: 0
+    SerializedBytes: 2d01080000004f006e004300680061006e006700650001010400000074007900700065002f00000000011c000000530079007300740065006d002e00520075006e00740069006d00650054007900700065002c0020006d00730063006f0072006c006900620000000000280122000000520075006e006e00650072002e0050006c00610079006500720044006100740061002c00200041007300730065006d0062006c0079002d0043005300680061007200700005
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: OnChange
-      Entry: 6
-      Data: 
-    - Name: type
-      Entry: 7
-      Data: 0|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: Runner.PlayerData, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   Value:
     value: 0
   Id: 1
@@ -4732,35 +4720,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
+    SerializedFormat: 0
+    SerializedBytes: 01010400000074006500730074002f00000000014c000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e004800610073006800530065007400600031005b005b00530079007300740065006d002e0053007400720069006e0067002c0020006d00730063006f0072006c00690062005d005d002c002000530079007300740065006d002e0043006f007200650000000000060200000000000000280105000000680065006c006c006f00280104000000740065007300740007052d010a0000004f006e0043006100720064005500730065006400
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: test
-      Entry: 7
-      Data: 0|System.Collections.Generic.HashSet`1[[System.String, mscorlib]], System.Core
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 1
-      Data: hello
-    - Name: 
-      Entry: 1
-      Data: test
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: OnCardUsed
-      Entry: 6
-      Data: 
+    SerializationNodes: []
   mainCamera: {fileID: 0}
   playingFieldMask:
     serializedVersion: 2
@@ -4785,17 +4752,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
+    SerializedFormat: 0
+    SerializedBytes: 2d010a0000004f006e0043006100720064005500730065006400
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: OnCardUsed
-      Entry: 6
-      Data: 
+    SerializationNodes: []
   aiDeck: {fileID: 11400000, guid: 8a5c0422680584f748caecc799c2ca4a, type: 2}
   opponentLoopTime: 4
 --- !u!114 &4988753507282275535
@@ -4811,7 +4775,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -7415,26 +7379,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
+    SerializedFormat: 0
+    SerializedBytes: 2d01080000004f006e004300680061006e006700650001010400000074007900700065002f00000000011c000000530079007300740065006d002e00520075006e00740069006d00650054007900700065002c0020006d00730063006f0072006c006900620000000000280122000000520075006e006e00650072002e0050006c00610079006500720044006100740061002c00200041007300730065006d0062006c0079002d0043005300680061007200700005
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: OnChange
-      Entry: 6
-      Data: 
-    - Name: type
-      Entry: 7
-      Data: 0|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: Runner.PlayerData, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   Value:
     value: 0
   Id: 1
