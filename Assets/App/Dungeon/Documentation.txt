@@ -1,0 +1,121 @@
+Documentation
+
+Main Scripts for the project:
+All scripts in the project are well commented, any doubt, please see the scripts comments for clarification.
+With that in mind, here are the main scripts for the project:
+
+DungeonGenerator.cs
+It creates all the dungeon for your game, set it up in your scene and configure all the prefabs your game will have.
+It can be extended or worked on to make more complex dungeons with more things.
+
+CellManager.cs
+The dungeon is made of a grid of cells, each cell must have this script.
+A cell is usually a ground plane with some texture, it can contain walls, enemy spawner, etc.
+Walls should not create dead ends, remember that the player maybe need to enter through the left of this cell and exit going up.
+A cell can have traps, holes or anything you want. Instead of using a enemy prefab, it should be used GameObjectSpanwer.cs script, that way you don't lose the enemy prefab once you add to the cell.
+
+ObjectManager.cs
+It manages all the object in the game that share the game grid, new objects need to interact with this script, read the script comments for more detail.
+
+BaseObj.cs
+The base for all the objects in the game, any method that need to be shared by all the game objects should be added here.
+All the classes exist in the game grid extends this class.
+
+
+
+Prefabs:
+Ambient:
+Prefabs that appear in the dungeon ambient, like statues, vines, torches
+
+
+Chars:
+Creating new enemies and player:
+Check Prefabs/Chars for examples.
+An enemy should have a script that use of extend EnemyObj.cs. Just configure it with the correct status and it should work.
+The player prefab can be found in Prefabs/Chars/Player, you can create more prefabs if you maybe want to be able to choose from multiple heroes
+
+
+Dungeon:
+Cells:
+A cell is a room that the player will find in the dungeon.
+Usually have a ground, but this is only for visual effects, the player can walk in any empty area, so even without a ground, it will walk on top of it.
+If you want a hole in the room, you can create a invisible wall, so the player can't walk on top of it. Or a trap, so it kill the player once it get on top of it.
+Cells can have walls, enemies, items, traps, buttons, anything really. 
+Default cells use GameObjectSpanwer.cs to spawn enemies and items, that way it has a chance that the enemy or item is not spawned, plus it choose from a pool with item it want to spawn.
+Adding the enemy or item prefab inside the cell will lost the prefab connection, so its best to use a script like GameObjectSpanwer.cs for that.
+The player need to navigate between the 4 exits in the cell, so don't create dead ends on the cell.
+You can make per example, a small passage with 4 exits, and a boss in the middle with 50% of spawn.
+
+Doors:
+Doors are walls that will appear between two cells in the dungeon, that the player must have a way to pass through.
+A wall can be totally empty, or have a small door, or be a hall, anything that the player can pass from one side to another.
+The door size should be the same as the cell size in the X axis
+
+End Stage:
+Those are special cells that only will appear on the end of the Dungeon.
+It should have a way to go the next floor.
+Example: A stair, a boss that you kill and appear a stair, a teleport surrounded by monsters. It will be the end of this stage.
+
+Managers:
+Prefabs for any manager for the game, if you configured a Dungeon, you can add it here so you can use later without the need to configure it again.
+
+Walls:
+Those will appear between two cells and the player must not be able to pass from one side to another.
+It can contain walls, traps, torches, anything really.
+The wall size should be the same as the cell size in the X axis
+
+
+Items:
+Any item that can appear during the dungeon
+
+
+Particles:
+Any particle prefab that exist in the game.
+
+
+Ranged:
+Prefabs of projectiles used in the game. Ex: Arrows, bombs, fire, etc
+
+
+Traps:
+Traps that appear in the dungeon
+
+UI:
+Elements of the UI, like health bar or damage.
+
+Weapons:
+Items that are weapons to appear on the ground during the dungeon.
+
+
+
+
+Starting a new dungeon:
+1) Set up a object with the DungeonGenerator.cs attached.
+2) Configure all the dungeon with prefabs for cells, items, etc. See the example scene for reference.
+3) Create a canvas, UI elements, audio manager, Object Manager, see example scene for reference.
+4) Create new cells at will, more doors, walls, enemies, items, traps if needed, extend the "Obj" scripts for new actions.
+5) Set the new prefabs on the DungeonGenerator script.
+6) Play the game
+
+
+Setting up Script Execution Order:
+Scripts that extend BaseObj should have the order that you want to spawn in the world. Example:
+WallObj  +100
+EnemyObj +200
+PlayerObj +300
+This will make the walls spawn, then the enemies, then the player, if there is any wall in the place of a enemy, the wall will be destroyed, and if there is any enemy in the player place, the enemy will be destroyed.
+
+
+
+--- Credits ---
+
+Art and music by:
+Kenney
+http://kenney.nl/
+
+Programming:
+Gabriel Poetsch
+
+
+For any support, please contact:
+gpoetsch@gmail.com

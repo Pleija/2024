@@ -16,7 +16,7 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 09000000140000000d000000
-  lastScan: 638413582521029130
+  lastScan: 638430885543770010
   supportSerializedTypes:
   - TypeName: SqlCipher4Unity3D.Model, SqlCipher4Unity3D
     IsCustom: 1
@@ -31,6 +31,9 @@ MonoBehaviour:
     IsCustom: 1
     Emit: 1
   - TypeName: Runner.Game.AState, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Boolean, mscorlib
     IsCustom: 0
     Emit: 1
   - TypeName: UnityRoyale.CardData, Assembly-CSharp
@@ -51,6 +54,14 @@ MonoBehaviour:
       Assembly-CSharp]], mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[UnityEngine.GameObject,
+      UnityEngine.CoreModule]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object,
+      mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
   - TypeName: System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object,
       mscorlib]], mscorlib
     IsCustom: 0
@@ -59,12 +70,21 @@ MonoBehaviour:
       Assembly-CSharp]], mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: System.Single, mscorlib
+    IsCustom: 0
+    Emit: 1
   - TypeName: System.Func`2[[System.Object, mscorlib],[System.Object, mscorlib]],
       mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: UnityEngine.GameObject, UnityEngine.CoreModule
+    IsCustom: 0
+    Emit: 1
   - TypeName: System.Collections.Generic.GenericEqualityComparer`1[[System.String,
       mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.HashSet`1[[System.String, mscorlib]], System.Core
     IsCustom: 0
     Emit: 1
   - TypeName: Runner.HighscoreEntry, Assembly-CSharp
@@ -93,6 +113,17 @@ MonoBehaviour:
       mscorlib
     IsCustom: 0
     Emit: 1
+  - TypeName: System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.List`1[[System.ValueTuple`3[[System.String,
+      mscorlib],[System.String, mscorlib],[System.String, mscorlib]], mscorlib]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Int64, mscorlib
+    IsCustom: 0
+    Emit: 1
   - TypeName: Runner.Missions.MissionBase, Assembly-CSharp
     IsCustom: 0
     Emit: 1
@@ -115,6 +146,10 @@ MonoBehaviour:
   - TypeName: UnityEngine.Events.UnityAction`3[[UnityRoyale.CardData, Assembly-CSharp],[UnityEngine.Vector3,
       UnityEngine.CoreModule],[UnityRoyale.Placeable+Faction, Assembly-CSharp]],
       UnityEngine.CoreModule
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.ValueTuple`3[[System.String, mscorlib],[System.String, mscorlib],[System.String,
+      mscorlib]], mscorlib
     IsCustom: 0
     Emit: 1
   - TypeName: System.ValueTuple`2[[System.String, mscorlib],[System.String, mscorlib]],
