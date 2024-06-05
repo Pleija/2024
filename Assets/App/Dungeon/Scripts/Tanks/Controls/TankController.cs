@@ -94,32 +94,32 @@ namespace TankShooter
         {
             //if game is not started or player tanks blown - do nothing
             if (gameplay.getGameState() == Gameplay.GameState.None || !isAlive) return;
-#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
-		//mobile controls
-		bodyDirection = getDirectionFromJoystick(leftJoystick);
-		if (PlayerPrefs.GetInt("control_type", 1) == 2) { //rotate cannon with right joystick
-			cannonDirection = getDirectionFromJoystick(rightJoystick).normalized;
-			RotateToDirection(cannon.transform, cannonDirection, cannonRotationSpeed);
-		}
-
-		foreach (Touch touch in Input.touches) {
-			if (isJoystickTouched(touch.position)) //ignore touches over joystick
-			    continue;
-			if (touch.phase == TouchPhase.Began) {
-				if (PlayerPrefs.GetInt("control_type", 1) == 1) {
-					cannonDirection = getCannonDirection(touch.position);
-					cannon.transform.rotation =
- Quaternion.LookRotation(cannonDirection); //rotate cannon to touch position
-				}
-				//start fire
-				if (cannon.bulletType != Cannon.BulletType.MortarBomb)
-					cannon.Fire();
-				else
-					cannon.Fire(getWorldPoint(touch.position));
-				break;
-			}
-		}
-#else
+// #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
+// 		//mobile controls
+// 		bodyDirection = getDirectionFromJoystick(leftJoystick);
+// 		if (PlayerPrefs.GetInt("control_type", 1) == 2) { //rotate cannon with right joystick
+// 			cannonDirection = getDirectionFromJoystick(rightJoystick).normalized;
+// 			RotateToDirection(cannon.transform, cannonDirection, cannonRotationSpeed);
+// 		}
+//
+// 		foreach (Touch touch in Input.touches) {
+// 			if (isJoystickTouched(touch.position)) //ignore touches over joystick
+// 			    continue;
+// 			if (touch.phase == TouchPhase.Began) {
+// 				if (PlayerPrefs.GetInt("control_type", 1) == 1) {
+// 					cannonDirection = getCannonDirection(touch.position);
+// 					cannon.transform.rotation =
+//  Quaternion.LookRotation(cannonDirection); //rotate cannon to touch position
+// 				}
+// 				//start fire
+// 				if (cannon.bulletType != Cannon.BulletType.MortarBomb)
+// 					cannon.Fire();
+// 				else
+// 					cannon.Fire(getWorldPoint(touch.position));
+// 				break;
+// 			}
+// 		}
+// #else
             // PC / Webplayer controls
             //bodyDirection = getBodyDirection();
             //cannonDirection = getCannonDirection(Input.mousePosition);
@@ -130,16 +130,17 @@ namespace TankShooter
 
                 if (timeUp <= time) {
                     time -= timeUp;
-                    //if ( /*Input.GetMouseButtonDown(0)*/) {
+                    cannon.Fire();
+                    //if ( Input.GetMouseButtonDown(0)) {
                     //start fire on mouse left button up
-                    if (cannon.bulletType != Cannon.BulletType.MortarBomb)
-                        cannon.Fire();
-                    else
-                        cannon.Fire(getWorldPoint(Input.mousePosition));
+                    // if (cannon.bulletType != Cannon.BulletType.MortarBomb)
+                    //     cannon.Fire();
+                    // else
+                    //     cannon.Fire(getWorldPoint(Input.mousePosition));
                     //}
                 }
             }
-#endif
+//#endif
             //rotate tank body to moving direction
             //RotateToDirection(body, bodyDirection, bodyRotationSpeed);
         }
