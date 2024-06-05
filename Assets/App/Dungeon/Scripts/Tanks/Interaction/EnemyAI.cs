@@ -18,7 +18,7 @@ namespace TankShooter
         public float cannonRotationSpeed = 15f; //speed of rotation to direction of cannon
         public float minFireRate = 2f;          //minimum delay before next shoot (in seconds)
         public float maxFireRate = 4f;          //maximum delay before next shoot (in seconds)
-        public bool chasePlayer = false;        //when true - the enemy follow the player when it's visible 
+        public bool chasePlayer = false;        //when true - the enemy follow the player when it's visible
         Gameplay gameplay;                      //main game component
         float viewDistance = 100f;              //maximum distance at which the enemy can see the player
         float moveError = 0.05f;                //maximum difference between enemy and target positions to change waypoint
@@ -30,13 +30,13 @@ namespace TankShooter
         bool playerVisible = false;   //check if player visible by enemy
         bool canFire = true;          //check if firing available
         bool hasMortarCannon = false; //check if enemy's cannon has mortar bombs
-        Transform player; 
+        Transform player => TankController.instance ? TankController.instance.transform : null;
         Vector3[] directions; //moving directions
 
         // Use this for initialization
         void Start () {
             gameplay = GameObject.FindObjectOfType<Gameplay>();
-            player = GameObject.FindObjectOfType<TankController>().transform;    //find player transform on scene
+            //player = GameObject.FindObjectOfType<TankController>().transform;    //find player transform on scene
             hasMortarCannon = cannon.bulletType == Cannon.BulletType.MortarBomb; //check bullet type
             CalculateDirections();                                               //calculate moving directions
             ChangeTargetWayPoint();                                              //find next point to move
@@ -44,9 +44,9 @@ namespace TankShooter
 
         void CalculateDirections() {
             //get 16 moving directions for realism (you can use less directions to improve performance)
-            directions = new Vector3[] { Vector3.forward, 
-                Vector3.back, 
-                Vector3.left, 
+            directions = new Vector3[] { Vector3.forward,
+                Vector3.back,
+                Vector3.left,
                 Vector3.right,
                 getSum(Vector3.forward, Vector3.left),
                 getSum(Vector3.forward, Vector3.right),
@@ -59,7 +59,7 @@ namespace TankShooter
                 getSum(Vector3.back, getSum(Vector3.back, Vector3.left)),
                 getSum(Vector3.back, getSum(Vector3.back, Vector3.right)),
                 getSum(getSum(Vector3.back, Vector3.left), Vector3.left),
-                getSum(getSum(Vector3.back, Vector3.right), Vector3.right) 
+                getSum(getSum(Vector3.back, Vector3.right), Vector3.right)
             };
         }
 
@@ -70,7 +70,7 @@ namespace TankShooter
 
         // Update is called once per frame
         void Update () {
-            if (!gameplay.isPlaying() || !isAlive)  //if game not started or finished - ignore update
+            if (!gameplay.isPlaying() || !isAlive || !player)  //if game not started or finished - ignore update
                 return;
             if (hasTargetPoint) { //rotate body to target point
                 RotateToDirection(body, bodyDirection, bodyRotationSpeed);
@@ -92,7 +92,7 @@ namespace TankShooter
                 } else { //rotate cannon in body direction if player not visible
                     RotateToDirection(cannon.transform, bodyDirection, cannonRotationSpeed);
                 }
-            } else { //for mortar bombs or similar 
+            } else { //for mortar bombs or similar
                 RotateToDirection(cannon.transform, dirToPlayer, cannonRotationSpeed);
                 if (canFire) {
                     cannon.Fire(player.position);
@@ -135,10 +135,12 @@ namespace TankShooter
             }
         }
 
-        //check the player visibility by enemy using raycast 
-        bool isPlayerVisible() {
+        //check the player visibility by enemy using raycast
+        bool isPlayerVisible()
+        {
+            if (!player) return false;
             RaycastHit hit;
-            int layerMask = ~((1 << LayerMask.NameToLayer("Enemy")) | 
+            int layerMask = ~((1 << LayerMask.NameToLayer("Enemy")) |
                 (1 << LayerMask.NameToLayer("EnemyBullet")) |
                 (1 << LayerMask.NameToLayer("PlayerBullet"))); //cast all layers except enemy and bullets
             if (Physics.Raycast(body.position, getDirectionToPlayer(), out hit, viewDistance, layerMask)) {
@@ -162,7 +164,7 @@ namespace TankShooter
             for (int i = 0; i < directions.Length; i++) {
                 Vector3 point = getDistantPoint(body.transform.position, directions[i]);
                 if (point != Vector3.zero)
-                    points.Add(point); 
+                    points.Add(point);
             }
             //if found at least one point - choose one of them randomly
             if (points.Count > 0) {
@@ -181,8 +183,8 @@ namespace TankShooter
             float halfSizeZ = body.GetComponent<Collider>().bounds.size.z/2;
             if (Physics.Raycast(origin, direction, out hit, maxMoveDistance)) {
                 distance = hit.distance; //save the distance to obstacle
-            } 
-            if (distance != Mathf.Infinity) {    //if ray reached obstacle 
+            }
+            if (distance != Mathf.Infinity) {    //if ray reached obstacle
                 if (distance >= minMoveDistance) //and if this obstacle not very far to enemy
                     //return random point in this direction
                     return origin + direction.normalized * Random.Range(minMoveDistance, distance - halfSizeZ);
@@ -206,7 +208,7 @@ namespace TankShooter
 
         void OnCollisionEnter(Collision collision) {
             //change the moving point when collides with obstacles or other enemies
-            if (collision.collider.tag == "Bound" 
+            if (collision.collider.tag == "Bound"
                 || collision.collider.tag == "Enemy"
                 || collision.collider.tag == "Breakable") {
                 ChangeTargetWayPoint();
@@ -215,7 +217,7 @@ namespace TankShooter
 
         void OnCollisionStay(Collision collision) {
             //change the moving point when collides with obstacles or other enemies
-            if (collision.collider.tag == "Bound" 
+            if (collision.collider.tag == "Bound"
                 || collision.collider.tag == "Enemy"
                 || collision.collider.tag == "Breakable") {
                 ChangeTargetWayPoint();
@@ -228,7 +230,7 @@ namespace TankShooter
             canFire = true;
         }
 
-        //called to hurt the enemy 
+        //called to hurt the enemy
         public void AddDamage(int power) {
             lifes -= power;
             if (lifes <= 0)  { //blow up the enemy if no more lifes
@@ -250,12 +252,12 @@ namespace TankShooter
             GameObject explosion = (GameObject) Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 2);
             Destroy(this.gameObject, 3);
-            GameObject.FindObjectOfType<Gameplay>().DecreaseEnemiesCount(); 
+            GameObject.FindObjectOfType<Gameplay>().DecreaseEnemiesCount();
         }
 
         public bool isEnemyAlive() {
             return this.isAlive;
         }
-	
+
     }
 }

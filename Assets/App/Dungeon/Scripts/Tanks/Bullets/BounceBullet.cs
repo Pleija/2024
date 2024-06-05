@@ -9,12 +9,12 @@ namespace TankShooter
 
         // Use this for initialization
         void Start () {
-	
+
         }
-	
+
         // Update is called once per frame
         void Update () {
-	
+
         }
 
         public override void StartMove(Target target) {
@@ -23,7 +23,7 @@ namespace TankShooter
         }
 
         void OnCollisionEnter (Collision collision) {
-            if (collision.gameObject.tag == "Bound") { //when the bullet collides with bound (wall)
+            if (collision.gameObject.CompareTag("Bound")) { //when the bullet collides with bound (wall)
                 bounces--;                             //decrease bounces count
                 if (bounces == 0) {                    //if the bullet is ready to explode
                     Explode();                         //explode it
@@ -32,10 +32,10 @@ namespace TankShooter
                 CheckCollisionWithGameObjects(collision, false);
             }
         }
-	
+
         void OnCollisionExit(Collision collision) {
             //change the bullet direction after bounce
-            if (collision.gameObject.tag == "Bound" && GetComponent<Rigidbody>().velocity != Vector3.zero) {
+            if (collision.gameObject.CompareTag("Bound") && GetComponent<Rigidbody>().velocity != Vector3.zero) {
                 transform.rotation = Quaternion.LookRotation(GetComponent<Rigidbody>().velocity);
             }
         }
