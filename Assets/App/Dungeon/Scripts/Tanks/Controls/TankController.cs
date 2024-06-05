@@ -32,12 +32,15 @@ namespace TankShooter
             instance = this;
         }
 
-        void Start () {
+        void Start ()
+        {
+
+            CameraFollow.instance.target = transform;
             gameplay = GameObject.FindObjectOfType<Gameplay>();
             lifeBar = GameObject.FindObjectOfType<LifeBar>();
 //#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
 			//if control type is joystick+touch - disable second joystick
-			if (PlayerPrefs.GetInt("control_type", 1) == 1) {
+			if (PlayerPrefs.GetInt("control_type", 1) == 1 && rightJoystick) {
 				rightJoystick.gameObject.SetActive(false);
 			}
 //#else

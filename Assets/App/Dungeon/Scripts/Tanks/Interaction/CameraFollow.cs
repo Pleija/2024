@@ -3,14 +3,21 @@
 //component for camera to follow the player
 namespace TankShooter
 {
-    public class CameraFollow : MonoBehaviour {
+    public class CameraFollow : MonoBehaviour
+    {
 
+        public static CameraFollow instance;
         public Transform target;     //target to follow
         public float distance = 10f; //horizontal distance to target
         public float height = 5f;    //height over the target
         public float heightDamping = 2f;
         public float rotationDamping = 3f;
-	
+
+        private void Awake()
+        {
+            instance = this;
+        }
+
         void LateUpdate () {
             if (!target) //ignore update if no target
                 return;
