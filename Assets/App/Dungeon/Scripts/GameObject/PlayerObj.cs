@@ -13,9 +13,6 @@ namespace Dungeon
     {
         //Instance of the player, for easy access
         public static PlayerObj playerInstance;
-        public List<GameObject> prefabs;
-        public int currentPrefab = 0;
-        public List<GameObject> enemyPrefab;
 
         //Hearth bar of the player, shown in the HUD
         protected Slider playerHealthBar;

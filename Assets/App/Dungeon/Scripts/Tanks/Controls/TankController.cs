@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dungeon;
 using Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -217,6 +218,17 @@ namespace TankShooter
                 if (result.gameObject.tag == "Joystick") return true;
             }
             return false;
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            //Debug.Log("collision");
+
+            if (other.transform.GetComponentInChildren<InteractiveObj>() is {} obj) {
+                obj.PlayerGet();
+            } else if (other.transform.GetComponentInParent<InteractiveObj>() is {} obj2) {
+                obj2.PlayerGet();
+            }
         }
 
         //used to hurt the player's tank by enemy

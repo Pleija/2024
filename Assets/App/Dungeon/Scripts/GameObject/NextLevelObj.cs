@@ -20,7 +20,7 @@
                 DungeonGenerator.instance.zSize++;
 
             //Save Player status, life, strength, etc
-            PlayerObj.playerInstance.SaveData();
+         if(PlayerObj.playerInstance)   PlayerObj.playerInstance.SaveData();
 
             //Create a new Dungeon
             DungeonGenerator.instance.GenerateDungeon();
