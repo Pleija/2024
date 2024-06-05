@@ -9,6 +9,7 @@ namespace zFrame.UI
 {
     public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
+        public static Joystick instance;
         public float maxRadius = 38; //摇杆移动最大半径
         public Direction activatedAxis = Direction.Both; //选择激活的轴向
         [SerializeField] bool dynamic = true; // 是否为动态摇杆
@@ -34,7 +35,17 @@ namespace zFrame.UI
         #endregion
 
         #region MonoBehaviour functions
-        void Start() => backGroundOriginLocalPostion = backGround.localPosition;
+        private void Awake()
+        {
+            instance = this;
+        }
+
+        void Start()
+        {
+
+            backGroundOriginLocalPostion = backGround.localPosition;
+        }
+
         void Update() => OnValueChanged.Invoke(knob.localPosition / maxRadius); //fixedupdate 为物理更新，摇杆操作放在常规 update 就好
         void OnDisable() => RestJoystick(); //意外被 Disable 各单位需要被重置
         void OnValidate() => ConfigJoystick(); //Inspector 发生改变，各单位需要重新配置，编辑器有效

@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Joystick
+  - Enemy
+  - Bound
+  - GameStatus
+  - WeaponShow
+  - PlayerHeathBar
+  - Breakable
   layers:
   - Default
   - TransparentFX
@@ -19,9 +26,9 @@ TagManager:
   - Character
   - 
   - 
-  - 
-  - 
-  - 
+  - Enemy
+  - PlayerBullet
+  - EnemyBullet
   - 
   - 
   - 
