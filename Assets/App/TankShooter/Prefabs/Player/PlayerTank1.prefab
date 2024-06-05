@@ -647,6 +647,9 @@ MonoBehaviour:
   cannonRotationSpeed: 15
   leftJoystick: {fileID: 0}
   rightJoystick: {fileID: 0}
+  isJoystickMoving: 0
+  timeUp: 2
+  time: 0
 --- !u!82 &8286264
 AudioSource:
   m_ObjectHideFlags: 0
