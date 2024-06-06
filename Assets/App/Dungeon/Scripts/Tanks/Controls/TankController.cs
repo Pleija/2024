@@ -58,6 +58,10 @@ namespace TankShooter
             //#if UNITY_EDITOR
             joystick.OnPointerDown.AddListener(v => {
                 Debug.Log($": 摇杆被按下！ ");
+                isJoystickMoving = false;
+                cannon.Fire();
+            });
+            joystick.OnDragging.AddListener(() => {
                 isJoystickMoving = true;
             });
             joystick.OnPointerUp.AddListener(v => {
@@ -149,7 +153,7 @@ namespace TankShooter
         void FixedUpdate()
         {
             //move the tank if it's alive
-            if (isAlive && isJoystickMoving)
+            if (isAlive && isJoystickMoving && joystick.IsDraging)
                 GetComponent<Rigidbody>().velocity = bodyDirection * tankMoveSpeed * Time.deltaTime;
             else
                 GetComponent<Rigidbody>().velocity = Vector3.zero;

@@ -1,6 +1,8 @@
 // Copyright (c) Bian Shanghai
 // https://github.com/Bian-Sh/UniJoystick
 // Licensed under the MIT license. See the LICENSE.md file in the project root for more information.
+
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
@@ -17,8 +19,10 @@ namespace zFrame.UI
         [Space(8)]
         public JoystickEvent OnValueChanged = new JoystickEvent(); //事件 ： 摇杆被 拖拽时
 
+        public UnityEvent OnDragging;
+
         #region Property
-        public bool IsDraging { get { return fingerId != int.MinValue; } } //摇杆拖拽状态
+        public bool IsDraging { get { return fingerId != int.MinValue && isMoving; } } //摇杆拖拽状态
         public bool ShowDirectionArrow { get => showDirectionArrow; set => showDirectionArrow = value; }  // 是否展示指向器
         public bool IsDynamic //运行时代码配置摇杆是否为动态摇杆
         {
@@ -32,6 +36,8 @@ namespace zFrame.UI
             }
             get => dynamic;
         }
+
+        public bool isMoving;
         #endregion
 
         #region MonoBehaviour functions
@@ -52,22 +58,48 @@ namespace zFrame.UI
         #endregion
 
         #region The implement of pointer event Interface
+        private bool beginDrag;
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
             if (eventData.pointerId < -1 || IsDraging) return; //适配 Touch：只响应一个Touch；适配鼠标：只响应左键
             fingerId = eventData.pointerId;
-            pointerDownPosition = eventData.position;
-            if (dynamic)
-            {
-                pointerDownPosition[2] = eventData.pressEventCamera?.WorldToScreenPoint(backGround.position).z ?? backGround.position.z;
-                backGround.position = eventData.pressEventCamera?.ScreenToWorldPoint(pointerDownPosition) ?? pointerDownPosition; ;
-            }
+            beginDrag = true;
+            isMoving = false;
+            // pointerDownPosition = eventData.position;
+            // if (dynamic)
+            // {
+            //     pointerDownPosition[2] = eventData.pressEventCamera?.WorldToScreenPoint(backGround.position).z ?? backGround.position.z;
+            //     backGround.position = eventData.pressEventCamera?.ScreenToWorldPoint(pointerDownPosition) ?? pointerDownPosition; ;
+            // }
             OnPointerDown.Invoke(eventData.position);
         }
+
 
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
             if (fingerId != eventData.pointerId) return;
+
+            if (beginDrag) {
+                isMoving = false;
+                beginDrag = false;
+                //Debug.Log("drag");
+                pointerDownPosition = eventData.position;
+
+                if (dynamic) {
+                    pointerDownPosition[2] =
+                        eventData.pressEventCamera?.WorldToScreenPoint(backGround.position).z
+                        ?? backGround.position.z;
+                    backGround.position =
+                        eventData.pressEventCamera?.ScreenToWorldPoint(pointerDownPosition)
+                        ?? pointerDownPosition;
+                    ;
+                }
+            }
+            else {
+                isMoving = true;
+            }
+
+
             Vector2 direction = eventData.position - (Vector2)pointerDownPosition; //得到BackGround 指向 Handle 的向量
             float radius = Mathf.Clamp(Vector3.Magnitude(direction), 0, maxRadius); //获取并锁定向量的长度 以控制 Handle 半径
             Vector2 localPosition = new Vector2()
@@ -81,11 +113,13 @@ namespace zFrame.UI
                 if (!arrow.gameObject.activeInHierarchy) arrow.gameObject.SetActive(true);
                 arrow.localEulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, localPosition));
             }
+            OnDragging.Invoke();
         }
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
             if (fingerId != eventData.pointerId) return;//正确的手指抬起时才会重置摇杆；
+            isMoving = false;
             RestJoystick();
             OnPointerUp.Invoke(eventData.position);
         }
