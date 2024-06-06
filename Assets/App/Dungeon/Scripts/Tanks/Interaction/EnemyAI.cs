@@ -144,7 +144,7 @@ namespace TankShooter
                 (1 << LayerMask.NameToLayer("EnemyBullet")) |
                 (1 << LayerMask.NameToLayer("PlayerBullet"))); //cast all layers except enemy and bullets
             if (Physics.Raycast(body.position, getDirectionToPlayer(), out hit, viewDistance, layerMask)) {
-                if (hit.collider.tag == "Player")
+                if (hit.collider.CompareTag("Player"))
                     return true;
                 else
                     return false;
